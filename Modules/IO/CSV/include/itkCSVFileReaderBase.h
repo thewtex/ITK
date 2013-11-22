@@ -60,12 +60,12 @@ namespace itk
  * \ingroup ITKIOCSV
  */
 
-class CSVFileReaderBase:public LightProcessObject
+class CSVFileReaderBase : public LightProcessObject
 {
 public:
   /** Standard class typedefs */
-  typedef CSVFileReaderBase         Self;
-  typedef LightProcessObject        Superclass;
+  typedef CSVFileReaderBase  Self;
+  typedef LightProcessObject Superclass;
 
   /** Run-time type information (and related methods) */
   itkTypeMacro(Self,Superclass);
@@ -131,19 +131,20 @@ public:
   *  from the c++ language.
   */
   template <typename TData>
-  TData ConvertStringToValueType(const std::string str)
+  TData
+  ConvertStringToValueType(const std::string str)
   {
-    TData value;
+    TData              value;
     std::istringstream isstream(str);
 
-    if ((isstream >> value).fail() || !(isstream >> std::ws).eof())
-    {
+    if ( (isstream >> value).fail() || !(isstream >> std::ws).eof() )
+      {
       return vcl_numeric_limits<TData>::quiet_NaN();
-    }
+      }
     else
-    {
+      {
       return value;
-    }
+      }
   }
 
   /** This method must be defined in derived classes to parse the entire
@@ -154,18 +155,19 @@ public:
   virtual void Parse()=0;
 
 protected:
-  std::string                  m_FileName;
-  char                         m_FieldDelimiterCharacter;
-  char                         m_StringDelimiterCharacter;
-  bool                         m_UseStringDelimiterCharacter;
-  bool                         m_HasRowHeaders;
-  bool                         m_HasColumnHeaders;
-  std::ifstream                m_InputStream;
-  int                          m_EndOfColumnHeadersLine;
-  std::string                  m_Line;
+  std::string   m_FileName;
+  char          m_FieldDelimiterCharacter;
+  char          m_StringDelimiterCharacter;
+  bool          m_UseStringDelimiterCharacter;
+  bool          m_HasRowHeaders;
+  bool          m_HasColumnHeaders;
+  std::ifstream m_InputStream;
+  int           m_EndOfColumnHeadersLine;
+  std::string   m_Line;
 
   CSVFileReaderBase();
-  virtual ~CSVFileReaderBase() {}
+  virtual
+  ~CSVFileReaderBase() {}
   /** Print method */
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -175,6 +177,7 @@ protected:
 private:
   CSVFileReaderBase(const Self &);       //purposely not implemented
   void operator=(const Self &);          //purposely not implemented
+
 };
 
 } //end namespace itk

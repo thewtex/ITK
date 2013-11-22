@@ -121,6 +121,7 @@ VectorAnisotropicDiffusionFunction< TImage >
 
   this->SetAverageGradientMagnitudeSquared( (double)accumulator / counter );
 }
+
 } // end namespace itk
 
 #endif

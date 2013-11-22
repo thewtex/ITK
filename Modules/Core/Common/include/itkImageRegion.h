@@ -66,7 +66,7 @@ class ImageBase;
  * \endwiki
  */
 template< unsigned int VImageDimension >
-class ImageRegion:public Region
+class ImageRegion : public Region
 {
 public:
   /** Standard class typedefs. */
@@ -85,8 +85,11 @@ public:
                        ( ImageDimension - ( ImageDimension > 1 ) ) );
 
   /** Dimension of the image available at run time. */
-  static unsigned int GetImageDimension()
-  { return ImageDimension; }
+  static unsigned int
+  GetImageDimension()
+  {
+    return ImageDimension;
+  }
 
   /** Index typedef support. An index is used to access pixel values. */
   typedef Index< itkGetStaticConstMacro(ImageDimension) > IndexType;
@@ -104,8 +107,11 @@ public:
   typedef ImageRegion< itkGetStaticConstMacro(SliceDimension) > SliceRegion;
 
   /** Return the region type. Images are described with structured regions. */
-  virtual typename Superclass::RegionType GetRegionType() const
-  { return Superclass::ITK_STRUCTURED_REGION; }
+  virtual typename Superclass::RegionType
+  GetRegionType() const
+  {
+    return Superclass::ITK_STRUCTURED_REGION;
+  }
 
   /** Constructor. ImageRegion is a lightweight object that is not reference
    * counted, so the constructor is public. */
@@ -113,58 +119,100 @@ public:
 
   /** Destructor. ImageRegion is a lightweight object that is not reference
    * counted, so the destructor is public. */
-  virtual ~ImageRegion();
+  virtual
+  ~ImageRegion();
 
   /** Copy constructor. ImageRegion is a lightweight object that is not
    * reference counted, so the copy constructor is public. */
-  ImageRegion(const Self & region):Region(region), m_Index(region.m_Index), m_Size(region.m_Size) {}
+  ImageRegion(const Self & region) : Region(region), m_Index(region.m_Index), m_Size(region.m_Size) {}
 
   /** Constructor that takes an index and size. ImageRegion is a lightweight
    * object that is not reference counted, so this constructor is public. */
   ImageRegion(const IndexType & index, const SizeType & size)
-  { m_Index = index; m_Size = size; }
+  {
+    m_Index = index; m_Size = size;
+  }
 
   /** Constructor that takes a size and assumes an index of zeros. ImageRegion
    * is lightweight object that is not reference counted so this constructor
    * is public. */
   ImageRegion(const SizeType & size)
-  { m_Size = size; m_Index.Fill(0); }
+  {
+    m_Size = size; m_Index.Fill(0);
+  }
 
   /** operator=. ImageRegion is a lightweight object that is not reference
    * counted, so operator= is public. */
-  void operator=(const Self & region)
-    { m_Index = region.m_Index;m_Size = region.m_Size; }
+  void
+  operator=(const Self & region)
+  {
+    m_Index = region.m_Index;m_Size = region.m_Size;
+  }
 
   /** Set the index defining the corner of the region. */
-  void SetIndex(const IndexType & index)
-  { m_Index = index; }
+  void
+  SetIndex(const IndexType & index)
+  {
+    m_Index = index;
+  }
 
   /** Get index defining the corner of the region. */
-  const IndexType & GetIndex() const { return m_Index; }
-  IndexType & GetModifiableIndex() { return m_Index; }
+  const IndexType &
+  GetIndex() const {
+    return m_Index;
+  }
+
+  IndexType &
+  GetModifiableIndex() {
+    return m_Index;
+  }
 
   /** Set the size of the region. This plus the index determines the
    * rectangular shape, or extent, of the region. */
-  void SetSize(const SizeType & size)
-  { m_Size = size; }
+  void
+  SetSize(const SizeType & size)
+  {
+    m_Size = size;
+  }
 
   /** Get the size of the region. */
-  const SizeType & GetSize() const { return m_Size; }
-  SizeType & GetModifiableSize() { return m_Size; }
+  const SizeType &
+  GetSize() const {
+    return m_Size;
+  }
+
+  SizeType &
+  GetModifiableSize() {
+    return m_Size;
+  }
 
   /** Convenience methods to get and set the size of the particular dimension i.
     */
-  void SetSize(unsigned int i, SizeValueType sze)
-  { m_Size[i] = sze; }
-  SizeValueType GetSize(unsigned int i) const
-  { return m_Size[i]; }
+  void
+  SetSize(unsigned int i, SizeValueType sze)
+  {
+    m_Size[i] = sze;
+  }
+
+  SizeValueType
+  GetSize(unsigned int i) const
+  {
+    return m_Size[i];
+  }
 
   /** Convenience methods to get and set the index of the particular dimension
     i. */
-  void SetIndex(unsigned int i, IndexValueType sze)
-  { m_Index[i] = sze; }
-  IndexValueType GetIndex(unsigned int i) const
-  { return m_Index[i]; }
+  void
+  SetIndex(unsigned int i, IndexValueType sze)
+  {
+    m_Index[i] = sze;
+  }
+
+  IndexValueType
+  GetIndex(unsigned int i) const
+  {
+    return m_Index[i];
+  }
 
   /** Get index defining the upper corner of the region. */
   IndexType GetUpperIndex() const;
@@ -180,6 +228,7 @@ public:
   operator==(const Self & region) const
   {
     bool same = ( m_Index == region.m_Index );
+
     same = same && ( m_Size == region.m_Size );
     return same;
   }
@@ -189,6 +238,7 @@ public:
   operator!=(const Self & region) const
   {
     bool same = ( m_Index == region.m_Index );
+
     same = same && ( m_Size == region.m_Size );
     return !same;
   }
@@ -227,7 +277,7 @@ public:
         }
       // bound is the last valid pixel location
       const TCoordRepType bound = static_cast< TCoordRepType >(
-        m_Index[i] + m_Size[i] - 0.5 );
+          m_Index[i] + m_Size[i] - 0.5 );
 
       /* Note for NaN: test using negation of a positive test in order
        * to always evaluate to true (and thus return false) when index[i]
@@ -235,7 +285,7 @@ public:
        * NaN into a platform-dependent value (large negative, -1 or large
        * positive, empirically). Thus this test here is relied on
        * to 'catch' NaN's. */
-      if ( ! (index[i] <= bound) )
+      if ( !(index[i] <= bound) )
         {
         return false;
         }
@@ -320,6 +370,7 @@ private:
 
 template< unsigned int VImageDimension >
 std::ostream & operator<<(std::ostream & os, const ImageRegion< VImageDimension > & region);
+
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION

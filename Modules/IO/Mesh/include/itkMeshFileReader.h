@@ -42,11 +42,12 @@ namespace itk
  * \brief Base exception class for IO conflicts.
  * \ingroup ITKIOMesh
  */
-class ITKIOMesh_HIDDEN MeshFileReaderException:public ExceptionObject
+class ITKIOMesh_HIDDEN MeshFileReaderException : public ExceptionObject
 {
 public:
   /** Has to have empty throw(). */
-  virtual ~MeshFileReaderException() throw() {};
+  virtual
+  ~MeshFileReaderException() throw() {}
 
   /** Run-time information. */
   itkTypeMacro(MeshFileReaderException, ExceptionObject);
@@ -54,14 +55,14 @@ public:
   /** Constructor. */
   MeshFileReaderException(const char *file, unsigned int line,
                           const char *message = "Error in IO",
-                          const char *loc = "Unknown"):
+                          const char *loc = "Unknown") :
     ExceptionObject(file, line, message, loc)
   {}
 
   /** Constructor. */
   MeshFileReaderException(const std::string & file, unsigned int line,
                           const char *message = "Error in IO",
-                          const char *loc = "Unknown"):
+                          const char *loc = "Unknown") :
     ExceptionObject(file, line, message, loc)
   {}
 
@@ -101,7 +102,7 @@ public:
 template< typename TOutputMesh,
           typename ConvertPointPixelTraits = MeshConvertPixelTraits< typename TOutputMesh::PixelType >,
           class ConvertCellPixelTraits = MeshConvertPixelTraits< typename TOutputMesh::CellPixelType > >
-class ITKIOMesh_HIDDEN MeshFileReader:public MeshSource< TOutputMesh >
+class ITKIOMesh_HIDDEN MeshFileReader : public MeshSource< TOutputMesh >
 {
 public:
   /** Standard class typedefs. */
@@ -152,6 +153,7 @@ public:
   * to use to read a particular file in case the factory mechanism will
   * not work properly (e.g., unknown or unusual extension). */
   void  SetMeshIO(MeshIOBase *meshIO);
+
   itkGetModifiableObjectMacro(MeshIO, MeshIOBase);
 
   /** Prepare the allocation of the output mesh during the first back

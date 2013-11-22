@@ -27,7 +27,7 @@ namespace itk
 {
 /** Constructor with default arguments */
 template< typename TScalar, unsigned int NDimensions >
-FixedCenterOfRotationAffineTransform< TScalar, NDimensions >::FixedCenterOfRotationAffineTransform():
+FixedCenterOfRotationAffineTransform< TScalar, NDimensions >::FixedCenterOfRotationAffineTransform() :
   Superclass(ParametersDimension)
 {}
 
@@ -35,7 +35,7 @@ template< typename TScalar, unsigned int NDimensions >
 FixedCenterOfRotationAffineTransform< TScalar, NDimensions >::FixedCenterOfRotationAffineTransform(
   unsigned int outputSpaceDims,
   unsigned int
-  paramsDims):
+  paramsDims) :
   Superclass(outputSpaceDims, paramsDims)
 {}
 
@@ -43,7 +43,7 @@ template< typename TScalar, unsigned int NDimensions >
 FixedCenterOfRotationAffineTransform< TScalar, NDimensions >::FixedCenterOfRotationAffineTransform(
   const MatrixType & matrix,
   const
-  OutputVectorType & offset):
+  OutputVectorType & offset) :
   Superclass(matrix, offset)
 {}
 
@@ -51,8 +51,8 @@ FixedCenterOfRotationAffineTransform< TScalar, NDimensions >::FixedCenterOfRotat
 template< typename TScalar, unsigned int NDimensions >
 FixedCenterOfRotationAffineTransform< TScalar, NDimensions >::
 ~FixedCenterOfRotationAffineTransform()
-{
-}
+{}
+
 } // namespace
 
 #endif

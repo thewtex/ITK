@@ -36,24 +36,28 @@ class Atan2
 public:
   Atan2() {}
   ~Atan2() {}
-  bool operator!=(const Atan2 &) const
+  bool
+  operator!=(const Atan2 &) const
   {
     return false;
   }
 
-  bool operator==(const Atan2 & other) const
+  bool
+  operator==(const Atan2 & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A, const TInput2 & B) const
+  inline TOutput
+  operator()(const TInput1 & A, const TInput2 & B) const
   {
     return static_cast< TOutput >(
-             vcl_atan2(
-               static_cast< double >( A ),
-               static_cast< double >( B ) )
-             );
+      vcl_atan2(
+        static_cast< double >( A ),
+        static_cast< double >( B ) )
+      );
   }
+
 };
 }
 /** \class Atan2ImageFilter
@@ -81,7 +85,7 @@ public:
  * \endwiki
  */
 template< typename TInputImage1, typename TInputImage2, typename TOutputImage >
-class Atan2ImageFilter:
+class Atan2ImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::Atan2<
@@ -122,11 +126,13 @@ public:
 
 protected:
   Atan2ImageFilter() {}
-  virtual ~Atan2ImageFilter() {}
+  virtual
+  ~Atan2ImageFilter() {}
 
 private:
   Atan2ImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };
 } // end namespace itk
 

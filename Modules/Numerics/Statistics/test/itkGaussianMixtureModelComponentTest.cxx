@@ -16,14 +16,14 @@
  *
  *=========================================================================*/
 
-
 #include <fstream>
 
 #include "itkPointSetToListSampleAdaptor.h"
 
 #include "itkGaussianMixtureModelComponent.h"
 
-int itkGaussianMixtureModelComponentTest(int argc, char* argv[] )
+int
+itkGaussianMixtureModelComponentTest(int argc, char* argv[] )
 {
   typedef itk::PointSet< double, 2 > PointSetType;
   typedef itk::Statistics::PointSetToListSampleAdaptor< PointSetType >
@@ -33,13 +33,13 @@ int itkGaussianMixtureModelComponentTest(int argc, char* argv[] )
 
   if (argc < 2)
     {
-      std::cout << "ERROR: data file name argument missing."
-                << std::endl;
-      return EXIT_FAILURE;
+    std::cout << "ERROR: data file name argument missing."
+              << std::endl;
+    return EXIT_FAILURE;
     }
 
   char* dataFileName = argv[1];
-  int dataSize = 2000;
+  int   dataSize = 2000;
   typedef itk::Array< double > ParametersType;
   unsigned int numberOfClasses = 2;
 
@@ -71,23 +71,23 @@ int itkGaussianMixtureModelComponentTest(int argc, char* argv[] )
   initialProportions[1] = 0.5;
 
   /* Loading point data */
-  PointSetType::Pointer pointSet = PointSetType::New();
+  PointSetType::Pointer                pointSet = PointSetType::New();
   PointSetType::PointsContainerPointer pointsContainer =
     PointSetType::PointsContainer::New();
   pointsContainer->Reserve(dataSize);
-  pointSet->SetPoints(pointsContainer.GetPointer());
+  pointSet->SetPoints(pointsContainer.GetPointer() );
 
   PointSetType::PointsContainerIterator p_iter = pointsContainer->Begin();
-  PointSetType::PointType point;
-  double temp;
-  std::ifstream dataStream(dataFileName);
+  PointSetType::PointType               point;
+  double                                temp;
+  std::ifstream                         dataStream(dataFileName);
   if ( !dataStream )
     {
     std::cout << "ERROR: fail to open the data file." << std::endl;
     return EXIT_FAILURE;
     }
 
-  while (p_iter != pointsContainer->End())
+  while (p_iter != pointsContainer->End() )
     {
     for (unsigned int i = 0; i < PointSetType::PointDimension; i++)
       {
@@ -104,15 +104,15 @@ int itkGaussianMixtureModelComponentTest(int argc, char* argv[] )
   DataSampleType::Pointer sample =
     DataSampleType::New();
 
-  sample->SetPointSet(pointSet.GetPointer());
+  sample->SetPointSet(pointSet.GetPointer() );
 
   /* Preparing the gaussian mixture components */
   typedef ComponentType::Pointer ComponentPointer;
   std::vector< ComponentPointer > components;
   for ( unsigned int i = 0; i < numberOfClasses; i++ )
     {
-    components.push_back(ComponentType::New());
-    (components[i])->SetSample(sample.GetPointer());
+    components.push_back(ComponentType::New() );
+    (components[i])->SetSample(sample.GetPointer() );
     (components[i])->SetParameters(initialParameters[i]);
     }
 

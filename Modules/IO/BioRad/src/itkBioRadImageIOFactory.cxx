@@ -60,9 +60,10 @@ BioRadImageIOFactory::GetDescription() const
 
 static bool BioRadImageIOFactoryHasBeenRegistered;
 
-void ITKIOBioRad_EXPORT BioRadImageIOFactoryRegister__Private(void)
+void ITKIOBioRad_EXPORT
+BioRadImageIOFactoryRegister__Private(void)
 {
-  if( ! BioRadImageIOFactoryHasBeenRegistered )
+  if( !BioRadImageIOFactoryHasBeenRegistered )
     {
     BioRadImageIOFactoryHasBeenRegistered = true;
     BioRadImageIOFactory::RegisterOneFactory();

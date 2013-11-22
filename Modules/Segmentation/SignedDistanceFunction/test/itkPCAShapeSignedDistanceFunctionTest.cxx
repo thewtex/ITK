@@ -22,7 +22,6 @@
 #include "itkImageRegionIterator.h"
 #include "itkEuler2DTransform.h"
 
-
 /**
  * This module tests the functionality of the PCAShapeSignedDistanceFunction
  * class.
@@ -33,15 +32,16 @@
  * The test fails if the evaluated results is not within a certain tolerance
  * of the expected results.
  */
-int itkPCAShapeSignedDistanceFunctionTest( int, char *[])
+int
+itkPCAShapeSignedDistanceFunctionTest( int, char *[])
 {
   unsigned int i;
+
   typedef double CoordRep;
   const unsigned int Dimension    = 2;
   const unsigned int ImageWidth   = 3;
   const unsigned int ImageHeight  = 2;
   const unsigned int NumberOfPCs  = 3;
-
 
   // define a pca shape function
   typedef itk::PCAShapeSignedDistanceFunction<CoordRep,Dimension> ShapeFunction;
@@ -49,12 +49,10 @@ int itkPCAShapeSignedDistanceFunctionTest( int, char *[])
 //  shape->DebugOn();
   shape->SetNumberOfPrincipalComponents(NumberOfPCs);
 
-
   // set up the transform
   typedef itk::Euler2DTransform<double> transformType;
   transformType::Pointer transform = transformType::New();
   shape->SetTransform(transform);
-
 
   // prepare for image creation
   typedef ShapeFunction::ImageType ImageType;
@@ -64,15 +62,13 @@ int itkPCAShapeSignedDistanceFunctionTest( int, char *[])
   ImageType::IndexType startIndex;
   startIndex.Fill(0);
 
-  ImageType::RegionType  region;
+  ImageType::RegionType region;
   region.SetSize(imageSize);
   region.SetIndex(startIndex);
-
 
   // set up the random number generator
   vnl_sample_reseed();
   ImageType::PixelType randomPixel;
-
 
   // set up the mean image
   ImageType::Pointer meanImage = ImageType::New();
@@ -80,7 +76,7 @@ int itkPCAShapeSignedDistanceFunctionTest( int, char *[])
   meanImage->Allocate();
 
   typedef itk::ImageRegionIterator<ImageType> ImageIterator;
-  ImageIterator meanImageIt(meanImage, meanImage->GetBufferedRegion());
+  ImageIterator meanImageIt(meanImage, meanImage->GetBufferedRegion() );
 
   for(meanImageIt.GoToBegin(); !meanImageIt.IsAtEnd(); ++meanImageIt)
     {
@@ -90,11 +86,10 @@ int itkPCAShapeSignedDistanceFunctionTest( int, char *[])
 
   shape->SetMeanImage(meanImage);
 
-
   // set up the NumberOfPCs principal component images
-  ShapeFunction::ImagePointerVector   pcImages(NumberOfPCs);
-  typedef std::vector<ImageIterator>  ImageIteratorVector;
-  ImageIteratorVector                 pcImageIts(NumberOfPCs);
+  ShapeFunction::ImagePointerVector pcImages(NumberOfPCs);
+  typedef std::vector<ImageIterator> ImageIteratorVector;
+  ImageIteratorVector pcImageIts(NumberOfPCs);
 
   for(i=0; i<NumberOfPCs; i++)
     {
@@ -102,7 +97,7 @@ int itkPCAShapeSignedDistanceFunctionTest( int, char *[])
     pcImages[i]->SetRegions(region);
     pcImages[i]->Allocate();
 
-    pcImageIts[i] = ImageIterator(pcImages[i], pcImages[i]->GetBufferedRegion());
+    pcImageIts[i] = ImageIterator(pcImages[i], pcImages[i]->GetBufferedRegion() );
 
     for(pcImageIts[i].GoToBegin(); !pcImageIts[i].IsAtEnd(); ++pcImageIts[i])
       {
@@ -113,15 +108,13 @@ int itkPCAShapeSignedDistanceFunctionTest( int, char *[])
 
   shape->SetPrincipalComponentImages(pcImages);
 
-
   // set up the standard deviation for each principal component images
   ShapeFunction::ParametersType pcStandardDeviations(NumberOfPCs);
 
   for(i=0; i<NumberOfPCs; i++)
-    { pcStandardDeviations[i] = vnl_sample_normal(0, 1); }
+        { pcStandardDeviations[i] = vnl_sample_normal(0, 1); }
 
   shape->SetPrincipalComponentStandardDeviations(pcStandardDeviations);
-
 
   // set up the parameters
   unsigned int numberOfShapeParameters  = shape->GetNumberOfShapeParameters();
@@ -131,10 +124,9 @@ int itkPCAShapeSignedDistanceFunctionTest( int, char *[])
   ShapeFunction::ParametersType parameters(numberOfParameters);
 
   for(i=0; i<numberOfParameters; i++)
-    { parameters[i] = vnl_sample_normal(0, 1); }
+        { parameters[i] = vnl_sample_normal(0, 1); }
 
   shape->SetParameters(parameters);
-
 
   // we must initialize the function before use
   shape->Initialize();
@@ -175,8 +167,8 @@ int itkPCAShapeSignedDistanceFunctionTest( int, char *[])
     for(i=0; i<NumberOfPCs; i++)
       {
       expected += pcImages[i]->GetPixel(index) *
-      pcStandardDeviations[i] *
-      parameters[i];
+        pcStandardDeviations[i] *
+        parameters[i];
       }
 
     // check result
@@ -189,25 +181,25 @@ int itkPCAShapeSignedDistanceFunctionTest( int, char *[])
       }
     }
 
- // Evaluate at a point outside the image domain
- std::cout << "Evaluate at point outside image domain" << std::endl;
- q.Fill( 5.0 );
- output = shape->Evaluate( q );
- std::cout << "f(" << q << ") = " << output << std::endl;
+  // Evaluate at a point outside the image domain
+  std::cout << "Evaluate at point outside image domain" << std::endl;
+  q.Fill( 5.0 );
+  output = shape->Evaluate( q );
+  std::cout << "f(" << q << ") = " << output << std::endl;
 
- // Exercise other methods for test coverage
- shape->Print( std::cout );
+  // Exercise other methods for test coverage
+  shape->Print( std::cout );
 
- std::cout << "NumberOfPrincipalComponents: "
-           << shape->GetNumberOfPrincipalComponents() << std::endl;
- std::cout << "MeanImage: "
-           << shape->GetMeanImage() << std::endl;
- std::cout << "PrincipalComponentStandardDeviations: "
-           << shape->GetPrincipalComponentStandardDeviations() << std::endl;
- std::cout << "Transform: "
-           << shape->GetTransform() << std::endl;
- std::cout << "Parameters: "
-           << shape->GetParameters() << std::endl;
+  std::cout << "NumberOfPrincipalComponents: "
+            << shape->GetNumberOfPrincipalComponents() << std::endl;
+  std::cout << "MeanImage: "
+            << shape->GetMeanImage() << std::endl;
+  std::cout << "PrincipalComponentStandardDeviations: "
+            << shape->GetPrincipalComponentStandardDeviations() << std::endl;
+  std::cout << "Transform: "
+            << shape->GetTransform() << std::endl;
+  std::cout << "Parameters: "
+            << shape->GetParameters() << std::endl;
 
   // Exercise error testing
   bool pass;
@@ -237,7 +229,7 @@ int itkPCAShapeSignedDistanceFunctionTest( int, char *[])
   TEST_INITIALIZATION_ERROR( MeanImage, NULL, meanImage );
 
   // Wrong number of PC images
-  ShapeFunction::ImagePointerVector   badPCImages;
+  ShapeFunction::ImagePointerVector badPCImages;
   badPCImages.resize(1);
   badPCImages[0] = NULL;
 

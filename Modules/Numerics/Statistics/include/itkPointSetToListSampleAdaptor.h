@@ -43,7 +43,7 @@ namespace Statistics
  */
 
 template< typename TPointSet >
-class PointSetToListSampleAdaptor:
+class PointSetToListSampleAdaptor :
   public ListSample< typename TPointSet::PointType >
 {
 public:
@@ -120,41 +120,48 @@ public:
       m_InstanceIdentifier = iter.m_InstanceIdentifier;
     }
 
-    ConstIterator & operator=(const ConstIterator & iter)
+    ConstIterator &
+    operator=(const ConstIterator & iter)
     {
       m_Iter = iter.m_Iter;
       m_InstanceIdentifier = iter.m_InstanceIdentifier;
       return *this;
     }
 
-    AbsoluteFrequencyType GetFrequency() const
+    AbsoluteFrequencyType
+    GetFrequency() const
     {
       return 1;
     }
 
-    const MeasurementVectorType & GetMeasurementVector() const
+    const MeasurementVectorType &
+    GetMeasurementVector() const
     {
       return ( const MeasurementVectorType & )m_Iter.Value();
     }
 
-    InstanceIdentifier GetInstanceIdentifier() const
+    InstanceIdentifier
+    GetInstanceIdentifier() const
     {
       return m_InstanceIdentifier;
     }
 
-    ConstIterator & operator++()
+    ConstIterator &
+    operator++()
     {
       ++m_Iter;
       ++m_InstanceIdentifier;
       return *this;
     }
 
-    bool operator!=(const ConstIterator & it)
+    bool
+    operator!=(const ConstIterator & it)
     {
       return ( m_Iter != it.m_Iter );
     }
 
-    bool operator==(const ConstIterator & it)
+    bool
+    operator==(const ConstIterator & it)
     {
       return ( m_Iter == it.m_Iter );
     }
@@ -180,19 +187,20 @@ private:
   /** \class Iterator
    * \ingroup ITKStatistics
    */
-  class Iterator:public ConstIterator
+  class Iterator : public ConstIterator
   {
     friend class PointSetToListSampleAdaptor;
 
 public:
 
-    Iterator(Self *adaptor):ConstIterator(adaptor)
+    Iterator(Self *adaptor) : ConstIterator(adaptor)
     {}
 
-    Iterator(const Iterator & iter):ConstIterator(iter)
+    Iterator(const Iterator & iter) : ConstIterator(iter)
     {}
 
-    Iterator & operator=(const Iterator & iter)
+    Iterator &
+    operator=(const Iterator & iter)
     {
       this->ConstIterator::operator=(iter);
       return *this;
@@ -209,14 +217,15 @@ protected:
 
     Iterator(
       PointsContainerIteratorType iter,
-      InstanceIdentifier iid):ConstIterator(iter, iid)
+      InstanceIdentifier iid) : ConstIterator(iter, iid)
     {}
 
 private:
   };
 
   /** returns an iterator that points to the beginning of the container */
-  Iterator Begin()
+  Iterator
+  Begin()
   {
     PointsContainerPointer nonConstPointsDataContainer =
       const_cast< PointsContainer * >( m_PointsContainer.GetPointer() );
@@ -226,7 +235,8 @@ private:
   }
 
   /** returns an iterator that points to the end of the container */
-  Iterator End()
+  Iterator
+  End()
   {
     PointsContainerPointer nonConstPointsDataContainer =
       const_cast< PointsContainer * >( m_PointsContainer.GetPointer() );
@@ -237,7 +247,8 @@ private:
   }
 
   /** returns an iterator that points to the beginning of the container */
-  ConstIterator Begin() const
+  ConstIterator
+  Begin() const
   {
     ConstIterator iter(m_PointsContainer->Begin(), 0);
 
@@ -245,7 +256,8 @@ private:
   }
 
   /** returns an iterator that points to the end of the container */
-  ConstIterator End() const
+  ConstIterator
+  End() const
   {
     ConstIterator iter( m_PointsContainer->End(), m_PointsContainer->Size() );
 
@@ -255,7 +267,8 @@ private:
 protected:
   PointSetToListSampleAdaptor();
 
-  virtual ~PointSetToListSampleAdaptor() {}
+  virtual
+  ~PointSetToListSampleAdaptor() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

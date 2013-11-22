@@ -18,25 +18,22 @@
 
 #include "itkDenseFrequencyContainer2.h"
 
-
-int itkDenseFrequencyContainer2Test(int, char* [] )
+int
+itkDenseFrequencyContainer2Test(int, char* [] )
 {
   std::cout << "DenseFrequencyContainer2 Test \n \n";
 
-
   typedef  itk::Statistics::DenseFrequencyContainer2
-                                            DenseFrequencyContainer2Type;
-
+    DenseFrequencyContainer2Type;
 
   DenseFrequencyContainer2Type::Pointer container =
-                                            DenseFrequencyContainer2Type::New();
+    DenseFrequencyContainer2Type::New();
 
-  typedef  DenseFrequencyContainer2Type::AbsoluteFrequencyType     AbsoluteFrequencyType;
+  typedef  DenseFrequencyContainer2Type::AbsoluteFrequencyType AbsoluteFrequencyType;
 
   const unsigned int numberOfBins = 1250;
 
   container->Initialize( numberOfBins );
-
 
   // Test the SetFrequency() / GetFrequency() methods
     {
@@ -47,7 +44,6 @@ int itkDenseFrequencyContainer2Test(int, char* [] )
       const AbsoluteFrequencyType frequency = static_cast<AbsoluteFrequencyType>( bin * bin );
       container->SetFrequency( bin, frequency );
       }
-
 
     for( unsigned int bin=0; bin < numberOfBins; bin++ )
       {
@@ -64,29 +60,31 @@ int itkDenseFrequencyContainer2Test(int, char* [] )
       }
 
     //Test Set/Get frequency of a out of bound bin
-    unsigned int binOutOfBound = numberOfBins;
+    unsigned int                binOutOfBound = numberOfBins;
     const AbsoluteFrequencyType frequency = static_cast<AbsoluteFrequencyType>( binOutOfBound * binOutOfBound );
 
     if ( container->SetFrequency( binOutOfBound, frequency ) )
       {
-      std::cerr << "SetFrequency() method should have returned false boolean\
-                    since the bin index is out of bound \n" << std::endl;
+      std::cerr <<
+      "SetFrequency() method should have returned false boolean\
+                    since the bin index is out of bound \n"
+                << std::endl;
       return EXIT_FAILURE;
       }
 
     if ( container->GetFrequency( binOutOfBound ) != itk::NumericTraits< AbsoluteFrequencyType >::Zero )
       {
-      std::cerr << "GetFrequency() method should have returned zero frequency\
-                    since the bin index is out of bound \n" << std::endl;
+      std::cerr <<
+      "GetFrequency() method should have returned zero frequency\
+                    since the bin index is out of bound \n"
+                << std::endl;
       return EXIT_FAILURE;
       }
-
 
     std::cout << " PASSED !" << std::endl;
     }   // end of SetFrequency() / GetFrequency() test
 
-
-    // Test the IncreaseFrequency() method
+  // Test the IncreaseFrequency() method
     {
     std::cout << "Testing IncreaseFrequency method...";
     // Try not to depend on previous tests....So, we initialize the histogram again.
@@ -105,7 +103,6 @@ int itkDenseFrequencyContainer2Test(int, char* [] )
       container->IncreaseFrequency( bin, frequency );
       }
 
-
     // Test if the values can be read back
     for( unsigned int bin=0; bin < numberOfBins; bin++ )
       {
@@ -119,20 +116,21 @@ int itkDenseFrequencyContainer2Test(int, char* [] )
         return EXIT_FAILURE;
         }
       }
-    unsigned int binOutOfBound = numberOfBins;
+    unsigned int                binOutOfBound = numberOfBins;
     const AbsoluteFrequencyType frequency = static_cast<AbsoluteFrequencyType>( binOutOfBound );
 
     if ( container->IncreaseFrequency( binOutOfBound, frequency ) )
       {
-      std::cerr << "IncreaseFrequency() method should have returned a false boolean\
-                    since the bin index is out of bound \n" << std::endl;
+      std::cerr <<
+      "IncreaseFrequency() method should have returned a false boolean\
+                    since the bin index is out of bound \n"
+                << std::endl;
       return EXIT_FAILURE;
 
       }
 
     std::cout << " PASSED !" << std::endl;
     }   // end of SetFrequency() / GetFrequency() test
-
 
   bool pass = true;
 

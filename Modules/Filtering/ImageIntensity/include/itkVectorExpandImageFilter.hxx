@@ -65,6 +65,7 @@ VectorExpandImageFilter< TInputImage, TOutputImage >
   Superclass::PrintSelf(os, indent);
 
   unsigned int j;
+
   os << indent << "ExpandFactors: [";
   for ( j = 0; j < ImageDimension - 1; j++ )
     {
@@ -201,7 +202,7 @@ VectorExpandImageFilter< TInputImage, TOutputImage >
       for ( unsigned int k = 0; k < VectorDimension; k++ )
         {
         outputValue[k] = static_cast< OutputValueType >(
-          interpolatedValue[k] );
+            interpolatedValue[k] );
         }
 
       outIt.Set(outputValue);
@@ -260,11 +261,11 @@ VectorExpandImageFilter< TInputImage, TOutputImage >
     {
     inputRequestedRegionSize[i] =
       (SizeValueType)vcl_ceil( (double)outputRequestedRegionSize[i]
-                      / (double)m_ExpandFactors[i] ) + 1;
+                               / (double)m_ExpandFactors[i] ) + 1;
 
     inputRequestedRegionStartIndex[i] =
       (IndexValueType)vcl_floor( (double)outputRequestedRegionStartIndex[i]
-                       / (double)m_ExpandFactors[i] );
+                                 / (double)m_ExpandFactors[i] );
     }
 
   typename TInputImage::RegionType inputRequestedRegion;
@@ -338,11 +339,11 @@ VectorExpandImageFilter< TInputImage, TOutputImage >
     {
     outputSpacing[i] = inputSpacing[i] / (float)m_ExpandFactors[i];
     outputSize[i] = (SizeValueType)
-                    ( (float)inputSize[i] * m_ExpandFactors[i]
-                      + 0.5f );
+      ( (float)inputSize[i] * m_ExpandFactors[i]
+        + 0.5f );
     outputStartIndex[i] = (IndexValueType)
-                          ( (float)inputStartIndex[i] * m_ExpandFactors[i]
-                            + 0.5f );
+      ( (float)inputStartIndex[i] * m_ExpandFactors[i]
+        + 0.5f );
     const double fraction = (double)( m_ExpandFactors[i] - 1 ) / (double)m_ExpandFactors[i];
     inputOriginShift[i] = -( inputSpacing[i] / 2.0 ) * fraction;
     }
@@ -360,6 +361,7 @@ VectorExpandImageFilter< TInputImage, TOutputImage >
 
   outputPtr->SetLargestPossibleRegion(outputLargestPossibleRegion);
 }
+
 } // end namespace itk
 
 #endif

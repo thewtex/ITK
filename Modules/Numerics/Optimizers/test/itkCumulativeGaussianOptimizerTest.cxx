@@ -29,14 +29,15 @@
  * be within differenceTolerance of the fitError.
  */
 
-int itkCumulativeGaussianOptimizerTest(int, char* [] )
+int
+itkCumulativeGaussianOptimizerTest(int, char* [] )
 {
-  double mean                = 3; // Mean of the Cumulative Gaussian.
-                                  // Ranges from 0 to N-1, where N is numberOfSamples.
-  double standardDeviation   = 2; // Standard deviation of the Cumulative Gaussian.
-  double lowerAsymptote      = -10; // Lower asymptotic value of the Cumulative Gaussian.
-  int    numberOfSamples     = 9; // Number of data samples.
-  double upperAsymptote      = 10; // Upper asymptotic value of the Cumulative Gaussian.
+  double mean                = 3;     // Mean of the Cumulative Gaussian.
+                                      // Ranges from 0 to N-1, where N is numberOfSamples.
+  double standardDeviation   = 2;     // Standard deviation of the Cumulative Gaussian.
+  double lowerAsymptote      = -10;   // Lower asymptotic value of the Cumulative Gaussian.
+  int    numberOfSamples     = 9;     // Number of data samples.
+  double upperAsymptote      = 10;    // Upper asymptotic value of the Cumulative Gaussian.
   double differenceTolerance = 1e-20; // Tolerance allowed for the difference between Gaussian iterations.
 
   // Typedef and initialization for the Cumulative Gaussian Optimizer.
@@ -93,8 +94,8 @@ int itkCumulativeGaussianOptimizerTest(int, char* [] )
       vcl_fabs(optimizer->GetLowerAsymptote() - lowerAsymptote) <= 0.1)
     {
     std::cerr << std::endl
-      << "Test Passed with a Fit Error of " << optimizer->GetFitError()
-      << std::endl << std::endl;
+              << "Test Passed with a Fit Error of " << optimizer->GetFitError()
+              << std::endl << std::endl;
 
     // Print out the resulting parameters.
     std::cerr << "Fitted mean = " << optimizer->GetComputedMean() << std::endl;
@@ -107,8 +108,8 @@ int itkCumulativeGaussianOptimizerTest(int, char* [] )
   else
     {
     std::cerr << std::endl
-      << "Test Failed with a Fit Error of " << optimizer->GetFitError()
-      << std::endl << std::endl;
+              << "Test Failed with a Fit Error of " << optimizer->GetFitError()
+              << std::endl << std::endl;
 
     // Print out the resulting parameters.
     std::cerr << "Fitted mean = " << optimizer->GetComputedMean() << std::endl;

@@ -63,5 +63,6 @@ GrayscaleFunctionErodeImageFilter< TInputImage, TOutputImage, TKernel >
 
   return min;
 }
+
 } // end namespace itk
 #endif

@@ -29,6 +29,7 @@ NarrowBandLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPixelType, TOu
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "m_ReverseExpansionDirection = " << m_ReverseExpansionDirection << std::endl;
   os << indent << "m_SegmentationFunction = " << m_SegmentationFunction << std::endl;
 }
@@ -78,7 +79,7 @@ NarrowBandLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPixelType, TOu
 ::GenerateData()
 {
   if ( m_SegmentationFunction == 0 )
-        { itkExceptionMacro("No finite difference function was specified."); }
+            { itkExceptionMacro("No finite difference function was specified."); }
 
   // A positive speed value causes surface expansion, the opposite of the
   // default.  Flip the sign of the propagation and advection weights.
@@ -140,6 +141,7 @@ NarrowBandLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPixelType, TOu
   m_IsoFilter->SetInput(NULL);
   m_ChamferFilter->SetInput(NULL);
 }
+
 } // end namespace itk
 
 #endif

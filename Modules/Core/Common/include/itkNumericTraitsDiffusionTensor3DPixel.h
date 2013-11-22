@@ -86,52 +86,62 @@ public:
    * \note minimum value for floating pointer types is defined as
    * minimum positive normalize value.
    */
-  static const Self max(const Self &)
+  static const Self
+  max(const Self &)
   {
     return Self( NumericTraits< T >::max() );
   }
 
-  static const Self min(const Self &)
+  static const Self
+  min(const Self &)
   {
     return Self( NumericTraits< T >::min() );
   }
 
-  static const Self NonpositiveMin(const Self &)
+  static const Self
+  NonpositiveMin(const Self &)
   {
     return Self( NumericTraits< T >::NonpositiveMin() );
   }
 
-  static const Self ZeroValue(const Self &)
+  static const Self
+  ZeroValue(const Self &)
   {
     return Self( NumericTraits< T >::ZeroValue() );
   }
 
-  static const Self OneValue(const Self &)
+  static const Self
+  OneValue(const Self &)
   {
     return Self( NumericTraits< T >::OneValue() );
   }
 
-  static const Self max()
+  static const Self
+  max()
   {
     return Self( NumericTraits< T >::max() );
   }
 
-  static const Self min()
+  static const Self
+  min()
   {
     return Self( NumericTraits< T >::min() );
   }
 
-  static const Self NonpositiveMin()
+  static const Self
+  NonpositiveMin()
   {
     return Self( NumericTraits< T >::NonpositiveMin() );
   }
 
-  static const Self ZeroValue()
+  static const Self
+  ZeroValue()
   {
     return Self( NumericTraits< T >::ZeroValue() );
   }
 
-  static const Self OneValue()
+  static const Self
+  OneValue()
   {
     return Self( NumericTraits< T >::OneValue() );
   }
@@ -140,7 +150,8 @@ public:
    *  be thrown if the input size is not valid.  In this case, the
    *  only valid size is 6. If the size is valid the tensor will be
    *  filled with zeros. */
-  static void SetLength(DiffusionTensor3D< T > & m, const unsigned int s)
+  static void
+  SetLength(DiffusionTensor3D< T > & m, const unsigned int s)
   {
     if ( s != 6 )
       {
@@ -151,24 +162,28 @@ public:
   }
 
   /** Return the size of the tensor. Always returns 6. */
-  static unsigned int GetLength(const DiffusionTensor3D< T > &)
+  static unsigned int
+  GetLength(const DiffusionTensor3D< T > &)
   {
     return 6;
   }
 
   /** Return the size of the tensor. Always returns 6. */
-  static unsigned int GetLength()
+  static unsigned int
+  GetLength()
   {
     return 6;
   }
 
-  static void AssignToArray( const Self & v, MeasurementVectorType & mv )
+  static void
+  AssignToArray( const Self & v, MeasurementVectorType & mv )
   {
     mv = v;
   }
 
   template<typename TArray>
-  static void AssignToArray( const Self & v, TArray & mv )
+  static void
+  AssignToArray( const Self & v, TArray & mv )
   {
     for( unsigned int i=0; i<6; i++ )
       {

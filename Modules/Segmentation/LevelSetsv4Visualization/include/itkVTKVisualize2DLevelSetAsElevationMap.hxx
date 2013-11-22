@@ -39,19 +39,19 @@ VTKVisualize2DLevelSetAsElevationMap< TInputImage, TLevelSet >
 ::VTKVisualize2DLevelSetAsElevationMap()
 {
   this->m_ColorValue = true;
-  this->m_MinValue = itk::NumericTraits< double >::max( );
-  this->m_MaxValue = itk::NumericTraits< double >::min( );
+  this->m_MinValue = itk::NumericTraits< double >::max();
+  this->m_MaxValue = itk::NumericTraits< double >::min();
   this->m_HeightScaling = 0.1;
 
   this->m_Mesh = vtkSmartPointer< vtkPolyData >::New();
 
   this->m_ScalarBarActor = vtkSmartPointer< vtkScalarBarActor >::New();
   this->m_ScalarBarActor->SetTitle( "Level Set" );
-  this->m_ScalarBarActor->GetPositionCoordinate( )->SetCoordinateSystemToNormalizedViewport( );
-  this->m_ScalarBarActor->GetPositionCoordinate( )->SetValue( 0.1, 0.01 );
-  this->m_ScalarBarActor->GetTitleTextProperty( )->SetColor( 0., 0., 0. );
-  this->m_ScalarBarActor->GetLabelTextProperty( )->SetColor( 0., 0., 0. );
-  this->m_ScalarBarActor->SetOrientationToHorizontal( );
+  this->m_ScalarBarActor->GetPositionCoordinate()->SetCoordinateSystemToNormalizedViewport();
+  this->m_ScalarBarActor->GetPositionCoordinate()->SetValue( 0.1, 0.01 );
+  this->m_ScalarBarActor->GetTitleTextProperty()->SetColor( 0., 0., 0. );
+  this->m_ScalarBarActor->GetLabelTextProperty()->SetColor( 0., 0., 0. );
+  this->m_ScalarBarActor->SetOrientationToHorizontal();
   this->m_ScalarBarActor->SetWidth( 0.8 );
   this->m_ScalarBarActor->SetHeight( 0.17 );
   this->m_Renderer->AddActor2D( this->m_ScalarBarActor );
@@ -64,15 +64,14 @@ VTKVisualize2DLevelSetAsElevationMap< TInputImage, TLevelSet >
 #endif
   this->m_SurfaceActor = vtkSmartPointer< vtkActor >::New();
   this->m_SurfaceActor->SetMapper( this->m_MeshMapper );
-  this->m_SurfaceActor->GetProperty( )->SetColor( 0.7, 0.7, 0.7 );
+  this->m_SurfaceActor->GetProperty()->SetColor( 0.7, 0.7, 0.7 );
   this->m_Renderer->AddActor( this->m_SurfaceActor );
 }
 
 template< typename TInputImage, typename TLevelSet >
 VTKVisualize2DLevelSetAsElevationMap< TInputImage, TLevelSet >
 ::~VTKVisualize2DLevelSetAsElevationMap()
-{
-}
+{}
 
 template< typename TInputImage, typename TLevelSet >
 void
@@ -91,11 +90,11 @@ VTKVisualize2DLevelSetAsElevationMap< TInputImage, TLevelSet >
 
   if( !this->m_ColorValue )
     {
-    this->m_MeshMapper->ScalarVisibilityOff( );
+    this->m_MeshMapper->ScalarVisibilityOff();
     }
   else
     {
-    this->m_MeshMapper->ScalarVisibilityOn( );
+    this->m_MeshMapper->ScalarVisibilityOn();
     this->m_MeshMapper->SetScalarRange( this->m_MinValue, this->m_MaxValue );
     vtkScalarsToColors * lookupTable = this->m_MeshMapper->GetLookupTable();
     lookupTable->SetRange( this->m_MinValue, this->m_MaxValue );
@@ -113,14 +112,14 @@ VTKVisualize2DLevelSetAsElevationMap< TInputImage, TLevelSet >
   typename InputImageType::ConstPointer inputImage = this->m_InputImageConverter->GetInput();
   typename InputImageType::RegionType       region = inputImage->GetLargestPossibleRegion();
 
-  typedef typename InputImageType::IndexType      IndexType;
-  typedef typename InputImageType::PointType      PointType;
+  typedef typename InputImageType::IndexType IndexType;
+  typedef typename InputImageType::PointType PointType;
 
   IndexType start = region.GetIndex();
   PointType itkPoint;
   PointType itkPoint2;
 
-  InputImageSizeType   size =  region.GetSize();
+  InputImageSizeType size =  region.GetSize();
 
   this->m_NumberOfSamples[0] = size[0] / 2;
   this->m_NumberOfSamples[1] = size[1] / 2;
@@ -129,21 +128,21 @@ VTKVisualize2DLevelSetAsElevationMap< TInputImage, TLevelSet >
   dx[0] = static_cast< IndexValueType >( size[0] / this->m_NumberOfSamples[0] );
   dx[1] = static_cast< IndexValueType >( size[1] / this->m_NumberOfSamples[1] );
 
-  vtkSmartPointer< vtkPoints >         vtkpoints = vtkSmartPointer< vtkPoints >::New( );
-  vtkSmartPointer< vtkDoubleArray > vtkpointdata = vtkSmartPointer< vtkDoubleArray >::New( );
-  vtkSmartPointer< vtkCellArray >          cells = vtkSmartPointer< vtkCellArray >::New( );
+  vtkSmartPointer< vtkPoints >      vtkpoints = vtkSmartPointer< vtkPoints >::New();
+  vtkSmartPointer< vtkDoubleArray > vtkpointdata = vtkSmartPointer< vtkDoubleArray >::New();
+  vtkSmartPointer< vtkCellArray >   cells = vtkSmartPointer< vtkCellArray >::New();
 
   this->m_Mesh->SetPoints( vtkpoints );
-  this->m_Mesh->GetPointData( )->SetScalars( vtkpointdata );
+  this->m_Mesh->GetPointData()->SetScalars( vtkpointdata );
   this->m_Mesh->SetPolys( cells );
 
-  this->m_MinValue = itk::NumericTraits< double >::max( );
-  this->m_MaxValue = itk::NumericTraits< double >::min( );
+  this->m_MinValue = itk::NumericTraits< double >::max();
+  this->m_MaxValue = itk::NumericTraits< double >::min();
 
   InputImageSizeValueType k = 0;
 
   IndexType index;
-  double p[3];
+  double    p[3];
 
   for( InputImageSizeValueType i = 0; i < this->m_NumberOfSamples[0]; i++ )
     {
@@ -187,7 +186,7 @@ VTKVisualize2DLevelSetAsElevationMap< TInputImage, TLevelSet >
   inputImage->TransformIndexToPhysicalPoint( index, itkPoint2 );
 
   double ratio = m_HeightScaling *
-      static_cast< double >( itkPoint.EuclideanDistanceTo( itkPoint2 ) );
+    static_cast< double >( itkPoint.EuclideanDistanceTo( itkPoint2 ) );
 
   if( den != 0. )
     {
@@ -202,7 +201,6 @@ VTKVisualize2DLevelSetAsElevationMap< TInputImage, TLevelSet >
     }
 
   vtkIdType vtkId[3];
-
 
   for( InputImageSizeValueType i = 0; i < ( this->m_NumberOfSamples[0] -1 ); i++ )
     {
@@ -219,7 +217,6 @@ VTKVisualize2DLevelSetAsElevationMap< TInputImage, TLevelSet >
       }
     }
 }
-
 
 } // end namespace itk
 

@@ -18,7 +18,6 @@
 #ifndef __itkBioGenome_h
 #define __itkBioGenome_h
 
-
 #if defined( _WIN32 )
 #include "itkWindows.h"
 #endif
@@ -49,7 +48,8 @@ public:
 
 public:
   Genome();
-  virtual ~Genome();
+  virtual
+  ~Genome();
 
   void Copy(const Genome & genome);
 
@@ -63,7 +63,8 @@ public:
 
   /** This method computes a normalized Sigmoide function that can
    *  be used for gene network computations.  */
-  static double Sigmoide(double threshold, double slant, double value)
+  static double
+  Sigmoide(double threshold, double slant, double value)
   {
     return vcl_atan( ( value - threshold ) / slant ) / 3.1416 + 0.5001;
   }

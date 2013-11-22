@@ -34,7 +34,7 @@ namespace itk
  */
 
 template< unsigned int TDimension = 3 >
-class PointBasedSpatialObject:
+class PointBasedSpatialObject :
   public SpatialObject< TDimension >
 {
 public:
@@ -74,7 +74,8 @@ public:
   }
 
   /** Return the number of points in the list */
-  virtual SizeValueType GetNumberOfPoints(void) const
+  virtual SizeValueType
+  GetNumberOfPoints(void) const
   {
     itkWarningMacro(<< "PointBasedSpatialObject::GetNumberOfPoints() is not"
                     << " implemented in the base class" << std::endl);
@@ -82,7 +83,8 @@ public:
   }
 
   /**  */
-  bool ComputeLocalBoundingBox() const
+  bool
+  ComputeLocalBoundingBox() const
   {
     itkWarningMacro(<< "PointBasedSpatialObject::ComputeLocalBoundingBox() is"
                     << " not implemented in the base class" << std::endl);
@@ -94,10 +96,12 @@ protected:
   void operator=(const Self &);          //purposely not implemented
 
   PointBasedSpatialObject();
-  virtual ~PointBasedSpatialObject();
+  virtual
+  ~PointBasedSpatialObject();
 
   /** Method to print the object.*/
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end namespace itk
 

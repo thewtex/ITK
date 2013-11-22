@@ -44,7 +44,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TInputMesh, typename TOutputMesh >
-class MeshToMeshFilter:public MeshSource< TOutputMesh >
+class MeshToMeshFilter : public MeshSource< TOutputMesh >
 {
 public:
   /** Standard class typedefs. */
@@ -91,6 +91,7 @@ protected:
 private:
   MeshToMeshFilter(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };
 } // end namespace itk
 

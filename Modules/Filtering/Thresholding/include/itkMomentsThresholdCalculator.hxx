@@ -35,6 +35,7 @@ MomentsThresholdCalculator<THistogram, TOutput>
 ::GenerateData(void)
 {
   const HistogramType * histogram = this->GetInput();
+
   // histogram->Print(std::cout);
   if ( histogram->GetTotalFrequency() == 0 )
     {
@@ -51,7 +52,7 @@ MomentsThresholdCalculator<THistogram, TOutput>
   double total = histogram->GetTotalFrequency();
   double m0=1.0, m1=0.0, m2 =0.0, m3 =0.0, sum =0.0, p0=0.0;
   double cd, c0, c1, z0, z1;        /* auxiliary variables */
-  int threshold = -1;
+  int    threshold = -1;
 
   std::vector<double> histo(size);
   for (unsigned i=0; i<size; i++)

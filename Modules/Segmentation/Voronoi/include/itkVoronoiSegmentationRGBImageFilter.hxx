@@ -234,6 +234,7 @@ VoronoiSegmentationRGBImageFilter< TInputImage, TOutputImage >::TakeAPrior(const
 
   unsigned int minx = 0, miny = 0, maxx = 0, maxy = 0;
   bool         status = 0;
+
   for ( unsigned int i = 0; i < this->GetSize()[1]; i++ )
     {
     for ( unsigned int j = 0; j < this->GetSize()[0]; j++ )
@@ -385,9 +386,11 @@ VoronoiSegmentationRGBImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "MaxValueOfRGB: " << m_MaxValueOfRGB << std::endl;
   os << indent << "Mean: " << m_Mean << std::endl;
 }
+
 } //end namespace
 
 #endif

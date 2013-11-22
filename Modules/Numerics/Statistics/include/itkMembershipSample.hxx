@@ -96,20 +96,20 @@ MembershipSample< TSample >
 template< typename TSample >
 const typename MembershipSample< TSample >::ClassSampleType *
 MembershipSample< TSample >
-::GetClassSample(const ClassLabelType & classLabel) const
-{
+::GetClassSample(const ClassLabelType &classLabel) const
+  {
   int classIndex = this->GetInternalClassLabel(classLabel);
 
   return m_ClassSamples[classIndex];
-}
+  }
 
 template< typename TSample >
 inline const typename MembershipSample< TSample >::MeasurementVectorType &
 MembershipSample< TSample >
-::GetMeasurementVector(const InstanceIdentifier & id) const
-{
+::GetMeasurementVector(const InstanceIdentifier &id) const
+  {
   return m_Sample->GetMeasurementVector(id);
-}
+  }
 
 template< typename TSample >
 inline typename MembershipSample< TSample >::MeasurementType
@@ -164,9 +164,11 @@ MembershipSample< TSample >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Sample: " << m_Sample.GetPointer() << std::endl;
   os << indent << "NumberOfClasses: " << this->GetNumberOfClasses() << std::endl;
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

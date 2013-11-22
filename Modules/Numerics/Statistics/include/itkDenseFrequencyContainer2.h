@@ -38,7 +38,7 @@ namespace Statistics
  * \ingroup ITKStatistics
  */
 
-class DenseFrequencyContainer2:
+class DenseFrequencyContainer2 :
   public Object
 {
 public:
@@ -71,7 +71,7 @@ public:
 
   /** Internal storage class typedefs */
   typedef ValarrayImageContainer< InstanceIdentifier, AbsoluteFrequencyType >
-  FrequencyContainerType;
+    FrequencyContainerType;
 
   typedef FrequencyContainerType::Pointer FrequencyContainerPointer;
 
@@ -98,14 +98,16 @@ public:
   AbsoluteFrequencyType GetFrequency(const InstanceIdentifier id) const;
 
   /** Gets the sum of the frequencies */
-  TotalAbsoluteFrequencyType GetTotalFrequency()
+  TotalAbsoluteFrequencyType
+  GetTotalFrequency()
   {
     return m_TotalFrequency;
   }
 
 protected:
   DenseFrequencyContainer2();
-  virtual ~DenseFrequencyContainer2() {}
+  virtual
+  ~DenseFrequencyContainer2() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

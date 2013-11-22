@@ -41,7 +41,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TEigenValueImage, typename TEigenVectorImage >
-class EigenAnalysis2DImageFilter:
+class EigenAnalysis2DImageFilter :
   public ImageToImageFilter< TInputImage, TEigenValueImage >
 {
 public:
@@ -116,13 +116,15 @@ public:
 
 protected:
   EigenAnalysis2DImageFilter();
-  virtual ~EigenAnalysis2DImageFilter() {}
+  virtual
+  ~EigenAnalysis2DImageFilter() {}
 
   void GenerateData(void);
 
 private:
   EigenAnalysis2DImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
+
 };
 } // end namespace itk
 

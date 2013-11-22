@@ -37,7 +37,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class BoxImageFilter:
+class BoxImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:

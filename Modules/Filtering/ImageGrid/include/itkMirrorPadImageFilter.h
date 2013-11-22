@@ -49,7 +49,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class MirrorPadImageFilter:
+class MirrorPadImageFilter :
   public PadImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -202,6 +202,7 @@ protected:
 private:
   MirrorPadImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);       //purposely not implemented
+
 };
 } // end namespace itk
 

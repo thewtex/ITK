@@ -59,7 +59,7 @@ namespace itk
  * \ingroup ITKDistanceMap
  */
 template< typename TInputImage, typename TOutputImage >
-class SignedMaurerDistanceMapImageFilter:
+class SignedMaurerDistanceMapImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -76,17 +76,17 @@ public:
   typedef TInputImage                           InputImageType;
   typedef typename InputImageType::ConstPointer InputImageConstPointer;
 
-  typedef TOutputImage                          OutputImageType;
-  typedef typename OutputImageType::Pointer     OutputImagePointer;
+  typedef TOutputImage                      OutputImageType;
+  typedef typename OutputImageType::Pointer OutputImagePointer;
 
   /** Standard class typedefs. */
-  typedef SignedMaurerDistanceMapImageFilter  Self;
+  typedef SignedMaurerDistanceMapImageFilter Self;
   typedef ImageToImageFilter<
-    InputImageType,
-    OutputImageType >                         Superclass;
+      InputImageType,
+      OutputImageType >                         Superclass;
 
-  typedef SmartPointer< Self >                Pointer;
-  typedef SmartPointer< const Self >          ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -95,8 +95,8 @@ public:
   itkTypeMacro(SignedMaurerDistanceMapImageFilter,
                ImageToImageFilter);
 
-  typedef typename InputImageType::RegionType   InputRegionType;
-  typedef typename OutputImageType::RegionType  OutputRegionType;
+  typedef typename InputImageType::RegionType  InputRegionType;
+  typedef typename OutputImageType::RegionType OutputRegionType;
 
   /** Image typedef support. */
   typedef typename InputImageType::PixelType  InputPixelType;
@@ -107,10 +107,10 @@ public:
   typedef typename OutputImageType::SizeType      OutputSizeType;
   typedef typename OutputImageType::SizeValueType OutputSizeValueType;
 
-  typedef typename InputImageType::IndexType        InputIndexType;
-  typedef typename InputImageType::IndexValueType   InputIndexValueType;
-  typedef typename OutputImageType::IndexType       OutputIndexType;
-  typedef typename OutputImageType::IndexValueType  OutputIndexValueType;
+  typedef typename InputImageType::IndexType       InputIndexType;
+  typedef typename InputImageType::IndexValueType  InputIndexValueType;
+  typedef typename OutputImageType::IndexType      OutputIndexType;
+  typedef typename OutputImageType::IndexValueType OutputIndexValueType;
 
   typedef typename InputImageType::SpacingType  InputSpacingType;
   typedef typename OutputImageType::SpacingType OutputSpacingType;
@@ -158,14 +158,15 @@ protected:
 
   SignedMaurerDistanceMapImageFilter();
 
-  virtual ~SignedMaurerDistanceMapImageFilter();
+  virtual
+  ~SignedMaurerDistanceMapImageFilter();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData();
 
   unsigned int SplitRequestedRegion(unsigned int i, unsigned int num,
-    OutputImageRegionType & splitRegion);
+                                    OutputImageRegionType & splitRegion);
 
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                             ThreadIdType threadId);
@@ -176,6 +177,7 @@ private:
   void operator=(const Self &);                     //purposely not implemented
 
   void Voronoi(unsigned int, OutputIndexType idx, OutputImageType *output );
+
   bool Remove(OutputPixelType, OutputPixelType, OutputPixelType,
               OutputPixelType, OutputPixelType, OutputPixelType);
 

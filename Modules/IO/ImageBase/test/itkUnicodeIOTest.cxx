@@ -21,7 +21,7 @@
 
 // Some utility functions for the test
 #if defined(ITK_SUPPORTS_WCHAR_T_FILENAME_CSTYLEIO) \
-   && ( defined(ITK_SUPPORTS_WCHAR_T_FILENAME_IOSTREAMS_CONSTRUCTORS) || defined(ITK_SUPPORTS_FDSTREAM_HPP) )
+  && ( defined(ITK_SUPPORTS_WCHAR_T_FILENAME_IOSTREAMS_CONSTRUCTORS) || defined(ITK_SUPPORTS_FDSTREAM_HPP) )
 # define LOCAL_USE_WIN32_WOPEN 1
 #else
 # define LOCAL_USE_WIN32_WOPEN 0
@@ -29,18 +29,19 @@
 
 // Check if alpha.txt exists using _wfopen with a wstring on MSVC and mingw
 // and fopen with a UTF-8 char * otherwise
-bool checkAlphaExists()
+bool
+checkAlphaExists()
 {
 #if LOCAL_USE_WIN32_WOPEN
   // mingw has _wfopen
   std::wstring wstr;
-  wstr.push_back((wchar_t)(0x03B1));
+  wstr.push_back( (wchar_t)(0x03B1) );
   wstr += L".txt";
   FILE * tmp = _wfopen(wstr.c_str(), L"r");
 #else
   std::string utf8_str;
-  utf8_str.append(1, (char)(0xCE));
-  utf8_str.append(1, (char)(0xB1));
+  utf8_str.append(1, (char)(0xCE) );
+  utf8_str.append(1, (char)(0xB1) );
   utf8_str += ".txt";
   FILE * tmp = fopen(utf8_str.c_str(), "r");
 #endif
@@ -55,20 +56,21 @@ bool checkAlphaExists()
 
 // Try to delete alpha.txt using wunlink with a wstring on MSVC
 // and unlink with UTF-8 char * otherwise
-bool removeAlpha()
+bool
+removeAlpha()
 {
 #if LOCAL_USE_WIN32_WOPEN
   // mingw has _wunlink
   std::wstring wstr;
-  wstr.push_back((wchar_t)(0x03B1));
+  wstr.push_back( (wchar_t)(0x03B1) );
   wstr += L".txt";
-  return (_wunlink(wstr.c_str()) != -1);
+  return (_wunlink(wstr.c_str() ) != -1);
 #else
   std::string utf8_str;
-  utf8_str.append(1,(char)(0xCE));
-  utf8_str.append(1,(char)(0xB1));
+  utf8_str.append(1,(char)(0xCE) );
+  utf8_str.append(1,(char)(0xB1) );
   utf8_str += ".txt";
-  return (unlink(utf8_str.c_str()) != -1);
+  return (unlink(utf8_str.c_str() ) != -1);
 #endif
 }
 
@@ -76,7 +78,8 @@ bool removeAlpha()
 // without too much annoyance to the rest of the world
 // main will then become
 // int itkUnicodeIOTest( int , char * [] )
-int main( int , char * [] )
+int
+main( int , char * [] )
 {
   std::cout << "Starting unicode IO test." << std::endl;
 
@@ -84,8 +87,9 @@ int main( int , char * [] )
 
   // Put alpha.txt encoded in utf8 within a std::string
   std::string utf8_str;
-  utf8_str.append(1, (char)(0xCE));
-  utf8_str.append(1, (char)(0xB1));
+
+  utf8_str.append(1, (char)(0xCE) );
+  utf8_str.append(1, (char)(0xB1) );
   utf8_str += ".txt";
 
   // Check if we actually find it is a valid string
@@ -98,7 +102,7 @@ int main( int , char * [] )
 #if LOCAL_USE_WIN32_WOPEN
   // Check that the string to wide string conversion works
   std::wstring utf16_str;
-  utf16_str.push_back((wchar_t)(0x03B1));
+  utf16_str.push_back( (wchar_t)(0x03B1) );
   utf16_str += L".txt";
   const std::wstring fromutf8_utf16_str = itk::i18n::Utf8StringToWString( utf8_str );
 
@@ -110,8 +114,8 @@ int main( int , char * [] )
 
   // Create a non utf8 std::string
   std::string bad_utf8_str;
-  bad_utf8_str.push_back((char)(0xC0));
-  bad_utf8_str.push_back((char)(0xC0));
+  bad_utf8_str.push_back( (char)(0xC0) );
+  bad_utf8_str.push_back( (char)(0xC0) );
   bad_utf8_str += ".txt";
 
   // Check if we actually find it is a non-valid utf-8 string
@@ -128,7 +132,7 @@ int main( int , char * [] )
   // Create alpha.txt using utf8fopen
   FILE * wfile = itk::i18n::I18nFopen(utf8_str, "wb");
 
-  if (!checkAlphaExists())
+  if (!checkAlphaExists() )
     {
     std::cout << "alpha.txt does not exist after utf8fopen." << std::endl;
     ++nberror;
@@ -149,7 +153,7 @@ int main( int , char * [] )
 
   if (rfile!=NULL)
     {
-    char teststring[10];
+    char   teststring[10];
     char * retptr = fgets(teststring, 10, rfile);
     if (retptr!=NULL)
       {
@@ -174,22 +178,21 @@ int main( int , char * [] )
     ++nberror;
     }
 
-  if (!removeAlpha())
+  if (!removeAlpha() )
     {
     std::cout << "Could not remove alpha.txt after I18nFopen." << std::endl;
     ++nberror;
     }
 
-
   // Create alpha.txt using open and write to it using streams
   itk::i18n::I18nOfstream wstream(utf8_str.c_str(), std::ios::binary | std::ios::out );
-  if (!checkAlphaExists())
+  if (!checkAlphaExists() )
     {
     std::cout << "alpha.txt does not exist after I18nOfstream creation." << std::endl;
     ++nberror;
     }
 
-  if (wstream.is_open())
+  if (wstream.is_open() )
     {
     wstream << "teststream" << std::flush;
     }
@@ -200,10 +203,9 @@ int main( int , char * [] )
     }
   wstream.close();
 
-
   itk::i18n::I18nIfstream rstream(utf8_str.c_str(), std::ios::binary | std::ios::in );
 
-  if (rstream.is_open())
+  if (rstream.is_open() )
     {
     std::string teststring;
     std::getline(rstream, teststring);
@@ -223,13 +225,11 @@ int main( int , char * [] )
     ++nberror;
     }
 
-
-  if (!removeAlpha())
+  if (!removeAlpha() )
     {
     std::cout << "Could not remove alpha.txt after I18nOfstream creation." << std::endl;
     ++nberror;
     }
-
 
   // Check number of errors
   if ( nberror > 0 )

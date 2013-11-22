@@ -23,7 +23,8 @@ namespace itk
 namespace fem
 {
 // Overload the CreateAnother() method
-::itk::LightObject::Pointer Element3DC0LinearTriangularLaplaceBeltrami::CreateAnother(void) const
+::itk::LightObject::Pointer
+Element3DC0LinearTriangularLaplaceBeltrami::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
   Pointer copyPtr = Self::New();
@@ -42,8 +43,7 @@ namespace fem
 
 Element3DC0LinearTriangularLaplaceBeltrami
 ::Element3DC0LinearTriangularLaplaceBeltrami() : Superclass()
-{
-}
+{}
 
 Element3DC0LinearTriangularLaplaceBeltrami
 ::Element3DC0LinearTriangularLaplaceBeltrami(NodeIDType n1_, NodeIDType n2_, NodeIDType n3_,
@@ -70,7 +70,8 @@ Element3DC0LinearTriangularLaplaceBeltrami
     }
 }
 
-void Element3DC0LinearTriangularLaplaceBeltrami::GetStiffnessMatrix(MatrixType & Ke) const
+void
+Element3DC0LinearTriangularLaplaceBeltrami::GetStiffnessMatrix(MatrixType & Ke) const
 {
   MatrixType cot, D, BB;
 

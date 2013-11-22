@@ -21,7 +21,8 @@
 #include "itkGroupSpatialObject.h"
 #include "itkDTITubeSpatialObject.h"
 
-int itkSpatialObjectDuplicatorTest(int, char* [])
+int
+itkSpatialObjectDuplicatorTest(int, char* [])
 {
   typedef itk::EllipseSpatialObject<3> EllipseType;
   EllipseType::Pointer ellipse = EllipseType::New();
@@ -30,7 +31,6 @@ int itkSpatialObjectDuplicatorTest(int, char* [])
 
   typedef itk::SpatialObjectDuplicator<EllipseType> DuplicatorType;
   DuplicatorType::Pointer duplicator = DuplicatorType::New();
-
 
   duplicator->SetInput(ellipse);
   duplicator->Update();
@@ -54,18 +54,17 @@ int itkSpatialObjectDuplicatorTest(int, char* [])
 
   GroupType::ChildrenListType* children = group_copy->GetChildren();
 
-  EllipseType::Pointer ellipse_copy2 = static_cast<EllipseType*>((*(children->begin())).GetPointer());
+  EllipseType::Pointer ellipse_copy2 = static_cast<EllipseType*>( (*(children->begin() ) ).GetPointer() );
   std::cout << ellipse_copy2->GetRadius() << std::endl;
 
   delete children;
 
-
   // Test copying a DTITube
-  typedef itk::DTITubeSpatialObject<3>       DTITubeType;
-  typedef itk::DTITubeSpatialObjectPoint<3>  DTITubePointType;
+  typedef itk::DTITubeSpatialObject<3>      DTITubeType;
+  typedef itk::DTITubeSpatialObjectPoint<3> DTITubePointType;
 
   // Tubes
-  DTITubeType::PointListType    list3;
+  DTITubeType::PointListType list3;
 
   for( unsigned int i=0; i<7; i++)
     {
@@ -86,7 +85,7 @@ int itkSpatialObjectDuplicatorTest(int, char* [])
     // this is only for testing
     // the tensor matrix should be definite positive
     // in the real case
-    for(unsigned int k=0;k<6;k++)
+    for(unsigned int k=0; k<6; k++)
       {
       v[k] = k;
       }
@@ -111,7 +110,7 @@ int itkSpatialObjectDuplicatorTest(int, char* [])
   DTITubeType::PointListType::const_iterator jdti;
 
   bool found = false;
-  if(!strcmp(dtiTube_copy->GetTypeName(),"DTITubeSpatialObject"))
+  if(!strcmp(dtiTube_copy->GetTypeName(),"DTITubeSpatialObject") )
     {
     found = true;
     unsigned int value=0;
@@ -126,81 +125,86 @@ int itkSpatialObjectDuplicatorTest(int, char* [])
         jdti != dtiTube_copy->GetPoints().end();
         jdti++)
       {
-      for(unsigned int d=0;d<3;d++)
+      for(unsigned int d=0; d<3; d++)
         {
-        if((*jdti).GetPosition()[d] != value * dtiTube_copy->GetId())
+        if( (*jdti).GetPosition()[d] != value * dtiTube_copy->GetId() )
           {
-          std::cout<<" [FAILED] (Position is: " << (*jdti).GetPosition()[d] << " expected : "<< value * dtiTube_copy->GetId()<< " ) " <<std::endl;
+          std::cout<<" [FAILED] (Position is: " << (*jdti).GetPosition()[d] << " expected : "<< value *
+          dtiTube_copy->GetId()<< " ) " <<std::endl;
           return EXIT_FAILURE;
           }
         }
-          // Testing the color of the tube points
-        if( (*jdti).GetRed() != value)
-          {
-          std::cout<<" [FAILED] : Red : found " << ( *jdti).GetRed() << " instead of " << value <<std::endl;
-          return EXIT_FAILURE;
-          }
-
-        if((*jdti).GetGreen() != value+1)
-          {
-          std::cout<<" [FAILED] : Green : found " << ( *jdti).GetGreen() << " instead of " << value+1 <<std::endl;
-          return EXIT_FAILURE;
-          }
-
-        if((*jdti).GetBlue() != value+2)
-          {
-          std::cout<<"[FAILED] : Blue : found " << ( *jdti).GetBlue() << " instead of " << value+2 <<std::endl;
-          return EXIT_FAILURE;
-          }
-
-        if((*jdti).GetAlpha() != value+3)
-          {
-          std::cout<<" [FAILED] : Alpha : found " << ( *jdti).GetAlpha() << " instead of " << value+3 <<std::endl;
-          return EXIT_FAILURE;
-          }
-
-        if((*jdti).GetField(DTITubePointType::FA) != value)
-          {
-          std::cout<<" [FAILED] : FA : found " << ( *jdti).GetField("FA") << " instead of " << value <<std::endl;
-          return EXIT_FAILURE;
-          }
-        if((*jdti).GetField(DTITubePointType::ADC) != value*2)
-          {
-          std::cout<<" [FAILED] : ADC : found " << ( *jdti).GetField("ADC") << " instead of " << value*2 <<std::endl;
-          return EXIT_FAILURE;
-          }
-        if((*jdti).GetField(DTITubePointType::GA) != value*3)
-          {
-          std::cout<<" [FAILED] : GA : found " << ( *jdti).GetField("FA") << " instead of " << value*3 <<std::endl;
-          return EXIT_FAILURE;
-          }
-        if((*jdti).GetField("Lambda1") != value*4)
-          {
-          std::cout<<" [FAILED] : GetLambda1 : found " << ( *jdti).GetField("Lambda1") << " instead of " << value*4 <<std::endl;
-          return EXIT_FAILURE;
-          }
-        if((*jdti).GetField("Lambda2") != value*5)
-          {
-          std::cout<<" [FAILED] : GetLambda2 : found " << ( *jdti).GetField("Lambda2") << " instead of " << value*5 <<std::endl;
-          return EXIT_FAILURE;
-          }
-        if((*jdti).GetField("Lambda3") != value*6)
-          {
-          std::cout<<" [FAILED] : GetLambda3 : found " << ( *jdti).GetField("Lambda3") << " instead of " << value*6 <<std::endl;
-          return EXIT_FAILURE;
-          }
-        int ind;
-        for(ind=0;ind<6;ind++)
-          {
-          if((*jdti).GetTensorMatrix()[ind] != ind)
-            {
-            std::cout<<" [FAILED] : GetTensorMatrix : found " << ( *jdti).GetTensorMatrix()[ind] << " instead of " << ind <<std::endl;
-            return EXIT_FAILURE;
-            }
-          }
-        value++;
+      // Testing the color of the tube points
+      if( (*jdti).GetRed() != value)
+        {
+        std::cout<<" [FAILED] : Red : found " << ( *jdti).GetRed() << " instead of " << value <<std::endl;
+        return EXIT_FAILURE;
         }
+
+      if( (*jdti).GetGreen() != value+1)
+        {
+        std::cout<<" [FAILED] : Green : found " << ( *jdti).GetGreen() << " instead of " << value+1 <<std::endl;
+        return EXIT_FAILURE;
+        }
+
+      if( (*jdti).GetBlue() != value+2)
+        {
+        std::cout<<"[FAILED] : Blue : found " << ( *jdti).GetBlue() << " instead of " << value+2 <<std::endl;
+        return EXIT_FAILURE;
+        }
+
+      if( (*jdti).GetAlpha() != value+3)
+        {
+        std::cout<<" [FAILED] : Alpha : found " << ( *jdti).GetAlpha() << " instead of " << value+3 <<std::endl;
+        return EXIT_FAILURE;
+        }
+
+      if( (*jdti).GetField(DTITubePointType::FA) != value)
+        {
+        std::cout<<" [FAILED] : FA : found " << ( *jdti).GetField("FA") << " instead of " << value <<std::endl;
+        return EXIT_FAILURE;
+        }
+      if( (*jdti).GetField(DTITubePointType::ADC) != value*2)
+        {
+        std::cout<<" [FAILED] : ADC : found " << ( *jdti).GetField("ADC") << " instead of " << value*2 <<std::endl;
+        return EXIT_FAILURE;
+        }
+      if( (*jdti).GetField(DTITubePointType::GA) != value*3)
+        {
+        std::cout<<" [FAILED] : GA : found " << ( *jdti).GetField("FA") << " instead of " << value*3 <<std::endl;
+        return EXIT_FAILURE;
+        }
+      if( (*jdti).GetField("Lambda1") != value*4)
+        {
+        std::cout<<" [FAILED] : GetLambda1 : found " << ( *jdti).GetField("Lambda1") << " instead of " << value*4 <<
+        std::endl;
+        return EXIT_FAILURE;
+        }
+      if( (*jdti).GetField("Lambda2") != value*5)
+        {
+        std::cout<<" [FAILED] : GetLambda2 : found " << ( *jdti).GetField("Lambda2") << " instead of " << value*5 <<
+        std::endl;
+        return EXIT_FAILURE;
+        }
+      if( (*jdti).GetField("Lambda3") != value*6)
+        {
+        std::cout<<" [FAILED] : GetLambda3 : found " << ( *jdti).GetField("Lambda3") << " instead of " << value*6 <<
+        std::endl;
+        return EXIT_FAILURE;
+        }
+      int ind;
+      for(ind=0; ind<6; ind++)
+        {
+        if( (*jdti).GetTensorMatrix()[ind] != ind)
+          {
+          std::cout<<" [FAILED] : GetTensorMatrix : found " << ( *jdti).GetTensorMatrix()[ind] << " instead of " <<
+          ind <<std::endl;
+          return EXIT_FAILURE;
+          }
+        }
+      value++;
       }
+    }
 
   if(found)
     {
@@ -212,9 +216,7 @@ int itkSpatialObjectDuplicatorTest(int, char* [])
     return EXIT_FAILURE;
     }
 
-
   std::cout << "TEST: [DONE]" << std::endl;
-
 
   return EXIT_SUCCESS;
 }

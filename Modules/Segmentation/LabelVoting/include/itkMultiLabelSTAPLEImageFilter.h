@@ -115,7 +115,7 @@ namespace itk
  */
 template <typename TInputImage, typename TOutputImage = TInputImage, typename TWeights = float >
 class MultiLabelSTAPLEImageFilter :
-    public ImageToImageFilter< TInputImage, TOutputImage >
+  public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -160,7 +160,8 @@ public:
 
   /** Set maximum number of iterations.
     */
-  void SetMaximumNumberOfIterations( const unsigned int mit )
+  void
+  SetMaximumNumberOfIterations( const unsigned int mit )
   {
     this->m_MaximumNumberOfIterations = mit;
     this->m_HasMaximumNumberOfIterations = true;
@@ -169,7 +170,8 @@ public:
 
   /** Unset label value for undecided pixels and turn on automatic selection.
     */
-  void UnsetMaximumNumberOfIterations()
+  void
+  UnsetMaximumNumberOfIterations()
   {
     if ( this->m_HasMaximumNumberOfIterations )
       {
@@ -180,7 +182,8 @@ public:
 
   /** Set termination threshold based on confusion matrix parameter updates.
     */
-  void SetTerminationUpdateThreshold( const TWeights thresh )
+  void
+  SetTerminationUpdateThreshold( const TWeights thresh )
   {
     this->m_TerminationUpdateThreshold = thresh;
     this->Modified();
@@ -188,7 +191,8 @@ public:
 
   /** Set label value for undecided pixels.
     */
-  void SetLabelForUndecidedPixels( const OutputPixelType l )
+  void
+  SetLabelForUndecidedPixels( const OutputPixelType l )
   {
     this->m_LabelForUndecidedPixels = l;
     this->m_HasLabelForUndecidedPixels = true;
@@ -201,14 +205,16 @@ public:
     * is overwritten when SetLabelForUndecidedPixels is called and the new
     * value only becomes effective upon the next filter update.
     */
-  OutputPixelType GetLabelForUndecidedPixels() const
+  OutputPixelType
+  GetLabelForUndecidedPixels() const
   {
     return this->m_LabelForUndecidedPixels;
   }
 
   /** Unset label value for undecided pixels and turn on automatic selection.
     */
-  void UnsetLabelForUndecidedPixels()
+  void
+  UnsetLabelForUndecidedPixels()
   {
     if ( this->m_HasLabelForUndecidedPixels )
       {
@@ -219,7 +225,8 @@ public:
 
   /** Set label value for undecided pixels.
     */
-  void SetPriorProbabilities( const PriorProbabilitiesType& ppa )
+  void
+  SetPriorProbabilities( const PriorProbabilitiesType& ppa )
   {
     this->m_PriorProbabilities = ppa;
     this->m_HasPriorProbabilities = true;
@@ -232,14 +239,16 @@ public:
     * SetPriorProbabilities, then they are estimated from the input
     * segmentations and the result is available through this function.
     */
-  PriorProbabilitiesType GetPriorProbabilities() const
+  PriorProbabilitiesType
+  GetPriorProbabilities() const
   {
     return this->m_PriorProbabilities;
   }
 
   /** Unset prior class probabilities and turn on automatic estimation.
     */
-  void UnsetPriorProbabilities()
+  void
+  UnsetPriorProbabilities()
   {
     if ( this->m_HasPriorProbabilities )
       {
@@ -250,7 +259,8 @@ public:
 
   /** Get confusion matrix for the i-th input segmentation.
     */
-  ConfusionMatrixType GetConfusionMatrix( const unsigned int i )
+  ConfusionMatrixType
+  GetConfusionMatrix( const unsigned int i )
   {
     return this->m_ConfusionMatrixArray[i];
   }
@@ -263,7 +273,9 @@ protected:
     this->m_HasMaximumNumberOfIterations = false;
     this->m_TerminationUpdateThreshold = 1e-5;
   }
-  virtual ~MultiLabelSTAPLEImageFilter() {}
+
+  virtual
+  ~MultiLabelSTAPLEImageFilter() {}
 
   void GenerateData();
 
@@ -280,12 +292,12 @@ protected:
 
 private:
   MultiLabelSTAPLEImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);              //purposely not implemented
 
   size_t m_TotalLabelCount;
 
-  OutputPixelType    m_LabelForUndecidedPixels;
-  bool               m_HasLabelForUndecidedPixels;
+  OutputPixelType m_LabelForUndecidedPixels;
+  bool            m_HasLabelForUndecidedPixels;
 
   bool                   m_HasPriorProbabilities;
   PriorProbabilitiesType m_PriorProbabilities;
@@ -296,6 +308,7 @@ private:
   std::vector<ConfusionMatrixType> m_UpdatedConfusionMatrixArray;
 
   void AllocateConfusionMatrixArray();
+
   void InitializeConfusionMatrixArrayFromVoting();
 
   bool         m_HasMaximumNumberOfIterations;

@@ -97,7 +97,8 @@
 #include "itkNormalVariateGenerator.h"
 // Software Guide : EndCodeSnippet
 
-int main( int,  char *[])
+int
+main( int,  char *[])
 {
   // Software Guide : BeginLatex
   //
@@ -115,7 +116,8 @@ int main( int,  char *[])
 
   // Software Guide : BeginCodeSnippet
   const unsigned int measurementVectorLength = 1;
-  typedef itk::Vector< double, measurementVectorLength > MeasurementVectorType;
+
+  typedef itk::Vector< double, measurementVectorLength >       MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
   SampleType::Pointer sample = SampleType::New();
   // length of measurement vectors in the sample.
@@ -155,9 +157,9 @@ int main( int,  char *[])
 
   normalGenerator->Initialize( 101 );
 
-  MeasurementVectorType mv;
-  double mean = 100;
-  double standardDeviation = 30;
+  MeasurementVectorType          mv;
+  double                         mean = 100;
+  double                         standardDeviation = 30;
   SampleType::InstanceIdentifier id = 0UL;
   for ( unsigned int i = 0; i < 100; ++i )
     {
@@ -249,7 +251,7 @@ int main( int,  char *[])
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::GaussianMembershipFunction< MeasurementVectorType >
-                                                    MembershipFunctionType;
+    MembershipFunctionType;
   typedef itk::Statistics::MaximumRatioDecisionRule DecisionRuleType;
   DecisionRuleType::Pointer decisionRule = DecisionRuleType::New();
 
@@ -268,7 +270,7 @@ int main( int,  char *[])
   classifier->SetNumberOfClasses( 2 );
 
   typedef ClassifierType::ClassLabelVectorObjectType
-                                               ClassLabelVectorObjectType;
+    ClassLabelVectorObjectType;
   typedef ClassifierType::ClassLabelVectorType ClassLabelVectorType;
 
   ClassLabelVectorObjectType::Pointer classLabelVectorObject =

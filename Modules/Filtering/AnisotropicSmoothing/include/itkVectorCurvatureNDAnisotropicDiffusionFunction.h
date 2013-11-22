@@ -41,7 +41,7 @@ namespace itk
  * \ingroup ITKAnisotropicSmoothing
  */
 template< typename TImage >
-class VectorCurvatureNDAnisotropicDiffusionFunction:
+class VectorCurvatureNDAnisotropicDiffusionFunction :
   public VectorAnisotropicDiffusionFunction< TImage >
 {
 public:
@@ -80,17 +80,21 @@ public:
                                   );
 
   /** This method is called prior to each iteration of the solver. */
-  virtual void InitializeIteration()
+  virtual void
+  InitializeIteration()
   {
     m_K = this->GetAverageGradientMagnitudeSquared() * this->GetConductanceParameter()
-          * this->GetConductanceParameter() * -2.0f;
+      * this->GetConductanceParameter() * -2.0f;
   }
 
 protected:
   VectorCurvatureNDAnisotropicDiffusionFunction();
   ~VectorCurvatureNDAnisotropicDiffusionFunction() {}
-  void PrintSelf(std::ostream & os, Indent indent) const
-  {  Superclass::PrintSelf(os, indent);   }
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+  }
 
 private:
   VectorCurvatureNDAnisotropicDiffusionFunction(const Self &); //purposely not

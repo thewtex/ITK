@@ -47,7 +47,7 @@ namespace itk
  */
 
 template< typename TInputMesh, typename TOutputMesh >
-class ConnectedRegionsMeshFilter:
+class ConnectedRegionsMeshFilter :
   public MeshToMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
@@ -121,32 +121,38 @@ public:
   itkSetMacro(ExtractionMode, int);
   itkGetConstMacro(ExtractionMode, int);
 
-  void SetExtractionModeToPointSeededRegions(void)
+  void
+  SetExtractionModeToPointSeededRegions(void)
   {
     this->SetExtractionMode(Self::PointSeededRegions);
   }
 
-  void SetExtractionModeToCellSeededRegions(void)
+  void
+  SetExtractionModeToCellSeededRegions(void)
   {
     this->SetExtractionMode(Self::CellSeededRegions);
   }
 
-  void SetExtractionModeToSpecifiedRegions(void)
+  void
+  SetExtractionModeToSpecifiedRegions(void)
   {
     this->SetExtractionMode(Self::SpecifiedRegions);
   }
 
-  void SetExtractionModeToLargestRegion(void)
+  void
+  SetExtractionModeToLargestRegion(void)
   {
     this->SetExtractionMode(Self::LargestRegion);
   }
 
-  void SetExtractionModeToAllRegions(void)
+  void
+  SetExtractionModeToAllRegions(void)
   {
     this->SetExtractionMode(Self::AllRegions);
   }
 
-  void SetExtractionModeToClosestPointRegion(void)
+  void
+  SetExtractionModeToClosestPointRegion(void)
   {
     this->SetExtractionMode(Self::ClosestPointRegion);
   }
@@ -154,7 +160,8 @@ public:
   /**
    * Initialize list of point ids/cell ids used to seed regions.
    */
-  void InitializeSeedList(void)
+  void
+  InitializeSeedList(void)
   {
     this->Modified();
     m_SeedList.clear();
@@ -163,7 +170,8 @@ public:
   /**
    * Add a seed id (point or cell id). Note: ids are 0-offset.
    */
-  void AddSeed(IdentifierType id)
+  void
+  AddSeed(IdentifierType id)
   {
     this->Modified();
     m_SeedList.push_back(id);
@@ -177,7 +185,8 @@ public:
   /**
    * Initialize list of region ids to extract.
    */
-  void InitializeSpecifiedRegionList(void)
+  void
+  InitializeSpecifiedRegionList(void)
   {
     this->Modified();
     m_RegionList.clear();
@@ -186,7 +195,8 @@ public:
   /**
    * Add a region id to extract. Note: ids are 0-offset.
    */
-  void AddSpecifiedRegion(IdentifierType id)
+  void
+  AddSpecifiedRegion(IdentifierType id)
   {
     this->Modified();
     m_RegionList.push_back(id);
@@ -201,7 +211,8 @@ public:
    * Use to specify x-y-z point coordinates when extracting the region
    * closest to a specified point.
    */
-  void SetClosestPoint(InputMeshPointType & p)
+  void
+  SetClosestPoint(InputMeshPointType & p)
   {
     if ( m_ClosestPoint != p )
       {
@@ -210,7 +221,8 @@ public:
       }
   }
 
-  InputMeshPointType & GetClosestPoint(InputMeshPointType &)
+  InputMeshPointType &
+  GetClosestPoint(InputMeshPointType &)
   {
     return m_ClosestPoint;
   }
@@ -218,7 +230,8 @@ public:
   /**
    * Obtain the number of connected regions.
    */
-  SizeValueType GetNumberOfExtractedRegions()
+  SizeValueType
+  GetNumberOfExtractedRegions()
   {
     return m_RegionList.size();
   }
@@ -226,7 +239,8 @@ public:
 protected:
 
   ConnectedRegionsMeshFilter(void);
-  virtual ~ConnectedRegionsMeshFilter(void) {}
+  virtual
+  ~ConnectedRegionsMeshFilter(void) {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -239,11 +253,11 @@ private:
   ConnectedRegionsMeshFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
 
-  int                            m_ExtractionMode;
-  InputMeshPointType             m_ClosestPoint;
-  std::vector< IdentifierType >  m_SeedList;
-  std::vector< IdentifierType >  m_RegionList;
-  std::vector< SizeValueType >   m_RegionSizes;
+  int                           m_ExtractionMode;
+  InputMeshPointType            m_ClosestPoint;
+  std::vector< IdentifierType > m_SeedList;
+  std::vector< IdentifierType > m_RegionList;
+  std::vector< SizeValueType >  m_RegionSizes;
 
   std::vector< OffsetValueType > m_Visited;
   SizeValueType                  m_NumberOfCellsInRegion;

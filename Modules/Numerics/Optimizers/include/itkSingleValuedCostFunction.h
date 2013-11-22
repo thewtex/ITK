@@ -30,7 +30,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class SingleValuedCostFunction:
+class SingleValuedCostFunction :
   public CostFunction
 {
 public:
@@ -67,9 +67,10 @@ public:
 
   /** This method returns the value and derivative of the cost function corresponding
     * to the specified parameters    */
-  virtual void GetValueAndDerivative(const ParametersType & parameters,
-                                     MeasureType & value,
-                                     DerivativeType & derivative) const
+  virtual void
+  GetValueAndDerivative(const ParametersType & parameters,
+                        MeasureType & value,
+                        DerivativeType & derivative) const
   {
     value = this->GetValue(parameters);
     this->GetDerivative(parameters, derivative);
@@ -77,11 +78,13 @@ public:
 
 protected:
   SingleValuedCostFunction() {}
-  virtual ~SingleValuedCostFunction() {}
+  virtual
+  ~SingleValuedCostFunction() {}
 
 private:
   SingleValuedCostFunction(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 } // end namespace itk
 

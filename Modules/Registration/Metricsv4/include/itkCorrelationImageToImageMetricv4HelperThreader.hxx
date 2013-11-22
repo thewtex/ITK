@@ -25,11 +25,9 @@ namespace itk
 
 template<typename TDomainPartitioner, typename TImageToImageMetric, typename TCorrelationMetric>
 CorrelationImageToImageMetricv4HelperThreader< TDomainPartitioner, TImageToImageMetric, TCorrelationMetric>
-::CorrelationImageToImageMetricv4HelperThreader():
+::CorrelationImageToImageMetricv4HelperThreader() :
   m_CorrelationMetricPerThreadVariables( NULL )
-{
-}
-
+{}
 
 template<typename TDomainPartitioner, typename TImageToImageMetric, typename TCorrelationMetric>
 CorrelationImageToImageMetricv4HelperThreader< TDomainPartitioner, TImageToImageMetric, TCorrelationMetric>
@@ -37,7 +35,6 @@ CorrelationImageToImageMetricv4HelperThreader< TDomainPartitioner, TImageToImage
 {
   delete[] m_CorrelationMetricPerThreadVariables;
 }
-
 
 template<typename TDomainPartitioner, typename TImageToImageMetric, typename TCorrelationMetric>
 void
@@ -50,10 +47,11 @@ CorrelationImageToImageMetricv4HelperThreader< TDomainPartitioner, TImageToImage
   this->m_CorrelationAssociate = dynamic_cast<TCorrelationMetric *>(this->m_Associate);
 
   delete[] this->m_CorrelationMetricPerThreadVariables;
-  this->m_CorrelationMetricPerThreadVariables = new AlignedCorrelationMetricPerThreadStruct[ this->GetNumberOfThreadsUsed() ];
+  this->m_CorrelationMetricPerThreadVariables =
+    new AlignedCorrelationMetricPerThreadStruct[ this->GetNumberOfThreadsUsed() ];
 
-    //---------------------------------------------------------------
-    // Set initial values.
+  //---------------------------------------------------------------
+  // Set initial values.
   for (ThreadIdType i = 0; i < this->GetNumberOfThreadsUsed(); i++)
     {
     this->m_CorrelationMetricPerThreadVariables[i].FixSum = NumericTraits<InternalComputationValueType>::Zero;
@@ -65,7 +63,7 @@ CorrelationImageToImageMetricv4HelperThreader< TDomainPartitioner, TImageToImage
 template<typename TDomainPartitioner, typename TImageToImageMetric, typename TCorrelationMetric>
 void
 CorrelationImageToImageMetricv4HelperThreader<TDomainPartitioner,
-    TImageToImageMetric, TCorrelationMetric>::AfterThreadedExecution()
+                                              TImageToImageMetric, TCorrelationMetric>::AfterThreadedExecution()
 {
 
   /* Store the number of valid points the enclosing class \c
@@ -74,7 +72,8 @@ CorrelationImageToImageMetricv4HelperThreader<TDomainPartitioner,
 
   for (ThreadIdType i = 0; i < this->GetNumberOfThreadsUsed(); i++)
     {
-    this->m_CorrelationAssociate->m_NumberOfValidPoints += this->m_GetValueAndDerivativePerThreadVariables[i].NumberOfValidPoints;
+    this->m_CorrelationAssociate->m_NumberOfValidPoints +=
+      this->m_GetValueAndDerivativePerThreadVariables[i].NumberOfValidPoints;
     }
 
   if (this->m_CorrelationAssociate->m_NumberOfValidPoints <= 0 )
@@ -99,14 +98,15 @@ CorrelationImageToImageMetricv4HelperThreader<TDomainPartitioner,
 template<typename TDomainPartitioner, typename TImageToImageMetric, typename TCorrelationMetric>
 bool
 CorrelationImageToImageMetricv4HelperThreader<TDomainPartitioner,
-TImageToImageMetric, TCorrelationMetric>
-::ProcessVirtualPoint( const VirtualIndexType & itkNotUsed(virtualIndex), const VirtualPointType & virtualPoint, const ThreadIdType threadID )
+                                              TImageToImageMetric, TCorrelationMetric>
+::ProcessVirtualPoint( const VirtualIndexType & itkNotUsed(
+                         virtualIndex), const VirtualPointType & virtualPoint, const ThreadIdType threadID )
 {
-  FixedImagePointType         mappedFixedPoint;
-  FixedImagePixelType         mappedFixedPixelValue;
-  MovingImagePointType        mappedMovingPoint;
-  MovingImagePixelType        mappedMovingPixelValue;
-  bool                        pointIsValid = false;
+  FixedImagePointType  mappedFixedPoint;
+  FixedImagePixelType  mappedFixedPixelValue;
+  MovingImagePointType mappedMovingPoint;
+  MovingImagePixelType mappedMovingPixelValue;
+  bool                 pointIsValid = false;
 
   /* Transform the point into fixed and moving spaces, and evaluate.
    * Different behavior with pre-warping enabled is handled transparently.
@@ -114,7 +114,8 @@ TImageToImageMetric, TCorrelationMetric>
    * then we otherwise get when exceptions are caught in MultiThreader. */
   try
     {
-    pointIsValid = this->m_CorrelationAssociate->TransformAndEvaluateFixedPoint( virtualPoint, mappedFixedPoint, mappedFixedPixelValue );
+    pointIsValid = this->m_CorrelationAssociate->TransformAndEvaluateFixedPoint( virtualPoint, mappedFixedPoint,
+                                                                                 mappedFixedPixelValue );
     }
   catch( ExceptionObject & exc )
     {
@@ -131,7 +132,8 @@ TImageToImageMetric, TCorrelationMetric>
 
   try
     {
-    pointIsValid = this->m_CorrelationAssociate->TransformAndEvaluateMovingPoint( virtualPoint, mappedMovingPoint, mappedMovingPixelValue );
+    pointIsValid = this->m_CorrelationAssociate->TransformAndEvaluateMovingPoint( virtualPoint, mappedMovingPoint,
+                                                                                  mappedMovingPixelValue );
     }
   catch( ExceptionObject & exc )
     {

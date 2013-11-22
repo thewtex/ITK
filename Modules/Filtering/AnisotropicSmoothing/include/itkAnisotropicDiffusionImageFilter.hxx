@@ -114,6 +114,7 @@ AnisotropicDiffusionImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf( os, indent.GetNextIndent() );
+
   os << indent << "TimeStep: " << m_TimeStep << std::endl;
   os << indent << "ConductanceParameter: "
      << m_ConductanceParameter << std::endl;
@@ -124,6 +125,7 @@ AnisotropicDiffusionImageFilter< TInputImage, TOutputImage >
   os << indent << "FixedAverageGradientMagnitude: "
      << m_FixedAverageGradientMagnitude << std::endl;
 }
+
 } // end namespace itk
 
 #endif

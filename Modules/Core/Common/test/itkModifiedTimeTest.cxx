@@ -19,13 +19,14 @@
 #include "itkBoundingBox.h"
 #include "itkIntTypes.h"
 
-int itkModifiedTimeTest( int, char* [] )
+int
+itkModifiedTimeTest( int, char* [] )
 {
 
   typedef itk::Point< double, 3 >                          Point;
   typedef itk::VectorContainer< unsigned long int, Point > PointsContainer;
   typedef itk::BoundingBox< unsigned long int, 3, double, PointsContainer >
-                                                           BoundingBox;
+    BoundingBox;
 
   Point p,q,r;
 
@@ -46,7 +47,6 @@ int itkModifiedTimeTest( int, char* [] )
   const itk::ModifiedTimeType bbBeforeTime = bb->GetMTime();
   const itk::ModifiedTimeType pcBeforeTime = pc->GetMTime();
 
-
   std::cout<<"BB time before modification: "<< bbBeforeTime <<std::endl;
   std::cout<<"PC time before modification: "<< pcBeforeTime <<std::endl;
 
@@ -58,7 +58,6 @@ int itkModifiedTimeTest( int, char* [] )
 
   std::cout<<"BB time after modification: "<< bbAfterTime <<std::endl;
   std::cout<<"PC time after modification: "<< pcAfterTime <<std::endl;
-
 
   if( pcAfterTime == pcBeforeTime )
     {
@@ -73,7 +72,6 @@ int itkModifiedTimeTest( int, char* [] )
     std::cout << "updated by changes in the points" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   if( bbAfterTime < pcAfterTime )
     {

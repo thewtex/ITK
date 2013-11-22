@@ -22,7 +22,8 @@
 #include "itkGDCMImageIO.h"
 #include "itkGDCMSeriesFileNames.h"
 
-int itkAccumulateImageFilterTest(int argc, char *argv[] )
+int
+itkAccumulateImageFilterTest(int argc, char *argv[] )
 {
   typedef short PixelType;
   static const int ImageDimension = 3;
@@ -32,11 +33,11 @@ int itkAccumulateImageFilterTest(int argc, char *argv[] )
   typedef itk::Image<unsigned char,ImageDimension> WriteImageType;
   typedef itk::ImageSeriesReader< InputImageType > ReaderType;
   typedef itk::AccumulateImageFilter<InputImageType,OutputImageType>
-                                                   AccumulaterType;
+    AccumulaterType;
   typedef itk::ImageSeriesWriter<OutputImageType,WriteImageType>
-                                                   WriterType;
-  typedef itk::GDCMSeriesFileNames                 SeriesFileNames;
-  typedef itk::GDCMImageIO                         ImageIOType;
+    WriterType;
+  typedef itk::GDCMSeriesFileNames SeriesFileNames;
+  typedef itk::GDCMImageIO         ImageIOType;
 
   if (argc < 3)
     {
@@ -53,7 +54,7 @@ int itkAccumulateImageFilterTest(int argc, char *argv[] )
 
   // Create the reader
   ImageIOType::Pointer gdcmIO = ImageIOType::New();
-  ReaderType::Pointer reader = ReaderType::New();
+  ReaderType::Pointer  reader = ReaderType::New();
   reader->SetImageIO( gdcmIO );
   try
     {
@@ -93,7 +94,7 @@ int itkAccumulateImageFilterTest(int argc, char *argv[] )
     WriterType::Pointer writer = WriterType::New();
     writer->SetFileName ( argv[2] );
 
-    writer->SetInput(accumulate->GetOutput());
+    writer->SetInput(accumulate->GetOutput() );
     writer->Update();
     }
   catch( itk::ExceptionObject & excp )
@@ -113,7 +114,7 @@ int itkAccumulateImageFilterTest(int argc, char *argv[] )
     WriterType::Pointer writer = WriterType::New();
     writer->SetFileName ( argv[2] );
 
-    writer->SetInput(accumulate->GetOutput());
+    writer->SetInput(accumulate->GetOutput() );
     writer->Update();
     }
   catch( itk::ExceptionObject & excp )

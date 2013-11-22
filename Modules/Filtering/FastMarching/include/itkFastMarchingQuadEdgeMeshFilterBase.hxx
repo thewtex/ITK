@@ -65,10 +65,10 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
 ::GetOutputValue( OutputMeshType* oMesh, const NodeType& iNode ) const
 {
   OutputPixelType outputValue = NumericTraits< OutputPixelType >::Zero;
+
   oMesh->GetPointData( iNode, &outputValue );
   return outputValue;
 }
-
 
 template< typename TInput, typename TOutput >
 unsigned char
@@ -93,7 +93,7 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
 ::SetLabelValueForGivenNode( const NodeType& iNode,
                              const LabelType& iLabel )
 {
-   m_Label[iNode] = iLabel;
+  m_Label[iNode] = iLabel;
 }
 
 template< typename TInput, typename TOutput >
@@ -103,6 +103,7 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
                    const NodeType& iNode )
 {
   OutputPointType p;
+
   oMesh->GetPoint( iNode, &p );
 
   OutputQEType* qe = p.GetEdge();
@@ -145,8 +146,9 @@ void
 FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
 ::UpdateValue( OutputMeshType* oMesh,
                const NodeType& iNode )
-  {
+{
   OutputPointType p;
+
   oMesh->GetPoint( iNode, &p );
 
   InputPixelType F = NumericTraits< InputPixelType >::Zero;
@@ -178,9 +180,9 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
           OutputPointIdentifierType id2 = qe_it2->GetDestination();
 
           const LabelType label1 =
-              static_cast< LabelType >( this->GetLabelValueForGivenNode( id1 ) );
+            static_cast< LabelType >( this->GetLabelValueForGivenNode( id1 ) );
           const LabelType label2 =
-              static_cast< LabelType >( this->GetLabelValueForGivenNode( id2 ) );
+            static_cast< LabelType >( this->GetLabelValueForGivenNode( id2 ) );
 
           bool IsFar1 = ( label1 != Traits::Far );
           bool IsFar2 = ( label2 != Traits::Far );
@@ -191,12 +193,12 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
             OutputPointType q2 = oMesh->GetPoint( id2 );
 
             OutputVectorRealType val1 =
-                static_cast< OutputVectorRealType >(
-                  this->GetOutputValue( oMesh, id1 ) );
+              static_cast< OutputVectorRealType >(
+                this->GetOutputValue( oMesh, id1 ) );
 
             OutputVectorRealType val2 =
-                static_cast< OutputVectorRealType >(
-                  this->GetOutputValue( oMesh, id2 ) );
+              static_cast< OutputVectorRealType >(
+                this->GetOutputValue( oMesh, id2 ) );
 
             if( val1 > val2 )
               {
@@ -210,13 +212,13 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
               }
 
             const OutputVectorRealType temp =
-                this->Solve( oMesh, iNode, p, F,
-                            id1, q1, IsFar1, val1,
-                            id2, q2, IsFar2, val2 );
+              this->Solve( oMesh, iNode, p, F,
+                           id1, q1, IsFar1, val1,
+                           id2, q2, IsFar2, val2 );
 
             outputPixel =
-                vnl_math_min( outputPixel,
-                              static_cast< OutputPixelType >( temp ) );
+              vnl_math_min( outputPixel,
+                            static_cast< OutputPixelType >( temp ) );
             }
           }
 
@@ -244,7 +246,7 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
     // throw one exception
     itkGenericExceptionMacro( << "qe_it is NULL" );
     }
-  }
+}
 
 template< typename TInput, typename TOutput >
 const typename
@@ -252,13 +254,13 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
 ::OutputVectorRealType
 FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
 ::Solve( OutputMeshType* oMesh,
-       const NodeType& iId, const OutputPointType& iCurrentPoint,
-       const OutputVectorRealType& iF,
-       const NodeType& iId1, const OutputPointType& iP1,
-       const bool& iIsFar1, const OutputVectorRealType iVal1,
-       const NodeType& iId2, const OutputPointType& iP2,
-       const bool& iIsFar2, const OutputVectorRealType& iVal2 ) const
-  {
+         const NodeType& iId, const OutputPointType& iCurrentPoint,
+         const OutputVectorRealType& iF,
+         const NodeType& iId1, const OutputPointType& iP1,
+         const bool& iIsFar1, const OutputVectorRealType iVal1,
+         const NodeType& iId2, const OutputPointType& iP2,
+         const bool& iIsFar2, const OutputVectorRealType& iVal2 ) const
+{
   OutputVectorType Edge1 = iP1 - iCurrentPoint;
   OutputVectorType Edge2 = iP2 - iCurrentPoint;
 
@@ -266,7 +268,7 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
   OutputVectorRealType norm1 = 0.;
 
   OutputVectorRealType epsilon =
-      NumericTraits< OutputVectorRealType >::epsilon();
+    NumericTraits< OutputVectorRealType >::epsilon();
 
   if( sq_norm1 > epsilon )
     {
@@ -301,17 +303,17 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
   if( iIsFar1 && iIsFar2 )
     {
     OutputVectorRealType dot =
-        static_cast< OutputVectorRealType >( Edge1 * Edge2 );
+      static_cast< OutputVectorRealType >( Edge1 * Edge2 );
 
     if( dot >= 0. )
       {
       return ComputeUpdate( iVal1, iVal2,
-                           norm2, sq_norm2,
-                           norm1, sq_norm1, dot, iF );
+                            norm2, sq_norm2,
+                            norm1, sq_norm1, dot, iF );
       }
     else
       {
-      OutputVectorRealType sq_norm3, norm3, dot1, dot2;
+      OutputVectorRealType      sq_norm3, norm3, dot1, dot2;
       OutputPointIdentifierType new_id;
 
       bool unfolded =
@@ -323,28 +325,27 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
         OutputVectorRealType t_sq_norm3 = norm3 * norm3;
 
         OutputVectorRealType val3 =
-            static_cast< OutputVectorRealType >(
-              this->GetOutputValue( oMesh, new_id ) );
+          static_cast< OutputVectorRealType >(
+            this->GetOutputValue( oMesh, new_id ) );
         OutputVectorRealType t1 = ComputeUpdate( iVal1, val3, norm3, t_sq_norm3,
-                                                norm1, sq_norm1, dot1, iF );
+                                                 norm1, sq_norm1, dot1, iF );
         OutputVectorRealType t2 = ComputeUpdate( iVal2, val3, norm3, t_sq_norm3,
-                                                norm2, sq_norm2, dot2, iF );
+                                                 norm2, sq_norm2, dot2, iF );
 
         return vnl_math_min( t1, t2 );
         }
       else
         {
         return ComputeUpdate( iVal1, iVal2,
-                             norm2, sq_norm2,
-                             norm1, sq_norm1, dot, iF );
+                              norm2, sq_norm2,
+                              norm1, sq_norm1, dot, iF );
         }
       }
-
 
     }
 
   return this->m_LargeValue;
-  }
+}
 
 template< typename TInput, typename TOutput >
 const typename
@@ -356,10 +357,10 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
   const OutputVectorRealType& iNorm1, const OutputVectorRealType& iSqNorm1,
   const OutputVectorRealType& iNorm2, const OutputVectorRealType& iSqNorm2,
   const OutputVectorRealType& iDot, const OutputVectorRealType& iF )
-  const
+const
 {
   OutputVectorRealType large_value =
-      static_cast< OutputVectorRealType >( this->m_LargeValue );
+    static_cast< OutputVectorRealType >( this->m_LargeValue );
 
   OutputVectorRealType t = large_value;
 
@@ -376,7 +377,7 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
   OutputVectorRealType delta = f1 * f1 - f0 * f2;
 
   OutputVectorRealType epsilon =
-      NumericTraits< OutputVectorRealType >::epsilon();
+    NumericTraits< OutputVectorRealType >::epsilon();
 
   if( delta >= 0. )
     {
@@ -400,13 +401,13 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
         }
       else
         {
-        t = - large_value;
+        t = -large_value;
         }
       }
     }
   else
     {
-    t = - large_value;
+    t = -large_value;
     }
 
   // choose the update from the 2 vertex only if upwind criterion is met
@@ -433,10 +434,10 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
   OutputVectorRealType& oNorm, OutputVectorRealType& oSqNorm,
   OutputVectorRealType& oDot1, OutputVectorRealType& oDot2,
   OutputPointIdentifierType& oId ) const
-  {
+{
   (void) iId;
 
-  OutputVectorType Edge1 = iP1 - iP;
+  OutputVectorType     Edge1 = iP1 - iP;
   OutputVectorRealType Norm1 = Edge1.GetNorm();
 
   OutputVectorRealType epsilon =
@@ -448,7 +449,7 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
     Edge1 *= inv_Norm;
     }
 
-  OutputVectorType Edge2 = iP2 - iP;
+  OutputVectorType     Edge2 = iP2 - iP;
   OutputVectorRealType Norm2 = Edge2.GetNorm();
   if( Norm2 > epsilon )
     {
@@ -457,12 +458,12 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
     }
 
   OutputVectorRealType dot =
-      static_cast< OutputVectorRealType >( Edge1 * Edge2 );
+    static_cast< OutputVectorRealType >( Edge1 * Edge2 );
 
   // the equation of the lines defining the unfolding region
   // [e.g. line 1 : {x ; <x,eq1>=0} ]
-  typedef Vector< OutputVectorRealType, 2 >     Vector2DType;
-  typedef Matrix< OutputVectorRealType, 2, 2 >  Matrix2DType;
+  typedef Vector< OutputVectorRealType, 2 >    Vector2DType;
+  typedef Matrix< OutputVectorRealType, 2, 2 > Matrix2DType;
 
   Vector2DType v1;
   v1[0] = dot;
@@ -495,7 +496,7 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
   unsigned int nNum = 0;
   while( nNum<50 && qe->GetLeft() != OutputMeshType::m_NoFace )
     {
-    OutputQEType* qe_Lnext = qe->GetLnext();
+    OutputQEType*             qe_Lnext = qe->GetLnext();
     OutputPointIdentifierType t_id = qe_Lnext->GetDestination();
 
     oMesh->GetPoint( t_id, &t_pt );
@@ -535,22 +536,21 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
     Matrix2DType rotation;
     rotation[0][0] = dot;
     rotation[0][1] = vcl_sqrt( 1. - dot * dot );
-    rotation[1][0] = - rotation[0][1];
+    rotation[1][0] = -rotation[0][1];
     rotation[1][1] = dot;
 
     Vector2DType x = rotation * vv + x1;
 
-
     /* compute the intersection points.
        We look for x=x1+lambda*(x-x1) or x=x2+lambda*(x-x2) with <x,eqi>=0, so */
-    OutputVectorRealType lambda11 = - ( x1 * v1 ) / ( ( x - x1 ) * v1 );  // left most
-    OutputVectorRealType lambda12 = - ( x1 * v2 ) / ( ( x - x1 ) * v2 );  // right most
-    OutputVectorRealType lambda21 = - ( x2 * v1 ) / ( ( x - x2 ) * v1 );  // left most
-    OutputVectorRealType lambda22 = - ( x2 * v2 ) / ( ( x - x2 ) * v2 );  // right most
-    bool bIntersect11 = (lambda11>=0.) && (lambda11<=1.);
-    bool bIntersect12 = (lambda12>=0.) && (lambda12<=1.);
-    bool bIntersect21 = (lambda21>=0.) && (lambda21<=1.);
-    bool bIntersect22 = (lambda22>=0.) && (lambda22<=1.);
+    OutputVectorRealType lambda11 = -( x1 * v1 ) / ( ( x - x1 ) * v1 );   // left most
+    OutputVectorRealType lambda12 = -( x1 * v2 ) / ( ( x - x1 ) * v2 );   // right most
+    OutputVectorRealType lambda21 = -( x2 * v1 ) / ( ( x - x2 ) * v1 );   // left most
+    OutputVectorRealType lambda22 = -( x2 * v2 ) / ( ( x - x2 ) * v2 );   // right most
+    bool                 bIntersect11 = (lambda11>=0.) && (lambda11<=1.);
+    bool                 bIntersect12 = (lambda12>=0.) && (lambda12<=1.);
+    bool                 bIntersect21 = (lambda21>=0.) && (lambda21<=1.);
+    bool                 bIntersect22 = (lambda22>=0.) && (lambda22<=1.);
 
     if( bIntersect11 && bIntersect12 )
       {
@@ -612,31 +612,31 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
     ++nNum;
     }
 
-    return false;
-  }
+  return false;
+}
 
 template< typename TInput, typename TOutput >
 bool
 FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
 ::CheckTopology( OutputMeshType* oMesh,
-                    const NodeType& iNode )
-  {
+                 const NodeType& iNode )
+{
   (void) oMesh;
   (void) iNode;
 
   return true;
-  }
+}
 
 template< typename TInput, typename TOutput >
 void
 FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
 ::InitializeOutput( OutputMeshType* oMesh )
-  {
+{
   this->CopyInputMeshToOutputMeshGeometry();
 
   // Check that the input mesh is made of triangles
     {
-    OutputCellsContainerPointer cells = oMesh->GetCells();
+    OutputCellsContainerPointer       cells = oMesh->GetCells();
     OutputCellsContainerConstIterator c_it = cells->Begin();
     OutputCellsContainerConstIterator c_end = cells->End();
 
@@ -655,7 +655,7 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
   OutputPointsContainerPointer points = oMesh->GetPoints();
 
   OutputPointDataContainerPointer pointdata =
-      OutputPointDataContainer::New();
+    OutputPointDataContainer::New();
   pointdata->Reserve( points->Size() );
 
   OutputPointsContainerIterator p_it = points->Begin();
@@ -734,7 +734,8 @@ FastMarchingQuadEdgeMeshFilterBase< TInput, TOutput >
       ++pointsIter;
       }
     }
-  }
+}
+
 }
 
 #endif // __itkFastMarchingQuadEdgeMeshFilterBase_hxx

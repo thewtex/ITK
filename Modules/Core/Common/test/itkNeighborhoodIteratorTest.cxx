@@ -19,10 +19,12 @@
 #include "itkNeighborhoodIteratorTestCommon.hxx"
 #include "itkNeighborhoodIterator.h"
 
-int itkNeighborhoodIteratorTest(int, char* [] )
+int
+itkNeighborhoodIteratorTest(int, char* [] )
 {
-  TestImageType::Pointer img = GetTestImage(10, 10, 5, 3);
+  TestImageType::Pointer                              img = GetTestImage(10, 10, 5, 3);
   itk::NeighborhoodIterator<TestImageType>::IndexType loc;
+
   loc[0] = 4; loc[1] = 4; loc[2] = 2; loc[3] = 1;
 
   itk::NeighborhoodIterator<TestImageType>::IndexType zeroIDX;
@@ -33,7 +35,7 @@ int itkNeighborhoodIteratorTest(int, char* [] )
 
   println("Creating NeighborhoodIterator");
   itk::NeighborhoodIterator<TestImageType>
-    it(radius, img, img->GetRequestedRegion());
+  it(radius, img, img->GetRequestedRegion() );
 
   println("Moving iterator using Superclass::SetLocation()");
   it.SetLocation(loc);
@@ -55,21 +57,20 @@ int itkNeighborhoodIteratorTest(int, char* [] )
 
   println("Testing GetCenterPointer()");
   std::cout << it.GetCenterPointer() << " = "
-            << *(it.GetCenterPointer()) << std::endl;
+            << *(it.GetCenterPointer() ) << std::endl;
 
   println("Testing operator=");
   it = itk::NeighborhoodIterator<TestImageType>(radius, img,
-                                                img->GetRequestedRegion());
+                                                img->GetRequestedRegion() );
 
   println("Testing copy constructor");
   itk::NeighborhoodIterator<TestImageType> it2(it);
   it.Print(std::cout);
   it2.Print(std::cout);
 
-
   println("Creating 5x5x1x1 neighborhood");
   radius[0] = 2; radius[1] = 2; radius[2] = 0; radius[3] = 0;
-  itk::NeighborhoodIterator<TestImageType> it3(radius, img, img->GetRequestedRegion());
+  itk::NeighborhoodIterator<TestImageType> it3(radius, img, img->GetRequestedRegion() );
 
   println("Moving to location 2, 2, 0, 0");
   loc[0] = 2; loc[1] = 2; loc[2] = 0; loc[3] = 0;
@@ -133,7 +134,6 @@ int itkNeighborhoodIteratorTest(int, char* [] )
     std::cout << std::endl;
     }
 
-
   println("Testing SetPrevious(0, 2, [0,0,0,0])");
   it3.SetPrevious(0,2,z);
 
@@ -179,14 +179,13 @@ int itkNeighborhoodIteratorTest(int, char* [] )
     std::cout << std::endl;
     }
 
-
   println("Testing SetPixel methods");
   bool raised = false;
   try
     {
     it3.GoToBegin();
     it3.SetPixel( it.Size()/2, z); // in bounds
-    it3.SetPixel( 0, z); // out of bounds, should throw an exception
+    it3.SetPixel( 0, z);           // out of bounds, should throw an exception
     }
   catch(itk::ExceptionObject &e)
     {

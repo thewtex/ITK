@@ -20,7 +20,6 @@
 
 #include "itkLayerBase.h"
 
-
 namespace itk
 {
 namespace Statistics
@@ -43,8 +42,8 @@ LayerBase<TMeasurementVector,TTargetVector>
 template<typename TMeasurementVector, typename TTargetVector>
 LayerBase<TMeasurementVector,TTargetVector>
 ::~LayerBase()
-{
-}
+{}
+
 template<typename TMeasurementVector, typename TTargetVector>
 void
 LayerBase<TMeasurementVector,TTargetVector>
@@ -65,7 +64,7 @@ LayerBase<TMeasurementVector,TTargetVector>
 template<typename TMeasurementVector, typename TTargetVector>
 void
 LayerBase<TMeasurementVector,TTargetVector>
-:: SetNodeInputFunction(InputFunctionInterfaceType* f)
+::SetNodeInputFunction(InputFunctionInterfaceType* f)
 {
   m_NodeInputFunction = f;
   this->Modified();

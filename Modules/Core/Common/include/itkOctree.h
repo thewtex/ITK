@@ -46,7 +46,7 @@ enum OctreePlaneType {
  *
  * \ingroup ITKCommon
  */
-class OctreeBase:public Object
+class OctreeBase : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -100,6 +100,7 @@ public:
 
   /** Get the size of the Color Table  */
   virtual int GetColorTableSize() const = 0;
+
 };
 
 /**
@@ -111,7 +112,7 @@ public:
  * \ingroup ITKCommon
  */
 template< typename TPixel, unsigned int ColorTableSize, typename MappingFunctionType >
-class Octree:public OctreeBase
+class Octree : public OctreeBase
 {
 public:
   /** Standard class typedefs. */
@@ -128,19 +129,28 @@ public:
 
   ImageTypePointer GetImage();
 
-  virtual void BuildFromBuffer(const void *buffer, const unsigned int xsize, const unsigned int ysize, const unsigned int zsize);
+  virtual void BuildFromBuffer(const void *buffer, const unsigned int xsize, const unsigned int ysize,
+                               const unsigned int zsize);
 
   void BuildFromImage(Image< TPixel, 3 > *fromImage);
 
   Octree(void);
   ~Octree(void);
-  void SetColor(unsigned int color) { m_Tree.SetColor(color); }
-  void SetTree(OctreeNodeBranch *branch) { m_Tree.SetBranch(branch); }
+  void
+  SetColor(unsigned int color) {
+    m_Tree.SetColor(color);
+  }
+
+  void
+  SetTree(OctreeNodeBranch *branch) {
+    m_Tree.SetBranch(branch);
+  }
+
   void SetTrueDims(const unsigned int Dim0, const unsigned int Dim1,
                    const unsigned int Dim2);
 
   int GetValue(const unsigned int Dim0, const unsigned int Dim1,
-                        const unsigned int Dim2);
+               const unsigned int Dim2);
 
   virtual void SetWidth(unsigned int width);
 

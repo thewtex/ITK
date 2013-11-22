@@ -49,8 +49,8 @@ public:
   typedef SmartPointer< const Self > ConstPointer;
   typedef WeakPointer< const Self >  ConstWeakPointer;
 
-  typedef RingBuffer<DataObject>        BufferType;
-  typedef TemporalRegion                TemporalRegionType;
+  typedef RingBuffer<DataObject> BufferType;
+  typedef TemporalRegion         TemporalRegionType;
 
   /** Enum for defining the way in which to compare temporal regions */
   typedef enum {Frame, RealTime, FrameAndRealTime} TemporalUnitType;
@@ -65,20 +65,27 @@ public:
 
   /** Explicity set temporal units (Defaults to Frame)*/
   virtual void SetTemporalUnitToFrame();
+
   virtual void SetTemporalUnitToRealTime();
+
   virtual void SetTemporalUnitToFrameAndRealTime();
 
   /** Get/Set the number of frames that the internal buffer can hold */
   SizeValueType GetNumberOfBuffers();
+
   void SetNumberOfBuffers(SizeValueType num);
 
   virtual void SetLargestPossibleTemporalRegion(
     const TemporalRegionType & region);
+
   virtual const TemporalRegionType & GetLargestPossibleTemporalRegion() const;
 
   virtual void SetBufferedTemporalRegion(const TemporalRegionType & region);
+
   virtual const TemporalRegionType & GetBufferedTemporalRegion() const;
+
   virtual void SetRequestedTemporalRegion(const TemporalRegionType & region);
+
   virtual const TemporalRegionType & GetRequestedTemporalRegion() const;
 
   /** Get the portion of the requested region that is not covered by the
@@ -100,7 +107,8 @@ public:
 protected:
 
   TemporalDataObject();
-  virtual ~TemporalDataObject();
+  virtual
+  ~TemporalDataObject();
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Buffer for holding component data objects */

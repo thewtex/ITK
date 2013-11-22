@@ -42,7 +42,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class FastApproximateRankImageFilter:
+class FastApproximateRankImageFilter :
   public MiniPipelineSeparableImageFilter< TInputImage, TOutputImage,
                                            RankImageFilter< TInputImage, TInputImage,
                                                             FlatStructuringElement< TInputImage::ImageDimension > > >
@@ -51,8 +51,9 @@ public:
   /** Standard class typedefs. */
   typedef FastApproximateRankImageFilter Self;
   typedef MiniPipelineSeparableImageFilter< TInputImage, TOutputImage,
-          RankImageFilter< TInputImage, TInputImage,
-                      FlatStructuringElement< TInputImage::ImageDimension > > > Superclass;
+                                            RankImageFilter< TInputImage, TInputImage,
+                                                             FlatStructuringElement< TInputImage::ImageDimension > > >
+    Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -78,7 +79,8 @@ public:
   /** n-dimensional Kernel radius. */
   typedef typename TInputImage::SizeType RadiusType;
 
-  void SetRank(float rank)
+  void
+  SetRank(float rank)
   {
     if ( m_Rank != rank )
       {
@@ -103,9 +105,11 @@ protected:
 
   ~FastApproximateRankImageFilter() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
+
     os << indent << "Rank: " << m_Rank << std::endl;
   }
 

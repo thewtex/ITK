@@ -44,7 +44,7 @@ template< unsigned int VImageDimension >
 ImageBase< VImageDimension >
 ::ImageBase()
 {
-  memset(m_OffsetTable, 0, sizeof(m_OffsetTable));
+  memset(m_OffsetTable, 0, sizeof(m_OffsetTable) );
   m_Spacing.Fill(1.0);
   m_Origin.Fill(0.0);
   m_Direction.SetIdentity();
@@ -72,7 +72,7 @@ ImageBase< VImageDimension >
   Superclass::Initialize();
 
   // Clear the offset table
-  memset(m_OffsetTable, 0, sizeof(m_OffsetTable));
+  memset(m_OffsetTable, 0, sizeof(m_OffsetTable) );
 
   // Clear the BufferedRegion ivar
   this->InitializeBufferedRegion();
@@ -548,6 +548,7 @@ ImageBase< VImageDimension >
   os << indent << "Inverse Direction: " << std::endl;
   os << this->GetInverseDirection() << std::endl;
 }
+
 } // end namespace itk
 
 #endif

@@ -107,6 +107,7 @@ GaborImageSource< TOutputImage >
     os << indent << "  Calculate complex part: false " << std::endl;
     }
 }
+
 } // end namespace itk
 
 #endif

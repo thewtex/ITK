@@ -16,9 +16,7 @@
  *
  *=========================================================================*/
 
-
 #include "itkNiftiImageIOTest.h"
-
 
 template <typename PixelType,unsigned TType>
 int
@@ -26,22 +24,23 @@ SlopeInterceptTest()
 {
   //
   // fill out a nifti image and write it.
-  const char *filename = "SlopeIntercept.nii";
+  const char *  filename = "SlopeIntercept.nii";
   nifti_image * niftiImage = nifti_simple_init_nim();
+
   niftiImage->fname = (char *)malloc(strlen(filename)+1);
   strcpy(niftiImage->fname,filename);
   niftiImage->nifti_type = 1;
   niftiImage->iname = (char *)malloc(strlen(filename)+1);
   strcpy(niftiImage->iname,filename);
   niftiImage->dim[0] =
-  niftiImage->ndim = 3;
+    niftiImage->ndim = 3;
   niftiImage->nx = niftiImage->dim[1] = 8;
   niftiImage->ny = niftiImage->dim[2] = 8;
   niftiImage->nz = niftiImage->dim[3] = 4;
   niftiImage->nvox = 256;
   niftiImage->dx = niftiImage->pixdim[1] =
-  niftiImage->dy = niftiImage->pixdim[2] =
-  niftiImage->dz = niftiImage->pixdim[3] = 1.0;
+      niftiImage->dy = niftiImage->pixdim[2] =
+          niftiImage->dz = niftiImage->pixdim[3] = 1.0;
   niftiImage->nu = 1;
   niftiImage->datatype = TType;
   niftiImage->nbyper = sizeof(PixelType);
@@ -72,7 +71,7 @@ SlopeInterceptTest()
                          0,
                          0,
                          0,
-                         &(niftiImage->qfac));
+                         &(niftiImage->qfac) );
   niftiImage->data = malloc(sizeof(PixelType) * 256);
   for(unsigned i = 0; i < 256; i++)
     {
@@ -86,7 +85,7 @@ SlopeInterceptTest()
   typename ImageType::Pointer image;
   try
     {
-    image = itk::IOTestHelper::ReadImage<ImageType>(std::string(filename));
+    image = itk::IOTestHelper::ReadImage<ImageType>(std::string(filename) );
     }
   catch(...)
     {
@@ -94,20 +93,20 @@ SlopeInterceptTest()
     return EXIT_FAILURE;
     }
   typedef typename itk::ImageRegionIterator<ImageType> IteratorType;
-  IteratorType it(image,image->GetLargestPossibleRegion());
+  IteratorType it(image,image->GetLargestPossibleRegion() );
   it.GoToBegin();
   double maxerror = 0.0;
   for(unsigned i = 0; i < 256; i++,++it)
     {
-    if(it.IsAtEnd())
+    if(it.IsAtEnd() )
       {
       return EXIT_FAILURE;
       }
-    if(!Equal(it.Value(),static_cast<float>(i)/256.0))
+    if(!Equal(it.Value(),static_cast<float>(i)/256.0) )
       {
       //      return EXIT_FAILURE;
       double error = vcl_abs(it.Value() -
-                             (static_cast<double>(i)/256.0));
+                             (static_cast<double>(i)/256.0) );
       if(error > maxerror)
         {
         maxerror = error;
@@ -121,7 +120,8 @@ SlopeInterceptTest()
 
 //
 // test vector images
-int itkNiftiImageIOTest5(int ac, char* av[])
+int
+itkNiftiImageIOTest5(int ac, char* av[])
 {
   //
   // first argument is passing in the writable directory to do all testing

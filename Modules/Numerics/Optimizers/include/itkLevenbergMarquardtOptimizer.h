@@ -29,7 +29,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class LevenbergMarquardtOptimizer:
+class LevenbergMarquardtOptimizer :
   public MultipleValuedNonLinearVnlOptimizer
 {
 public:
@@ -75,7 +75,8 @@ public:
 
 protected:
   LevenbergMarquardtOptimizer();
-  virtual ~LevenbergMarquardtOptimizer();
+  virtual
+  ~LevenbergMarquardtOptimizer();
 
   typedef Superclass::CostFunctionAdaptorType CostFunctionAdaptorType;
 

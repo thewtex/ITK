@@ -51,7 +51,7 @@ LevelSetMotionRegistrationFunction< TFixedImage, TMovingImage, TDisplacementFiel
     DefaultInterpolatorType::New();
 
   m_MovingImageInterpolator = static_cast< InterpolatorType * >(
-    interp.GetPointer() );
+      interp.GetPointer() );
 
   m_Metric = NumericTraits< double >::max();
   m_SumOfSquaredDifference = 0.0;
@@ -311,7 +311,7 @@ LevelSetMotionRegistrationFunction< TFixedImage, TMovingImage, TDisplacementFiel
     if ( m_SmoothMovingImageInterpolator->IsInsideBuffer(mPoint) )
       {
       forwardDifferences[j] = m_SmoothMovingImageInterpolator->Evaluate(mPoint)
-                              - centralValue;
+        - centralValue;
       forwardDifferences[j] /= mSpacing[j];
       }
     else
@@ -323,7 +323,7 @@ LevelSetMotionRegistrationFunction< TFixedImage, TMovingImage, TDisplacementFiel
     if ( m_SmoothMovingImageInterpolator->IsInsideBuffer(mPoint) )
       {
       backwardDifferences[j] = centralValue
-                               - m_SmoothMovingImageInterpolator->Evaluate(mPoint);
+        - m_SmoothMovingImageInterpolator->Evaluate(mPoint);
       backwardDifferences[j] /= mSpacing[j];
       }
     else
@@ -450,7 +450,7 @@ LevelSetMotionRegistrationFunction< TFixedImage, TMovingImage, TDisplacementFiel
   if ( m_NumberOfPixelsProcessed )
     {
     m_Metric = m_SumOfSquaredDifference
-               / static_cast< double >( m_NumberOfPixelsProcessed );
+      / static_cast< double >( m_NumberOfPixelsProcessed );
     m_RMSChange = vcl_sqrt( m_SumOfSquaredChange
                             / static_cast< double >( m_NumberOfPixelsProcessed ) );
     }
@@ -458,6 +458,7 @@ LevelSetMotionRegistrationFunction< TFixedImage, TMovingImage, TDisplacementFiel
 
   delete globalData;
 }
+
 } // end namespace itk
 
 #endif

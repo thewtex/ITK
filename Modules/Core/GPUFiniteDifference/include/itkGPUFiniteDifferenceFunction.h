@@ -83,17 +83,21 @@ public:
     * interpolation among grid values in a neighborhood. */
   typedef typename Superclass::FloatOffsetType FloatOffsetType;
 
-  virtual void InitializeIteration() {}
+  virtual void
+  InitializeIteration() {}
 
 #if !defined( CABLE_CONFIGURATION )
   /** Empty implementation - this will not be used by GPU filters */
-  virtual PixelType  ComputeUpdate( const NeighborhoodType & itkNotUsed(neighborhood),
-                                    void *itkNotUsed(globalData),
-                                    const FloatOffsetType & itkNotUsed(offset = FloatOffsetType(0.0)) )
+  virtual PixelType
+  ComputeUpdate( const NeighborhoodType & itkNotUsed(neighborhood),
+                 void *itkNotUsed(globalData),
+                 const FloatOffsetType & itkNotUsed(offset = FloatOffsetType(0.0) ) )
   {
     PixelType pix = itk::NumericTraits<PixelType>::Zero;
+
     return pix;
   }
+
 #endif
 
   /** GPU function to compute update buffer */
@@ -103,20 +107,23 @@ public:
 
   /** Allocate GPU buffers for computing metric statitics
    * */
-  virtual void GPUAllocateMetricData(unsigned int itkNotUsed(numPixels)) {}
+  virtual void
+  GPUAllocateMetricData(unsigned int itkNotUsed(numPixels) ) {}
 
   /** Release GPU buffers for computing metric statitics
    * */
-  virtual void GPUReleaseMetricData() {}
+  virtual void
+  GPUReleaseMetricData() {}
 
 protected:
   GPUFiniteDifferenceFunction() {
     m_GPUKernelManager = GPUKernelManager::New();
   }
-  ~GPUFiniteDifferenceFunction() {
-  }
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  ~GPUFiniteDifferenceFunction() {}
+
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
   }

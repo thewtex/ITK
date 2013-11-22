@@ -20,16 +20,17 @@
 #include "itkQuadEdgeMeshEulerOperatorJoinFacetFunction.h"
 #include "itkQuadEdgeMeshEulerOperatorsTestHelper.h"
 
-int itkQuadEdgeMeshEulerOperatorSplitFaceTest( int, char * [] )
+int
+itkQuadEdgeMeshEulerOperatorSplitFaceTest( int, char * [] )
 {
 
-  typedef itk::QuadEdgeMesh< double, 3 >                      MeshType;
-  typedef MeshType::Pointer                                   MeshPointer;
-  typedef MeshType::QEType                                    QEType;
-  typedef MeshType::PointIdentifier                           PointIdentifier;
-  typedef MeshType::PointType                                 PointType;
-  typedef MeshType::CellType                                  CellType;
-  typedef itk::QuadEdgeMeshLineCell< CellType >               LineCellType;
+  typedef itk::QuadEdgeMesh< double, 3 >        MeshType;
+  typedef MeshType::Pointer                     MeshPointer;
+  typedef MeshType::QEType                      QEType;
+  typedef MeshType::PointIdentifier             PointIdentifier;
+  typedef MeshType::PointType                   PointType;
+  typedef MeshType::CellType                    CellType;
+  typedef itk::QuadEdgeMeshLineCell< CellType > LineCellType;
 
   typedef itk::QuadEdgeMeshEulerOperatorSplitFacetFunction< MeshType, QEType>
     SplitFacet;
@@ -45,7 +46,7 @@ int itkQuadEdgeMeshEulerOperatorSplitFaceTest( int, char * [] )
   // Split the facet again in order to restore the original situation:
   std::cout << "Checking SplitFacet." << std::endl;
 
-  SplitFacet::Pointer splitFacet = SplitFacet::New( );
+  SplitFacet::Pointer splitFacet = SplitFacet::New();
   std::cout << "     " << "Test No Mesh Input";
   if( splitFacet->Evaluate( (QEType*)1, (QEType*)2 ) )
     {
@@ -88,7 +89,7 @@ int itkQuadEdgeMeshEulerOperatorSplitFaceTest( int, char * [] )
 
   std::cout << "     " << "Test two consecutive QE Input";
   if( splitFacet->Evaluate( mesh->FindEdge( 10, 16 ),
-                            mesh->FindEdge( 10, 16 )->GetLnext( ) ) )
+                            mesh->FindEdge( 10, 16 )->GetLnext() ) )
     {
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
@@ -96,9 +97,9 @@ int itkQuadEdgeMeshEulerOperatorSplitFaceTest( int, char * [] )
   std::cout << "OK" << std::endl;
 
   JoinFacet::Pointer joinFacet = JoinFacet::New();
-  QEType* DeletedEdge = mesh->FindEdge( 12, 7 );
-  QEType* G = DeletedEdge->GetSym( )->GetLprev( );
-  QEType* H = joinFacet->Evaluate( DeletedEdge );
+  QEType*            DeletedEdge = mesh->FindEdge( 12, 7 );
+  QEType*            G = DeletedEdge->GetSym()->GetLprev();
+  QEType*            H = joinFacet->Evaluate( DeletedEdge );
 
   if( !splitFacet->Evaluate( H, G ) )
     {
@@ -109,16 +110,16 @@ int itkQuadEdgeMeshEulerOperatorSplitFaceTest( int, char * [] )
   std::cout << "     " << "Split a face (possible)";
   // The number of edges and faces must be respectively identical to
   // the original number edges and faces:
-  if( ! AssertTopologicalInvariants< MeshType >
-          ( mesh, 25, 56, 32, 1, 0 ) )
+  if( !AssertTopologicalInvariants< MeshType >
+        ( mesh, 25, 56, 32, 1, 0 ) )
     {
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
     }
-  if ( mesh->GetPoint( 12 ).GetValence( ) != 6 )
+  if ( mesh->GetPoint( 12 ).GetValence() != 6 )
     {
     std::cout << "FAILED [wrong valence of "
-              << mesh->GetPoint( 12 ).GetValence( )
+              << mesh->GetPoint( 12 ).GetValence()
               << " ]." << std::endl;
     return EXIT_FAILURE;
     }
@@ -126,7 +127,7 @@ int itkQuadEdgeMeshEulerOperatorSplitFaceTest( int, char * [] )
   std::cout << "Checking SplitFacet. OK" << std::endl << std::endl;
 
   std::cout << "Checking JoinFacet( SplitFacet( edge ) ) invariance.";
-  G = mesh->FindEdge( 12, 7 )->GetSym( )->GetLprev( );
+  G = mesh->FindEdge( 12, 7 )->GetSym()->GetLprev();
   H = joinFacet->Evaluate( mesh->FindEdge( 12, 7 ) );
   if( !H )
     {
@@ -138,16 +139,16 @@ int itkQuadEdgeMeshEulerOperatorSplitFaceTest( int, char * [] )
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
     }
-  if( ! AssertTopologicalInvariants< MeshType >
-          ( mesh, 25, 55, 31, 1, 0 ) )
+  if( !AssertTopologicalInvariants< MeshType >
+        ( mesh, 25, 55, 31, 1, 0 ) )
     {
     std::cout << "FAILED." << std::endl;
     return EXIT_FAILURE;
     }
-  if ( mesh->GetPoint( 12 ).GetValence( ) != 5 )
+  if ( mesh->GetPoint( 12 ).GetValence() != 5 )
     {
     std::cout << "FAILED [wrong valence of "
-              << mesh->GetPoint( 12 ).GetValence( )
+              << mesh->GetPoint( 12 ).GetValence()
               << " ]." << std::endl;
     return EXIT_FAILURE;
     }

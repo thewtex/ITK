@@ -67,13 +67,13 @@ public:
                       TImage::ImageDimension);
 
   /** Index typedef support. */
-  typedef typename TImage::IndexType      IndexType;
+  typedef typename TImage::IndexType IndexType;
 
   /** Offset typedef support. */
-  typedef typename TImage::OffsetType      OffsetType;
+  typedef typename TImage::OffsetType OffsetType;
 
   /** Size typedef support. */
-  typedef typename TImage::SizeType      SizeType;
+  typedef typename TImage::SizeType SizeType;
 
   /** Region typedef support */
   typedef typename TImage::RegionType RegionType;
@@ -107,25 +107,29 @@ public:
   itkTypeMacro(LineConstIterator, None);
 
   /** Get the dimension (size) of the index. */
-  static unsigned int GetImageIteratorDimension()
+  static unsigned int
+  GetImageIteratorDimension()
   {
     return TImage::ImageDimension;
   }
 
   /** Get the index. This provides a read only reference to the index. */
-  const IndexType GetIndex()
+  const IndexType
+  GetIndex()
   {
     return m_CurrentImageIndex;
   }
 
   /** Get the pixel value */
-  const PixelType Get(void) const
+  const PixelType
+  Get(void) const
   {
     return m_Image->GetPixel(m_CurrentImageIndex);
   }
 
   /** Is the iterator at the end of the line? */
-  bool IsAtEnd()
+  bool
+  IsAtEnd()
   {
     return m_IsAtEnd;
   }
@@ -144,7 +148,8 @@ public:
   LineConstIterator(const ImageType *imagePtr, const IndexType & firstIndex, const IndexType & lastIndex);
 
   /** Default Destructor. */
-  virtual ~LineConstIterator() {}
+  virtual
+  ~LineConstIterator() {}
 
 protected: //made protected so other iterators can access
   /** Smart pointer to the source image. */

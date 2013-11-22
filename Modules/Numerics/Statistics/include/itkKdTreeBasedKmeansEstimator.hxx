@@ -104,6 +104,7 @@ KdTreeBasedKmeansEstimator< TKdTree >
   double tempDistance;
 
   std::vector< int >::iterator iter = validIndexes.begin();
+
   while ( iter != validIndexes.end() )
     {
     tempDistance =
@@ -164,7 +165,7 @@ KdTreeBasedKmeansEstimator< TKdTree >
   int           closest;
   ParameterType individualPoint;
   NumericTraits<ParameterType>::SetLength(individualPoint,
-    this->m_MeasurementVectorSize);
+                                          this->m_MeasurementVectorSize);
 
   if ( node->IsTerminal() )
     {
@@ -449,7 +450,7 @@ template< typename TKdTree >
 const typename KdTreeBasedKmeansEstimator< TKdTree >::MembershipFunctionVectorObjectType *
 KdTreeBasedKmeansEstimator< TKdTree >
 ::GetOutput() const
-{
+  {
   //INSERT CHECKS if all the required inputs are set and optmization has been
   // run.
   unsigned int                   numberOfClasses = m_Parameters.size() / m_MeasurementVectorSize;
@@ -472,7 +473,7 @@ KdTreeBasedKmeansEstimator< TKdTree >
     }
 
   return static_cast< const MembershipFunctionVectorObjectType * >( m_MembershipFunctionsObject );
-}
+  }
 
 template< typename TKdTree >
 void
@@ -492,12 +493,14 @@ KdTreeBasedKmeansEstimator< TKdTree >
 ::PrintPoint(ParameterType & point)
 {
   std::cout << "[ ";
+
   for ( unsigned int i = 0; i < m_MeasurementVectorSize; i++ )
     {
     std::cout << point[i] << " ";
     }
   std::cout << "]";
 }
+
 } // end of namespace Statistics
 } // end namespace itk
 

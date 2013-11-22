@@ -130,5 +130,6 @@ ShiftScaleImageFilter< TInputImage, TOutputImage >
   os << indent << "UnderflowCount: "  << m_UnderflowCount << std::endl;
   os << indent << "OverflowCount: "  << m_OverflowCount << std::endl;
 }
+
 } // end namespace itk
 #endif

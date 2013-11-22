@@ -41,8 +41,8 @@
 #include "itkPNGImageIO.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   // Verify the number of parameters in the command line
   if( argc < 4 )
@@ -51,7 +51,6 @@ int main( int argc, char ** argv )
     std::cerr << argv[0] << "first last  outputRGBImageFile " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // Software Guide : BeginLatex
   //
@@ -64,10 +63,10 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::RGBPixel< unsigned char >        PixelType;
+  typedef itk::RGBPixel< unsigned char > PixelType;
   const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType, Dimension >    ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -81,13 +80,12 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageSeriesReader< ImageType >  SeriesReaderType;
-  typedef itk::ImageFileWriter<   ImageType >  WriterType;
+  typedef itk::ImageSeriesReader< ImageType > SeriesReaderType;
+  typedef itk::ImageFileWriter<   ImageType > WriterType;
 
   SeriesReaderType::Pointer seriesReader = SeriesReaderType::New();
   WriterType::Pointer       writer       = WriterType::New();
   // Software Guide : EndCodeSnippet
-
 
   const unsigned int first = atoi( argv[1] );
   const unsigned int last  = atoi( argv[2] );
@@ -103,7 +101,7 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::NumericSeriesFileNames    NameGeneratorType;
+  typedef itk::NumericSeriesFileNames NameGeneratorType;
 
   NameGeneratorType::Pointer nameGenerator = NameGeneratorType::New();
 
@@ -182,7 +180,7 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< PixelType, 2 >     Image2DType;
+  typedef itk::Image< PixelType, 2 > Image2DType;
 
   typedef itk::ImageSeriesWriter< ImageType, Image2DType > SeriesWriterType;
 

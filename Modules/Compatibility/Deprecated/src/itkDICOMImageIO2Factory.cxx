@@ -44,4 +44,5 @@ DICOMImageIO2Factory::GetDescription() const
 {
   return "DICOM ImageIO Factory, allows the loading of DICOM images into Insight";
 }
+
 } // end namespace itk

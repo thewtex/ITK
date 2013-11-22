@@ -49,7 +49,7 @@ namespace itk
  * \ingroup IOFilters
  * \ingroup ITKIOImageBase
  */
-class ITKIOImageBase_EXPORT StreamingImageIOBase:public ImageIOBase
+class ITKIOImageBase_EXPORT StreamingImageIOBase : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -150,7 +150,10 @@ protected:
    *
    * The default implementation is to return the header size.
    */
-  virtual SizeType GetDataPosition(void) const { return this->GetHeaderSize(); }
+  virtual SizeType
+  GetDataPosition(void) const {
+    return this->GetHeaderSize();
+  }
 
   /** \brief Opens a file for reading and random access
    *
@@ -173,6 +176,7 @@ protected:
 private:
   StreamingImageIOBase(const Self &); //purposely not implemented
   void operator=(const Self &);       //purposely not implemented
+
 };
 } // namespace itk
 

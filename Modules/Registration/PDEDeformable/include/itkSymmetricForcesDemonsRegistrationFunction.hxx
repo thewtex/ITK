@@ -49,7 +49,7 @@ SymmetricForcesDemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacem
     DefaultInterpolatorType::New();
 
   m_MovingImageInterpolator = static_cast< InterpolatorType * >(
-    interp.GetPointer() );
+      interp.GetPointer() );
 
   m_Metric = NumericTraits< double >::max();
   m_SumOfSquaredDifference = 0.0;
@@ -160,7 +160,7 @@ SymmetricForcesDemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacem
   GlobalDataStruct *globalData = (GlobalDataStruct *)gd;
   const IndexType   FirstIndex = this->GetFixedImage()->GetLargestPossibleRegion().GetIndex();
   const IndexType   LastIndex = this->GetFixedImage()->GetLargestPossibleRegion().GetIndex()
-                                + this->GetFixedImage()->GetLargestPossibleRegion().GetSize();
+    + this->GetFixedImage()->GetLargestPossibleRegion().GetSize();
 
   const IndexType index = it.GetIndex();
   // Get fixed image related information
@@ -170,9 +170,9 @@ SymmetricForcesDemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacem
   const CovariantVectorType fixedGradient = m_FixedImageGradientCalculator->EvaluateAtIndex(index);
 
   // Get moving image related information
-  IndexType                         tmpIndex = index;
-  PointType                         mappedNeighPoint;
-  CovariantVectorType               movingGradient;
+  IndexType                          tmpIndex = index;
+  PointType                          mappedNeighPoint;
+  CovariantVectorType                movingGradient;
   const DisplacementFieldType *const field = this->GetDisplacementField();
 
   typedef typename DisplacementFieldType::PixelType DisplacementPixelType;
@@ -316,7 +316,7 @@ SymmetricForcesDemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacem
   if ( m_NumberOfPixelsProcessed )
     {
     m_Metric = m_SumOfSquaredDifference
-               / static_cast< double >( m_NumberOfPixelsProcessed );
+      / static_cast< double >( m_NumberOfPixelsProcessed );
     m_RMSChange = vcl_sqrt( m_SumOfSquaredChange
                             / static_cast< double >( m_NumberOfPixelsProcessed ) );
     }
@@ -324,5 +324,6 @@ SymmetricForcesDemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacem
 
   delete globalData;
 }
+
 } // end namespace itk
 #endif

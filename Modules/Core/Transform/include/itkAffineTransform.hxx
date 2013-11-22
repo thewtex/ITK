@@ -26,19 +26,19 @@ namespace itk
 {
 /** Constructor with default arguments */
 template< typename TScalar, unsigned int NDimensions >
-AffineTransform< TScalar, NDimensions >::AffineTransform():Superclass(ParametersDimension)
+AffineTransform< TScalar, NDimensions >::AffineTransform() : Superclass(ParametersDimension)
 {}
 
 /** Constructor with default arguments */
 template< typename TScalar, unsigned int NDimensions >
-AffineTransform< TScalar, NDimensions >::AffineTransform(unsigned int parametersDimension):
+AffineTransform< TScalar, NDimensions >::AffineTransform(unsigned int parametersDimension) :
   Superclass(parametersDimension)
 {}
 
 /** Constructor with explicit arguments */
 template< typename TScalar, unsigned int NDimensions >
 AffineTransform< TScalar, NDimensions >::AffineTransform(const MatrixType & matrix,
-                                                             const OutputVectorType & offset):
+                                                         const OutputVectorType & offset) :
   Superclass(matrix, offset)
 {}
 
@@ -46,8 +46,7 @@ AffineTransform< TScalar, NDimensions >::AffineTransform(const MatrixType & matr
 template< typename TScalar, unsigned int NDimensions >
 AffineTransform< TScalar, NDimensions >::
 ~AffineTransform()
-{
-}
+{}
 
 /** Print self */
 template< typename TScalar, unsigned int NDimensions >
@@ -349,6 +348,7 @@ AffineTransform< TScalar, NDimensions >
 
   return vcl_sqrt(result);
 }
+
 } // namespace
 
 #endif

@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TInputImage, typename TCoordRep = float >
-class BinaryThresholdImageFunction:
+class BinaryThresholdImageFunction :
   public ImageFunction< TInputImage, bool, TCoordRep >
 {
 public:
@@ -83,7 +83,8 @@ public:
    * ImageFunction::IsInsideBuffer() can be used to check bounds before
    * calling the method. */
 
-  virtual bool Evaluate(const PointType & point) const
+  virtual bool
+  Evaluate(const PointType & point) const
   {
     IndexType index;
 
@@ -99,7 +100,8 @@ public:
    *
    * ImageFunction::IsInsideBuffer() can be used to check bounds before
    * calling the method. */
-  virtual bool EvaluateAtContinuousIndex(
+  virtual bool
+  EvaluateAtContinuousIndex(
     const ContinuousIndexType & index) const
   {
     IndexType nindex;
@@ -116,7 +118,8 @@ public:
    *
    * ImageFunction::IsInsideBuffer() can be used to check bounds before
    * calling the method. */
-  virtual bool EvaluateAtIndex(const IndexType & index) const
+  virtual bool
+  EvaluateAtIndex(const IndexType & index) const
   {
     PixelType value = this->GetInputImage()->GetPixel(index);
 

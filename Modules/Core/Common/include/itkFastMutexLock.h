@@ -56,7 +56,7 @@ namespace itk
  * \ingroup OSSystemObjects
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT FastMutexLock:public Object
+class ITKCommon_EXPORT FastMutexLock : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -87,16 +87,20 @@ protected:
 private:
   FastMutexLock(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 
-inline void FastMutexLock::Lock(void)
+inline void
+FastMutexLock::Lock(void)
 {
   m_SimpleFastMutexLock.Lock();
 }
 
-inline void FastMutexLock::Unlock(void)
+inline void
+FastMutexLock::Unlock(void)
 {
   m_SimpleFastMutexLock.Unlock();
 }
+
 } //end itk namespace
 #endif

@@ -39,7 +39,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TInputMesh, typename TOutputMesh, typename TTransform >
-class TransformMeshFilter:
+class TransformMeshFilter :
   public MeshToMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
@@ -84,6 +84,7 @@ protected:
 private:
   TransformMeshFilter(const TransformMeshFilter &); //purposely not implemented
   void operator=(const TransformMeshFilter &);      //purposely not implemented
+
 };
 } // end namespace itk
 

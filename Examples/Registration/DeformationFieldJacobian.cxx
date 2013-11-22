@@ -21,7 +21,8 @@
 
 #include "itkDeformationFieldJacobianDeterminantFilter.h"
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 3 )
     {
@@ -34,13 +35,13 @@ int main( int argc, char * argv[] )
   typedef itk::Vector< float, 3 > InputPixelType;
   typedef float                   OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  3 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 3 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  3 > InputImageType;
+  typedef itk::Image< OutputPixelType, 3 > OutputImageType;
 
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
   typedef itk::DeformationFieldJacobianDeterminantFilter<
-               InputImageType >  FilterType;
+      InputImageType >  FilterType;
 
   // Set up deformation field reader
   ReaderType::Pointer reader = ReaderType::New();
@@ -52,7 +53,7 @@ int main( int argc, char * argv[] )
   //  filter->SetUseImageSpacingOn();
   filter->Update();
 
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   // Write Jacobian determinant image.
   WriterType::Pointer writer = WriterType::New();

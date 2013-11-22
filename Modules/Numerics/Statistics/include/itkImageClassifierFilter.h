@@ -45,7 +45,7 @@ namespace Statistics
  */
 
 template< typename TSample, typename TInputImage, typename TOutputImage >
-class ImageClassifierFilter:
+class ImageClassifierFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -94,23 +94,23 @@ public:
   typedef typename MembershipFunctionType::ConstPointer   MembershipFunctionPointer;
   typedef std::vector< MembershipFunctionPointer >        MembershipFunctionVectorType;
   typedef SimpleDataObjectDecorator<
-    MembershipFunctionVectorType >                        MembershipFunctionVectorObjectType;
+      MembershipFunctionVectorType >                        MembershipFunctionVectorObjectType;
   typedef typename
-  MembershipFunctionVectorObjectType::Pointer MembershipFunctionVectorObjectPointer;
+    MembershipFunctionVectorObjectType::Pointer MembershipFunctionVectorObjectPointer;
 
   /** typedef for membership functions weight proprtion */
   typedef Array< double > MembershipFunctionsWeightsArrayType;
 
   typedef SimpleDataObjectDecorator<
-    MembershipFunctionsWeightsArrayType >                 MembershipFunctionsWeightsArrayObjectType;
+      MembershipFunctionsWeightsArrayType >                 MembershipFunctionsWeightsArrayObjectType;
   typedef typename
-  MembershipFunctionsWeightsArrayObjectType::Pointer MembershipFunctionsWeightsArrayPointer;
+    MembershipFunctionsWeightsArrayObjectType::Pointer MembershipFunctionsWeightsArrayPointer;
 
   /** typedef for class label type */
   typedef IdentifierType                ClassLabelType;
   typedef std::vector< ClassLabelType > ClassLabelVectorType;
   typedef SimpleDataObjectDecorator<
-    ClassLabelVectorType >                            ClassLabelVectorObjectType;
+      ClassLabelVectorType >                            ClassLabelVectorObjectType;
   typedef ClassLabelVectorObjectType::Pointer ClassLabelVectorObjectPointer;
 
   /** type of the decision rule */
@@ -147,7 +147,8 @@ public:
 
 protected:
   ImageClassifierFilter();
-  virtual ~ImageClassifierFilter() {}
+  virtual
+  ~ImageClassifierFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   ImageClassifierFilter(const Self &); //purposely not implemented

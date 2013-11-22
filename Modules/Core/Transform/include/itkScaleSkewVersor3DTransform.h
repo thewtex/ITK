@@ -138,17 +138,18 @@ protected:
   ScaleSkewVersor3DTransform(const MatrixType & matrix, const OutputVectorType & offset);
   ScaleSkewVersor3DTransform(unsigned int paramDims);
   ~ScaleSkewVersor3DTransform()
-  {
-  }
+  {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void SetVarScale(const ScaleVectorType & scale)
+  void
+  SetVarScale(const ScaleVectorType & scale)
   {
     m_Scale = scale;
   }
 
-  void SetVarSkew(const SkewVectorType & skew)
+  void
+  SetVarSkew(const SkewVectorType & skew)
   {
     m_Skew = skew;
   }

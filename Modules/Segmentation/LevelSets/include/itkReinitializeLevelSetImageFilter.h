@@ -52,7 +52,7 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TLevelSet >
-class ReinitializeLevelSetImageFilter:
+class ReinitializeLevelSetImageFilter :
   public ImageToImageFilter< TLevelSet, TLevelSet >
 {
 public:
@@ -105,7 +105,8 @@ public:
 
   /** Set the bandwidth for both the input and output narrowband,
    * By default, both the input and output are set to 12. */
-  void SetNarrowBandwidth(double value)
+  void
+  SetNarrowBandwidth(double value)
   {
     this->SetInputNarrowBandwidth(value);
     this->SetOutputNarrowBandwidth(value);
@@ -114,12 +115,18 @@ public:
   /** Set/Get the input narrowband. */
   void SetInputNarrowBand(NodeContainer *ptr);
 
-  NodeContainerPointer GetInputNarrowBand() const
-  { return m_InputNarrowBand; }
+  NodeContainerPointer
+  GetInputNarrowBand() const
+  {
+    return m_InputNarrowBand;
+  }
 
   /** Get the output narrowband. */
-  NodeContainerPointer GetOutputNarrowBand() const
-  { return m_OutputNarrowBand; }
+  NodeContainerPointer
+  GetOutputNarrowBand() const
+  {
+    return m_OutputNarrowBand;
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -152,8 +159,11 @@ protected:
 
   virtual void EnlargeOutputRequestedRegion(DataObject *);
 
-  void SetOutputNarrowBand(NodeContainer *ptr)
-  { m_OutputNarrowBand = ptr; }
+  void
+  SetOutputNarrowBand(NodeContainer *ptr)
+  {
+    m_OutputNarrowBand = ptr;
+  }
 
 private:
   ReinitializeLevelSetImageFilter(const Self &); //purposely not implemented

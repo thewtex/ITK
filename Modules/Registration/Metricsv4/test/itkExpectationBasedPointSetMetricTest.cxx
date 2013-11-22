@@ -22,7 +22,8 @@
 #include <fstream>
 
 template<unsigned int Dimension>
-int itkExpectationBasedPointSetMetricTestRun()
+int
+itkExpectationBasedPointSetMetricTestRun()
 {
   typedef itk::PointSet<unsigned char, Dimension> PointSetType;
 
@@ -44,7 +45,7 @@ int itkExpectationBasedPointSetMetricTestRun()
   for( float theta = 0; theta < 2.0 * vnl_math::pi; theta += 0.1 )
     {
     PointType fixedPoint;
-    float radius = 100.0;
+    float     radius = 100.0;
     fixedPoint[0] = radius * vcl_cos( theta );
     fixedPoint[1] = radius * vcl_sin( theta );
     if( Dimension > 2 )
@@ -151,7 +152,8 @@ int itkExpectationBasedPointSetMetricTestRun()
   return result;
 }
 
-int itkExpectationBasedPointSetMetricTest( int, char* [] )
+int
+itkExpectationBasedPointSetMetricTest( int, char* [] )
 {
   int result = EXIT_SUCCESS;
 

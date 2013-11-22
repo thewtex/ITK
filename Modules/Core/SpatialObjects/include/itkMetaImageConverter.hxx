@@ -34,9 +34,9 @@ template< unsigned int NDimensions, typename PixelType , typename TSpatialObject
 typename MetaImageConverter< NDimensions, PixelType, TSpatialObjectType >::MetaObjectType *
 MetaImageConverter< NDimensions, PixelType, TSpatialObjectType >
 ::CreateMetaObject()
-{
+  {
   return dynamic_cast<MetaObjectType *>(new ImageMetaObjectType);
-}
+  }
 
 template< unsigned int NDimensions, typename PixelType , typename TSpatialObjectType >
 const char *
@@ -58,7 +58,7 @@ MetaImageConverter< NDimensions, PixelType, TSpatialObjectType >
   typedef typename ImageType::SpacingType SpacingType;
   typedef typename ImageType::RegionType  RegionType;
 
-  SizeType size;
+  SizeType    size;
   SpacingType spacing;
 
   for ( unsigned int i = 0; i < NDimensions; i++ )
@@ -103,11 +103,10 @@ MetaImageConverter< NDimensions, PixelType, TSpatialObjectType >
 
   ImageSpatialObjectPointer imageSO = ImageSpatialObjectType::New();
 
-
   typename ImageType::Pointer myImage = this->AllocateImage(imageMO);
 
   itk::ImageRegionIteratorWithIndex< ImageType >
-    it(myImage,myImage->GetLargestPossibleRegion());
+  it(myImage,myImage->GetLargestPossibleRegion() );
   for ( unsigned int i = 0; !it.IsAtEnd(); i++, ++it )
     {
     it.Set(
@@ -122,23 +121,22 @@ MetaImageConverter< NDimensions, PixelType, TSpatialObjectType >
   return imageSO.GetPointer();
 }
 
-
 /** Convert an Image SpatialObject into a metaImage */
 template< unsigned int NDimensions, typename PixelType , typename TSpatialObjectType >
 typename MetaImageConverter< NDimensions, PixelType, TSpatialObjectType >::MetaObjectType *
 MetaImageConverter< NDimensions, PixelType, TSpatialObjectType >
 ::SpatialObjectToMetaObject(const SpatialObjectType *so)
-{
+  {
   const ImageSpatialObjectConstPointer imageSO =
     dynamic_cast<const ImageSpatialObjectType *>(so);
 
-  if(imageSO.IsNull())
+  if(imageSO.IsNull() )
     {
     itkExceptionMacro(<< "Can't downcast SpatialObject to ImageSpatialObject");
     }
-  typedef typename ImageType::ConstPointer     ImageConstPointer;
-  typedef typename ImageType::SizeType         SizeType;
-  typedef typename ImageType::RegionType       RegionType;
+  typedef typename ImageType::ConstPointer ImageConstPointer;
+  typedef typename ImageType::SizeType     SizeType;
+  typedef typename ImageType::RegionType   RegionType;
 
   ImageConstPointer SOImage = imageSO->GetImage();
 
@@ -167,9 +165,9 @@ MetaImageConverter< NDimensions, PixelType, TSpatialObjectType >
 
   imageMO->ElementDataFileName("LOCAL");
 
-  imageMO->ObjectSubTypeName(this->GetMetaObjectSubType());
+  imageMO->ObjectSubTypeName(this->GetMetaObjectSubType() );
 
-  if ( this->GetWriteImagesInSeparateFile())
+  if ( this->GetWriteImagesInSeparateFile() )
     {
     std::string filename = imageSO->GetProperty()->GetName();
     if ( filename.size() == 0 )
@@ -185,7 +183,7 @@ MetaImageConverter< NDimensions, PixelType, TSpatialObjectType >
       }
     }
   return imageMO;
-}
+  }
 
 } // end namespace itk
 

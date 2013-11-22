@@ -41,7 +41,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TImage >
-class ShapeKeepNObjectsLabelMapFilter:
+class ShapeKeepNObjectsLabelMapFilter :
   public InPlaceLabelMapFilter< TImage >
 {
 public:
@@ -103,7 +103,8 @@ public:
   itkGetConstMacro(Attribute, AttributeType);
   itkSetMacro(Attribute, AttributeType);
 
-  void SetAttribute(const std::string & s)
+  void
+  SetAttribute(const std::string & s)
   {
     this->SetAttribute( LabelObjectType::GetAttributeFromName(s) );
   }
@@ -115,7 +116,8 @@ protected:
   void GenerateData();
 
   template< typename TAttributeAccessor >
-  void TemplatedGenerateData(const TAttributeAccessor &)
+  void
+  TemplatedGenerateData(const TAttributeAccessor &)
   {
     // Allocate the output
     this->AllocateOutputs();
@@ -136,7 +138,7 @@ protected:
     VectorType labelObjects;
     labelObjects.reserve( output->GetNumberOfLabelObjects() );
     typename ImageType::Iterator it( output );
-    while ( ! it.IsAtEnd() )
+    while ( !it.IsAtEnd() )
       {
       labelObjects.push_back( it.GetLabelObject() );
       progress.CompletedPixel();
@@ -181,6 +183,7 @@ protected:
 private:
   ShapeKeepNObjectsLabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                  //purposely not implemented
+
 };                                               // end of class
 } // end namespace itk
 

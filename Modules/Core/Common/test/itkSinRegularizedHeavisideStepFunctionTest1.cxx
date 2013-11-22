@@ -19,12 +19,13 @@
 #include "itkSinRegularizedHeavisideStepFunction.h"
 #include "itkTestingMacros.h"
 
-int itkSinRegularizedHeavisideStepFunctionTest1( int, char* [] )
+int
+itkSinRegularizedHeavisideStepFunctionTest1( int, char* [] )
 {
-  typedef double    InputType;
-  typedef double    OutputType;
+  typedef double InputType;
+  typedef double OutputType;
 
-  typedef itk::SinRegularizedHeavisideStepFunction< InputType, OutputType >  HeavisideFunctionBaseType;
+  typedef itk::SinRegularizedHeavisideStepFunction< InputType, OutputType > HeavisideFunctionBaseType;
 
   HeavisideFunctionBaseType::Pointer functionBase0 = HeavisideFunctionBaseType::New();
 
@@ -50,8 +51,8 @@ int itkSinRegularizedHeavisideStepFunctionTest1( int, char* [] )
   for( signed int x = minValue; x < maxValue; x++ )
     {
     const InputType ix = x * incValue;
-    OutputType f  = functionBase0->Evaluate( ix );
-    OutputType df = functionBase0->EvaluateDerivative( ix );
+    OutputType      f  = functionBase0->Evaluate( ix );
+    OutputType      df = functionBase0->EvaluateDerivative( ix );
     std::cout << ix << " " << f << " " << df << std::endl;
     }
 

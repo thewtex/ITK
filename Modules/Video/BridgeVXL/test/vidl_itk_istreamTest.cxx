@@ -22,51 +22,52 @@
 #include "itkVXLVideoIOFactory.h"
 #include "vidl/vidl_ffmpeg_ostream.h"
 
-
 //
 // Helper function to test pixel type
 //
 template<typename TPixelType>
-bool TestFormat(vidl_pixel_format expectedFormat)
+bool
+TestFormat(vidl_pixel_format expectedFormat)
 {
-  typedef TPixelType                        PixelType;
-  typedef itk::Image<PixelType, 2>          FrameType;
-  typedef itk::VideoStream<FrameType>       VideoType;
-  typedef itk::vidl_itk_istream<VideoType>  StreamType;
+  typedef TPixelType                       PixelType;
+  typedef itk::Image<PixelType, 2>         FrameType;
+  typedef itk::VideoStream<FrameType>      VideoType;
+  typedef itk::vidl_itk_istream<VideoType> StreamType;
 
   StreamType* stream = new StreamType();
-  bool out = (stream->format() == expectedFormat);
+  bool        out = (stream->format() == expectedFormat);
   delete stream;
   return out;
 }
 
 #define TestFormatMacro(PixelType, expectedFormat)                          \
-  if (!TestFormat<PixelType>(expectedFormat))                               \
+  if (!TestFormat<PixelType>(expectedFormat) )                               \
     {                                                                       \
     std::cerr << "format() did not return expected result for pixel type "  \
               << typeid(PixelType).name() << std::endl;                     \
-      return EXIT_FAILURE;                                                  \
+    return EXIT_FAILURE;                                                  \
     }
 
 //
 // Templated test
 //
 template<typename TPixelType>
-int vidl_itk_istreamTestWithPixelType(char* argv[], vidl_pixel_format expectedFormat)
+int
+vidl_itk_istreamTestWithPixelType(char* argv[], vidl_pixel_format expectedFormat)
 {
   // typedefs
-  typedef TPixelType                        PixelType;
-  typedef itk::Image<PixelType, 2>          FrameType;
-  typedef itk::VideoStream<FrameType>       VideoType;
-  typedef itk::vidl_itk_istream<VideoType>  StreamType;
-  typedef itk::VideoFileReader<VideoType>   ReaderType;
+  typedef TPixelType                       PixelType;
+  typedef itk::Image<PixelType, 2>         FrameType;
+  typedef itk::VideoStream<FrameType>      VideoType;
+  typedef itk::vidl_itk_istream<VideoType> StreamType;
+  typedef itk::VideoFileReader<VideoType>  ReaderType;
 
   // Test the pixel format
-  if (!TestFormat<PixelType>(expectedFormat))
+  if (!TestFormat<PixelType>(expectedFormat) )
     {
     std::cerr << "format() did not return expected result for pixel type "
               << typeid(PixelType).name() << std::endl;
-      return EXIT_FAILURE;
+    return EXIT_FAILURE;
     }
 
   // Set up VideoFileReader
@@ -75,13 +76,13 @@ int vidl_itk_istreamTestWithPixelType(char* argv[], vidl_pixel_format expectedFo
 
   // Set up new istream and connect it
   StreamType* istream = new StreamType();
-  istream->open(reader->GetOutput());
+  istream->open(reader->GetOutput() );
 
   // Check width and height
   unsigned int width = istream->width();
   unsigned int height = istream->height();
-  if (width != static_cast<unsigned int>(atoi(argv[3])) ||
-      height != static_cast<unsigned int>(atoi(argv[4])))
+  if (width != static_cast<unsigned int>(atoi(argv[3]) ) ||
+      height != static_cast<unsigned int>(atoi(argv[4]) ) )
     {
     std::cerr << "(px: " << typeid(PixelType).name()
               << ") dimensions not reporting correctly. Got [" << width << "," << height
@@ -128,7 +129,8 @@ int vidl_itk_istreamTestWithPixelType(char* argv[], vidl_pixel_format expectedFo
 //
 // Main test body
 //
-int vidl_itk_istreamTest ( int argc, char *argv[] )
+int
+vidl_itk_istreamTest( int argc, char *argv[] )
 {
   //
   // Check parameters
@@ -138,7 +140,6 @@ int vidl_itk_istreamTest ( int argc, char *argv[] )
     std::cerr << "Usage: " << argv[0] << " input_file output_file width height" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // Register a VXLVideoIO. This should be fixed eventually
   itk::ObjectFactoryBase::RegisterFactory( itk::VXLVideoIOFactory::New() );

@@ -280,6 +280,7 @@ BinomialBlurImageFilter< TInputImage, TOutputImage >
 
   os << indent << "Number of repetitions: " << m_Repetitions << std::endl;
 }
+
 } // end namespace
 
 #endif

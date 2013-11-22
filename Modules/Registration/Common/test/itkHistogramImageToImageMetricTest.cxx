@@ -21,10 +21,12 @@
 #include "itkMeanSquaresHistogramImageToImageMetric.h"
 #include "itkTranslationTransform.h"
 
-int itkHistogramImageToImageMetricTest(int , char*[] )
+int
+itkHistogramImageToImageMetricTest(int , char*[] )
 {
   // Create two simple images.
   const unsigned int ImageDimension = 2;
+
   typedef double PixelType;
   typedef double CoordinateRepresentationType;
 
@@ -39,18 +41,18 @@ int itkHistogramImageToImageMetricTest(int , char*[] )
   typedef FixedImageSourceType::Pointer             FixedImageSourcePointer;
 
   // Note: the following declarations are classical arrays
-  FixedImageType::SizeValueType fixedImageSize[] = {100,  100};
+  FixedImageType::SizeValueType  fixedImageSize[] = {100,  100};
   MovingImageType::SizeValueType movingImageSize[] = {100,  100};
 
-  FixedImageType::SpacingValueType fixedImageSpacing[]  = {1.0f, 1.0f};
+  FixedImageType::SpacingValueType  fixedImageSpacing[]  = {1.0f, 1.0f};
   MovingImageType::SpacingValueType movingImageSpacing[] = {1.0f, 1.0f};
 
-  FixedImageType::PointValueType fixedImageOrigin[] = {0.0f, 0.0f};
+  FixedImageType::PointValueType  fixedImageOrigin[] = {0.0f, 0.0f};
   MovingImageType::PointValueType movingImageOrigin[] = {0.0f, 0.0f};
 
   MovingImageSourceType::Pointer movingImageSource =
     MovingImageSourceType::New();
-  FixedImageSourceType::Pointer  fixedImageSource  =
+  FixedImageSourceType::Pointer fixedImageSource  =
     FixedImageSourceType::New();
 
   movingImageSource->SetSize(movingImageSize);
@@ -73,7 +75,7 @@ int itkHistogramImageToImageMetricTest(int , char*[] )
 
   // Set up the metric.
   typedef itk::MeanSquaresHistogramImageToImageMetric<FixedImageType,
-    MovingImageType>                        MetricType;
+                                                      MovingImageType>                        MetricType;
   typedef MetricType::TransformType         TransformBaseType;
   typedef MetricType::ScalesType            ScalesType;
   typedef MetricType::DerivativeType        DerivativeType;
@@ -81,7 +83,7 @@ int itkHistogramImageToImageMetricTest(int , char*[] )
 
   MetricType::Pointer metric = MetricType::New();
 
-  unsigned int nBins = 256;
+  unsigned int                        nBins = 256;
   MetricType::HistogramType::SizeType histSize;
   histSize.SetSize(2);
   histSize[0] = nBins;
@@ -94,21 +96,21 @@ int itkHistogramImageToImageMetricTest(int , char*[] )
 
   // Set up a transform.
   typedef itk::TranslationTransform<CoordinateRepresentationType,
-    ImageDimension> TransformType;
+                                    ImageDimension> TransformType;
 
   TransformType::Pointer transform = TransformType::New();
-  metric->SetTransform(transform.GetPointer());
+  metric->SetTransform(transform.GetPointer() );
 
   // Set up an interpolator.
   typedef itk::LinearInterpolateImageFunction<MovingImageType,
-    double> InterpolatorType;
+                                              double> InterpolatorType;
 
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
-  interpolator->SetInputImage(movingImage.GetPointer());
-  metric->SetInterpolator(interpolator.GetPointer());
+  interpolator->SetInputImage(movingImage.GetPointer() );
+  metric->SetInterpolator(interpolator.GetPointer() );
 
   // Define the region over which the metric will be computed.
-  metric->SetFixedImageRegion(fixedImage->GetBufferedRegion());
+  metric->SetFixedImageRegion(fixedImage->GetBufferedRegion() );
 
   // Set up transform parameters.
   const unsigned int numberOfParameters = transform->GetNumberOfParameters();
@@ -146,7 +148,7 @@ int itkHistogramImageToImageMetricTest(int , char*[] )
       }
 
     // Check to make sure the returned histogram size is the same as histSize.
-    if (histSize != metric->GetHistogramSize())
+    if (histSize != metric->GetHistogramSize() )
       {
       std::cout << "Incorrect histogram size." << std::endl;
       return EXIT_FAILURE;
@@ -167,7 +169,7 @@ int itkHistogramImageToImageMetricTest(int , char*[] )
       }
 
     // Do some work
-    DerivativeType derivatives( numberOfParameters );
+    DerivativeType          derivatives( numberOfParameters );
     MetricType::MeasureType value;
     for (double y = -50.0; y <= 50.0; y += 25.0)
       {
@@ -193,7 +195,6 @@ int itkHistogramImageToImageMetricTest(int , char*[] )
     std::cerr << ex << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Exercise the SetLowerBound() and SetUpperBound() methods " << std::endl;
 
@@ -227,7 +228,7 @@ int itkHistogramImageToImageMetricTest(int , char*[] )
     {
     ParametersType parameters2( 2 );
     DerivativeType derivatives2( 2 );
-    ScalesType badScales( 1 );
+    ScalesType     badScales( 1 );
     metric->SetDerivativeStepLengthScales(badScales);
     metric->Initialize();
     metric->GetDerivative (parameters2, derivatives2);

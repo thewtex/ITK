@@ -25,7 +25,8 @@
 namespace itk
 {
 template< typename TImageType, typename TFeatureImageType >
-void LaplacianSegmentationLevelSetFunction< TImageType, TFeatureImageType >
+void
+LaplacianSegmentationLevelSetFunction< TImageType, TFeatureImageType >
 ::CalculateSpeedImage()
 {
   typename LaplacianImageFilter< ImageType, ImageType >::Pointer
@@ -48,6 +49,7 @@ void LaplacianSegmentationLevelSetFunction< TImageType, TFeatureImageType >
   // unfortunately functions are not filters so we can't graft back
   this->GetSpeedImage()->Graft( filter->GetOutput() );
 }
+
 } // end namespace itk
 
 #endif

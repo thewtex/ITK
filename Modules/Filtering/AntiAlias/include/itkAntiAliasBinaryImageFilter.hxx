@@ -29,6 +29,7 @@ AntiAliasBinaryImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "m_UpperBinaryValue = " << m_UpperBinaryValue << std::endl;
   os << indent << "m_LowerBinaryValue = " << m_LowerBinaryValue << std::endl;
   os << indent << "m_InputImage = " << m_InputImage << std::endl;
@@ -125,6 +126,7 @@ AntiAliasBinaryImageFilter< TInputImage, TOutputImage >
   // Start the solver.
   Superclass::GenerateData();
 }
+
 } // end namespace itk
 
 #endif

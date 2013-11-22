@@ -27,10 +27,9 @@ namespace itk
 
 template< typename TDomainPartitioner, typename TJointHistogramMetric >
 JointHistogramMutualInformationComputeJointPDFThreaderBase< TDomainPartitioner, TJointHistogramMetric >
-::JointHistogramMutualInformationComputeJointPDFThreaderBase():
+::JointHistogramMutualInformationComputeJointPDFThreaderBase() :
   m_JointHistogramMIPerThreadVariables( NULL )
-{
-}
+{}
 
 template< typename TDomainPartitioner, typename TJointHistogramMetric >
 JointHistogramMutualInformationComputeJointPDFThreaderBase< TDomainPartitioner, TJointHistogramMetric >
@@ -45,7 +44,8 @@ JointHistogramMutualInformationComputeJointPDFThreaderBase< TDomainPartitioner, 
 ::BeforeThreadedExecution()
 {
   delete[] this->m_JointHistogramMIPerThreadVariables;
-  this->m_JointHistogramMIPerThreadVariables = new AlignedJointHistogramMIPerThreadStruct[ this->GetNumberOfThreadsUsed() ];
+  this->m_JointHistogramMIPerThreadVariables =
+    new AlignedJointHistogramMIPerThreadStruct[ this->GetNumberOfThreadsUsed() ];
   for( ThreadIdType i = 0; i < this->GetNumberOfThreadsUsed(); ++i )
     {
     if( this->m_JointHistogramMIPerThreadVariables[i].JointHistogram.IsNull() )
@@ -53,7 +53,8 @@ JointHistogramMutualInformationComputeJointPDFThreaderBase< TDomainPartitioner, 
       this->m_JointHistogramMIPerThreadVariables[i].JointHistogram = JointHistogramType::New();
       }
     this->m_JointHistogramMIPerThreadVariables[i].JointHistogram->CopyInformation( this->m_Associate->m_JointPDF );
-    this->m_JointHistogramMIPerThreadVariables[i].JointHistogram->SetRegions( this->m_Associate->m_JointPDF->GetLargestPossibleRegion() );
+    this->m_JointHistogramMIPerThreadVariables[i].JointHistogram->SetRegions(
+      this->m_Associate->m_JointPDF->GetLargestPossibleRegion() );
     this->m_JointHistogramMIPerThreadVariables[i].JointHistogram->Allocate();
     this->m_JointHistogramMIPerThreadVariables[i].JointHistogram->FillBuffer( NumericTraits< SizeValueType >::Zero );
     this->m_JointHistogramMIPerThreadVariables[i].JointHistogramCount = NumericTraits< SizeValueType >::Zero;
@@ -73,14 +74,15 @@ JointHistogramMutualInformationComputeJointPDFThreaderBase< TDomainPartitioner, 
   typename AssociateType::Superclass::MovingImagePointType    mappedMovingPoint;
   typename AssociateType::Superclass::MovingImagePixelType    movingImageValue;
   typename AssociateType::Superclass::MovingImageGradientType movingImageGradients;
-  bool                                                        pointIsValid = false;
+  bool pointIsValid = false;
 
   try
     {
     pointIsValid = this->m_Associate->TransformAndEvaluateFixedPoint( virtualPoint, mappedFixedPoint, fixedImageValue );
     if( pointIsValid )
       {
-      pointIsValid = this->m_Associate->TransformAndEvaluateMovingPoint( virtualPoint, mappedMovingPoint, movingImageValue );
+      pointIsValid = this->m_Associate->TransformAndEvaluateMovingPoint( virtualPoint, mappedMovingPoint,
+                                                                         movingImageValue );
       }
     }
   catch( ExceptionObject & exc )
@@ -98,13 +100,16 @@ JointHistogramMutualInformationComputeJointPDFThreaderBase< TDomainPartitioner, 
     JointPDFPointType jointPDFpoint;
     this->m_Associate->ComputeJointPDFPoint( fixedImageValue, movingImageValue, jointPDFpoint );
     JointPDFIndexType jointPDFIndex;
-    this->m_JointHistogramMIPerThreadVariables[threadId].JointHistogram->TransformPhysicalPointToIndex( jointPDFpoint, jointPDFIndex );
+    this->m_JointHistogramMIPerThreadVariables[threadId].JointHistogram->TransformPhysicalPointToIndex( jointPDFpoint,
+                                                                                                        jointPDFIndex );
     if( this->m_JointHistogramMIPerThreadVariables[threadId].JointHistogram->GetBufferedRegion().IsInside( jointPDFIndex ) )
       {
       typename JointHistogramType::PixelType jointHistogramPixel;
-      jointHistogramPixel = this->m_JointHistogramMIPerThreadVariables[threadId].JointHistogram->GetPixel( jointPDFIndex );
+      jointHistogramPixel =
+        this->m_JointHistogramMIPerThreadVariables[threadId].JointHistogram->GetPixel( jointPDFIndex );
       jointHistogramPixel++;
-      this->m_JointHistogramMIPerThreadVariables[threadId].JointHistogram->SetPixel( jointPDFIndex, jointHistogramPixel );
+      this->m_JointHistogramMIPerThreadVariables[threadId].JointHistogram->SetPixel( jointPDFIndex,
+                                                                                     jointHistogramPixel );
       this->m_JointHistogramMIPerThreadVariables[threadId].JointHistogramCount++;
       }
     }
@@ -137,8 +142,10 @@ JointHistogramMutualInformationComputeJointPDFThreaderBase< TDomainPartitioner, 
   std::vector< JointHistogramIteratorType > jointHistogramPerThreadIts;
   for( ThreadIdType i = 0; i < numberOfThreadsUsed; ++i )
     {
-    jointHistogramPerThreadIts.push_back( JointHistogramIteratorType( this->m_JointHistogramMIPerThreadVariables[i].JointHistogram,
-        this->m_JointHistogramMIPerThreadVariables[i].JointHistogram->GetBufferedRegion() ) );
+    jointHistogramPerThreadIts.push_back( JointHistogramIteratorType( this->m_JointHistogramMIPerThreadVariables[i].
+                                                                      JointHistogram,
+                                                                      this->m_JointHistogramMIPerThreadVariables[i].
+                                                                      JointHistogram->GetBufferedRegion() ) );
     jointHistogramPerThreadIts[i].GoToBegin();
     }
 
@@ -151,7 +158,8 @@ JointHistogramMutualInformationComputeJointPDFThreaderBase< TDomainPartitioner, 
       jointHistogramPixel += jointHistogramPerThreadIts[i].Get();
       ++jointHistogramPerThreadIts[i];
       }
-    jointPDFIt.Set( static_cast< JointPDFValueType >( jointHistogramPixel ) / static_cast< JointPDFValueType >( this->m_Associate->m_JointHistogramTotalCount ) );
+    jointPDFIt.Set( static_cast< JointPDFValueType >( jointHistogramPixel ) /
+                    static_cast< JointPDFValueType >( this->m_Associate->m_JointHistogramTotalCount ) );
     ++jointPDFIt;
     }
 }

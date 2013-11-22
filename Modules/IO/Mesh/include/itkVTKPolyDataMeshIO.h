@@ -37,7 +37,7 @@ namespace itk
  * \ingroup IOFilters
  * \ingroup ITKIOMesh
  */
-class ITKIOMesh_EXPORT VTKPolyDataMeshIO:public MeshIOBase
+class ITKIOMesh_EXPORT VTKPolyDataMeshIO : public MeshIOBase
 {
 public:
   /** Standard "Self" typedef. */
@@ -46,14 +46,14 @@ public:
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
-  typedef Superclass::SizeValueType  SizeValueType;
+  typedef Superclass::SizeValueType SizeValueType;
 
-  typedef std::string                                        StringType;
-  typedef std::vector< StringType >                          StringVectorType;
-  typedef std::stringstream                                  StringStreamType;
-  typedef std::vector< SizeValueType >                       PointIdVector;
-  typedef VectorContainer< SizeValueType,  PointIdVector >   PolylinesContainerType;
-  typedef PolylinesContainerType::Pointer                    PolylinesContainerPointer;
+  typedef std::string                                      StringType;
+  typedef std::vector< StringType >                        StringVectorType;
+  typedef std::stringstream                                StringStreamType;
+  typedef std::vector< SizeValueType >                     PointIdVector;
+  typedef VectorContainer< SizeValueType,  PointIdVector > PolylinesContainerType;
+  typedef PolylinesContainerType::Pointer                  PolylinesContainerPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -107,12 +107,14 @@ public:
 
 protected:
   VTKPolyDataMeshIO();
-  virtual ~VTKPolyDataMeshIO() {}
+  virtual
+  ~VTKPolyDataMeshIO() {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   template< typename T >
-  void UpdateCellInformation(T *buffer)
+  void
+  UpdateCellInformation(T *buffer)
   {
     unsigned int numberOfVertices = 0;
     unsigned int numberOfVertexIndices = 0;
@@ -125,8 +127,9 @@ protected:
 
     for ( SizeValueType ii = 0; ii < this->m_NumberOfCells; ii++ )
       {
-      MeshIOBase::CellGeometryType cellType = static_cast< MeshIOBase::CellGeometryType >( static_cast< int >( buffer[index++] ) );
-      unsigned int                 nn = static_cast< unsigned int >( buffer[index++] );
+      MeshIOBase::CellGeometryType cellType =
+        static_cast< MeshIOBase::CellGeometryType >( static_cast< int >( buffer[index++] ) );
+      unsigned int nn = static_cast< unsigned int >( buffer[index++] );
       switch ( cellType )
         {
         case VERTEX_CELL:
@@ -167,7 +170,8 @@ protected:
   }
 
   template< typename T >
-  void ReadPointsBufferAsASCII(std::ifstream & inputFile, T *buffer)
+  void
+  ReadPointsBufferAsASCII(std::ifstream & inputFile, T *buffer)
   {
     std::string line;
 
@@ -188,7 +192,8 @@ protected:
   }
 
   template< typename T >
-  void ReadPointsBufferAsBINARY(std::ifstream & inputFile, T *buffer)
+  void
+  ReadPointsBufferAsBINARY(std::ifstream & inputFile, T *buffer)
   {
     std::string line;
 
@@ -214,7 +219,8 @@ protected:
   void ReadCellsBufferAsBINARY(std::ifstream & inputFile, void *buffer);
 
   template< typename T >
-  void ReadPointDataBufferAsASCII(std::ifstream & inputFile, T *buffer)
+  void
+  ReadPointDataBufferAsASCII(std::ifstream & inputFile, T *buffer)
   {
     StringType line;
 
@@ -260,7 +266,8 @@ protected:
   }
 
   template< typename T >
-  void ReadPointDataBufferAsBINARY(std::ifstream & inputFile, T *buffer)
+  void
+  ReadPointDataBufferAsBINARY(std::ifstream & inputFile, T *buffer)
   {
     StringType line;
 
@@ -307,7 +314,8 @@ protected:
   }
 
   template< typename T >
-  void ReadCellDataBufferAsASCII(std::ifstream & inputFile, T *buffer)
+  void
+  ReadCellDataBufferAsASCII(std::ifstream & inputFile, T *buffer)
   {
     StringType line;
 
@@ -353,7 +361,8 @@ protected:
   }
 
   template< typename T >
-  void ReadCellDataBufferAsBINARY(std::ifstream & inputFile, T *buffer)
+  void
+  ReadCellDataBufferAsBINARY(std::ifstream & inputFile, T *buffer)
   {
     StringType line;
 
@@ -399,7 +408,8 @@ protected:
   }
 
   template< typename T >
-  void WritePointsBufferAsASCII(std::ofstream & outputFile, T *buffer, const StringType & pointComponentType)
+  void
+  WritePointsBufferAsASCII(std::ofstream & outputFile, T *buffer, const StringType & pointComponentType)
   {
     NumberToString<T> convert;
     /** 1. Write number of points */
@@ -420,19 +430,22 @@ protected:
   }
 
   template< typename T >
-  void WritePointsBufferAsBINARY(std::ofstream & outputFile, T *buffer, const StringType & pointComponentType)
+  void
+  WritePointsBufferAsBINARY(std::ofstream & outputFile, T *buffer, const StringType & pointComponentType)
   {
     /** 1. Write number of points */
     outputFile << "POINTS " << this->m_NumberOfPoints;
     outputFile << pointComponentType << "\n";
-    itk::ByteSwapper< T >::SwapWriteRangeFromSystemToBigEndian(buffer, this->m_NumberOfPoints * this->m_PointDimension, &outputFile);
+    itk::ByteSwapper< T >::SwapWriteRangeFromSystemToBigEndian(buffer, this->m_NumberOfPoints * this->m_PointDimension,
+                                                               &outputFile);
     outputFile << "\n";
 
     return;
   }
 
   template< typename T >
-  void WriteCellsBufferAsASCII(std::ofstream & outputFile, T *buffer)
+  void
+  WriteCellsBufferAsASCII(std::ofstream & outputFile, T *buffer)
   {
     MetaDataDictionary & metaDic = this->GetMetaDataDictionary();
     unsigned int         numberOfVertices = 0;
@@ -452,8 +465,9 @@ protected:
       outputFile << "VERTICES " << numberOfVertices << " " << numberOfVertexIndices << '\n';
       for ( SizeValueType ii = 0; ii < this->m_NumberOfCells; ii++ )
         {
-        MeshIOBase::CellGeometryType cellType = static_cast< MeshIOBase::CellGeometryType >( static_cast< int >( buffer[index++] ) );
-        unsigned int                 nn = static_cast< unsigned int >( buffer[index++] );
+        MeshIOBase::CellGeometryType cellType =
+          static_cast< MeshIOBase::CellGeometryType >( static_cast< int >( buffer[index++] ) );
+        unsigned int nn = static_cast< unsigned int >( buffer[index++] );
         if ( cellType == VERTEX_CELL )
           {
           outputFile << nn;
@@ -476,13 +490,14 @@ protected:
     if ( numberOfLines )
       {
       numberOfLineIndices = 0;
-      SizeValueType           numberOfPolylines = 0;
+      SizeValueType             numberOfPolylines = 0;
       PolylinesContainerPointer polylines = PolylinesContainerType::New();
       PointIdVector             pointIds;
       for ( SizeValueType ii = 0; ii < this->m_NumberOfCells; ii++ )
         {
-        MeshIOBase::CellGeometryType cellType = static_cast< MeshIOBase::CellGeometryType >( static_cast< int >( buffer[index++] ) );
-        unsigned int                 nn = static_cast< unsigned int >( buffer[index++] );
+        MeshIOBase::CellGeometryType cellType =
+          static_cast< MeshIOBase::CellGeometryType >( static_cast< int >( buffer[index++] ) );
+        unsigned int nn = static_cast< unsigned int >( buffer[index++] );
         if ( cellType == LINE_CELL )
           {
           if ( pointIds.size() >= nn )
@@ -549,8 +564,9 @@ protected:
       outputFile << "POLYGONS " << numberOfPolygons << " " << numberOfPolygonIndices << '\n';
       for ( SizeValueType ii = 0; ii < this->m_NumberOfCells; ii++ )
         {
-        MeshIOBase::CellGeometryType cellType = static_cast< MeshIOBase::CellGeometryType >( static_cast< int >( buffer[index++] ) );
-        unsigned int                 nn = static_cast< unsigned int >( buffer[index++] );
+        MeshIOBase::CellGeometryType cellType =
+          static_cast< MeshIOBase::CellGeometryType >( static_cast< int >( buffer[index++] ) );
+        unsigned int nn = static_cast< unsigned int >( buffer[index++] );
         if ( cellType == POLYGON_CELL ||
              cellType == TRIANGLE_CELL ||
              cellType == QUADRILATERAL_CELL )
@@ -571,7 +587,8 @@ protected:
   }
 
   template< typename T >
-  void WriteCellsBufferAsBINARY(std::ofstream & outputFile, T *buffer)
+  void
+  WriteCellsBufferAsBINARY(std::ofstream & outputFile, T *buffer)
   {
     MetaDataDictionary & metaDic = this->GetMetaDataDictionary();
     unsigned int         numberOfVertices = 0;
@@ -602,13 +619,14 @@ protected:
     if ( numberOfLines )
       {
       numberOfLineIndices = 0;
-      SizeValueType           numberOfPolylines = 0;
+      SizeValueType             numberOfPolylines = 0;
       PolylinesContainerPointer polylines = PolylinesContainerType::New();
       PointIdVector             pointIds;
       for ( SizeValueType ii = 0; ii < this->m_NumberOfCells; ii++ )
         {
-        MeshIOBase::CellGeometryType cellType = static_cast< MeshIOBase::CellGeometryType >( static_cast< int >( buffer[index++] ) );
-        unsigned int                 nn = static_cast< unsigned int >( buffer[index++] );
+        MeshIOBase::CellGeometryType cellType =
+          static_cast< MeshIOBase::CellGeometryType >( static_cast< int >( buffer[index++] ) );
+        unsigned int nn = static_cast< unsigned int >( buffer[index++] );
         if ( cellType == LINE_CELL )
           {
           if ( pointIds.size() >= nn )
@@ -688,7 +706,8 @@ protected:
   }
 
   template< typename T >
-  void WritePointDataBufferAsASCII(std::ofstream & outputFile, T *buffer, const StringType & pointPixelComponentName)
+  void
+  WritePointDataBufferAsASCII(std::ofstream & outputFile, T *buffer, const StringType & pointPixelComponentName)
   {
     NumberToString<T>    convert;
     MetaDataDictionary & metaDic = this->GetMetaDataDictionary();
@@ -728,7 +747,8 @@ protected:
         outputFile << "COLOR_SCALARS ";
         ExposeMetaData< StringType >(metaDic, "pointColorScalarDataName", dataName);
         outputFile << dataName << "  ";
-        WriteColorScalarBufferAsASCII(outputFile, buffer, this->m_NumberOfPointPixelComponents, this->m_NumberOfPointPixels);
+        WriteColorScalarBufferAsASCII(outputFile, buffer, this->m_NumberOfPointPixelComponents,
+                                      this->m_NumberOfPointPixels);
         return;
         }
       default:
@@ -747,8 +767,8 @@ protected:
     Indent indent(2);
     if ( this->m_PointPixelType == SYMMETRICSECONDRANKTENSOR )
       {
-      T *ptr = buffer;
-      SizeValueType i = 0;
+      T *                 ptr = buffer;
+      SizeValueType       i = 0;
       const SizeValueType num = this->m_NumberOfPointPixelComponents * this->m_NumberOfPointPixels;
       // Note that only the 3D tensors are supported in the VTK File Format
       // documentation.
@@ -807,7 +827,7 @@ protected:
       }
     else // not tensor
       {
-      unsigned int  jj;
+      unsigned int jj;
       for ( SizeValueType ii = 0; ii < this->m_NumberOfPointPixels; ii++ )
         {
         for ( jj = 0; jj < this->m_NumberOfPointPixelComponents - 1; jj++ )
@@ -823,7 +843,8 @@ protected:
   }
 
   template< typename T >
-  void WritePointDataBufferAsBINARY(std::ofstream & outputFile, T *buffer, const StringType & pointPixelComponentName)
+  void
+  WritePointDataBufferAsBINARY(std::ofstream & outputFile, T *buffer, const StringType & pointPixelComponentName)
   {
     MetaDataDictionary & metaDic = this->GetMetaDataDictionary();
     StringType           dataName;
@@ -862,7 +883,8 @@ protected:
         outputFile << "COLOR_SCALARS ";
         ExposeMetaData< StringType >(metaDic, "pointColorScalarDataName", dataName);
         outputFile << dataName << "  ";
-        WriteColorScalarBufferAsBINARY(outputFile, buffer, this->m_NumberOfPointPixelComponents, this->m_NumberOfPointPixels);
+        WriteColorScalarBufferAsBINARY(outputFile, buffer, this->m_NumberOfPointPixelComponents,
+                                       this->m_NumberOfPointPixels);
         return;
         }
       default:
@@ -885,7 +907,8 @@ protected:
   }
 
   template< typename T >
-  void WriteCellDataBufferAsASCII(std::ofstream & outputFile, T *buffer, const StringType & cellPixelComponentName)
+  void
+  WriteCellDataBufferAsASCII(std::ofstream & outputFile, T *buffer, const StringType & cellPixelComponentName)
   {
     MetaDataDictionary & metaDic = this->GetMetaDataDictionary();
     StringType           dataName;
@@ -924,7 +947,8 @@ protected:
         outputFile << "COLOR_SCALARS ";
         ExposeMetaData< StringType >(metaDic, "cellColorScalarDataName", dataName);
         outputFile << dataName << "  ";
-        WriteColorScalarBufferAsASCII(outputFile, buffer, this->m_NumberOfCellPixelComponents, this->m_NumberOfCellPixels);
+        WriteColorScalarBufferAsASCII(outputFile, buffer, this->m_NumberOfCellPixelComponents,
+                                      this->m_NumberOfCellPixels);
         return;
         }
       default:
@@ -942,8 +966,8 @@ protected:
     Indent indent(2);
     if ( this->m_CellPixelType == SYMMETRICSECONDRANKTENSOR )
       {
-      T *ptr = buffer;
-      SizeValueType i = 0;
+      T *                 ptr = buffer;
+      SizeValueType       i = 0;
       const SizeValueType num = this->m_NumberOfCellPixelComponents * this->m_NumberOfCellPixels;
       if( this->m_NumberOfCellPixelComponents == 3 )
         {
@@ -1016,7 +1040,8 @@ protected:
   }
 
   template< typename T >
-  void WriteCellDataBufferAsBINARY(std::ofstream & outputFile, T *buffer, const StringType & cellPixelComponentName)
+  void
+  WriteCellDataBufferAsBINARY(std::ofstream & outputFile, T *buffer, const StringType & cellPixelComponentName)
   {
     MetaDataDictionary & metaDic = this->GetMetaDataDictionary();
     StringType           dataName;
@@ -1055,7 +1080,8 @@ protected:
         outputFile << "COLOR_SCALARS ";
         ExposeMetaData< StringType >(metaDic, "cellColorScalarDataName", dataName);
         outputFile << dataName << "  ";
-        WriteColorScalarBufferAsBINARY(outputFile, buffer, this->m_NumberOfCellPixelComponents, this->m_NumberOfCellPixels);
+        WriteColorScalarBufferAsBINARY(outputFile, buffer, this->m_NumberOfCellPixelComponents,
+                                       this->m_NumberOfCellPixels);
         return;
         }
       default:
@@ -1078,10 +1104,11 @@ protected:
   }
 
   template< typename T >
-  void WriteColorScalarBufferAsASCII(std::ofstream & outputFile,
-                                     T *buffer,
-                                     unsigned int numberOfPixelComponents,
-                                     SizeValueType numberOfPixels)
+  void
+  WriteColorScalarBufferAsASCII(std::ofstream & outputFile,
+                                T *buffer,
+                                unsigned int numberOfPixelComponents,
+                                SizeValueType numberOfPixels)
   {
     NumberToString<float> convert;
     outputFile << numberOfPixelComponents << "\n";
@@ -1090,7 +1117,7 @@ protected:
       {
       for ( unsigned int jj = 0; jj < numberOfPixelComponents; ++jj )
         {
-        outputFile << convert(static_cast< float >( buffer[ii * numberOfPixelComponents + jj])) << indent;
+        outputFile << convert(static_cast< float >( buffer[ii * numberOfPixelComponents + jj]) ) << indent;
         }
 
       outputFile << "\n";
@@ -1100,10 +1127,11 @@ protected:
   }
 
   template< typename T >
-  void WriteColorScalarBufferAsBINARY(std::ofstream & outputFile,
-                                      T *buffer,
-                                      unsigned int numberOfPixelComponents,
-                                      SizeValueType numberOfPixels)
+  void
+  WriteColorScalarBufferAsBINARY(std::ofstream & outputFile,
+                                 T *buffer,
+                                 unsigned int numberOfPixelComponents,
+                                 SizeValueType numberOfPixels)
   {
     outputFile << numberOfPixelComponents << "\n";
     SizeValueType  numberOfElements = numberOfPixelComponents * numberOfPixels;
@@ -1123,7 +1151,8 @@ protected:
   /** Convert cells buffer for output cells buffer, it's user's responsibility to make sure
   the input cells don't contain any cell type that coule not be written as polygon cell */
   template< typename TInput, typename TOutput >
-  void ReadCellsBuffer(TInput *input, TOutput *output)
+  void
+  ReadCellsBuffer(TInput *input, TOutput *output)
   {
     SizeValueType inputIndex = 0;
     SizeValueType outputIndex = 0;
@@ -1146,6 +1175,7 @@ protected:
 private:
   VTKPolyDataMeshIO(const Self &); // purposely not implemented
   void operator=(const Self &);    // purposely not implemented
+
 };
 } // end namespace itk
 

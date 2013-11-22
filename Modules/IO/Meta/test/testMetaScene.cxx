@@ -22,7 +22,8 @@
 #include <metaEllipse.h>
 #include "itksys/SystemTools.hxx"
 
-int testMetaScene(int argc, char * argv[])
+int
+testMetaScene(int argc, char * argv[])
 {
   if (argc > 1)
     {
@@ -40,7 +41,7 @@ int testMetaScene(int argc, char * argv[])
   e2->ID(1);
   e2->Radius(4);
 
-  MetaGroup g0;
+  MetaGroup   g0;
   MetaGroup * g1 = new MetaGroup(3);
   g1->FileName("MyFilename");
   g1->ID(2);

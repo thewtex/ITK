@@ -23,7 +23,8 @@
 #include "itkZeroCrossingImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkLaplacianRecursiveGaussianImageFilterTest(int argc, char* argv[])
+int
+itkLaplacianRecursiveGaussianImageFilterTest(int argc, char* argv[])
 {
   if( argc < 3)
     {
@@ -35,16 +36,16 @@ int itkLaplacianRecursiveGaussianImageFilterTest(int argc, char* argv[])
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[2];
 
-  typedef unsigned char    CharPixelType;  //IO
-  typedef double          RealPixelType;  //Operations
+  typedef unsigned char CharPixelType;    //IO
+  typedef double        RealPixelType;    //Operations
 
-  const    unsigned int    Dimension = 2;
+  const    unsigned int Dimension = 2;
 
-  typedef itk::Image<CharPixelType, Dimension>    CharImageType;
-  typedef itk::Image<RealPixelType, Dimension>    RealImageType;
+  typedef itk::Image<CharPixelType, Dimension> CharImageType;
+  typedef itk::Image<RealPixelType, Dimension> RealImageType;
 
-  typedef itk::ImageFileReader< CharImageType >  ReaderType;
-  typedef itk::ImageFileWriter< CharImageType >  WriterType;
+  typedef itk::ImageFileReader< CharImageType > ReaderType;
+  typedef itk::ImageFileWriter< CharImageType > WriterType;
 
   typedef itk::CastImageFilter<CharImageType, RealImageType> CastToRealFilterType;
   typedef itk::CastImageFilter<RealImageType, CharImageType> CastToCharFilterType;
@@ -52,20 +53,20 @@ int itkLaplacianRecursiveGaussianImageFilterTest(int argc, char* argv[])
   typedef itk::RescaleIntensityImageFilter<RealImageType, RealImageType> RescaleFilter;
 
   typedef itk::LaplacianRecursiveGaussianImageFilter<
-                              RealImageType,
-                              RealImageType >    LaplacianFilter;
+      RealImageType,
+      RealImageType >    LaplacianFilter;
 
-  { //Instantiate a 7D image for testing purposes
-  typedef itk::Image<RealPixelType,7> SevenDImageType;
-  typedef itk::LaplacianRecursiveGaussianImageFilter<
-                              SevenDImageType,
-                              SevenDImageType >    LaplacianFilter7DType;
-  LaplacianFilter7DType::Pointer SevenDTest = LaplacianFilter7DType::New();
-  }
+    { //Instantiate a 7D image for testing purposes
+    typedef itk::Image<RealPixelType,7> SevenDImageType;
+    typedef itk::LaplacianRecursiveGaussianImageFilter<
+        SevenDImageType,
+        SevenDImageType >    LaplacianFilter7DType;
+    LaplacianFilter7DType::Pointer SevenDTest = LaplacianFilter7DType::New();
+    }
 
   typedef itk::ZeroCrossingImageFilter<
-                              RealImageType,
-                              RealImageType>     ZeroCrossingFilter;
+      RealImageType,
+      RealImageType>     ZeroCrossingFilter;
 
   //Setting the IO
   ReaderType::Pointer reader = ReaderType::New();
@@ -73,12 +74,12 @@ int itkLaplacianRecursiveGaussianImageFilterTest(int argc, char* argv[])
 
   CastToRealFilterType::Pointer toReal = CastToRealFilterType::New();
   CastToCharFilterType::Pointer toChar = CastToCharFilterType::New();
-  RescaleFilter::Pointer rescale = RescaleFilter::New();
+  RescaleFilter::Pointer        rescale = RescaleFilter::New();
 
   //Setting the ITK pipeline filter
 
-  LaplacianFilter::Pointer lapFilter = LaplacianFilter::New();
-  itk::SimpleFilterWatcher watcher(lapFilter);
+  LaplacianFilter::Pointer    lapFilter = LaplacianFilter::New();
+  itk::SimpleFilterWatcher    watcher(lapFilter);
   ZeroCrossingFilter::Pointer zeroFilter = ZeroCrossingFilter::New();
 
   reader->SetFileName( inputFilename  );

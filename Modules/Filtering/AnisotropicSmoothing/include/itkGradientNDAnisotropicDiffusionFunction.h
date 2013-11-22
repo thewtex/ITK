@@ -58,7 +58,7 @@ namespace itk
  * \ingroup ITKAnisotropicSmoothing
  */
 template< typename TImage >
-class GradientNDAnisotropicDiffusionFunction:
+class GradientNDAnisotropicDiffusionFunction :
   public ScalarAnisotropicDiffusionFunction< TImage >
 {
 public:
@@ -96,7 +96,8 @@ public:
                                   );
 
   /** This method is called prior to each iteration of the solver. */
-  virtual void InitializeIteration()
+  virtual void
+  InitializeIteration()
   {
     m_K = static_cast< PixelType >( this->GetAverageGradientMagnitudeSquared()
                                     * this->GetConductanceParameter() * this->GetConductanceParameter() * -2.0f );

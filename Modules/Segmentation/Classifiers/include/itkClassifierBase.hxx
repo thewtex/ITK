@@ -96,6 +96,7 @@ ClassifierBase< TDataContainer >
   m_MembershipFunctions.push_back(function);
   return static_cast< unsigned int >( m_MembershipFunctions.size() );
 }
+
 } // namespace itk
 
 #endif

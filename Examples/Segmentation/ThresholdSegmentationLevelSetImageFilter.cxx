@@ -92,7 +92,6 @@
 //
 // Software Guide : EndLatex
 
-
 #include "itkImage.h"
 // Software Guide : BeginCodeSnippet
 #include "itkThresholdSegmentationLevelSetImageFilter.h"
@@ -103,8 +102,8 @@
 #include "itkImageFileWriter.h"
 #include "itkZeroCrossingImageFilter.h"
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 8 )
     {
@@ -127,15 +126,15 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   float           InternalPixelType;
-  const     unsigned int    Dimension = 2;
-  typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
+  typedef   float InternalPixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
   // Software Guide : EndCodeSnippet
 
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::BinaryThresholdImageFilter<InternalImageType, OutputImageType>
-                                                   ThresholdingFilterType;
+    ThresholdingFilterType;
 
   ThresholdingFilterType::Pointer thresholder = ThresholdingFilterType::New();
 
@@ -154,7 +153,6 @@ int main( int argc, char *argv[] )
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 
-
   //  We now declare the type of the \doxygen{FastMarchingImageFilter} that
   //  will be used to generate the initial level set in the form of a distance
   //  map.
@@ -162,7 +160,7 @@ int main( int argc, char *argv[] )
   typedef  itk::FastMarchingImageFilter< InternalImageType, InternalImageType >
     FastMarchingFilterType;
 
-  FastMarchingFilterType::Pointer  fastMarching = FastMarchingFilterType::New();
+  FastMarchingFilterType::Pointer fastMarching = FastMarchingFilterType::New();
 
   //  Software Guide : BeginLatex
   //
@@ -173,11 +171,11 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef  itk::ThresholdSegmentationLevelSetImageFilter< InternalImageType,
-    InternalImageType > ThresholdSegmentationLevelSetImageFilterType;
+                                                          InternalImageType >
+    ThresholdSegmentationLevelSetImageFilterType;
   ThresholdSegmentationLevelSetImageFilterType::Pointer thresholdSegmentation =
     ThresholdSegmentationLevelSetImageFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -215,8 +213,8 @@ int main( int argc, char *argv[] )
   //  change in the level set function. When RMS change for an iteration is
   //  below a user-specified threshold, the solution is considered to have
   //  converged.
-    thresholdSegmentation->SetMaximumRMSError( 0.02 );
-    thresholdSegmentation->SetNumberOfIterations( 1200 );
+  thresholdSegmentation->SetMaximumRMSError( 0.02 );
+  thresholdSegmentation->SetNumberOfIterations( 1200 );
 
   //    thresholdSegmentation->SetMaximumRMSError( atof(argv[8]) );
   //    thresholdSegmentation->SetNumberOfIterations( atoi(argv[9]) );
@@ -266,12 +264,12 @@ int main( int argc, char *argv[] )
   //  container is defined as \code{NodeContainer} among the
   //  FastMarchingImageFilter traits.
   //
-  typedef FastMarchingFilterType::NodeContainer           NodeContainer;
-  typedef FastMarchingFilterType::NodeType                NodeType;
+  typedef FastMarchingFilterType::NodeContainer NodeContainer;
+  typedef FastMarchingFilterType::NodeType      NodeType;
 
   NodeContainer::Pointer seeds = NodeContainer::New();
 
-  InternalImageType::IndexType  seedPosition;
+  InternalImageType::IndexType seedPosition;
 
   seedPosition[0] = atoi( argv[3] );
   seedPosition[1] = atoi( argv[4] );
@@ -291,7 +289,7 @@ int main( int argc, char *argv[] )
 
   NodeType node;
 
-  const double seedValue = - initialDistance;
+  const double seedValue = -initialDistance;
 
   node.SetValue( seedValue );
   node.SetIndex( seedPosition );
@@ -301,7 +299,6 @@ int main( int argc, char *argv[] )
   //  the \code{InsertElement()}.
   seeds->Initialize();
   seeds->InsertElement( 0, node );
-
 
   //  The set of seed nodes is passed now to the
   //  FastMarchingImageFilter with the method
@@ -316,7 +313,6 @@ int main( int argc, char *argv[] )
 
   fastMarching->SetSpeedConstant( 1.0 );
 
-
   //  The FastMarchingImageFilter requires the user to specify the size of the
   //  image to be produced as output. This is done using the
   //  \code{SetOutputRegion()} method. Note that the size is obtained here from
@@ -324,7 +320,6 @@ int main( int argc, char *argv[] )
   //  only after the \code{Update()} methods of this filter has been called
   //  directly or indirectly. Other image parameters such as Origin, Spacing
   //  and Direction are set in a similar manner.
-
 
   //  Software Guide : BeginLatex
   //
@@ -359,7 +354,6 @@ int main( int argc, char *argv[] )
   std::cout << std::endl;
   std::cout << "No. elpased iterations: " << thresholdSegmentation->GetElapsedIterations() << std::endl;
   std::cout << "RMS change: " << thresholdSegmentation->GetRMSChange() << std::endl;
-
 
   // We write out some intermediate images for debugging.  These images can
   // help tune parameters.

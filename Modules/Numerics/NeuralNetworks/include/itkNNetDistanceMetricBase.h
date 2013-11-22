@@ -51,23 +51,27 @@ public:
   virtual double Evaluate(const InputVectorType& x1, const InputVectorType& x2) const = 0;
 
   /** Evaluate */
-  virtual double Evaluate(const InputVectorType& ) const {return 0;}
+  virtual double
+  Evaluate(const InputVectorType& ) const {
+    return 0;
+  }
 
 protected:
-  NNetDistanceMetricBase() {};
-  ~NNetDistanceMetricBase() {};
+  NNetDistanceMetricBase() {}
+  ~NNetDistanceMetricBase() {}
 
   /** Method to print the object. */
-  virtual void PrintSelf( std::ostream& os, Indent indent ) const
-    {
+  virtual void
+  PrintSelf( std::ostream& os, Indent indent ) const
+  {
     os << indent << "NNetDistanceMetricBase(" << this << ")" << std::endl;
     Superclass::PrintSelf( os, indent );
-    }
+  }
 
 private:
 
   NNetDistanceMetricBase (const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);          //purposely not implemented
 
 };
 

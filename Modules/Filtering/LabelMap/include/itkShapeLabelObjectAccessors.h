@@ -42,10 +42,12 @@ public:
   typedef TLabelObject  LabelObjectType;
   typedef SizeValueType AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetNumberOfPixels();
   }
+
 };
 
 template< typename TLabelObject >
@@ -55,10 +57,12 @@ public:
   typedef TLabelObject                         LabelObjectType;
   typedef typename LabelObjectType::RegionType AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetBoundingBox();
   }
+
 };
 
 template< typename TLabelObject >
@@ -68,10 +72,12 @@ public:
   typedef TLabelObject LabelObjectType;
   typedef double       AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetPhysicalSize();
   }
+
 };
 
 template< typename TLabelObject >
@@ -81,10 +87,12 @@ public:
   typedef TLabelObject  LabelObjectType;
   typedef SizeValueType AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetNumberOfPixelsOnBorder();
   }
+
 };
 
 template< typename TLabelObject >
@@ -94,10 +102,12 @@ public:
   typedef TLabelObject LabelObjectType;
   typedef double       AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetPerimeterOnBorder();
   }
+
 };
 
 template< typename TLabelObject >
@@ -107,10 +117,12 @@ public:
   typedef TLabelObject                           LabelObjectType;
   typedef typename LabelObjectType::CentroidType AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetCentroid();
   }
+
 };
 
 template< typename TLabelObject >
@@ -120,10 +132,12 @@ public:
   typedef TLabelObject LabelObjectType;
   typedef double       AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetFeretDiameter();
   }
+
 };
 
 template< typename TLabelObject >
@@ -133,10 +147,12 @@ public:
   typedef TLabelObject                         LabelObjectType;
   typedef typename LabelObjectType::VectorType AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetPrincipalMoments();
   }
+
 };
 
 template< typename TLabelObject >
@@ -146,10 +162,12 @@ public:
   typedef TLabelObject                         LabelObjectType;
   typedef typename LabelObjectType::MatrixType AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetPrincipalAxes();
   }
+
 };
 
 template< typename TLabelObject >
@@ -159,10 +177,12 @@ public:
   typedef TLabelObject LabelObjectType;
   typedef double       AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetElongation();
   }
+
 };
 
 template< typename TLabelObject >
@@ -172,10 +192,12 @@ public:
   typedef TLabelObject LabelObjectType;
   typedef double       AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetPerimeter();
   }
+
 };
 
 template< typename TLabelObject >
@@ -185,10 +207,12 @@ public:
   typedef TLabelObject LabelObjectType;
   typedef double       AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetRoundness();
   }
+
 };
 
 template< typename TLabelObject >
@@ -198,10 +222,12 @@ public:
   typedef TLabelObject LabelObjectType;
   typedef double       AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetEquivalentSphericalRadius();
   }
+
 };
 
 template< typename TLabelObject >
@@ -211,10 +237,12 @@ public:
   typedef TLabelObject LabelObjectType;
   typedef double       AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetEquivalentSphericalPerimeter();
   }
+
 };
 
 template< typename TLabelObject >
@@ -224,10 +252,12 @@ public:
   typedef TLabelObject                         LabelObjectType;
   typedef typename LabelObjectType::VectorType AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetEquivalentEllipsoidDiameter();
   }
+
 };
 
 template< typename TLabelObject >
@@ -237,10 +267,12 @@ public:
   typedef TLabelObject LabelObjectType;
   typedef double       AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetFlatness();
   }
+
 };
 
 template< typename TLabelObject >
@@ -250,10 +282,12 @@ public:
   typedef TLabelObject LabelObjectType;
   typedef double       AttributeValueType;
 
-  inline AttributeValueType operator()(const LabelObjectType *labelObject) const
+  inline AttributeValueType
+  operator()(const LabelObjectType *labelObject) const
   {
     return labelObject->GetPerimeterOnBorderRatio();
   }
+
 };
 
 }

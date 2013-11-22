@@ -41,17 +41,19 @@
 //   Main code
 //
 //-------------------------
-int itkNthElementPixelAccessorTest(int, char* []) {
+int
+itkNthElementPixelAccessorTest(int, char* []) {
 
   // Typedefs for convenience
   const unsigned int Dimension = 2;
   const unsigned int VectorLength = 3;
+
   typedef itk::Image< itk::Vector<float, VectorLength>, Dimension >              myImageType;
   typedef itk::NthElementPixelAccessor<float, itk::Vector<float, VectorLength> > myNthAccessorType;
 
-  typedef itk::ImageAdaptor< myImageType, myNthAccessorType >    myNthAdaptorType;
-  typedef itk::ImageRegionIteratorWithIndex< myImageType >       myIteratorType;
-  typedef itk::ImageRegionIteratorWithIndex< myNthAdaptorType >  myNthIteratorType;
+  typedef itk::ImageAdaptor< myImageType, myNthAccessorType >   myNthAdaptorType;
+  typedef itk::ImageRegionIteratorWithIndex< myImageType >      myIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex< myNthAdaptorType > myNthIteratorType;
 
   myImageType::SizeType size;
   size[0] = 2;
@@ -72,11 +74,11 @@ int itkNthElementPixelAccessorTest(int, char* []) {
   myImage->SetRequestedRegion( region );
   myImage->Allocate();
 
-  myIteratorType  it1( myImage, myImage->GetRequestedRegion() );
+  myIteratorType it1( myImage, myImage->GetRequestedRegion() );
 
   // Value to initialize the pixels
   myImageType::PixelType::ComponentType colorInit[3] = {1.0f, 0.5f, 0.5f};
-  myImageType::PixelType color = colorInit;
+  myImageType::PixelType                color = colorInit;
 
   // Initializing all the pixel in the image
   it1.GoToBegin();
@@ -104,9 +106,7 @@ int itkNthElementPixelAccessorTest(int, char* []) {
   myNthAccessor.SetElementNumber(0);
   myAdaptor->SetPixelAccessor(myNthAccessor);
 
-
-  myNthIteratorType  it2( myAdaptor, myAdaptor->GetRequestedRegion() );
-
+  myNthIteratorType it2( myAdaptor, myAdaptor->GetRequestedRegion() );
 
   // Set the values of the first component of myImage, using myAdaptor
   const float MY_VALUE = float(0.4);
@@ -116,7 +116,6 @@ int itkNthElementPixelAccessorTest(int, char* []) {
     it2.Set(MY_VALUE);
     ++it2;
     }
-
 
   std::cout << "--- After --- " << std::endl;
 
@@ -131,7 +130,6 @@ int itkNthElementPixelAccessorTest(int, char* []) {
 
     ++it1;
     }
-
 
   return EXIT_SUCCESS;
 }

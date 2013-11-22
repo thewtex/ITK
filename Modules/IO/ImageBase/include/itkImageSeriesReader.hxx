@@ -47,7 +47,8 @@ ImageSeriesReader< TOutputImage >
 }
 
 template< typename TOutputImage >
-void ImageSeriesReader< TOutputImage >
+void
+ImageSeriesReader< TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
@@ -70,7 +71,8 @@ void ImageSeriesReader< TOutputImage >
 }
 
 template< typename TOutputImage >
-int ImageSeriesReader< TOutputImage >
+int
+ImageSeriesReader< TOutputImage >
 ::ComputeMovingDimensionIndex(ReaderType *reader)
 {
   // This method computes the the diminesion index which we are going
@@ -84,7 +86,7 @@ int ImageSeriesReader< TOutputImage >
     }
 
   const TOutputImage * readerOutput = reader->GetOutput();
-  SizeType dimSize = readerOutput->GetLargestPossibleRegion().GetSize();
+  SizeType             dimSize = readerOutput->GetLargestPossibleRegion().GetSize();
 
   // collapse the number of dimensions in image if any of the last
   // dimensions are one
@@ -97,7 +99,8 @@ int ImageSeriesReader< TOutputImage >
 }
 
 template< typename TOutputImage >
-void ImageSeriesReader< TOutputImage >
+void
+ImageSeriesReader< TOutputImage >
 ::GenerateOutputInformation(void)
 {
   typename TOutputImage::Pointer output = this->GetOutput();
@@ -277,7 +280,8 @@ ImageSeriesReader< TOutputImage >
 }
 
 template< typename TOutputImage >
-void ImageSeriesReader< TOutputImage >
+void
+ImageSeriesReader< TOutputImage >
 ::GenerateData()
 {
   TOutputImage *output = this->GetOutput();
@@ -320,8 +324,8 @@ void ImageSeriesReader< TOutputImage >
     && m_MetaDataDictionaryArrayUpdate;
 
   typename  TOutputImage::InternalPixelType *outputBuffer = output->GetBufferPointer();
-  IndexType                           sliceStartIndex = requestedRegion.GetIndex();
-  const int                           numberOfFiles = static_cast< int >( m_FileNames.size() );
+  IndexType sliceStartIndex = requestedRegion.GetIndex();
+  const int numberOfFiles = static_cast< int >( m_FileNames.size() );
 
   for ( int i = 0; i != numberOfFiles; ++i )
     {
@@ -388,17 +392,17 @@ void ImageSeriesReader< TOutputImage >
         // ourselves, then set the ImageReader's buffer to a section
         // of ours
 
-        const size_t  numberOfPixelsInSlice = sliceRegionToRequest.GetNumberOfPixels();
+        const size_t numberOfPixelsInSlice = sliceRegionToRequest.GetNumberOfPixels();
 
         typedef typename TOutputImage::AccessorFunctorType AccessorFunctorType;
-        const size_t      numberOfInternalComponentsPerPixel =  AccessorFunctorType::GetVectorLength( output );
+        const size_t numberOfInternalComponentsPerPixel =  AccessorFunctorType::GetVectorLength( output );
 
+        const ptrdiff_t sliceOffset = ( TOutputImage::ImageDimension != this->m_NumberOfDimensionsInImage ) ?
+          ( i - requestedRegion.GetIndex(this->m_NumberOfDimensionsInImage) ) : 0;
 
-        const ptrdiff_t   sliceOffset = ( TOutputImage::ImageDimension != this->m_NumberOfDimensionsInImage ) ?
-          ( i - requestedRegion.GetIndex(this->m_NumberOfDimensionsInImage)) : 0;
-
-        const ptrdiff_t  numberOfPixelComponentsUpToSlice =  numberOfPixelsInSlice * numberOfInternalComponentsPerPixel * sliceOffset;
-        const bool       bufferDelete = false;
+        const ptrdiff_t numberOfPixelComponentsUpToSlice =  numberOfPixelsInSlice * numberOfInternalComponentsPerPixel *
+          sliceOffset;
+        const bool bufferDelete = false;
 
         typename  TOutputImage::InternalPixelType * outputSliceBuffer = outputBuffer + numberOfPixelComponentsUpToSlice;
 
@@ -443,7 +447,7 @@ void ImageSeriesReader< TOutputImage >
       // report progress for read slices
       progress.CompletedPixel();
 
-     } // end !insidedRequestedRegion
+      } // end !insidedRequestedRegion
 
     // Deep copy the MetaDataDictionary into the array
     if ( reader->GetImageIO() &&  needToUpdateMetaDataDictionaryArray )
@@ -477,6 +481,7 @@ ImageSeriesReader< TOutputImage >
     }
   return &m_MetaDataDictionaryArray;
 }
+
 } //namespace ITK
 
 #endif

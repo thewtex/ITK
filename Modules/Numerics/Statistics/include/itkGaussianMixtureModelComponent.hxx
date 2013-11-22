@@ -77,7 +77,7 @@ GaussianMixtureModelComponent< TSample >
   typename NativeMembershipFunctionType::MeanVectorType mean;
 
   NumericTraits<typename NativeMembershipFunctionType::MeanVectorType>::SetLength(mean,
-    measurementVectorLength);
+                                                                                  measurementVectorLength);
 
   for ( unsigned int i = 0; i < measurementVectorLength; ++i )
     {
@@ -116,7 +116,7 @@ GaussianMixtureModelComponent< TSample >
   typename NativeMembershipFunctionType::MeanVectorType mean;
 
   NumericTraits<typename NativeMembershipFunctionType::MeanVectorType>::SetLength(mean,
-    measurementVectorSize);
+                                                                                  measurementVectorSize);
 
   for ( i = 0; i < measurementVectorSize; ++i )
     {
@@ -172,7 +172,7 @@ GaussianMixtureModelComponent< TSample >
     for ( j = 0; j < measurementVectorSize; j++ )
       {
       temp = m_Covariance.GetVnlMatrix().get(i, j)
-             - covEstimate.GetVnlMatrix().get(i, j);
+        - covEstimate.GetVnlMatrix().get(i, j);
       changes += temp * temp;
       }
     }
@@ -208,12 +208,12 @@ GaussianMixtureModelComponent< TSample >
   m_MeanEstimator->SetWeights(weights);
   m_MeanEstimator->Update();
 
-  MeasurementVectorSizeType   i, j;
-  double         temp;
-  double         changes;
-  bool           changed = false;
-  ParametersType parameters = this->GetFullParameters();
-  MeasurementVectorSizeType            paramIndex  = 0;
+  MeasurementVectorSizeType i, j;
+  double                    temp;
+  double                    changes;
+  bool                      changed = false;
+  ParametersType            parameters = this->GetFullParameters();
+  MeasurementVectorSizeType paramIndex  = 0;
 
   typename MeanEstimatorType::MeasurementVectorType meanEstimate = m_MeanEstimator->GetMean();
   for ( i = 0; i < measurementVectorSize; i++ )
@@ -254,7 +254,7 @@ GaussianMixtureModelComponent< TSample >
       for ( j = 0; j < measurementVectorSize; j++ )
         {
         temp = m_Covariance.GetVnlMatrix().get(i, j)
-               - covEstimate.GetVnlMatrix().get(i, j);
+          - covEstimate.GetVnlMatrix().get(i, j);
         changes = vnl_math_abs( temp );
         if ( changes > this->GetMinimalParametersChange() )
           {
@@ -289,7 +289,7 @@ GaussianMixtureModelComponent< TSample >
 
   typename NativeMembershipFunctionType::MeanVectorType mean;
   NumericTraits<typename NativeMembershipFunctionType::MeanVectorType>::SetLength(mean,
-    measurementVectorSize);
+                                                                                  measurementVectorSize);
 
   for ( i = 0; i < measurementVectorSize; ++i )
     {
@@ -309,6 +309,7 @@ GaussianMixtureModelComponent< TSample >
 
   Superclass::SetParameters(parameters);
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

@@ -28,7 +28,7 @@ namespace itk
  * \ingroup ITKSystemObjects
  * \ingroup ITKCommon
  */
-class CreateObjectFunctionBase:public Object
+class CreateObjectFunctionBase : public Object
 {
 public:
   /** Standard typedefs. */
@@ -48,6 +48,7 @@ protected:
 private:
   CreateObjectFunctionBase(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 
 /** \class CreateObjectFunction
@@ -58,7 +59,7 @@ private:
  * \ingroup ITKCommon
  */
 template< typename T >
-class CreateObjectFunction:public CreateObjectFunctionBase
+class CreateObjectFunction : public CreateObjectFunctionBase
 {
 public:
   /** Standard class typedefs. */
@@ -67,7 +68,10 @@ public:
 
   /** Methods from itk:LightObject. */
   itkFactorylessNewMacro(Self);
-  LightObject::Pointer CreateObject() { return T::New().GetPointer(); }
+  LightObject::Pointer
+  CreateObject() {
+    return T::New().GetPointer();
+  }
 
 protected:
   CreateObjectFunction() {}
@@ -76,6 +80,7 @@ protected:
 private:
   CreateObjectFunction(const Self &); //purposely not implemented
   void operator=(const Self &);       //purposely not implemented
+
 };
 } // end namespace itk
 

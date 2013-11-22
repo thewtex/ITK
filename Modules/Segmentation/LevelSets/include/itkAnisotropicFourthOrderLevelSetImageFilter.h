@@ -80,7 +80,7 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TInputImage, typename TOutputImage >
-class AnisotropicFourthOrderLevelSetImageFilter:
+class AnisotropicFourthOrderLevelSetImageFilter :
   public SparseFieldFourthOrderLevelSetImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -118,7 +118,8 @@ protected:
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This filter halts when the iteration count reaches the specified count. */
-  virtual bool Halt()
+  virtual bool
+  Halt()
   {
     if ( this->GetElapsedIterations() == m_MaxFilterIteration )
       {

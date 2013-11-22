@@ -31,8 +31,7 @@ MINCImageIOFactory::MINCImageIOFactory()
 }
 
 MINCImageIOFactory::~MINCImageIOFactory()
-{
-}
+{}
 
 const char *
 MINCImageIOFactory::GetITKSourceVersion() const
@@ -51,7 +50,8 @@ MINCImageIOFactory::GetDescription() const
 
 static bool MINCImageIOFactoryHasBeenRegistered;
 
-void MINCImageIOFactoryRegister__Private(void)
+void
+MINCImageIOFactoryRegister__Private(void)
 {
   if( !MINCImageIOFactoryHasBeenRegistered )
     {

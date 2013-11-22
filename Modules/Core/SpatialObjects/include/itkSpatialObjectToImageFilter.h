@@ -37,7 +37,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputSpatialObject, typename TOutputImage >
-class SpatialObjectToImageFilter:public ImageSource< TOutputImage >
+class SpatialObjectToImageFilter : public ImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -154,12 +154,13 @@ protected:
   SpatialObjectToImageFilter();
   ~SpatialObjectToImageFilter();
 
-  virtual void GenerateOutputInformation(){}  // do nothing
+  virtual void
+  GenerateOutputInformation(){}               // do nothing
   virtual void GenerateData();
 
-  SizeType m_Size;
-  double m_Spacing[OutputImageDimension];
-  double m_Origin[OutputImageDimension];
+  SizeType      m_Size;
+  double        m_Spacing[OutputImageDimension];
+  double        m_Origin[OutputImageDimension];
   DirectionType m_Direction;
 
   unsigned int m_ChildrenDepth;
@@ -175,6 +176,7 @@ private:
 
   SpatialObjectToImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
+
 };
 } // end namespace itk
 

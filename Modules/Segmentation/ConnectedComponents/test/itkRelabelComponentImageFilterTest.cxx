@@ -25,8 +25,8 @@
 #include "itkChangeInformationImageFilter.h"
 #include "itkLabelStatisticsImageFilter.h"
 
-
-int itkRelabelComponentImageFilterTest(int argc, char* argv[] )
+int
+itkRelabelComponentImageFilterTest(int argc, char* argv[] )
 {
   if( argc < 5 )
     {
@@ -36,10 +36,10 @@ int itkRelabelComponentImageFilterTest(int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef   unsigned short  InternalPixelType;
-  typedef   unsigned long   LabelPixelType;
-  typedef   unsigned char   WritePixelType;
-  const     unsigned int    Dimension = 2;
+  typedef   unsigned short InternalPixelType;
+  typedef   unsigned long  LabelPixelType;
+  typedef   unsigned char  WritePixelType;
+  const     unsigned int Dimension = 2;
 
   typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
   typedef itk::Image< LabelPixelType, Dimension>     LabelImageType;
@@ -48,31 +48,30 @@ int itkRelabelComponentImageFilterTest(int argc, char* argv[] )
   typedef itk::ImageFileReader< InternalImageType > ReaderType;
   typedef itk::ImageFileWriter<  WriteImageType  >  WriterType;
 
-
-  typedef itk::ChangeInformationImageFilter<InternalImageType> ChangeFilterType;
+  typedef itk::ChangeInformationImageFilter<InternalImageType>                    ChangeFilterType;
   typedef itk::BinaryThresholdImageFilter< InternalImageType, InternalImageType > ThresholdFilterType;
   typedef itk::ConnectedComponentImageFilter< InternalImageType, LabelImageType > ConnectedComponentType;
-  typedef itk::RelabelComponentImageFilter< LabelImageType, LabelImageType > RelabelComponentType;
-  typedef itk::BinaryThresholdImageFilter<LabelImageType, WriteImageType> FinalThresholdFilterType;
-  typedef itk::LabelStatisticsImageFilter< InternalImageType, LabelImageType> StatisticsFilterType;
+  typedef itk::RelabelComponentImageFilter< LabelImageType, LabelImageType >      RelabelComponentType;
+  typedef itk::BinaryThresholdImageFilter<LabelImageType, WriteImageType>         FinalThresholdFilterType;
+  typedef itk::LabelStatisticsImageFilter< InternalImageType, LabelImageType>     StatisticsFilterType;
 
   typedef itk::NumericTraits<InternalPixelType>::RealType RealType;
 
   typedef itk::Statistics::Histogram<RealType> HistogramType;
 
   typedef HistogramType::IndexType HIndexType;
-  int NumBins = 13;
+  int      NumBins = 13;
   RealType LowerBound = 51.0;
   RealType UpperBound = 252.0;
 
-  ReaderType::Pointer reader = ReaderType::New();
-  WriterType::Pointer writer = WriterType::New();
-  ChangeFilterType::Pointer change = ChangeFilterType::New();
-  ThresholdFilterType::Pointer threshold = ThresholdFilterType::New();
-  ConnectedComponentType::Pointer connected = ConnectedComponentType::New();
-  RelabelComponentType::Pointer relabel = RelabelComponentType::New();
+  ReaderType::Pointer               reader = ReaderType::New();
+  WriterType::Pointer               writer = WriterType::New();
+  ChangeFilterType::Pointer         change = ChangeFilterType::New();
+  ThresholdFilterType::Pointer      threshold = ThresholdFilterType::New();
+  ConnectedComponentType::Pointer   connected = ConnectedComponentType::New();
+  RelabelComponentType::Pointer     relabel = RelabelComponentType::New();
   FinalThresholdFilterType::Pointer finalThreshold = FinalThresholdFilterType::New();
-  StatisticsFilterType::Pointer statistics = StatisticsFilterType::New();
+  StatisticsFilterType::Pointer     statistics = StatisticsFilterType::New();
 
   FilterWatcher watcher(relabel);
   FilterWatcher statswatcher(statistics);
@@ -93,7 +92,7 @@ int itkRelabelComponentImageFilterTest(int argc, char* argv[] )
   threshold_low = atoi( argv[3]);
   threshold_hi = atoi( argv[4]);
 
-  threshold->SetInput (change->GetOutput());
+  threshold->SetInput (change->GetOutput() );
   threshold->SetInsideValue(itk::NumericTraits<InternalPixelType>::One);
   threshold->SetOutsideValue(itk::NumericTraits<InternalPixelType>::Zero);
   threshold->SetLowerThreshold(threshold_low);
@@ -102,7 +101,7 @@ int itkRelabelComponentImageFilterTest(int argc, char* argv[] )
 
   // Label the components in the image and relabel them so that object
   // numbers increase as the size of the objects decrease.
-  connected->SetInput (threshold->GetOutput());
+  connected->SetInput (threshold->GetOutput() );
   relabel->SetInput( connected->GetOutput() );
   relabel->SetNumberOfObjectsToPrint( 5 );
   std::cout << "Modified time of relabel's output = " << relabel->GetOutput()->GetMTime() << std::endl;
@@ -119,7 +118,7 @@ int itkRelabelComponentImageFilterTest(int argc, char* argv[] )
 
   try
     {
-    writer->SetInput (finalThreshold->GetOutput());
+    writer->SetInput (finalThreshold->GetOutput() );
     writer->SetFileName( argv[2] );
     writer->Update();
     std::cout << "Modified time of relabel's output = " << relabel->GetOutput()->GetMTime() << std::endl;
@@ -134,7 +133,6 @@ int itkRelabelComponentImageFilterTest(int argc, char* argv[] )
     std::cerr << "Exception caught !" << std::endl;
     std::cerr << excep << std::endl;
     }
-
 
   try
     {
@@ -153,7 +151,7 @@ int itkRelabelComponentImageFilterTest(int argc, char* argv[] )
   try
     {
     HistogramType::Pointer histogram;
-    unsigned long printNum = statistics->GetNumberOfLabels();
+    unsigned long          printNum = statistics->GetNumberOfLabels();
     if (printNum > 10)
       {
       printNum = 10;
@@ -179,11 +177,11 @@ int itkRelabelComponentImageFilterTest(int argc, char* argv[] )
         std::cout << bbox[jj] << " ";
         }
       std::cout << std::endl;
-      if (statistics->HasLabel(ii))
+      if (statistics->HasLabel(ii) )
         {
         std::cout << "\tHistogram Frequencies:" << std::endl;
         histogram = statistics->GetHistogram(ii);
-        for (int jj=0;jj<=NumBins;jj++)
+        for (int jj=0; jj<=NumBins; jj++)
           {
           std::cout << histogram->GetFrequency(jj) << ", ";
           }
@@ -193,7 +191,7 @@ int itkRelabelComponentImageFilterTest(int argc, char* argv[] )
 
     printNum = 2;
     for (unsigned int ii=statistics->GetNumberOfObjects();
-           ii < statistics->GetNumberOfObjects()+printNum; ++ii)
+         ii < statistics->GetNumberOfObjects()+printNum; ++ii)
       {
       std::cout << "Label " << ii << ": " << (statistics->HasLabel(ii) ? "Exists" : "Does not exist") << std::endl;
       std::cout << "\tCount = " << statistics->GetCount(ii) << std::endl;
@@ -204,11 +202,11 @@ int itkRelabelComponentImageFilterTest(int argc, char* argv[] )
       std::cout << "\tVariance = " << statistics->GetVariance(ii) << std::endl;
       std::cout << "\tSum = " << statistics->GetSum(ii) << std::endl;
       std::cout << "\tMedian = " << statistics->GetMedian(ii) << std::endl;
-      if (statistics->HasLabel(ii))
+      if (statistics->HasLabel(ii) )
         {
         std::cout << "\tEvery tenth Histogram Frequencies:" << std::endl;
         histogram = statistics->GetHistogram(ii);
-        for (int jj=0;jj<=NumBins;jj++)
+        for (int jj=0; jj<=NumBins; jj++)
           {
           std::cout << histogram->GetFrequency(jj) << ", ";
           }

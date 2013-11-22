@@ -24,10 +24,22 @@
 class LogTester
 {
 public:
-  LogTester(){ this->m_Logger = NULL; }
-  itk::Logger* GetLogger() { return m_Logger; }
-  void SetLogger(itk::Logger* logger) { m_Logger = logger; }
-  void log() {
+  LogTester(){
+    this->m_Logger = NULL;
+  }
+
+  itk::Logger*
+  GetLogger() {
+    return m_Logger;
+  }
+
+  void
+  SetLogger(itk::Logger* logger) {
+    m_Logger = logger;
+  }
+
+  void
+  log() {
     itkLogMacro( DEBUG, "DEBUG message by itkLogMacro\n" );
     itkLogMacro( INFO, "INFO message by itkLogMacro\n" );
     itkLogMacro( WARNING, "WARNING message by itkLogMacro\n" );
@@ -35,7 +47,9 @@ public:
     itkLogMacro( FATAL, "FATAL message by itkLogMacro\n" );
     itkLogMacro( MUSTFLUSH, "MUSTFLUSH message by itkLogMacro\n" );
   }
-  static void logStatic(LogTester* tester)
+
+  static void
+  logStatic(LogTester* tester)
   {
     itkLogMacroStatic( tester, DEBUG, "DEBUG message by itkLogMacroStatic\n" );
     itkLogMacroStatic( tester, INFO, "INFO message by itkLogMacroStatic\n" );
@@ -49,7 +63,8 @@ private:
   itk::Logger* m_Logger;
 };
 
-int itkLoggerManagerTest( int argc, char *argv [] )
+int
+itkLoggerManagerTest( int argc, char *argv [] )
 {
   try
     {
@@ -70,10 +85,11 @@ int itkLoggerManagerTest( int argc, char *argv [] )
     itk::LoggerManager::Pointer manager = itk::LoggerManager::New();
 
     itk::Logger::Pointer logger = manager->CreateLogger( "org.itk.logTester.logger",
-      itk::LoggerBase::DEBUG, itk::LoggerBase::CRITICAL );
+                                                         itk::LoggerBase::DEBUG, itk::LoggerBase::CRITICAL );
 
     itk::ThreadLogger::Pointer t_logger = manager->CreateThreadLogger( "org.itk.ThreadLogger",
-      itk::LoggerBase::WARNING, itk::LoggerBase::CRITICAL );
+                                                                       itk::LoggerBase::WARNING,
+                                                                       itk::LoggerBase::CRITICAL );
 
     std::cout << "Testing itk::LoggerManager" << std::endl;
 
@@ -88,7 +104,9 @@ int itkLoggerManagerTest( int argc, char *argv [] )
     // Logging by the itkLogMacroStatic from a class with itk::ThreadLogger
     LogTester::logStatic(&tester);
 
-    std::cout << "  The printed order of 'Messages ##' below might not be predictable because of multi-threaded logging" << std::endl;
+    std::cout <<
+    "  The printed order of 'Messages ##' below might not be predictable because of multi-threaded logging" <<
+    std::endl;
     std::cout << "  But the logged messages will be in order." << std::endl;
     std::cout << "  Each line is an atom for synchronization." << std::endl;
     // Writing by the logger
@@ -104,14 +122,14 @@ int itkLoggerManagerTest( int argc, char *argv [] )
     itk::Logger* pLogger;
     pLogger = manager->GetLogger("org.itk.logTester.logger");
     if( pLogger == NULL )
-    {
+      {
       throw "LoggerManager::GetLogger() failed";
-    }
+      }
     pLogger->Write(itk::LoggerBase::INFO, "This is the message from the logger got from a LoggerManager");
     if( manager->GetLogger("abc") != NULL )
-    {
+      {
       throw "LoggerManager::GetLogger() must return NULL";
-    }
+      }
     manager->Flush();
     }
   catch(const char * errmsg)

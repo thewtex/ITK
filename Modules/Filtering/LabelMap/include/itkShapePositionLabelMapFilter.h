@@ -36,7 +36,7 @@ namespace itk {
  */
 template<typename TImage>
 class ShapePositionLabelMapFilter :
-    public InPlaceLabelMapFilter<TImage>
+  public InPlaceLabelMapFilter<TImage>
 {
 public:
   /** Standard class typedefs. */
@@ -74,7 +74,7 @@ public:
     (Concept::Convertible<int, InputImagePixelType>));
   itkConceptMacro(InputOStreamWritableCheck,
     (Concept::OStreamWritable<InputImagePixelType>));*/
-  // End concept checking
+// End concept checking
 #endif
 
   /**
@@ -83,19 +83,22 @@ public:
    */
   itkGetConstMacro( Attribute, AttributeType );
   itkSetMacro( Attribute, AttributeType );
-  void SetAttribute( const std::string & s )
-    {
+  void
+  SetAttribute( const std::string & s )
+  {
     this->SetAttribute( LabelObjectType::GetAttributeFromName( s ) );
-    }
+  }
 
 protected:
   ShapePositionLabelMapFilter();
-  ~ShapePositionLabelMapFilter() {};
+  ~ShapePositionLabelMapFilter() {}
 
   virtual void ThreadedProcessLabelObject( LabelObjectType * labelObject );
 
   template< typename TAttributeAccessor >
-  void TemplatedThreadedProcessLabelObject( const TAttributeAccessor & accessor, bool physical, LabelObjectType * labelObject )
+  void
+  TemplatedThreadedProcessLabelObject( const TAttributeAccessor & accessor, bool physical,
+                                       LabelObjectType * labelObject )
   {
     typedef typename TAttributeAccessor::AttributeValueType AttributeValueType;
     AttributeValueType position = accessor( labelObject );
@@ -136,7 +139,7 @@ protected:
 
 private:
   ShapePositionLabelMapFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);              //purposely not implemented
 
 }; // end of class
 

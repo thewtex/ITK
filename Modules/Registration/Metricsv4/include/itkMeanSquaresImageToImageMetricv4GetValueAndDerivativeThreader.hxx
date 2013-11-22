@@ -26,7 +26,8 @@ namespace itk
 
 template< typename TDomainPartitioner, typename TImageToImageMetric, typename TMeanSquaresMetric >
 bool
-MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric, TMeanSquaresMetric >
+MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric,
+                                                              TMeanSquaresMetric >
 ::ProcessPoint( const VirtualIndexType &,
                 const VirtualPointType &           virtualPoint,
                 const FixedImagePointType &,
@@ -41,7 +42,8 @@ MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner
 {
   /** Only the voxelwise contribution given the point pairs. */
   FixedImagePixelType diff = fixedImageValue - movingImageValue;
-  const unsigned int nComponents = NumericTraits<FixedImagePixelType>::GetLength( diff );
+  const unsigned int  nComponents = NumericTraits<FixedImagePixelType>::GetLength( diff );
+
   metricValueReturn = NumericTraits<MeasureType>::ZeroValue();
 
   for ( unsigned int nc = 0; nc < nComponents; nc++ )
@@ -50,7 +52,7 @@ MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner
     metricValueReturn += diffC*diffC;
     }
 
-  if( ! this->GetComputeDerivative() )
+  if( !this->GetComputeDerivative() )
     {
     return true;
     }

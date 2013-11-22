@@ -21,12 +21,11 @@
 #include "itkVotingBinaryHoleFillingImageFilter.h"
 #include "itkTextOutput.h"
 
-
-int itkVotingBinaryHoleFillingImageFilterTest(int, char* [] )
+int
+itkVotingBinaryHoleFillingImageFilterTest(int, char* [] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
-
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   typedef itk::Image<unsigned short,2> ImageType;
 
@@ -61,17 +60,15 @@ int itkVotingBinaryHoleFillingImageFilterTest(int, char* [] )
   // Create a voting image
   itk::VotingBinaryHoleFillingImageFilter<ImageType, ImageType>::Pointer voting;
   voting = itk::VotingBinaryHoleFillingImageFilter<ImageType,ImageType>::New();
-  voting->SetInput( thresholder->GetOutput());
+  voting->SetInput( thresholder->GetOutput() );
   voting->SetForegroundValue( foreground );
   voting->SetBackgroundValue( background );
-
 
   // define the neighborhood size used for the voting filter (5x5)
   ImageType::SizeType neighRadius;
   neighRadius[0] = 1;
   neighRadius[1] = 1;
   voting->SetRadius(neighRadius);
-
 
   // Set the number of pixels over 50% that will tip the decision about
   // switching a pixel.
@@ -82,39 +79,38 @@ int itkVotingBinaryHoleFillingImageFilterTest(int, char* [] )
 
   itk::ImageRegionIterator<ImageType> it;
   it = itk::ImageRegionIterator<ImageType>(random->GetOutput(),
-                               random->GetOutput()->GetBufferedRegion());
+                                           random->GetOutput()->GetBufferedRegion() );
   std::cout << "Input image" << std::endl;
   unsigned int i;
   for (i=1; !it.IsAtEnd(); ++i, ++it)
     {
     std::cout << "\t" << it.Get();
-    if ((i % 8) == 0)
+    if ( (i % 8) == 0)
       {
       std::cout << std::endl;
       }
     }
 
   it = itk::ImageRegionIterator<ImageType>(thresholder->GetOutput(),
-                               thresholder->GetOutput()->GetBufferedRegion());
+                                           thresholder->GetOutput()->GetBufferedRegion() );
   std::cout << "Binary image" << std::endl;
 
   for (i=1; !it.IsAtEnd(); ++i, ++it)
     {
     std::cout << "\t" << it.Get();
-    if ((i % 8) == 0)
+    if ( (i % 8) == 0)
       {
       std::cout << std::endl;
       }
     }
 
-
   std::cout << "Output image" << std::endl;
   it = itk::ImageRegionIterator<ImageType>(voting->GetOutput(),
-                               voting->GetOutput()->GetBufferedRegion());
+                                           voting->GetOutput()->GetBufferedRegion() );
   for (i=1; !it.IsAtEnd(); ++i, ++it)
     {
     std::cout << "\t" << it.Get();
-    if ((i % 8) == 0)
+    if ( (i % 8) == 0)
       {
       std::cout << std::endl;
       }

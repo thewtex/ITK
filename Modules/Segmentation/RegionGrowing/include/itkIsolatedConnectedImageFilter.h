@@ -68,7 +68,7 @@ namespace itk
  * \ingroup ITKRegionGrowing
  */
 template< typename TInputImage, typename TOutputImage >
-class IsolatedConnectedImageFilter:
+class IsolatedConnectedImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -101,7 +101,7 @@ public:
   typedef std::vector< IndexType > SeedsContainerType;
 
   typedef typename NumericTraits<
-    InputImagePixelType >::RealType InputRealType;
+      InputImagePixelType >::RealType InputRealType;
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -128,6 +128,7 @@ public:
 
   /** Method to access seed container */
   virtual const SeedsContainerType &GetSeeds1() const;
+
   virtual const SeedsContainerType &GetSeeds2() const;
 
   /** Set/Get the limit on the lower threshold value. The default is
@@ -143,12 +144,14 @@ public:
   /** Set/Get the limit on the upper threshold value. The default is
       the max() for the InputPixelType.  These methods have been
       deprecated.  Please use Set/Get Upper instead. */
-  void SetUpperValueLimit(InputImagePixelType upperValue)
+  void
+  SetUpperValueLimit(InputImagePixelType upperValue)
   {
     this->SetUpper(upperValue);
   }
 
-  InputImagePixelType GetUpperValueLimit()
+  InputImagePixelType
+  GetUpperValueLimit()
   {
     return this->GetUpper();
   }
@@ -212,6 +215,7 @@ protected:
 private:
   IsolatedConnectedImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);               //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -123,7 +123,8 @@ Element2DC0LinearLine
 // ----------------------------------------------------------------------------
 // Compute distance to finite line. Returns parametric coordinate t
 // and point location on line.
-itk::fem::Element::Float Element2DC0LinearLine::DistanceToLine(
+itk::fem::Element::Float
+Element2DC0LinearLine::DistanceToLine(
   const VectorType & x, const VectorType & p1, const VectorType & p2, Float & t,
   VectorType & closestPoint) const
 {
@@ -183,7 +184,8 @@ itk::fem::Element::Float Element2DC0LinearLine::DistanceToLine(
   return dist;
 }
 
-void Element2DC0LinearLine::PopulateEdgeIds(void)
+void
+Element2DC0LinearLine::PopulateEdgeIds(void)
 {
   this->m_EdgeIds.resize(0);
 
@@ -196,7 +198,8 @@ void Element2DC0LinearLine::PopulateEdgeIds(void)
   this->m_EdgeIds.push_back(edgePtIds);
 }
 
-void Element2DC0LinearLine::PrintSelf(std::ostream& os, Indent indent) const
+void
+Element2DC0LinearLine::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }

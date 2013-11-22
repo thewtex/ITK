@@ -35,7 +35,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingImage >
-class MutualInformationHistogramImageToImageMetric:
+class MutualInformationHistogramImageToImageMetric :
   public HistogramImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
@@ -76,7 +76,8 @@ protected:
   /** Constructor is protected to ensure that \c New() function is used to
       create instances. */
   MutualInformationHistogramImageToImageMetric(){}
-  virtual ~MutualInformationHistogramImageToImageMetric(){}
+  virtual
+  ~MutualInformationHistogramImageToImageMetric(){}
 
   /** Evaluates the mutual information from the histogram. */
   virtual MeasureType EvaluateMeasure(HistogramType & histogram) const;
@@ -85,6 +86,7 @@ private:
   // Purposely not implemented.
   MutualInformationHistogramImageToImageMetric(Self const &);
   void operator=(Self const &); // Purposely not implemented.
+
 };
 } // End namespace itk.
 

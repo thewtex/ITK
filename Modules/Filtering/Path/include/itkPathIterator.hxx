@@ -25,7 +25,7 @@ namespace itk
 {
 template< typename TImage, typename TPath >
 PathIterator< TImage, TPath >
-::PathIterator(ImageType *imagePtr, const PathType  *pathPtr):
+::PathIterator(ImageType *imagePtr, const PathType  *pathPtr) :
   PathConstIterator< TImage, TPath >(imagePtr, pathPtr)
 {}
 
@@ -37,6 +37,7 @@ PathIterator< TImage, TPath >
   this->PathConstIterator< TImage, TPath >::operator=(it);
   return *this;
 }
+
 } // end namespace itk
 
 #endif

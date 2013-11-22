@@ -69,6 +69,7 @@ NeighborhoodSampler< TSample >
   // m_Radius
   os << indent << "Radius: " << this->GetRadiusInput() << std::endl;
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

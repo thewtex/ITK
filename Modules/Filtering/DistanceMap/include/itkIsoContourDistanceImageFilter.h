@@ -54,7 +54,7 @@ namespace itk
  * \ingroup ITKDistanceMap
  */
 template< typename TInputImage, typename TOutputImage >
-class IsoContourDistanceImageFilter:
+class IsoContourDistanceImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -87,8 +87,8 @@ public:
   typedef typename InputImageType::PixelType   InputPixelType;
   typedef typename OutputImageType::RegionType OutputImageRegionType;
 
-  typedef typename InputImageType::SizeType   InputSizeType;
-  typedef typename OutputImageType::SizeType  SizeType;
+  typedef typename InputImageType::SizeType  InputSizeType;
+  typedef typename OutputImageType::SizeType SizeType;
 
   typedef typename InputImageType::IndexType  InputIndexType;
   typedef typename OutputImageType::IndexType IndexType;
@@ -122,8 +122,11 @@ public:
   /** Set/Get the narrowband. */
   void SetNarrowBand(NarrowBandType *ptr);
 
-  NarrowBandPointer GetNarrowBand() const
-  { return m_NarrowBand; }
+  NarrowBandPointer
+  GetNarrowBand() const
+  {
+    return m_NarrowBand;
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking

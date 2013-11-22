@@ -70,7 +70,7 @@ namespace itk
  * \ingroup ITKBinaryMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class ObjectMorphologyImageFilter:
+class ObjectMorphologyImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -94,11 +94,11 @@ public:
   typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
 
   typedef ImageBoundaryCondition< InputImageType > *
-  ImageBoundaryConditionPointerType;
+    ImageBoundaryConditionPointerType;
   typedef ImageBoundaryCondition< InputImageType > const *
-  ImageBoundaryConditionConstPointerType;
+    ImageBoundaryConditionConstPointerType;
   typedef ConstantBoundaryCondition< InputImageType >
-  DefaultBoundaryConditionType;
+    DefaultBoundaryConditionType;
 
   /** Image related typedefs. */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -110,9 +110,9 @@ public:
 
   /** Neighborhood iterator type. */
   typedef ConstNeighborhoodIterator< TInputImage >
-  InputNeighborhoodIteratorType;
+    InputNeighborhoodIteratorType;
   typedef NeighborhoodIterator< TOutputImage >
-  OutputNeighborhoodIteratorType;
+    OutputNeighborhoodIteratorType;
 
   /** Kernel typedef. */
   typedef TKernel KernelType;
@@ -148,12 +148,18 @@ public:
    * can be of a different type than the default type as long as it is
    * a subclass of ImageBoundaryCondition.
    * NOTE: Don't foget to set UseBoundaryCondition to true! */
-  void OverrideBoundaryCondition(const ImageBoundaryConditionPointerType i)
-  { m_BoundaryCondition = i; }
+  void
+  OverrideBoundaryCondition(const ImageBoundaryConditionPointerType i)
+  {
+    m_BoundaryCondition = i;
+  }
 
   /** Rest the boundary condition to the default */
-  void ResetBoundaryCondition()
-  { m_BoundaryCondition = &m_DefaultBoundaryCondition; }
+  void
+  ResetBoundaryCondition()
+  {
+    m_BoundaryCondition = &m_DefaultBoundaryCondition;
+  }
 
   /** Get the current boundary condition. */
   itkGetConstMacro(BoundaryCondition, ImageBoundaryConditionPointerType);
@@ -231,6 +237,7 @@ protected:
 private:
   ObjectMorphologyImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);              //purposely not implemented
+
 };                                           // end of class
 } // end namespace itk
 

@@ -27,7 +27,8 @@
 #include "itkLevelSetEquationCurvatureTerm.h"
 #include "itkLevelSetEvolutionNumberOfIterationsStoppingCriterion.h"
 
-int itkSingleLevelSetWhitakerImage2DWithCurvatureTest( int argc, char* argv[] )
+int
+itkSingleLevelSetWhitakerImage2DWithCurvatureTest( int argc, char* argv[] )
 {
   if( argc < 2 )
     {
@@ -37,44 +38,44 @@ int itkSingleLevelSetWhitakerImage2DWithCurvatureTest( int argc, char* argv[] )
 
   const unsigned int Dimension = 2;
 
-  typedef unsigned short                                    InputPixelType;
-  typedef itk::Image< InputPixelType, Dimension >           InputImageType;
+  typedef unsigned short                          InputPixelType;
+  typedef itk::Image< InputPixelType, Dimension > InputImageType;
   typedef itk::ImageRegionIteratorWithIndex< InputImageType >
-                                                            InputIteratorType;
-  typedef itk::ImageFileReader< InputImageType >            ReaderType;
+    InputIteratorType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
-  typedef float                                             PixelType;
-  typedef InputImageType::OffsetType                        OffsetType;
+  typedef float                      PixelType;
+  typedef InputImageType::OffsetType OffsetType;
 
   typedef itk::WhitakerSparseLevelSetImage< PixelType, Dimension >
-                                                            SparseLevelSetType;
+    SparseLevelSetType;
   typedef itk::BinaryImageToLevelSetImageAdaptor< InputImageType, SparseLevelSetType >
-                                                            BinaryToSparseAdaptorType;
+    BinaryToSparseAdaptorType;
 
-  typedef itk::IdentifierType                               IdentifierType;
+  typedef itk::IdentifierType IdentifierType;
 
   typedef itk::LevelSetContainer< IdentifierType, SparseLevelSetType >
-                                                            LevelSetContainerType;
+    LevelSetContainerType;
 
   typedef itk::LevelSetEquationChanAndVeseInternalTerm< InputImageType, LevelSetContainerType >
-                                                            ChanAndVeseInternalTermType;
+    ChanAndVeseInternalTermType;
   typedef itk::LevelSetEquationChanAndVeseExternalTerm< InputImageType, LevelSetContainerType >
-                                                            ChanAndVeseExternalTermType;
+    ChanAndVeseExternalTermType;
   typedef itk::LevelSetEquationCurvatureTerm< InputImageType, LevelSetContainerType >
-                                                            CurvatureTermType;
+    CurvatureTermType;
   typedef itk::LevelSetEquationTermContainer< InputImageType, LevelSetContainerType >
-                                                            TermContainerType;
+    TermContainerType;
 
   typedef itk::LevelSetEquationContainer< TermContainerType >
-                                                            EquationContainerType;
+    EquationContainerType;
 
   typedef itk::LevelSetEvolution< EquationContainerType, SparseLevelSetType >
-                                                            LevelSetEvolutionType;
+    LevelSetEvolutionType;
 
-  typedef SparseLevelSetType::OutputRealType                      LevelSetOutputRealType;
+  typedef SparseLevelSetType::OutputRealType LevelSetOutputRealType;
   typedef itk::SinRegularizedHeavisideStepFunction< LevelSetOutputRealType, LevelSetOutputRealType >
-                                                            HeavisideFunctionBaseType;
-  typedef itk::ImageRegionIteratorWithIndex< InputImageType >     InputIteratorType;
+    HeavisideFunctionBaseType;
+  typedef itk::ImageRegionIteratorWithIndex< InputImageType > InputIteratorType;
 
   // load binary mask
   ReaderType::Pointer reader = ReaderType::New();
@@ -90,8 +91,8 @@ int itkSingleLevelSetWhitakerImage2DWithCurvatureTest( int argc, char* argv[] )
   binary->FillBuffer( itk::NumericTraits<InputPixelType>::Zero );
 
   InputImageType::RegionType region;
-  InputImageType::IndexType index;
-  InputImageType::SizeType size;
+  InputImageType::IndexType  index;
+  InputImageType::SizeType   size;
 
   index.Fill( 10 );
   size.Fill( 30 );
@@ -114,7 +115,6 @@ int itkSingleLevelSetWhitakerImage2DWithCurvatureTest( int argc, char* argv[] )
   std::cout << "Finished converting to sparse format" << std::endl;
 
   SparseLevelSetType::Pointer level_set = adaptor->GetModifiableLevelSet();
-
 
   input->TransformPhysicalPointToIndex( binary->GetOrigin(), index );
   OffsetType offset;
@@ -180,7 +180,7 @@ int itkSingleLevelSetWhitakerImage2DWithCurvatureTest( int argc, char* argv[] )
   equationContainer->AddEquation( 0, termContainer0 );
 
   typedef itk::LevelSetEvolutionNumberOfIterationsStoppingCriterion< LevelSetContainerType >
-      StoppingCriterionType;
+    StoppingCriterionType;
   StoppingCriterionType::Pointer criterion = StoppingCriterionType::New();
   criterion->SetNumberOfIterations( 5 );
 
@@ -197,7 +197,7 @@ int itkSingleLevelSetWhitakerImage2DWithCurvatureTest( int argc, char* argv[] )
 
   evolution->SetStoppingCriterion( criterion );
 
-  if( evolution->GetStoppingCriterion( ) != criterion )
+  if( evolution->GetStoppingCriterion() != criterion )
     {
     std::cerr << "evolution->GetStoppingCriterion( ) != criterion" << std::endl;
 
@@ -207,14 +207,13 @@ int itkSingleLevelSetWhitakerImage2DWithCurvatureTest( int argc, char* argv[] )
 
   evolution->SetLevelSetContainer( lscontainer );
 
-  if( evolution->GetLevelSetContainer( ) != lscontainer )
+  if( evolution->GetLevelSetContainer() != lscontainer )
     {
     std::cerr << "evolution->GetLevelSetContainer( ) != lscontainer" << std::endl;
 
     return EXIT_FAILURE;
     }
   std::cerr << "evolution->GetLevelSetContainer( ) == lscontainer" << std::endl;
-
 
   try
     {

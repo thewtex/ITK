@@ -28,7 +28,8 @@ namespace
 
 const double epsilon = 1e-10;
 
-void PrintVector( const Vector2Type & v )
+void
+PrintVector( const Vector2Type & v )
 {
   for( unsigned int i = 0; i < Vector2Type::Dimension; i++ )
     {
@@ -38,7 +39,8 @@ void PrintVector( const Vector2Type & v )
 }
 
 template <typename TMatrix>
-bool testMatrix( const TMatrix & m1, const TMatrix & m2 )
+bool
+testMatrix( const TMatrix & m1, const TMatrix & m2 )
 {
   bool pass = true;
 
@@ -56,7 +58,8 @@ bool testMatrix( const TMatrix & m1, const TMatrix & m2 )
 }
 
 template <typename TVector>
-bool testVector( const TVector & v1, const TVector & v2 )
+bool
+testVector( const TVector & v1, const TVector & v2 )
 {
   bool pass = true;
 
@@ -71,7 +74,8 @@ bool testVector( const TVector & v1, const TVector & v2 )
 }
 
 template <typename TVector>
-bool testVariableVector( const TVector & v1, const TVector & v2 )
+bool
+testVariableVector( const TVector & v1, const TVector & v2 )
 {
   bool               pass = true;
   const unsigned int D1 = v1.Size();
@@ -91,14 +95,16 @@ bool testVariableVector( const TVector & v1, const TVector & v2 )
   return pass;
 }
 
-bool testValue( const double v1, const double v2 )
+bool
+testValue( const double v1, const double v2 )
 {
   return vcl_fabs( v1 - v2 ) <= epsilon;
 }
 
 } // namespace
 
-int itkAffineTransformTest(int, char *[])
+int
+itkAffineTransformTest(int, char *[])
 {
   /* NOTE: The truth values for tests were taken from the output
       of the tests themselves. The assumption is that this code
@@ -574,9 +580,9 @@ int itkAffineTransformTest(int, char *[])
   std::cout << jaffJacobian << std::endl;
 
   double data[] =
-        {5, 10, 15, 0, 0, 0, 0, 0, 0, 1, 0, 0,
-        0, 0, 0, 5, 10, 15, 0, 0, 0, 0, 1, 0,
-        0, 0, 0, 0, 0, 0, 5, 10, 15, 0, 0, 1};
+          {5, 10, 15, 0, 0, 0, 0, 0, 0, 1, 0, 0,
+          0, 0, 0, 5, 10, 15, 0, 0, 0, 0, 1, 0,
+          0, 0, 0, 0, 0, 0, 5, 10, 15, 0, 0, 1};
   vnl_matrix<double>         vnlData( data, 3, 12 );
   Affine3DType::JacobianType expectedJacobian(vnlData);
   for( unsigned int i = 0; i < 3; i++ )

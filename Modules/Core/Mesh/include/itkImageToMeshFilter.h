@@ -33,7 +33,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TInputImage, typename TOutputMesh >
-class ImageToMeshFilter:public MeshSource< TOutputMesh >
+class ImageToMeshFilter : public MeshSource< TOutputMesh >
 {
 public:
   /** Standard class typedefs. */
@@ -64,17 +64,21 @@ public:
   /** Set the input image of this process object.  */
   using Superclass::SetInput;
   void SetInput(unsigned int idx, const InputImageType *input);
-  void SetInput(const InputImageType *input)
-    {
+
+  void
+  SetInput(const InputImageType *input)
+  {
     this->SetInput(0, input);
-    }
+  }
 
   /** Get the input image of this process object.  */
   const InputImageType * GetInput(unsigned int idx);
-  const InputImageType * GetInput()
-    {
+
+  const InputImageType *
+  GetInput()
+  {
     return this->GetInput(0);
-    }
+  }
 
   /** Get the output Mesh of this process object.  */
   OutputMeshType * GetOutput(void);
@@ -89,6 +93,7 @@ protected:
 private:
   ImageToMeshFilter(const ImageToMeshFilter &); //purposely not implemented
   void operator=(const ImageToMeshFilter &);    //purposely not implemented
+
 };
 } // end namespace itk
 

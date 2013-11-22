@@ -38,6 +38,7 @@ typename LevelSetQuadEdgeMesh< TMesh >::OutputType
 LevelSetQuadEdgeMesh< TMesh >::Evaluate( const InputType& iP ) const
 {
   OutputType oValue = 0.;
+
   this->m_Mesh->GetPointData( iP, &oValue );
   return oValue;
 }

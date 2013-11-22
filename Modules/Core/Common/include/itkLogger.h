@@ -33,7 +33,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT Logger:public LoggerBase
+class ITKCommon_EXPORT Logger : public LoggerBase
 {
 public:
   typedef Logger                     Self;
@@ -53,11 +53,13 @@ protected:
   Logger() {}
 
   /** Destructor */
-  virtual ~Logger() {}
+  virtual
+  ~Logger() {}
 
 private:
   Logger(const Self &);         //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };                              // class Logger
 } // namespace itk
 

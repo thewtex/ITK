@@ -53,10 +53,10 @@ class DOMNode : public Object
 {
 public:
   /** Standard class typedefs. */
-  typedef DOMNode                     Self;
-  typedef Object                      Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef DOMNode                    Self;
+  typedef Object                     Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -65,8 +65,8 @@ public:
   itkTypeMacro(DOMNode, Object);
 
   /** Container to return all or a subset of the children of a DOM node. */
-  typedef std::vector<DOMNode*>         ChildrenListType;
-  typedef std::vector<const DOMNode*>   ConstChildrenListType;
+  typedef std::vector<DOMNode*>       ChildrenListType;
+  typedef std::vector<const DOMNode*> ConstChildrenListType;
 
   /** An attribute is a pair of <key,value>, both key and value are strings. */
   typedef std::string AttributeKeyType;
@@ -83,7 +83,9 @@ public:
 
   /** Retrieve the parent node. */
   virtual void SetParent( DOMNode* node );
+
   DOMNode* GetParent();
+
   const DOMNode* GetParent() const;
 
   /** Retrieve the tag name of this node. */
@@ -96,10 +98,13 @@ public:
 
   /** Retrieve an attribute by key (return an empty string if not found). */
   virtual std::string GetAttribute( const std::string& key ) const;
+
   /** Check whether has an attribute. */
   virtual bool HasAttribute( const std::string& key ) const;
+
   /** Add or replace an attribute. */
   virtual void SetAttribute( const std::string& key, const std::string& value );
+
   /** Remove an attribute by key (throw exception if not found). */
   virtual void RemoveAttribute( const std::string& key );
 
@@ -108,6 +113,7 @@ public:
    * or alphabetic order of the attribute keys (keepOriginalOrder = false).
    */
   virtual void GetAllAttributes( AttributesListType& output, bool keepOriginalOrder = true ) const;
+
   /** Remove all attributes. */
   virtual void RemoveAllAttributes();
 
@@ -116,11 +122,13 @@ public:
 
   /** Return all children. */
   virtual void GetAllChildren( ChildrenListType& output );
+
   /** Return all children for read-only access. */
   virtual void GetAllChildren( ConstChildrenListType& output ) const;
 
   /** Return all children of a same tag name. */
   virtual void GetChildren( const std::string& tag, ChildrenListType& output );
+
   /** Return all children of a same tag name for read-only access. */
   virtual void GetChildren( const std::string& tag, ConstChildrenListType& output ) const;
 
@@ -129,8 +137,10 @@ public:
 
   /** Add a child in front of another child (throw exception if not able to add). */
   virtual void AddChild( DOMNode* node, IdentifierType i=0 );
+
   /** Add a child in front of the children list (throw exception if not able to add). */
   virtual void AddChildAtBegin( DOMNode* node );
+
   /** Add a child at the end of the children list (throw exception if not able to add). */
   virtual void AddChildAtEnd( DOMNode* node );
 
@@ -145,22 +155,27 @@ public:
 
   /** Retrieve a child by index (return NULL if i is out of range). */
   virtual DOMNode* GetChild( IdentifierType i=0 );
+
   virtual const DOMNode* GetChild( IdentifierType i=0 ) const;
 
   /** Retrieve a child by tag name and an index (multiple children can have a same tag name, return NULL if no such child). */
   virtual DOMNode* GetChild( const std::string& tag, IdentifierType i=0 );
+
   virtual const DOMNode* GetChild( const std::string& tag, IdentifierType i=0 ) const;
 
   /** Retrieve a child by its unique "id" attribute value (return NULL if not found). */
   virtual DOMNode* GetChildByID( const std::string& value );
+
   virtual const DOMNode* GetChildByID( const std::string& value ) const;
 
   /** Retrieve an older or younger sibling by distance (return NULL if no such sibling). */
   virtual DOMNode* GetSibling( OffsetType i );
+
   virtual const DOMNode* GetSibling( OffsetType i ) const;
 
   /** Return the root node. */
   virtual DOMNode* GetRoot();
+
   virtual const DOMNode* GetRoot() const;
 
   /** Test whether the input node and this node share the same root. */
@@ -184,6 +199,7 @@ public:
    * The method returns NULL if queried node does not exist.
    */
   virtual DOMNode* Find( const std::string& path );
+
   virtual const DOMNode* Find( const std::string& path ) const;
 
   /** Return the path of this node within its root, in the form of a query string that uses only indices. */
@@ -191,12 +207,15 @@ public:
 
   /** Get a child and cast it to a text node (return NULL if out of range or not a text node). */
   virtual DOMTextNode* GetTextChild( IdentifierType i=0 );
+
   virtual const DOMTextNode* GetTextChild( IdentifierType i=0 ) const;
 
   /** Generate a text node from a string and add/insert it as a child (see AddChild(node,i)). */
   virtual void AddTextChild( const std::string& text, IdentifierType i=0 );
+
   /** Generate a text node from a string and add/insert in front of all children. */
   virtual void AddTextChildAtBegin( const std::string& text );
+
   /** Generate a text node from a string and add/insert at the end of all children. */
   virtual void AddTextChildAtEnd( const std::string& text );
 
@@ -228,8 +247,9 @@ private:
   typedef std::list<AttributeItemType*> OrderedAttributesContainer;
   OrderedAttributesContainer m_OrderedAttributes;
 
-  DOMNode(const Self &); //purposely not implemented
+  DOMNode(const Self &);        //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 
 } // namespace itk

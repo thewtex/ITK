@@ -39,7 +39,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 class ITKCommon_EXPORT Barrier
-  : public LightObject
+  : public             LightObject
 {
 public:
   /** Standard class typedefs. */

@@ -24,7 +24,8 @@
 #include "itkLevelOrderTreeIterator.h"
 #include <iostream>
 
-int itkSpatialObjectTreeContainerTest(int, char* [])
+int
+itkSpatialObjectTreeContainerTest(int, char* [])
 {
 
   typedef itk::GroupSpatialObject<2>         NodeType;
@@ -58,13 +59,13 @@ int itkSpatialObjectTreeContainerTest(int, char* [])
   TreeType::Pointer tree = TreeType::New();
   tree->Print(std::cout);
 
-  tree->SetRoot(object0.GetPointer());
+  tree->SetRoot(object0.GetPointer() );
 
   // LevelOrderTreeIterator Test
   std::cout << "Testing LevelOrderTreeIterator: " << std::endl;
   itk::LevelOrderTreeIterator<TreeType> levelIt(tree,10);
   levelIt.GoToBegin();
-  while(!levelIt.IsAtEnd())
+  while(!levelIt.IsAtEnd() )
     {
     std::cout << levelIt.Get()->GetId() << " ("<< levelIt.GetLevel() << ")" << std::endl;
     ++levelIt;
@@ -72,16 +73,15 @@ int itkSpatialObjectTreeContainerTest(int, char* [])
   std::cout << std::endl;
   std::cout << "[SUCCESS]" << std::endl;
 
-
   std::cout << "Testing adding to tree by iterator (PreOrderTreeIterator): " << std::endl;
   NodeType::Pointer object8 = NodeType::New();
   object8->SetId(8);
   itk::PreOrderTreeIterator<TreeType> preIt( tree );
-  preIt.Add(object8.GetPointer());
+  preIt.Add(object8.GetPointer() );
 //if the following line is used instead of the previous line the correct node type is created and the test passes
 //  preIt.GetNode()->AddChild(object8->GetTreeNode());
   preIt.GoToBegin();
-  while(!preIt.IsAtEnd())
+  while(!preIt.IsAtEnd() )
     {
     if(preIt.Get()->GetId() == 8)
       {
@@ -98,7 +98,7 @@ int itkSpatialObjectTreeContainerTest(int, char* [])
 
   std::cout << "Testing node type of SpatialObject added to tree by iterator (PreOrderTreeIterator): " << std::endl;
   const itk::SpatialObjectTreeNode<2>* spatialObjectTreeNode =
-    dynamic_cast<const itk::SpatialObjectTreeNode<2>*>(preIt.GetNode());
+    dynamic_cast<const itk::SpatialObjectTreeNode<2>*>(preIt.GetNode() );
   if(spatialObjectTreeNode==NULL)
     {
     std::cout << "[FAILED]" << std::endl;

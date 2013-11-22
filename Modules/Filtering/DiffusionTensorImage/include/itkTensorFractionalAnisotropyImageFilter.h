@@ -34,20 +34,24 @@ public:
   typedef typename TInput::RealValueType RealValueType;
   TensorFractionalAnisotropyFunction() {}
   ~TensorFractionalAnisotropyFunction() {}
-  bool operator!=(const TensorFractionalAnisotropyFunction &) const
+  bool
+  operator!=(const TensorFractionalAnisotropyFunction &) const
   {
     return false;
   }
 
-  bool operator==(const TensorFractionalAnisotropyFunction & other) const
+  bool
+  operator==(const TensorFractionalAnisotropyFunction & other) const
   {
     return !( *this != other );
   }
 
-  inline RealValueType operator()(const TInput & x) const
+  inline RealValueType
+  operator()(const TInput & x) const
   {
     return x.GetFractionalAnisotropy();
   }
+
 };
 }  // end namespace functor
 
@@ -67,10 +71,10 @@ public:
  * \ingroup ITKDiffusionTensorImage
  */
 template< typename  TInputImage,
-  typename  TOutputImage = Image<
-    typename NumericTraits< typename TInputImage::PixelType::ValueType >::RealType,
-    TInputImage::Dimension > >
-class TensorFractionalAnisotropyImageFilter:
+          typename  TOutputImage = Image<
+              typename NumericTraits< typename TInputImage::PixelType::ValueType >::RealType,
+              TInputImage::Dimension > >
+class TensorFractionalAnisotropyImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::TensorFractionalAnisotropyFunction<
@@ -80,9 +84,9 @@ public:
   /** Standard class typedefs. */
   typedef TensorFractionalAnisotropyImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::TensorFractionalAnisotropyFunction<
-      typename TInputImage::PixelType > >         Superclass;
+      TInputImage, TOutputImage,
+      Functor::TensorFractionalAnisotropyFunction<
+        typename TInputImage::PixelType > >         Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -99,8 +103,11 @@ public:
   itkNewMacro(Self);
 
   /** Print internal ivars */
-  void PrintSelf(std::ostream & os, Indent indent) const
-  { this->Superclass::PrintSelf(os, indent); }
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    this->Superclass::PrintSelf(os, indent);
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -111,7 +118,8 @@ public:
 
 protected:
   TensorFractionalAnisotropyImageFilter() {}
-  virtual ~TensorFractionalAnisotropyImageFilter() {}
+  virtual
+  ~TensorFractionalAnisotropyImageFilter() {}
 
 private:
   TensorFractionalAnisotropyImageFilter(const Self &); //purposely not

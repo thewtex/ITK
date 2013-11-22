@@ -41,7 +41,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TImageType, typename TCoordRep = double, typename TCoefficientType = double >
-class ComplexBSplineInterpolateImageFunction:
+class ComplexBSplineInterpolateImageFunction :
   public InterpolateImageFunction< TImageType, TCoordRep >
 {
 public:
@@ -123,7 +123,8 @@ public:
 
 protected:
   ComplexBSplineInterpolateImageFunction();
-  virtual ~ComplexBSplineInterpolateImageFunction() {}
+  virtual
+  ~ComplexBSplineInterpolateImageFunction() {}
   void operator=(const Self &);  //purposely not implemented
 
   void PrintSelf(std::ostream & os, Indent indent) const;

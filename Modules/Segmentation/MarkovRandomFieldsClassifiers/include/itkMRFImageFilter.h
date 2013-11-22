@@ -122,7 +122,7 @@ namespace itk
  * \ingroup ITKMarkovRandomFieldsClassifiers
  */
 template< typename TInputImage, typename TClassifiedImage >
-class MRFImageFilter:
+class MRFImageFilter :
   public ImageToImageFilter< TInputImage, TClassifiedImage >
 {
 public:
@@ -185,7 +185,7 @@ public:
 
   /** Type definition for the input image region iterator */
   typedef ImageRegionIterator< TClassifiedImage >
-  LabelledImageRegionIterator;
+    LabelledImageRegionIterator;
 
   /** Labelled Image dimension */
   itkStaticConstMacro(ClassifiedImageDimension, unsigned int,
@@ -202,35 +202,35 @@ public:
 
   /** Input image neighborhood iterator and kernel size typedef */
   typedef ConstNeighborhoodIterator< TInputImage >
-  InputImageNeighborhoodIterator;
+    InputImageNeighborhoodIterator;
 
   typedef typename InputImageNeighborhoodIterator::RadiusType
-  InputImageNeighborhoodRadiusType;
+    InputImageNeighborhoodRadiusType;
 
   typedef NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< TInputImage >
-  InputImageFacesCalculator;
+    InputImageFacesCalculator;
 
   typedef typename InputImageFacesCalculator::FaceListType
-  InputImageFaceListType;
+    InputImageFaceListType;
 
   typedef typename InputImageFaceListType::iterator
-  InputImageFaceListIterator;
+    InputImageFaceListIterator;
 
   /** Labelled image neighborhood interator typedef */
   typedef NeighborhoodIterator< TClassifiedImage >
-  LabelledImageNeighborhoodIterator;
+    LabelledImageNeighborhoodIterator;
 
   typedef typename LabelledImageNeighborhoodIterator::RadiusType
-  LabelledImageNeighborhoodRadiusType;
+    LabelledImageNeighborhoodRadiusType;
 
   typedef NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< TClassifiedImage >
-  LabelledImageFacesCalculator;
+    LabelledImageFacesCalculator;
 
   typedef typename LabelledImageFacesCalculator::FaceListType
-  LabelledImageFaceListType;
+    LabelledImageFaceListType;
 
   typedef typename LabelledImageFaceListType::iterator
-  LabelledImageFaceListIterator;
+    LabelledImageFaceListIterator;
 
   /** Set the pointer to the classifer being used. */
   void SetClassifier(typename ClassifierType::Pointer ptrToClassifier);
@@ -265,7 +265,8 @@ public:
   void SetNeighborhoodRadius(const SizeValueType *radiusArray);
 
   /** Get the neighborhood radius */
-  const NeighborhoodRadiusType GetNeighborhoodRadius() const
+  const NeighborhoodRadiusType
+  GetNeighborhoodRadius() const
   {
     NeighborhoodRadiusType radius;
 
@@ -341,7 +342,7 @@ protected:
 
   /** Labelled status image neighborhood interator typedef */
   typedef NeighborhoodIterator< LabelStatusImageType >
-  LabelStatusImageNeighborhoodIterator;
+    LabelStatusImageNeighborhoodIterator;
   //Function implementing the neighborhood operation
 
   virtual void DoNeighborhoodOperation(const InputImageNeighborhoodIterator & imageIter,
@@ -363,16 +364,16 @@ private:
   typedef typename TInputImage::SizeType InputImageSizeType;
 
   typedef typename LabelStatusImageNeighborhoodIterator::RadiusType
-  LabelStatusImageNeighborhoodRadiusType;
+    LabelStatusImageNeighborhoodRadiusType;
 
   typedef NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< LabelStatusImageType >
-  LabelStatusImageFacesCalculator;
+    LabelStatusImageFacesCalculator;
 
   typedef typename LabelStatusImageFacesCalculator::FaceListType
-  LabelStatusImageFaceListType;
+    LabelStatusImageFaceListType;
 
   typedef typename LabelStatusImageFaceListType::iterator
-  LabelStatusImageFaceListIterator;
+    LabelStatusImageFaceListIterator;
 
   InputImageNeighborhoodRadiusType       m_InputImageNeighborhoodRadius;
   LabelledImageNeighborhoodRadiusType    m_LabelledImageNeighborhoodRadius;
@@ -409,6 +410,7 @@ private:
 
   //Function implementing the ICM algorithm to label the images
   void ApplyICMLabeller();
+
 }; // class MRFImageFilter
 } // namespace itk
 

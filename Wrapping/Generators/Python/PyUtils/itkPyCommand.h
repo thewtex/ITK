@@ -43,10 +43,10 @@ class PyCommand : public Command
 {
 public:
   ///! Standard "Self" typedef.
-  typedef PyCommand         Self;
+  typedef PyCommand Self;
 
   ///! Smart pointer typedef support.
-  typedef SmartPointer<Self>  Pointer;
+  typedef SmartPointer<Self> Pointer;
 
   ///! Run-time type information (and related methods).
   itkTypeMacro(PyCommand,Command);
@@ -64,19 +64,20 @@ public:
   PyObject * GetCommandCallable();
 
   void Execute(Object *, const EventObject&);
+
   void Execute(const Object *, const EventObject&);
 
 protected:
   PyCommand();
   ~PyCommand();
   void PyExecute();
-  PyCommand(const Self&);     // Not implemented.
+
+  PyCommand(const Self&);             // Not implemented.
   PyCommand & operator=(const Self&); // Not implemented.
 
 private:
   PyObject *m_Object;
 };
-
 
 } // namespace itk
 

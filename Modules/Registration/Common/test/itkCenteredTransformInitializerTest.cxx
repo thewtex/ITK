@@ -20,7 +20,6 @@
 #include "itkCenteredTransformInitializer.h"
 #include "itkImageRegionIterator.h"
 
-
 namespace
 {
 const unsigned int Dimension = 3;
@@ -28,30 +27,31 @@ const unsigned int Dimension = 3;
 // This function assumes that the center of mass of both images is the
 // geometrical center.
 template< typename TFixedImage, typename TMovingImage >
-bool RunTest(
+bool
+RunTest(
   itk::SmartPointer< TFixedImage >  fixedImage,
   itk::SmartPointer< TMovingImage > movingImage
   )
-  {
+{
   typedef TFixedImage  FixedImageType;
   typedef TMovingImage MovingImageType;
 
   bool pass = true;
 
   // Transform Type
-  typedef itk::VersorRigid3DTransform< double >     TransformType;
-  typedef TransformType::ParametersType             ParametersType;
+  typedef itk::VersorRigid3DTransform< double > TransformType;
+  typedef TransformType::ParametersType         ParametersType;
 
   // calculate image centers
-  TransformType::InputPointType   fixedCenter;
-  TransformType::InputPointType   movingCenter;
+  TransformType::InputPointType fixedCenter;
+  TransformType::InputPointType movingCenter;
 
   typedef itk::ContinuousIndex< double, Dimension > ContinuousIndexType;
 
   const typename FixedImageType::RegionType & fixedRegion = fixedImage->GetLargestPossibleRegion();
   const typename FixedImageType::SizeType &   fixedSize   = fixedRegion.GetSize();
   const typename FixedImageType::IndexType &  fixedIndex  = fixedRegion.GetIndex();
-  ContinuousIndexType                         fixedCenterIndex;
+  ContinuousIndexType fixedCenterIndex;
   for ( unsigned int i=0; i<Dimension; i++ )
     {
     assert( 0 < fixedSize[i] );
@@ -63,7 +63,7 @@ bool RunTest(
   const typename MovingImageType::RegionType & movingRegion = movingImage->GetLargestPossibleRegion();
   const typename MovingImageType::SizeType &   movingSize   = movingRegion.GetSize();
   const typename MovingImageType::IndexType &  movingIndex  = movingRegion.GetIndex();
-  ContinuousIndexType                          movingCenterIndex;
+  ContinuousIndexType movingCenterIndex;
   for ( unsigned int i=0; i<Dimension; i++ )
     {
     assert( 0 < movingSize[i] );
@@ -74,14 +74,13 @@ bool RunTest(
 
   TransformType::InputVectorType relativeCenter = movingCenter - fixedCenter;
 
-
   TransformType::Pointer transform = TransformType::New();
 
   typedef itk::CenteredTransformInitializer<
-                                  TransformType,
-                                  FixedImageType,
-                                  MovingImageType >
-                                            InitializerType;
+      TransformType,
+      FixedImageType,
+      MovingImageType >
+    InitializerType;
 
   typename InitializerType::Pointer initializer = InitializerType::New();
 
@@ -100,7 +99,7 @@ bool RunTest(
   const TransformType::InputPointType &   center1      = transform->GetCenter();
   const TransformType::OutputVectorType & translation1 = transform->GetTranslation();
   const TransformType::OffsetType &       offset1      = transform->GetOffset();
-  const double tolerance = 1e-3;
+  const double                            tolerance = 1e-3;
 
   // Verfications for the Geometry Mode
   for(unsigned int k=0; k < Dimension; k++ )
@@ -173,12 +172,12 @@ bool RunTest(
     }
 
   return pass;
-  }
-
+}
 
 template< typename TImage >
-void PopulateImage( itk::SmartPointer< TImage > image )
-  {
+void
+PopulateImage( itk::SmartPointer< TImage > image )
+{
   image->Allocate();
   image->FillBuffer( 0 );
 
@@ -209,7 +208,6 @@ void PopulateImage( itk::SmartPointer< TImage > image )
   internalSize[1]  = size[1] - 2 * border;
   internalSize[2]  = size[2] - 2 * border;
 
-
   internalRegion.SetSize(  internalSize  );
   internalRegion.SetIndex( internalIndex );
 
@@ -222,10 +220,9 @@ void PopulateImage( itk::SmartPointer< TImage > image )
     it.Set( 200 );
     ++it;
     }
-  }
+}
 
 } // namespace
-
 
 /**
  *  This program tests the use of the CenteredTransformInitializer class
@@ -233,152 +230,151 @@ void PopulateImage( itk::SmartPointer< TImage > image )
  *
  */
 
-int itkCenteredTransformInitializerTest(int , char* [] )
+int
+itkCenteredTransformInitializerTest(int , char* [] )
 {
 
   bool pass = true;
 
   std::cout << std::endl << std::endl;
   std::cout << "Running tests with itk::Image" << std::endl;
-  {
-  // Create Images
+    {
+    // Create Images
 
-  typedef itk::Image<unsigned char, Dimension>     FixedImageType;
-  typedef itk::Image<unsigned char, Dimension>     MovingImageType;
+    typedef itk::Image<unsigned char, Dimension> FixedImageType;
+    typedef itk::Image<unsigned char, Dimension> MovingImageType;
 
-  typedef FixedImageType::SizeType                 SizeType;
-  typedef FixedImageType::SpacingType              SpacingType;
-  typedef FixedImageType::PointType                PointType;
-  typedef FixedImageType::IndexType                IndexType;
-  typedef FixedImageType::RegionType               RegionType;
+    typedef FixedImageType::SizeType    SizeType;
+    typedef FixedImageType::SpacingType SpacingType;
+    typedef FixedImageType::PointType   PointType;
+    typedef FixedImageType::IndexType   IndexType;
+    typedef FixedImageType::RegionType  RegionType;
 
-  SizeType size;
-  size[0] = 100;
-  size[1] = 100;
-  size[2] =  60;
+    SizeType size;
+    size[0] = 100;
+    size[1] = 100;
+    size[2] =  60;
 
-  PointType fixedOrigin;
-  fixedOrigin[0] = 0.0;
-  fixedOrigin[1] = 0.0;
-  fixedOrigin[2] = 0.0;
+    PointType fixedOrigin;
+    fixedOrigin[0] = 0.0;
+    fixedOrigin[1] = 0.0;
+    fixedOrigin[2] = 0.0;
 
-  PointType movingOrigin;
-  movingOrigin[0] = 29.0;
-  movingOrigin[1] = 17.0;
-  movingOrigin[2] = 13.0;
+    PointType movingOrigin;
+    movingOrigin[0] = 29.0;
+    movingOrigin[1] = 17.0;
+    movingOrigin[2] = 13.0;
 
-  SpacingType spacing;
-  spacing[0] = 1.5;
-  spacing[1] = 1.5;
-  spacing[2] = 2.5;
+    SpacingType spacing;
+    spacing[0] = 1.5;
+    spacing[1] = 1.5;
+    spacing[2] = 2.5;
 
-  IndexType index;
-  index[0] = 0;
-  index[1] = 0;
-  index[2] = 0;
+    IndexType index;
+    index[0] = 0;
+    index[1] = 0;
+    index[2] = 0;
 
-  RegionType region;
-  region.SetSize( size );
-  region.SetIndex( index );
+    RegionType region;
+    region.SetSize( size );
+    region.SetIndex( index );
 
+    FixedImageType::Pointer  fixedImage    = FixedImageType::New();
+    MovingImageType::Pointer movingImage   = MovingImageType::New();
 
-  FixedImageType::Pointer     fixedImage    = FixedImageType::New();
-  MovingImageType::Pointer    movingImage   = MovingImageType::New();
+    fixedImage->SetRegions( region );
+    fixedImage->SetSpacing( spacing );
+    fixedImage->SetOrigin(  fixedOrigin );
 
-  fixedImage->SetRegions( region );
-  fixedImage->SetSpacing( spacing );
-  fixedImage->SetOrigin(  fixedOrigin );
+    movingImage->SetRegions( region );
+    movingImage->SetSpacing( spacing );
+    movingImage->SetOrigin(  movingOrigin );
 
-  movingImage->SetRegions( region );
-  movingImage->SetSpacing( spacing );
-  movingImage->SetOrigin(  movingOrigin );
+    PopulateImage( fixedImage );
+    PopulateImage( movingImage );
 
-  PopulateImage( fixedImage );
-  PopulateImage( movingImage );
-
-  pass &= RunTest( fixedImage, movingImage );
-  }
+    pass &= RunTest( fixedImage, movingImage );
+    }
 
   std::cout << std::endl << std::endl;
   std::cout << "Running tests with itk::Image" << std::endl;
-  {
-  // Create Images
+    {
+    // Create Images
 
-  typedef itk::Image<unsigned char, Dimension>     FixedImageType;
-  typedef itk::Image<unsigned char, Dimension>     MovingImageType;
+    typedef itk::Image<unsigned char, Dimension> FixedImageType;
+    typedef itk::Image<unsigned char, Dimension> MovingImageType;
 
-  typedef FixedImageType::SizeType                 SizeType;
-  typedef FixedImageType::SpacingType              SpacingType;
-  typedef FixedImageType::PointType                PointType;
-  typedef FixedImageType::IndexType                IndexType;
-  typedef FixedImageType::RegionType               RegionType;
-  typedef FixedImageType::DirectionType            DirectionType;
+    typedef FixedImageType::SizeType      SizeType;
+    typedef FixedImageType::SpacingType   SpacingType;
+    typedef FixedImageType::PointType     PointType;
+    typedef FixedImageType::IndexType     IndexType;
+    typedef FixedImageType::RegionType    RegionType;
+    typedef FixedImageType::DirectionType DirectionType;
 
-  SizeType size;
-  size[0] = 100;
-  size[1] = 100;
-  size[2] =  60;
+    SizeType size;
+    size[0] = 100;
+    size[1] = 100;
+    size[2] =  60;
 
-  PointType fixedOrigin;
-  fixedOrigin[0] = 0.0;
-  fixedOrigin[1] = 0.0;
-  fixedOrigin[2] = 0.0;
+    PointType fixedOrigin;
+    fixedOrigin[0] = 0.0;
+    fixedOrigin[1] = 0.0;
+    fixedOrigin[2] = 0.0;
 
-  PointType movingOrigin;
-  movingOrigin[0] = 29.0;
-  movingOrigin[1] = 17.0;
-  movingOrigin[2] = 13.0;
+    PointType movingOrigin;
+    movingOrigin[0] = 29.0;
+    movingOrigin[1] = 17.0;
+    movingOrigin[2] = 13.0;
 
-  SpacingType spacing;
-  spacing[0] = 1.5;
-  spacing[1] = 1.5;
-  spacing[2] = 2.5;
+    SpacingType spacing;
+    spacing[0] = 1.5;
+    spacing[1] = 1.5;
+    spacing[2] = 2.5;
 
-  IndexType fixedIndex;
-  fixedIndex[0] = 0;
-  fixedIndex[1] = 0;
-  fixedIndex[2] = 0;
+    IndexType fixedIndex;
+    fixedIndex[0] = 0;
+    fixedIndex[1] = 0;
+    fixedIndex[2] = 0;
 
-  IndexType movingIndex;
-  movingIndex[0] = 10;
-  movingIndex[1] = 20;
-  movingIndex[2] = 30;
+    IndexType movingIndex;
+    movingIndex[0] = 10;
+    movingIndex[1] = 20;
+    movingIndex[2] = 30;
 
-  RegionType fixedRegion;
-  fixedRegion.SetSize( size );
-  fixedRegion.SetIndex( fixedIndex );
+    RegionType fixedRegion;
+    fixedRegion.SetSize( size );
+    fixedRegion.SetIndex( fixedIndex );
 
-  RegionType movingRegion;
-  movingRegion.SetSize( size );
-  movingRegion.SetIndex( movingIndex );
+    RegionType movingRegion;
+    movingRegion.SetSize( size );
+    movingRegion.SetIndex( movingIndex );
 
-  typedef itk::Versor< itk::SpacePrecisionType > VersorType;
-  VersorType x; x.SetRotationAroundX( 0.5 );
-  VersorType y; y.SetRotationAroundY( 1.0 );
-  VersorType z; z.SetRotationAroundZ( 1.5 );
+    typedef itk::Versor< itk::SpacePrecisionType > VersorType;
+    VersorType x; x.SetRotationAroundX( 0.5 );
+    VersorType y; y.SetRotationAroundY( 1.0 );
+    VersorType z; z.SetRotationAroundZ( 1.5 );
 
-  DirectionType fixedDirection  = (x*y*z).GetMatrix();
-  DirectionType movingDirection = (z*y*x).GetMatrix();
+    DirectionType fixedDirection  = (x*y*z).GetMatrix();
+    DirectionType movingDirection = (z*y*x).GetMatrix();
 
+    FixedImageType::Pointer  fixedImage  = FixedImageType::New();
+    MovingImageType::Pointer movingImage = MovingImageType::New();
 
-  FixedImageType::Pointer  fixedImage  = FixedImageType::New();
-  MovingImageType::Pointer movingImage = MovingImageType::New();
+    fixedImage->SetRegions(    fixedRegion     );
+    fixedImage->SetSpacing(    spacing         );
+    fixedImage->SetOrigin(     fixedOrigin     );
+    fixedImage->SetDirection(  fixedDirection  );
 
-  fixedImage->SetRegions(    fixedRegion     );
-  fixedImage->SetSpacing(    spacing         );
-  fixedImage->SetOrigin(     fixedOrigin     );
-  fixedImage->SetDirection(  fixedDirection  );
+    movingImage->SetRegions(   movingRegion    );
+    movingImage->SetSpacing(   spacing         );
+    movingImage->SetOrigin(    movingOrigin    );
+    movingImage->SetDirection( movingDirection );
 
-  movingImage->SetRegions(   movingRegion    );
-  movingImage->SetSpacing(   spacing         );
-  movingImage->SetOrigin(    movingOrigin    );
-  movingImage->SetDirection( movingDirection );
+    PopulateImage( fixedImage );
+    PopulateImage( movingImage );
 
-  PopulateImage( fixedImage );
-  PopulateImage( movingImage );
-
-  pass &= RunTest( fixedImage, movingImage );
-  }
+    pass &= RunTest( fixedImage, movingImage );
+    }
 
   if( !pass )
     {
@@ -388,6 +384,5 @@ int itkCenteredTransformInitializerTest(int , char* [] )
 
   std::cout << "Test PASSED." << std::endl;
   return EXIT_SUCCESS;
-
 
 }

@@ -32,9 +32,9 @@ template< unsigned int NDimensions >
 typename MetaBlobConverter< NDimensions >::MetaObjectType *
 MetaBlobConverter< NDimensions>
 ::CreateMetaObject()
-{
+  {
   return dynamic_cast<MetaObjectType *>(new BlobMetaObjectType);
-}
+  }
 
 /** Convert a metaBlob into an Blob SpatialObject  */
 template< unsigned int NDimensions >
@@ -43,6 +43,7 @@ MetaBlobConverter< NDimensions >
 ::MetaObjectToSpatialObject(const MetaObjectType *mo)
 {
   const BlobMetaObjectType *Blob = dynamic_cast<const BlobMetaObjectType *>(mo);
+
   if(Blob == 0)
     {
     itkExceptionMacro(<< "Can't downcast MetaObject to BlobMetaObject");
@@ -99,7 +100,7 @@ MetaBlobConverter< NDimensions >
     it2++;
     }
 
-  return SpatialObjectPointer(blob.GetPointer());
+  return SpatialObjectPointer(blob.GetPointer() );
 }
 
 /** Convert a Blob SpatialObject into a metaBlob */
@@ -107,9 +108,10 @@ template< unsigned int NDimensions >
 typename MetaBlobConverter<NDimensions>::MetaObjectType *
 MetaBlobConverter< NDimensions >
 ::SpatialObjectToMetaObject(const SpatialObjectType *spatialObject)
-{
+  {
   BlobSpatialObjectConstPointer blobSO = dynamic_cast<const BlobSpatialObjectType *>(spatialObject);
-  if(blobSO.IsNull())
+
+  if(blobSO.IsNull() )
     {
     itkExceptionMacro(<< "Can't downcast SpatialObject to BlobSpatialObject");
     }
@@ -167,7 +169,7 @@ MetaBlobConverter< NDimensions >
     }
   Blob->BinaryData(true);
   return Blob;
-}
+  }
 
 } // end namespace itk
 

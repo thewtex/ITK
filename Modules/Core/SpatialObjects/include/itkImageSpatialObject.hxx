@@ -38,7 +38,7 @@ ImageSpatialObject< TDimension,  PixelType >
     }
 
   this->ComputeBoundingBox();
-  this->InternalSetPixelType(static_cast<const PixelType *>(0));
+  this->InternalSetPixelType(static_cast<const PixelType *>(0) );
   m_Interpolator = NNInterpolatorType::New();
 }
 
@@ -170,8 +170,8 @@ ImageSpatialObject< TDimension,  PixelType >
       }
 
     value = static_cast< double >(
-      DefaultConvertPixelTraits< InterpolatorOutputType >::GetScalarValue(
-        m_Interpolator->EvaluateAtContinuousIndex(index) ) );
+        DefaultConvertPixelTraits< InterpolatorOutputType >::GetScalarValue(
+          m_Interpolator->EvaluateAtContinuousIndex(index) ) );
 
     returnValue = true;
     }
@@ -314,9 +314,9 @@ template< unsigned int TDimension, typename PixelType >
 const typename ImageSpatialObject< TDimension,  PixelType >::ImageType *
 ImageSpatialObject< TDimension,  PixelType >
 ::GetImage(void) const
-{
+  {
   return m_Image.GetPointer();
-}
+  }
 
 /** Print the object */
 template< unsigned int TDimension, typename PixelType >
@@ -325,6 +325,7 @@ ImageSpatialObject< TDimension,  PixelType >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "Image: " << std::endl;
   os << indent << m_Image << std::endl;
   os << "Interpolator: " << std::endl;
@@ -337,7 +338,7 @@ ModifiedTimeType
 ImageSpatialObject< TDimension,  PixelType >
 ::GetMTime(void) const
 {
-  ModifiedTimeType latestMTime = Superclass::GetMTime();
+  ModifiedTimeType       latestMTime = Superclass::GetMTime();
   const ModifiedTimeType imageMTime = m_Image->GetMTime();
 
   if ( imageMTime > latestMTime )
@@ -357,6 +358,7 @@ ImageSpatialObject< TDimension,  PixelType >
   m_SlicePosition[dimension] = position;
   this->Modified();
 }
+
 } // end namespace itk
 
 #endif //__ImageSpatialObject_hxx

@@ -56,7 +56,7 @@ template< unsigned int VDimension >
 class SpatialObjectTreeNode;
 
 template< unsigned int VDimension = 3 >
-class SpatialObject:
+class SpatialObject :
   public DataObject
 {
 public:
@@ -67,7 +67,10 @@ public:
 
   /** Return the maximum depth that a tree of spatial objects can
    * have.  This provides convenient access to a static constant. */
-  unsigned int GetMaximumDepth() const { return MaximumDepth; }
+  unsigned int
+  GetMaximumDepth() const {
+    return MaximumDepth;
+  }
 
   typedef SpatialObject< VDimension > Self;
   typedef DataObject                  Superclass;
@@ -93,7 +96,7 @@ public:
   typedef typename TransformType::Pointer               TransformPointer;
   typedef const TransformType *                         TransformConstPointer;
 
-  typedef VectorContainer< IdentifierType, PointType >  VectorContainerType;
+  typedef VectorContainer< IdentifierType, PointType > VectorContainerType;
 
   typedef BoundingBox< IdentifierType, VDimension, ScalarType, VectorContainerType > BoundingBoxType;
   typedef typename BoundingBoxType::Pointer                                          BoundingBoxPointer;
@@ -106,15 +109,15 @@ public:
   typedef ChildrenListType *   ChildrenListPointer;
 
   /** Index typedef support. An index is used to access pixel values. */
-  typedef Index< VDimension >                IndexType;
+  typedef Index< VDimension > IndexType;
 
   /** Offset typedef support. An offset represent relative position
    * between indices. */
-  typedef Offset< VDimension >                 OffsetType;
-  typedef ImageRegion< VDimension >            RegionType;
-  typedef Size< VDimension >                   SizeType;
-  typedef SpatialObjectProperty< float >       PropertyType;
-  typedef typename PropertyType::Pointer       PropertyPointer;
+  typedef Offset< VDimension >           OffsetType;
+  typedef ImageRegion< VDimension >      RegionType;
+  typedef Size< VDimension >             SizeType;
+  typedef SpatialObjectProperty< float > PropertyType;
+  typedef typename PropertyType::Pointer PropertyPointer;
 
   typedef SpatialObjectTreeNode< VDimension > TreeNodeType;
 
@@ -123,7 +126,10 @@ public:
   virtual bool HasParent(void) const;
 
   /** Get the typename of the SpatialObject */
-  virtual const char * GetTypeName(void) const { return m_TypeName.c_str(); }
+  virtual const char *
+  GetTypeName(void) const {
+    return m_TypeName.c_str();
+  }
 
   /** Dimension of the object.  This constant is used by functions that are
    * templated over SpatialObject type when they need compile time access
@@ -131,7 +137,10 @@ public:
   itkStaticConstMacro(ObjectDimension, unsigned int, VDimension);
 
   /** Get the dimensionality of the object */
-  unsigned int GetObjectDimension(void) const { return VDimension; }
+  unsigned int
+  GetObjectDimension(void) const {
+    return VDimension;
+  }
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -146,6 +155,7 @@ public:
   /** This defines the transformation from the global coordinate frame.
    *  By setting this transform, the local transform is computed */
   void SetObjectToWorldTransform(TransformType *transform);
+
   itkGetModifiableObjectMacro(ObjectToWorldTransform, TransformType);
 
   itkGetModifiableObjectMacro(IndexToWorldTransform, TransformType);
@@ -188,7 +198,8 @@ public:
    * to make spatial objects compatible with spatial functions
    * and conditional iterators for defining regions of interest.
    */
-  bool Evaluate(const PointType & point) const
+  bool
+  Evaluate(const PointType & point) const
   {
     return this->IsInside(point);
   }
@@ -206,7 +217,8 @@ public:
 
   /** Returns the latest modified time of the spatial object, but not
    *  the modification time of the children */
-  unsigned long GetObjectMTime(void) const
+  unsigned long
+  GetObjectMTime(void) const
   {
     return Superclass::GetMTime();
   }
@@ -225,8 +237,11 @@ public:
    * entire dataset.  It is also used to determine boundary
    * conditions.
    * \sa ImageRegion, GetBufferedRegion(), GetRequestedRegion() */
-  virtual const RegionType & GetLargestPossibleRegion() const
-  { return m_LargestPossibleRegion; }
+  virtual const RegionType &
+  GetLargestPossibleRegion() const
+  {
+    return m_LargestPossibleRegion;
+  }
 
   /** Set the region object that defines the size and starting index
    * of the region of the image currently loaded in memory.
@@ -236,8 +251,11 @@ public:
   /** Get the region object that defines the size and starting index
    * of the region of the image currently loaded in memory.
    * \sa ImageRegion, SetLargestPossibleRegion(), SetRequestedRegion() */
-  virtual const RegionType & GetBufferedRegion() const
-  { return m_BufferedRegion; }
+  virtual const RegionType &
+  GetBufferedRegion() const
+  {
+    return m_BufferedRegion;
+  }
 
   /** Set the region object that defines the size and starting index
    * for the region of the image requested (i.e., the region of the
@@ -255,8 +273,11 @@ public:
    * for the region of the image requested (i.e., the region of the
    * image to be operated on by a filter).
    * \sa ImageRegion, SetLargestPossibleRegion(), SetBufferedRegion() */
-  virtual const RegionType & GetRequestedRegion() const
-  { return m_RequestedRegion; }
+  virtual const RegionType &
+  GetRequestedRegion() const
+  {
+    return m_RequestedRegion;
+  }
 
   /** Get the offset table.  The offset table gives increments for
    * moving from one pixel to next in the current row, column, slice,
@@ -267,11 +288,15 @@ public:
    * the OffsetTable is equivalent to the BufferSize.  Having a
    * [VImageDimension+1] size array, simplifies the implementation of
    * some data accessing algorithms. */
-  const OffsetValueType * GetOffsetTable() const { return m_OffsetTable; }
+  const OffsetValueType *
+  GetOffsetTable() const {
+    return m_OffsetTable;
+  }
 
   /** Compute an offset from the beginning of the buffer for a pixel
    * at the specified index. */
-  OffsetValueType ComputeOffset(const IndexType & ind) const
+  OffsetValueType
+  ComputeOffset(const IndexType & ind) const
   {
     // need to add bounds checking for the region/buffer?
     OffsetValueType   offset = 0;
@@ -290,7 +315,8 @@ public:
 
   /** Compute the index of the pixel at a specified offset from the
    * beginning of the buffered region. */
-  IndexType ComputeIndex(OffsetValueType offset) const
+  IndexType
+  ComputeIndex(OffsetValueType offset) const
   {
     IndexType         index;
     const IndexType & bufferedRegionIndex = m_BufferedRegion.GetIndex();
@@ -355,7 +381,10 @@ public:
   /** Returns a pointer to the property object applied to this class. */
   PropertyType * GetProperty(void);
 
-  const PropertyType * GetProperty(void) const { return m_Property; }
+  const PropertyType *
+  GetProperty(void) const {
+    return m_Property;
+  }
 
   /** Set the property applied to the object. */
   void SetProperty(PropertyType *property);
@@ -379,15 +408,18 @@ public:
 
   /** Theses functions are just calling the AffineGeometryFrame functions */
   /** Set the spacing of the spatial object. */
-  void SetSpacing(const double spacing[itkGetStaticConstMacro(ObjectDimension)])
+  void
+  SetSpacing(const double spacing[itkGetStaticConstMacro(ObjectDimension)])
   {
-  m_AffineGeometryFrame->GetModifiableIndexToObjectTransform()->SetScale(spacing);
-  this->Modified();
+    m_AffineGeometryFrame->GetModifiableIndexToObjectTransform()->SetScale(spacing);
+    this->Modified();
   }
+
   /** Get the spacing of the spatial object. */
-  virtual const double * GetSpacing() const
+  virtual const double *
+  GetSpacing() const
   {
-  return this->GetIndexToObjectTransform()->GetScale();
+    return this->GetIndexToObjectTransform()->GetScale();
   }
 
   /** Transform points from the internal data coordinate system
@@ -397,15 +429,17 @@ public:
    */
   const TransformType * GetIndexToObjectTransform(void) const;
 
-  TransformType * GetModifiableIndexToObjectTransform(void)
-    {
+  TransformType *
+  GetModifiableIndexToObjectTransform(void)
+  {
     return m_AffineGeometryFrame->GetModifiableIndexToObjectTransform();
-    }
-  TransformType * GetIndexToObjectTransform(void)
-    {
-    return m_AffineGeometryFrame->GetModifiableIndexToObjectTransform();
-    }
+  }
 
+  TransformType *
+  GetIndexToObjectTransform(void)
+  {
+    return m_AffineGeometryFrame->GetModifiableIndexToObjectTransform();
+  }
 
   /** Transforms points from the object-specific "physical" space
    * to the "physical" space of its parent object.
@@ -484,10 +518,12 @@ public:
    */
   virtual bool ComputeBoundingBox() const;
 
-  virtual bool ComputeLocalBoundingBox() const
+  virtual bool
+  ComputeLocalBoundingBox() const
   {
     std::cerr << "SpatialObject::ComputeLocalBoundingBox Not Implemented!"
               << std::endl;
+
     return false;
   }
 
@@ -535,7 +571,8 @@ protected:
   SpatialObject();
 
   /** Destructor. */
-  virtual ~SpatialObject();
+  virtual
+  ~SpatialObject();
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 

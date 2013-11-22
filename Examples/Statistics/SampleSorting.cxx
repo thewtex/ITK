@@ -48,7 +48,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkListSample.h"
 // Software Guide : EndCodeSnippet
@@ -83,9 +82,9 @@
 typedef int                               MeasurementType;
 typedef itk::Vector< MeasurementType, 2 > MeasurementVectorType;
 typedef itk::Statistics::ListSample< MeasurementVectorType >
-                                          SampleType;
+  SampleType;
 typedef itk::Statistics::Subsample< SampleType >
-                                          SubsampleType;
+  SubsampleType;
 
 // Software Guide : BeginLatex
 //
@@ -96,12 +95,14 @@ typedef itk::Statistics::Subsample< SampleType >
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-void initializeSubsample(SubsampleType* subsample, SampleType* sample)
+void
+initializeSubsample(SubsampleType* subsample, SampleType* sample)
 {
   subsample->Clear();
   subsample->SetSample(sample);
   subsample->InitializeWithAllInstances();
 }
+
 // Software Guide : EndCodeSnippet
 
 // Software Guide : BeginLatex
@@ -112,11 +113,13 @@ void initializeSubsample(SubsampleType* subsample, SampleType* sample)
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-void printSubsample(SubsampleType* subsample, const char* header)
+void
+printSubsample(SubsampleType* subsample, const char* header)
 {
   std::cout << std::endl;
   std::cout << header << std::endl;
   SubsampleType::Iterator iter = subsample->Begin();
+
   while ( iter != subsample->End() )
     {
     std::cout << "instance identifier = " << iter.GetInstanceIdentifier()
@@ -126,9 +129,11 @@ void printSubsample(SubsampleType* subsample, const char* header)
     ++iter;
     }
 }
+
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -143,6 +148,7 @@ int main()
   SampleType::Pointer sample = SampleType::New();
 
   MeasurementVectorType mv;
+
   for ( unsigned int i = 5; i > 0; --i )
     {
     for (unsigned int j = 0; j < 2; j++ )
@@ -192,10 +198,9 @@ int main()
   // Software Guide : BeginCodeSnippet
   int activeDimension = 0;
   itk::Statistics::Algorithm::InsertSort< SubsampleType >( subsample,
-                              activeDimension, 0, subsample->Size() );
+                                                           activeDimension, 0, subsample->Size() );
   printSubsample(subsample, "InsertSort");
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -207,10 +212,9 @@ int main()
   // Software Guide : BeginCodeSnippet
   initializeSubsample(subsample, sample);
   itk::Statistics::Algorithm::HeapSort< SubsampleType >( subsample,
-                              activeDimension, 0, subsample->Size() );
+                                                         activeDimension, 0, subsample->Size() );
   printSubsample(subsample, "HeapSort");
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -226,10 +230,9 @@ int main()
   // Software Guide : BeginCodeSnippet
   initializeSubsample(subsample, sample);
   itk::Statistics::Algorithm::IntrospectiveSort< SubsampleType >
-                      ( subsample, activeDimension, 0, subsample->Size(), 16 );
+    ( subsample, activeDimension, 0, subsample->Size(), 16 );
   printSubsample(subsample, "IntrospectiveSort");
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -244,10 +247,10 @@ int main()
   // Software Guide : BeginCodeSnippet
   initializeSubsample(subsample, sample);
   SubsampleType::MeasurementType median =
-          itk::Statistics::Algorithm::QuickSelect< SubsampleType >( subsample,
-                                                         activeDimension,
-                                                         0, subsample->Size(),
-                                                         subsample->Size()/2 );
+    itk::Statistics::Algorithm::QuickSelect< SubsampleType >( subsample,
+                                                              activeDimension,
+                                                              0, subsample->Size(),
+                                                              subsample->Size()/2 );
   std::cout << std::endl;
   std::cout << "Quick Select: median = " << median << std::endl;
   // Software Guide : EndCodeSnippet

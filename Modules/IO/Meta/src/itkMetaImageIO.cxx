@@ -47,14 +47,17 @@ MetaImageIO::MetaImageIO()
 MetaImageIO::~MetaImageIO()
 {}
 
-void MetaImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+MetaImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   m_MetaImage.PrintInfo();
   os << indent << "SubSamplingFactor: " << m_SubSamplingFactor << "\n";
 }
 
-void MetaImageIO::SetDataFileName(const char *filename)
+void
+MetaImageIO::SetDataFileName(const char *filename)
 {
   m_MetaImage.ElementDataFileName(filename);
 }
@@ -62,7 +65,8 @@ void MetaImageIO::SetDataFileName(const char *filename)
 // This method will only test if the header looks like a
 // MetaImage.  Some code is redundant with ReadImageInformation
 // a StateMachine could provide a better implementation
-bool MetaImageIO::CanReadFile(const char *filename)
+bool
+MetaImageIO::CanReadFile(const char *filename)
 {
   // First check the extension
   std::string fname = filename;
@@ -76,7 +80,8 @@ bool MetaImageIO::CanReadFile(const char *filename)
   return m_MetaImage.CanRead(filename);
 }
 
-void MetaImageIO::ReadImageInformation()
+void
+MetaImageIO::ReadImageInformation()
 {
   if ( !m_MetaImage.Read(m_FileName.c_str(), false) )
     {
@@ -418,7 +423,8 @@ void MetaImageIO::ReadImageInformation()
     }
 }
 
-void MetaImageIO::Read(void *buffer)
+void
+MetaImageIO::Read(void *buffer)
 {
   const unsigned int nDims = this->GetNumberOfDimensions();
 
@@ -487,12 +493,14 @@ void MetaImageIO::Read(void *buffer)
     }
 }
 
-MetaImage * MetaImageIO::GetMetaImagePointer(void)
+MetaImage *
+MetaImageIO::GetMetaImagePointer(void)
 {
   return &m_MetaImage;
 }
 
-bool MetaImageIO::CanWriteFile(const char *name)
+bool
+MetaImageIO::CanWriteFile(const char *name)
 {
   std::string filename = name;
 
@@ -554,7 +562,7 @@ MetaImageIO
 
   // Save out the metadatadictionary key/value pairs as part of
   // the metaio header.
-  std::vector< std::string > keys = metaDict.GetKeys();
+  std::vector< std::string >                 keys = metaDict.GetKeys();
   std::vector< std::string >::const_iterator keyIt;
   for ( keyIt = keys.begin(); keyIt != keys.end(); ++keyIt )
     {
@@ -565,63 +573,63 @@ MetaImageIO
       }
     // try for common scalar types
     std::ostringstream strs;
-    double dval=0.0;
-    float fval=0.0F;
-    long lval=0L;
-    unsigned long ulval=0L;
-    int ival=0;
-    unsigned uval=0;
-    short shval=0;
-    unsigned short ushval=0;
-    char cval=0;
-    unsigned char ucval=0;
-    bool bval=false;
-    std::string value="";
-    if(ExposeMetaData< std::string >(metaDict, *keyIt, value))
+    double             dval=0.0;
+    float              fval=0.0F;
+    long               lval=0L;
+    unsigned long      ulval=0L;
+    int                ival=0;
+    unsigned           uval=0;
+    short              shval=0;
+    unsigned short     ushval=0;
+    char               cval=0;
+    unsigned char      ucval=0;
+    bool               bval=false;
+    std::string        value="";
+    if(ExposeMetaData< std::string >(metaDict, *keyIt, value) )
       {
       strs << value;
       }
-    else if(ExposeMetaData<double>(metaDict,*keyIt,dval))
+    else if(ExposeMetaData<double>(metaDict,*keyIt,dval) )
       {
       strs << dval;
       }
-    else if(ExposeMetaData<float>(metaDict,*keyIt,fval))
+    else if(ExposeMetaData<float>(metaDict,*keyIt,fval) )
       {
       strs << fval;
       }
-    else if(ExposeMetaData<long>(metaDict,*keyIt,lval))
+    else if(ExposeMetaData<long>(metaDict,*keyIt,lval) )
       {
       strs << lval;
       }
-    else if(ExposeMetaData<unsigned long>(metaDict,*keyIt,ulval))
+    else if(ExposeMetaData<unsigned long>(metaDict,*keyIt,ulval) )
       {
       strs << ulval;
       }
-    else if(ExposeMetaData<int>(metaDict,*keyIt,ival))
+    else if(ExposeMetaData<int>(metaDict,*keyIt,ival) )
       {
       strs << ival;
       }
-    else if(ExposeMetaData<unsigned int>(metaDict,*keyIt,uval))
+    else if(ExposeMetaData<unsigned int>(metaDict,*keyIt,uval) )
       {
       strs << uval;
       }
-    else if(ExposeMetaData<short>(metaDict,*keyIt,shval))
+    else if(ExposeMetaData<short>(metaDict,*keyIt,shval) )
       {
       strs << shval;
       }
-    else if(ExposeMetaData<unsigned short>(metaDict,*keyIt,ushval))
+    else if(ExposeMetaData<unsigned short>(metaDict,*keyIt,ushval) )
       {
       strs << ushval;
       }
-    else if(ExposeMetaData<char>(metaDict,*keyIt,cval))
+    else if(ExposeMetaData<char>(metaDict,*keyIt,cval) )
       {
       strs << cval;
       }
-    else if(ExposeMetaData<unsigned char>(metaDict,*keyIt,ucval))
+    else if(ExposeMetaData<unsigned char>(metaDict,*keyIt,ucval) )
       {
       strs << ucval;
       }
-    else if(ExposeMetaData<bool>(metaDict,*keyIt,bval))
+    else if(ExposeMetaData<bool>(metaDict,*keyIt,bval) )
       {
       strs << bval;
       }
@@ -757,9 +765,9 @@ MetaImageIO
       break;
     }
 
-  int *        dSize = new int[numberOfDimensions];
-  float *      eSpacing = new float[numberOfDimensions];
-  double *     eOrigin = new double[numberOfDimensions];
+  int *    dSize = new int[numberOfDimensions];
+  float *  eSpacing = new float[numberOfDimensions];
+  double * eOrigin = new double[numberOfDimensions];
   for ( unsigned int ii = 0; ii < numberOfDimensions; ++ii )
     {
     dSize[ii] = this->GetDimensions(ii);
@@ -779,7 +787,7 @@ MetaImageIO
     {
     SpatialOrientation::ValidCoordinateOrientationFlags coordOrient =
       SpatialOrientation::ITK_COORDINATE_ORIENTATION_INVALID;
-    std::vector< double > dirx, diry, dirz;
+    std::vector< double >                    dirx, diry, dirz;
     SpatialOrientationAdapter::DirectionType dir;
     dirx = this->GetDirection(0);
     diry = this->GetDirection(1);
@@ -1022,7 +1030,8 @@ MetaImageIO
       }
     }
   // Propagage direction cosine information.
-  double *transformMatrix = static_cast< double * >( malloc( numberOfDimensions * numberOfDimensions * sizeof( double ) ) );
+  double *transformMatrix =
+    static_cast< double * >( malloc( numberOfDimensions * numberOfDimensions * sizeof( double ) ) );
   for ( unsigned int ii = 0; ii < numberOfDimensions; ++ii )
     {
     for ( unsigned int jj = 0; jj < numberOfDimensions; ++jj )
@@ -1255,4 +1264,5 @@ MetaImageIO::GetSplitRegionForWriting( unsigned int ithPiece,
 {
   return GetSplitRegionForWritingCanStreamWrite(ithPiece, numberOfActualSplits, pasteRegion);
 }
+
 } // end namespace itk

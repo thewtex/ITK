@@ -36,7 +36,8 @@
  * This module test the functionality of the BSplineDeformableTransform class.
  *
  */
-int itkBSplineDeformableTransformTest1()
+int
+itkBSplineDeformableTransformTest1()
 {
 
   // Comment the following if you want to use the itk text output window
@@ -47,9 +48,10 @@ int itkBSplineDeformableTransformTest1()
 
   const unsigned int SpaceDimension = 3;
   const unsigned int SplineOrder = 3;
+
   typedef double CoordinateRepType;
   typedef itk::BSplineDeformableTransform
-  <CoordinateRepType,SpaceDimension, SplineOrder> TransformType;
+    <CoordinateRepType,SpaceDimension, SplineOrder> TransformType;
 
   typedef TransformType::ParametersType ParametersType;
 
@@ -64,8 +66,8 @@ int itkBSplineDeformableTransformTest1()
   origin.Fill( 0.0 );
 
   typedef TransformType::RegionType RegionType;
-  RegionType region;
-  RegionType::SizeType   size;
+  RegionType           region;
+  RegionType::SizeType size;
   size.Fill( 10 );
   region.SetSize( size );
   std::cout << region << std::endl;
@@ -99,9 +101,9 @@ int itkBSplineDeformableTransformTest1()
   typedef ParametersType::ValueType                   CoefficientType;
   typedef itk::Image<CoefficientType, SpaceDimension> CoefficientImageType;
 
-  CoefficientImageType::Pointer  coeffImage[SpaceDimension];
-  unsigned int numberOfControlPoints = region.GetNumberOfPixels();
-  CoefficientType * dataPointer = parameters.data_block();
+  CoefficientImageType::Pointer coeffImage[SpaceDimension];
+  unsigned int                  numberOfControlPoints = region.GetNumberOfPixels();
+  CoefficientType *             dataPointer = parameters.data_block();
   for( j = 0; j < SpaceDimension; j++ )
     {
     coeffImage[j] = CoefficientImageType::New();
@@ -393,7 +395,7 @@ int itkBSplineDeformableTransformTest1()
   std::cout << transform->GetValidRegion() << std::endl;
 
   typedef itk::BSplineDeformableTransform<CoordinateRepType, SpaceDimension, 2>
-  EvenOrderTransformType;
+    EvenOrderTransformType;
   EvenOrderTransformType::Pointer evenOrderTransform = EvenOrderTransformType::New();
   if( evenOrderTransform.IsNull() )
     {
@@ -442,7 +444,8 @@ int itkBSplineDeformableTransformTest1()
   return EXIT_SUCCESS;
 }
 
-int itkBSplineDeformableTransformTest2()
+int
+itkBSplineDeformableTransformTest2()
 {
   /**
    * This function tests the Set/GetCoefficientImages interface
@@ -455,13 +458,14 @@ int itkBSplineDeformableTransformTest2()
    * Define a vector field as Dimension number of images
    */
   const unsigned int Dimension = 2;
+
   typedef double PixelType;
 
   typedef itk::Image<PixelType, Dimension> ImageType;
 
   // Set up the transform
   const unsigned int SplineOrder = 3;
-  typedef double CoordRep;
+  typedef double                                                            CoordRep;
   typedef itk::BSplineDeformableTransform<CoordRep, Dimension, SplineOrder> TransformType;
   TransformType::InputPointType  inputPoint;
   TransformType::OutputPointType outputPoint;
@@ -506,24 +510,24 @@ int itkBSplineDeformableTransformTest2()
   // This should generate an exception because parameters have not yet
   // been set.
   inputPoint.Fill( 0.0 );
-  {
-  bool exceptionCaught(false);
-  try
     {
-    outputPoint = transform->TransformPoint( inputPoint );
+    bool exceptionCaught(false);
+    try
+      {
+      outputPoint = transform->TransformPoint( inputPoint );
+      }
+    catch( itk::ExceptionObject& err )
+      {
+      std::cout << "Expected exception:" << std::endl;
+      std::cout << err << std::endl;
+      exceptionCaught = true;
+      }
+    if(!exceptionCaught)
+      {
+      std::cerr << "Expected exception not caught" << std::endl;
+      return EXIT_FAILURE;
+      }
     }
-  catch( itk::ExceptionObject& err )
-    {
-    std::cout << "Expected exception:" << std::endl;
-    std::cout << err << std::endl;
-    exceptionCaught = true;
-    }
-  if(!exceptionCaught)
-    {
-    std::cerr << "Expected exception not caught" << std::endl;
-    return EXIT_FAILURE;
-    }
-  }
   // Set the coefficient images
   transform->SetCoefficientImages( field );
 
@@ -579,7 +583,8 @@ int itkBSplineDeformableTransformTest2()
   return EXIT_SUCCESS;
 }
 
-int itkBSplineDeformableTransformTest3()
+int
+itkBSplineDeformableTransformTest3()
 {
 
   // This function tests the SetParametersByValue interface
@@ -589,9 +594,10 @@ int itkBSplineDeformableTransformTest3()
 
   const unsigned int SpaceDimension = 3;
   const unsigned int SplineOrder = 3;
+
   typedef double CoordinateRepType;
   typedef itk::BSplineDeformableTransform
-  <CoordinateRepType, SpaceDimension, SplineOrder> TransformType;
+    <CoordinateRepType, SpaceDimension, SplineOrder> TransformType;
 
   typedef TransformType::ParametersType ParametersType;
 
@@ -606,8 +612,8 @@ int itkBSplineDeformableTransformTest3()
   origin.Fill( 0.0 );
 
   typedef TransformType::RegionType RegionType;
-  RegionType region;
-  RegionType::SizeType   size;
+  RegionType           region;
+  RegionType::SizeType size;
   size.Fill( 10 );
   region.SetSize( size );
   std::cout << region << std::endl;
@@ -639,9 +645,9 @@ int itkBSplineDeformableTransformTest3()
   typedef ParametersType::ValueType                   CoefficientType;
   typedef itk::Image<CoefficientType, SpaceDimension> CoefficientImageType;
 
-  CoefficientImageType::Pointer  coeffImage[SpaceDimension];
-  unsigned int numberOfControlPoints = region.GetNumberOfPixels();
-  CoefficientType * dataPointer = parameters.data_block();
+  CoefficientImageType::Pointer coeffImage[SpaceDimension];
+  unsigned int                  numberOfControlPoints = region.GetNumberOfPixels();
+  CoefficientType *             dataPointer = parameters.data_block();
   for( j = 0; j < SpaceDimension; j++ )
     {
     coeffImage[j] = CoefficientImageType::New();
@@ -699,7 +705,8 @@ int itkBSplineDeformableTransformTest3()
   return EXIT_SUCCESS;
 }
 
-int itkBSplineDeformableTransformTest(int, char * [] )
+int
+itkBSplineDeformableTransformTest(int, char * [] )
 {
   bool failed;
 

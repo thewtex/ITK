@@ -22,8 +22,9 @@
 #include "itkNumericTraits.h"
 #include "itksys/SystemTools.hxx"
 
-int testMetaObject(int argc, char *argv[])
-  {
+int
+testMetaObject(int argc, char *argv[])
+{
   if (argc > 1)
     {
     itksys::SystemTools::ChangeDirectory(argv[1]);
@@ -40,7 +41,7 @@ int testMetaObject(int argc, char *argv[])
   tObj.Position(1, 2);
   tObj.Position(2, 3);
   double orient[9];
-  int i;
+  int    i;
   for(i=0; i<9; i++)
     {
     orient[i] = 0;
@@ -84,30 +85,30 @@ int testMetaObject(int argc, char *argv[])
 
   tObj.PrintInfo();
 
-  char* name = static_cast<char*>(tObj.GetUserField("MyName"));
-  if(strcmp(name,"Julien"))
-  {
+  char* name = static_cast<char*>(tObj.GetUserField("MyName") );
+  if(strcmp(name,"Julien") )
+    {
     std::cout << "MyName: FAIL" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   delete[] name;
 
-  int* array = static_cast<int*>(tObj.GetUserField("MyArray"));
+  int* array = static_cast<int*>(tObj.GetUserField("MyArray") );
 
-  for(i=0;i<3;i++)
-  {
-    if(array[i] != i+1)
+  for(i=0; i<3; i++)
     {
+    if(array[i] != i+1)
+      {
       std::cout << "MyArray: FAIL" << std::endl;
       delete[] array;
       return EXIT_FAILURE;
+      }
     }
-  }
 
   delete[] array;
 
-  float* matrix = static_cast<float*>(tObj.GetUserField("MyMatrix"));
+  float* matrix = static_cast<float*>(tObj.GetUserField("MyMatrix") );
   for(i=0; i<4; i++)
     {
     if(matrix[i] != i)
@@ -166,13 +167,12 @@ int testMetaObject(int argc, char *argv[])
     std::cout << "ElementSpacing: PASS" << std::endl;
     }
 
-
   // testing metaUtils
 
   char* inDataChar = new char[1];
   inDataChar[0]=1;
   char* outDataChar = new char[1];
-  if(!MET_ValueToValue(MET_CHAR_ARRAY,inDataChar,0,MET_CHAR_ARRAY,outDataChar))
+  if(!MET_ValueToValue(MET_CHAR_ARRAY,inDataChar,0,MET_CHAR_ARRAY,outDataChar) )
     {
     std::cout << "MET_ValueToValue: FAIL" << std::endl;
     return EXIT_FAILURE;
@@ -188,7 +188,7 @@ int testMetaObject(int argc, char *argv[])
   unsigned char* inDataUChar = new unsigned char[1];
   inDataUChar[0]=1;
   unsigned char* outDataUChar = new unsigned char[1];
-  if(!MET_ValueToValue(MET_UCHAR_ARRAY,inDataUChar,0,MET_UCHAR_ARRAY,outDataUChar))
+  if(!MET_ValueToValue(MET_UCHAR_ARRAY,inDataUChar,0,MET_UCHAR_ARRAY,outDataUChar) )
     {
     std::cout << "MET_ValueToValue: FAIL" << std::endl;
     return EXIT_FAILURE;
@@ -201,7 +201,6 @@ int testMetaObject(int argc, char *argv[])
   delete[] inDataUChar;
   delete[] outDataUChar;
 
-
   std::cout << "[DONE]" << std::endl;
   return EXIT_SUCCESS;
-  }
+}

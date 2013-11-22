@@ -28,7 +28,7 @@ namespace itk
 {
 template< typename TInputImage, typename TOutputImage >
 GrayscaleConnectedOpeningImageFilter< TInputImage, TOutputImage >
-::GrayscaleConnectedOpeningImageFilter():
+::GrayscaleConnectedOpeningImageFilter() :
   m_NumberOfIterationsUsed(1)
 {
   m_Seed.Fill(NumericTraits< typename InputImageIndexType::OffsetValueType >::Zero);
@@ -45,6 +45,7 @@ GrayscaleConnectedOpeningImageFilter< TInputImage, TOutputImage >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
@@ -68,8 +69,7 @@ GrayscaleConnectedOpeningImageFilter< TInputImage, TOutputImage >
   // Allocate the output
   this->AllocateOutputs();
 
-
-  OutputImageType *outputImage = this->GetOutput();
+  OutputImageType *      outputImage = this->GetOutput();
   const InputImageType * inputImage = this->GetInput();
 
   // construct a marker image to manipulate using reconstruction by
@@ -155,5 +155,6 @@ GrayscaleConnectedOpeningImageFilter< TInputImage, TOutputImage >
      << m_NumberOfIterationsUsed << std::endl;
   os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
 }
+
 } // end namespace itk
 #endif

@@ -26,7 +26,7 @@
 namespace itk
 {
 /** Create a helper GPU Kernel class for GPUReduction */
-  itkGPUKernelClassMacro(GPUReductionKernel);
+itkGPUKernelClassMacro(GPUReductionKernel);
 
 /**
  * \class GPUReduction
@@ -64,29 +64,36 @@ public:
   itkGetOpenCLSourceFromKernelMacro(GPUReductionKernel);
 
   unsigned int NextPow2( unsigned int x );
+
   bool isPow2(unsigned int x);
+
   void GetNumBlocksAndThreads(int whichKernel, int n, int maxBlocks, int maxThreads, int &blocks, int &threads);
+
   unsigned int GetReductionKernel(int whichKernel, int blockSize, int isPowOf2);
 
   void AllocateGPUInputBuffer(TElement *h_idata = NULL);
+
   void ReleaseGPUInputBuffer();
+
   void InitializeKernel(unsigned int size);
 
   TElement RandomTest();
+
   TElement GPUGenerateData();
+
   TElement CPUGenerateData(TElement *data, int size);
 
   TElement GPUReduce(  cl_int  n,
-                  int  numThreads,
-                  int  numBlocks,
-                  int  maxThreads,
-                  int  maxBlocks,
-                  int  whichKernel,
-                  bool cpuFinalReduction,
-                  int  cpuFinalThreshold,
-                  double* dTotalTime,
-                  GPUDataPointer idata,
-                  GPUDataPointer odata);
+                       int  numThreads,
+                       int  numBlocks,
+                       int  maxThreads,
+                       int  maxBlocks,
+                       int  whichKernel,
+                       bool cpuFinalReduction,
+                       int  cpuFinalThreshold,
+                       double* dTotalTime,
+                       GPUDataPointer idata,
+                       GPUDataPointer odata);
 
 protected:
   GPUReduction();
@@ -98,13 +105,13 @@ protected:
   GPUDataPointer            m_GPUDataManager;
 
   /* GPU kernel handle for GPUComputeUpdate */
-  int           m_ReduceGPUKernelHandle;
-  int           m_TestGPUKernelHandle;
+  int m_ReduceGPUKernelHandle;
+  int m_TestGPUKernelHandle;
 
-  unsigned int  m_Size;
-  bool          m_SmallBlock;
+  unsigned int m_Size;
+  bool         m_SmallBlock;
 
-  TElement      m_GPUResult, m_CPUResult;
+  TElement m_GPUResult, m_CPUResult;
 
 private:
   GPUReduction(const Self &);   //purposely not implemented

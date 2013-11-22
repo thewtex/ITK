@@ -19,10 +19,11 @@
 #include "itkQuadEdgeMeshEulerOperatorJoinVertexFunction.h"
 #include "itkQuadEdgeMeshEulerOperatorsTestHelper.h"
 
-int itkQuadEdgeMeshEulerOperatorJoinVertexTest( int argc, char * argv[] )
+int
+itkQuadEdgeMeshEulerOperatorJoinVertexTest( int argc, char * argv[] )
 {
   if( argc < 2 )
-  {
+    {
     std::cout <<"*** ERROR ***" <<std::endl;
     std::cout <<"Requires one argument: " <<std::endl;
     std::cout <<" 0-Test with a square mesh with only triangles." <<std::endl;
@@ -32,14 +33,14 @@ int itkQuadEdgeMeshEulerOperatorJoinVertexTest( int argc, char * argv[] )
     std::cout <<" 4-Test with an isolated edge." <<std::endl;
     std::cout <<" 5-Test with a square mesh with one centered hole" <<std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
-  int InputType;
+  int               InputType;
   std::stringstream ssout( argv[1] );
   ssout >>InputType;
 
   if( ( InputType > 5 ) || ( InputType < 0 ) )
-  {
+    {
     std::cout <<"*** ERROR ***" <<std::endl;
     std::cout <<"Requires one argument: " <<std::endl;
     std::cout <<" 0-Test with a square mesh with only triangles." <<std::endl;
@@ -49,20 +50,20 @@ int itkQuadEdgeMeshEulerOperatorJoinVertexTest( int argc, char * argv[] )
     std::cout <<" 4-Test with an isolated edge." <<std::endl;
     std::cout <<" 5-Test with a square mesh with one centered hole" <<std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
-  typedef itk::QuadEdgeMesh< double, 3 >                      MeshType;
-  typedef MeshType::Pointer                                   MeshPointer;
-  typedef MeshType::QEType                                    QEType;
-  typedef MeshType::PointIdentifier                           PointIdentifier;
-  typedef MeshType::PointType                                 PointType;
-  typedef MeshType::CellType                                  CellType;
-  typedef itk::QuadEdgeMeshLineCell< CellType >               LineCellType;
+  typedef itk::QuadEdgeMesh< double, 3 >        MeshType;
+  typedef MeshType::Pointer                     MeshPointer;
+  typedef MeshType::QEType                      QEType;
+  typedef MeshType::PointIdentifier             PointIdentifier;
+  typedef MeshType::PointType                   PointType;
+  typedef MeshType::CellType                    CellType;
+  typedef itk::QuadEdgeMeshLineCell< CellType > LineCellType;
 
   typedef itk::QuadEdgeMeshEulerOperatorJoinVertexFunction< MeshType, QEType>
     JoinVertexType;
 
-  MeshPointer mesh = MeshType::New();
+  MeshPointer     mesh = MeshType::New();
   PointIdentifier start_id( 12 );
 
   switch( InputType )
@@ -196,11 +197,10 @@ int itkQuadEdgeMeshEulerOperatorJoinVertexTest( int argc, char * argv[] )
       break;
     }
 
-  JoinVertexType::Pointer joinVertex = JoinVertexType::New( );
+  JoinVertexType::Pointer joinVertex = JoinVertexType::New();
 
   std::cout << joinVertex->GetNameOfClass() << std::endl;
   std::cout << joinVertex << std::endl;
-
 
 #ifndef NDEBUG
   std::cout << "     " << "Test No Mesh Input.";
@@ -218,7 +218,7 @@ int itkQuadEdgeMeshEulerOperatorJoinVertexTest( int argc, char * argv[] )
 
   std::cout << "     " << "Test QE Input and Sym isolated.";
   LineCellType* IsolatedLineCell = new LineCellType;
-  if( joinVertex->Evaluate( IsolatedLineCell->GetQEGeom( ) ) )
+  if( joinVertex->Evaluate( IsolatedLineCell->GetQEGeom() ) )
     {
     std::cout << "FAILED." << std::endl;
     delete IsolatedLineCell;
@@ -238,7 +238,7 @@ int itkQuadEdgeMeshEulerOperatorJoinVertexTest( int argc, char * argv[] )
 #endif
 
   QEType* qe = mesh->FindEdge( start_id );
-  int kk( 0 );
+  int     kk( 0 );
 
   typedef itk::QuadEdgeMeshTopologyChecker< MeshType > CheckerType;
   CheckerType::Pointer check = CheckerType::New();
@@ -249,7 +249,7 @@ int itkQuadEdgeMeshEulerOperatorJoinVertexTest( int argc, char * argv[] )
     PointIdentifier id_org = qe->GetOrigin();
     PointIdentifier id_dest = qe->GetDestination();
 
-    QEType* qe_output = joinVertex->Evaluate( qe );
+    QEType*                        qe_output = joinVertex->Evaluate( qe );
     JoinVertexType::EdgeStatusType status = joinVertex->GetEdgeStatus();
 
     std::cout <<"*** " <<kk <<" ***" <<std::endl;
@@ -276,7 +276,7 @@ int itkQuadEdgeMeshEulerOperatorJoinVertexTest( int argc, char * argv[] )
 
     check->SetMesh( mesh );
 
-    if( check->ValidateEulerCharacteristic( ) )
+    if( check->ValidateEulerCharacteristic() )
       {
       std::cout <<"OK" <<std::endl;
       }

@@ -131,7 +131,7 @@ UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
     outputPtr->SetOrigin(outputOrigin);
     outputPtr->SetDirection(outputDirection);
     outputPtr->SetNumberOfComponentsPerPixel(  // propagate vector length info
-                                                                              inputPtr->GetNumberOfComponentsPerPixel() );
+      inputPtr->GetNumberOfComponentsPerPixel() );
     }
   else
     {
@@ -158,7 +158,7 @@ UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
     return;
     }
   const TInputImage *inputPtr = this->GetInput();
-  TOutputImage *outputPtr = this->GetOutput(0);
+  TOutputImage *     outputPtr = this->GetOutput(0);
 
   // Define the portion of the input to walk for this thread, using
   // the CallCopyOutputRegionToInputRegion method allows for the input
@@ -167,12 +167,12 @@ UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
 
   this->CallCopyOutputRegionToInputRegion(inputRegionForThread, outputRegionForThread);
 
-  const size_t numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() / regionSize[0];
+  const size_t     numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() / regionSize[0];
   ProgressReporter progress( this, threadId, numberOfLinesToProcess );
 
   // Define the iterators
   ImageScanlineConstIterator< TInputImage > inputIt(inputPtr, inputRegionForThread);
-  ImageScanlineIterator< TOutputImage > outputIt(outputPtr, outputRegionForThread);
+  ImageScanlineIterator< TOutputImage >     outputIt(outputPtr, outputRegionForThread);
 
   inputIt.GoToBegin();
   outputIt.GoToBegin();
@@ -189,6 +189,7 @@ UnaryFunctorImageFilter< TInputImage, TOutputImage, TFunction >
     progress.CompletedPixel();  // potential exception thrown here
     }
 }
+
 } // end namespace itk
 
 #endif

@@ -79,10 +79,10 @@ template< typename TInputImage, typename TOutputMesh >
 const typename ImageToMeshFilter< TInputImage, TOutputMesh >::InputImageType *
 ImageToMeshFilter< TInputImage, TOutputMesh >
 ::GetInput(unsigned int idx)
-{
+  {
   return dynamic_cast< const InputImageType * >
          ( this->ProcessObject::GetInput(idx) );
-}
+  }
 
 /**
  *
@@ -91,10 +91,10 @@ template< typename TInputImage, typename TOutputMesh >
 typename ImageToMeshFilter< TInputImage, TOutputMesh >::OutputMeshType *
 ImageToMeshFilter< TInputImage, TOutputMesh >
 ::GetOutput(void)
-{
+  {
   return dynamic_cast< OutputMeshType * >
          ( this->ProcessObject::GetOutput(0) );
-}
+  }
 
 /**
  * copy information from first input to all outputs

@@ -62,14 +62,14 @@ IntensityWindowingImageFilter< TInputImage, TOutputImage >
   InputRealType tmp1, tmp2;
 
   tmp1 = static_cast< InputRealType >( level )
-         - ( static_cast< InputRealType >( window ) / 2.0 );
+    - ( static_cast< InputRealType >( window ) / 2.0 );
   if ( tmp1 < NumericTraits< InputPixelType >::NonpositiveMin() )
     {
     tmp1 = 0.0;
     }
 
   tmp2 = static_cast< InputRealType >( level )
-         + ( static_cast< InputRealType >( window ) / 2.0 );
+    + ( static_cast< InputRealType >( window ) / 2.0 );
   if ( tmp2 > NumericTraits< InputPixelType >::max() )
     {
     tmp2 = NumericTraits< InputPixelType >::max();
@@ -159,6 +159,7 @@ IntensityWindowingImageFilter< TInputImage, TOutputImage >
   this->GetFunctor().SetFactor(m_Scale);
   this->GetFunctor().SetOffset(m_Shift);
 }
+
 } // end namespace itk
 
 #endif

@@ -53,12 +53,13 @@ public:
   virtual ScalarType Evaluate(const ScalarType& input) const;
 
   virtual ScalarType EvaluateDerivative(const ScalarType& dist,const ArrayType& input,
-                                      char mode,int element_id=0) const;
+                                        char mode,int element_id=0) const;
 
 protected:
 
   GaussianRadialBasisFunction();
-  virtual ~GaussianRadialBasisFunction();
+  virtual
+  ~GaussianRadialBasisFunction();
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
@@ -69,7 +70,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkGaussianRadialBasisFunction.hxx"
+#include "itkGaussianRadialBasisFunction.hxx"
 #endif
 
 #endif

@@ -21,13 +21,13 @@
 #include "itkTestingMacros.h"
 #include <iostream>
 
-int itkImageRegionSplitterSlowDimensionTest(int, char*[])
+int
+itkImageRegionSplitterSlowDimensionTest(int, char*[])
 {
 
   itk::ImageRegionSplitterSlowDimension::Pointer splitter = itk::ImageRegionSplitterSlowDimension::New();
 
   EXERCISE_BASIC_OBJECT_METHODS( splitter,ImageRegionSplitterSlowDimension );
-
 
   itk::ImageRegion<2> region;
   region.SetSize(0, 10);
@@ -47,7 +47,6 @@ int itkImageRegionSplitterSlowDimensionTest(int, char*[])
   TEST_EXPECT_EQUAL( splitter->GetNumberOfSplits( lpRegion, 12 ), 11 );
   TEST_EXPECT_EQUAL( splitter->GetNumberOfSplits( lpRegion, 99 ), 11 );
 
-
   region = lpRegion;
   splitter->GetSplit(0, 2, region);
   TEST_EXPECT_EQUAL(region.GetSize(0), 10);
@@ -57,7 +56,6 @@ int itkImageRegionSplitterSlowDimensionTest(int, char*[])
   splitter->GetSplit(1, 2, region);
   TEST_EXPECT_EQUAL(region.GetSize(0), 10);
   TEST_EXPECT_EQUAL(region.GetSize(1), 5);
-
 
   return EXIT_SUCCESS;
 }

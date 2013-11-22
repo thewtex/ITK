@@ -24,7 +24,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
@@ -41,8 +40,8 @@
 #include "itkGradientRecursiveGaussianImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -50,7 +49,6 @@ int main( int argc, char * argv[] )
     std::cerr << argv[0] << "  inputImageFile   outputVectorImageFile   sigma" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -60,14 +58,13 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  const unsigned int  Dimension = 3;
-  typedef    float    InputPixelType;
-  typedef    float    OutputComponentPixelType;
+  const unsigned int Dimension = 3;
+  typedef    float InputPixelType;
+  typedef    float OutputComponentPixelType;
 
   typedef itk::CovariantVector<
-    OutputComponentPixelType, Dimension > OutputPixelType;
+      OutputComponentPixelType, Dimension > OutputPixelType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -76,13 +73,11 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
-
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
   //  Software Guide : BeginLatex
   //
@@ -95,13 +90,11 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::GradientRecursiveGaussianImageFilter<
-                        InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
   // Software Guide : EndCodeSnippet
-
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -117,7 +110,6 @@ int main( int argc, char * argv[] )
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The input image can be obtained from the output of another filter. Here,
@@ -129,7 +121,6 @@ int main( int argc, char * argv[] )
   filter->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The standard deviation of the Gaussian smoothing kernel is now set.
@@ -140,11 +131,9 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
   const double sigma = atof( argv[3] );
 
-
   // Software Guide : BeginCodeSnippet
   filter->SetSigma( sigma );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -154,11 +143,9 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   filter->Update();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -169,26 +156,22 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
 
   writer->SetFileName( argv[2] );
-
 
   // Software Guide : BeginCodeSnippet
   writer->SetInput( filter->GetOutput() );
   writer->Update();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

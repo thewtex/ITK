@@ -21,7 +21,8 @@
 #include "itkFEMElement2DC0LinearQuadrilateralMembrane.h"
 
 //
-int itkFEMPArrayTest(int, char *[])
+int
+itkFEMPArrayTest(int, char *[])
 {
   //Need to register default FEM object types,
   //and setup SpatialReader to recognize FEM types

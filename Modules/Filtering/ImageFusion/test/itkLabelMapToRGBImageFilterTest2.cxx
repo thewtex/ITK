@@ -22,8 +22,8 @@
 #include "itkLabelImageToLabelMapFilter.h"
 #include "itkLabelMapToRGBImageFilter.h"
 
-
-int itkLabelMapToRGBImageFilterTest2(int argc, char * argv[])
+int
+itkLabelMapToRGBImageFilterTest2(int argc, char * argv[])
 {
   if( argc != 3 )
     {

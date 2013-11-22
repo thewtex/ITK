@@ -26,7 +26,7 @@ namespace Statistics
 {
 template< typename TVector >
 MahalanobisDistanceMetric< TVector >
-::MahalanobisDistanceMetric():
+::MahalanobisDistanceMetric() :
   m_Epsilon(1e-100),
   m_DoubleMax(1e+20)
 {
@@ -54,9 +54,9 @@ const typename
 MahalanobisDistanceMetric< TVector >::MeanVectorType &
 MahalanobisDistanceMetric< TVector >
 ::GetMean() const
-{
+  {
   return Superclass::GetOrigin();
-}
+  }
 
 template< typename TVector >
 void
@@ -231,6 +231,7 @@ MahalanobisDistanceMetric< TVector >
   os << indent << "Double max:        " << std::endl;
   os << this->GetDoubleMax() << std::endl;
 }
+
 } // end namespace Statistics
 } // end of namespace itk
 

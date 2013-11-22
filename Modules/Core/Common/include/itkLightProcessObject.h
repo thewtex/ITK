@@ -69,7 +69,7 @@ namespace itk
  * \ingroup DataProcessing
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT LightProcessObject:public Object
+class ITKCommon_EXPORT LightProcessObject : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -119,7 +119,8 @@ protected:
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This method causes the filter to generate its output. */
-  virtual void GenerateData() {}
+  virtual void
+  GenerateData() {}
 
 private:
   LightProcessObject(const Self &); //purposely not implemented

@@ -40,6 +40,7 @@ LaplacianSegmentationLevelSetImageFilter< TInputImage, TFeatureImage,
 {
   //   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

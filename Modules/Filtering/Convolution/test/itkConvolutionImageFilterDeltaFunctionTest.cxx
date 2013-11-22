@@ -20,7 +20,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int itkConvolutionImageFilterDeltaFunctionTest(int argc, char * argv[])
+int
+itkConvolutionImageFilterDeltaFunctionTest(int argc, char * argv[])
 {
   if ( argc < 3 )
     {
@@ -30,9 +31,9 @@ int itkConvolutionImageFilterDeltaFunctionTest(int argc, char * argv[])
 
   const unsigned int ImageDimension = 2;
 
-  typedef unsigned char                            PixelType;
-  typedef itk::Image< PixelType, ImageDimension >  ImageType;
-  typedef itk::ImageFileReader< ImageType >        ReaderType;
+  typedef unsigned char                           PixelType;
+  typedef itk::Image< PixelType, ImageDimension > ImageType;
+  typedef itk::ImageFileReader< ImageType >       ReaderType;
 
   // Read kernel image.
   ReaderType::Pointer reader = ReaderType::New();
@@ -41,7 +42,7 @@ int itkConvolutionImageFilterDeltaFunctionTest(int argc, char * argv[])
 
   // Set up delta function image.
   ImageType::RegionType region = reader->GetOutput()->GetLargestPossibleRegion();
-  ImageType::Pointer deltaFunctionImage = ImageType::New();
+  ImageType::Pointer    deltaFunctionImage = ImageType::New();
   deltaFunctionImage->SetRegions( region );
   deltaFunctionImage->Allocate();
   deltaFunctionImage->FillBuffer( 0 );

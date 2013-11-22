@@ -196,8 +196,8 @@ protected:
   Similarity2DTransform();
 
   ~Similarity2DTransform()
-  {
-  }
+  {}
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Compute matrix from angle and scale. This is used in Set methods
@@ -212,7 +212,8 @@ protected:
   virtual void ComputeMatrixParameters(void);
 
   /** Set the scale without updating underlying variables. */
-  void SetVarScale(ScaleType scale)
+  void
+  SetVarScale(ScaleType scale)
   {
     m_Scale = scale;
   }

@@ -35,14 +35,12 @@ ManifoldParzenWindowsPointSetFunction<TPointSet, TOutput, TCoordRep>
   m_KernelSigma( 1.0 ),
   m_Normalize( true ),
   m_UseAnisotropicCovariances( true )
-{
-}
+{}
 
 template <typename TPointSet, typename TOutput, typename TCoordRep>
 ManifoldParzenWindowsPointSetFunction<TPointSet, TOutput, TCoordRep>
 ::~ManifoldParzenWindowsPointSetFunction()
-{
-}
+{}
 
 template <typename TPointSet, typename TOutput, typename TCoordRep>
 void
@@ -91,7 +89,7 @@ ManifoldParzenWindowsPointSetFunction<TPointSet, TOutput, TCoordRep>
   It = points->Begin();
   while( It != points->End() )
     {
-    PointType point = It.Value();
+    PointType     point = It.Value();
     unsigned long index = It.Index();
 
     this->m_Gaussians[index] = GaussianType::New();
@@ -99,7 +97,7 @@ ManifoldParzenWindowsPointSetFunction<TPointSet, TOutput, TCoordRep>
     this->m_Gaussians[index]->SetMean( inputGaussians[index]->GetMean() );
 
     if( this->m_CovarianceKNeighborhood > 0
-      && this->m_UseAnisotropicCovariances )
+        && this->m_UseAnisotropicCovariances )
       {
       CovarianceMatrixType Cout( PointDimension, PointDimension );
       Cout.Fill( 0 );
@@ -111,7 +109,7 @@ ManifoldParzenWindowsPointSetFunction<TPointSet, TOutput, TCoordRep>
       for( unsigned int j = 0; j < this->m_CovarianceKNeighborhood; j++ )
         {
         if( neighbors[j] != index
-          && neighbors[j] < this->GetInputPointSet()->GetNumberOfPoints() )
+            && neighbors[j] < this->GetInputPointSet()->GetNumberOfPoints() )
           {
           PointType neighbor =
             this->GetInputPointSet()->GetPoint( neighbors[j] );
@@ -173,8 +171,8 @@ ManifoldParzenWindowsPointSetFunction<TPointSet, TOutput, TCoordRep>
     }
 
   unsigned int numberOfNeighbors = vnl_math_min(
-    this->m_EvaluationKNeighborhood,
-    static_cast<unsigned int>( this->m_Gaussians.size() ) );
+      this->m_EvaluationKNeighborhood,
+      static_cast<unsigned int>( this->m_Gaussians.size() ) );
 
   OutputType sum = NumericTraits< OutputType>::Zero;
 
@@ -183,7 +181,7 @@ ManifoldParzenWindowsPointSetFunction<TPointSet, TOutput, TCoordRep>
     for( unsigned int j = 0; j < this->m_Gaussians.size(); j++ )
       {
       sum += static_cast<OutputType>(
-        this->m_Gaussians[j]->Evaluate( point ) );
+          this->m_Gaussians[j]->Evaluate( point ) );
       }
     }
   else
@@ -194,7 +192,7 @@ ManifoldParzenWindowsPointSetFunction<TPointSet, TOutput, TCoordRep>
     for( unsigned int j = 0; j < numberOfNeighbors; j++ )
       {
       sum += static_cast<OutputType>(
-        this->m_Gaussians[neighbors[j]]->Evaluate( point ) );
+          this->m_Gaussians[neighbors[j]]->Evaluate( point ) );
       }
     }
   return static_cast<OutputType>(
@@ -227,17 +225,17 @@ ManifoldParzenWindowsPointSetFunction<TPointSet, TOutput, TCoordRep>
   Indent indent) const
 {
   os << indent << "Covariance neighborhood: "
-               << this->m_CovarianceKNeighborhood << std::endl;
+     << this->m_CovarianceKNeighborhood << std::endl;
   os << indent << "Evaluation neighborhood: "
-               << this->m_EvaluationKNeighborhood << std::endl;
+     << this->m_EvaluationKNeighborhood << std::endl;
   os << indent << "Regularization sigma: "
-               << this->m_RegularizationSigma << std::endl;
+     << this->m_RegularizationSigma << std::endl;
   os << indent << "Kernel sigma: "
-               << this->m_KernelSigma << std::endl;
+     << this->m_KernelSigma << std::endl;
   os << indent << "Normalize: "
-               << this->m_Normalize << std::endl;
+     << this->m_Normalize << std::endl;
   os << indent << "Use anisotropic covariances: "
-               << this->m_UseAnisotropicCovariances << std::endl;
+     << this->m_UseAnisotropicCovariances << std::endl;
 }
 
 }  //end namespace itk

@@ -58,10 +58,12 @@ public:
   typedef NeuralNetworkObject<VectorType, OutputVectorType> NetworkType;
   typedef ErrorFunctionBase<InternalVectorType, ScalarType> PerformanceFunctionType;
   typedef SquaredDifferenceErrorFunction<InternalVectorType, ScalarType>
-                                                            DefaultPerformanceType;
+    DefaultPerformanceType;
 
   void SetTrainingSamples(TSample* samples);
+
   void SetTargetValues(TTargetVector* targets);
+
   void SetLearningRate(ValueType);
 
   ValueType GetLearningRate();
@@ -71,25 +73,27 @@ public:
 
   void SetPerformanceFunction(PerformanceFunctionType* f);
 
-  virtual void Train(NetworkType* itkNotUsed(net), TSample* itkNotUsed(samples), TTargetVector* itkNotUsed(targets))
-    {
+  virtual void
+  Train(NetworkType* itkNotUsed(net), TSample* itkNotUsed(samples), TTargetVector* itkNotUsed(targets) )
+  {
     // not implemented
-    };
+  }
 
   inline VectorType
   defaultconverter(typename TSample::MeasurementVectorType v)
-    {
+  {
     VectorType temp;
+
     for (unsigned int i = 0; i < v.Size(); i++)
       {
       temp[i] = static_cast<ScalarType>(v[i]);
       }
     return temp;
-    }
+  }
 
   inline OutputVectorType
   targetconverter(typename TTargetVector::MeasurementVectorType v)
-    {
+  {
     OutputVectorType temp;
 
     for (unsigned int i = 0; i < v.Size(); i++)
@@ -97,22 +101,22 @@ public:
       temp[i] = static_cast<ScalarType>(v[i]);
       }
     return temp;
-    }
+  }
 
 protected:
 
   TrainingFunctionBase();
-  ~TrainingFunctionBase(){};
+  ~TrainingFunctionBase(){}
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
-  TSample*                m_TrainingSamples;// original samples
-  TTargetVector*          m_SampleTargets;  // original samples
-  InputSampleVectorType   m_InputSamples;   // itk::vectors
-  OutputSampleVectorType  m_Targets;        // itk::vectors
-  SizeValueType           m_Iterations;
-  ValueType               m_LearningRate;
+  TSample*               m_TrainingSamples; // original samples
+  TTargetVector*         m_SampleTargets;   // original samples
+  InputSampleVectorType  m_InputSamples;    // itk::vectors
+  OutputSampleVectorType m_Targets;         // itk::vectors
+  SizeValueType          m_Iterations;
+  ValueType              m_LearningRate;
 
   typename PerformanceFunctionType::Pointer m_PerformanceFunction;
 };

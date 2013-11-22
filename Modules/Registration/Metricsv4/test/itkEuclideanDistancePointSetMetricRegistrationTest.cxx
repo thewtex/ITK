@@ -26,24 +26,26 @@ template<typename TFilter>
 class itkEuclideanDistancePointSetMetricRegistrationTestCommandIterationUpdate : public itk::Command
 {
 public:
-  typedef itkEuclideanDistancePointSetMetricRegistrationTestCommandIterationUpdate   Self;
+  typedef itkEuclideanDistancePointSetMetricRegistrationTestCommandIterationUpdate Self;
 
-  typedef itk::Command             Superclass;
-  typedef itk::SmartPointer<Self>  Pointer;
+  typedef itk::Command            Superclass;
+  typedef itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  itkEuclideanDistancePointSetMetricRegistrationTestCommandIterationUpdate() {};
+  itkEuclideanDistancePointSetMetricRegistrationTestCommandIterationUpdate() {}
 
 public:
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *) caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     if( typeid( event ) != typeid( itk::IterationEvent ) )
       {
       return;
@@ -56,7 +58,8 @@ public:
       }
     std::cout << "It: " << optimizer->GetCurrentIteration() << " metric value: " << optimizer->GetCurrentMetricValue();
     std::cout << std::endl;
-    }
+  }
+
 };
 
 // Transform type
@@ -64,7 +67,8 @@ typedef itk::Transform<double, 2, 2> itkEuclideanDistancePointSetMetricRegistrat
 
 /////////////////////////////////////////////////////////
 template< typename TTransform, typename TMetric, typename TPointSet >
-int itkEuclideanDistancePointSetMetricRegistrationTestRun(
+int
+itkEuclideanDistancePointSetMetricRegistrationTestRun(
   unsigned int numberOfIterations, double maximumPhysicalStepSize, double pointMax,
   typename TTransform::Pointer & transform, typename TMetric::Pointer & metric )
 {
@@ -80,7 +84,7 @@ int itkEuclideanDistancePointSetMetricRegistrationTestRun(
 
   // Create a few points and apply a small rotation to make the moving point set
 
-  float theta = vnl_math::pi / static_cast<float>(180.0) * static_cast<float>(1.0);
+  float     theta = vnl_math::pi / static_cast<float>(180.0) * static_cast<float>(1.0);
   PointType fixedPoint;
   fixedPoint[0] = static_cast<CoordRepType>( 0.0 );
   fixedPoint[1] = static_cast<CoordRepType>( 0.0 );
@@ -100,7 +104,7 @@ int itkEuclideanDistancePointSetMetricRegistrationTestRun(
   unsigned int numberOfPoints = fixedPoints->GetNumberOfPoints();
 
   PointType movingPoint;
-  for( unsigned int n=0; n < numberOfPoints; n ++ )
+  for( unsigned int n=0; n < numberOfPoints; n++ )
     {
     fixedPoint = fixedPoints->GetPoint( n );
     movingPoint[0] = fixedPoint[0] * vcl_cos( theta ) - fixedPoint[1] * vcl_sin( theta );
@@ -117,13 +121,14 @@ int itkEuclideanDistancePointSetMetricRegistrationTestRun(
 
   // scales estimator
   typedef itk::RegistrationParameterScalesFromPhysicalShift< TMetric > RegistrationParameterScalesFromShiftType;
-  typename RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator = RegistrationParameterScalesFromShiftType::New();
+  typename RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator =
+    RegistrationParameterScalesFromShiftType::New();
   shiftScaleEstimator->SetMetric( metric );
   // needed with pointset metrics
   shiftScaleEstimator->SetVirtualDomainPointSet( metric->GetVirtualTransformedPointSet() );
 
   // optimizer
-  typedef itk::GradientDescentOptimizerv4  OptimizerType;
+  typedef itk::GradientDescentOptimizerv4 OptimizerType;
   typename OptimizerType::Pointer  optimizer = OptimizerType::New();
   optimizer->SetMetric( metric );
   optimizer->SetNumberOfIterations( numberOfIterations );
@@ -146,9 +151,11 @@ int itkEuclideanDistancePointSetMetricRegistrationTestRun(
     {
     std::cout << "local-support transform non-zero parameters: " << std::endl;
     typename TTransform::ParametersType params = transform->GetParameters();
-    for( itk::SizeValueType n = 0; n < transform->GetNumberOfParameters(); n += transform->GetNumberOfLocalParameters() )
+    for( itk::SizeValueType n = 0; n < transform->GetNumberOfParameters();
+         n += transform->GetNumberOfLocalParameters() )
       {
-      typename TTransform::ParametersValueType zero = itk::NumericTraits<typename TTransform::ParametersValueType>::ZeroValue();
+      typename TTransform::ParametersValueType zero =
+        itk::NumericTraits<typename TTransform::ParametersValueType>::ZeroValue();
       if( params[n] != zero && params[n+1] != zero )
         {
         std::cout << n << ", " << n+1 << " : " << params[n] << ", " << params[n+1] << std::endl;
@@ -182,7 +189,7 @@ int itkEuclideanDistancePointSetMetricRegistrationTestRun(
       passed = false;
       }
     }
-  if( ! passed )
+  if( !passed )
     {
     std::cerr << "Results do not match truth within tolerance." << std::endl;
     return EXIT_FAILURE;
@@ -192,14 +199,16 @@ int itkEuclideanDistancePointSetMetricRegistrationTestRun(
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int itkEuclideanDistancePointSetMetricRegistrationTest( int argc, char *argv[] )
+int
+itkEuclideanDistancePointSetMetricRegistrationTest( int argc, char *argv[] )
 {
   const unsigned int Dimension = 2;
 
   int finalResult = EXIT_SUCCESS;
 
   unsigned int numberOfIterations = 100;
-  double maximumPhysicalStepSize = static_cast<double>( 2.0 );
+  double       maximumPhysicalStepSize = static_cast<double>( 2.0 );
+
   if( argc > 1 )
     {
     numberOfIterations = atoi( argv[1] );
@@ -216,7 +225,7 @@ int itkEuclideanDistancePointSetMetricRegistrationTest( int argc, char *argv[] )
   //
 
   // metric
-  typedef itk::PointSet<unsigned char, Dimension> PointSetType;
+  typedef itk::PointSet<unsigned char, Dimension>                        PointSetType;
   typedef itk::EuclideanDistancePointSetToPointSetMetricv4<PointSetType> PointSetMetricType;
   PointSetMetricType::Pointer metric = PointSetMetricType::New();
 
@@ -225,8 +234,9 @@ int itkEuclideanDistancePointSetMetricRegistrationTest( int argc, char *argv[] )
   AffineTransformType::Pointer affineTransform = AffineTransformType::New();
   affineTransform->SetIdentity();
   std::cout << "XX Test with affine transform: " << std::endl;
-  int oneResult = itkEuclideanDistancePointSetMetricRegistrationTestRun<AffineTransformType, PointSetMetricType, PointSetType>
-    ( numberOfIterations, maximumPhysicalStepSize, pointMax, affineTransform, metric );
+  int oneResult =
+    itkEuclideanDistancePointSetMetricRegistrationTestRun<AffineTransformType, PointSetMetricType, PointSetType>
+      ( numberOfIterations, maximumPhysicalStepSize, pointMax, affineTransform, metric );
   if( oneResult == EXIT_FAILURE )
     {
     finalResult = EXIT_FAILURE;
@@ -289,8 +299,10 @@ int itkEuclideanDistancePointSetMetricRegistrationTest( int argc, char *argv[] )
   //metric2->SetVirtualDomain( spacing, origin, direction, region );
 
   std::cout << "XX Testing with displacement field transform." << std::endl;
-  oneResult = itkEuclideanDistancePointSetMetricRegistrationTestRun<DisplacementFieldTransformType, PointSetMetricType, PointSetType>
-    ( numberOfIterations, maximumPhysicalStepSize, pointMax, displacementTransform, metric2 );
+  oneResult =
+    itkEuclideanDistancePointSetMetricRegistrationTestRun<DisplacementFieldTransformType, PointSetMetricType,
+                                                          PointSetType>
+      ( numberOfIterations, maximumPhysicalStepSize, pointMax, displacementTransform, metric2 );
   if( oneResult == EXIT_FAILURE )
     {
     finalResult = EXIT_FAILURE;

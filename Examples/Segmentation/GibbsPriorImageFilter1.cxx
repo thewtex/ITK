@@ -50,7 +50,8 @@
 #define   NUM_CLASSES         3
 #define   MAX_NUM_ITER        1
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc != 4 )
     {
@@ -74,7 +75,7 @@ int main( int argc, char *argv[] )
   const unsigned short NDIMENSION = 3;
 
   typedef itk::Image<itk::Vector<unsigned short,NUMBANDS>,
-                                                     NDIMENSION> VecImageType;
+                     NDIMENSION> VecImageType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -91,7 +92,6 @@ int main( int argc, char *argv[] )
   typedef itk::Image< unsigned short, NDIMENSION > ClassImageType;
   // Software Guide : EndCodeSnippet
 
-
   // We instantiate reader and writer types
   //
   typedef  itk::ImageFileReader< ClassImageType >   ReaderType;
@@ -104,7 +104,6 @@ int main( int argc, char *argv[] )
   inputimagereader->SetFileName( argv[1] );
   trainingimagereader->SetFileName( argv[2] );
   writer->SetFileName( argv[3] );
-
 
   // We convert the input into vector images
   //
@@ -142,8 +141,8 @@ int main( int argc, char *argv[] )
   inputIt.GoToBegin();
 
   //Set up the vector to store the image  data
-  typedef VecImageType::PixelType     DataVector;
-  DataVector   dblVec;
+  typedef VecImageType::PixelType DataVector;
+  DataVector dblVec;
 
   while ( !vecIt.IsAtEnd() )
     {
@@ -159,9 +158,9 @@ int main( int argc, char *argv[] )
 
   namespace stat = itk::Statistics;
 
-  typedef VecImageType::PixelType         VecImagePixelType;
+  typedef VecImageType::PixelType VecImagePixelType;
   typedef stat::MahalanobisDistanceMembershipFunction< VecImagePixelType >
-                                          MembershipFunctionType;
+    MembershipFunctionType;
   typedef MembershipFunctionType::Pointer MembershipFunctionPointer;
 
   typedef std::vector< MembershipFunctionPointer >
@@ -172,7 +171,7 @@ int main( int argc, char *argv[] )
   //----------------------------------------------------------------------
 
   typedef itk::ImageGaussianModelEstimator<VecImageType,
-    MembershipFunctionType, ClassImageType>
+                                           MembershipFunctionType, ClassImageType>
     ImageGaussianModelEstimatorType;
 
   ImageGaussianModelEstimatorType::Pointer
@@ -180,8 +179,7 @@ int main( int argc, char *argv[] )
 
   applyEstimateModel->SetNumberOfModels(NUM_CLASSES);
   applyEstimateModel->SetInputImage(vecImage);
-  applyEstimateModel->SetTrainingImage(trainingimagereader->GetOutput());
-
+  applyEstimateModel->SetTrainingImage(trainingimagereader->GetOutput() );
 
   //Run the gaussian classifier algorithm
   applyEstimateModel->Update();
@@ -201,7 +199,7 @@ int main( int argc, char *argv[] )
   typedef itk::Statistics::DecisionRule::Pointer DecisionRuleBasePointer;
 
   typedef itk::Statistics::MinimumDecisionRule DecisionRuleType;
-  DecisionRuleType::Pointer  myDecisionRule = DecisionRuleType::New();
+  DecisionRuleType::Pointer myDecisionRule = DecisionRuleType::New();
 
   std::cout << " site 3 " << std::endl;
 
@@ -233,7 +231,7 @@ int main( int argc, char *argv[] )
   myClassifier->SetNumberOfClasses(NUM_CLASSES);
 
   // Set the decison rule
-  myClassifier->SetDecisionRule((DecisionRuleBasePointer) myDecisionRule );
+  myClassifier->SetDecisionRule( (DecisionRuleBasePointer) myDecisionRule );
 
   //Add the membership functions
   for( unsigned int i=0; i<NUM_CLASSES; i++ )
@@ -287,7 +285,7 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   applyGibbsImageFilter->SetInput(vecImage);
   applyGibbsImageFilter->SetClassifier( myClassifier );
-  applyGibbsImageFilter->SetTrainingImage(trainingimagereader->GetOutput());
+  applyGibbsImageFilter->SetTrainingImage(trainingimagereader->GetOutput() );
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex

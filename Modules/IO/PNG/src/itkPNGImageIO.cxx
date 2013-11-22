@@ -23,27 +23,31 @@ namespace itk
 {
 extern "C"
 {
-  #include <setjmp.h>
+#include <setjmp.h>
 /* The PNG library does not expect the error function to return.
    Therefore we must use this ugly longjmp call.  */
-void itkPNGWriteErrorFunction( png_structp png_ptr,
-                               png_const_charp itkNotUsed(error_msg) )
+void
+itkPNGWriteErrorFunction( png_structp png_ptr,
+                          png_const_charp itkNotUsed(error_msg) )
 {
   longjmp(png_jmpbuf(png_ptr), 1);
 }
+
 }
 
 extern "C"
 {
-void itkPNGWriteWarningFunction( png_structp itkNotUsed(png_ptr),
-                                 png_const_charp itkNotUsed(warning_msg) )
+void
+itkPNGWriteWarningFunction( png_structp itkNotUsed(png_ptr),
+                            png_const_charp itkNotUsed(warning_msg) )
 {}
 }
 
 namespace
 {
 // Wrap setjmp call to avoid warnings about variable clobbering.
-bool wrapSetjmp( png_structp & png_ptr )
+bool
+wrapSetjmp( png_structp & png_ptr )
 {
   if( setjmp( png_jmpbuf( png_ptr ) ) )
     {
@@ -51,6 +55,7 @@ bool wrapSetjmp( png_structp & png_ptr )
     }
   return 0;
 }
+
 }
 
 // simple class to call fopen on construct and
@@ -58,12 +63,13 @@ bool wrapSetjmp( png_structp & png_ptr )
 class PNGFileWrapper
 {
 public:
-  PNGFileWrapper(const char *const fname, const char *const openMode):m_FilePointer(NULL)
+  PNGFileWrapper(const char *const fname, const char *const openMode) : m_FilePointer(NULL)
   {
     m_FilePointer = fopen(fname, openMode);
   }
 
-  virtual ~PNGFileWrapper()
+  virtual
+  ~PNGFileWrapper()
   {
     if ( m_FilePointer )
       {
@@ -74,7 +80,8 @@ public:
   FILE *m_FilePointer;
 };
 
-bool PNGImageIO::CanReadFile(const char *file)
+bool
+PNGImageIO::CanReadFile(const char *file)
 {
   // First check the extension
   std::string filename = file;
@@ -98,13 +105,13 @@ bool PNGImageIO::CanReadFile(const char *file)
     return false;
     }
   unsigned char header[8];
-  size_t temp = fread(header, 1, 8, pngfp.m_FilePointer);
+  size_t        temp = fread(header, 1, 8, pngfp.m_FilePointer);
   if( temp != 8 )
     {
     itkExceptionMacro( "PNGImageIO failed to read header for file: "
-      << this->GetFileName() << std::endl
-      << "Reason: fread read only " << temp
-      << " instead of 8" );
+                       << this->GetFileName() << std::endl
+                       << "Reason: fread read only " << temp
+                       << " instead of 8" );
     }
   bool is_png = !png_sig_cmp(header, 0, 8);
   if ( !is_png )
@@ -112,8 +119,8 @@ bool PNGImageIO::CanReadFile(const char *file)
     return false;
     }
   png_structp png_ptr = png_create_read_struct
-                          (PNG_LIBPNG_VER_STRING, (png_voidp)NULL,
-                          NULL, NULL);
+      (PNG_LIBPNG_VER_STRING, (png_voidp)NULL,
+      NULL, NULL);
   if ( !png_ptr )
     {
     return false;
@@ -140,10 +147,12 @@ bool PNGImageIO::CanReadFile(const char *file)
   return true;
 }
 
-void PNGImageIO::ReadVolume(void *)
+void
+PNGImageIO::ReadVolume(void *)
 {}
 
-void PNGImageIO::Read(void *buffer)
+void
+PNGImageIO::Read(void *buffer)
 {
   itkDebugMacro( "Read: file dimensions = " << this->GetNumberOfDimensions() );
   // use this class so return will call close
@@ -159,13 +168,13 @@ void PNGImageIO::Read(void *buffer)
     return;
     }
   unsigned char header[8];
-  size_t temp = fread(header, 1, 8, fp);
+  size_t        temp = fread(header, 1, 8, fp);
   if( temp != 8 )
     {
     itkExceptionMacro( "PNGImageIO failed to read header for file: "
-      << this->GetFileName() << std::endl
-      << "Reason: fread read only " << temp
-      << " instead of 8" );
+                       << this->GetFileName() << std::endl
+                       << "Reason: fread read only " << temp
+                       << " instead of 8" );
     }
 
   bool is_png = !png_sig_cmp(header, 0, 8);
@@ -175,8 +184,8 @@ void PNGImageIO::Read(void *buffer)
     return;
     }
   png_structp png_ptr = png_create_read_struct
-                          (PNG_LIBPNG_VER_STRING, (png_voidp)NULL,
-                          NULL, NULL);
+      (PNG_LIBPNG_VER_STRING, (png_voidp)NULL,
+      NULL, NULL);
   if ( !png_ptr )
     {
     itkExceptionMacro( "File is not png type" << this->GetFileName() );
@@ -303,13 +312,16 @@ PNGImageIO::PNGImageIO()
 PNGImageIO::~PNGImageIO()
 {}
 
-void PNGImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+PNGImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Compression Level : " << m_CompressionLevel << "\n";
 }
 
-void PNGImageIO::ReadImageInformation()
+void
+PNGImageIO::ReadImageInformation()
 {
   m_Spacing[0] = 1.0;  // We'll look for PNG pixel size information later,
   m_Spacing[1] = 1.0;  // but set the defaults now
@@ -325,13 +337,13 @@ void PNGImageIO::ReadImageInformation()
     return;
     }
   unsigned char header[8];
-  size_t temp = fread(header, 1, 8, fp);
+  size_t        temp = fread(header, 1, 8, fp);
   if( temp != 8 )
     {
     itkExceptionMacro( "PNGImageIO failed to read header for file: "
-      << this->GetFileName() << std::endl
-      << "Reason: fread read only " << temp
-      << " instead of 8" );
+                       << this->GetFileName() << std::endl
+                       << "Reason: fread read only " << temp
+                       << " instead of 8" );
     }
 
   bool is_png = !png_sig_cmp(header, 0, 8);
@@ -340,8 +352,8 @@ void PNGImageIO::ReadImageInformation()
     return;
     }
   png_structp png_ptr = png_create_read_struct
-                          (PNG_LIBPNG_VER_STRING, (png_voidp)NULL,
-                          NULL, NULL);
+      (PNG_LIBPNG_VER_STRING, (png_voidp)NULL,
+      NULL, NULL);
   if ( !png_ptr )
     {
     return;
@@ -438,7 +450,8 @@ void PNGImageIO::ReadImageInformation()
                           &end_info);
 }
 
-bool PNGImageIO::CanWriteFile(const char *name)
+bool
+PNGImageIO::CanWriteFile(const char *name)
 {
   std::string filename = name;
 
@@ -464,15 +477,18 @@ bool PNGImageIO::CanWriteFile(const char *name)
   return false;
 }
 
-void PNGImageIO::WriteImageInformation(void)
+void
+PNGImageIO::WriteImageInformation(void)
 {}
 
-void PNGImageIO::Write(const void *buffer)
+void
+PNGImageIO::Write(const void *buffer)
 {
   this->WriteSlice(m_FileName, buffer);
 }
 
-void PNGImageIO::WriteSlice(const std::string & fileName, const void *buffer)
+void
+PNGImageIO::WriteSlice(const std::string & fileName, const void *buffer)
 {
   // use this class so return will call close
   PNGFileWrapper pngfp(fileName.c_str(), "wb");
@@ -517,7 +533,7 @@ void PNGImageIO::WriteSlice(const std::string & fileName, const void *buffer)
     }
 
   png_structp png_ptr = png_create_write_struct
-                          (PNG_LIBPNG_VER_STRING, (png_voidp)NULL, NULL, NULL);
+      (PNG_LIBPNG_VER_STRING, (png_voidp)NULL, NULL, NULL);
   if ( !png_ptr )
     {
     itkExceptionMacro(<< "Unable to write PNG file! png_create_write_struct failed.");
@@ -618,7 +634,7 @@ void PNGImageIO::WriteSlice(const std::string & fileName, const void *buffer)
   png_byte **row_pointers = new png_byte *[height];
 
     {
-    const int        rowInc = width * numComp * bitDepth / 8;
+    const int                     rowInc = width * numComp * bitDepth / 8;
     volatile const unsigned char *outPtr = ( (const unsigned char *)buffer );
     for ( unsigned int ui = 0; ui < height; ui++ )
       {
@@ -632,4 +648,5 @@ void PNGImageIO::WriteSlice(const std::string & fileName, const void *buffer)
   delete[] row_pointers;
   png_destroy_write_struct(&png_ptr, &info_ptr);
 }
+
 } // end namespace itk

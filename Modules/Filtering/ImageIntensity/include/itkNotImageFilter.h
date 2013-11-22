@@ -36,20 +36,24 @@ class NOT
 public:
   NOT() {}
   ~NOT() {}
-  bool operator!=(const NOT &) const
+  bool
+  operator!=(const NOT &) const
   {
     return false;
   }
 
-  bool operator==(const NOT & other) const
+  bool
+  operator==(const NOT & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return static_cast< TOutput >( !A );
   }
+
 };
 }
 /** \class NotImageFilter
@@ -77,7 +81,7 @@ public:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage, typename TOutputImage >
-class NotImageFilter:
+class NotImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::NOT<
@@ -89,11 +93,11 @@ public:
   /** Standard class typedefs. */
   typedef NotImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::NOT<
-      typename TInputImage::PixelType,
-      typename TOutputImage::PixelType >
-    >                               Superclass;
+      TInputImage, TOutputImage,
+      Functor::NOT<
+        typename TInputImage::PixelType,
+        typename TOutputImage::PixelType >
+      >                               Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -120,11 +124,13 @@ public:
 
 protected:
   NotImageFilter() {}
-  virtual ~NotImageFilter() {}
+  virtual
+  ~NotImageFilter() {}
 
 private:
   NotImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

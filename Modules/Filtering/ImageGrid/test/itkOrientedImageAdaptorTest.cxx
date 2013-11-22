@@ -34,30 +34,29 @@
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkRedPixelAccessor.h"
 
-
 //-------------------------------------
 //     Typedefs for convenience
 //-------------------------------------
 typedef itk::Image< itk::RGBPixel<float>,   2 > myImageType;
 
-
 typedef itk::RedPixelAccessor<float> myRedAccessorType;
 
 typedef itk::ImageAdaptor< myImageType, myRedAccessorType > myRedAdaptorType;
 
-typedef itk::ImageRegionIteratorWithIndex< myImageType >       myIteratorType;
+typedef itk::ImageRegionIteratorWithIndex< myImageType > myIteratorType;
 
-typedef itk::ImageRegionIteratorWithIndex< myRedAdaptorType >  myRedIteratorType;
+typedef itk::ImageRegionIteratorWithIndex< myRedAdaptorType > myRedIteratorType;
 
 //-------------------------
 //
 //   Main code
 //
 //-------------------------
-int itkOrientedImageAdaptorTest(int, char* []) {
-
+int
+itkOrientedImageAdaptorTest(int, char* []) {
 
   myImageType::SizeType size;
+
   size[0] = 2;
   size[1] = 2;
 
@@ -71,17 +70,16 @@ int itkOrientedImageAdaptorTest(int, char* []) {
 
   myImageType::Pointer myImage = myImageType::New();
 
-
   myImage->SetLargestPossibleRegion( region );
   myImage->SetBufferedRegion( region );
   myImage->SetRequestedRegion( region );
   myImage->Allocate();
 
-  myIteratorType  it1( myImage, myImage->GetRequestedRegion() );
+  myIteratorType it1( myImage, myImage->GetRequestedRegion() );
 
   // Value to initialize the pixels
   myImageType::PixelType::ComponentType colorInit[3] = {1.0f, 0.5f, 0.5f};
-  myImageType::PixelType color = colorInit;
+  myImageType::PixelType                color = colorInit;
 
   // Initializing all the pixel in the image
   it1.GoToBegin();
@@ -106,8 +104,7 @@ int itkOrientedImageAdaptorTest(int, char* []) {
   myRedAdaptorType::Pointer myAdaptor = myRedAdaptorType::New();
   myAdaptor->SetImage( myImage );
 
-
-  myRedIteratorType  it2( myAdaptor, myAdaptor->GetRequestedRegion() );
+  myRedIteratorType it2( myAdaptor, myAdaptor->GetRequestedRegion() );
 
   // Set the values of the Red component of myImage, using myAdaptor
   it2.GoToBegin();
@@ -116,7 +113,6 @@ int itkOrientedImageAdaptorTest(int, char* []) {
     it2.Set( 0.4 );
     ++it2;
     }
-
 
   std::cout << "--- After --- " << std::endl;
 
@@ -133,7 +129,7 @@ int itkOrientedImageAdaptorTest(int, char* []) {
   // Test the Set/Get Methods of the adaptor
   // First test the get methods of the adaptor
 
-  if (myImage->GetPixelContainer() != myAdaptor->GetPixelContainer())
+  if (myImage->GetPixelContainer() != myAdaptor->GetPixelContainer() )
     {
     std::cout << "image pixel container != adaptor pixel container: "
               << myImage->GetPixelContainer() << " != "
@@ -144,7 +140,7 @@ int itkOrientedImageAdaptorTest(int, char* []) {
 
   float forigin[2] = {2.0, 3.0};
   myImage->SetOrigin(forigin);
-  if (myImage->GetOrigin() != myAdaptor->GetOrigin())
+  if (myImage->GetOrigin() != myAdaptor->GetOrigin() )
     {
     std::cout << "image origin != adaptor origin: "
               << myImage->GetOrigin() << " != "
@@ -155,7 +151,7 @@ int itkOrientedImageAdaptorTest(int, char* []) {
 
   double dorigin[2] = {2.0, 3.0};
   myImage->SetOrigin(dorigin);
-  if (myImage->GetOrigin() != myAdaptor->GetOrigin())
+  if (myImage->GetOrigin() != myAdaptor->GetOrigin() )
     {
     std::cout << "image origin != adaptor origin: "
               << myImage->GetOrigin() << " != "
@@ -164,11 +160,10 @@ int itkOrientedImageAdaptorTest(int, char* []) {
     return EXIT_FAILURE;
     }
 
-
   myImageType::PointType imageOrigin;
   imageOrigin.Fill(10.0);
   myImage->SetOrigin(imageOrigin);
-  if (myImage->GetOrigin() != myAdaptor->GetOrigin())
+  if (myImage->GetOrigin() != myAdaptor->GetOrigin() )
     {
     std::cout << "image origin != adaptor origin: "
               << myImage->GetOrigin() << " != "
@@ -179,7 +174,7 @@ int itkOrientedImageAdaptorTest(int, char* []) {
 
   float fspacing[2] = {2.0, 3.0};
   myImage->SetSpacing(fspacing);
-  if (myImage->GetSpacing() != myAdaptor->GetSpacing())
+  if (myImage->GetSpacing() != myAdaptor->GetSpacing() )
     {
     std::cout << "image spacing != adaptor spacing: "
               << myImage->GetSpacing() << " != "
@@ -190,7 +185,7 @@ int itkOrientedImageAdaptorTest(int, char* []) {
 
   double dspacing[2] = {2.0, 3.0};
   myImage->SetSpacing(dspacing);
-  if (myImage->GetSpacing() != myAdaptor->GetSpacing())
+  if (myImage->GetSpacing() != myAdaptor->GetSpacing() )
     {
     std::cout << "image spacing != adaptor spacing: "
               << myImage->GetSpacing() << " != "
@@ -199,12 +194,11 @@ int itkOrientedImageAdaptorTest(int, char* []) {
     return EXIT_FAILURE;
     }
 
-
   myImageType::SpacingType imageSpacing;
   imageSpacing.Fill(10.0);
 
   myImage->SetSpacing(imageSpacing);
-  if (myImage->GetSpacing() != myAdaptor->GetSpacing())
+  if (myImage->GetSpacing() != myAdaptor->GetSpacing() )
     {
     std::cout << "image spacing != adaptor spacing: "
               << myImage->GetSpacing() << " != "
@@ -218,7 +212,7 @@ int itkOrientedImageAdaptorTest(int, char* []) {
   imageDirection[1][1]=10.0;
 
   myImage->SetDirection(imageDirection);
-  if (myImage->GetDirection() != myAdaptor->GetDirection())
+  if (myImage->GetDirection() != myAdaptor->GetDirection() )
     {
     std::cout << "image direction != adaptor direction: "
               << myImage->GetDirection() << " != "
@@ -230,7 +224,7 @@ int itkOrientedImageAdaptorTest(int, char* []) {
   // Now test the set methods of the adaptor
   forigin[0] = 20.0;
   myAdaptor->SetOrigin(forigin);
-  if (myImage->GetOrigin() != myAdaptor->GetOrigin())
+  if (myImage->GetOrigin() != myAdaptor->GetOrigin() )
     {
     std::cout << "image origin != adaptor origin: "
               << myImage->GetOrigin() << " != "
@@ -241,7 +235,7 @@ int itkOrientedImageAdaptorTest(int, char* []) {
 
   dorigin[0] = 20.0;
   myAdaptor->SetOrigin(dorigin);
-  if (myImage->GetOrigin() != myAdaptor->GetOrigin())
+  if (myImage->GetOrigin() != myAdaptor->GetOrigin() )
     {
     std::cout << "image origin != adaptor origin: "
               << myImage->GetOrigin() << " != "
@@ -253,7 +247,7 @@ int itkOrientedImageAdaptorTest(int, char* []) {
   imageOrigin.Fill(100.0);
 
   myAdaptor->SetOrigin(imageOrigin);
-  if (myImage->GetOrigin() != myAdaptor->GetOrigin())
+  if (myImage->GetOrigin() != myAdaptor->GetOrigin() )
     {
     std::cout << "image origin != adaptor origin: "
               << myImage->GetOrigin() << " != "
@@ -264,7 +258,7 @@ int itkOrientedImageAdaptorTest(int, char* []) {
 
   fspacing[0] = 20.0;
   myAdaptor->SetSpacing(fspacing);
-  if (myImage->GetSpacing() != myAdaptor->GetSpacing())
+  if (myImage->GetSpacing() != myAdaptor->GetSpacing() )
     {
     std::cout << "image spacing != adaptor spacing: "
               << myImage->GetSpacing() << " != "
@@ -275,7 +269,7 @@ int itkOrientedImageAdaptorTest(int, char* []) {
 
   dspacing[0] = 20.0;
   myAdaptor->SetSpacing(dspacing);
-  if (myImage->GetSpacing() != myAdaptor->GetSpacing())
+  if (myImage->GetSpacing() != myAdaptor->GetSpacing() )
     {
     std::cout << "image spacing != adaptor spacing: "
               << myImage->GetSpacing() << " != "
@@ -287,7 +281,7 @@ int itkOrientedImageAdaptorTest(int, char* []) {
   imageSpacing.Fill(100.0);
 
   myAdaptor->SetSpacing(imageSpacing);
-  if (myImage->GetSpacing() != myAdaptor->GetSpacing())
+  if (myImage->GetSpacing() != myAdaptor->GetSpacing() )
     {
     std::cout << "image spacing != adaptor spacing: "
               << myImage->GetSpacing() << " != "
@@ -299,7 +293,7 @@ int itkOrientedImageAdaptorTest(int, char* []) {
   imageDirection[1][1]=100.0;
 
   myAdaptor->SetDirection(imageDirection);
-  if (myImage->GetDirection() != myAdaptor->GetDirection())
+  if (myImage->GetDirection() != myAdaptor->GetDirection() )
     {
     std::cout << "image direction != adaptor direction: "
               << myImage->GetDirection() << " != "

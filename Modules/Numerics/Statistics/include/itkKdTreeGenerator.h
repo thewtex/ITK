@@ -67,7 +67,7 @@ namespace Statistics
  */
 
 template< typename TSample >
-class KdTreeGenerator:public Object
+class KdTreeGenerator : public Object
 {
 public:
   /** Standard class typedefs */
@@ -115,13 +115,15 @@ public:
   void SetBucketSize(unsigned int size);
 
   /** Returns the pointer to the generated k-d tree. */
-  OutputPointer GetOutput()
+  OutputPointer
+  GetOutput()
   {
     return m_Tree;
   }
 
   /** Runs this k-d tree construction algorithm. */
-  void Update()
+  void
+  Update()
   {
     this->GenerateData();
   }
@@ -138,12 +140,14 @@ protected:
   KdTreeGenerator();
 
   /** Destructor */
-  virtual ~KdTreeGenerator() {}
+  virtual
+  ~KdTreeGenerator() {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Returns the smart pointer to the internal Subsample object. */
-  SubsamplePointer GetSubsample()
+  SubsamplePointer
+  GetSubsample()
   {
     return m_Subsample;
   }

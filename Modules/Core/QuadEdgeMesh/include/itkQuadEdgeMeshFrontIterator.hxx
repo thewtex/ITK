@@ -26,7 +26,7 @@ namespace itk
 template< typename TMesh, typename TQE >
 QuadEdgeMeshFrontBaseIterator< TMesh, TQE >::QuadEdgeMeshFrontBaseIterator(MeshType *mesh,
                                                                            bool start,
-                                                                           QEType *seed):
+                                                                           QEType *seed) :
   m_Mesh(mesh), m_Seed(seed), m_Start(start)
 {
   if ( !mesh )
@@ -133,7 +133,7 @@ QuadEdgeMeshFrontBaseIterator< TMesh, TQE >::operator++()
 template< typename TMesh, typename TQE >
 typename QuadEdgeMeshFrontBaseIterator< TMesh, TQE >::QEType *
 QuadEdgeMeshFrontBaseIterator< TMesh, TQE >::FindDefaultSeed()
-{
+  {
   if ( QEType * edge = dynamic_cast< QEType * >( m_Mesh->GetEdge() ) )
     {
     return edge;
@@ -144,6 +144,6 @@ QuadEdgeMeshFrontBaseIterator< TMesh, TQE >::FindDefaultSeed()
     return edge->GetRot();
     }
   return (QEType *)0;
-}
+  }
 }
 #endif

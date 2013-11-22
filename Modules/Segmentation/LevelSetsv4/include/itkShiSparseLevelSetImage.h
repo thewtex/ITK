@@ -35,14 +35,14 @@ namespace itk
  */
 template< unsigned int VDimension >
 class ShiSparseLevelSetImage :
-    public LevelSetSparseImage< int8_t, VDimension >
+  public LevelSetSparseImage< int8_t, VDimension >
 {
 public:
-  typedef ShiSparseLevelSetImage                  Self;
-  typedef SmartPointer< Self >                    Pointer;
-  typedef SmartPointer< const Self >              ConstPointer;
+  typedef ShiSparseLevelSetImage     Self;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
   typedef LevelSetSparseImage< int8_t, VDimension >
-                                                  Superclass;
+    Superclass;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -59,23 +59,23 @@ public:
   typedef typename Superclass::HessianType      HessianType;
   typedef typename Superclass::LevelSetDataType LevelSetDataType;
 
-  typedef typename Superclass::LayerIdType            LayerIdType;
-  typedef typename Superclass::LabelObjectType        LabelObjectType;
-  typedef typename Superclass::LabelObjectPointer     LabelObjectPointer;
-  typedef typename Superclass::LabelObjectLengthType  LabelObjectLengthType;
-  typedef typename Superclass::LabelObjectLineType    LabelObjectLineType;
+  typedef typename Superclass::LayerIdType           LayerIdType;
+  typedef typename Superclass::LabelObjectType       LabelObjectType;
+  typedef typename Superclass::LabelObjectPointer    LabelObjectPointer;
+  typedef typename Superclass::LabelObjectLengthType LabelObjectLengthType;
+  typedef typename Superclass::LabelObjectLineType   LabelObjectLineType;
 
-  typedef typename Superclass::LabelMapType     LabelMapType;
-  typedef typename Superclass::LabelMapPointer  LabelMapPointer;
-  typedef typename Superclass::RegionType       RegionType;
+  typedef typename Superclass::LabelMapType    LabelMapType;
+  typedef typename Superclass::LabelMapPointer LabelMapPointer;
+  typedef typename Superclass::RegionType      RegionType;
 
   typedef typename Superclass::LayerType          LayerType;
   typedef typename Superclass::LayerIterator      LayerIterator;
   typedef typename Superclass::LayerConstIterator LayerConstIterator;
 
-  typedef typename Superclass::LayerMapType           LayerMapType;
-  typedef typename Superclass::LayerMapIterator       LayerMapIterator;
-  typedef typename Superclass::LayerMapConstIterator  LayerMapConstIterator;
+  typedef typename Superclass::LayerMapType          LayerMapType;
+  typedef typename Superclass::LayerMapIterator      LayerMapIterator;
+  typedef typename Superclass::LayerMapConstIterator LayerMapConstIterator;
 
   /** Returns the value of the level set function at a given location inputIndex */
   using Superclass::Evaluate;
@@ -91,19 +91,37 @@ public:
   virtual OutputRealType EvaluateMeanCurvature( const InputType& inputIndex ) const;
 
   virtual void EvaluateHessian( const InputType& inputIndex, LevelSetDataType& data ) const;
+
   virtual void EvaluateLaplacian( const InputType& inputIndex, LevelSetDataType& data ) const;
+
   virtual void EvaluateMeanCurvature( const InputType& inputIndex, LevelSetDataType& data ) const;
 
-  static inline LayerIdType MinusThreeLayer() { return -3; }
-  static inline LayerIdType MinusOneLayer() { return -1; }
-  static inline LayerIdType PlusOneLayer() { return 1; }
-  static inline LayerIdType PlusThreeLayer() { return 3; }
+  static inline LayerIdType
+  MinusThreeLayer() {
+    return -3;
+  }
+
+  static inline LayerIdType
+  MinusOneLayer() {
+    return -1;
+  }
+
+  static inline LayerIdType
+  PlusOneLayer() {
+    return 1;
+  }
+
+  static inline LayerIdType
+  PlusThreeLayer() {
+    return 3;
+  }
 
 protected:
 
   ShiSparseLevelSetImage();
 
-  virtual ~ShiSparseLevelSetImage();
+  virtual
+  ~ShiSparseLevelSetImage();
 
   /** Initialize the sparse field layers */
   virtual void InitializeLayers();
@@ -113,7 +131,8 @@ protected:
 private:
 
   ShiSparseLevelSetImage( const Self& ); //purposely not implemented
-  void operator = ( const Self& ); //purposely not implemented
+  void operator =( const Self& );        //purposely not implemented
+
 };
 }
 

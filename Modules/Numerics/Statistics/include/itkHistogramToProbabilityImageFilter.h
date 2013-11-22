@@ -57,23 +57,26 @@ public:
   // Returns pixels of float..
   typedef  TOutput OutputPixelType;
 
-  HistogramProbabilityFunction():
+  HistogramProbabilityFunction() :
     m_TotalFrequency(1) {}
 
   ~HistogramProbabilityFunction() {}
 
-  inline OutputPixelType operator()(const TInput & A) const
+  inline OutputPixelType
+  operator()(const TInput & A) const
   {
     return static_cast< OutputPixelType >( static_cast< OutputPixelType >( A )
                                            / static_cast< OutputPixelType >( m_TotalFrequency ) );
   }
 
-  void SetTotalFrequency(SizeValueType n)
+  void
+  SetTotalFrequency(SizeValueType n)
   {
     m_TotalFrequency = n;
   }
 
-  SizeValueType GetTotalFrequency() const
+  SizeValueType
+  GetTotalFrequency() const
   {
     return m_TotalFrequency;
   }
@@ -84,7 +87,7 @@ private:
 }
 
 template< typename THistogram, typename TImage=Image< float, 3> >
-class HistogramToProbabilityImageFilter:
+class HistogramToProbabilityImageFilter :
   public HistogramToImageFilter< THistogram, TImage,
                                  Function::HistogramProbabilityFunction< SizeValueType, typename TImage::PixelType > >
 {
@@ -95,8 +98,8 @@ public:
 
   /** Standard "Superclass" typedef. */
   typedef HistogramToImageFilter< THistogram, TImage,
-                                 Function::HistogramProbabilityFunction< SizeValueType, typename TImage::PixelType > >
-  Superclass;
+                                  Function::HistogramProbabilityFunction< SizeValueType, typename TImage::PixelType > >
+    Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -109,11 +112,13 @@ public:
 
 protected:
   HistogramToProbabilityImageFilter() {}
-  virtual ~HistogramToProbabilityImageFilter() {}
+  virtual
+  ~HistogramToProbabilityImageFilter() {}
 
 private:
   HistogramToProbabilityImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                    //purposely not implemented
+
 };
 } // end namespace itk
 

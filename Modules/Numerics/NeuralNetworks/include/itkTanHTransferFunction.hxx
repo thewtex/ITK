@@ -29,15 +29,13 @@ namespace Statistics
 template<typename ScalarType>
 TanHTransferFunction<ScalarType>
 ::TanHTransferFunction()
-{
-}
+{}
 
 /** Destructor */
 template<typename ScalarType>
 TanHTransferFunction<ScalarType>
 ::~TanHTransferFunction()
-{
-}
+{}
 
 /** Evaluate */
 template<typename ScalarType>
@@ -47,7 +45,8 @@ TanHTransferFunction<ScalarType>
 {
   ScalarType x = vcl_exp(input);
   ScalarType y = vcl_exp(-input);
-  return static_cast<ScalarType>((float) (x - y) / (x + y));
+
+  return static_cast<ScalarType>( (float) (x - y) / (x + y) );
 }
 
 /** Evaluate derivatives */
@@ -57,6 +56,7 @@ TanHTransferFunction<ScalarType>
 ::EvaluateDerivative(const ScalarType& input)  const
 {
   ScalarType f = Evaluate(input);
+
   return 1 - vcl_pow(f, 2);
 }
 

@@ -117,5 +117,6 @@ Gene
   controlDomain.m_Type   = type;
   m_ControlDomains.push_back(controlDomain);
 }
+
 }  // end namespace bio
 }  // end namespace itk

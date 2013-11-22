@@ -41,7 +41,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage >
-class MinimumMaximumImageCalculator:public Object
+class MinimumMaximumImageCalculator : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -103,7 +103,8 @@ public:
 
 protected:
   MinimumMaximumImageCalculator();
-  virtual ~MinimumMaximumImageCalculator() {}
+  virtual
+  ~MinimumMaximumImageCalculator() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

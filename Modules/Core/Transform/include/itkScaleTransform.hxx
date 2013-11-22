@@ -35,8 +35,7 @@ ScaleTransform<ScalarType, NDimensions>::ScaleTransform() : Superclass(Parameter
 template <typename ScalarType, unsigned int NDimensions>
 ScaleTransform<ScalarType, NDimensions>::
 ~ScaleTransform()
-{
-}
+{}
 
 // Set the parameters
 template <typename ScalarType, unsigned int NDimensions>

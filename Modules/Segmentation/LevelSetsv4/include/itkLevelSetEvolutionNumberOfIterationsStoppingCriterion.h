@@ -44,21 +44,21 @@ public:
   itkTypeMacro( LevelSetEvolutionNumberOfIterationsStoppingCriterion,
                 LevelSetEvolutionStoppingCriterion );
 
-  typedef TLevelSetContainer                               LevelSetContainerType;
-  typedef typename LevelSetContainerType::Pointer          LevelSetContainerPointer;
+  typedef TLevelSetContainer                      LevelSetContainerType;
+  typedef typename LevelSetContainerType::Pointer LevelSetContainerPointer;
 
-  typedef typename LevelSetContainerType::LevelSetIdentifierType  LevelSetIdentifierType;
-  typedef typename LevelSetContainerType::LevelSetType            LevelSetType;
-  typedef typename LevelSetContainerType::LevelSetPointer         LevelSetPointer;
+  typedef typename LevelSetContainerType::LevelSetIdentifierType LevelSetIdentifierType;
+  typedef typename LevelSetContainerType::LevelSetType           LevelSetType;
+  typedef typename LevelSetContainerType::LevelSetPointer        LevelSetPointer;
 
-  typedef typename LevelSetContainerType::InputIndexType   InputIndexType;
-  typedef typename LevelSetContainerType::OutputType       OutputType;
-  typedef typename LevelSetContainerType::OutputRealType   OutputRealType;
-  typedef typename LevelSetContainerType::GradientType     GradientType;
-  typedef typename LevelSetContainerType::HessianType      HessianType;
+  typedef typename LevelSetContainerType::InputIndexType InputIndexType;
+  typedef typename LevelSetContainerType::OutputType     OutputType;
+  typedef typename LevelSetContainerType::OutputRealType OutputRealType;
+  typedef typename LevelSetContainerType::GradientType   GradientType;
+  typedef typename LevelSetContainerType::HessianType    HessianType;
 
-  typedef typename LevelSetContainerType::HeavisideType    HeavisideType;
-  typedef typename LevelSetContainerType::HeavisideType    HeavisidePointer;
+  typedef typename LevelSetContainerType::HeavisideType HeavisideType;
+  typedef typename LevelSetContainerType::HeavisideType HeavisidePointer;
 
   virtual bool IsSatisfied() const;
 
@@ -69,13 +69,15 @@ protected:
   LevelSetEvolutionNumberOfIterationsStoppingCriterion();
 
   /** Destructor */
-  virtual ~LevelSetEvolutionNumberOfIterationsStoppingCriterion();
+  virtual
+  ~LevelSetEvolutionNumberOfIterationsStoppingCriterion();
 
 private:
   LevelSetEvolutionNumberOfIterationsStoppingCriterion( const Self& ); // purposely not implemented
-  void operator = ( const Self& ); // purposely not implemented
- };
- }
+  void operator =( const Self& );                                      // purposely not implemented
+
+};
+}
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetEvolutionNumberOfIterationsStoppingCriterion.hxx"
 #endif

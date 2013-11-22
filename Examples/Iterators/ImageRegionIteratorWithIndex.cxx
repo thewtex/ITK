@@ -52,7 +52,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   // Verify the number of parameters on the command line.
   if ( argc < 3 )
@@ -87,7 +88,7 @@ int main( int argc, char *argv[] )
   typedef itk::ImageFileWriter< ImageType > WriterType;
 
   ImageType::ConstPointer inputImage;
-  ReaderType::Pointer reader = ReaderType::New();
+  ReaderType::Pointer     reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   try
     {
@@ -138,9 +139,9 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   ImageType::IndexType requestedIndex =
-                outputImage->GetRequestedRegion().GetIndex();
+    outputImage->GetRequestedRegion().GetIndex();
   ImageType::SizeType requestedSize =
-                outputImage->GetRequestedRegion().GetSize();
+    outputImage->GetRequestedRegion().GetSize();
 
   for ( outputIt.GoToBegin(); !outputIt.IsAtEnd(); ++outputIt)
     {
@@ -162,7 +163,7 @@ int main( int argc, char *argv[] )
     std::cout << "ExceptionObject caught !" << std::endl;
     std::cout << err << std::endl;
     return -1;
-}
+    }
 
   // Software Guide : BeginLatex
   //

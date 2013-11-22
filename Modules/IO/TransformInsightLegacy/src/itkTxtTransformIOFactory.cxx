@@ -22,7 +22,8 @@
 
 namespace itk
 {
-void TxtTransformIOFactory::PrintSelf(std::ostream &, Indent) const
+void
+TxtTransformIOFactory::PrintSelf(std::ostream &, Indent) const
 {}
 
 TxtTransformIOFactory::TxtTransformIOFactory()
@@ -59,12 +60,14 @@ TxtTransformIOFactory::GetDescription() const
 // DO NOT CALL DIRECTLY.
 static bool TxtTransformIOFactoryHasBeenRegistered;
 
-void TxtTransformIOFactoryRegister__Private(void)
+void
+TxtTransformIOFactoryRegister__Private(void)
 {
-  if( ! TxtTransformIOFactoryHasBeenRegistered )
+  if( !TxtTransformIOFactoryHasBeenRegistered )
     {
     TxtTransformIOFactoryHasBeenRegistered = true;
     TxtTransformIOFactory::RegisterOneFactory();
     }
 }
+
 } // end namespace itk

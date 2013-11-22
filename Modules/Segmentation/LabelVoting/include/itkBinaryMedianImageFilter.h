@@ -46,7 +46,7 @@ namespace itk
  * \ingroup ITKLabelVoting
  */
 template< typename TInputImage, typename TOutputImage >
-class BinaryMedianImageFilter:
+class BinaryMedianImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -122,7 +122,8 @@ public:
 
 protected:
   BinaryMedianImageFilter();
-  virtual ~BinaryMedianImageFilter() {}
+  virtual
+  ~BinaryMedianImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** BinaryMedianImageFilter can be implemented as a multithreaded filter.

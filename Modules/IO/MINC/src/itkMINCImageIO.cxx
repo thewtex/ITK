@@ -26,7 +26,8 @@
 namespace itk
 {
 
-bool MINCImageIO::CanReadFile(const char *file)
+bool
+MINCImageIO::CanReadFile(const char *file)
 {
   if ( *file == 0 )
     {
@@ -66,7 +67,8 @@ bool MINCImageIO::CanReadFile(const char *file)
   return false;
 }
 
-void MINCImageIO::Read(void *buffer)
+void
+MINCImageIO::Read(void *buffer)
 {
   const unsigned int nDims = this->GetNumberOfDimensions();
   const unsigned int nComp = this->GetNumberOfComponents();
@@ -143,7 +145,8 @@ void MINCImageIO::Read(void *buffer)
   delete[] count;
 }
 
-void MINCImageIO::CleanupDimensions(void)
+void
+MINCImageIO::CleanupDimensions(void)
 {
   if( this->m_DimensionName )
     {
@@ -169,7 +172,8 @@ void MINCImageIO::CleanupDimensions(void)
   this->m_MincApparentDims = NULL;
 }
 
-void MINCImageIO::AllocateDimensions(int nDims)
+void
+MINCImageIO::AllocateDimensions(int nDims)
 {
   this->CleanupDimensions();
 
@@ -198,7 +202,8 @@ void MINCImageIO::AllocateDimensions(int nDims)
 }
 
 // close existing volume, cleanup internal structures
-void MINCImageIO::CloseVolume(void)
+void
+MINCImageIO::CloseVolume(void)
 {
   this->CleanupDimensions();
 
@@ -244,14 +249,16 @@ MINCImageIO::~MINCImageIO()
   this->CloseVolume();
 }
 
-void MINCImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+MINCImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
   os << indent << "NDims: " << m_NDims << std::endl;
 }
 
-void MINCImageIO::ReadImageInformation()
+void
+MINCImageIO::ReadImageInformation()
 {
   std::string dimension_order;
 
@@ -261,7 +268,7 @@ void MINCImageIO::ReadImageInformation()
     {
     // Error opening the volume
     itkExceptionMacro(<< "Could not open file \"" << m_FileName.c_str() << "\".");
-  }
+    }
 
   // find out how many dimensions are there regularly sampled
   // dimensions only
@@ -279,7 +286,7 @@ void MINCImageIO::ReadImageInformation()
                                this->m_MincFileDims) < 0 )
     {
     itkExceptionMacro(<< "Could not get dimension handles!");
-  }
+    }
 
   for (int i = 0; i < m_NDims; i++ )
     {
@@ -290,7 +297,7 @@ void MINCImageIO::ReadImageInformation()
       {
       // Error getting dimension name
       itkExceptionMacro( << "Could not get dimension name!");
-    }
+      }
 
     if( miget_dimension_separation(this->m_MincFileDims[i],MI_ORDER_FILE, &_sep) == MI_NOERROR && _sep < 0 )
       _sign = "-";
@@ -332,7 +339,7 @@ void MINCImageIO::ReadImageInformation()
     else
       {
       itkExceptionMacro( << "Unsupported MINC dimension:"<<name);
-    }
+      }
     }
 
   // fill the DimensionSize by calling the following MINC2.0 function
@@ -340,17 +347,17 @@ void MINCImageIO::ReadImageInformation()
     {
     // Error getting dimension sizes
     itkExceptionMacro( << "Could not get dimension sizes!");
-  }
+    }
 
   if ( miget_dimension_separations(this->m_MincFileDims, MI_ORDER_FILE, m_NDims, m_DimensionStep) < 0 )
     {
     itkExceptionMacro( << " Could not dimension sizes");
-  }
+    }
 
   if ( miget_dimension_starts(this->m_MincFileDims, MI_ORDER_FILE, this->m_NDims, m_DimensionStart) < 0 )
     {
     itkExceptionMacro( << " Could not dimension sizes");
-  }
+    }
 
   mitype_t volume_data_type;
   if ( miget_data_type(m_Volume, &volume_data_type) < 0 )
@@ -383,7 +390,6 @@ void MINCImageIO::ReadImageInformation()
       {
       itkExceptionMacro( << " Can not get volume range!!\n");
       }
-
 
     global_scaling_flag=!(volume_min == valid_min && volume_max == valid_max);
     }
@@ -651,40 +657,40 @@ void MINCImageIO::ReadImageInformation()
   switch ( volume_data_type )
     {
     case MI_TYPE_BYTE:
-      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(char).name());
+      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(char).name() );
       break;
     case MI_TYPE_UBYTE:
-      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(unsigned char).name());
+      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(unsigned char).name() );
       break;
     case MI_TYPE_SHORT:
-      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(short).name());
+      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(short).name() );
       break;
     case MI_TYPE_USHORT:
-      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(unsigned short).name());
+      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(unsigned short).name() );
       break;
     case MI_TYPE_INT:
-      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(int).name());
+      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(int).name() );
       break;
     case MI_TYPE_UINT:
-      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(unsigned int).name());
+      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(unsigned int).name() );
       break;
     case MI_TYPE_FLOAT:
-      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(float).name());
+      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(float).name() );
       break;
     case MI_TYPE_DOUBLE:
-      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(double).name());
+      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(double).name() );
       break;
     case MI_TYPE_SCOMPLEX:
-      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(short).name());
+      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(short).name() );
       break;
     case MI_TYPE_ICOMPLEX:
-      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(int).name());
+      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(int).name() );
       break;
     case MI_TYPE_FCOMPLEX:
-      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(float).name());
+      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(float).name() );
       break;
     case MI_TYPE_DCOMPLEX:
-      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(double).name());
+      EncapsulateMetaData< std::string >(thisDic,"storage_data_type",typeid(double).name() );
       break;
     default:
       break;
@@ -748,7 +754,7 @@ void MINCImageIO::ReadImageInformation()
                     EncapsulateMetaData<Array<float> >(thisDic,entry_key,tmp);
                     }
                   } else {
-                   itkExceptionMacro( <<  " Error getting float attribute! ");
+                  itkExceptionMacro( <<  " Error getting float attribute! ");
                   }
                 }
                 break;
@@ -802,7 +808,8 @@ void MINCImageIO::ReadImageInformation()
     }
 }
 
-bool MINCImageIO::CanWriteFile(const char *file)
+bool
+MINCImageIO::CanWriteFile(const char *file)
 {
   std::string filename = file;
 
@@ -841,7 +848,8 @@ bool MINCImageIO::CanWriteFile(const char *file)
 /*
  * fill out the appropriate header information
 */
-void MINCImageIO::WriteImageInformation(void)
+void
+MINCImageIO::WriteImageInformation(void)
 {
   const unsigned int nDims = this->GetNumberOfDimensions();
   const unsigned int nComp = this->GetNumberOfComponents();
@@ -851,23 +859,23 @@ void MINCImageIO::WriteImageInformation(void)
 
   MetaDataDictionary &thisDic=GetMetaDataDictionary();
 
-  unsigned int    minc_dimensions=0;
-  double tstart=0.0;
-  double tstep=1.0;
+  unsigned int minc_dimensions=0;
+  double       tstart=0.0;
+  double       tstep=1.0;
 
   if(nComp>3) //last dimension will be either vector or time
     {
     micreate_dimension(MItime, MI_DIMCLASS_TIME, MI_DIMATTR_REGULARLY_SAMPLED, nComp,
                        &this->m_MincApparentDims[m_NDims-minc_dimensions-1] );
 
-    if(!ExposeMetaData< double >(thisDic,"tstart",tstart))
+    if(!ExposeMetaData< double >(thisDic,"tstart",tstart) )
       {
       tstart=0.0;
       }
 
     miset_dimension_start(this->m_MincApparentDims[m_NDims-minc_dimensions-1],tstart);
 
-    if(!ExposeMetaData< double >(thisDic,"tstep",tstep))
+    if(!ExposeMetaData< double >(thisDic,"tstep",tstep) )
       {
       tstep=1.0;
       }
@@ -926,7 +934,7 @@ void MINCImageIO::WriteImageInformation(void)
   for (unsigned int i = 0; i < nDims; i++ )
     {
     unsigned int j=i+(nComp>1 ? 1 : 0);
-    double dir_cos[3];
+    double       dir_cos[3];
     for(unsigned int k=0; k<3; k++)
       {
       if(k<nDims)
@@ -995,22 +1003,22 @@ void MINCImageIO::WriteImageInformation(void)
   if( ( this->GetComponentType() == FLOAT || this->GetComponentType() == DOUBLE ) &&
       ExposeMetaData< std::string >(thisDic,"storage_data_type",storage_data_type) )
     {
-      if(storage_data_type==typeid(char).name())
-        this->m_Volume_type=MI_TYPE_BYTE;
-      else if(storage_data_type==typeid(unsigned char).name())
-        this->m_Volume_type=MI_TYPE_UBYTE;
-      else if(storage_data_type==typeid(short).name())
-        this->m_Volume_type=MI_TYPE_SHORT;
-      else if(storage_data_type==typeid(unsigned short).name())
-        this->m_Volume_type=MI_TYPE_USHORT;
-      else if(storage_data_type==typeid(int).name() )
-        this->m_Volume_type=MI_TYPE_INT;
-      else if(storage_data_type==typeid(unsigned int).name())
-        this->m_Volume_type=MI_TYPE_UINT;
-      else if(storage_data_type==typeid(float).name())
-        this->m_Volume_type=MI_TYPE_FLOAT;
-      else if(storage_data_type==typeid(double).name())
-        this->m_Volume_type=MI_TYPE_DOUBLE;
+    if(storage_data_type==typeid(char).name() )
+      this->m_Volume_type=MI_TYPE_BYTE;
+    else if(storage_data_type==typeid(unsigned char).name() )
+      this->m_Volume_type=MI_TYPE_UBYTE;
+    else if(storage_data_type==typeid(short).name() )
+      this->m_Volume_type=MI_TYPE_SHORT;
+    else if(storage_data_type==typeid(unsigned short).name() )
+      this->m_Volume_type=MI_TYPE_USHORT;
+    else if(storage_data_type==typeid(int).name() )
+      this->m_Volume_type=MI_TYPE_INT;
+    else if(storage_data_type==typeid(unsigned int).name() )
+      this->m_Volume_type=MI_TYPE_UINT;
+    else if(storage_data_type==typeid(float).name() )
+      this->m_Volume_type=MI_TYPE_FLOAT;
+    else if(storage_data_type==typeid(double).name() )
+      this->m_Volume_type=MI_TYPE_DOUBLE;
     }
   //now let's create the same dimension order and positive/negative step size as
   // in original image
@@ -1055,15 +1063,15 @@ void MINCImageIO::WriteImageInformation(void)
             break;
           case 'x':
           case 'X':
-            j=m_NDims-1-((nComp>1 ? 1 : 0));
+            j=m_NDims-1-( (nComp>1 ? 1 : 0) );
             break;
           case 'y':
           case 'Y':
-            j=m_NDims-1-((nComp>1 ? 1 : 0)+1);
+            j=m_NDims-1-( (nComp>1 ? 1 : 0)+1);
             break;
           case 'z':
           case 'Z':
-            j=m_NDims-1-((nComp>1 ? 1 : 0)+2);
+            j=m_NDims-1-( (nComp>1 ? 1 : 0)+2);
             break;
           default:
             itkDebugMacro( << "Dimension order is incorrect " << dimension_order.c_str() );
@@ -1243,10 +1251,11 @@ void MINCImageIO::WriteImageInformation(void)
         //TODO: figure out what to do with it
       }
     }
-    mifree_volume_props( hprops );
+  mifree_volume_props( hprops );
 }
 
-template<typename T> void get_buffer_min_max(const void* _buffer,size_t len,double &buf_min,double &buf_max)
+template<typename T> void
+get_buffer_min_max(const void* _buffer,size_t len,double &buf_min,double &buf_max)
 {
   const T* buf=static_cast<const T*>(_buffer);
 
@@ -1258,7 +1267,8 @@ template<typename T> void get_buffer_min_max(const void* _buffer,size_t len,doub
     }
 }
 
-void MINCImageIO::Write(const void *buffer)
+void
+MINCImageIO::Write(const void *buffer)
 {
   const unsigned int nDims = this->GetNumberOfDimensions();
   const unsigned int nComp = this->GetNumberOfComponents();
@@ -1347,21 +1357,21 @@ void MINCImageIO::Write(const void *buffer)
     }
   else // we are using scaling
     {
-      //Special hack to deal with rounding errors
-      //unfortunately the dynamic range will be smaller
-      //but it's ok since it matches float
-      if( this->GetComponentType() == FLOAT )
+    //Special hack to deal with rounding errors
+    //unfortunately the dynamic range will be smaller
+    //but it's ok since it matches float
+    if( this->GetComponentType() == FLOAT )
+      {
+      if( this->m_Volume_type == MI_TYPE_INT )
         {
-          if( this->m_Volume_type == MI_TYPE_INT )
-            {
-              miset_volume_valid_range(m_Volume,INT_MAX/2,INT_MIN/2);
-            }
-          else if( this->m_Volume_type == MI_TYPE_UINT )
-            {
-              miset_volume_valid_range(m_Volume,UINT_MAX/2,0);
-            }
+        miset_volume_valid_range(m_Volume,INT_MAX/2,INT_MIN/2);
         }
-      miset_volume_range(m_Volume,buffer_max,buffer_min);
+      else if( this->m_Volume_type == MI_TYPE_UINT )
+        {
+        miset_volume_valid_range(m_Volume,UINT_MAX/2,0);
+        }
+      }
+    miset_volume_range(m_Volume,buffer_max,buffer_min);
     }
 
   if ( miset_real_value_hyperslab(m_Volume, volume_data_type, start, count, const_cast<void*>( buffer) ) < 0 )

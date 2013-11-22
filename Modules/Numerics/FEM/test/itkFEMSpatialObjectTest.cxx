@@ -16,11 +16,10 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSpatialObjectReader.h"
 
-
-int itkFEMSpatialObjectTest(int argc, char *argv[])
+int
+itkFEMSpatialObjectTest(int argc, char *argv[])
 {
   if(argc < 2)
     {
@@ -32,14 +31,12 @@ int itkFEMSpatialObjectTest(int argc, char *argv[])
   //the initializaiton of the itk::FEMFactoryBase::GetFactory()
   itk::FEMFactoryBase::GetFactory()->RegisterDefaultTypes();
 
-
   std::cout << "Read Spatial Object" << std::endl;
   typedef itk::FEMSpatialObjectReader<2>      FEMSpatialObjectReaderType;
   typedef FEMSpatialObjectReaderType::Pointer FEMSpatialObjectReaderPointer;
   FEMSpatialObjectReaderPointer SpatialReader = FEMSpatialObjectReaderType::New();
   SpatialReader->SetFileName( argv[1] );
   SpatialReader->Update();
-
 
 /*
   FEMSpatialObjectReaderType::ScenePointer myScene = SpatialReader->GetScene();
@@ -53,8 +50,7 @@ int itkFEMSpatialObjectTest(int argc, char *argv[])
 
   delete children;
 */
-  //femSO->GetFEMObject()->FinalizeMesh();
-
+//femSO->GetFEMObject()->FinalizeMesh();
 
   std::cout << "Overall Test : [PASSED]" << std::endl;
   return EXIT_SUCCESS;

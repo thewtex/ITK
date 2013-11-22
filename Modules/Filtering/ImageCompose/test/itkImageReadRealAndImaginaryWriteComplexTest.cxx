@@ -34,7 +34,8 @@
 #include "itkImageFileWriter.h"
 #include "itkComposeImageFilter.h"
 
-int itkImageReadRealAndImaginaryWriteComplexTest( int argc, char * argv[] )
+int
+itkImageReadRealAndImaginaryWriteComplexTest( int argc, char * argv[] )
 {
   if( argc != 4 )
     {
@@ -44,15 +45,15 @@ int itkImageReadRealAndImaginaryWriteComplexTest( int argc, char * argv[] )
 
   const unsigned int Dimension = 2;
 
-  typedef float                                                   InputPixelType;
-  typedef float                                                   OutputPixelType;
-  typedef itk::Image< InputPixelType,Dimension >                  InputImageType;
-  typedef itk::Image< std::complex<OutputPixelType>,Dimension >   OutputImageType;
-  typedef itk::ImageFileReader< InputImageType >                  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >                 WriterType;
+  typedef float                                                 InputPixelType;
+  typedef float                                                 OutputPixelType;
+  typedef itk::Image< InputPixelType,Dimension >                InputImageType;
+  typedef itk::Image< std::complex<OutputPixelType>,Dimension > OutputImageType;
+  typedef itk::ImageFileReader< InputImageType >                ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType >               WriterType;
 
   typedef itk::ComposeImageFilter <
-    InputImageType, OutputImageType >  RealAndImaginary2ComplexFilterType;
+      InputImageType, OutputImageType >  RealAndImaginary2ComplexFilterType;
 
   ReaderType::Pointer readerReal = ReaderType::New();
   ReaderType::Pointer readerImag = ReaderType::New();
@@ -68,10 +69,10 @@ int itkImageReadRealAndImaginaryWriteComplexTest( int argc, char * argv[] )
   readerReal->Update();
   readerImag->Update();
 
-  RealAndImaginary2Complex->SetInput1(readerReal->GetOutput());
-  RealAndImaginary2Complex->SetInput2(readerImag->GetOutput());
+  RealAndImaginary2Complex->SetInput1(readerReal->GetOutput() );
+  RealAndImaginary2Complex->SetInput2(readerImag->GetOutput() );
 
-  writer->SetInput(RealAndImaginary2Complex->GetOutput());
+  writer->SetInput(RealAndImaginary2Complex->GetOutput() );
 
   try
     {

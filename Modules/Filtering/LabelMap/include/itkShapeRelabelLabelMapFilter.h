@@ -42,7 +42,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TImage >
-class ShapeRelabelLabelMapFilter:
+class ShapeRelabelLabelMapFilter :
   public InPlaceLabelMapFilter< TImage >
 {
 public:
@@ -97,7 +97,8 @@ public:
    */
   itkGetConstMacro(Attribute, AttributeType);
   itkSetMacro(Attribute, AttributeType);
-  void SetAttribute(const std::string & s)
+  void
+  SetAttribute(const std::string & s)
   {
     this->SetAttribute( LabelObjectType::GetAttributeFromName(s) );
   }
@@ -109,7 +110,8 @@ protected:
   void GenerateData();
 
   template< typename TAttributeAccessor >
-  void TemplatedGenerateData(const TAttributeAccessor &)
+  void
+  TemplatedGenerateData(const TAttributeAccessor &)
   {
     // Allocate the output
     this->AllocateOutputs();
@@ -125,10 +127,10 @@ protected:
     VectorType labelObjects;
     labelObjects.reserve( output->GetNumberOfLabelObjects() );
     for ( typename ImageType::Iterator it( output );
-          ! it.IsAtEnd();
+          !it.IsAtEnd();
           ++it )
       {
-      labelObjects.push_back(it.GetLabelObject());
+      labelObjects.push_back(it.GetLabelObject() );
       progress.CompletedPixel();
       }
 
@@ -176,6 +178,7 @@ protected:
 private:
   ShapeRelabelLabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
+
 };                                          // end of class
 } // end namespace itk
 

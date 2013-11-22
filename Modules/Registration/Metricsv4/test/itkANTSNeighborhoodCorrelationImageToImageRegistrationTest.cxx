@@ -35,7 +35,7 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 template<typename TRegistration>
@@ -43,22 +43,29 @@ class ShowProgressObject
 {
 public:
   ShowProgressObject(TRegistration* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
     std::cout << "Progress: " << m_Process->GetProgress() << "  ";
     std::cout << "Iter: " << m_Process->GetElapsedIterations() << "  ";
     std::cout << "Metric: "   << m_Process->GetMetric()   << "  ";
     std::cout << "RMSChange: " << m_Process->GetRMSChange() << "  ";
     std::cout << std::endl;
+
     if ( m_Process->GetElapsedIterations() == 10 )
-      { m_Process->StopRegistration(); }
-    }
+            { m_Process->StopRegistration(); }
+  }
+
   typename TRegistration::Pointer m_Process;
 };
 }
 
-int itkANTSNeighborhoodCorrelationImageToImageRegistrationTest(int argc, char *argv[])
+int
+itkANTSNeighborhoodCorrelationImageToImageRegistrationTest(int argc, char *argv[])
 {
 
   if( argc < 4 || argc > 8)
@@ -74,8 +81,8 @@ int itkANTSNeighborhoodCorrelationImageToImageRegistrationTest(int argc, char *a
 
   std::cout << argc << std::endl;
   unsigned int numberOfIterations = 10;
-  double learningRate = 0.1;
-  double deformationLearningRate = 1;
+  double       learningRate = 0.1;
+  double       deformationLearningRate = 1;
   if( argc >= 5 )
     {
     numberOfIterations = atoi( argv[4] );
@@ -93,13 +100,13 @@ int itkANTSNeighborhoodCorrelationImageToImageRegistrationTest(int argc, char *a
   const unsigned int Dimension = 2;
   typedef double PixelType; //I assume png is unsigned short
 
-  typedef itk::Image< PixelType, Dimension >  FixedImageType;
-  typedef itk::Image< PixelType, Dimension >  MovingImageType;
+  typedef itk::Image< PixelType, Dimension > FixedImageType;
+  typedef itk::Image< PixelType, Dimension > MovingImageType;
 
   typedef itk::ImageFileReader< FixedImageType  > FixedImageReaderType;
   typedef itk::ImageFileReader< MovingImageType > MovingImageReaderType;
 
-  FixedImageReaderType::Pointer fixedImageReader   = FixedImageReaderType::New();
+  FixedImageReaderType::Pointer  fixedImageReader   = FixedImageReaderType::New();
   MovingImageReaderType::Pointer movingImageReader = MovingImageReaderType::New();
 
   fixedImageReader->SetFileName( argv[1] );
@@ -107,36 +114,35 @@ int itkANTSNeighborhoodCorrelationImageToImageRegistrationTest(int argc, char *a
 
   //get the images
   fixedImageReader->Update();
-  FixedImageType::Pointer  fixedImage = fixedImageReader->GetOutput();
+  FixedImageType::Pointer fixedImage = fixedImageReader->GetOutput();
   movingImageReader->Update();
   MovingImageType::Pointer movingImage = movingImageReader->GetOutput();
 
   /** define a resample filter that will ultimately be used to deform the image */
   typedef itk::ResampleImageFilter<
-                            MovingImageType,
-                            FixedImageType >    ResampleFilterType;
+      MovingImageType,
+      FixedImageType >    ResampleFilterType;
   ResampleFilterType::Pointer resample = ResampleFilterType::New();
 
-
   /** create a composite transform holder for other transforms  */
-  typedef itk::CompositeTransform<double, Dimension>    CompositeType;
-  typedef CompositeType::ScalarType                     ScalarType;
+  typedef itk::CompositeTransform<double, Dimension> CompositeType;
+  typedef CompositeType::ScalarType                  ScalarType;
 
   CompositeType::Pointer compositeTransform = CompositeType::New();
 
   //create an affine transform
   typedef itk::AffineTransform<double, Dimension>
-                                                    AffineTransformType;
+    AffineTransformType;
   AffineTransformType::Pointer affineTransform = AffineTransformType::New();
   affineTransform->SetIdentity();
   std::cout <<" affineTransform params " << affineTransform->GetParameters() << std::endl;
   typedef itk::GaussianSmoothingOnUpdateDisplacementFieldTransform<
-                                                    double, Dimension>
-                                                     DisplacementTransformType;
+      double, Dimension>
+    DisplacementTransformType;
   DisplacementTransformType::Pointer displacementTransform =
-                                              DisplacementTransformType::New();
+    DisplacementTransformType::New();
   typedef DisplacementTransformType::DisplacementFieldType
-                                                         DisplacementFieldType;
+    DisplacementFieldType;
   DisplacementFieldType::Pointer field = DisplacementFieldType::New();
 
   //set the field to be the same as the fixed image region, which will
@@ -166,7 +172,7 @@ int itkANTSNeighborhoodCorrelationImageToImageRegistrationTest(int argc, char *a
   // The metric
   typedef itk::ANTSNeighborhoodCorrelationImageToImageMetricv4
     < FixedImageType, MovingImageType > MetricType;
-  MetricType::Pointer metric = MetricType::New();
+  MetricType::Pointer  metric = MetricType::New();
   itk::Size<Dimension> radSize;
   radSize.Fill(2);
   metric->SetRadius(radSize);
@@ -185,7 +191,8 @@ int itkANTSNeighborhoodCorrelationImageToImageRegistrationTest(int argc, char *a
   metric->Initialize();
 
   typedef itk::RegistrationParameterScalesFromPhysicalShift< MetricType > RegistrationParameterScalesFromShiftType;
-  RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator = RegistrationParameterScalesFromShiftType::New();
+  RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator =
+    RegistrationParameterScalesFromShiftType::New();
   shiftScaleEstimator->SetMetric(metric);
   shiftScaleEstimator->SetTransformForward(true); //by default, scales for the moving transform
   RegistrationParameterScalesFromShiftType::ScalesType movingScales( affineTransform->GetNumberOfLocalParameters() );
@@ -193,8 +200,8 @@ int itkANTSNeighborhoodCorrelationImageToImageRegistrationTest(int argc, char *a
   std::cout << "Shift scales for the affine transform = " << movingScales << std::endl;
 
   std::cout << "First do an affine registration " << std::endl;
-  typedef itk::GradientDescentOptimizerv4  OptimizerType;
-  OptimizerType::Pointer  optimizer = OptimizerType::New();
+  typedef itk::GradientDescentOptimizerv4 OptimizerType;
+  OptimizerType::Pointer optimizer = OptimizerType::New();
   optimizer->SetMetric( metric );
   optimizer->SetLearningRate( learningRate );
   optimizer->SetNumberOfIterations( numberOfIterations );
@@ -205,14 +212,14 @@ int itkANTSNeighborhoodCorrelationImageToImageRegistrationTest(int argc, char *a
   // now add the displacement field to the composite transform
   compositeTransform->AddTransform( affineTransform );
   compositeTransform->AddTransform( displacementTransform );
-  compositeTransform->SetAllTransformsToOptimizeOn(); //Set back to optimize all.
+  compositeTransform->SetAllTransformsToOptimizeOn();           //Set back to optimize all.
   compositeTransform->SetOnlyMostRecentTransformToOptimizeOn(); //set to optimize the displacement field
   metric->SetMovingTransform( compositeTransform );
   metric->Initialize();
 
   // Optimizer
   RegistrationParameterScalesFromShiftType::ScalesType displacementScales(
-    displacementTransform->GetNumberOfLocalParameters());
+    displacementTransform->GetNumberOfLocalParameters() );
   displacementScales.Fill(1);
   optimizer->SetMetric( metric );
   optimizer->SetLearningRate( deformationLearningRate );
@@ -234,23 +241,24 @@ int itkANTSNeighborhoodCorrelationImageToImageRegistrationTest(int argc, char *a
     }
   std::cout << "...finished. " << std::endl;
 
-  std::cout << "threads: metric: " << metric->GetNumberOfThreadsUsed() << "  optimizer: " << optimizer->GetNumberOfThreads() << std::endl;
+  std::cout << "threads: metric: " << metric->GetNumberOfThreadsUsed() << "  optimizer: " <<
+  optimizer->GetNumberOfThreads() << std::endl;
 
   // try use the sparse sample point set in CC metric
-  typedef MetricType::FixedSampledPointSetType  PointSetType;
-  typedef PointSetType::PointType               PointType;
+  typedef MetricType::FixedSampledPointSetType PointSetType;
+  typedef PointSetType::PointType              PointType;
   std::cout << "Using sparse point set..." << std::endl;
-  PointSetType::Pointer               pset(PointSetType::New());
-  unsigned int ind=0,ct=0;
+  PointSetType::Pointer                             pset(PointSetType::New() );
+  unsigned int                                      ind=0,ct=0;
   itk::ImageRegionIteratorWithIndex<FixedImageType> It(fixedImage, fixedImage->GetLargestPossibleRegion() );
   for( It.GoToBegin(); !It.IsAtEnd(); ++It )
     {
     // take every point
-      PointType pt;
-      fixedImage->TransformIndexToPhysicalPoint( It.GetIndex(), pt);
-      pset->SetPoint(ind, pt);
-      ind++;
-      ct++;
+    PointType pt;
+    fixedImage->TransformIndexToPhysicalPoint( It.GetIndex(), pt);
+    pset->SetPoint(ind, pt);
+    ind++;
+    ct++;
     }
   metric->SetFixedSampledPointSet( pset );
   metric->SetUseFixedSampledPointSet( true );
@@ -270,7 +278,8 @@ int itkANTSNeighborhoodCorrelationImageToImageRegistrationTest(int argc, char *a
     return EXIT_FAILURE;
     }
   std::cout << "...finished. " << std::endl;
-  std::cout << "threads: metric: " << metric->GetNumberOfThreadsUsed() << "  optimizer: " << optimizer->GetNumberOfThreads() << std::endl;
+  std::cout << "threads: metric: " << metric->GetNumberOfThreadsUsed() << "  optimizer: " <<
+  optimizer->GetNumberOfThreads() << std::endl;
 
   //warp the image with the displacement field
   resample->SetTransform( compositeTransform );
@@ -283,14 +292,14 @@ int itkANTSNeighborhoodCorrelationImageToImageRegistrationTest(int argc, char *a
   resample->Update();
 
   //write the warped image into a file
-  typedef double                                    OutputPixelType;
-  typedef itk::Image< OutputPixelType, Dimension >  OutputImageType;
+  typedef double                                   OutputPixelType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::CastImageFilter<
-                        MovingImageType,
-                        OutputImageType >           CastFilterType;
-  typedef itk::ImageFileWriter< OutputImageType >   WriterType;
-  WriterType::Pointer      writer =  WriterType::New();
-  CastFilterType::Pointer  caster =  CastFilterType::New();
+      MovingImageType,
+      OutputImageType >           CastFilterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
+  WriterType::Pointer     writer =  WriterType::New();
+  CastFilterType::Pointer caster =  CastFilterType::New();
   writer->SetFileName( argv[3] );
   caster->SetInput( resample->GetOutput() );
   writer->SetInput( caster->GetOutput() );

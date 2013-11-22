@@ -79,7 +79,7 @@ namespace itk
 template< typename TScalar = float,  // Data type for scalars
           unsigned int NDimensions = 3 >
 // (e.g. float or double)
-class AzimuthElevationToCartesianTransform:
+class AzimuthElevationToCartesianTransform :
   public AffineTransform< TScalar, NDimensions >
 {
 public:
@@ -135,7 +135,8 @@ public:
   OutputPointType     TransformPoint(const InputPointType  & point) const;
 
   /** Back transform from cartesian to azimuth-elevation.  */
-  inline InputPointType  BackTransform(const OutputPointType  & point) const
+  inline InputPointType
+  BackTransform(const OutputPointType  & point) const
   {
     InputPointType result;
 
@@ -150,7 +151,8 @@ public:
     return result;
   }
 
-  inline InputPointType  BackTransformPoint(const OutputPointType  & point) const
+  inline InputPointType
+  BackTransformPoint(const OutputPointType  & point) const
   {
     return BackTransform(point);
   }
@@ -206,7 +208,8 @@ protected:
   AzimuthElevationToCartesianTransform();
 
   /** Destroy an AzimuthElevationToCartesianTransform object. */
-  virtual ~AzimuthElevationToCartesianTransform();
+  virtual
+  ~AzimuthElevationToCartesianTransform();
 
   /** Print contents of an AzimuthElevationTransform. */
   void PrintSelf(std::ostream & s, Indent indent) const;

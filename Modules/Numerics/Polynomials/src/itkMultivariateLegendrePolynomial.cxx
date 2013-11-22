@@ -54,7 +54,7 @@ MultivariateLegendrePolynomial
   for ( unsigned int j = 0; j < m_Dimension; j++ )
     {
     m_NormFactor[j] = 2.0f
-                      / ( static_cast< double >( m_DomainSize[j] ) - 1.0f );
+      / ( static_cast< double >( m_DomainSize[j] ) - 1.0f );
     }
 }
 
@@ -62,7 +62,8 @@ MultivariateLegendrePolynomial
 ::~MultivariateLegendrePolynomial()
 {}
 
-void MultivariateLegendrePolynomial
+void
+MultivariateLegendrePolynomial
 ::Print(std::ostream & os)
 {
   itk::Indent indent(4);
@@ -70,7 +71,8 @@ void MultivariateLegendrePolynomial
   this->PrintSelf(os, indent);
 }
 
-void MultivariateLegendrePolynomial
+void
+MultivariateLegendrePolynomial
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   os << indent << "Dimension: " << m_Dimension << std::endl;
@@ -121,7 +123,8 @@ void MultivariateLegendrePolynomial
   os << indent << "Previous Z index: " << m_PrevZ << std::endl;
 }
 
-void MultivariateLegendrePolynomial
+void
+MultivariateLegendrePolynomial
 ::SetCoefficients(const CoefficientArrayType & coefficients)
 throw ( MultivariateLegendrePolynomial::CoefficientVectorSizeMismatch )
 {
@@ -144,7 +147,8 @@ throw ( MultivariateLegendrePolynomial::CoefficientVectorSizeMismatch )
   m_PrevZ = -1;
 }
 
-void MultivariateLegendrePolynomial
+void
+MultivariateLegendrePolynomial
 ::SetCoefficients(const ParametersType & coefficients)
 throw ( MultivariateLegendrePolynomial::CoefficientVectorSizeMismatch )
 {
@@ -174,7 +178,8 @@ MultivariateLegendrePolynomial
   return m_CoefficientArray;
 }
 
-void MultivariateLegendrePolynomial
+void
+MultivariateLegendrePolynomial
 ::CalculateXCoef(double norm_y, const CoefficientArrayType & coef)
 {
   // compute x_coef[i] = sum (0 <= j <= m-i) pij * P(y)]
@@ -189,7 +194,8 @@ void MultivariateLegendrePolynomial
     }
 }
 
-void MultivariateLegendrePolynomial
+void
+MultivariateLegendrePolynomial
 ::CalculateYCoef(double norm_z, const CoefficientArrayType & coef)
 {
   // compute y_coef[i,j] = sum (0 <= k <= m-i-j) pijk * P(z)
@@ -215,7 +221,8 @@ void MultivariateLegendrePolynomial
     }
 }
 
-double MultivariateLegendrePolynomial
+double
+MultivariateLegendrePolynomial
 ::LegendreSum(const double x, int n, const CoefficientArrayType & coef,
               int offset)
 //n+1 elements !
@@ -236,7 +243,8 @@ double MultivariateLegendrePolynomial
   return -ykp2 / 2 + x * ykp1 + coef[offset];
 }
 
-unsigned int MultivariateLegendrePolynomial
+unsigned int
+MultivariateLegendrePolynomial
 ::GetNumberOfCoefficients(unsigned int dimension, unsigned int degree)
 {
   // calculate the number of parameters
@@ -251,16 +259,19 @@ unsigned int MultivariateLegendrePolynomial
   return numerator / denominator;
 }
 
-unsigned int MultivariateLegendrePolynomial
+unsigned int
+MultivariateLegendrePolynomial
 ::GetNumberOfCoefficients()
 {
   return m_NumberOfCoefficients;
 }
 
-std::ostream & operator<<(std::ostream & os,
-                          MultivariateLegendrePolynomial & poly)
+std::ostream &
+operator<<(std::ostream & os,
+           MultivariateLegendrePolynomial & poly)
 {
   poly.Print(os);
   return os;
 }
+
 } // end of namespace itk

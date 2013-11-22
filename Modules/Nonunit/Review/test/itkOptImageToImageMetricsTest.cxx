@@ -27,7 +27,8 @@
 
 #include "itkOptImageToImageMetricsTest.h"
 
-int itkOptImageToImageMetricsTest(int , char* argv[])
+int
+itkOptImageToImageMetricsTest(int , char* argv[])
 {
   std::cout << "OPTIMIZED ON" << std::endl;
   std::cout << "Default number of threads : "
@@ -46,7 +47,6 @@ int itkOptImageToImageMetricsTest(int , char* argv[])
   fixedImageReader->SetFileName(  argv[1] );
   movingImageReader->SetFileName( argv[2] );
 
-
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //  First run the experiments with the default number of threads,
   //  as set from the command line arguments, the system defaults
@@ -55,11 +55,12 @@ int itkOptImageToImageMetricsTest(int , char* argv[])
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
   std::cout << "Now Running tests with : " << std::endl;
-  std::cout << "\t Global Default Number of Threads " << itk::MultiThreader::GetGlobalDefaultNumberOfThreads() << std::endl;
-  std::cout << "\t Global Maximum Number of Threads " << itk::MultiThreader::GetGlobalMaximumNumberOfThreads() << std::endl;
+  std::cout << "\t Global Default Number of Threads " << itk::MultiThreader::GetGlobalDefaultNumberOfThreads() <<
+  std::endl;
+  std::cout << "\t Global Maximum Number of Threads " << itk::MultiThreader::GetGlobalMaximumNumberOfThreads() <<
+  std::endl;
   std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
   std::cout << std::endl;
-
 
   itk::TranslationLinearTest( fixedImageReader.GetPointer(),
                               movingImageReader.GetPointer() );

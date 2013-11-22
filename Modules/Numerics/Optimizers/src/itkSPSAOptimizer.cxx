@@ -285,11 +285,12 @@ SPSAOptimizer
  * described by Spall.
  */
 
-double SPSAOptimizer
+double
+SPSAOptimizer
 ::Compute_a(SizeValueType k) const
 {
   return static_cast< double >(
-           m_Sa / vcl_pow(m_A + k + 1, m_Alpha) );
+    m_Sa / vcl_pow(m_A + k + 1, m_Alpha) );
 } // end Compute_a
 
 /**
@@ -299,11 +300,12 @@ double SPSAOptimizer
  * described by Spall.
  */
 
-double SPSAOptimizer
+double
+SPSAOptimizer
 ::Compute_c(SizeValueType k) const
 {
   return static_cast< double >(
-           m_Sc / vcl_pow(k + 1, m_Gamma) );
+    m_Sc / vcl_pow(k + 1, m_Gamma) );
 } // end Compute_c
 
 /**
@@ -314,7 +316,8 @@ double SPSAOptimizer
  * distribution. (+- 1)
  */
 
-void SPSAOptimizer
+void
+SPSAOptimizer
 ::GenerateDelta(const unsigned int spaceDimension)
 {
   m_Delta = DerivativeType(spaceDimension);
@@ -520,6 +523,7 @@ SPSAOptimizer::GetStopConditionDescription() const
     }
   return reason.str();
 }
+
 } // end namespace itk
 
 #endif // end #ifndef __itkSPSAOptimizer_cxx

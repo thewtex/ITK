@@ -403,20 +403,21 @@ Versor< T >
 
   //check for orthonormality and that it isn't a reflection
   const vnl_matrix_fixed< T, 3, 3 > & I = m*m.transpose();
+
   if( vcl_abs( I[0][1] ) > epsilon || vcl_abs( I[0][2] ) > epsilon ||
-    vcl_abs( I[1][0] ) > epsilon || vcl_abs( I[1][2] ) > epsilon ||
-    vcl_abs( I[2][0] ) > epsilon || vcl_abs( I[2][1] ) > epsilon ||
-    vcl_abs( I[0][0] - itk::NumericTraits<T>::One ) > epsilonDiff ||
-    vcl_abs( I[1][1] - itk::NumericTraits<T>::One ) > epsilonDiff ||
-    vcl_abs( I[2][2] - itk::NumericTraits<T>::One ) > epsilonDiff ||
-    vnl_det( I ) < 0 )
+      vcl_abs( I[1][0] ) > epsilon || vcl_abs( I[1][2] ) > epsilon ||
+      vcl_abs( I[2][0] ) > epsilon || vcl_abs( I[2][1] ) > epsilon ||
+      vcl_abs( I[0][0] - itk::NumericTraits<T>::One ) > epsilonDiff ||
+      vcl_abs( I[1][1] - itk::NumericTraits<T>::One ) > epsilonDiff ||
+      vcl_abs( I[2][2] - itk::NumericTraits<T>::One ) > epsilonDiff ||
+      vnl_det( I ) < 0 )
     {
     itkGenericExceptionMacro(<< "The following matrix does not represent rotation to within an epsion of "
-      << epsilon << "." << std::endl
-      << m << std::endl
-      << "det(m * m transpose) is: " << vnl_det(I) << std::endl
-      << "m * m transpose is:" << std::endl
-      << I << std::endl);
+                             << epsilon << "." << std::endl
+                             << m << std::endl
+                             << "det(m * m transpose) is: " << vnl_det(I) << std::endl
+                             << "m * m transpose is:" << std::endl
+                             << I << std::endl);
     }
 
   const double trace = m(0, 0) + m(1, 1) + m(2, 2) + 1.0;
@@ -581,39 +582,42 @@ Versor< T >
 }
 
 namespace {
-  template< typename InputVectorType, typename ValueType, typename OutputVectorType >
-    const OutputVectorType localTransformVectorMath(const InputVectorType & VectorObject,
-      const ValueType & inputX,
-      const ValueType & inputY,
-      const ValueType & inputZ,
-      const ValueType & inputW)
-      {
-      const ValueType xx = inputX * inputX;
-      const ValueType yy = inputY * inputY;
-      const ValueType zz = inputZ * inputZ;
-      const ValueType xy = inputX * inputY;
-      const ValueType xz = inputX * inputZ;
-      const ValueType xw = inputX * inputW;
-      const ValueType yz = inputY * inputZ;
-      const ValueType yw = inputY * inputW;
-      const ValueType zw = inputZ * inputW;
+template< typename InputVectorType, typename ValueType, typename OutputVectorType >
+const OutputVectorType
+localTransformVectorMath(const InputVectorType & VectorObject,
+                         const ValueType & inputX,
+                         const ValueType & inputY,
+                         const ValueType & inputZ,
+                         const ValueType & inputW)
+{
+  const ValueType xx = inputX * inputX;
+  const ValueType yy = inputY * inputY;
+  const ValueType zz = inputZ * inputZ;
+  const ValueType xy = inputX * inputY;
+  const ValueType xz = inputX * inputZ;
+  const ValueType xw = inputX * inputW;
+  const ValueType yz = inputY * inputZ;
+  const ValueType yw = inputY * inputW;
+  const ValueType zw = inputZ * inputW;
 
-      const ValueType mxx = 1.0 - 2.0 * ( yy + zz );
-      const ValueType myy = 1.0 - 2.0 * ( xx + zz );
-      const ValueType mzz = 1.0 - 2.0 * ( xx + yy );
-      const ValueType mxy = 2.0 * ( xy - zw );
-      const ValueType mxz = 2.0 * ( xz + yw );
-      const ValueType myx = 2.0 * ( xy + zw );
-      const ValueType mzx = 2.0 * ( xz - yw );
-      const ValueType mzy = 2.0 * ( yz + xw );
-      const ValueType myz = 2.0 * ( yz - xw );
+  const ValueType mxx = 1.0 - 2.0 * ( yy + zz );
+  const ValueType myy = 1.0 - 2.0 * ( xx + zz );
+  const ValueType mzz = 1.0 - 2.0 * ( xx + yy );
+  const ValueType mxy = 2.0 * ( xy - zw );
+  const ValueType mxz = 2.0 * ( xz + yw );
+  const ValueType myx = 2.0 * ( xy + zw );
+  const ValueType mzx = 2.0 * ( xz - yw );
+  const ValueType mzy = 2.0 * ( yz + xw );
+  const ValueType myz = 2.0 * ( yz - xw );
 
-      OutputVectorType result;
-      result[0] = mxx * VectorObject[0] + mxy * VectorObject[1] + mxz * VectorObject[2];
-      result[1] = myx * VectorObject[0] + myy * VectorObject[1] + myz * VectorObject[2];
-      result[2] = mzx * VectorObject[0] + mzy * VectorObject[1] + mzz * VectorObject[2];
-      return result;
-      }
+  OutputVectorType result;
+
+  result[0] = mxx * VectorObject[0] + mxy * VectorObject[1] + mxz * VectorObject[2];
+  result[1] = myx * VectorObject[0] + myy * VectorObject[1] + myz * VectorObject[2];
+  result[2] = mzx * VectorObject[0] + mzy * VectorObject[1] + mzz * VectorObject[2];
+  return result;
+}
+
 }
 
 /** Transform a Vector */
@@ -622,7 +626,8 @@ typename Versor< T >::VectorType
 Versor< T >
 ::Transform(const VectorType & v) const
 {
-  return localTransformVectorMath<VectorType,T,typename Versor< T >::VectorType>(v,this->m_X,this->m_Y,this->m_Z,this->m_W);
+  return localTransformVectorMath<VectorType,T,typename Versor< T >::VectorType>(v,this->m_X,this->m_Y,this->m_Z,
+                                                                                 this->m_W);
 }
 
 /** Transform a CovariantVector
@@ -633,7 +638,9 @@ typename Versor< T >::CovariantVectorType
 Versor< T >
 ::Transform(const CovariantVectorType & v) const
 {
-  return localTransformVectorMath<CovariantVectorType,T,typename Versor< T >::CovariantVectorType>(v,this->m_X,this->m_Y,this->m_Z,this->m_W);
+  return localTransformVectorMath<CovariantVectorType,T,typename Versor< T >::CovariantVectorType>(v,this->m_X,
+                                                                                                   this->m_Y,this->m_Z,
+                                                                                                   this->m_W);
 }
 
 /** Transform a Point */
@@ -642,7 +649,8 @@ typename Versor< T >::PointType
 Versor< T >
 ::Transform(const PointType & v) const
 {
-  return localTransformVectorMath<PointType,T,typename Versor< T >::PointType>(v,this->m_X,this->m_Y,this->m_Z,this->m_W);
+  return localTransformVectorMath<PointType,T,typename Versor< T >::PointType>(v,this->m_X,this->m_Y,this->m_Z,
+                                                                               this->m_W);
 }
 
 /** Transform a VnlVector */
@@ -651,7 +659,8 @@ typename Versor< T >::VnlVectorType
 Versor< T >
 ::Transform(const VnlVectorType & v) const
 {
-  return localTransformVectorMath<VnlVectorType,T,typename Versor< T >::VnlVectorType>(v,this->m_X,this->m_Y,this->m_Z,this->m_W);
+  return localTransformVectorMath<VnlVectorType,T,typename Versor< T >::VnlVectorType>(v,this->m_X,this->m_Y,this->m_Z,
+                                                                                       this->m_W);
 }
 
 /** Get Matrix representation */
@@ -684,6 +693,7 @@ Versor< T >
 
   return matrix;
 }
+
 } // end namespace itk
 
 #endif

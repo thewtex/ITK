@@ -48,11 +48,18 @@ public:
    * representation of data. */
   typedef TInternalType InternalType;
 
-  static inline void Set(TInternalType & output, const TExternalType & input)
-  { output = static_cast< TInternalType >( vcl_exp( -static_cast< double >( input ) ) ); }
+  static inline void
+  Set(TInternalType & output, const TExternalType & input)
+  {
+    output = static_cast< TInternalType >( vcl_exp( -static_cast< double >( input ) ) );
+  }
 
-  static inline TExternalType Get(const TInternalType & input)
-  { return static_cast< TExternalType >( vcl_exp( -static_cast< double >( input ) ) ); }
+  static inline TExternalType
+  Get(const TInternalType & input)
+  {
+    return static_cast< TExternalType >( vcl_exp( -static_cast< double >( input ) ) );
+  }
+
 };
 } // end namespace Accessor
 
@@ -66,7 +73,7 @@ public:
  * \ingroup ITKImageAdaptors
  */
 template< typename TImage, typename TOutputPixelType >
-class ExpNegativeImageAdaptor:public
+class ExpNegativeImageAdaptor : public
   ImageAdaptor< TImage, Accessor::ExpNegativePixelAccessor<
                   typename TImage::PixelType,
                   TOutputPixelType >   >
@@ -75,8 +82,8 @@ public:
   /** Standard class typedefs. */
   typedef ExpNegativeImageAdaptor Self;
   typedef ImageAdaptor<
-    TImage, Accessor::ExpNegativePixelAccessor<
-      typename TImage::PixelType, TOutputPixelType > >     Superclass;
+      TImage, Accessor::ExpNegativePixelAccessor<
+        typename TImage::PixelType, TOutputPixelType > >     Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -89,11 +96,13 @@ public:
 
 protected:
   ExpNegativeImageAdaptor() {}
-  virtual ~ExpNegativeImageAdaptor() {}
+  virtual
+  ~ExpNegativeImageAdaptor() {}
 
 private:
   ExpNegativeImageAdaptor(const Self &); //purposely not implemented
   void operator=(const Self &);          //purposely not implemented
+
 };
 } // end namespace itk
 

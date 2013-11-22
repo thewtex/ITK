@@ -45,18 +45,18 @@ namespace itk
   * \ingroup ITKIOMINC
   */
 template < class TScalarType=double, unsigned int NInputDimensions=3,unsigned int NOutputDimensions=3>
-  class MINCTransformAdapter : public Transform < TScalarType, NInputDimensions, NOutputDimensions>
+class MINCTransformAdapter : public Transform < TScalarType, NInputDimensions, NOutputDimensions>
 {
 public:
   /** Standard class typedefs. */
-  typedef MINCTransformAdapter  Self;
+  typedef MINCTransformAdapter Self;
 
   typedef Transform < TScalarType, NInputDimensions, NOutputDimensions> Superclass;
 
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
-  typedef typename Superclass::NumberOfParametersType  NumberOfParametersType;
+  typedef typename Superclass::NumberOfParametersType NumberOfParametersType;
 
   /** New method for creating an object using a factory. */
   itkNewMacro(Self);
@@ -75,7 +75,7 @@ public:
   typedef typename Superclass::ParametersType ParametersType;
 
   /** Type of the Jacobian matrix. */
-  typedef typename Superclass::JacobianType  JacobianType;
+  typedef typename Superclass::JacobianType JacobianType;
 
   /** Standard vector type for this class. */
   typedef Vector<TScalarType, itkGetStaticConstMacro(InputSpaceDimension)>  InputVectorType;
@@ -87,7 +87,7 @@ public:
   typedef VariableLengthVector<TScalarType> OutputVectorPixelType;
 
   /** Standard covariant vector type for this class */
-  typedef CovariantVector<TScalarType, itkGetStaticConstMacro(InputSpaceDimension)>  InputCovariantVectorType;
+  typedef CovariantVector<TScalarType, itkGetStaticConstMacro(InputSpaceDimension)> InputCovariantVectorType;
 
   typedef CovariantVector<TScalarType, itkGetStaticConstMacro(OutputSpaceDimension)> OutputCovariantVectorType;
 
@@ -100,7 +100,8 @@ public:
   typedef vnl_vector_fixed<TScalarType, NOutputDimensions> OutputVnlVectorType;
 
   /**  Method to transform a point. */
-  virtual OutputPointType TransformPoint(const InputPointType  &point ) const
+  virtual OutputPointType
+  TransformPoint(const InputPointType  &point ) const
   {
     if(!m_Initialized)
       {
@@ -114,74 +115,81 @@ public:
 
     OutputPointType pnt;
     //works only for 3D->3D transforms
-    general_transform_point((m_Invert ? &m_Xfm_inv : &m_Xfm), point[0], point[1], point[2], &pnt[0], &pnt[1], &pnt[2]);
+    general_transform_point( (m_Invert ? &m_Xfm_inv : &m_Xfm), point[0], point[1], point[2], &pnt[0], &pnt[1], &pnt[2]);
 
     return pnt;
   }
 
   //! use finate element difference to estimate local jacobian
-  void estimate_local_jacobian(const InputPointType  &orig, vnl_matrix_fixed< double, 3, 3 > &m)
+  void
+  estimate_local_jacobian(const InputPointType  &orig, vnl_matrix_fixed< double, 3, 3 > &m)
   {
-    double u1,v1,w1;
-    double u2,v2,w2;
+    double       u1,v1,w1;
+    double       u2,v2,w2;
     const double delta=1e-4;
 
-    general_transform_point((m_Invert ? &m_Xfm_inv : &m_Xfm) , orig[0]-delta, orig[1], orig[2],&u1, &v1, &w1);
-    general_transform_point((m_Invert ? &m_Xfm_inv : &m_Xfm) , orig[0]+delta, orig[1], orig[2],&u2, &v2, &w2);
+    general_transform_point( (m_Invert ? &m_Xfm_inv : &m_Xfm) , orig[0]-delta, orig[1], orig[2],&u1, &v1, &w1);
+    general_transform_point( (m_Invert ? &m_Xfm_inv : &m_Xfm) , orig[0]+delta, orig[1], orig[2],&u2, &v2, &w2);
     m(0,0)=(u2-u1)/(2*delta);
     m(0,1)=(v2-v1)/(2*delta);
     m(0,2)=(w2-w1)/(2*delta);
 
-    general_transform_point((m_Invert ? &m_Xfm_inv : &m_Xfm) , orig[0], orig[1]-delta, orig[2],&u1, &v1, &w1);
-    general_transform_point((m_Invert ? &m_Xfm_inv : &m_Xfm) , orig[0], orig[1]+delta, orig[2],&u2, &v2, &w2);
+    general_transform_point( (m_Invert ? &m_Xfm_inv : &m_Xfm) , orig[0], orig[1]-delta, orig[2],&u1, &v1, &w1);
+    general_transform_point( (m_Invert ? &m_Xfm_inv : &m_Xfm) , orig[0], orig[1]+delta, orig[2],&u2, &v2, &w2);
     m(1,0)=(u2-u1)/(2*delta);
     m(1,1)=(v2-v1)/(2*delta);
     m(1,2)=(w2-w1)/(2*delta);
 
-    general_transform_point((m_Invert ? &m_Xfm_inv : &m_Xfm), orig[0], orig[1], orig[2]-delta,&u1, &v1, &w1);
-    general_transform_point((m_Invert ? &m_Xfm_inv : &m_Xfm), orig[0], orig[1], orig[2]+delta,&u2, &v2, &w2);
+    general_transform_point( (m_Invert ? &m_Xfm_inv : &m_Xfm), orig[0], orig[1], orig[2]-delta,&u1, &v1, &w1);
+    general_transform_point( (m_Invert ? &m_Xfm_inv : &m_Xfm), orig[0], orig[1], orig[2]+delta,&u2, &v2, &w2);
     m(2,0)=(u2-u1)/(2*delta);
     m(2,1)=(v2-v1)/(2*delta);
     m(2,2)=(w2-w1)/(2*delta);
   }
 
   /**  Method to transform a vector. */
-  OutputVectorType TransformVector( const InputVectorType& vector, const InputPointType &  ) const
+  OutputVectorType
+  TransformVector( const InputVectorType& vector, const InputPointType &  ) const
   {
     itkExceptionMacro( << "Not Implemented" );
     return vector;
   }
 
   /**  Method to transform a vector. */
-  OutputVnlVectorType TransformVector( const InputVnlVectorType& vector, const InputPointType & ) const
+  OutputVnlVectorType
+  TransformVector( const InputVnlVectorType& vector, const InputPointType & ) const
   {
     itkExceptionMacro( << "Not Implemented" );
     return vector;
   }
 
   /**  Method to transform a vector. */
-  OutputVectorType TransformVector( const InputVectorType& vector) const
+  OutputVectorType
+  TransformVector( const InputVectorType& vector) const
   {
     itkExceptionMacro( << "Not Implemented" );
     return vector;
   }
 
   /**  Method to transform a vector. */
-  OutputVnlVectorType TransformVector( const InputVnlVectorType& vector) const
+  OutputVnlVectorType
+  TransformVector( const InputVnlVectorType& vector) const
   {
     itkExceptionMacro( << "Not Implemented" );
     return vector;
   }
 
   /**  Method to transform a vector. */
-  OutputVectorPixelType TransformVector( const InputVectorPixelType& vector) const
+  OutputVectorPixelType
+  TransformVector( const InputVectorPixelType& vector) const
   {
     itkExceptionMacro( << "Not Implemented" );
     return vector;
   }
 
   /**  Method to transform a vector. */
-  OutputVectorPixelType TransformVector(
+  OutputVectorPixelType
+  TransformVector(
     const InputVectorPixelType& vector,
     const InputPointType & ) const
   {
@@ -190,16 +198,18 @@ public:
   }
 
   /**  Method to transform a CovariantVector. */
-  virtual OutputCovariantVectorType TransformCovariantVector(
+  virtual OutputCovariantVectorType
+  TransformCovariantVector(
     const InputCovariantVectorType &vector
-  , const InputPointType & ) const
+    , const InputPointType & ) const
   {
     itkExceptionMacro( << "Not Implemented" );
     return vector;
   }
 
   /**  Method to transform a CovariantVector. */
-  virtual OutputCovariantVectorType TransformCovariantVector(
+  virtual OutputCovariantVectorType
+  TransformCovariantVector(
     const InputCovariantVectorType &vector) const
   {
     itkExceptionMacro( << "Not Implemented" );
@@ -207,7 +217,8 @@ public:
   }
 
   /**  Method to transform a CovariantVector. */
-  virtual OutputVectorPixelType TransformCovariantVector(
+  virtual OutputVectorPixelType
+  TransformCovariantVector(
     const InputVectorPixelType &vector) const
   {
     itkExceptionMacro( << "Not Implemented" );
@@ -215,7 +226,8 @@ public:
   }
 
   /**  Method to transform a CovariantVector. */
-  virtual OutputVectorPixelType TransformCovariantVector(
+  virtual OutputVectorPixelType
+  TransformCovariantVector(
     const InputVectorPixelType &vector, const InputPointType & ) const
   {
     itkExceptionMacro( << "Not Implemented" );
@@ -224,31 +236,36 @@ public:
 
   /** Set the transformation to an Identity
     */
-  virtual void SetIdentity( void )
+  virtual void
+  SetIdentity( void )
   {
     cleanup();
   }
 
-  virtual void SetFixedParameters(const ParametersType &)
+  virtual void
+  SetFixedParameters(const ParametersType &)
   {
     itkExceptionMacro( << "Not Implemented" );
   }
 
-  virtual void ComputeJacobianWithRespectToParameters(
-              const InputPointType &,
-              JacobianType &) const
+  virtual void
+  ComputeJacobianWithRespectToParameters(
+    const InputPointType &,
+    JacobianType &) const
   {
     itkExceptionMacro( << "Not Implemented" );
   }
 
-  virtual void ComputeJacobianWithRespectToPosition(
-              const InputPointType & ,
-              JacobianType & ) const
+  virtual void
+  ComputeJacobianWithRespectToPosition(
+    const InputPointType & ,
+    JacobianType & ) const
   {
     itkExceptionMacro( << "Not Implemented" );
   }
 
-  virtual NumberOfParametersType GetNumberOfParameters(void) const
+  virtual NumberOfParametersType
+  GetNumberOfParameters(void) const
   {
     //this transform is defined by XFM file
     itkExceptionMacro( << "Not Defined" );
@@ -257,26 +274,30 @@ public:
 
   /** Set the Transformation Parameters
     * and update the internal transformation. */
-  virtual void  SetParameters(const ParametersType &)
+  virtual void
+  SetParameters(const ParametersType &)
   {
     itkExceptionMacro( << "Not Implemented" );
   }
 
-  virtual const ParametersType & GetParameters(void) const
+  virtual const ParametersType &
+  GetParameters(void) const
   {
     itkExceptionMacro( << "Not Implemented" );
     return m_Parameters;
   }
 
-  void OpenXfm(const char *xfm)
+  void
+  OpenXfm(const char *xfm)
   {
     cleanup();
-    if(input_transform_file((char*)xfm, &m_Xfm) != VIO_OK)
+    if(input_transform_file( (char*)xfm, &m_Xfm) != VIO_OK)
       itkExceptionMacro( << "Error reading XFM:" << xfm );
     m_Initialized=true;
   }
 
-  void Invert(void)
+  void
+  Invert(void)
   {
     if(!m_Initialized)
       itkExceptionMacro( << "XFM not initialized" );
@@ -289,7 +310,7 @@ public:
   }
 
 protected:
-  MINCTransformAdapter():
+  MINCTransformAdapter() :
     Transform< TScalarType, NInputDimensions, NOutputDimensions>(0),
     m_Invert(false),
     m_Initialized(false),
@@ -299,12 +320,14 @@ protected:
       itkExceptionMacro(<< "Sorry, only 3D to 3d minc xfm transform is currently implemented");
   }
 
-  virtual ~MINCTransformAdapter()
+  virtual
+  ~MINCTransformAdapter()
   {
     cleanup();
   }
 
-  void cleanup(void)
+  void
+  cleanup(void)
   {
     if(m_Initialized)
       {
@@ -329,7 +352,8 @@ protected:
 
 private:
   MINCTransformAdapter ( const Self & ); //purposely not implemented
-  void operator= ( const Self & ); //purposely not implemented
+  void operator=( const Self & );        //purposely not implemented
+
 };
 
 }

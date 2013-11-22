@@ -77,7 +77,7 @@ bool
 RegistrationParameterScalesEstimator< TMetric >
 ::CheckAndSetInputs()
 {
-if (m_Metric.IsNull())
+  if (m_Metric.IsNull() )
     {
     itkExceptionMacro("RegistrationParameterScalesEstimator: the metric is NULL");
     }
@@ -133,11 +133,13 @@ bool
 RegistrationParameterScalesEstimator< TMetric >
 ::IsDisplacementFieldTransform()
 {
-  if( this->m_TransformForward && this->m_Metric->GetMovingTransform()->GetTransformCategory() == MovingTransformType::DisplacementField )
+  if( this->m_TransformForward && this->m_Metric->GetMovingTransform()->GetTransformCategory() ==
+      MovingTransformType::DisplacementField )
     {
     return true;
     }
-  else if( !this->m_TransformForward && this->m_Metric->GetFixedTransform()->GetTransformCategory() == FixedTransformType::DisplacementField )
+  else if( !this->m_TransformForward && this->m_Metric->GetFixedTransform()->GetTransformCategory() ==
+           FixedTransformType::DisplacementField )
     {
     return true;
     }
@@ -151,11 +153,13 @@ RegistrationParameterScalesEstimator< TMetric >
 {
   bool isBSplineTransform = false;
 
-  if( this->m_TransformForward && this->m_Metric->GetMovingTransform()->GetTransformCategory() == MovingTransformType::BSpline )
+  if( this->m_TransformForward && this->m_Metric->GetMovingTransform()->GetTransformCategory() ==
+      MovingTransformType::BSpline )
     {
     isBSplineTransform = true;
     }
-  else if( !this->m_TransformForward && this->m_Metric->GetFixedTransform()->GetTransformCategory() == FixedTransformType::BSpline )
+  else if( !this->m_TransformForward && this->m_Metric->GetFixedTransform()->GetTransformCategory() ==
+           FixedTransformType::BSpline )
     {
     isBSplineTransform = true;
     }
@@ -171,15 +175,18 @@ RegistrationParameterScalesEstimator< TMetric >
     if( this->m_TransformForward )
       {
       typedef CompositeTransform<FloatType, MovingDimension> CompositeTransformType;
-      typename CompositeTransformType::Pointer compositeTransform = dynamic_cast<CompositeTransformType *>( const_cast<MovingTransformType *>( this->m_Metric->GetMovingTransform() ) );
+      typename CompositeTransformType::Pointer compositeTransform =
+        dynamic_cast<CompositeTransformType *>( const_cast<MovingTransformType *>( this->m_Metric->GetMovingTransform() ) );
 
       if( compositeTransform )
         {
         isBSplineTransform = true;
-        for( signed long tind = static_cast<signed long>( compositeTransform->GetNumberOfTransforms() ) - 1; tind >= 0; tind-- )
+        for( signed long tind = static_cast<signed long>( compositeTransform->GetNumberOfTransforms() ) - 1; tind >= 0;
+             tind-- )
           {
           if( compositeTransform->GetNthTransformToOptimize( tind ) &&
-            ( compositeTransform->GetNthTransformConstPointer( tind )->GetTransformCategory() != MovingTransformType::BSpline ) )
+              ( compositeTransform->GetNthTransformConstPointer( tind )->GetTransformCategory() !=
+                MovingTransformType::BSpline ) )
             {
             isBSplineTransform = false;
             break;
@@ -190,15 +197,18 @@ RegistrationParameterScalesEstimator< TMetric >
     else // !this->m_TransformForward
       {
       typedef CompositeTransform<FloatType, FixedDimension> CompositeTransformType;
-      typename CompositeTransformType::Pointer compositeTransform = dynamic_cast<CompositeTransformType *>( const_cast<FixedTransformType *>( this->m_Metric->GetFixedTransform() ) );
+      typename CompositeTransformType::Pointer compositeTransform =
+        dynamic_cast<CompositeTransformType *>( const_cast<FixedTransformType *>( this->m_Metric->GetFixedTransform() ) );
 
       if( compositeTransform )
         {
         isBSplineTransform = true;
-        for( signed long tind = static_cast<signed long>( compositeTransform->GetNumberOfTransforms() ) - 1; tind >= 0; tind-- )
+        for( signed long tind = static_cast<signed long>( compositeTransform->GetNumberOfTransforms() ) - 1; tind >= 0;
+             tind-- )
           {
           if( compositeTransform->GetNthTransformToOptimize( tind ) &&
-            ( compositeTransform->GetNthTransformConstPointer( tind )->GetTransformCategory() != FixedTransformType::BSpline ) )
+              ( compositeTransform->GetNthTransformConstPointer( tind )->GetTransformCategory() !=
+                FixedTransformType::BSpline ) )
             {
             isBSplineTransform = false;
             break;
@@ -210,7 +220,6 @@ RegistrationParameterScalesEstimator< TMetric >
 
   return isBSplineTransform;
 }
-
 
 template< typename TMetric >
 bool
@@ -233,7 +242,7 @@ SizeValueType
 RegistrationParameterScalesEstimator< TMetric >
 ::GetNumberOfLocalParameters()
 {
-  if (this->GetTransformForward())
+  if (this->GetTransformForward() )
     {
     return this->m_Metric->GetMovingTransform()->GetNumberOfLocalParameters();
     }
@@ -252,13 +261,15 @@ RegistrationParameterScalesEstimator< TMetric >
   // Apply the delta parameters to the transform
   if (this->m_TransformForward)
     {
-    typename MovingTransformType::Pointer movingTransform = const_cast<MovingTransformType *>(this->m_Metric->GetMovingTransform());
+    typename MovingTransformType::Pointer movingTransform =
+      const_cast<MovingTransformType *>(this->m_Metric->GetMovingTransform() );
     ParametersType &step = const_cast<ParametersType &>(deltaParameters);
     movingTransform->UpdateTransformParameters(step);
     }
   else
     {
-    typename FixedTransformType::Pointer fixedTransform = const_cast<FixedTransformType *>(this->m_Metric->GetFixedTransform());
+    typename FixedTransformType::Pointer fixedTransform =
+      const_cast<FixedTransformType *>(this->m_Metric->GetFixedTransform() );
     ParametersType &step = const_cast<ParametersType &>(deltaParameters);
     fixedTransform->UpdateTransformParameters(step);
     }
@@ -274,7 +285,7 @@ void
 RegistrationParameterScalesEstimator< TMetric >
 ::TransformPoint(const VirtualPointType &point, TTargetPointType &mappedPoint)
 {
-  if (this->GetTransformForward())
+  if (this->GetTransformForward() )
     {
     mappedPoint = this->m_Metric->GetMovingTransform()->TransformPoint( point );
     }
@@ -290,11 +301,11 @@ void
 RegistrationParameterScalesEstimator< TMetric >
 ::ComputeSquaredJacobianNorms( const VirtualPointType  & point, ParametersType & squareNorms )
 {
-  JacobianType jacobian;
+  JacobianType        jacobian;
   const SizeValueType numPara = this->GetNumberOfLocalParameters();
   const SizeValueType dim = this->GetDimension();
 
-  if (this->GetTransformForward())
+  if (this->GetTransformForward() )
     {
     this->m_Metric->GetMovingTransform()->ComputeJacobianWithRespectToParameters(point, jacobian);
 
@@ -330,12 +341,13 @@ void
 RegistrationParameterScalesEstimator< TMetric >
 ::SampleVirtualDomain()
 {
-  if ( !(this->m_SamplingTime < this->GetTimeStamp()) && !(this->m_SamplingTime < this->m_Metric->GetVirtualDomainTimeStamp()) )
+  if ( !(this->m_SamplingTime < this->GetTimeStamp() ) &&
+       !(this->m_SamplingTime < this->m_Metric->GetVirtualDomainTimeStamp() ) )
     {
     return;
     }
 
-  if( ! this->m_Metric->SupportsArbitraryVirtualDomainSamples() && ! this->m_VirtualDomainPointSet )
+  if( !this->m_Metric->SupportsArbitraryVirtualDomainSamples() && !this->m_VirtualDomainPointSet )
     {
     itkExceptionMacro(" The assigned metric does not support aribitrary virtual domain sampling, "
                       " yet this->m_VirtualDomainPointSet has not been assigned. " );
@@ -388,7 +400,7 @@ RegistrationParameterScalesEstimator< TMetric >
     {
     this->SetSamplingStrategy(CentralRegionSampling);
     }
-  else if (this->CheckGeneralAffineTransform())
+  else if (this->CheckGeneralAffineTransform() )
     {
     this->SetSamplingStrategy(CornerSampling);
     }
@@ -416,7 +428,7 @@ RegistrationParameterScalesEstimator< TMetric >
     // Have to use FullDomainSampling for a transform with local support
     this->SetSamplingStrategy(FullDomainSampling);
     }
-  else if (this->CheckGeneralAffineTransform())
+  else if (this->CheckGeneralAffineTransform() )
     {
     this->SetSamplingStrategy(CornerSampling);
     }
@@ -436,7 +448,7 @@ bool
 RegistrationParameterScalesEstimator< TMetric >
 ::CheckGeneralAffineTransform()
 {
-  if (this->GetTransformForward())
+  if (this->GetTransformForward() )
     {
     return this->CheckGeneralAffineTransformTemplated<MovingTransformType>();
     }
@@ -465,21 +477,21 @@ RegistrationParameterScalesEstimator< TMetric >
   const SizeValueType OutputSpaceDimension = TTransform::OutputSpaceDimension;
 
   typedef MatrixOffsetTransformBase<ScalarType, InputSpaceDimension, OutputSpaceDimension>
-          MatrixOffsetTransformBaseType;
+    MatrixOffsetTransformBaseType;
   typedef TranslationTransform<ScalarType, InputSpaceDimension>
-          TranslationTransformType;
+    TranslationTransformType;
   typedef IdentityTransform<ScalarType, InputSpaceDimension>
-          IdentityTransformType;
+    IdentityTransformType;
   typedef Rigid3DPerspectiveTransform<ScalarType>
-          Rigid3DPerspectiveTransformType;
+    Rigid3DPerspectiveTransformType;
 
   const TransformBaseTemplate<typename TMetric::MeasureType> *transform = this->GetTransform();
 
   if ( dynamic_cast< const MatrixOffsetTransformBaseType * >( transform ) != NULL
-    || dynamic_cast< const TranslationTransformType * >( transform ) != NULL
-    || dynamic_cast< const IdentityTransformType * >( transform ) != NULL
-    || dynamic_cast< const Rigid3DPerspectiveTransformType * >( transform ) != NULL
-    )
+       || dynamic_cast< const TranslationTransformType * >( transform ) != NULL
+       || dynamic_cast< const IdentityTransformType * >( transform ) != NULL
+       || dynamic_cast< const Rigid3DPerspectiveTransformType * >( transform ) != NULL
+       )
     {
     return true;
     }
@@ -495,16 +507,17 @@ typename RegistrationParameterScalesEstimator< TMetric >::VirtualIndexType
 RegistrationParameterScalesEstimator< TMetric >
 ::GetVirtualDomainCentralIndex()
 {
-  VirtualRegionType region = this->m_Metric->GetVirtualRegion();
+  VirtualRegionType   region = this->m_Metric->GetVirtualRegion();
   const SizeValueType dim = this->GetDimension();
 
   VirtualIndexType lowerIndex, upperIndex, centralIndex;
+
   lowerIndex = region.GetIndex();
   upperIndex = region.GetUpperIndex();
 
   for (SizeValueType d=0; d<dim; d++)
     {
-    centralIndex[d] = (IndexValueType)((lowerIndex[d] + upperIndex[d])/2.0);
+    centralIndex[d] = (IndexValueType)( (lowerIndex[d] + upperIndex[d])/2.0);
     }
 
   return centralIndex;
@@ -520,10 +533,11 @@ RegistrationParameterScalesEstimator< TMetric >
 {
   VirtualIndexType centralIndex = this->GetVirtualDomainCentralIndex();
 
-  VirtualRegionType region = this->m_Metric->GetVirtualRegion();
+  VirtualRegionType   region = this->m_Metric->GetVirtualRegion();
   const SizeValueType dim = this->GetDimension();
 
   VirtualIndexType lowerIndex, upperIndex;
+
   lowerIndex = region.GetIndex();
   upperIndex = region.GetUpperIndex();
 
@@ -555,6 +569,7 @@ RegistrationParameterScalesEstimator< TMetric >
 ::SampleVirtualDomainWithCentralRegion()
 {
   VirtualRegionType centralRegion = this->GetVirtualDomainCentralRegion();
+
   SampleVirtualDomainWithRegion(centralRegion);
 }
 
@@ -567,7 +582,8 @@ RegistrationParameterScalesEstimator< TMetric >
 ::SampleVirtualDomainWithRegion(VirtualRegionType region)
 {
   VirtualImageConstPointer image = this->m_Metric->GetVirtualImage();
-  const SizeValueType total = region.GetNumberOfPixels();
+  const SizeValueType      total = region.GetNumberOfPixels();
+
   this->m_SamplePoints.resize(total);
 
   /* Set up an iterator within the user specified virtual image region. */
@@ -600,12 +616,12 @@ RegistrationParameterScalesEstimator< TMetric >
   VirtualImageConstPointer image = this->m_Metric->GetVirtualImage();
 
   VirtualRegionType region = this->m_Metric->GetVirtualRegion();
-  VirtualIndexType firstCorner = region.GetIndex();
-  VirtualIndexType corner;
-  VirtualPointType point;
+  VirtualIndexType  firstCorner = region.GetIndex();
+  VirtualIndexType  corner;
+  VirtualPointType  point;
 
   VirtualSizeType size = region.GetSize();
-  const int cornerNumber = 1 << VirtualDimension; // 2^Dimension
+  const int       cornerNumber = 1 << VirtualDimension; // 2^Dimension
 
   this->m_SamplePoints.resize(cornerNumber);
 
@@ -614,7 +630,7 @@ RegistrationParameterScalesEstimator< TMetric >
     int bit;
     for (int d=0; d<VirtualDimension; d++)
       {
-      bit = (int) (( i & (1 << d) ) != 0); // 0 or 1
+      bit = (int) ( ( i & (1 << d) ) != 0); // 0 or 1
       corner[d] = firstCorner[d] + bit * (size[d] - 1);
       }
 
@@ -642,7 +658,7 @@ RegistrationParameterScalesEstimator< TMetric >
       }
     else
       {
-      FloatType ratio = 1 + vcl_log((FloatType)total/SizeOfSmallDomain);
+      FloatType ratio = 1 + vcl_log( (FloatType)total/SizeOfSmallDomain);
       //ratio >= 1 since total/SizeOfSmallDomain > 1
 
       this->m_NumberOfRandomSamples = static_cast<int>(SizeOfSmallDomain * ratio);
@@ -680,7 +696,7 @@ RegistrationParameterScalesEstimator< TMetric >
 ::SampleVirtualDomainWithPointSet()
 {
   /* The virtual domain point set must already be supplied */
-  if( ! this->m_VirtualDomainPointSet )
+  if( !this->m_VirtualDomainPointSet )
     {
     itkExceptionMacro("The virtual domain point set has not been set.");
     }
@@ -692,7 +708,7 @@ RegistrationParameterScalesEstimator< TMetric >
   this->m_SamplePoints.resize( this->m_VirtualDomainPointSet->GetNumberOfPoints() );
 
   typename VirtualPointSetType::PointsContainerConstIterator it( this->m_VirtualDomainPointSet->GetPoints()->Begin() );
-  SizeValueType count = 0;
+  SizeValueType                                              count = 0;
   while( it != this->m_VirtualDomainPointSet->GetPoints()->End() )
     {
     this->m_SamplePoints[count] = it.Value();
@@ -710,6 +726,7 @@ RegistrationParameterScalesEstimator< TMetric >
 ::SampleVirtualDomainFully()
 {
   VirtualRegionType region = this->m_Metric->GetVirtualRegion();
+
   this->SampleVirtualDomainWithRegion(region);
 }
 

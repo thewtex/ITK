@@ -41,20 +41,22 @@ ObjectToObjectMetricBaseTemplate<TInternalComputationValueType>
 
 //-------------------------------------------------------------------
 template<typename TInternalComputationValueType>
-bool ObjectToObjectMetricBaseTemplate<TInternalComputationValueType>
+bool
+ObjectToObjectMetricBaseTemplate<TInternalComputationValueType>
 ::GetGradientSourceIncludesFixed() const
 {
   return m_GradientSource == GRADIENT_SOURCE_FIXED ||
-  m_GradientSource == GRADIENT_SOURCE_BOTH;
+         m_GradientSource == GRADIENT_SOURCE_BOTH;
 }
 
 //-------------------------------------------------------------------
 template<typename TInternalComputationValueType>
-bool ObjectToObjectMetricBaseTemplate<TInternalComputationValueType>
+bool
+ObjectToObjectMetricBaseTemplate<TInternalComputationValueType>
 ::GetGradientSourceIncludesMoving() const
 {
   return m_GradientSource == GRADIENT_SOURCE_MOVING ||
-  m_GradientSource == GRADIENT_SOURCE_BOTH;
+         m_GradientSource == GRADIENT_SOURCE_BOTH;
 }
 
 //-------------------------------------------------------------------
@@ -72,26 +74,27 @@ void
 ObjectToObjectMetricBaseTemplate<TInternalComputationValueType>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
-Superclass::PrintSelf(os, indent);
-os << indent << "Value: " << m_Value << std::endl;
-os << indent << "GradientSourceType: ";
-switch( m_GradientSource )
-  {
+  Superclass::PrintSelf(os, indent);
+
+  os << indent << "Value: " << m_Value << std::endl;
+  os << indent << "GradientSourceType: ";
+  switch( m_GradientSource )
+    {
     case GRADIENT_SOURCE_FIXED:
-    os << "GRADIENT_SOURCE_FIXED";
-    break;
+      os << "GRADIENT_SOURCE_FIXED";
+      break;
     case GRADIENT_SOURCE_MOVING:
-    os << "GRADIENT_SOURCE_MOVING";
-    break;
+      os << "GRADIENT_SOURCE_MOVING";
+      break;
     case GRADIENT_SOURCE_BOTH:
-    os << "GRADIENT_SOURCE_BOTH";
-    break;
+      os << "GRADIENT_SOURCE_BOTH";
+      break;
     default:
-    itkExceptionMacro(<< "Unknown GradientSource.");
-  }
-os << std::endl;
+      itkExceptionMacro(<< "Unknown GradientSource.");
+    }
+  os << std::endl;
 }
 
-}//namespace itk
+} //namespace itk
 
 #endif

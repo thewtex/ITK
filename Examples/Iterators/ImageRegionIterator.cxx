@@ -50,17 +50,18 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   // Verify the number of parameters on the command line.
   if ( argc < 7 )
     {
-      std::cerr << "Missing parameters. " << std::endl;
-      std::cerr << "Usage: " << std::endl;
-      std::cerr << argv[0]
-                << " inputImageFile outputImageFile startX startY sizeX sizeY"
-                << std::endl;
-      return -1;
+    std::cerr << "Missing parameters. " << std::endl;
+    std::cerr << "Usage: " << std::endl;
+    std::cerr << argv[0]
+              << " inputImageFile outputImageFile startX startY sizeX sizeY"
+              << std::endl;
+    return -1;
     }
 
   // Software Guide : BeginLatex
@@ -107,7 +108,6 @@ int main( int argc, char *argv[] )
   inputRegion.SetIndex( inputStart );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The destination region in the output image is defined using the input region
@@ -128,7 +128,6 @@ int main( int argc, char *argv[] )
   outputRegion.SetIndex( outputStart );
   // Software Guide : EndCodeSnippet
 
-
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   try
@@ -142,8 +141,8 @@ int main( int argc, char *argv[] )
     return -1;
     }
 
-    // Check that the region is contained within the input image.
-  if ( ! reader->GetOutput()->GetRequestedRegion().IsInside( inputRegion ) )
+  // Check that the region is contained within the input image.
+  if ( !reader->GetOutput()->GetRequestedRegion().IsInside( inputRegion ) )
     {
     std::cerr << "Error" << std::endl;
     std::cerr << "The region " << inputRegion << "is not contained within the input image region "
@@ -169,8 +168,8 @@ int main( int argc, char *argv[] )
   ImageType::Pointer outputImage = ImageType::New();
   outputImage->SetRegions( outputRegion );
   const ImageType::SpacingType& spacing = reader->GetOutput()->GetSpacing();
-  const ImageType::PointType& inputOrigin = reader->GetOutput()->GetOrigin();
-  double   outputOrigin[ Dimension ];
+  const ImageType::PointType&   inputOrigin = reader->GetOutput()->GetOrigin();
+  double                        outputOrigin[ Dimension ];
 
   for(unsigned int i=0; i< Dimension; i++)
     {
@@ -181,7 +180,6 @@ int main( int argc, char *argv[] )
   outputImage->SetOrigin(  outputOrigin );
   outputImage->Allocate();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -209,7 +207,6 @@ int main( int argc, char *argv[] )
     ++outputIt;
     }
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //

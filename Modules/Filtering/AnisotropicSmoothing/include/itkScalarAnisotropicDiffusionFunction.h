@@ -38,7 +38,7 @@ namespace itk
  * \ingroup ITKAnisotropicSmoothing
  */
 template< typename TImage >
-class ScalarAnisotropicDiffusionFunction:
+class ScalarAnisotropicDiffusionFunction :
   public AnisotropicDiffusionFunction< TImage >
 {
 public:
@@ -73,6 +73,7 @@ protected:
 private:
   ScalarAnisotropicDiffusionFunction(const Self &); //purposely not implemented
   void operator=(const Self &);                     //purposely not implemented
+
 };
 } // end namespace itk
 

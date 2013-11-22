@@ -34,9 +34,10 @@ namespace itk
  */
 
 template< typename TRegion, typename TLine >
-bool NeedToDoFace(const TRegion AllImage,
-                  const TRegion face,
-                  const TLine line)
+bool
+NeedToDoFace(const TRegion AllImage,
+             const TRegion face,
+             const TLine line)
 {
   // can't use the continuous IsInside (even if I could get it to
   // work) because on the edge doesn't count as inside for this test
@@ -76,13 +77,14 @@ bool NeedToDoFace(const TRegion AllImage,
 }
 
 template< typename TImage, typename TBres, typename TLine >
-int ComputeStartEnd(const typename TImage::IndexType StartIndex,
-                    const TLine line,
-                    const float tol,
-                    const typename TBres::OffsetArray LineOffsets,
-                    const typename TImage::RegionType AllImage,
-                    unsigned & start,
-                    unsigned & end)
+int
+ComputeStartEnd(const typename TImage::IndexType StartIndex,
+                const TLine line,
+                const float tol,
+                const typename TBres::OffsetArray LineOffsets,
+                const typename TImage::RegionType AllImage,
+                unsigned & start,
+                unsigned & end)
 {
   // compute intersection between ray and box
   typename TImage::IndexType ImStart = AllImage.GetIndex();
@@ -139,7 +141,7 @@ int ComputeStartEnd(const typename TImage::IndexType StartIndex,
   if ( Tfar < Tnear ) // seems to need some margin
     {
     // in theory, no intersection, but search between them
-    bool     intersection = false;
+    bool         intersection = false;
     unsigned int inside = 0; // initialize to avoid warning
     if ( Tnear - Tfar < 10 )
       {
@@ -239,12 +241,13 @@ int ComputeStartEnd(const typename TImage::IndexType StartIndex,
 }
 
 template< typename TImage, typename TBres >
-void CopyLineToImage(const typename TImage::Pointer output,
-                     const typename TImage::IndexType StartIndex,
-                     const typename TBres::OffsetArray LineOffsets,
-                     std::vector<typename TImage::PixelType> & outbuffer,
-                     const unsigned start,
-                     const unsigned end)
+void
+CopyLineToImage(const typename TImage::Pointer output,
+                const typename TImage::IndexType StartIndex,
+                const typename TBres::OffsetArray LineOffsets,
+                std::vector<typename TImage::PixelType> & outbuffer,
+                const unsigned start,
+                const unsigned end)
 {
   unsigned size = end - start + 1;
 
@@ -384,18 +387,20 @@ MakeEnlargedFace(const typename TInputImage::ConstPointer itkNotUsed(input),
 }
 
 template< typename TImage, typename TBres, typename TLine >
-int FillLineBuffer(typename TImage::ConstPointer input,
-                   const typename TImage::IndexType StartIndex,
-                   const TLine line,  // unit vector
-                   const float tol,
-                   const typename TBres::OffsetArray LineOffsets,
-                   const typename TImage::RegionType AllImage,
-                   std::vector<typename TImage::PixelType> & inbuffer,
-                   unsigned int & start,
-                   unsigned int & end)
+int
+FillLineBuffer(typename TImage::ConstPointer input,
+               const typename TImage::IndexType StartIndex,
+               const TLine line,      // unit vector
+               const float tol,
+               const typename TBres::OffsetArray LineOffsets,
+               const typename TImage::RegionType AllImage,
+               std::vector<typename TImage::PixelType> & inbuffer,
+               unsigned int & start,
+               unsigned int & end)
 {
   int status = ComputeStartEnd< TImage, TBres, TLine >(StartIndex, line, tol, LineOffsets, AllImage,
                                                        start, end);
+
   if ( !status ) { return ( status ); }
   unsigned size = end - start + 1;
   // compat
@@ -408,7 +413,8 @@ int FillLineBuffer(typename TImage::ConstPointer input,
 }
 
 template< typename TLine >
-unsigned int GetLinePixels(const TLine line)
+unsigned int
+GetLinePixels(const TLine line)
 {
   float N = line.GetNorm();
   float correction = 0.0;
@@ -422,6 +428,7 @@ unsigned int GetLinePixels(const TLine line)
   N *= correction;
   return (int)( N + 0.5 );
 }
+
 } // namespace itk
 
 #endif

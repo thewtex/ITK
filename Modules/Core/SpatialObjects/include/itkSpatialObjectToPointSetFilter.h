@@ -31,7 +31,7 @@ namespace itk
  * \ingroup ITKSpatialObjects
  */
 template< typename TInputSpatialObject, typename TOutputPointSet >
-class SpatialObjectToPointSetFilter:public MeshSource< TOutputPointSet >
+class SpatialObjectToPointSetFilter : public MeshSource< TOutputPointSet >
 {
 public:
   /** Standard class typedefs. */
@@ -91,7 +91,8 @@ protected:
   SpatialObjectToPointSetFilter();
   ~SpatialObjectToPointSetFilter();
 
-  virtual void GenerateOutputInformation(){}  // do nothing
+  virtual void
+  GenerateOutputInformation(){}               // do nothing
   virtual void GenerateData();
 
   unsigned int m_ChildrenDepth;

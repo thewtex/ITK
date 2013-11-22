@@ -48,7 +48,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class GrayscaleMorphologicalOpeningImageFilter:
+class GrayscaleMorphologicalOpeningImageFilter :
   public KernelImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -80,20 +80,20 @@ public:
   typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
 
   typedef FlatStructuringElement< itkGetStaticConstMacro(ImageDimension) >
-  FlatKernelType;
+    FlatKernelType;
   typedef MovingHistogramDilateImageFilter< TInputImage, TOutputImage, TKernel >
-  HistogramDilateFilterType;
+    HistogramDilateFilterType;
   typedef MovingHistogramErodeImageFilter< TInputImage, TOutputImage, TKernel >
-  HistogramErodeFilterType;
+    HistogramErodeFilterType;
   typedef BasicErodeImageFilter< TInputImage, TInputImage, TKernel >
-  BasicErodeFilterType;
+    BasicErodeFilterType;
   typedef BasicDilateImageFilter< TInputImage, TOutputImage, TKernel >
-  BasicDilateFilterType;
+    BasicDilateFilterType;
   typedef AnchorOpenImageFilter< TInputImage, FlatKernelType > AnchorFilterType;
   typedef VanHerkGilWermanErodeImageFilter< TInputImage, FlatKernelType >
-  VanHerkGilWermanErodeFilterType;
+    VanHerkGilWermanErodeFilterType;
   typedef VanHerkGilWermanDilateImageFilter< TInputImage, FlatKernelType >
-  VanHerkGilWermanDilateFilterType;
+    VanHerkGilWermanDilateFilterType;
   typedef CastImageFilter< TInputImage, TOutputImage > SubtractFilterType;
 
   /** Kernel typedef. */

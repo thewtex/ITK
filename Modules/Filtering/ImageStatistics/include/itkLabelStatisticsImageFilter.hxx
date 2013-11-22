@@ -44,6 +44,7 @@ LabelStatisticsImageFilter< TInputImage, TLabelImage >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   if ( this->GetInput() )
     {
     InputImagePointer image =
@@ -67,6 +68,7 @@ LabelStatisticsImageFilter< TInputImage, TLabelImage >
 ::EnlargeOutputRequestedRegion(DataObject *data)
 {
   Superclass::EnlargeOutputRequestedRegion(data);
+
   data->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -202,7 +204,7 @@ LabelStatisticsImageFilter< TInputImage, TLabelImage >
     {
     // mean
     ( *mapIt ).second.m_Mean = ( *mapIt ).second.m_Sum
-                               / static_cast< RealType >( ( *mapIt ).second.m_Count );
+      / static_cast< RealType >( ( *mapIt ).second.m_Count );
 
     // variance
     if ( ( *mapIt ).second.m_Count > 1 )
@@ -226,10 +228,10 @@ LabelStatisticsImageFilter< TInputImage, TLabelImage >
     {
     //Now update the cached vector of valid labels.
     m_ValidLabelValues.resize(0);
-    m_ValidLabelValues.reserve(m_LabelStatistics.size());
+    m_ValidLabelValues.reserve(m_LabelStatistics.size() );
     for ( mapIt = m_LabelStatistics.begin();
-      mapIt != m_LabelStatistics.end();
-      ++mapIt )
+          mapIt != m_LabelStatistics.end();
+          ++mapIt )
       {
       m_ValidLabelValues.push_back(mapIt->first);
       }
@@ -588,5 +590,6 @@ LabelStatisticsImageFilter< TImage, TLabelImage >
   os << indent << "Histogram Upper Bound: " << m_UpperBound
      << std::endl;
 }
+
 } // end namespace itk
 #endif

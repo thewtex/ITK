@@ -93,8 +93,8 @@ MinMaxCurvatureFlowFunction< TImage >
     for ( j = 0; j < ImageDimension; j++ )
       {
       length += static_cast< RadiusValueType >(
-        vnl_math_sqr( static_cast< IndexValueType >( counter[j] )
-                      - static_cast< IndexValueType >( m_StencilRadius ) ) );
+          vnl_math_sqr( static_cast< IndexValueType >( counter[j] )
+                        - static_cast< IndexValueType >( m_StencilRadius ) ) );
       }
     if ( length <= sqrRadius )
       {
@@ -184,7 +184,7 @@ MinMaxCurvatureFlowFunction< TImage >
     for ( j = 0; j <  ImageDimension; j++ )
       {
       IndexValueType diff = static_cast< IndexValueType >( counter[j] )
-                         - static_cast< IndexValueType >( m_StencilRadius );
+        - static_cast< IndexValueType >( m_StencilRadius );
 
       dotProduct += static_cast< PixelType >( diff ) * gradient[j];
       vectorMagnitude += static_cast< PixelType >( vnl_math_sqr(diff) );
@@ -265,7 +265,7 @@ MinMaxCurvatureFlowFunction< TImage >
   if ( gradMagnitude == 0.0 ) { return threshold; }
 
   gradMagnitude = vcl_sqrt( (double)gradMagnitude )
-                  / static_cast< PixelType >( m_StencilRadius );
+    / static_cast< PixelType >( m_StencilRadius );
 
   for ( j = 0; j < imageDimension; j++ )
     {
@@ -336,7 +336,7 @@ MinMaxCurvatureFlowFunction< TImage >
   if ( gradMagnitude == 0.0 ) { return threshold; }
 
   gradMagnitude = vcl_sqrt( (double)gradMagnitude )
-                  / static_cast< PixelType >( m_StencilRadius );
+    / static_cast< PixelType >( m_StencilRadius );
 
   for ( j = 0; j < imageDimension; j++ )
     {
@@ -420,7 +420,7 @@ MinMaxCurvatureFlowFunction< TImage >
                 const FloatOffsetType & offset)
 {
   PixelType update = this->Superclass::ComputeUpdate(
-    it, globalData, offset);
+      it, globalData, offset);
 
   if ( update == 0.0 )
     {
@@ -442,6 +442,7 @@ MinMaxCurvatureFlowFunction< TImage >
     return ( vnl_math_min(update, NumericTraits< PixelType >::Zero) );
     }
 }
+
 } // end namespace itk
 
 #endif

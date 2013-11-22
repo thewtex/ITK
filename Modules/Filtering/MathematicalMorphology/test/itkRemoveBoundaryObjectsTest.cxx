@@ -26,7 +26,8 @@
 #include "itkNotImageFilter.h"
 #include "itkRescaleIntensityImageFilter.h"
 
-int itkRemoveBoundaryObjectsTest( int argc, char * argv[] )
+int
+itkRemoveBoundaryObjectsTest( int argc, char * argv[] )
 {
   if( argc < 3 )
     {
@@ -36,32 +37,30 @@ int itkRemoveBoundaryObjectsTest( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   //
   //  The following code defines the input and output pixel types and their
   //  associated image types.
   //
   const unsigned int Dimension = 2;
 
-  typedef unsigned char   InputPixelType;
-  typedef unsigned char   OutputPixelType;
-  typedef unsigned char   WritePixelType;
+  typedef unsigned char InputPixelType;
+  typedef unsigned char OutputPixelType;
+  typedef unsigned char WritePixelType;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
-  typedef itk::Image< WritePixelType, Dimension >    WriteImageType;
-
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
+  typedef itk::Image< WritePixelType, Dimension >  WriteImageType;
 
   // readers/writers
   typedef itk::ImageFileReader< InputImageType  > ReaderType;
   typedef itk::ImageFileWriter< WriteImageType >  WriterType;
   typedef itk::RescaleIntensityImageFilter<OutputImageType, WriteImageType>
-                                                  RescaleType;
+    RescaleType;
 
   // define the fillhole filter
   typedef itk::GrayscaleFillholeImageFilter<
-                            InputImageType,
-                            OutputImageType >  FillholeFilterType;
+      InputImageType,
+      OutputImageType >  FillholeFilterType;
 
   // define the xor and not filters
   typedef itk::XorImageFilter<InputImageType, InputImageType, OutputImageType>
@@ -69,14 +68,13 @@ int itkRemoveBoundaryObjectsTest( int argc, char * argv[] )
   typedef itk::NotImageFilter<InputImageType, OutputImageType>
     NotFilterType;
 
-
   // Creation of Reader and Writer filters
-  ReaderType::Pointer reader = ReaderType::New();
-  WriterType::Pointer writer  = WriterType::New();
+  ReaderType::Pointer  reader = ReaderType::New();
+  WriterType::Pointer  writer  = WriterType::New();
   RescaleType::Pointer rescaler = RescaleType::New();
 
   // Create the filter
-  FillholeFilterType::Pointer  fillhole = FillholeFilterType::New();
+  FillholeFilterType::Pointer fillhole = FillholeFilterType::New();
 
   // Create the xor and not filter
   XorFilterType::Pointer xorfilter = XorFilterType::New();

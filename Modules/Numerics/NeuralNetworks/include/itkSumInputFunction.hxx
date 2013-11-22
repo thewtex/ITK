@@ -37,8 +37,7 @@ SumInputFunction<TMeasurementVector,ScalarType>
 template<typename TMeasurementVector, typename ScalarType>
 SumInputFunction<TMeasurementVector,ScalarType>
 ::~SumInputFunction()
-{
-}
+{}
 
 /** Set the size */
 template<typename TMeasurementVector, typename ScalarType>

@@ -45,9 +45,9 @@ template< typename TImage >
 const typename ChangeLabelLabelMapFilter< TImage >::ChangeMapType &
 ChangeLabelLabelMapFilter< TImage >
 ::GetChangeMap() const
-{
+  {
   return m_MapOfLabelToBeReplaced;
-}
+  }
 
 template< typename TImage >
 void
@@ -157,7 +157,7 @@ ChangeLabelLabelMapFilter< TImage >
         LabelObjectType *labelObjectDestination = output->GetLabelObject(newLabel);
 
         typename LabelObjectType::ConstLineIterator lit( labelObjectSource );
-        while ( ! lit.IsAtEnd() )
+        while ( !lit.IsAtEnd() )
           {
           labelObjectDestination->AddLine( lit.GetLine() );
           ++lit;
@@ -204,5 +204,6 @@ ChangeLabelLabelMapFilter< TImage >
     ++pairToReplace;
     }
 }
+
 } // end namespace itk
 #endif

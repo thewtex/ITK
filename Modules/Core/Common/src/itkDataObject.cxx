@@ -48,25 +48,25 @@ template class ITKCommon_EXPORT itk::SmartPointerForwardReference< itk::ProcessO
 namespace itk
 {
 // after use by filter
-bool DataObject:: m_GlobalReleaseDataFlag = false;
+bool DataObject::m_GlobalReleaseDataFlag = false;
 
 DataObjectError
-::DataObjectError():
+::DataObjectError() :
   ExceptionObject(), m_DataObject(0)
 {}
 
 DataObjectError
-::DataObjectError(const char *file, unsigned int lineNumber):
+::DataObjectError(const char *file, unsigned int lineNumber) :
   ExceptionObject(file, lineNumber), m_DataObject(0)
 {}
 
 DataObjectError
-::DataObjectError(const std::string & file, unsigned int lineNumber):
+::DataObjectError(const std::string & file, unsigned int lineNumber) :
   ExceptionObject(file, lineNumber), m_DataObject(0)
 {}
 
 DataObjectError
-::DataObjectError(const DataObjectError & orig):
+::DataObjectError(const DataObjectError & orig) :
   ExceptionObject(orig)
 {
   m_DataObject = orig.m_DataObject;
@@ -77,6 +77,7 @@ DataObjectError
 ::operator=(const DataObjectError & orig)
 {
   ExceptionObject::operator=(orig);
+
   m_DataObject = orig.m_DataObject;
   return *this;
 }
@@ -114,22 +115,22 @@ DataObjectError
 }
 
 InvalidRequestedRegionError
-::InvalidRequestedRegionError():
+::InvalidRequestedRegionError() :
   DataObjectError()
 {}
 
 InvalidRequestedRegionError
-::InvalidRequestedRegionError(const char *file, unsigned int lineNumber):
+::InvalidRequestedRegionError(const char *file, unsigned int lineNumber) :
   DataObjectError(file, lineNumber)
 {}
 
 InvalidRequestedRegionError
-::InvalidRequestedRegionError(const std::string & file, unsigned int lineNumber):
+::InvalidRequestedRegionError(const std::string & file, unsigned int lineNumber) :
   DataObjectError(file, lineNumber)
 {}
 
 InvalidRequestedRegionError
-::InvalidRequestedRegionError(const InvalidRequestedRegionError & orig):
+::InvalidRequestedRegionError(const InvalidRequestedRegionError & orig) :
   DataObjectError(orig)
 {}
 
@@ -138,6 +139,7 @@ InvalidRequestedRegionError
 ::operator=(const InvalidRequestedRegionError & orig)
 {
   DataObjectError::operator=(orig);
+
   return *this;
 }
 
@@ -149,7 +151,7 @@ InvalidRequestedRegionError
 }
 
 //----------------------------------------------------------------------------
-DataObject::DataObject():m_UpdateMTime()
+DataObject::DataObject() : m_UpdateMTime()
 {
   m_Source = 0;
   m_SourceOutputName = "";
@@ -307,7 +309,7 @@ DataObject::DataObjectPointerArraySizeType
 DataObject
 ::GetSourceOutputIndex() const
 {
-  if( ! m_Source )
+  if( !m_Source )
     {
     return 0;
     }

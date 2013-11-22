@@ -32,47 +32,46 @@
 
 #include "itkGaussianImageSource.h"
 
-  typedef double InputPixelType;
-  typedef double CoordValueType;
+typedef double InputPixelType;
+typedef double CoordValueType;
 
+// Setup for 2D Images
+enum { ImageDimension2D = 2 };
 
-  // Setup for 2D Images
-  enum { ImageDimension2D = 2 };
+typedef itk::Image< InputPixelType, ImageDimension2D > ImageType2D;
+typedef ImageType2D::Pointer                           ImageType2DPointer;
+typedef ImageType2D::SizeType                          ImageType2DSizeType;
+typedef itk::InterpolateImagePointsFilter<ImageType2D,ImageType2D,CoordValueType>
+  InterpolatorType2D;
 
-  typedef itk::Image< InputPixelType, ImageDimension2D > ImageType2D;
-  typedef ImageType2D::Pointer                           ImageType2DPointer;
-  typedef ImageType2D::SizeType                          ImageType2DSizeType;
-  typedef itk::InterpolateImagePointsFilter<ImageType2D,ImageType2D,CoordValueType>
-                                                          InterpolatorType2D;
+typedef itk::Image< CoordValueType, ImageDimension2D > CoordImageType2D;
+typedef CoordImageType2D::Pointer                      CoordImageType2DPointer;
+typedef CoordImageType2D::SizeType                     CoordImage2DSizeType;
 
-  typedef itk::Image< CoordValueType, ImageDimension2D > CoordImageType2D;
-  typedef CoordImageType2D::Pointer                      CoordImageType2DPointer;
-  typedef CoordImageType2D::SizeType                     CoordImage2DSizeType;
+void set2DInterpolateImagePointsFilterData(ImageType2D::Pointer);
 
-  void set2DInterpolateImagePointsFilterData(ImageType2D::Pointer);
+//Setup for 3D Images
+enum { ImageDimension3D = 3 };
 
-  //Setup for 3D Images
-  enum { ImageDimension3D = 3 };
+typedef itk::Image< InputPixelType, ImageDimension3D > ImageType3D;
+typedef ImageType3D::Pointer                           ImageTypePtr3D;
+typedef ImageType3D::SizeType                          SizeType3D;
+typedef ImageType3D::IndexType                         IndexType3D;
+typedef itk::InterpolateImagePointsFilter<ImageType3D,ImageType3D,CoordValueType>
+  InterpolatorType3D;
 
-  typedef itk::Image< InputPixelType, ImageDimension3D > ImageType3D;
-  typedef ImageType3D::Pointer                           ImageTypePtr3D;
-  typedef ImageType3D::SizeType                          SizeType3D;
-  typedef ImageType3D::IndexType                         IndexType3D;
-  typedef itk::InterpolateImagePointsFilter<ImageType3D,ImageType3D,CoordValueType>
-                                                          InterpolatorType3D;
+typedef itk::Image< CoordValueType, ImageDimension3D > CoordImageType3D;
+typedef CoordImageType3D::Pointer                      CoordImageType3DPointer;
+typedef CoordImageType3D::SizeType                     CoordSizeType3D;
+typedef CoordImageType3D::IndexType                    CoordIndexType3D;
 
-  typedef itk::Image< CoordValueType, ImageDimension3D > CoordImageType3D;
-  typedef CoordImageType3D::Pointer                      CoordImageType3DPointer;
-  typedef CoordImageType3D::SizeType                     CoordSizeType3D;
-  typedef CoordImageType3D::IndexType                    CoordIndexType3D;
-
-  ImageTypePtr3D set3DData();
-
+ImageTypePtr3D set3DData();
 
 /*** test2DInterpolateImagePointsFilter() Tests InterpolateImagePointsFilter for
    * expected results at a handful of index locations.
    */
-int test2DInterpolateImagePointsFilter()
+int
+test2DInterpolateImagePointsFilter()
 {
   int flag = 0;
 
@@ -80,6 +79,7 @@ int test2DInterpolateImagePointsFilter()
 
   // Initialize input image
   ImageType2DPointer image = ImageType2D::New();
+
   set2DInterpolateImagePointsFilterData(image);
   // Using Index Coordinates so setting of origin and spacing should
   // not change results.
@@ -89,19 +89,18 @@ int test2DInterpolateImagePointsFilter()
   image->SetSpacing(spacing);
 
   // Initialize the sample data
-  const int NPOINTS2 = 4;  // number of points
-  const double DEFAULTPIXELVALUE =   1.23;  // arb value to test setting
+  const int    NPOINTS2 = 4;               // number of points
+  const double DEFAULTPIXELVALUE =   1.23; // arb value to test setting
 
   double xcoord[NPOINTS2] = { 0.1, 3.4, 4.0, 2.0};
   double ycoord[NPOINTS2] = { 0.2, 5.8, 6.0, 7.0};
   double truth[NPOINTS2] = {151.650316034, 22.411473093, 36.2, DEFAULTPIXELVALUE};
 
-
   // Place Continuous Index Coordinates into an image data structure
   CoordImageType2DPointer index1 = CoordImageType2D::New();
   CoordImageType2DPointer index2 = CoordImageType2D::New();
 
-  CoordImage2DSizeType size = {{2,2}};
+  CoordImage2DSizeType         size = {{2,2}};
   CoordImageType2D::RegionType region;
   region.SetSize( size );
 
@@ -116,7 +115,7 @@ int test2DInterpolateImagePointsFilter()
   index2->Allocate();
 
   // Setup copy iterators
-  typedef itk::ImageRegionIterator<CoordImageType2D>  InputIterator;
+  typedef itk::ImageRegionIterator<CoordImageType2D> InputIterator;
   InputIterator inIter1( index1, region );
   InputIterator inIter2( index2, region );
 
@@ -131,10 +130,9 @@ int test2DInterpolateImagePointsFilter()
     ++j;
     }
 
-
   // Initialize InterpolateImagePointsFilter
   InterpolatorType2D::Pointer resamp = InterpolatorType2D::New();
-  unsigned int splineOrder = 3;
+  unsigned int                splineOrder = 3;
   resamp->GetInterpolator()->SetSplineOrder(splineOrder);
   resamp->SetInputImage(image);
   resamp->SetInterpolationCoordinate(index1, 0);
@@ -147,7 +145,7 @@ int test2DInterpolateImagePointsFilter()
   ImageType2DPointer outputImage;
   outputImage = resamp->GetOutput();
   InputIterator outIter(outputImage,region);
-  int i = 0;
+  int           i = 0;
   while ( !outIter.IsAtEnd() )
     {
     double value = outIter.Get();
@@ -159,9 +157,9 @@ int test2DInterpolateImagePointsFilter()
       flag += 1;
       }
     else
-    {
-    std::cout << "*** test2DInterpolateImagePointsFilter() Passed.\n" << std::endl;
-    }
+      {
+      std::cout << "*** test2DInterpolateImagePointsFilter() Passed.\n" << std::endl;
+      }
     ++outIter;
     ++i;
     }
@@ -169,7 +167,8 @@ int test2DInterpolateImagePointsFilter()
   return (flag);
 }
 
-int test3DInterpolateImagePointsFilter()
+int
+test3DInterpolateImagePointsFilter()
 {
   int flag = 0;
 
@@ -180,14 +179,14 @@ int test3DInterpolateImagePointsFilter()
 
   // Initialize InterpolateImagePointsFilter and set input image
   InterpolatorType3D::Pointer resamp = InterpolatorType3D::New();
-  unsigned int splineOrder = 3;
+  unsigned int                splineOrder = 3;
+
   resamp->GetInterpolator()->SetSplineOrder(splineOrder);
   resamp->SetInputImage(image);
 
-
   // Generate Coordinates at original index locations
-  SizeType3D size = image->GetLargestPossibleRegion().GetSize();
-  CoordImageType3DPointer coord[ImageDimension3D]; // = CoordImageType2D::New();
+  SizeType3D                   size = image->GetLargestPossibleRegion().GetSize();
+  CoordImageType3DPointer      coord[ImageDimension3D]; // = CoordImageType2D::New();
   CoordImageType3D::RegionType region;
   region.SetSize(size);
   for (int i = 0; i < ImageDimension3D; i++)
@@ -200,31 +199,30 @@ int test3DInterpolateImagePointsFilter()
     }
 
   CoordIndexType3D index;
-    for (unsigned int i0 = 0; i0 < size[0]; i0++)
+  for (unsigned int i0 = 0; i0 < size[0]; i0++)
+    {
+    index[0] = i0;
+    for (unsigned int i1 = 0; i1 < size[1]; i1++)
       {
-      index[0] = i0;
-      for (unsigned int i1 = 0; i1 < size[1]; i1++)
+      index[1] = i1;
+      for (unsigned int i2 = 0; i2 < size[2]; i2++)
         {
-        index[1] = i1;
-        for (unsigned int i2 = 0; i2 < size[2]; i2++)
-          {
-          index[2] = i2;
-          (coord[0])->SetPixel(index, i0);
-          (coord[1])->SetPixel(index, i1);
-          (coord[2])->SetPixel(index, i2);
-          }
+        index[2] = i2;
+        (coord[0])->SetPixel(index, i0);
+        (coord[1])->SetPixel(index, i1);
+        (coord[2])->SetPixel(index, i2);
         }
       }
-    for (unsigned int i = 0; i < ImageDimension3D; i++)
-      {
-      resamp->SetInterpolationCoordinate(coord[i],i);
-      }
-
+    }
+  for (unsigned int i = 0; i < ImageDimension3D; i++)
+    {
+    resamp->SetInterpolationCoordinate(coord[i],i);
+    }
 
   resamp->Update();
   resamp->Print(std::cout);
 
-    // Get results and compare for accuracy
+  // Get results and compare for accuracy
   ImageTypePtr3D outputImage;
   outputImage = resamp->GetOutput();
 
@@ -232,9 +230,9 @@ int test3DInterpolateImagePointsFilter()
   // First set up iterators
   typedef itk::ImageRegionIterator<ImageType3D>      InputIterator;
   typedef itk::ImageRegionIterator<CoordImageType3D> OutputIterator;
-  InputIterator inIter(image,region);
+  InputIterator  inIter(image,region);
   OutputIterator outIter(outputImage,region);
-  double rmse;
+  double         rmse;
   rmse = 0.0;
   while ( !outIter.IsAtEnd() )
     {
@@ -270,37 +268,40 @@ itkInterpolateImagePointsFilterTest( int, char * [] )
   flag += test2DInterpolateImagePointsFilter();
   flag += test3DInterpolateImagePointsFilter();
 
-
   /* Return results of test */
   if (flag != 0) {
     std::cout << "\n*** " << flag << " tests failed" << std::endl;
 
-    return EXIT_FAILURE; }
+    return EXIT_FAILURE;
+    }
   else {
     std::cout << "\nAll tests successfully passed\n" << std::endl;
-    return EXIT_SUCCESS; }
+    return EXIT_SUCCESS;
+    }
 
 }
 
-void set2DInterpolateImagePointsFilterData(ImageType2D::Pointer imgPtr)
+void
+set2DInterpolateImagePointsFilterData(ImageType2D::Pointer imgPtr)
 {
   ImageType2DSizeType size = {{7,7}};
-  double mydata[ 49 ] = {  154.5000,   82.4000,   30.9000,         0,  -10.3000,         0,   30.9000 ,
-    117.0000,   62.4000,   23.4000,         0,   -7.8000,         0,   23.4000 ,
-   18.0000,    9.6000,    3.6000,         0,   -1.2000,         0,    3.6000 ,
- -120.0000,  -64.0000,  -24.0000,         0,    8.0000,         0,  -24.0000 ,
- -274.5000, -146.4000,  -54.9000,         0,   18.3000,         0,  -54.9000 ,
- -423.0000, -225.6000,  -84.6000,         0,   28.2000,         0,  -84.6000 ,
- -543.0000, -289.6000, -108.6000,         0,   36.2000,         0, -108.6000  };
+  double              mydata[ 49 ] = {  154.5000,   82.4000,   30.9000,         0,  -10.3000,         0,   30.9000 ,
+                                        117.0000,   62.4000,   23.4000,         0,   -7.8000,         0,   23.4000 ,
+                                        18.0000,    9.6000,    3.6000,         0,   -1.2000,         0,    3.6000 ,
+                                        -120.0000,  -64.0000,  -24.0000,         0,    8.0000,         0,  -24.0000 ,
+                                        -274.5000, -146.4000,  -54.9000,         0,   18.3000,         0,  -54.9000 ,
+                                        -423.0000, -225.6000,  -84.6000,         0,   28.2000,         0,  -84.6000 ,
+                                        -543.0000, -289.6000, -108.6000,         0,   36.2000,         0, -108.6000  };
 
   ImageType2D::RegionType region;
+
   region.SetSize( size );
 
   imgPtr->SetLargestPossibleRegion( region );
   imgPtr->SetBufferedRegion( region );
   imgPtr->Allocate();
 
-  typedef itk::ImageRegionIterator<ImageType2D>  InputIterator;
+  typedef itk::ImageRegionIterator<ImageType2D> InputIterator;
 
   InputIterator inIter( imgPtr, region );
 
@@ -312,11 +313,10 @@ void set2DInterpolateImagePointsFilterData(ImageType2D::Pointer imgPtr)
     ++j;
     }
 
-
 }
 
-
-ImageTypePtr3D set3DData()
+ImageTypePtr3D
+set3DData()
 {
 
   // Create a gaussian image source
@@ -324,7 +324,7 @@ ImageTypePtr3D set3DData()
   GaussianSourceType::Pointer pSource = GaussianSourceType::New();
 
   ImageType3D::SpacingValueType spacing[] = { 1.2f, 1.3f, 1.4f };
-  ImageType3D::PointValueType origin[] = { 1.0f, 4.0f, 2.0f };
+  ImageType3D::PointValueType   origin[] = { 1.0f, 4.0f, 2.0f };
   ImageType3D::SizeValueType    size[]  = { 65, 75, 60};
 
   GaussianSourceType::ArrayType mean;
@@ -349,6 +349,5 @@ ImageTypePtr3D set3DData()
   // Run the pipeline
   pSource->Update();
   return (pImage);
-
 
 }

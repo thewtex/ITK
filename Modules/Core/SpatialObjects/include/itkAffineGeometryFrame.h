@@ -30,7 +30,7 @@ namespace itk
  * \ingroup ITKSpatialObjects
  */
 template< typename TScalar = double, unsigned int NDimensions = 3 >
-class AffineGeometryFrame:public Object
+class AffineGeometryFrame : public Object
 {
 public:
   typedef AffineGeometryFrame        Self;
@@ -52,7 +52,8 @@ public:
   /** Get the bounding box */
   itkGetModifiableObjectMacro(BoundingBox, BoundingBoxType);
 
-  const BoundsArrayType GetBounds() const
+  const BoundsArrayType
+  GetBounds() const
   {
     itkAssertInDebugAndIgnoreInReleaseMacro( m_BoundingBox.IsNotNull() );
     return m_BoundingBox->GetBounds();
@@ -64,7 +65,8 @@ public:
   virtual void SetBounds(const BoundsArrayType & bounds);
 
   /** Get the extent of the bounding box */
-  TScalar GetExtent(unsigned int direction) const
+  TScalar
+  GetExtent(unsigned int direction) const
   {
     itkAssertInDebugAndIgnoreInReleaseMacro(direction < NDimensions);
     itkAssertInDebugAndIgnoreInReleaseMacro( m_BoundingBox.IsNotNull() );
@@ -97,7 +99,8 @@ public:
 protected:
 
   AffineGeometryFrame();
-  virtual ~AffineGeometryFrame();
+  virtual
+  ~AffineGeometryFrame();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** used in clone to initialize the newly created geometry */
@@ -117,6 +120,7 @@ protected:
 private:
   AffineGeometryFrame(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
+
 };
 } // namespace itk
 

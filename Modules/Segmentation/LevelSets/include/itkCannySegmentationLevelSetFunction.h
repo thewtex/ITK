@@ -32,7 +32,7 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TImageType, typename TFeatureImageType = TImageType >
-class CannySegmentationLevelSetFunction:
+class CannySegmentationLevelSetFunction :
   public SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 {
 public:
@@ -61,16 +61,30 @@ public:
                       Superclass::ImageDimension);
 
   /** */
-  void SetThreshold(ScalarValueType v)
-  { m_Threshold = v; }
-  ScalarValueType GetThreshold() const
-  { return m_Threshold; }
+  void
+  SetThreshold(ScalarValueType v)
+  {
+    m_Threshold = v;
+  }
+
+  ScalarValueType
+  GetThreshold() const
+  {
+    return m_Threshold;
+  }
 
   /** */
-  void SetVariance(double v)
-  { m_Variance = v; }
-  double GetVariance() const
-  { return m_Variance; }
+  void
+  SetVariance(double v)
+  {
+    m_Variance = v;
+  }
+
+  double
+  GetVariance() const
+  {
+    return m_Variance;
+  }
 
   /** Compute the Speed Image. The Speed Image is the distance to the
       canny edges. */
@@ -84,7 +98,8 @@ public:
    * edges. */
   virtual void CalculateDistanceImage();
 
-  virtual void Initialize(const RadiusType & r)
+  virtual void
+  Initialize(const RadiusType & r)
   {
     Superclass::Initialize(r);
 
@@ -93,8 +108,11 @@ public:
     this->SetCurvatureWeight(NumericTraits< ScalarValueType >::One);
   }
 
-  ImageType * GetCannyImage()
-  { return m_Canny->GetOutput(); }
+  ImageType *
+  GetCannyImage()
+  {
+    return m_Canny->GetOutput();
+  }
 
 protected:
   CannySegmentationLevelSetFunction()
@@ -106,7 +124,8 @@ protected:
     m_Distance = DanielssonDistanceMapImageFilter< ImageType, ImageType >::New();
   }
 
-  virtual ~CannySegmentationLevelSetFunction() {}
+  virtual
+  ~CannySegmentationLevelSetFunction() {}
 
   CannySegmentationLevelSetFunction(const Self &); //purposely not implemented
   void operator=(const Self &);                    //purposely not implemented
@@ -125,20 +144,24 @@ private:
    *  use the CastImageFilter to match them.
    */
   template <typename DummyImagePointerType>
-  void AssignCannyInput(typename FeatureImageType::Pointer &feature,
-                        DummyImagePointerType &)
+  void
+  AssignCannyInput(typename FeatureImageType::Pointer &feature,
+                   DummyImagePointerType &)
   {
     m_Caster->SetInput(feature);
     m_Canny->SetInput( m_Caster->GetOutput() );
   }
+
   /** If FeatureImageType == ImageType,
    *  assign directly to the Canny filter
    */
-  void AssignCannyInput(typename FeatureImageType::Pointer &feature,
-                        typename FeatureImageType::Pointer &)
+  void
+  AssignCannyInput(typename FeatureImageType::Pointer &feature,
+                   typename FeatureImageType::Pointer &)
   {
     m_Canny->SetInput(feature);
   }
+
 };
 } // end namespace itk
 

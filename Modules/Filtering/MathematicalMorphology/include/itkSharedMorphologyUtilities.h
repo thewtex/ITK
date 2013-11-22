@@ -44,7 +44,7 @@ int FillLineBuffer(typename TImage::ConstPointer input,
                    const float tol,
                    const typename TBres::OffsetArray LineOffsets,
                    const typename TImage::RegionType AllImage,
-                   std::vector<typename TImage::PixelType> & inbuffer,
+                   std::vector<typename TImage::PixelType> &inbuffer,
                    unsigned int &start,
                    unsigned int &end);
 

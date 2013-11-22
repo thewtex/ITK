@@ -102,15 +102,15 @@ namespace Statistics
  */
 
 template<typename TImageType, typename THistogramFrequencyContainer =
-  DenseFrequencyContainer2>
+           DenseFrequencyContainer2>
 class ScalarImageToRunLengthMatrixFilter : public ProcessObject
 {
 public:
   /** Standard typedefs */
-  typedef ScalarImageToRunLengthMatrixFilter  Self;
-  typedef ProcessObject                       Superclass;
-  typedef SmartPointer<Self>                  Pointer;
-  typedef SmartPointer<const Self>            ConstPointer;
+  typedef ScalarImageToRunLengthMatrixFilter Self;
+  typedef ProcessObject                      Superclass;
+  typedef SmartPointer<Self>                 Pointer;
+  typedef SmartPointer<const Self>           ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( ScalarImageToRunLengthMatrixFilter, ProcessObject );
@@ -118,30 +118,30 @@ public:
   /** standard New() method support */
   itkNewMacro( Self );
 
-  typedef TImageType                                      ImageType;
-  typedef typename ImageType::Pointer                     ImagePointer;
-  typedef typename ImageType::ConstPointer                ImageConstPointer;
-  typedef typename ImageType::PixelType                   PixelType;
-  typedef typename ImageType::IndexType                   IndexType;
-  typedef typename ImageType::RegionType                  RegionType;
-  typedef typename ImageType::SizeType                    RadiusType;
-  typedef typename ImageType::OffsetType                  OffsetType;
-  typedef VectorContainer<unsigned char, OffsetType>      OffsetVector;
-  typedef typename OffsetVector::Pointer                  OffsetVectorPointer;
-  typedef typename ImageType::PointType                   PointType;
+  typedef TImageType                                 ImageType;
+  typedef typename ImageType::Pointer                ImagePointer;
+  typedef typename ImageType::ConstPointer           ImageConstPointer;
+  typedef typename ImageType::PixelType              PixelType;
+  typedef typename ImageType::IndexType              IndexType;
+  typedef typename ImageType::RegionType             RegionType;
+  typedef typename ImageType::SizeType               RadiusType;
+  typedef typename ImageType::OffsetType             OffsetType;
+  typedef VectorContainer<unsigned char, OffsetType> OffsetVector;
+  typedef typename OffsetVector::Pointer             OffsetVectorPointer;
+  typedef typename ImageType::PointType              PointType;
 
-  typedef typename NumericTraits<PixelType>::RealType     MeasurementType;
-  typedef typename NumericTraits<PixelType>::RealType     RealType;
+  typedef typename NumericTraits<PixelType>::RealType MeasurementType;
+  typedef typename NumericTraits<PixelType>::RealType RealType;
 
   typedef Histogram<MeasurementType, THistogramFrequencyContainer>
-                                                          HistogramType;
-  typedef typename HistogramType::Pointer                 HistogramPointer;
-  typedef typename HistogramType::ConstPointer            HistogramConstPointer;
-  typedef typename HistogramType::MeasurementVectorType   MeasurementVectorType;
+    HistogramType;
+  typedef typename HistogramType::Pointer               HistogramPointer;
+  typedef typename HistogramType::ConstPointer          HistogramConstPointer;
+  typedef typename HistogramType::MeasurementVectorType MeasurementVectorType;
 
   /** ImageDimension constants */
   itkStaticConstMacro( ImageDimension, unsigned int,
-    TImageType::ImageDimension );
+                       TImageType::ImageDimension );
 
   /** Specify the default number of bins per axis */
   itkStaticConstMacro( DefaultBinsPerAxis, unsigned int, 256 );
@@ -232,7 +232,8 @@ public:
 
 protected:
   ScalarImageToRunLengthMatrixFilter();
-  virtual ~ScalarImageToRunLengthMatrixFilter() {};
+  virtual
+  ~ScalarImageToRunLengthMatrixFilter() {}
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /** Standard itk::ProcessObject subclass method. */
@@ -256,16 +257,16 @@ protected:
 
 private:
 
-  unsigned int             m_NumberOfBinsPerAxis;
-  PixelType                m_Min;
-  PixelType                m_Max;
-  RealType                 m_MinDistance;
-  RealType                 m_MaxDistance;
-  PixelType                m_InsidePixelValue;
+  unsigned int m_NumberOfBinsPerAxis;
+  PixelType    m_Min;
+  PixelType    m_Max;
+  RealType     m_MinDistance;
+  RealType     m_MaxDistance;
+  PixelType    m_InsidePixelValue;
 
-  MeasurementVectorType    m_LowerBound;
-  MeasurementVectorType    m_UpperBound;
-  OffsetVectorPointer      m_Offsets;
+  MeasurementVectorType m_LowerBound;
+  MeasurementVectorType m_UpperBound;
+  OffsetVectorPointer   m_Offsets;
 
 };
 } // end of namespace Statistics

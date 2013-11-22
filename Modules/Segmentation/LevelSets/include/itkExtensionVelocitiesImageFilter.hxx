@@ -71,15 +71,15 @@ const typename ExtensionVelocitiesImageFilter< TLevelSet, TAuxValue, VAuxDimensi
 ::AuxImageType *
 ExtensionVelocitiesImageFilter< TLevelSet, TAuxValue, VAuxDimension >
 ::GetInputVelocityImage(unsigned int idx)
-{
+  {
   if ( idx >= VAuxDimension || this->GetNumberOfIndexedInputs() < idx + 2 )
     {
     return NULL;
     }
 
   return dynamic_cast< AuxImageType * >(
-           this->ProcessObject::GetInput(idx + 1) );
-}
+    this->ProcessObject::GetInput(idx + 1) );
+  }
 
 /**
  *
@@ -89,14 +89,14 @@ typename ExtensionVelocitiesImageFilter< TLevelSet, TAuxValue, VAuxDimension >
 ::AuxImageType *
 ExtensionVelocitiesImageFilter< TLevelSet, TAuxValue, VAuxDimension >
 ::GetOutputVelocityImage(unsigned int idx)
-{
+  {
   if ( idx >= VAuxDimension || this->GetNumberOfIndexedOutputs() < idx + 2 )
     {
     return NULL;
     }
 
   return itkDynamicCastInDebugMode< AuxImageType * >(this->ProcessObject::GetOutput(idx + 1) );
-}
+  }
 
 /**
  *
@@ -167,7 +167,7 @@ ExtensionVelocitiesImageFilter< TLevelSet, TAuxValue, VAuxDimension >
   IteratorType tempIt;
 
   typedef
-  ImageRegionIterator< AuxImageType > AuxIteratorType;
+    ImageRegionIterator< AuxImageType > AuxIteratorType;
 
   AuxIteratorType auxTempIt[VAuxDimension];
   AuxIteratorType auxOutputIt[VAuxDimension];
@@ -344,7 +344,7 @@ ExtensionVelocitiesImageFilter< TLevelSet, TAuxValue, VAuxDimension >
   zeroPixel = 0.0;
 
   typedef
-  ImageRegionIterator< AuxImageType > AuxIteratorType;
+    ImageRegionIterator< AuxImageType > AuxIteratorType;
 
   AuxIteratorType auxOutputIt[VAuxDimension];
 
@@ -474,6 +474,7 @@ ExtensionVelocitiesImageFilter< TLevelSet, TAuxValue, VAuxDimension >
       }
     }
 }
+
 } //namespace itk
 
 #endif

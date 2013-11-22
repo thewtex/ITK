@@ -65,7 +65,7 @@ namespace itk
  * \ingroup ITKPath
  */
 template< typename TImage, typename TPath >
-class PathIterator:public PathConstIterator< TImage, TPath >
+class PathIterator : public PathConstIterator< TImage, TPath >
 {
 public:
   /** Standard class typedefs. */
@@ -99,7 +99,8 @@ public:
   itkTypeMacro(PathIterator, PathConstIterator);
 
   /** Set the pixel value */
-  void Set(const PixelType & value)
+  void
+  Set(const PixelType & value)
   {
     // Normally, this would just be the following:
     //   m_Image->SetPixel(m_CurrentImageIndex,value);
@@ -112,7 +113,8 @@ public:
   /** Return a reference to the pixel
    * This method will provide the fastest access to pixel
    * data, but it will NOT support ImageAdaptors. */
-  PixelType & Value(void)
+  PixelType &
+  Value(void)
   {
     return this->GetImage()->GetPixel(this->m_ImageIndex);
   }
@@ -125,7 +127,8 @@ public:
   PathIterator(ImageType *imagePtr, const PathType  *pathPtr);
 
   /** Default Destructor. */
-  virtual ~PathIterator() {}
+  virtual
+  ~PathIterator() {}
 };
 } // end namespace itk
 

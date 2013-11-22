@@ -23,7 +23,8 @@
 #include "itkRobustAutomaticThresholdImageFilter.h"
 #include "itkGradientMagnitudeRecursiveGaussianImageFilter.h"
 
-int itkRobustAutomaticThresholdImageFilterTest(int argc, char * argv[])
+int
+itkRobustAutomaticThresholdImageFilterTest(int argc, char * argv[])
 {
 
   if( argc != 4 )

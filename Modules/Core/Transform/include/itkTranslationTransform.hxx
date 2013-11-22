@@ -44,8 +44,7 @@ TranslationTransform<TScalar, NDimensions>::TranslationTransform() : Superclass(
 template <typename TScalar, unsigned int NDimensions>
 TranslationTransform<TScalar, NDimensions>::
 ~TranslationTransform()
-{
-}
+{}
 
 // Set the parameters
 template <typename TScalar, unsigned int NDimensions>

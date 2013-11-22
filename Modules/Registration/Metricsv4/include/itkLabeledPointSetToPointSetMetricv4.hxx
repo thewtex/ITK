@@ -43,8 +43,7 @@ LabeledPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 template<typename TFixedPointSet, typename TMovingPointSet>
 LabeledPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 ::~LabeledPointSetToPointSetMetricv4()
-{
-}
+{}
 
 template<typename TFixedPointSet, typename TMovingPointSet>
 void
@@ -53,8 +52,10 @@ LabeledPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 {
   Superclass::Initialize();
 
-  if( !this->m_FixedPointSet->GetPointData() || this->m_FixedPointSet->GetPoints()->Size() != this->m_FixedPointSet->GetPointData()->Size() ||
-    !this->m_MovingPointSet->GetPointData() || this->m_MovingPointSet->GetPoints()->Size() != this->m_MovingPointSet->GetPointData()->Size() )
+  if( !this->m_FixedPointSet->GetPointData() || this->m_FixedPointSet->GetPoints()->Size() !=
+      this->m_FixedPointSet->GetPointData()->Size() ||
+      !this->m_MovingPointSet->GetPointData() || this->m_MovingPointSet->GetPoints()->Size() !=
+      this->m_MovingPointSet->GetPointData()->Size() )
     {
     itkExceptionMacro( "Each point of the point set must be associated with a label." );
     }
@@ -66,9 +67,10 @@ LabeledPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
   typename LabelSetType::const_iterator it;
   for( it = this->m_CommonPointSetLabels.begin(); it != this->m_CommonPointSetLabels.end(); ++it )
     {
-    typename PointSetMetricType::Pointer metricPtr = dynamic_cast<PointSetMetricType *>( this->m_PointSetMetric->Clone().GetPointer() );
+    typename PointSetMetricType::Pointer metricPtr =
+      dynamic_cast<PointSetMetricType *>( this->m_PointSetMetric->Clone().GetPointer() );
 
-    FixedPointSetPointer fixedPointSet = this->GetLabeledFixedPointSet( *it );
+    FixedPointSetPointer  fixedPointSet = this->GetLabeledFixedPointSet( *it );
     MovingPointSetPointer movingPointSet = this->GetLabeledMovingPointSet( *it );
 
     metricPtr->SetFixedPointSet( fixedPointSet );
@@ -85,7 +87,8 @@ typename LabeledPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 LabeledPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 ::GetLocalNeighborhoodValue( const PointType & point, const LabelType & label ) const
 {
-  typename LabelSetType::const_iterator labelIt = std::find( this->m_CommonPointSetLabels.begin(), this->m_CommonPointSetLabels.end(), label );
+  typename LabelSetType::const_iterator labelIt = std::find(
+      this->m_CommonPointSetLabels.begin(), this->m_CommonPointSetLabels.end(), label );
   if( labelIt == this->m_CommonPointSetLabels.end() )
     {
     itkExceptionMacro( "Label not found in common label set" );
@@ -93,7 +96,7 @@ LabeledPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
   else
     {
     unsigned int labelIndex = labelIt - this->m_CommonPointSetLabels.begin();
-    MeasureType value = this->m_PointSetMetricClones[labelIndex]->GetLocalNeighborhoodValue( point, label );
+    MeasureType  value = this->m_PointSetMetricClones[labelIndex]->GetLocalNeighborhoodValue( point, label );
     return value;
     }
 }
@@ -102,9 +105,11 @@ template<typename TFixedPointSet, typename TMovingPointSet>
 void
 LabeledPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 ::GetLocalNeighborhoodValueAndDerivative( const PointType & point,
-  MeasureType &measure, LocalDerivativeType & localDerivative, const LabelType & label ) const
+                                          MeasureType &measure, LocalDerivativeType & localDerivative,
+                                          const LabelType & label ) const
 {
-  typename LabelSetType::const_iterator labelIt = std::find( this->m_CommonPointSetLabels.begin(), this->m_CommonPointSetLabels.end(), label );
+  typename LabelSetType::const_iterator labelIt = std::find(
+      this->m_CommonPointSetLabels.begin(), this->m_CommonPointSetLabels.end(), label );
   if( labelIt == this->m_CommonPointSetLabels.end() )
     {
     itkExceptionMacro( "Label not found in common label set" );
@@ -112,7 +117,8 @@ LabeledPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
   else
     {
     unsigned int labelIndex = labelIt - this->m_CommonPointSetLabels.begin();
-    this->m_PointSetMetricClones[labelIndex]->GetLocalNeighborhoodValueAndDerivative( point, measure, localDerivative, label );
+    this->m_PointSetMetricClones[labelIndex]->GetLocalNeighborhoodValueAndDerivative( point, measure, localDerivative,
+                                                                                      label );
     }
 }
 
@@ -180,7 +186,8 @@ LabeledPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
     typename FixedPointSetType::PointDataContainerIterator It = this->m_FixedPointSet->GetPointData()->Begin();
     while( It != this->m_FixedPointSet->GetPointData()->End() )
       {
-      if( std::find( this->m_FixedPointSetLabels.begin(), this->m_FixedPointSetLabels.end(), It.Value() ) == this->m_FixedPointSetLabels.end() )
+      if( std::find( this->m_FixedPointSetLabels.begin(), this->m_FixedPointSetLabels.end(),
+                     It.Value() ) == this->m_FixedPointSetLabels.end() )
         {
         this->m_FixedPointSetLabels.push_back( It.Value() );
         }
@@ -194,7 +201,8 @@ LabeledPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
     typename MovingPointSetType::PointDataContainerIterator It = this->m_MovingPointSet->GetPointData()->Begin();
     while( It != this->m_MovingPointSet->GetPointData()->End() )
       {
-      if( std::find( this->m_MovingPointSetLabels.begin(), this->m_MovingPointSetLabels.end(), It.Value() ) == this->m_MovingPointSetLabels.end() )
+      if( std::find( this->m_MovingPointSetLabels.begin(), this->m_MovingPointSetLabels.end(),
+                     It.Value() ) == this->m_MovingPointSetLabels.end() )
         {
         this->m_MovingPointSetLabels.push_back( It.Value() );
         }
@@ -208,7 +216,8 @@ LabeledPointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
   typename LabelSetType::const_iterator itF;
   for( itF = this->m_FixedPointSetLabels.begin(); itF != this->m_FixedPointSetLabels.end(); ++itF )
     {
-    if( std::find( this->m_MovingPointSetLabels.begin(), this->m_MovingPointSetLabels.end(), *itF ) != this->m_MovingPointSetLabels.end() )
+    if( std::find( this->m_MovingPointSetLabels.begin(), this->m_MovingPointSetLabels.end(),
+                   *itF ) != this->m_MovingPointSetLabels.end() )
       {
       this->m_CommonPointSetLabels.push_back( *itF );
       }

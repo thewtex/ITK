@@ -89,16 +89,19 @@ namespace itk
   *
   * \ingroup ITKMetricsv4
   */
-template<unsigned int TFixedDimension, unsigned int TMovingDimension, typename TVirtualImage = Image<double, TFixedDimension>, class TInternalComputationValueType = double >
-class ObjectToObjectMultiMetricv4:
+template<unsigned int TFixedDimension, unsigned int TMovingDimension, typename TVirtualImage =
+           Image<double, TFixedDimension>, class TInternalComputationValueType = double >
+class ObjectToObjectMultiMetricv4 :
   public ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage, TInternalComputationValueType>
 {
 public:
   /** Standard class typedefs */
-  typedef ObjectToObjectMultiMetricv4                                                                      Self;
-  typedef ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage, TInternalComputationValueType>  Superclass;
-  typedef SmartPointer<Self>                                                                               Pointer;
-  typedef SmartPointer<const Self>                                                                         ConstPointer;
+  typedef ObjectToObjectMultiMetricv4 Self;
+  typedef ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage,
+                               TInternalComputationValueType> Superclass;
+  typedef SmartPointer<Self> Pointer;
+  typedef SmartPointer<const Self>
+    ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(ObjectToObjectMultiMetricv4, ObjectToObjectMetric);
@@ -118,14 +121,14 @@ public:
   typedef typename Superclass::FixedTransformType           FixedTransformType;
 
   /** typedefs related to the metric queue */
-  typedef Superclass                               MetricType;
-  typedef typename MetricType::Pointer             MetricBasePointer;
-  typedef typename MetricType::ConstPointer        MetricBaseConstPointer;
-  typedef std::deque<MetricBasePointer>            MetricQueueType;
+  typedef Superclass                        MetricType;
+  typedef typename MetricType::Pointer      MetricBasePointer;
+  typedef typename MetricType::ConstPointer MetricBaseConstPointer;
+  typedef std::deque<MetricBasePointer>     MetricQueueType;
 
-  typedef typename DerivativeType::ValueType       WeightValueType;
-  typedef Array<WeightValueType>                   WeightsArrayType;
-  typedef Array<MeasureType>                       MetricValueArrayType;
+  typedef typename DerivativeType::ValueType WeightValueType;
+  typedef Array<WeightValueType>             WeightsArrayType;
+  typedef Array<MeasureType>                 MetricValueArrayType;
 
   itkSetMacro(MetricWeights,WeightsArrayType);
   itkGetMacro(MetricWeights,WeightsArrayType);
@@ -179,7 +182,8 @@ public:
 protected:
 
   ObjectToObjectMultiMetricv4();
-  virtual ~ObjectToObjectMultiMetricv4();
+  virtual
+  ~ObjectToObjectMultiMetricv4();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
@@ -188,9 +192,9 @@ private:
   ObjectToObjectMultiMetricv4(const Self &);
   void operator=(const Self &);
 
-  MetricQueueType               m_MetricQueue;
-  WeightsArrayType              m_MetricWeights;
-  mutable MetricValueArrayType  m_MetricValueArray;
+  MetricQueueType              m_MetricQueue;
+  WeightsArrayType             m_MetricWeights;
+  mutable MetricValueArrayType m_MetricValueArray;
 };
 
 } //end namespace itk

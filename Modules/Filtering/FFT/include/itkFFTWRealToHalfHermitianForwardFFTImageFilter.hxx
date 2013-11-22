@@ -77,8 +77,8 @@ FFTWRealToHalfHermitianForwardFFTImageFilter< TInputImage, TOutputImage >
     }
 
   typename FFTWProxyType::PlanType plan;
-  InputPixelType * in = const_cast<InputPixelType*>(inputPtr->GetBufferPointer());
-  typename FFTWProxyType::ComplexType * out = (typename FFTWProxyType::ComplexType*) outputPtr->GetBufferPointer();
+  InputPixelType * in = const_cast<InputPixelType*>(inputPtr->GetBufferPointer() );
+  typename FFTWProxyType::ComplexType * out = (typename FFTWProxyType::ComplexType*)outputPtr->GetBufferPointer();
   int flags = m_PlanRigor;
   if( !m_CanUseDestructiveAlgorithm )
     {
@@ -94,7 +94,7 @@ FFTWRealToHalfHermitianForwardFFTImageFilter< TInputImage, TOutputImage >
     }
 
   plan = FFTWProxyType::Plan_dft_r2c(ImageDimension, sizes, in, out, flags,
-                                    this->GetNumberOfThreads());
+                                     this->GetNumberOfThreads() );
   delete[] sizes;
   FFTWProxyType::Execute(plan);
   FFTWProxyType::DestroyPlan(plan);
@@ -119,7 +119,8 @@ FFTWRealToHalfHermitianForwardFFTImageFilter< TInputImage, TOutputImage >
 {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "PlanRigor: " << FFTWGlobalConfiguration::GetPlanRigorName(m_PlanRigor) << " (" << m_PlanRigor << ")" << std::endl;
+  os << indent << "PlanRigor: " << FFTWGlobalConfiguration::GetPlanRigorName(m_PlanRigor) << " (" << m_PlanRigor <<
+    ")" << std::endl;
 }
 
 } // namespace itk

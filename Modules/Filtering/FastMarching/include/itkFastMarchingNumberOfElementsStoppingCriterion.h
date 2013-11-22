@@ -39,34 +39,36 @@ namespace itk
  */
 template< typename TInput, typename TOutput >
 class FastMarchingNumberOfElementsStoppingCriterion :
-public FastMarchingStoppingCriterionBase< TInput, TOutput >
+  public FastMarchingStoppingCriterionBase< TInput, TOutput >
 {
 public:
-  typedef FastMarchingNumberOfElementsStoppingCriterion         Self;
-  typedef FastMarchingStoppingCriterionBase< TInput, TOutput >  Superclass;
-  typedef SmartPointer< Self >                                  Pointer;
-  typedef SmartPointer< const Self >                            ConstPointer;
+  typedef FastMarchingNumberOfElementsStoppingCriterion        Self;
+  typedef FastMarchingStoppingCriterionBase< TInput, TOutput > Superclass;
+  typedef SmartPointer< Self >                                 Pointer;
+  typedef SmartPointer< const Self >                           ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(FastMarchingNumberOfElementsStoppingCriterion,
-                FastMarchingStoppingCriterionBase );
+               FastMarchingStoppingCriterionBase );
 
-  typedef typename Superclass::OutputPixelType  OutputPixelType;
-  typedef typename Superclass::NodeType         NodeType;
+  typedef typename Superclass::OutputPixelType OutputPixelType;
+  typedef typename Superclass::NodeType        NodeType;
 
   /** Get/set the threshold used by the stopping criteria. */
   itkSetMacro( TargetNumberOfElements, IdentifierType );
   itkGetMacro( TargetNumberOfElements, IdentifierType );
 
-  bool IsSatisfied() const
+  bool
+  IsSatisfied() const
   {
     return ( this->m_CurrentNumberOfElements >= this->m_TargetNumberOfElements );
   }
 
-  std::string GetDescription() const
+  std::string
+  GetDescription() const
   {
     return "Current Number of Elements >= Target Number of Elements";
   }
@@ -79,22 +81,25 @@ protected:
 
   ~FastMarchingNumberOfElementsStoppingCriterion() {}
 
-  IdentifierType  m_CurrentNumberOfElements;
-  IdentifierType  m_TargetNumberOfElements;
+  IdentifierType m_CurrentNumberOfElements;
+  IdentifierType m_TargetNumberOfElements;
 
-  void SetCurrentNode( const NodeType& )
+  void
+  SetCurrentNode( const NodeType& )
   {
     ++this->m_CurrentNumberOfElements;
   }
 
-  void Reset()
+  void
+  Reset()
   {
     this->m_CurrentNumberOfElements = NumericTraits< IdentifierType >::Zero;
   }
 
 private:
   FastMarchingNumberOfElementsStoppingCriterion( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
+
 };
 
 }

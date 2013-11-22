@@ -16,10 +16,10 @@
  *
  *=========================================================================*/
 
-
 #include "itkTransformFileWriter.h"
 
-int itkTransformFileWriterTest( int argc, char *argv[] )
+int
+itkTransformFileWriterTest( int argc, char *argv[] )
 {
   if( argc < 1 )
     {
@@ -28,15 +28,14 @@ int itkTransformFileWriterTest( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::TransformFileWriter        TransformWriterType;
-
+  typedef itk::TransformFileWriter TransformWriterType;
 
   TransformWriterType::Pointer transformWriter = TransformWriterType::New();
 
   std::cout << "Writer class = "
             << transformWriter->GetNameOfClass()
             << "Writer base = "
-            << dynamic_cast<TransformWriterType::Superclass *>(transformWriter.GetPointer())->GetNameOfClass()
+            << dynamic_cast<TransformWriterType::Superclass *>(transformWriter.GetPointer() )->GetNameOfClass()
             << std::endl;
 
   try
@@ -60,7 +59,6 @@ int itkTransformFileWriterTest( int argc, char *argv[] )
     std::cerr << "Expected exception (no transformio that can write file)"
               << excp << std::endl;
     }
-
 
   std::cout << "Test PASSED!" << std::endl;
 

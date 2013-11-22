@@ -49,14 +49,14 @@ class NthElementImageAdaptorHelper
 {
 public:
   typedef  NthElementPixelAccessor<
-    TOutputPixelType,
-    typename TImage::PixelType > PixelAccessor;
+      TOutputPixelType,
+      typename TImage::PixelType > PixelAccessor;
 
   typedef  ImageAdaptor< TImage, PixelAccessor > Super;
 };
 
 template< typename TImage, typename TOutputPixelType >
-class NthElementImageAdaptor:
+class NthElementImageAdaptor :
   public NthElementImageAdaptorHelper< TImage, TOutputPixelType >::Super
 {
 public:
@@ -73,7 +73,8 @@ public:
   itkNewMacro(Self);
 
   /** Select the element number to be accessed */
-  void SelectNthElement(unsigned int nth)
+  void
+  SelectNthElement(unsigned int nth)
   {
     this->GetPixelAccessor().SetElementNumber(nth);
     this->Modified();
@@ -81,11 +82,13 @@ public:
 
 protected:
   NthElementImageAdaptor() {}
-  virtual ~NthElementImageAdaptor() {}
+  virtual
+  ~NthElementImageAdaptor() {}
 
 private:
   NthElementImageAdaptor(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
+
 };
 } // end namespace itk
 

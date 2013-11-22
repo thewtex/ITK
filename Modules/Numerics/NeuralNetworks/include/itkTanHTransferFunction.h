@@ -47,7 +47,6 @@ public:
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
-
   /** Evaluate at the specified input position */
   virtual ScalarType Evaluate(const ScalarType& input) const;
 
@@ -57,7 +56,8 @@ public:
 protected:
 
   TanHTransferFunction();
-  virtual ~TanHTransferFunction();
+  virtual
+  ~TanHTransferFunction();
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
@@ -68,7 +68,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkTanHTransferFunction.hxx"
+#include "itkTanHTransferFunction.hxx"
 #endif
 
 #endif

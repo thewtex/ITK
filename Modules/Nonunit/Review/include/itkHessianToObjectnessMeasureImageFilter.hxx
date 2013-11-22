@@ -68,7 +68,8 @@ HessianToObjectnessMeasureImageFilter< TInputImage, TOutputImage >
   typename InputImageType::ConstPointer input = this->GetInput();
 
   // support progress methods/callbacks
-  ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels(), 1000 / this->GetNumberOfThreads() );
+  ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels(),
+                             1000 / this->GetNumberOfThreads() );
 
   // calculator for computation of the eigen values
   typedef SymmetricEigenAnalysis< InputPixelType, EigenValueArrayType > CalculatorType;
@@ -203,6 +204,7 @@ HessianToObjectnessMeasureImageFilter< TInputImage, TOutputImage >
   os << indent << "ObjectDimension: " << m_ObjectDimension << std::endl;
   os << indent << "BrightObject: " << m_BrightObject << std::endl;
 }
+
 } // end namespace itk
 
 #endif

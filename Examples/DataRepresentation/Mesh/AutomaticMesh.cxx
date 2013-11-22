@@ -77,15 +77,15 @@ main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef float                             PixelType;
-  typedef itk::Mesh< PixelType, 3 >         MeshType;
+  typedef float                     PixelType;
+  typedef itk::Mesh< PixelType, 3 > MeshType;
 
-  typedef MeshType::PointType               PointType;
-  typedef MeshType::CellType                CellType;
+  typedef MeshType::PointType PointType;
+  typedef MeshType::CellType  CellType;
 
-  typedef itk::AutomaticTopologyMeshSource< MeshType >   MeshSourceType;
-  typedef MeshSourceType::IdentifierType                 IdentifierType;
-  typedef MeshSourceType::IdentifierArrayType            IdentifierArrayType;
+  typedef itk::AutomaticTopologyMeshSource< MeshType > MeshSourceType;
+  typedef MeshSourceType::IdentifierType               IdentifierType;
+  typedef MeshSourceType::IdentifierArrayType          IdentifierArrayType;
 
   MeshSourceType::Pointer meshSource;
 
@@ -107,7 +107,7 @@ main(int, char *[])
     meshSource->AddPoint(  1,  1, -1 ),
     meshSource->AddPoint(  1, -1,  1 ),
     meshSource->AddPoint( -1,  1,  1 )
-  );
+    );
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -146,7 +146,7 @@ main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  PointType p;
+  PointType           p;
   IdentifierArrayType idArray( 4 );
 
   p[ 0 ] = -2;

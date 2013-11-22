@@ -91,7 +91,7 @@ namespace Statistics
 
 template< typename TImageType,
           typename THistogramFrequencyContainer = DenseFrequencyContainer2 >
-class ScalarImageToCooccurrenceMatrixFilter:public ProcessObject
+class ScalarImageToCooccurrenceMatrixFilter : public ProcessObject
 {
 public:
   /** Standard typedefs */
@@ -171,7 +171,8 @@ public:
 
 protected:
   ScalarImageToCooccurrenceMatrixFilter();
-  virtual ~ScalarImageToCooccurrenceMatrixFilter() {}
+  virtual
+  ~ScalarImageToCooccurrenceMatrixFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void FillHistogram(RadiusType radius, RegionType region);

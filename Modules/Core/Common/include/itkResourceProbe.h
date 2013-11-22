@@ -42,7 +42,7 @@ public:
 
   /** Type for counting how many times the probe has been started and stopped.
     */
-  typedef  SizeValueType  CountType;
+  typedef  SizeValueType CountType;
 
 public:
 
@@ -50,7 +50,8 @@ public:
   ResourceProbe(const std::string & type, const std::string & unit);
 
   /** Destructor */
-  virtual ~ResourceProbe();
+  virtual
+  ~ResourceProbe();
 
   /** Returns the type probed value */
   std::string GetType(void) const;

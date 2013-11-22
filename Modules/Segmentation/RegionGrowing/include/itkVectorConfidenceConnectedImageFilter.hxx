@@ -101,6 +101,7 @@ VectorConfidenceConnectedImageFilter< TInputImage, TOutputImage >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   if ( this->GetInput() )
     {
     InputImagePointer input =
@@ -109,13 +110,13 @@ VectorConfidenceConnectedImageFilter< TInputImage, TOutputImage >
     }
 }
 
-
 template< typename TInputImage, typename TOutputImage >
 void
 VectorConfidenceConnectedImageFilter< TInputImage, TOutputImage >
 ::EnlargeOutputRequestedRegion(DataObject *output)
 {
   Superclass::EnlargeOutputRequestedRegion(output);
+
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -127,7 +128,7 @@ VectorConfidenceConnectedImageFilter< TInputImage, TOutputImage >
   typedef typename InputImageType::PixelType InputPixelType;
 
   typedef BinaryThresholdImageFunction< OutputImageType >
-  SecondFunctionType;
+    SecondFunctionType;
   typedef FloodFilledImageFunctionConditionalIterator< OutputImageType, DistanceThresholdFunctionType > IteratorType;
   typedef FloodFilledImageFunctionConditionalConstIterator< InputImageType,
                                                             SecondFunctionType >        SecondIteratorType;
@@ -200,9 +201,9 @@ VectorConfidenceConnectedImageFilter< TInputImage, TOutputImage >
 
   if ( seed_cnt == 0 )
     {
-      this->UpdateProgress(1.0);
-      // no seeds result in zero image
-      return;
+    this->UpdateProgress(1.0);
+    // no seeds result in zero image
+    return;
     }
 
   for ( unsigned int ik = 0; ik < dimension; ik++ )
@@ -368,27 +369,27 @@ const typename
 VectorConfidenceConnectedImageFilter< TInputImage, TOutputImage >::CovarianceMatrixType &
 VectorConfidenceConnectedImageFilter< TInputImage, TOutputImage >
 ::GetCovariance() const
-{
+  {
   return m_ThresholdFunction->GetCovariance();
-}
+  }
 
 template< typename TInputImage, typename TOutputImage >
 const typename
 VectorConfidenceConnectedImageFilter< TInputImage, TOutputImage >::MeanVectorType &
 VectorConfidenceConnectedImageFilter< TInputImage, TOutputImage >
 ::GetMean() const
-{
+  {
   return m_ThresholdFunction->GetMean();
-}
+  }
 
 template< typename TInputImage, typename TOutputImage >
 const typename VectorConfidenceConnectedImageFilter< TInputImage, TOutputImage >::SeedsContainerType &
 VectorConfidenceConnectedImageFilter< TInputImage, TOutputImage >
 ::GetSeeds() const
-{
+  {
   itkDebugMacro("returning Seeds");
   return this->m_Seeds;
-}
+  }
 
 } // end namespace itk
 

@@ -71,12 +71,16 @@ public:
   /** This method resets the estimator. It set all the parameters to null.
    * The covariance matrix is not changed.
    * \sa Estimator \sa Variance \sa ClearVariance */
-  void ClearEstimation(void)
-  { m_Estimator = VectorType( T(0) ); }
+  void
+  ClearEstimation(void)
+  {
+    m_Estimator = VectorType( T(0) );
+  }
 
   /** This method resets the covariance matrix. It is set to an identity matrix
    * \sa Estimator \sa Variance \sa ClearEstimation */
-  void ClearVariance(void)
+  void
+  ClearVariance(void)
   {
     m_Variance.set_identity();
   }
@@ -87,7 +91,8 @@ public:
    * \sa Estimator
    * \sa Variance
    * \sa ClearEstimation */
-  void SetVariance(const ValueType & var = 1.0)
+  void
+  SetVariance(const ValueType & var = 1.0)
   {
     m_Variance.set_identity();
     m_Variance *= var;
@@ -98,18 +103,27 @@ public:
    * distribution of the parameters.  It can also be used to resume the
    * operation of a previously used estimator using it last known state.
    * \sa Estimator \sa Variance \sa ClearEstimation */
-  void SetVariance(const MatrixType & m)
-  { m_Variance = m; }
+  void
+  SetVariance(const MatrixType & m)
+  {
+    m_Variance = m;
+  }
 
   /** This method returns the vector of estimated parameters
    * \sa Estimator */
-  const VectorType & GetEstimator(void) const
-  { return m_Estimator; }
+  const VectorType &
+  GetEstimator(void) const
+  {
+    return m_Estimator;
+  }
 
   /** This method returns the covariance matrix of the estimated parameters
    * \sa Variance */
-  const MatrixType & GetVariance(void) const
-  { return m_Variance; }
+  const MatrixType &
+  GetVariance(void) const
+  {
+    return m_Variance;
+  }
 
 private:
   /** This methods performs the update of the parameter's covariance matrix.
@@ -168,6 +182,7 @@ KalmanLinearEstimator< T, VEstimatorDimension >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

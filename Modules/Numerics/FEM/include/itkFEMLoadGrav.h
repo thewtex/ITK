@@ -51,7 +51,8 @@ public:
   virtual vnl_vector<Float> GetGravitationalForceAtPoint(vnl_vector<Float> ) = 0;
 
 protected:
-  virtual void PrintSelf(std::ostream& os, Indent indent) const
+  virtual void
+  PrintSelf(std::ostream& os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
   }
@@ -99,6 +100,7 @@ public:
    * Get the gravity force that exists at every point
    */
   vnl_vector<itk::fem::Element::Float> & GetForce();
+
   const vnl_vector<itk::fem::Element::Float> & GetForce() const;
 
   /** Apply the load to the specified element */

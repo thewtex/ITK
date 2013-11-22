@@ -54,10 +54,10 @@ class BSplineSmoothingOnUpdateDisplacementFieldTransform :
 {
 public:
   /** Standard class typedefs. */
-  typedef BSplineSmoothingOnUpdateDisplacementFieldTransform    Self;
-  typedef DisplacementFieldTransform<TScalar, NDimensions>      Superclass;
-  typedef SmartPointer<Self>                                    Pointer;
-  typedef SmartPointer<const Self>                              ConstPointer;
+  typedef BSplineSmoothingOnUpdateDisplacementFieldTransform Self;
+  typedef DisplacementFieldTransform<TScalar, NDimensions>   Superclass;
+  typedef SmartPointer<Self>                                 Pointer;
+  typedef SmartPointer<const Self>                           ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( BSplineSmoothingOnUpdateDisplacementFieldTransform, DisplacementFieldTransform );
@@ -77,20 +77,21 @@ public:
   typedef typename Superclass::DisplacementFieldConstPointer DisplacementFieldConstPointer;
 
   typedef typename Transform<TScalar,NDimensions,NDimensions>::Pointer
-             TransformPointer;
+    TransformPointer;
 
   /**
    * typedefs for projecting the input displacement field onto a
    * B-spline field.
    */
-  typedef typename DisplacementFieldType::PixelType                                              DisplacementVectorType;
-  typedef PointSet<DisplacementVectorType, Dimension>                                            PointSetType;
-  typedef unsigned int                                                                           SplineOrderType;
-  typedef DisplacementFieldToBSplineImageFilter<DisplacementFieldType, DisplacementFieldType>    BSplineFilterType;
-  typedef typename BSplineFilterType::WeightsContainerType                                       WeightsContainerType;
-  typedef DisplacementFieldType                                                                  DisplacementFieldControlPointLatticeType;
-  typedef typename BSplineFilterType::ArrayType                                                  ArrayType;
-  typedef typename ArrayType::ValueType                                                          ArrayValueType;
+  typedef typename DisplacementFieldType::PixelType                                           DisplacementVectorType;
+  typedef PointSet<DisplacementVectorType, Dimension>                                         PointSetType;
+  typedef unsigned int                                                                        SplineOrderType;
+  typedef DisplacementFieldToBSplineImageFilter<DisplacementFieldType, DisplacementFieldType> BSplineFilterType;
+  typedef typename BSplineFilterType::WeightsContainerType                                    WeightsContainerType;
+  typedef DisplacementFieldType
+    DisplacementFieldControlPointLatticeType;
+  typedef typename BSplineFilterType::ArrayType ArrayType;
+  typedef typename ArrayType::ValueType         ArrayValueType;
 
   /**
    * Update the transform's parameters by the values in \c update.  We
@@ -175,7 +176,8 @@ public:
 
 protected:
   BSplineSmoothingOnUpdateDisplacementFieldTransform();
-  virtual ~BSplineSmoothingOnUpdateDisplacementFieldTransform();
+  virtual
+  ~BSplineSmoothingOnUpdateDisplacementFieldTransform();
 
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
@@ -185,16 +187,16 @@ protected:
   /**
    * Smooth the displacement field using B-splines.
    */
-   DisplacementFieldPointer BSplineSmoothDisplacementField( const DisplacementFieldType *, const ArrayType & );
+  DisplacementFieldPointer BSplineSmoothDisplacementField( const DisplacementFieldType *, const ArrayType & );
 
 private:
   BSplineSmoothingOnUpdateDisplacementFieldTransform( const Self& ); //purposely not implemented
-  void operator=( const Self& ); //purposely not implemented
+  void operator=( const Self& );                                     //purposely not implemented
 
-  SplineOrderType             m_SplineOrder;
-  bool                        m_EnforceStationaryBoundary;
-  ArrayType                   m_NumberOfControlPointsForTheUpdateField;
-  ArrayType                   m_NumberOfControlPointsForTheTotalField;
+  SplineOrderType m_SplineOrder;
+  bool            m_EnforceStationaryBoundary;
+  ArrayType       m_NumberOfControlPointsForTheUpdateField;
+  ArrayType       m_NumberOfControlPointsForTheTotalField;
 };
 
 } // end namespace itk

@@ -63,7 +63,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class BinaryDilateImageFilter:
+class BinaryDilateImageFilter :
   public BinaryMorphologyImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -113,18 +113,25 @@ public:
   /** Set the value in the image to consider as "foreground". Defaults to
    * maximum value of PixelType. This is an alias to the
    * ForegroundValue in the superclass. */
-  void SetDilateValue(const InputPixelType & value)
-  { this->SetForegroundValue(value); }
+  void
+  SetDilateValue(const InputPixelType & value)
+  {
+    this->SetForegroundValue(value);
+  }
 
   /** Get the value in the image considered as "foreground". Defaults to
    * maximum value of PixelType. This is an alias to the
    * ForegroundValue in the superclass. */
-  InputPixelType GetDilateValue() const
-  { return this->GetForegroundValue(); }
+  InputPixelType
+  GetDilateValue() const
+  {
+    return this->GetForegroundValue();
+  }
 
 protected:
   BinaryDilateImageFilter();
-  virtual ~BinaryDilateImageFilter(){}
+  virtual
+  ~BinaryDilateImageFilter(){}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData();
@@ -135,6 +142,7 @@ protected:
 private:
   BinaryDilateImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);          //purposely not implemented
+
 };
 } // end namespace itk
 

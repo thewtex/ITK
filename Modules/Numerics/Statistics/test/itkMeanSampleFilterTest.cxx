@@ -19,26 +19,27 @@
 #include "itkMeanSampleFilter.h"
 #include "itkListSample.h"
 
-int itkMeanSampleFilterTest(int, char* [] )
+int
+itkMeanSampleFilterTest(int, char* [] )
 {
   std::cout << "MeanSampleFilter test \n \n";
-  bool pass = true;
+  bool        pass = true;
   std::string failureMeassage= "";
 
-  const unsigned int                  MeasurementVectorSize = 2;
-  const unsigned int                  numberOfMeasurementVectors = 5;
-  unsigned int                        counter;
+  const unsigned int MeasurementVectorSize = 2;
+  const unsigned int numberOfMeasurementVectors = 5;
+  unsigned int       counter;
 
   typedef itk::FixedArray<
-    float, MeasurementVectorSize >             MeasurementVectorType;
+      float, MeasurementVectorSize >             MeasurementVectorType;
   typedef itk::Statistics::ListSample<
-    MeasurementVectorType >                    SampleType;
+      MeasurementVectorType >                    SampleType;
 
   SampleType::Pointer sample = SampleType::New();
 
   sample->SetMeasurementVectorSize( MeasurementVectorSize );
 
-  MeasurementVectorType               measure;
+  MeasurementVectorType measure;
 
   //reset counter
   counter = 0;
@@ -65,8 +66,9 @@ int itkMeanSampleFilterTest(int, char* [] )
   try
     {
     filter->Update();
-    failureMeassage = "Exception should have been thrown since \
-                    Update() is invoked without setting an input ";
+    failureMeassage =
+      "Exception should have been thrown since \
+                    Update() is invoked without setting an input "                                                 ;
     pass = false;
     }
   catch ( itk::ExceptionObject & excp )
@@ -94,7 +96,7 @@ int itkMeanSampleFilterTest(int, char* [] )
     }
 
   const FilterType::MeasurementVectorDecoratedType * decorator = filter->GetOutput();
-  FilterType::MeasurementVectorType    meanOutput  = decorator->Get();
+  FilterType::MeasurementVectorType                  meanOutput  = decorator->Get();
 
   FilterType::MeasurementVectorType mean;
 
@@ -104,10 +106,10 @@ int itkMeanSampleFilterTest(int, char* [] )
   std::cout << meanOutput[0] << " " << mean[0] << " "
             << meanOutput[1] << " " << mean[1] << " " << std::endl;
 
-  FilterType::MeasurementVectorType::ValueType    epsilon = 1e-6;
+  FilterType::MeasurementVectorType::ValueType epsilon = 1e-6;
 
   if ( ( vcl_fabs( meanOutput[0] - mean[0]) > epsilon )  ||
-       ( vcl_fabs( meanOutput[1] - mean[1]) > epsilon ))
+       ( vcl_fabs( meanOutput[1] - mean[1]) > epsilon ) )
     {
     pass = false;
     failureMeassage = "The result is not what is expected";

@@ -29,7 +29,8 @@
 #include "itkNeighborhoodAlgorithm.h"
 #include <math.h>
 
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   if ( argc < 4 )
     {
@@ -46,7 +47,7 @@ int main( int argc, char ** argv )
   typedef itk::ImageFileReader< ImageType > ReaderType;
 
   typedef itk::ConstShapedNeighborhoodIterator< ImageType >
-                                               ShapedNeighborhoodIteratorType;
+    ShapedNeighborhoodIteratorType;
   typedef itk::ImageRegionIterator< ImageType> IteratorType;
 
   ReaderType::Pointer reader = ReaderType::New();
@@ -66,13 +67,13 @@ int main( int argc, char ** argv )
     }
 
   ImageType::Pointer output = ImageType::New();
-  output->SetRegions(reader->GetOutput()->GetRequestedRegion());
+  output->SetRegions(reader->GetOutput()->GetRequestedRegion() );
   output->Allocate();
 
   typedef itk::NeighborhoodAlgorithm::ImageBoundaryFacesCalculator<ImageType> FaceCalculatorType;
 
-  FaceCalculatorType faceCalculator;
-  FaceCalculatorType::FaceListType faceList;
+  FaceCalculatorType                         faceCalculator;
+  FaceCalculatorType::FaceListType           faceList;
   FaceCalculatorType::FaceListType::iterator fit;
 
   ShapedNeighborhoodIteratorType::RadiusType radius;
@@ -81,7 +82,7 @@ int main( int argc, char ** argv )
   faceList = faceCalculator(reader->GetOutput(), output->GetRequestedRegion(), radius);
 
   IteratorType out;
-  const float rad = static_cast<float>(element_radius);
+  const float  rad = static_cast<float>(element_radius);
 
   const PixelType background_value = 0;
   const PixelType foreground_value = 255;

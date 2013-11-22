@@ -22,7 +22,8 @@
 #include "itkTriangleMeshToSimplexMeshFilter.h"
 #include "itkDefaultDynamicMeshTraits.h"
 
-int itkTriangleMeshToSimplexMeshFilterTest(int , char * [] )
+int
+itkTriangleMeshToSimplexMeshFilterTest(int , char * [] )
 {
   // Declare the type of the input and output mesh
   typedef itk::DefaultDynamicMeshTraits<double, 3, 3>   TriangleMeshTraits;
@@ -38,10 +39,10 @@ int itkTriangleMeshToSimplexMeshFilterTest(int , char * [] )
   // declare the triangle to simplex mesh filter
   typedef itk::TriangleMeshToSimplexMeshFilter<TriangleMeshType, SimplexMeshType> SimplexFilterType;
 
-  SphereMeshSourceType::Pointer  mySphereMeshSource = SphereMeshSourceType::New();
-  PointType center; center.Fill(0);
-  PointType::ValueType scaleInit[3] = {5,5,5};
-  VectorType scale = scaleInit;
+  SphereMeshSourceType::Pointer mySphereMeshSource = SphereMeshSourceType::New();
+  PointType                     center; center.Fill(0);
+  PointType::ValueType          scaleInit[3] = {5,5,5};
+  VectorType                    scale = scaleInit;
 
   mySphereMeshSource->SetCenter(center);
   mySphereMeshSource->SetResolution(0);

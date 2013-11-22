@@ -21,7 +21,8 @@
 #include "itkThresholdLabelerImageFilter.h"
 #include "itkImageRegionIterator.h"
 
-int itkThresholdLabelerImageFilterTest( int, char *[] )
+int
+itkThresholdLabelerImageFilterTest( int, char *[] )
 {
   //
   //  The following code defines the input and output pixel types and their
@@ -36,8 +37,8 @@ int itkThresholdLabelerImageFilterTest( int, char *[] )
   typedef itk::Image<LabeledPixelType,Dimension> LabeledImageType;
 
   // create an image with stripes to label
-  InputImageType::IndexType index = {{0, 0}};
-  InputImageType::SizeType size = {{32, 32}};
+  InputImageType::IndexType  index = {{0, 0}};
+  InputImageType::SizeType   size = {{32, 32}};
   InputImageType::RegionType region;
   region.SetSize(size);
   region.SetIndex(index);
@@ -83,7 +84,7 @@ int itkThresholdLabelerImageFilterTest( int, char *[] )
   labels.push_back(3 + offset);
 
   // fill in the image
-  unsigned int i;
+  unsigned int                         i;
   IndexValueVectorType::const_iterator indexIter;
   for (indexIter = yindexes.begin(), i=0; indexIter != yindexes.end(); ++indexIter, ++i)
     {
@@ -106,13 +107,13 @@ int itkThresholdLabelerImageFilterTest( int, char *[] )
   labelerFilter->Print(std::cout);
   try
     {
-      labelerFilter->Update();
-      labelerFilter->SetFunctor(labelerFilter->GetFunctor());
+    labelerFilter->Update();
+    labelerFilter->SetFunctor(labelerFilter->GetFunctor() );
     }
 
   catch(itk::ExceptionObject & excp)
     {
-      std::cerr << excp << std::endl;
+    std::cerr << excp << std::endl;
     }
 
   // check if labels coincide with expected labels

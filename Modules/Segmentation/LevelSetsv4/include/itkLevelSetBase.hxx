@@ -29,7 +29,7 @@ namespace itk
 template< typename TInput, unsigned int VDimension, typename TOutput, typename TDomain >
 LevelSetBase< TInput, VDimension, TOutput, TDomain >
 ::LevelSetBase()
-  {}
+{}
 
 // ----------------------------------------------------------------------------
 template< typename TInput, unsigned int VDimension, typename TOutput, typename TDomain >
@@ -76,6 +76,7 @@ LevelSetBase< TInput, VDimension, TOutput, TDomain >
 ::EvaluateGradientNorm( const InputType& iP ) const
 {
   GradientType grad = this->EvaluateGradient( iP );
+
   return grad.GetNorm();
 }
 
@@ -89,8 +90,8 @@ LevelSetBase< TInput, VDimension, TOutput, TDomain >
 {
   OutputRealType oValue = NumericTraits< OutputRealType >::Zero;
 
-  HessianType   hessian = this->EvaluateHessian( iP );
-  GradientType  grad = this->EvaluateGradient( iP );
+  HessianType  hessian = this->EvaluateHessian( iP );
+  GradientType grad = this->EvaluateGradient( iP );
 
   for( unsigned int i = 0; i < Dimension; i++ )
     {
@@ -151,9 +152,9 @@ LevelSetBase< TInput, VDimension, TOutput, TDomain >
         if( j != i )
           {
           ioData.MeanCurvature.m_Value -= ioData.Gradient.m_Value[i]
-              * ioData.Gradient.m_Value[j] * ioData.Hessian.m_Value[i][j];
+            * ioData.Gradient.m_Value[j] * ioData.Hessian.m_Value[i][j];
           ioData.MeanCurvature.m_Value += ioData.Hessian.m_Value[j][j]
-              * ioData.Gradient.m_Value[i] * ioData.Gradient.m_Value[i];
+            * ioData.Gradient.m_Value[i] * ioData.Gradient.m_Value[i];
           }
         }
       }

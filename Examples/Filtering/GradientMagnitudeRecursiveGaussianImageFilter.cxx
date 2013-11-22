@@ -58,7 +58,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
@@ -76,8 +75,8 @@
 #include "itkGradientMagnitudeRecursiveGaussianImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -85,7 +84,6 @@ int main( int argc, char * argv[] )
     std::cerr << argv[0] << "  inputImageFile   outputImageFile   sigma" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -95,10 +93,9 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef    float    InputPixelType;
-  typedef    float    OutputPixelType;
+  typedef    float InputPixelType;
+  typedef    float OutputPixelType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -107,13 +104,11 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
-
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
   //  Software Guide : BeginLatex
   //
@@ -126,13 +121,11 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::GradientMagnitudeRecursiveGaussianImageFilter<
-                        InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
   // Software Guide : EndCodeSnippet
-
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -148,7 +141,6 @@ int main( int argc, char * argv[] )
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The input image can be obtained from the output of another filter. Here,
@@ -160,7 +152,6 @@ int main( int argc, char * argv[] )
   filter->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The standard deviation of the Gaussian smoothing kernel is now set.
@@ -171,11 +162,9 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
   const double sigma = atof( argv[3] );
 
-
   // Software Guide : BeginCodeSnippet
   filter->SetSigma( sigma );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -185,11 +174,9 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   filter->Update();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -200,31 +187,28 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   typedef unsigned char                   WritePixelType;
   typedef itk::Image< WritePixelType, 2 > WriteImageType;
 
   typedef itk::RescaleIntensityImageFilter<
-                   OutputImageType, WriteImageType > RescaleFilterType;
+      OutputImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
 
-  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
 
   writer->SetFileName( argv[2] );
-
 
   // Software Guide : BeginCodeSnippet
   rescaler->SetInput( filter->GetOutput() );
   writer->SetInput( rescaler->GetOutput() );
   writer->Update();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -251,7 +235,6 @@ int main( int argc, char * argv[] )
   //  smaller than the dynamic range of the input image.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

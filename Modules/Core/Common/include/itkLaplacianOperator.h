@@ -61,7 +61,7 @@ namespace itk
  */
 template< typename TPixel, unsigned int VDimension = 2,
           typename TAllocator = NeighborhoodAllocator< TPixel > >
-class LaplacianOperator:
+class LaplacianOperator :
   public NeighborhoodOperator< TPixel, VDimension, TAllocator >
 {
 public:
@@ -84,7 +84,7 @@ public:
   }
 
   /** Copy constructor   */
-  LaplacianOperator(const Self & other):
+  LaplacianOperator(const Self & other) :
     NeighborhoodOperator< TPixel, VDimension, TAllocator >(other)
   {
     for ( unsigned i = 0; i < VDimension; ++i )
@@ -97,14 +97,17 @@ public:
   void CreateOperator();
 
   /** Assignment operator   */
-  Self & operator=(const Self & other)
+  Self &
+  operator=(const Self & other)
   {
     Superclass::operator=(other);
+
     return *this;
   }
 
   /** Prints some debugging information   */
-  virtual void PrintSelf(std::ostream & os, Indent i) const
+  virtual void
+  PrintSelf(std::ostream & os, Indent i) const
   {
     os << i << "LaplacianOperator { this=" << this
        << "}" << std::endl;

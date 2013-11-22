@@ -34,7 +34,8 @@
 //   Main code
 //
 // -------------------------
-int itkVersorRigid3DTransformTest(int, char * [] )
+int
+itkVersorRigid3DTransformTest(int, char * [] )
 {
 
   typedef   double ValueType;
@@ -537,7 +538,7 @@ int itkVersorRigid3DTransformTest(int, char * [] )
       }
       {
       TransformType::Pointer tInverse = TransformType::New();
-      if(!t->GetInverse(tInverse))
+      if(!t->GetInverse(tInverse) )
         {
         std::cout << "Cannot create inverse transform" << std::endl;
         return EXIT_FAILURE;

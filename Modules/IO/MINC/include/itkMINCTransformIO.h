@@ -38,7 +38,7 @@ namespace itk
 * \ingroup ITKIOMINC
 */
 template< typename TInternalComputationValueType >
-class MINCTransformIOTemplate: public TransformIOBaseTemplate< TInternalComputationValueType >
+class MINCTransformIOTemplate : public TransformIOBaseTemplate< TInternalComputationValueType >
 {
 public:
   typedef MINCTransformIOTemplate                                  Self;
@@ -53,8 +53,8 @@ public:
 
   typedef MatrixOffsetTransformBase<TInternalComputationValueType, 3, 3> MatrixOffsetTransformBaseType;
 
-  typedef typename MatrixOffsetTransformBaseType::MatrixType    MatrixType;
-  typedef typename MatrixOffsetTransformBaseType::OffsetType    OffsetType;
+  typedef typename MatrixOffsetTransformBaseType::MatrixType MatrixType;
+  typedef typename MatrixOffsetTransformBaseType::OffsetType OffsetType;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( MINCTransformIOTemplate, TransformIOBaseTemplate );
@@ -75,19 +75,22 @@ public:
 
 protected:
   MINCTransformIOTemplate();
-  virtual ~MINCTransformIOTemplate();
+  virtual
+  ~MINCTransformIOTemplate();
 
   VIO_General_transform m_XFM;
   bool                  m_XFM_initialized;
 
 private:
   void _cleanup(void);
+
   void WriteOneTransform(const int transformIndex,
                          const TransformType *transform,
                          std::vector<VIO_General_transform> &_xfm,
                          const char * xfm_file_base,int & serial);
 
   void ReadOneTransform(VIO_General_transform *xfm);
+
 };
 
 /** This helps to meet backward compatibility */

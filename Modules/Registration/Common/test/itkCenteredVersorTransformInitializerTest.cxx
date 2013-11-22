@@ -20,14 +20,14 @@
 
 #include "itkImageRegionIterator.h"
 
-
 /**
  *  This program tests the use of the CenteredVersorTransformInitializer class
  *
  *
  */
 
-int itkCenteredVersorTransformInitializerTest(int , char* [] )
+int
+itkCenteredVersorTransformInitializerTest(int , char* [] )
 {
 
   bool pass = true;
@@ -35,22 +35,21 @@ int itkCenteredVersorTransformInitializerTest(int , char* [] )
   const unsigned int Dimension = 3;
 
   // Fixed Image Type
-  typedef itk::Image<unsigned char, Dimension>      FixedImageType;
+  typedef itk::Image<unsigned char, Dimension> FixedImageType;
 
   // Moving Image Type
-  typedef itk::Image<unsigned char, Dimension>       MovingImageType;
+  typedef itk::Image<unsigned char, Dimension> MovingImageType;
 
   // Size Type
-  typedef FixedImageType::SizeType                 SizeType;
-  typedef FixedImageType::SpacingType              SpacingType;
-  typedef FixedImageType::PointType                PointType;
-  typedef FixedImageType::IndexType                IndexType;
-  typedef FixedImageType::RegionType               RegionType;
-
+  typedef FixedImageType::SizeType    SizeType;
+  typedef FixedImageType::SpacingType SpacingType;
+  typedef FixedImageType::PointType   PointType;
+  typedef FixedImageType::IndexType   IndexType;
+  typedef FixedImageType::RegionType  RegionType;
 
   // Transform Type
-  typedef itk::VersorRigid3DTransform< double >     TransformType;
-  typedef TransformType::ParametersType             ParametersType;
+  typedef itk::VersorRigid3DTransform< double > TransformType;
+  typedef TransformType::ParametersType         ParametersType;
 
   SizeType size;
   size[0] = 100;
@@ -81,9 +80,8 @@ int itkCenteredVersorTransformInitializerTest(int , char* [] )
   region.SetSize( size );
   region.SetIndex( index );
 
-
-  FixedImageType::Pointer     fixedImage    = FixedImageType::New();
-  MovingImageType::Pointer    movingImage   = MovingImageType::New();
+  FixedImageType::Pointer  fixedImage    = FixedImageType::New();
+  MovingImageType::Pointer movingImage   = MovingImageType::New();
 
   fixedImage->SetRegions( region );
   fixedImage->SetSpacing( spacing );
@@ -98,8 +96,8 @@ int itkCenteredVersorTransformInitializerTest(int , char* [] )
   movingImage->FillBuffer( 0 );
 
   RegionType internalRegion;
-  SizeType  internalSize;
-  IndexType internalIndex;
+  SizeType   internalSize;
+  IndexType  internalIndex;
 
   internalIndex[0] = index[0] + 20;
   internalIndex[1] = index[1] + 30;
@@ -108,7 +106,6 @@ int itkCenteredVersorTransformInitializerTest(int , char* [] )
   internalSize[0]  = size[0] - 2 * 20;
   internalSize[1]  = size[1] - 2 * 30;
   internalSize[2]  = size[2] - 2 * 10;
-
 
   internalRegion.SetSize(  internalSize  );
   internalRegion.SetIndex( internalIndex );
@@ -123,7 +120,6 @@ int itkCenteredVersorTransformInitializerTest(int , char* [] )
     ++fi;
     }
 
-
   internalIndex[0] = index[0] + 10;
   internalIndex[1] = index[1] + 20;
   internalIndex[2] = index[2] + 30;
@@ -132,10 +128,8 @@ int itkCenteredVersorTransformInitializerTest(int , char* [] )
   internalSize[1]  = size[1] - 2 * 20;
   internalSize[2]  = size[2] - 2 * 30;
 
-
   internalRegion.SetSize(  internalSize  );
   internalRegion.SetIndex( internalIndex );
-
 
   typedef itk::ImageRegionIterator< MovingImageType > MovingIterator;
   MovingIterator mi( movingImage, internalRegion );
@@ -150,11 +144,10 @@ int itkCenteredVersorTransformInitializerTest(int , char* [] )
   TransformType::Pointer transform = TransformType::New();
   transform->SetIdentity();
 
-
   typedef itk::CenteredVersorTransformInitializer<
-                                  FixedImageType,
-                                  MovingImageType >
-                                            InitializerType;
+      FixedImageType,
+      MovingImageType >
+    InitializerType;
 
   InitializerType::Pointer initializer = InitializerType::New();
 
@@ -167,66 +160,65 @@ int itkCenteredVersorTransformInitializerTest(int , char* [] )
   TransformType::OutputVectorType translation2 = transform->GetTranslation();
   TransformType::OffsetType       offset2      = transform->GetOffset();
 
-  { // Verfications
-  TransformType::InputPointType   fixedCenter;
-  TransformType::InputPointType   movingCenter;
+    { // Verfications
+    TransformType::InputPointType fixedCenter;
+    TransformType::InputPointType movingCenter;
 
-  for(unsigned int j=0; j < Dimension; j++ )
-    {
-    fixedCenter[j]  = fixedOrigin[j]  + size[j] * spacing[j] / 2.0;
-    movingCenter[j] = movingOrigin[j] + size[j] * spacing[j] / 2.0;
-    }
-
-  TransformType::InputVectorType relativeCenter = movingCenter - fixedCenter;
-
-
-  const double tolerance = 1e-3;
-
-  for(unsigned int k=0; k < Dimension; k++ )
-    {
-    if( vcl_fabs( translation2[k] - relativeCenter[k] ) > tolerance )
+    for(unsigned int j=0; j < Dimension; j++ )
       {
-      std::cerr << "Translation differs from expected value" << std::endl;
-      std::cerr << "It should be " << relativeCenter << std::endl;
-      std::cerr << "but it is    " << translation2 << std::endl;
-      pass = false;
-      break;
+      fixedCenter[j]  = fixedOrigin[j]  + size[j] * spacing[j] / 2.0;
+      movingCenter[j] = movingOrigin[j] + size[j] * spacing[j] / 2.0;
       }
-    if( vcl_fabs( offset2[k] - relativeCenter[k] ) > tolerance )
+
+    TransformType::InputVectorType relativeCenter = movingCenter - fixedCenter;
+
+    const double tolerance = 1e-3;
+
+    for(unsigned int k=0; k < Dimension; k++ )
       {
-      std::cerr << "Offset differs from expected value" << std::endl;
-      std::cerr << "It should be " << relativeCenter << std::endl;
-      std::cerr << "but it is    " << offset2 << std::endl;
-      pass = false;
-      break;
+      if( vcl_fabs( translation2[k] - relativeCenter[k] ) > tolerance )
+        {
+        std::cerr << "Translation differs from expected value" << std::endl;
+        std::cerr << "It should be " << relativeCenter << std::endl;
+        std::cerr << "but it is    " << translation2 << std::endl;
+        pass = false;
+        break;
+        }
+      if( vcl_fabs( offset2[k] - relativeCenter[k] ) > tolerance )
+        {
+        std::cerr << "Offset differs from expected value" << std::endl;
+        std::cerr << "It should be " << relativeCenter << std::endl;
+        std::cerr << "but it is    " << offset2 << std::endl;
+        pass = false;
+        break;
+        }
+      }
+
+    initializer->ComputeRotationOn();
+    initializer->InitializeTransform();
+
+    std::cout << "Initialized Transform is" << std::endl;
+
+    transform->Print( std::cout );
+
+    TransformType::InputPointType mappedOrigin = transform->TransformPoint( fixedOrigin );
+    TransformType::InputPointType expectedPoint;
+    expectedPoint[0] = 29.0;
+    expectedPoint[1] = 165.75;
+    expectedPoint[2] = 13.25;
+
+    for(unsigned int j=0; j < Dimension; j++ )
+      {
+      if( vcl_fabs( expectedPoint[j] - mappedOrigin[j] ) > tolerance )
+        {
+        std::cerr << "Mapped point differs from expected point" << std::endl;
+        std::cerr << "It should be " << expectedPoint << std::endl;
+        std::cerr << "but it is    " << mappedOrigin << std::endl;
+        pass = false;
+        break;
+        }
       }
     }
-
-  initializer->ComputeRotationOn();
-  initializer->InitializeTransform();
-
-  std::cout << "Initialized Transform is" << std::endl;
-
-  transform->Print( std::cout );
-
-  TransformType::InputPointType mappedOrigin = transform->TransformPoint( fixedOrigin );
-  TransformType::InputPointType expectedPoint;
-  expectedPoint[0] = 29.0;
-  expectedPoint[1] = 165.75;
-  expectedPoint[2] = 13.25;
-
-  for(unsigned int j=0; j < Dimension; j++ )
-    {
-    if( vcl_fabs( expectedPoint[j] - mappedOrigin[j] ) > tolerance )
-      {
-      std::cerr << "Mapped point differs from expected point" << std::endl;
-      std::cerr << "It should be " << expectedPoint << std::endl;
-      std::cerr << "but it is    " << mappedOrigin << std::endl;
-      pass = false;
-      break;
-      }
-    }
-  }
 
   if( !pass )
     {
@@ -236,6 +228,5 @@ int itkCenteredVersorTransformInitializerTest(int , char* [] )
 
   std::cout << "Test PASSED." << std::endl;
   return EXIT_SUCCESS;
-
 
 }

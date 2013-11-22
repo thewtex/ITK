@@ -34,10 +34,14 @@ template< typename TInput, typename TOutput >
 class ExpNegative
 {
 public:
-  ExpNegative() { m_Factor = 1.0; }
+  ExpNegative() {
+    m_Factor = 1.0;
+  }
+
   ~ExpNegative() {}
 
-  bool operator!=(const ExpNegative & other) const
+  bool
+  operator!=(const ExpNegative & other) const
   {
     if ( m_Factor != other.m_Factor )
       {
@@ -46,23 +50,27 @@ public:
     return false;
   }
 
-  bool operator==(const ExpNegative & other) const
+  bool
+  operator==(const ExpNegative & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return static_cast< TOutput >( vcl_exp( -m_Factor * static_cast< double >( A ) ) );
   }
 
   /** Sets the value 'K' used in the function evaluation exp(-K.x). */
-  void SetFactor(double factor)
+  void
+  SetFactor(double factor)
   {
     m_Factor = factor;
   }
 
-  double GetFactor() const
+  double
+  GetFactor() const
   {
     return m_Factor;
   }
@@ -84,7 +92,7 @@ private:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage, typename TOutputImage >
-class ExpNegativeImageFilter:
+class ExpNegativeImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::ExpNegative<
@@ -95,9 +103,9 @@ public:
   /** Standard class typedefs. */
   typedef ExpNegativeImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::ExpNegative< typename TInputImage::PixelType,
-                          typename TOutputImage::PixelType > >  Superclass;
+      TInputImage, TOutputImage,
+      Functor::ExpNegative< typename TInputImage::PixelType,
+                            typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -109,7 +117,8 @@ public:
   itkTypeMacro(ExpNegativeImageFilter,
                UnaryFunctorImageFilter);
 
-  void SetFactor(double factor)
+  void
+  SetFactor(double factor)
   {
     if ( factor == this->GetFunctor().GetFactor() )
       {
@@ -118,7 +127,9 @@ public:
     this->GetFunctor().SetFactor(factor);
     this->Modified();
   }
-  double GetFactor() const
+
+  double
+  GetFactor() const
   {
     return this->GetFunctor().GetFactor();
   }
@@ -134,11 +145,13 @@ public:
 
 protected:
   ExpNegativeImageFilter() {}
-  virtual ~ExpNegativeImageFilter() {}
+  virtual
+  ~ExpNegativeImageFilter() {}
 
 private:
   ExpNegativeImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
+
 };
 } // end namespace itk
 

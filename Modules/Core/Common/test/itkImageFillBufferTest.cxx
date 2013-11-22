@@ -19,7 +19,8 @@
 #include <iostream>
 #include "itkImage.h"
 
-int itkImageFillBufferTest(int argc, char * argv[])
+int
+itkImageFillBufferTest(int argc, char * argv[])
 {
   if( argc != 2 )
     {

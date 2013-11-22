@@ -20,14 +20,14 @@
 #include "itkVideoIOFactory.h"
 #include "itkVXLVideoIOFactory.h"
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // This tests all of the functionality of the VXLVideoIO
 //
 // Usage: [Video Input] [Non-Video Input] [Video Output] [Width] [Height]
 //            [Num Frames] [FpS]
 
-int test_VXLVideoIOFactory ( char* input, char* output, itk::SizeValueType itkNotUsed(cameraNumber) )
+int
+test_VXLVideoIOFactory( char* input, char* output, itk::SizeValueType itkNotUsed(cameraNumber) )
 {
 
   int ret = EXIT_SUCCESS;
@@ -41,13 +41,13 @@ int test_VXLVideoIOFactory ( char* input, char* output, itk::SizeValueType itkNo
   // framework since none of the factories get reigstered by default.
   itk::ObjectFactoryBase::RegisterFactory( itk::VXLVideoIOFactory::New() );
 
-
   //////
   // Create the VideoIOBase for reading from a file
   //////
   std::cout << "Trying to create IO for reading from file..." << std::endl;
   itk::VideoIOBase::Pointer ioReadFile = itk::VideoIOFactory::CreateVideoIO(
-    itk::VideoIOFactory::ReadFileMode, input);
+      itk::VideoIOFactory::ReadFileMode, input);
+
   if (!ioReadFile)
     {
     std::cerr << "Did not create valid VideoIO for reading from file " << std::endl;
@@ -59,19 +59,19 @@ int test_VXLVideoIOFactory ( char* input, char* output, itk::SizeValueType itkNo
   //////
   std::cout << "Trying to create IO for writing to file..." << std::endl;
   itk::VideoIOBase::Pointer ioWrite = itk::VideoIOFactory::CreateVideoIO(
-    itk::VideoIOFactory::WriteMode, output);
+      itk::VideoIOFactory::WriteMode, output);
   if (!ioWrite)
     {
     std::cerr << "Did not create valid VideoIO for writing " << std::endl;
     ret = EXIT_FAILURE;
     }
 
-
   std::cout<<"Done !"<<std::endl;
   return ret;
 }
 
-int itkVXLVideoIOFactoryTest ( int argc, char *argv[] )
+int
+itkVXLVideoIOFactoryTest( int argc, char *argv[] )
 {
   if (argc != 4)
     {
@@ -79,5 +79,5 @@ int itkVXLVideoIOFactoryTest ( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  return test_VXLVideoIOFactory(argv[1], argv[2], atoi(argv[3]));
+  return test_VXLVideoIOFactory(argv[1], argv[2], atoi(argv[3]) );
 }

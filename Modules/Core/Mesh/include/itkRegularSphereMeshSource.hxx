@@ -56,7 +56,7 @@ RegularSphereMeshSource< TOutputMesh >
 
   PointsContainerPointer myPoints = outputMesh->GetPoints();
 
-  PointType     p1;
+  PointType      p1;
   IdentifierType idx = 0;
 
   p1[0] = 1 * m_Scale[0] + m_Center[0];
@@ -137,10 +137,10 @@ RegularSphereMeshSource< TOutputMesh >
     v_pt[0] = &v[0];
     v_pt[1] = &v[1];
     v_pt[2] = &v[2];
-    IdentifierType        cellIdx = 0;
-    IdentifierType        pointIdxOffset = outputMesh->GetNumberOfPoints();
-    IdentifierType        pointIdx = pointIdxOffset;
-    IdentifierType        newIdx[3] = { 0, 1, 2 };
+    IdentifierType cellIdx = 0;
+    IdentifierType pointIdxOffset = outputMesh->GetNumberOfPoints();
+    IdentifierType pointIdx = pointIdxOffset;
+    IdentifierType newIdx[3] = { 0, 1, 2 };
 
     // container for the processed edges
     // when subdividing a triangle, the corresponding subdivided
@@ -356,6 +356,7 @@ RegularSphereMeshSource< TOutputMesh >
   os << indent << "Scale: " << m_Scale << std::endl;
   os << indent << "Resolution: " << m_Resolution << std::endl;
 }
+
 } //end of namespace itk
 
 #endif

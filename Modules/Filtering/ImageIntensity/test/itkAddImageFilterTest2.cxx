@@ -23,7 +23,8 @@
 #include "itkPipelineMonitorImageFilter.h"
 #include "itkTestingMacros.h"
 
-int itkAddImageFilterTest2(int argc, char* argv[] )
+int
+itkAddImageFilterTest2(int argc, char* argv[] )
 {
   if( argc != 3 )
     {

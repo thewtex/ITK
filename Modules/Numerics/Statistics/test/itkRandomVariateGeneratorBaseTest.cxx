@@ -34,25 +34,29 @@ public:
 
   itkNewMacro(Self);
 
-  virtual double GetVariate()
-    {
+  virtual double
+  GetVariate()
+  {
     double theAnswerToTheQuestionOfLifeTheUniverseAndEverything = 42.0;
-    return theAnswerToTheQuestionOfLifeTheUniverseAndEverything;
-    }
 
-  void RunTests()
-    {
+    return theAnswerToTheQuestionOfLifeTheUniverseAndEverything;
+  }
+
+  void
+  RunTests()
+  {
     std::cout << "Superclass Name " << this->Superclass::GetNameOfClass() << std::endl;
     std::cout << "This class Name " << this->GetNameOfClass() << std::endl;
     std::cout << "GetVariate() = "  << this->GetVariate() << std::endl;
-    }
+  }
 
 };
 
 }
 }
 
-int itkRandomVariateGeneratorBaseTest( int , char* [] )
+int
+itkRandomVariateGeneratorBaseTest( int , char* [] )
 {
   typedef itk::Statistics::VariateGeneratorTestHelper GeneratorType;
 

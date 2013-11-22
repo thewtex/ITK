@@ -29,8 +29,7 @@ namespace itk
 Optimizer
 ::Optimizer() :
   m_ScalesInitialized( false )
-{
-}
+{}
 
 /**
  * Set scaling as an array of factors
@@ -44,7 +43,7 @@ Optimizer
   //Nearly every optimizer computes the inverse at each iteration.
   //provides 1 commone place where the inverse can be computes
   //and validated.
-  m_InverseScales.SetSize(m_Scales.GetSize());
+  m_InverseScales.SetSize(m_Scales.GetSize() );
 
   for( unsigned int i = 0; i < m_Scales.size(); ++i )
     {
@@ -118,6 +117,7 @@ Optimizer
   os << indent << "StopConditionDescription: "
      << this->GetStopConditionDescription() << std::endl;
 }
+
 } // end namespace itk
 
 #endif

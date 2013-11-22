@@ -25,12 +25,15 @@
  * TODO Numerical verification.
  */
 template<typename TIndexType, typename TPointType>
-double itkCorrelationImageToImageMetricv4Test_GetToyImagePixelValue(TIndexType index, TPointType offset, const unsigned int Dim, double c)
+double
+itkCorrelationImageToImageMetricv4Test_GetToyImagePixelValue(TIndexType index, TPointType offset,
+                                                             const unsigned int Dim, double c)
 {
   double v = 0.0;
+
   for(unsigned int i=0; i<Dim; i++)
     {
-      v += (index[i]+offset[i])*(index[i]+offset[i]);
+    v += (index[i]+offset[i])*(index[i]+offset[i]);
     }
 
   v = std::exp( -1.0 * v / 8 );
@@ -40,9 +43,10 @@ double itkCorrelationImageToImageMetricv4Test_GetToyImagePixelValue(TIndexType i
 }
 
 template<typename TMetricPointer, typename TValueType, typename TDerivativeType>
-int itkCorrelationImageToImageMetricv4Test_WithSpecifiedThreads(TMetricPointer &metric,
-                                                                TValueType &value,
-                                                                TDerivativeType &derivative)
+int
+itkCorrelationImageToImageMetricv4Test_WithSpecifiedThreads(TMetricPointer &metric,
+                                                            TValueType &value,
+                                                            TDerivativeType &derivative)
 {
   typedef typename TMetricPointer::ObjectType MetricType;
 
@@ -73,7 +77,6 @@ int itkCorrelationImageToImageMetricv4Test_WithSpecifiedThreads(TMetricPointer &
               << exc;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "value:" << valueReturn1 << std::endl;
   std::cout << "derivativeReturn:" << derivativeReturn << std::endl;
@@ -116,25 +119,27 @@ int itkCorrelationImageToImageMetricv4Test_WithSpecifiedThreads(TMetricPointer &
   return EXIT_SUCCESS;
 }
 
-int itkCorrelationImageToImageMetricv4Test(int, char ** const)
+int
+itkCorrelationImageToImageMetricv4Test(int, char ** const)
 {
 
   const unsigned int imageSize = 20;
   const unsigned int imageDimensionality = 3;
-  typedef itk::Image< double, imageDimensionality >              ImageType;
 
-  ImageType::SizeType       size;
+  typedef itk::Image< double, imageDimensionality > ImageType;
+
+  ImageType::SizeType size;
   size.Fill( imageSize );
-  ImageType::IndexType      index;
+  ImageType::IndexType index;
   index.Fill( 0 );
-  ImageType::RegionType     region;
+  ImageType::RegionType region;
   region.SetSize( size );
   region.SetIndex( index );
-  ImageType::SpacingType    spacing;
+  ImageType::SpacingType spacing;
   spacing.Fill(1.0);
-  ImageType::PointType      origin;
+  ImageType::PointType origin;
   origin.Fill(0);
-  ImageType::DirectionType  direction;
+  ImageType::DirectionType direction;
   direction.SetIdentity();
 
   /* Create simple test images. */
@@ -165,7 +170,7 @@ int itkCorrelationImageToImageMetricv4Test(int, char ** const)
   while( !itFixed.IsAtEnd() )
     {
     IndexType ind = itFixed.GetIndex();
-    double v = itkCorrelationImageToImageMetricv4Test_GetToyImagePixelValue(ind, p0, imageDimensionality, 0);
+    double    v = itkCorrelationImageToImageMetricv4Test_GetToyImagePixelValue(ind, p0, imageDimensionality, 0);
     itFixed.Set( v  );
     count++;
     ++itFixed;
@@ -182,7 +187,7 @@ int itkCorrelationImageToImageMetricv4Test(int, char ** const)
   while( !itMoving.IsAtEnd() )
     {
     IndexType ind = itMoving.GetIndex();
-    double v = itkCorrelationImageToImageMetricv4Test_GetToyImagePixelValue(ind, p1, imageDimensionality, 0);
+    double    v = itkCorrelationImageToImageMetricv4Test_GetToyImagePixelValue(ind, p1, imageDimensionality, 0);
     itMoving.Set( v );
     count++;
     ++itMoving;
@@ -192,7 +197,7 @@ int itkCorrelationImageToImageMetricv4Test(int, char ** const)
   typedef itk::TranslationTransform<double,imageDimensionality> FixedTransformType;
   typedef itk::TranslationTransform<double,imageDimensionality> MovingTransformType;
 
-  FixedTransformType::Pointer fixedTransform = FixedTransformType::New();
+  FixedTransformType::Pointer  fixedTransform = FixedTransformType::New();
   MovingTransformType::Pointer movingTransform = MovingTransformType::New();
 
   fixedTransform->SetIdentity();
@@ -211,10 +216,10 @@ int itkCorrelationImageToImageMetricv4Test(int, char ** const)
   metric->SetFixedTransform( fixedTransform );
   metric->SetMovingTransform( movingTransform );
 
-  MetricType::MeasureType value1, value2;
+  MetricType::MeasureType    value1, value2;
   MetricType::DerivativeType derivative1, derivative2;
-  int ret;
-  int result = EXIT_SUCCESS;
+  int                        ret;
+  int                        result = EXIT_SUCCESS;
 
   metric->SetMaximumNumberOfThreads(1);
   std::cerr << "Setting number of metric threads to " << metric->GetMaximumNumberOfThreads() << std::endl;
@@ -241,7 +246,7 @@ int itkCorrelationImageToImageMetricv4Test(int, char ** const)
     result = EXIT_FAILURE;
     }
 
-  vnl_vector<double> ddiff = (vnl_vector<double>) derivative1 - (vnl_vector<double>) derivative2;
+  vnl_vector<double> ddiff = (vnl_vector<double>)derivative1 - (vnl_vector<double>)derivative2;
   if (ddiff.two_norm() > myeps)
     {
     std::cerr << "derivative1: " << derivative1 << std::endl;
@@ -255,7 +260,7 @@ int itkCorrelationImageToImageMetricv4Test(int, char ** const)
   MovingTransformType::ParametersType parameters( imageDimensionality );
   parameters.Fill( static_cast<MovingTransformType::ParametersValueType>(1000) );
   movingTransform->SetParameters( parameters );
-  MetricType::MeasureType expectedMetricMax, valueReturn;
+  MetricType::MeasureType    expectedMetricMax, valueReturn;
   MetricType::DerivativeType derivativeReturn;
   expectedMetricMax = itk::NumericTraits<MetricType::MeasureType>::max();
   std::cout << "Testing non-overlapping images. Expect a warning:" << std::endl;

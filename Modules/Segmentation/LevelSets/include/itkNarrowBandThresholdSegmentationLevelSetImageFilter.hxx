@@ -39,8 +39,10 @@ NarrowBandThresholdSegmentationLevelSetImageFilter< TInputImage, TFeatureImage, 
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "ThresholdFunction: " << m_ThresholdFunction;
 }
+
 } // end namespace itk
 
 #endif

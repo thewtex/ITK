@@ -18,14 +18,15 @@
 
 #include "itkOtsuMultipleThresholdsCalculator.h"
 
-int itkOtsuMultipleThresholdsCalculatorTest(int, char*[])
+int
+itkOtsuMultipleThresholdsCalculatorTest(int, char*[])
 {
   typedef float                                         MeasurementType;
   typedef itk::Statistics::Histogram< MeasurementType > HistogramType;
   HistogramType::Pointer histogram = HistogramType::New();
 
   // initialize histogram
-  HistogramType::SizeType size;
+  HistogramType::SizeType              size;
   HistogramType::MeasurementVectorType lowerBound;
   HistogramType::MeasurementVectorType upperBound;
   lowerBound.SetSize(1);
@@ -55,7 +56,7 @@ int itkOtsuMultipleThresholdsCalculatorTest(int, char*[])
 
     for (ValuesVectorType::const_iterator viter = values.begin(); viter != values.end(); ++viter)
       {
-      if (measurement > (*viter-range) && measurement <  (*viter+range))
+      if (measurement > (*viter-range) && measurement <  (*viter+range) )
         {
         iter.SetFrequency(1);
         }
@@ -65,11 +66,11 @@ int itkOtsuMultipleThresholdsCalculatorTest(int, char*[])
   // Compute numberOfValues - 1 thresholds.
   unsigned long numberOfThresholds = values.size() - 1;
 
-  typedef itk::OtsuMultipleThresholdsCalculator<HistogramType>  OtsuMultipleThresholdCalculatorType;
+  typedef itk::OtsuMultipleThresholdsCalculator<HistogramType> OtsuMultipleThresholdCalculatorType;
 
   OtsuMultipleThresholdCalculatorType::Pointer otsuThresholdCalculator = OtsuMultipleThresholdCalculatorType::New();
 
-  otsuThresholdCalculator->SetInputHistogram(histogram.GetPointer());
+  otsuThresholdCalculator->SetInputHistogram(histogram.GetPointer() );
   otsuThresholdCalculator->SetNumberOfThresholds(numberOfThresholds);
 
   try
@@ -98,9 +99,9 @@ int itkOtsuMultipleThresholdsCalculatorTest(int, char*[])
 
   if (!passed)
     {
-      std::cout << "Test failed." << std::endl;
-      std::cout << otsuThresholdCalculator << std::endl;
-      return EXIT_FAILURE;
+    std::cout << "Test failed." << std::endl;
+    std::cout << otsuThresholdCalculator << std::endl;
+    return EXIT_FAILURE;
     }
 
   std::cout << "Test passed." << std::endl;

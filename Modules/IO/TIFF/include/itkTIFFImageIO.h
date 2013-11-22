@@ -39,7 +39,7 @@ class TIFFReaderInternal;
  * \wikiexample{IO/TIFFImageIO,Write a TIFF image}
  * \endwiki
  */
-class TIFFImageIO:public ImageIOBase
+class TIFFImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -100,13 +100,33 @@ public:
   // Description:
   // Set compression type. Sinze LZW compression is patented outside US, the
   // additional work steps have to be taken in order to use that compression.
-  void SetCompressionToNoCompression() { this->SetCompression(NoCompression); }
-  void SetCompressionToPackBits()      { this->SetCompression(PackBits); }
-  void SetCompressionToJPEG()          { this->SetCompression(JPEG); }
-  void SetCompressionToDeflate()       { this->SetCompression(Deflate); }
-  void SetCompressionToLZW()           { this->SetCompression(LZW); }
+  void
+  SetCompressionToNoCompression() {
+    this->SetCompression(NoCompression);
+  }
 
-  void SetCompression(int compression)
+  void
+  SetCompressionToPackBits()      {
+    this->SetCompression(PackBits);
+  }
+
+  void
+  SetCompressionToJPEG()          {
+    this->SetCompression(JPEG);
+  }
+
+  void
+  SetCompressionToDeflate()       {
+    this->SetCompression(Deflate);
+  }
+
+  void
+  SetCompressionToLZW()           {
+    this->SetCompression(LZW);
+  }
+
+  void
+  SetCompression(int compression)
   {
     m_Compression = compression;
 

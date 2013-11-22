@@ -48,8 +48,8 @@ public:
   typedef SmartPointer< Self >                 Pointer;
   typedef SmartPointer< const Self >           ConstPointer;
 
-  typedef itk::fem::FEMObject< TDimension >    FEMObjectType;
-  typedef typename FEMObjectType::Pointer      FEMObjectPointer;
+  typedef itk::fem::FEMObject< TDimension > FEMObjectType;
+  typedef typename FEMObjectType::Pointer   FEMObjectPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self );
@@ -61,27 +61,30 @@ public:
   void SetFEMObject( FEMObjectType * femobject );
 
   /** Get a pointer to the femobject currently attached to the object. */
-  FEMObjectType * GetFEMObject( void )
-  {
-    return m_FEMObject.GetPointer();
-  }
-  const FEMObjectType * GetFEMObject( void ) const
+  FEMObjectType *
+  GetFEMObject( void )
   {
     return m_FEMObject.GetPointer();
   }
 
+  const FEMObjectType *
+  GetFEMObject( void ) const
+  {
+    return m_FEMObject.GetPointer();
+  }
 
   /** Returns the latest modified time of the object and its component. */
   ModifiedTimeType GetMTime( void ) const;
 
 protected:
   FEMObjectSpatialObject(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);         //purposely not implemented
 
   FEMObjectPointer m_FEMObject;
 
   FEMObjectSpatialObject();
-  virtual ~FEMObjectSpatialObject();
+  virtual
+  ~FEMObjectSpatialObject();
 
   void PrintSelf( std::ostream& os, Indent indent ) const;
 

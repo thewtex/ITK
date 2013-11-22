@@ -51,7 +51,8 @@ class GenericCUBFileAdaptor
 {
 public:
   GenericCUBFileAdaptor() {}
-  virtual ~GenericCUBFileAdaptor() {}
+  virtual
+  ~GenericCUBFileAdaptor() {}
 
   typedef ImageIOBase::SizeType SizeType;
 
@@ -61,7 +62,8 @@ public:
 
   virtual void WriteData(const void *data, SizeType bytes) = 0;
 
-  std::string ReadHeader()
+  std::string
+  ReadHeader()
   {
     // Read everything up to the \f symbol
     itksys_ios::ostringstream oss;
@@ -90,13 +92,14 @@ public:
     // Return the header string
     return oss.str();
   }
+
 };
 
 /**
  * A reader for gzip files
  */
 
-class CompressedCUBFileAdaptor:public GenericCUBFileAdaptor
+class CompressedCUBFileAdaptor : public GenericCUBFileAdaptor
 {
 public:
   CompressedCUBFileAdaptor(const char *file, const char *mode)
@@ -110,7 +113,8 @@ public:
       }
   }
 
-  virtual ~CompressedCUBFileAdaptor()
+  virtual
+  ~CompressedCUBFileAdaptor()
   {
     if ( m_GzFile )
       {
@@ -119,7 +123,8 @@ public:
       }
   }
 
-  unsigned char ReadByte()
+  unsigned char
+  ReadByte()
   {
     int byte = gzgetc(m_GzFile);
 
@@ -134,7 +139,8 @@ public:
     return static_cast< unsigned char >( byte );
   }
 
-  void ReadData(void *data, SizeType bytes)
+  void
+  ReadData(void *data, SizeType bytes)
   {
     if ( m_GzFile == NULL )
       {
@@ -158,7 +164,8 @@ public:
       }
   }
 
-  void WriteData(const void *data, SizeType bytes)
+  void
+  WriteData(const void *data, SizeType bytes)
   {
     if ( m_GzFile == NULL )
       {
@@ -186,7 +193,7 @@ private:
 /**
  * A reader for non-gzip files
  */
-class DirectCUBFileAdaptor:public GenericCUBFileAdaptor
+class DirectCUBFileAdaptor : public GenericCUBFileAdaptor
 {
 public:
   DirectCUBFileAdaptor(const char *file, const char *mode)
@@ -208,7 +215,8 @@ public:
       }
   }
 
-  unsigned char ReadByte()
+  unsigned char
+  ReadByte()
   {
     int byte = fgetc(m_File);
 
@@ -223,7 +231,8 @@ public:
     return static_cast< unsigned char >( byte );
   }
 
-  void ReadData(void *data, SizeType bytes)
+  void
+  ReadData(void *data, SizeType bytes)
   {
     if ( m_File == NULL )
       {
@@ -233,7 +242,7 @@ public:
       }
 
     const SizeValueType numberOfBytesToRead =  Math::CastWithRangeCheck< SizeValueType, SizeType >(bytes);
-    SizeType     bread = fread(data, NumericTraits< SizeValueType >::One, numberOfBytesToRead, m_File);
+    SizeType            bread = fread(data, NumericTraits< SizeValueType >::One, numberOfBytesToRead, m_File);
     if ( bread != bytes )
       {
       itksys_ios::ostringstream oss;
@@ -247,7 +256,8 @@ public:
       }
   }
 
-  void WriteData(const void *data, SizeType bytes)
+  void
+  WriteData(const void *data, SizeType bytes)
   {
     if ( m_File == NULL )
       {
@@ -257,7 +267,7 @@ public:
       }
 
     const SizeValueType numberOfBytesToWrite =  Math::CastWithRangeCheck< SizeValueType, SizeType >(bytes);
-    SizeType     bwritten = fwrite(data, NumericTraits< SizeValueType >::One, numberOfBytesToWrite, m_File);
+    SizeType            bwritten = fwrite(data, NumericTraits< SizeValueType >::One, numberOfBytesToWrite, m_File);
     if ( bwritten != bytes )
       {
       ExceptionObject exception;
@@ -284,7 +294,8 @@ public:
   typedef ImageIOBase::ByteOrder      ByteOrder;
   typedef ImageIOBase::BufferSizeType BufferSizeType;
 
-  static void SwapIfNecessary(
+  static void
+  SwapIfNecessary(
     void *buffer, BufferSizeType numberOfBytes, ByteOrder dataByteOrder)
   {
     if ( dataByteOrder == ImageIOBase::LittleEndian )
@@ -298,23 +309,24 @@ public:
         (TPixel *)buffer, numberOfBytes / sizeof( TPixel ) );
       }
   }
+
 };
 
 // Strings
-const char *VoxBoCUBImageIO:: m_VB_IDENTIFIER_SYSTEM = "VB98";
-const char *VoxBoCUBImageIO:: m_VB_IDENTIFIER_FILETYPE = "CUB1";
-const char *VoxBoCUBImageIO:: m_VB_DIMENSIONS = "VoxDims(XYZ)";
-const char *VoxBoCUBImageIO:: m_VB_SPACING = "VoxSizes(XYZ)";
-const char *VoxBoCUBImageIO:: m_VB_ORIGIN = "Origin(XYZ)";
-const char *VoxBoCUBImageIO:: m_VB_DATATYPE = "DataType";
-const char *VoxBoCUBImageIO:: m_VB_BYTEORDER = "Byteorder";
-const char *VoxBoCUBImageIO:: m_VB_ORIENTATION = "Orientation";
-const char *VoxBoCUBImageIO:: m_VB_BYTEORDER_MSB = "msbfirst";
-const char *VoxBoCUBImageIO:: m_VB_BYTEORDER_LSB = "lsbfirst";
-const char *VoxBoCUBImageIO:: m_VB_DATATYPE_BYTE = "Byte";
-const char *VoxBoCUBImageIO:: m_VB_DATATYPE_INT = "Integer";
-const char *VoxBoCUBImageIO:: m_VB_DATATYPE_FLOAT = "Float";
-const char *VoxBoCUBImageIO:: m_VB_DATATYPE_DOUBLE = "Double";
+const char *VoxBoCUBImageIO::m_VB_IDENTIFIER_SYSTEM = "VB98";
+const char *VoxBoCUBImageIO::m_VB_IDENTIFIER_FILETYPE = "CUB1";
+const char *VoxBoCUBImageIO::m_VB_DIMENSIONS = "VoxDims(XYZ)";
+const char *VoxBoCUBImageIO::m_VB_SPACING = "VoxSizes(XYZ)";
+const char *VoxBoCUBImageIO::m_VB_ORIGIN = "Origin(XYZ)";
+const char *VoxBoCUBImageIO::m_VB_DATATYPE = "DataType";
+const char *VoxBoCUBImageIO::m_VB_BYTEORDER = "Byteorder";
+const char *VoxBoCUBImageIO::m_VB_ORIENTATION = "Orientation";
+const char *VoxBoCUBImageIO::m_VB_BYTEORDER_MSB = "msbfirst";
+const char *VoxBoCUBImageIO::m_VB_BYTEORDER_LSB = "lsbfirst";
+const char *VoxBoCUBImageIO::m_VB_DATATYPE_BYTE = "Byte";
+const char *VoxBoCUBImageIO::m_VB_DATATYPE_INT = "Integer";
+const char *VoxBoCUBImageIO::m_VB_DATATYPE_FLOAT = "Float";
+const char *VoxBoCUBImageIO::m_VB_DATATYPE_DOUBLE = "Double";
 
 /** Constructor */
 VoxBoCUBImageIO::VoxBoCUBImageIO()
@@ -388,7 +400,8 @@ VoxBoCUBImageIO::CreateWriter(const char *filename)
     }
 }
 
-bool VoxBoCUBImageIO::CanReadFile(const char *filename)
+bool
+VoxBoCUBImageIO::CanReadFile(const char *filename)
 {
   // First check if the file can be read
   GenericCUBFileAdaptor *reader = CreateReader(filename);
@@ -432,14 +445,16 @@ bool VoxBoCUBImageIO::CanReadFile(const char *filename)
   return iscub;
 }
 
-bool VoxBoCUBImageIO::CanWriteFile(const char *name)
+bool
+VoxBoCUBImageIO::CanWriteFile(const char *name)
 {
   bool compressed;
 
   return CheckExtension(name, compressed);
 }
 
-void VoxBoCUBImageIO::Read(void *buffer)
+void
+VoxBoCUBImageIO::Read(void *buffer)
 {
   if ( m_Reader == NULL )
     {
@@ -458,7 +473,8 @@ void VoxBoCUBImageIO::Read(void *buffer)
  *  Read Information about the VoxBoCUB file
  *  and put the cursor of the stream just before the first data pixel
  */
-void VoxBoCUBImageIO::ReadImageInformation()
+void
+VoxBoCUBImageIO::ReadImageInformation()
 {
   // Make sure there is no other reader
   delete m_Reader;
@@ -576,7 +592,7 @@ void VoxBoCUBImageIO::ReadImageInformation()
         if ( it != m_OrientationMap.end() )
           {
           //NOTE:  The itk::ImageIOBase direction is a std::vector<std::vector > >, and threeDDirection is a 3x3 matrix
-          itk::SpatialOrientationAdapter soAdaptor;
+          itk::SpatialOrientationAdapter                soAdaptor;
           itk::SpatialOrientationAdapter::DirectionType threeDDirection=soAdaptor.ToDirectionCosines(it->second);
           this->m_Direction[0][0]=threeDDirection[0][0];
           this->m_Direction[0][1]=threeDDirection[0][1];
@@ -687,7 +703,7 @@ VoxBoCUBImageIO
 
   // Write the orientation code
   //NOTE:  The itk::ImageIOBase direction is a std::vector<std::vector > >, and threeDDirection is a 3x3 matrix
-  itk::SpatialOrientationAdapter soAdaptor;
+  itk::SpatialOrientationAdapter                soAdaptor;
   itk::SpatialOrientationAdapter::DirectionType threeDDirection;
   threeDDirection[0][0]=this->m_Direction[0][0];
   threeDDirection[0][1]=this->m_Direction[0][1];
@@ -698,7 +714,7 @@ VoxBoCUBImageIO
   threeDDirection[2][0]=this->m_Direction[2][0];
   threeDDirection[2][1]=this->m_Direction[2][1];
   threeDDirection[2][2]=this->m_Direction[2][2];
-  OrientationFlags     oflag = soAdaptor.FromDirectionCosines(threeDDirection);
+  OrientationFlags oflag = soAdaptor.FromDirectionCosines(threeDDirection);
     {
     InverseOrientationMap::const_iterator it = m_InverseOrientationMap.find(oflag);
     if ( it != m_InverseOrientationMap.end() )
@@ -708,7 +724,7 @@ VoxBoCUBImageIO
     }
 
   //Add CUB specific parameters to header from MetaDictionary
-  MetaDataDictionary & dic = GetMetaDataDictionary();
+  MetaDataDictionary &       dic = GetMetaDataDictionary();
   std::vector< std::string > keys = dic.GetKeys();
   std::string                word;
   for ( SizeValueType i = 0; i < keys.size(); i++ )
@@ -747,13 +763,16 @@ VoxBoCUBImageIO
 }
 
 /** Print Self Method */
-void VoxBoCUBImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+VoxBoCUBImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "PixelType " << m_PixelType << "\n";
 }
 
-bool VoxBoCUBImageIO::CheckExtension(const char *filename, bool & isCompressed)
+bool
+VoxBoCUBImageIO::CheckExtension(const char *filename, bool & isCompressed)
 {
   std::string fname = filename;
 
@@ -905,4 +924,5 @@ VoxBoCUBImageIO
     throw exception;
     }
 }
+
 } // end namespace itk

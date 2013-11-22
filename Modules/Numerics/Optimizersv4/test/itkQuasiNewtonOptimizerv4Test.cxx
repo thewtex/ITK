@@ -35,28 +35,30 @@
  */
 
 template< typename TMovingTransform >
-int itkQuasiNewtonOptimizerv4TestTemplated(int numberOfIterations,
-                                                          double shiftOfStep,
-                                                          std::string scalesOption,
-                                                          bool usePhysicalSpaceForShift = true)
+int
+itkQuasiNewtonOptimizerv4TestTemplated(int numberOfIterations,
+                                       double shiftOfStep,
+                                       std::string scalesOption,
+                                       bool usePhysicalSpaceForShift = true)
 {
   const unsigned int Dimension = TMovingTransform::SpaceDimension;
+
   typedef double PixelType;
 
   // Fixed Image Type
-  typedef itk::Image<PixelType,Dimension>               FixedImageType;
+  typedef itk::Image<PixelType,Dimension> FixedImageType;
 
   // Moving Image Type
-  typedef itk::Image<PixelType,Dimension>               MovingImageType;
+  typedef itk::Image<PixelType,Dimension> MovingImageType;
 
   // Size Type
-  typedef typename MovingImageType::SizeType            SizeType;
+  typedef typename MovingImageType::SizeType SizeType;
 
   // ImageSource
   typedef typename itk::testhelper::ImageRegistrationMethodImageSource<
-                                  typename FixedImageType::PixelType,
-                                  typename MovingImageType::PixelType,
-                                  Dimension >         ImageSourceType;
+      typename FixedImageType::PixelType,
+      typename MovingImageType::PixelType,
+      Dimension >         ImageSourceType;
 
   typename FixedImageType::ConstPointer    fixedImage;
   typename MovingImageType::ConstPointer   movingImage;
@@ -94,7 +96,7 @@ int itkQuasiNewtonOptimizerv4TestTemplated(int numberOfIterations,
   // Assign images and transforms to the metric.
   metric->SetFixedImage( fixedImage );
   metric->SetMovingImage( movingImage );
-  metric->SetVirtualDomainFromImage( const_cast<FixedImageType *>(fixedImage.GetPointer()) );
+  metric->SetVirtualDomainFromImage( const_cast<FixedImageType *>(fixedImage.GetPointer() ) );
 
   metric->SetFixedTransform( fixedTransform );
   metric->SetMovingTransform( movingTransform );
@@ -103,14 +105,14 @@ int itkQuasiNewtonOptimizerv4TestTemplated(int numberOfIterations,
   metric->Initialize();
 
   // Optimizer
-  typedef itk::QuasiNewtonOptimizerv4  OptimizerType;
+  typedef itk::QuasiNewtonOptimizerv4 OptimizerType;
   OptimizerType::Pointer optimizer = OptimizerType::New();
 
   optimizer->SetMetric( metric );
   optimizer->SetNumberOfIterations( numberOfIterations );
 
   // Instantiate an Observer to report the progress of the Optimization
-  typedef itk::CommandIterationUpdate< OptimizerType >  CommandIterationType;
+  typedef itk::CommandIterationUpdate< OptimizerType > CommandIterationType;
   CommandIterationType::Pointer iterationCommand = CommandIterationType::New();
   iterationCommand->SetOptimizer( optimizer.GetPointer() );
 
@@ -118,8 +120,8 @@ int itkQuasiNewtonOptimizerv4TestTemplated(int numberOfIterations,
   typename itk::OptimizerParameterScalesEstimator::Pointer scalesEstimator;
 
   typedef itk::RegistrationParameterScalesFromPhysicalShift< MetricType > PhysicalShiftScalesEstimatorType;
-  typedef itk::RegistrationParameterScalesFromIndexShift< MetricType > IndexShiftScalesEstimatorType;
-  typedef itk::RegistrationParameterScalesFromJacobian< MetricType > JacobianScalesEstimatorType;
+  typedef itk::RegistrationParameterScalesFromIndexShift< MetricType >    IndexShiftScalesEstimatorType;
+  typedef itk::RegistrationParameterScalesFromJacobian< MetricType >      JacobianScalesEstimatorType;
 
   if (scalesOption.compare("shift") == 0)
     {
@@ -222,7 +224,8 @@ int itkQuasiNewtonOptimizerv4TestTemplated(int numberOfIterations,
     }
 }
 
-int itkQuasiNewtonOptimizerv4Test(int argc, char ** const argv)
+int
+itkQuasiNewtonOptimizerv4Test(int argc, char ** const argv)
 {
   if( argc > 3 )
     {
@@ -233,7 +236,7 @@ int itkQuasiNewtonOptimizerv4Test(int argc, char ** const argv)
     return EXIT_FAILURE;
     }
   unsigned int numberOfIterations = 50;
-  double shiftOfStep = 1.0;
+  double       shiftOfStep = 1.0;
 
   if( argc >= 2 )
     {
@@ -252,7 +255,8 @@ int itkQuasiNewtonOptimizerv4Test(int argc, char ** const argv)
 
   std::cout << std::endl << "Optimizing translation transform with Jacobian scales" << std::endl;
   typedef itk::TranslationTransform<double, Dimension> TranslationTransformType;
-  int ret2 = itkQuasiNewtonOptimizerv4TestTemplated<TranslationTransformType>(numberOfIterations, shiftOfStep, "jacobian");
+  int ret2 = itkQuasiNewtonOptimizerv4TestTemplated<TranslationTransformType>(numberOfIterations, shiftOfStep,
+                                                                              "jacobian");
 
   if ( ret1 == EXIT_SUCCESS && ret2 == EXIT_SUCCESS )
     {

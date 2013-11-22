@@ -77,11 +77,11 @@ int Partition(TSubsample *sample,
  * http://en.wikipedia.org/wiki/Selection_algorithm */
 template< typename TSubsample >
 typename TSubsample::MeasurementType
-QuickSelect(TSubsample * sample,
-            unsigned int activeDimension,
-            int beginIndex, int endIndex,
-            int kth,
-            typename TSubsample::MeasurementType medianGuess);
+  QuickSelect(TSubsample * sample,
+              unsigned int activeDimension,
+              int beginIndex, int endIndex,
+              int kth,
+              typename TSubsample::MeasurementType medianGuess);
 
 /** QuickSelect is an algorithm for finding the k-th largest element of a list.
  * In this case, only one of the components of the measurement vectors is

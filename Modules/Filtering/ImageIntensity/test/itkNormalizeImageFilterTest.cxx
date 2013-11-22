@@ -23,7 +23,8 @@
 #include "itkStreamingImageFilter.h"
 #include "itkFilterWatcher.h"
 
-int itkNormalizeImageFilterTest(int, char* [] )
+int
+itkNormalizeImageFilterTest(int, char* [] )
 {
   std::cout << "itkNormalizeImageFilterTest Start" << std::endl;
 
@@ -32,7 +33,7 @@ int itkNormalizeImageFilterTest(int, char* [] )
 
   // Generate a real image
   typedef itk::RandomImageSource<ShortImage> SourceType;
-  SourceType::Pointer source = SourceType::New();
+  SourceType::Pointer       source = SourceType::New();
   ShortImage::SizeValueType randomSize[3] = {18, 17, 67};
 
   source->SetSize( randomSize );
@@ -44,15 +45,15 @@ int itkNormalizeImageFilterTest(int, char* [] )
 
   typedef itk::NormalizeImageFilter<ShortImage,FloatImage> NormalizeType;
   NormalizeType::Pointer normalize = NormalizeType::New();
-  FilterWatcher watch(normalize, "Streaming");
+  FilterWatcher          watch(normalize, "Streaming");
 
-  normalize->SetInput(source->GetOutput());
+  normalize->SetInput(source->GetOutput() );
 
   typedef itk::StreamingImageFilter<FloatImage,FloatImage> StreamingType;
   StreamingType::Pointer streaming = StreamingType::New();
 
   streaming->SetNumberOfStreamDivisions(5);
-  streaming->SetInput (normalize->GetOutput());
+  streaming->SetInput (normalize->GetOutput() );
   streaming->Update();
 
   // Force the filter to re-execute
@@ -61,11 +62,10 @@ int itkNormalizeImageFilterTest(int, char* [] )
   typedef itk::StatisticsImageFilter<FloatImage> StatisticsType;
   StatisticsType::Pointer statistics = StatisticsType::New();
 
-  statistics->SetInput(streaming->GetOutput());
+  statistics->SetInput(streaming->GetOutput() );
   statistics->UpdateLargestPossibleRegion();
 
   std::cout << "Mean is: " << statistics->GetMean() << " Sigma is: " << statistics->GetSigma() << std::endl;
-
 
   return EXIT_SUCCESS;
 }

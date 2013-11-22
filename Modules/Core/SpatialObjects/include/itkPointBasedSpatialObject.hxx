@@ -18,7 +18,6 @@
 #ifndef __itkPointBasedSpatialObject_hxx
 #define __itkPointBasedSpatialObject_hxx
 
-
 #include "itkPointBasedSpatialObject.h"
 
 namespace itk
@@ -26,7 +25,7 @@ namespace itk
 /** Constructor */
 template< unsigned int TDimension >
 PointBasedSpatialObject< TDimension >
-::PointBasedSpatialObject():
+::PointBasedSpatialObject() :
   SpatialObject< TDimension >()
 {
   this->SetTypeName("PointBasedSpatialObject");
@@ -47,6 +46,7 @@ PointBasedSpatialObject< TDimension >
   os << indent << "PointBasedSpatialObject(" << this << ")" << std::endl;
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif // end __itkPointBasedSpatialObject_hxx

@@ -434,7 +434,7 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
   if (m_Sampler.IsNull() )
     {
     typedef itk::Statistics::SpatialNeighborSubsampler< PatchSampleType, InputImageRegionType >
-    SamplerType;
+      SamplerType;
     typename SamplerType::Pointer defaultSampler = SamplerType::New();
 
     defaultSampler->SetRadius(25);
@@ -560,7 +560,7 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
   centerIndex.Fill(patchRadius);
 
   ImageRegionIteratorWithIndex<WeightsImageType> pwIt(physicalWeightsImage, physicalRegion);
-  unsigned int                          pos = 0;
+  unsigned int                                   pos = 0;
   for ( pwIt.GoToBegin(); !pwIt.IsAtEnd(); ++pwIt )
     {
     typename WeightsImageType::IndexType curIndex;
@@ -570,7 +570,7 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
     for (unsigned int d = 0; d < ImageDimension; d++)
       {
       distanceVector[d] = static_cast<DistanceType> (curIndex[d])
-                          - static_cast<DistanceType> (centerIndex[d]);
+        - static_cast<DistanceType> (centerIndex[d]);
       }
     const float distanceFromCenter = distanceVector.GetNorm();
 
@@ -2527,8 +2527,7 @@ template <typename TInputImage, typename TOutputImage>
 void
 PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
 ::PostProcessOutput()
-{
-}
+{}
 
 template <typename TInputImage, typename TOutputImage>
 void

@@ -17,7 +17,6 @@
  *=========================================================================*/
 #include "itkLightObject.h"
 
-
 namespace itk
 {
 /** \class ExceptionObject::ExceptionData
@@ -26,19 +25,19 @@ namespace itk
  * Contains the location and description of the error, as well as
  * the text that should be returned by itk::ExceptionObject::what().
  */
-class ExceptionObject::ExceptionData:public ReferenceCounterInterface
+class ExceptionObject::ExceptionData : public ReferenceCounterInterface
 {
 protected:
   // Constructor. Might throw an exception.
   ExceptionData(
     const std::string & file, unsigned int line,
     const std::string & description,
-    const std::string & location):
+    const std::string & location) :
     m_Location(location),
     m_Description(description),
     m_File(file),
     m_Line(line)
-    {
+  {
     std::ostringstream loc;
 
     loc << ":" << m_Line << ":\n";
@@ -46,7 +45,7 @@ protected:
     m_What += loc.str();
     m_What += m_Description;
     m_WhatPointer = m_What.c_str();
-    }
+  }
 
 private:
   void operator=(const ExceptionData &); //purposely not implemented
@@ -74,12 +73,13 @@ private:
  * an exception within the constructor of ExceptionData won't trigger the destruction
  * of LightObject.
  */
-class ExceptionObject::ReferenceCountedExceptionData:public ExceptionData, public LightObject
+class ExceptionObject::ReferenceCountedExceptionData : public ExceptionData, public LightObject
 {
 public:
   typedef ReferenceCountedExceptionData Self;
   typedef SmartPointer< const Self >    ConstPointer;
-  static ConstPointer ConstNew(
+  static ConstPointer
+  ConstNew(
     const std::string & file, unsigned int line,
     const std::string & description,
     const std::string & location)
@@ -94,14 +94,16 @@ public:
 
   /** Increase the reference count (mark as used by another object).
     * Delegates the counting to its LightObject superclass  */
-  virtual void Register() const
+  virtual void
+  Register() const
   {
     this->LightObject::Register();
   }
 
   /** Decrease the reference count (release by another object).
     * Delegates the counting to its LightObject superclass  */
-  virtual void UnRegister() const
+  virtual void
+  UnRegister() const
   {
     this->LightObject::UnRegister();
   }
@@ -111,18 +113,19 @@ private:
   ReferenceCountedExceptionData(
     const std::string & file, unsigned int line,
     const std::string & description,
-    const std::string & location):
+    const std::string & location) :
     ExceptionData(file, line, description, location),
     LightObject()
-         {}
+  {}
 
   // Destructor. Only invoked via LightObject::UnRegister(), when its reference
   // count drops to zero.
   ~ReferenceCountedExceptionData()
-         {}
+  {}
 
   ReferenceCountedExceptionData(const Self &); //purposely not implemented
   void operator=(const Self &);                //purposely not implemented
+
 };
 
 ExceptionObject::ExceptionObject()
@@ -134,20 +137,21 @@ ExceptionObject::ExceptionObject(
   const char *file,
   unsigned int lineNumber,
   const char *desc,
-  const char *loc):
-  m_ExceptionData( ReferenceCountedExceptionData::ConstNew(file == 0 ? "":file, lineNumber, desc == 0 ? "":desc, loc ==
-                                                               0 ? "":loc) )
+  const char *loc) :
+  m_ExceptionData( ReferenceCountedExceptionData::ConstNew(file == 0 ? "" : file, lineNumber, desc == 0 ? "" : desc,
+                                                           loc ==
+                                                           0 ? "" : loc) )
 {}
 
 ExceptionObject::ExceptionObject(
   const std::string & file,
   unsigned int lineNumber,
   const std::string & desc,
-  const std::string & loc):
+  const std::string & loc) :
   m_ExceptionData( ReferenceCountedExceptionData::ConstNew(file, lineNumber, desc, loc) )
 {}
 
-ExceptionObject::ExceptionObject(const ExceptionObject & orig):
+ExceptionObject::ExceptionObject(const ExceptionObject & orig) :
   Superclass(orig),
   m_ExceptionData(orig.m_ExceptionData)
 {
@@ -227,10 +231,10 @@ ExceptionObject::SetLocation(const std::string & s)
   const bool IsNull = m_ExceptionData.IsNull();
 
   m_ExceptionData = ReferenceCountedExceptionData::ConstNew(
-    IsNull ? "" : this->GetExceptionData()->m_File.c_str(),
-    IsNull ? 0 : this->GetExceptionData()->m_Line,
-    IsNull ? "" : this->GetExceptionData()->m_Description.c_str(),
-    s);
+      IsNull ? "" : this->GetExceptionData()->m_File.c_str(),
+      IsNull ? 0 : this->GetExceptionData()->m_Line,
+      IsNull ? "" : this->GetExceptionData()->m_Description.c_str(),
+      s);
 }
 
 void
@@ -239,10 +243,10 @@ ExceptionObject::SetDescription(const std::string & s)
   const bool IsNull = m_ExceptionData.IsNull();
 
   m_ExceptionData = ReferenceCountedExceptionData::ConstNew(
-    IsNull ? "" : this->GetExceptionData()->m_File.c_str(),
-    IsNull ? 0 : this->GetExceptionData()->m_Line,
-    s,
-    IsNull ? "" : this->GetExceptionData()->m_Location.c_str() );
+      IsNull ? "" : this->GetExceptionData()->m_File.c_str(),
+      IsNull ? 0 : this->GetExceptionData()->m_Line,
+      s,
+      IsNull ? "" : this->GetExceptionData()->m_Location.c_str() );
 }
 
 void
@@ -343,4 +347,5 @@ ExceptionObject
   // Print trailer
   os << indent << std::endl;
 }
+
 } // end namespace itk

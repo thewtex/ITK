@@ -28,13 +28,24 @@ template< typename TInput, typename TOutput >
 class VectorIndexSelectionCast
 {
 public:
-  VectorIndexSelectionCast() { m_Index = 0; }
+  VectorIndexSelectionCast() {
+    m_Index = 0;
+  }
+
   ~VectorIndexSelectionCast() {}
 
-  unsigned int GetIndex() const { return m_Index; }
-  void SetIndex(unsigned int i) { m_Index = i; }
+  unsigned int
+  GetIndex() const {
+    return m_Index;
+  }
 
-  bool operator!=(const VectorIndexSelectionCast & other) const
+  void
+  SetIndex(unsigned int i) {
+    m_Index = i;
+  }
+
+  bool
+  operator!=(const VectorIndexSelectionCast & other) const
   {
     if ( m_Index != other.m_Index )
       {
@@ -43,12 +54,14 @@ public:
     return false;
   }
 
-  bool operator==(const VectorIndexSelectionCast & other) const
+  bool
+  operator==(const VectorIndexSelectionCast & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return static_cast< TOutput >( A[m_Index] );
   }
@@ -82,7 +95,7 @@ private:
  */
 
 template< typename TInputImage, typename TOutputImage >
-class VectorIndexSelectionCastImageFilter:
+class VectorIndexSelectionCastImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::VectorIndexSelectionCast< typename TInputImage::PixelType,
@@ -92,10 +105,10 @@ public:
   /** Standard class typedefs. */
   typedef VectorIndexSelectionCastImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::VectorIndexSelectionCast< typename TInputImage::PixelType,
-                                       typename TOutputImage::PixelType > >
-  Superclass;
+      TInputImage, TOutputImage,
+      Functor::VectorIndexSelectionCast< typename TInputImage::PixelType,
+                                         typename TOutputImage::PixelType > >
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -107,7 +120,8 @@ public:
                UnaryFunctorImageFilter);
 
   /** Get/Set methods for the index */
-  void SetIndex(unsigned int i)
+  void
+  SetIndex(unsigned int i)
   {
     if ( i != this->GetFunctor().GetIndex() )
       {
@@ -116,7 +130,8 @@ public:
       }
   }
 
-  unsigned int GetIndex(void) const
+  unsigned int
+  GetIndex(void) const
   {
     return this->GetFunctor().GetIndex();
   }
@@ -130,9 +145,11 @@ public:
 
 protected:
   VectorIndexSelectionCastImageFilter() {}
-  virtual ~VectorIndexSelectionCastImageFilter() {}
+  virtual
+  ~VectorIndexSelectionCastImageFilter() {}
 
-  virtual void BeforeThreadedGenerateData()
+  virtual void
+  BeforeThreadedGenerateData()
   {
     const unsigned int index = this->GetIndex();
     const TInputImage *image = this->GetInput();
@@ -143,10 +160,10 @@ protected:
     typedef typename TInputImage::PixelType PixelType;
 
     typedef typename NumericTraits< PixelType >::RealType
-    PixelRealType;
+      PixelRealType;
 
     typedef typename NumericTraits< PixelType >::ScalarRealType
-    PixelScalarRealType;
+      PixelScalarRealType;
 
     const unsigned int numberOfCompileTimeComponents =
       sizeof( PixelRealType ) / sizeof( PixelScalarRealType );
@@ -170,6 +187,7 @@ protected:
 private:
   VectorIndexSelectionCastImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                      //purposely not implemented
+
 };
 } // end namespace itk
 

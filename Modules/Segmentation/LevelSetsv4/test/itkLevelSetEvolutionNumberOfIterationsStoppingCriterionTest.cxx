@@ -20,18 +20,20 @@
 #include "itkLevelSetContainer.h"
 #include "itkLevelSetEvolutionNumberOfIterationsStoppingCriterion.h"
 
-int itkLevelSetEvolutionNumberOfIterationsStoppingCriterionTest( int , char* [] )
+int
+itkLevelSetEvolutionNumberOfIterationsStoppingCriterionTest( int , char* [] )
 {
   const unsigned int Dimension = 2;
+
   typedef float ValueType;
 
   typedef itk::WhitakerSparseLevelSetImage< ValueType, Dimension > LevelSetType;
 
   typedef itk::LevelSetContainerBase< itk::IdentifierType, LevelSetType >
-                                                            LevelSetContainerType;
+    LevelSetContainerType;
 
   typedef itk::LevelSetEvolutionNumberOfIterationsStoppingCriterion< LevelSetContainerType >
-      StoppingCriterionType;
+    StoppingCriterionType;
   StoppingCriterionType::Pointer criterion = StoppingCriterionType::New();
   criterion->SetNumberOfIterations( 5 );
 

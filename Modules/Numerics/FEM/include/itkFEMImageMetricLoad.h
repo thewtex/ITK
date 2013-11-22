@@ -103,17 +103,17 @@ public:
   typedef ImageRegionIteratorWithIndex<FixedType>  TarRegionIteratorType;
 
   typedef NeighborhoodIterator<MovingType>
-  MovingNeighborhoodIteratorType;
+    MovingNeighborhoodIteratorType;
   typedef typename MovingNeighborhoodIteratorType::IndexType
-  MovingNeighborhoodIndexType;
+    MovingNeighborhoodIndexType;
   typedef typename MovingNeighborhoodIteratorType::RadiusType
-  MovingRadiusType;
+    MovingRadiusType;
   typedef NeighborhoodIterator<FixedType>
-  FixedNeighborhoodIteratorType;
+    FixedNeighborhoodIteratorType;
   typedef typename FixedNeighborhoodIteratorType::IndexType
-  FixedNeighborhoodIndexType;
+    FixedNeighborhoodIndexType;
   typedef typename FixedNeighborhoodIteratorType::RadiusType
-  FixedRadiusType;
+    FixedRadiusType;
 
 // IMAGE DATA
   typedef   typename  MovingType::PixelType                             RefPixelType;
@@ -131,7 +131,7 @@ public:
 // Set up the metrics
 // ------------------------------------------------------------
   typedef double
-  CoordinateRepresentationType;
+    CoordinateRepresentationType;
   typedef Transform<CoordinateRepresentationType, itkGetStaticConstMacro(ImageDimension),
                     itkGetStaticConstMacro(ImageDimension)>            TransformBaseType;
   typedef TranslationTransform<CoordinateRepresentationType,
@@ -167,60 +167,71 @@ public:
   typedef SmartPointer<GradientImageType> GradientImagePointer;
   typedef GradientRecursiveGaussianImageFilter<ImageType,
                                                GradientImageType>
-  GradientImageFilterType;
+    GradientImageFilterType;
   //  typedef typename GradientImageFilterType::Pointer
   // GradientImageFilterPointer;
 
 // FUNCTIONS
 
   /** Set/Get the Metric.  */
-  void SetMetric(MetricBaseTypePointer MP)
+  void
+  SetMetric(MetricBaseTypePointer MP)
   {
     m_Metric = MP;
   }
 
   /** Define the reference (moving) image. */
-  void SetMovingImage(MovingType *R)
+  void
+  SetMovingImage(MovingType *R)
   {
     m_RefImage = R;
     m_RefSize = m_RefImage->GetLargestPossibleRegion().GetSize();
   }
 
-  void SetMetricMovingImage(MovingType *R)
+  void
+  SetMetricMovingImage(MovingType *R)
   {
     m_Metric->SetMovingImage(R);
     m_RefSize = R->GetLargestPossibleRegion().GetSize();
   }
 
   /** Define the target (fixed) image. */
-  void SetFixedImage(FixedType *T)
+  void
+  SetFixedImage(FixedType *T)
   {
     m_TarImage = T;
     m_TarSize = T->GetLargestPossibleRegion().GetSize();
   }
 
-  void SetMetricFixedImage(FixedType *T)
+  void
+  SetMetricFixedImage(FixedType *T)
   {
     m_Metric->SetFixedImage(T);
     m_TarSize = T->GetLargestPossibleRegion().GetSize();
   }
 
-  MovingPointer GetMovingImage()
+  MovingPointer
+  GetMovingImage()
   {
     return m_RefImage;
   }
-  FixedPointer GetFixedImage()
+
+  FixedPointer
+  GetFixedImage()
   {
     return m_TarImage;
   }
 
   /** Define the metric region size. */
-  void SetMetricRadius(MovingRadiusType T)
+  void
+  SetMetricRadius(MovingRadiusType T)
   {
     m_MetricRadius  = T;
   }
+
   /** Get the metric region size. */
-  MovingRadiusType GetMetricRadius()
+  MovingRadiusType
+  GetMetricRadius()
   {
     return m_MetricRadius;
   }
@@ -229,11 +240,14 @@ public:
    * in each 1-dimensional line integral when evaluating the load.
    * This value is passed to the load implementation.
    */
-  void SetNumberOfIntegrationPoints(unsigned int i)
+  void
+  SetNumberOfIntegrationPoints(unsigned int i)
   {
     m_NumberOfIntegrationPoints = i;
   }
-  unsigned int GetNumberOfIntegrationPoints()
+
+  unsigned int
+  GetNumberOfIntegrationPoints()
   {
     return m_NumberOfIntegrationPoints;
   }
@@ -241,19 +255,22 @@ public:
   /** Set the direction of the gradient (uphill or downhill).
     * E.g. the mean squares metric should be minimized while NCC and PR should be maximized.
     */
-  void SetSign(Float s)
+  void
+  SetSign(Float s)
   {
     m_Sign = s;
   }
 
   /** Set the sigma in a gaussian measure. */
-  void SetTemp(Float s)
+  void
+  SetTemp(Float s)
   {
     m_Temp = s;
   }
 
   /** Scaling of the similarity energy term */
-  void SetGamma(Float s)
+  void
+  SetGamma(Float s)
   {
     m_Gamma = s;
   }
@@ -261,14 +278,17 @@ public:
   /** Set the pointer to the solution vector.
    * \param ptr Pointer to the object of Solution class.
    */
-  void SetSolution(Solution::ConstPointer ptr)
+  void
+  SetSolution(Solution::ConstPointer ptr)
   {
     m_Solution = ptr;
   }
+
   /** Get the pointer to the solution vector.
    * \return Pointer to the object of Solution class.
    */
-  Solution::ConstPointer GetSolution()
+  Solution::ConstPointer
+  GetSolution()
   {
     return m_Solution;
   }
@@ -283,7 +303,8 @@ public:
   VectorType MetricFiniteDiff(VectorType PositionInElement, VectorType SolutionAtPosition);
 
   // FIXME - WE ASSUME THE 2ND VECTOR (INDEX 1) HAS THE INFORMATION WE WANT
-  Float GetSolution(unsigned int i, unsigned int which = 0)
+  Float
+  GetSolution(unsigned int i, unsigned int which = 0)
   {
     return m_Solution->GetSolutionValue(i, which);
   }
@@ -303,31 +324,40 @@ public:
    */
   VectorType Fe(VectorType, VectorType);
 
-  static Baseclass * NewImageMetricLoad(void)
+  static Baseclass *
+  NewImageMetricLoad(void)
   {
     return new ImageMetricLoad;
   }
 
   /** Set/Get the metric gradient image */
   // void InitializeGradientImage();
-  void SetMetricGradientImage(GradientImageType *g)
+  void
+  SetMetricGradientImage(GradientImageType *g)
   {
     m_MetricGradientImage = g;
   }
-  GradientImageType * GetMetricGradientImage()
+
+  GradientImageType *
+  GetMetricGradientImage()
   {
     return m_MetricGradientImage;
   }
 
-  void PrintCurrentEnergy()
+  void
+  PrintCurrentEnergy()
   {
     std::cout << " energy " << m_Energy << std::endl;
   }
-  double GetCurrentEnergy()
+
+  double
+  GetCurrentEnergy()
   {
     return m_Energy;
   }
-  void  SetCurrentEnergy(double e)
+
+  void
+  SetCurrentEnergy(double e)
   {
     m_Energy = e;
   }
@@ -346,15 +376,15 @@ private:
                                                   region size for fixed image*/
   typename MovingType::SizeType m_RefSize;
   typename FixedType::SizeType  m_TarSize;
-  unsigned int                  m_NumberOfIntegrationPoints;
-  unsigned int                  m_SolutionIndex;
-  unsigned int                  m_SolutionIndex2;
-  Float                         m_Sign;
-  Float                         m_Temp;
-  Float                         m_Gamma;
+  unsigned int m_NumberOfIntegrationPoints;
+  unsigned int m_SolutionIndex;
+  unsigned int m_SolutionIndex2;
+  Float        m_Sign;
+  Float        m_Temp;
+  Float        m_Gamma;
 
   typename Solution::ConstPointer     m_Solution;
-  MetricBaseTypePointer               m_Metric;
+  MetricBaseTypePointer m_Metric;
   typename TransformBaseType::Pointer m_Transform;
   typename InterpolatorType::Pointer  m_Interpolator;
 

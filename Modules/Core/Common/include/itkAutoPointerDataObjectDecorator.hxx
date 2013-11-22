@@ -35,7 +35,7 @@ namespace itk
 /** Constructor */
 template< typename T >
 AutoPointerDataObjectDecorator< T >
-::AutoPointerDataObjectDecorator():m_Component()
+::AutoPointerDataObjectDecorator() : m_Component()
 {}
 
 /** Destructor */
@@ -69,6 +69,7 @@ AutoPointerDataObjectDecorator< T >
 
   os << indent << "Component: " << typeid( m_Component ).name() << std::endl;
 }
+
 } // end namespace itk
 
 #endif

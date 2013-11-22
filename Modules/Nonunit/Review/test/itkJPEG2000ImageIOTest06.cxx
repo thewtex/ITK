@@ -20,8 +20,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
-int itkJPEG2000ImageIOTest06( int argc, char * argv[] )
+int
+itkJPEG2000ImageIOTest06( int argc, char * argv[] )
 {
   // Verify the number of parameters in the command line
   if( argc < 3 )
@@ -34,16 +34,15 @@ int itkJPEG2000ImageIOTest06( int argc, char * argv[] )
   //  Register the factory
   itk::JPEG2000ImageIOFactory::RegisterOneFactory();
 
-
   //  Image types are defined below.
-  typedef itk::RGBPixel<unsigned char>  PixelType;
-  const   unsigned int        Dimension = 2;
+  typedef itk::RGBPixel<unsigned char> PixelType;
+  const   unsigned int Dimension = 2;
 
-  typedef itk::Image< PixelType,  Dimension >   InputImageType;
-  typedef itk::Image< PixelType, Dimension >    OutputImageType;
+  typedef itk::Image< PixelType,  Dimension > InputImageType;
+  typedef itk::Image< PixelType, Dimension >  OutputImageType;
 
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();

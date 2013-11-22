@@ -236,6 +236,7 @@ ConnectedComponentFunctorImageFilter< TInputImage, TOutputImage, TFunctor, TMask
     progress.CompletedPixel();
     }
 }
+
 } // end namespace itk
 
 #endif

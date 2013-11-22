@@ -82,7 +82,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingSpatialObject >
-class ImageToSpatialObjectRegistrationMethod:public ProcessObject
+class ImageToSpatialObjectRegistrationMethod : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -104,7 +104,7 @@ public:
   /**  Type of the Moving image. */
   typedef TMovingSpatialObject MovingSpatialObjectType;
   typedef typename MovingSpatialObjectType::ConstPointer
-  MovingSpatialObjectConstPointer;
+    MovingSpatialObjectConstPointer;
 
   /**  Type of the metric. */
   typedef ImageToSpatialObjectMetric< FixedImageType,
@@ -192,12 +192,17 @@ public:
   // compatibility reasons, we check whether StartRegistration was
   // called directly or whether Update() (which in turn called
   // StartRegistration()).
-  void StartRegistration(void) { this->Update(); }
+  void
+  StartRegistration(void) {
+    this->Update();
+  }
+
 #endif
 
 protected:
   ImageToSpatialObjectRegistrationMethod();
-  virtual ~ImageToSpatialObjectRegistrationMethod() {}
+  virtual
+  ~ImageToSpatialObjectRegistrationMethod() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Method invoked by the pipeline in order to trigger the computation of
@@ -215,7 +220,8 @@ private:
   ImageToSpatialObjectRegistrationMethod(const Self &); //purposely not
                                                         // implemented
   void operator=(const Self &);                         //purposely not
-                                                        // implemented
+
+  // implemented
 
   MetricPointer          m_Metric;
   OptimizerType::Pointer m_Optimizer;

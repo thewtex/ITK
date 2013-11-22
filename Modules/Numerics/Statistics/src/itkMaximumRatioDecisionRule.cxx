@@ -23,8 +23,7 @@ namespace Statistics
 {
 MaximumRatioDecisionRule
 ::MaximumRatioDecisionRule()
-{
-}
+{}
 
 void
 MaximumRatioDecisionRule
@@ -58,7 +57,7 @@ void
 MaximumRatioDecisionRule
 ::SetPriorProbabilities(const PriorProbabilityVectorType& p)
 {
-  if (p.size() != m_PriorProbabilities.size())
+  if (p.size() != m_PriorProbabilities.size() )
     {
     m_PriorProbabilities = p;
     this->Modified();
@@ -75,7 +74,7 @@ MaximumRatioDecisionRule
         break;
         }
       }
-    if (pit != p.end())
+    if (pit != p.end() )
       {
       m_PriorProbabilities = p;
       this->Modified();
@@ -88,9 +87,12 @@ MaximumRatioDecisionRule
 ::Evaluate(const MembershipVectorType & discriminantScores) const
 {
   bool uniformPrior = false;
-  if (discriminantScores.size() != m_PriorProbabilities.size())
+
+  if (discriminantScores.size() != m_PriorProbabilities.size() )
     {
-    itkWarningMacro("Size mismatch between discriminant scores (" << discriminantScores.size() << ") and priors (" << m_PriorProbabilities.size() << "). Reverting to a uniform prior.");
+    itkWarningMacro(
+      "Size mismatch between discriminant scores (" << discriminantScores.size() << ") and priors (" << m_PriorProbabilities.size() <<
+        "). Reverting to a uniform prior.");
     uniformPrior = true;
     }
 
@@ -127,5 +129,6 @@ MaximumRatioDecisionRule
     }
   return besti;
 }
+
 } // end of Statistics namespace
 } // end of ITK namespace

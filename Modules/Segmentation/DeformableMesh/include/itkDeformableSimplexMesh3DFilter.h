@@ -73,7 +73,7 @@ namespace itk
   * \ingroup ITKDeformableMesh
   */
 template< typename TInputMesh, typename TOutputMesh >
-class DeformableSimplexMesh3DFilter:public MeshToMeshFilter< TInputMesh, TOutputMesh >
+class DeformableSimplexMesh3DFilter : public MeshToMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
   /** Standard "Self" typedef. */
@@ -128,11 +128,11 @@ public:
   typedef typename InputMeshType::NeighborListType           InputNeighbors;
   typedef typename InputMeshType::NeighborListType::iterator InputNeighborsIterator;
 
-  typedef std::set< IdentifierType >                            NeighborSetType;
-  typedef std::set< IdentifierType >                            IndexSetType;
-  typedef itk::MapContainer< IdentifierType, NeighborSetType >  VertexNeighborListType;
-  typedef typename NeighborSetType::iterator                    NeighborSetIterator;
-  typedef typename IndexSetType::iterator                       IndexSetIterator;
+  typedef std::set< IdentifierType >                           NeighborSetType;
+  typedef std::set< IdentifierType >                           IndexSetType;
+  typedef itk::MapContainer< IdentifierType, NeighborSetType > VertexNeighborListType;
+  typedef typename NeighborSetType::iterator                   NeighborSetIterator;
+  typedef typename IndexSetType::iterator                      IndexSetIterator;
 
   typedef typename InputMeshType::GeometryMapType GeometryMapType;
   typedef typename GeometryMapType::Pointer       GeometryMapPointer;

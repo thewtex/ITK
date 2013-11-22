@@ -29,7 +29,7 @@ MinimumDecisionRule
 
   if (discriminantScores.size() > 0)
     {
-    MembershipValueType  min = discriminantScores[0];
+    MembershipValueType min = discriminantScores[0];
     ClassIdentifierType i;
 
     for ( i = 1; i < discriminantScores.size(); i++ )
@@ -43,5 +43,6 @@ MinimumDecisionRule
     }
   return minIndex;
 }
+
 } // end of namespace Statistics
 } // end of namespace itk

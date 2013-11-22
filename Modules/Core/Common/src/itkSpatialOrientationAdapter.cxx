@@ -140,4 +140,5 @@ SpatialOrientationAdapter
   //TODO:  Should check that directions are orthoganal.
   return direction;
 }
+
 } // end namespace itk

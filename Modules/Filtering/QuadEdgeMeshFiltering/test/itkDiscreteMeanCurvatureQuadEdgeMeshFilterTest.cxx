@@ -21,7 +21,8 @@
 #include "itkQuadEdgeMeshExtendedTraits.h"
 #include "itkDiscreteMeanCurvatureQuadEdgeMeshFilter.h"
 
-int itkDiscreteMeanCurvatureQuadEdgeMeshFilterTest( int argc, char* argv[] )
+int
+itkDiscreteMeanCurvatureQuadEdgeMeshFilterTest( int argc, char* argv[] )
 {
   if( argc < 2 )
     {
@@ -35,14 +36,14 @@ int itkDiscreteMeanCurvatureQuadEdgeMeshFilterTest( int argc, char* argv[] )
   typedef double CoordType;
 
   typedef itk::QuadEdgeMeshExtendedTraits <
-    CoordType,
-    Dimension,
-    2,
-    CoordType,
-    CoordType,
-    CoordType,
-    bool,
-    bool > Traits;
+      CoordType,
+      Dimension,
+      2,
+      CoordType,
+      CoordType,
+      CoordType,
+      bool,
+      bool > Traits;
 
   typedef itk::QuadEdgeMesh< CoordType, Dimension, Traits > MeshType;
   typedef itk::DiscreteMeanCurvatureQuadEdgeMeshFilter<MeshType,MeshType>
@@ -50,11 +51,11 @@ int itkDiscreteMeanCurvatureQuadEdgeMeshFilterTest( int argc, char* argv[] )
 
   typedef itk::MeshFileReader< MeshType > ReaderType;
 
-  ReaderType::Pointer reader = ReaderType::New( );
+  ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   try
     {
-    reader->Update( );
+    reader->Update();
     }
   catch( itk::ExceptionObject & excp )
     {

@@ -23,7 +23,8 @@ namespace itk
 // static variable initialization
 GPUContextManager* GPUContextManager::m_Instance = NULL;
 
-GPUContextManager* GPUContextManager::GetInstance()
+GPUContextManager*
+GPUContextManager::GetInstance()
 {
   if(m_Instance == NULL)
     {
@@ -32,9 +33,11 @@ GPUContextManager* GPUContextManager::GetInstance()
   return m_Instance;
 }
 
-void GPUContextManager::DestroyInstance()
+void
+GPUContextManager::DestroyInstance()
 {
-std::cout << "Context is destroyed" << std::endl;
+  std::cout << "Context is destroyed" << std::endl;
+
   delete m_Instance;
   m_Instance = NULL;
 }
@@ -51,7 +54,7 @@ GPUContextManager::GPUContextManager()
   m_Platform = OpenCLSelectPlatform("NVIDIA");
   assert(m_Platform != NULL);
 
-  cl_device_type devType = CL_DEVICE_TYPE_GPU;//CL_DEVICE_TYPE_CPU;//
+  cl_device_type devType = CL_DEVICE_TYPE_GPU; //CL_DEVICE_TYPE_CPU;//
 
   // Get the devices
   m_Devices = OpenCLGetAvailableDevices(m_Platform, devType, &m_NumberOfDevices);
@@ -78,10 +81,10 @@ GPUContextManager::GPUContextManager()
 }
 
 GPUContextManager::~GPUContextManager()
-{
-}
+{}
 
-cl_command_queue GPUContextManager::GetCommandQueue(int i)
+cl_command_queue
+GPUContextManager::GetCommandQueue(int i)
 {
   if(i < 0 || i >= (int)m_NumberOfDevices)
     {
@@ -94,7 +97,8 @@ cl_command_queue GPUContextManager::GetCommandQueue(int i)
   return m_CommandQueue[i];
 }
 
-cl_device_id GPUContextManager::GetDeviceId(int i)
+cl_device_id
+GPUContextManager::GetDeviceId(int i)
 {
   if(i < 0 || i >= (int)m_NumberOfDevices)
     {

@@ -25,24 +25,28 @@
 
 namespace itk
 {
-class InvalidImageMomentsError:public ExceptionObject
+class InvalidImageMomentsError : public ExceptionObject
 {
 public:
   /**
    * Constructor. Needed to ensure the exception object can be copied.
    */
-  InvalidImageMomentsError(const char *file, unsigned int lineNumber):ExceptionObject(file,
-                                                                                      lineNumber) { this->
-                                                                                                    SetDescription(
-                                                                                                      "No valid image moments are available."); }
+  InvalidImageMomentsError(const char *file, unsigned int lineNumber) : ExceptionObject(file,
+                                                                                        lineNumber) {
+    this->
+    SetDescription(
+      "No valid image moments are available.");
+  }
 
   /**
    * Constructor. Needed to ensure the exception object can be copied.
    */
-  InvalidImageMomentsError(const std::string & file, unsigned int lineNumber):ExceptionObject(file,
-                                                                                              lineNumber) { this->
-                                                                                                            SetDescription(
-                                                                                                              "No valid image moments are available."); }
+  InvalidImageMomentsError(const std::string & file, unsigned int lineNumber) : ExceptionObject(file,
+                                                                                                lineNumber) {
+    this->
+    SetDescription(
+      "No valid image moments are available.");
+  }
 
   itkTypeMacro(InvalidImageMomentsError, ExceptionObject);
 };
@@ -77,6 +81,7 @@ ImageMomentsCalculator< TInputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Image: " << m_Image.GetPointer() << std::endl;
   os << indent << "Valid: " << m_Valid << std::endl;
   os << indent << "Zeroth Moment about origin: " << m_M0 << std::endl;
@@ -130,7 +135,7 @@ ImageMomentsCalculator< TImage >::Compute()
         for ( unsigned int j = 0; j < ImageDimension; j++ )
           {
           double weight = value * static_cast< double >( indexPosition[i] )
-                          * static_cast< double >( indexPosition[j] );
+            * static_cast< double >( indexPosition[j] );
           m_M2[i][j] += weight;
           }
         }
@@ -280,7 +285,8 @@ ImageMomentsCalculator< TImage >::GetPrincipalMoments() const
 {
   if ( !m_Valid )
     {
-    itkExceptionMacro(<< "GetPrincipalMoments() invoked, but the moments have not been computed. Call Compute() first.");
+    itkExceptionMacro(<<
+      "GetPrincipalMoments() invoked, but the moments have not been computed. Call Compute() first.");
     }
   return m_Pm;
 }
@@ -350,6 +356,7 @@ ImageMomentsCalculator< TImage >::GetPhysicalAxesToPrincipalAxesTransform(void) 
 
   return inverse;
 }
+
 } // end namespace itk
 
 #endif

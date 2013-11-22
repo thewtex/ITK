@@ -151,6 +151,7 @@ QuadEdgeMeshScalarDataVTKPolyDataWriter< TMesh >
     outputFile.close();
     }
 }
+
 }
 
 #endif

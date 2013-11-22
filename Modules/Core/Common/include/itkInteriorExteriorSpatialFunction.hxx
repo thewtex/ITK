@@ -39,6 +39,7 @@ InteriorExteriorSpatialFunction< VDimension, TInput >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

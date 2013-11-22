@@ -35,7 +35,8 @@ CylinderSpatialObject::~CylinderSpatialObject()
 /** Test whether a point is inside or outside the object
  *  For computational speed purposes, it is faster if the method does not
  *  check the name of the class and the current depth */
-bool CylinderSpatialObject
+bool
+CylinderSpatialObject
 ::IsInside(const PointType & point) const
 {
   if ( !this->SetInternalInverseTransformToWorldToIndexTransform() )
@@ -75,7 +76,7 @@ bool CylinderSpatialObject
            ( lambda > -( m_Radius / ( 2 * vcl_sqrt(B) ) ) )
            && ( lambda < 0 ) )
          || ( ( lambda <= 1.0 ) && ( lambda >= 0.0 ) )
-          )
+         )
       {
       PointType p;
 
@@ -98,7 +99,8 @@ bool CylinderSpatialObject
 }
 
 /** Test if the given point is inside the Cylinder */
-bool CylinderSpatialObject
+bool
+CylinderSpatialObject
 ::IsInside(const PointType & point, unsigned int depth, char *name) const
 {
   itkDebugMacro("Checking the point [" << point << "] is inside the Cylinder");
@@ -122,7 +124,8 @@ bool CylinderSpatialObject
 }
 
 /** Compute the bounds of the Cylinder */
-bool CylinderSpatialObject
+bool
+CylinderSpatialObject
 ::ComputeLocalBoundingBox() const
 {
   itkDebugMacro("Computing tube bounding box");
@@ -157,7 +160,8 @@ bool CylinderSpatialObject
 }
 
 /** Returns if the Cylinder os evaluable at one point */
-bool CylinderSpatialObject
+bool
+CylinderSpatialObject
 ::IsEvaluableAt(const PointType & point, unsigned int depth, char *name) const
 {
   itkDebugMacro("Checking if the Cylinder is evaluable at " << point);
@@ -165,7 +169,8 @@ bool CylinderSpatialObject
 }
 
 /** Returns the value at one point */
-bool CylinderSpatialObject
+bool
+CylinderSpatialObject
 ::ValueAt(const PointType & point, double & value, unsigned int depth,
           char *name) const
 {
@@ -191,11 +196,14 @@ bool CylinderSpatialObject
 }
 
 /** Print Self function */
-void CylinderSpatialObject
+void
+CylinderSpatialObject
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "Radius: " << m_Radius << std::endl;
   os << "Height: " << m_Height << std::endl;
 }
+
 } // end namespace itk

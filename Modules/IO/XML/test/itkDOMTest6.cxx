@@ -33,7 +33,8 @@ void testStringToolsWithItkArray();
 
 void testStringToolsForStringOperations();
 
-int itkDOMTest6( int, char*[] )
+int
+itkDOMTest6( int, char*[] )
 {
   try
     {
@@ -65,7 +66,8 @@ int itkDOMTest6( int, char*[] )
 }
 
 // test for basic data type
-void testStringToolsWithBasicType()
+void
+testStringToolsWithBasicType()
 {
   // for unsigned char
     {
@@ -140,13 +142,15 @@ void testStringToolsWithBasicType()
 }
 
 // test for std::vector<T>
-void testStringToolsWithStdVector()
+void
+testStringToolsWithStdVector()
 {
   std::string svalue;
   std::string s;
 
   std::vector<float> dataIn( 10, -0.1f );
   itk::StringTools::FromData( svalue, dataIn );
+
   // add one more data element to the end of the string
   svalue.append( " 10 " );
 
@@ -226,7 +230,8 @@ void testStringToolsWithStdVector()
 }
 
 // test for itk::Array<T>
-void testStringToolsWithItkArray()
+void
+testStringToolsWithItkArray()
 {
   typedef itk::Array<double> DataType;
 
@@ -316,7 +321,8 @@ void testStringToolsWithItkArray()
   std::cout << "testStringToolsWithItkArray: Passed!" << std::endl;
 }
 
-void testStringToolsForStringOperations()
+void
+testStringToolsForStringOperations()
 {
   std::string s;
 

@@ -34,8 +34,9 @@ BinaryCrossStructuringElement< TPixel, VDimension, TAllocator >
   SEType flatKernel = SEType::Cross( this->GetRadius() );
 
   // Copy the cross into the kernel
-  std::copy(flatKernel.Begin(),flatKernel.End(),this->Begin());
+  std::copy(flatKernel.Begin(),flatKernel.End(),this->Begin() );
 }
+
 } // namespace itk
 
 #endif

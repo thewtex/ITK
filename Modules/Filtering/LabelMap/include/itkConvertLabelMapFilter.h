@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TInputImage, typename TOutputImage >
-class ConvertLabelMapFilter:
+class ConvertLabelMapFilter :
   public LabelMapFilter< TInputImage, TOutputImage >
 {
 public:
@@ -51,20 +51,20 @@ public:
   typedef SmartPointer< const Self >                  ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage                                 InputImageType;
-  typedef TOutputImage                                OutputImageType;
-  typedef typename InputImageType::Pointer            InputImagePointer;
-  typedef typename InputImageType::ConstPointer       InputImageConstPointer;
-  typedef typename InputImageType::RegionType         InputImageRegionType;
-  typedef typename InputImageType::PixelType          InputImagePixelType;
-  typedef typename InputImageType::LabelObjectType    LabelObjectType;
+  typedef TInputImage                              InputImageType;
+  typedef TOutputImage                             OutputImageType;
+  typedef typename InputImageType::Pointer         InputImagePointer;
+  typedef typename InputImageType::ConstPointer    InputImageConstPointer;
+  typedef typename InputImageType::RegionType      InputImageRegionType;
+  typedef typename InputImageType::PixelType       InputImagePixelType;
+  typedef typename InputImageType::LabelObjectType LabelObjectType;
 
-  typedef typename OutputImageType::Pointer           OutputImagePointer;
-  typedef typename OutputImageType::ConstPointer      OutputImageConstPointer;
-  typedef typename OutputImageType::RegionType        OutputImageRegionType;
-  typedef typename OutputImageType::PixelType         OutputImagePixelType;
-  typedef typename OutputImageType::IndexType         IndexType;
-  typedef typename OutputImageType::LabelObjectType   OutputLabelObjectType;
+  typedef typename OutputImageType::Pointer         OutputImagePointer;
+  typedef typename OutputImageType::ConstPointer    OutputImageConstPointer;
+  typedef typename OutputImageType::RegionType      OutputImageRegionType;
+  typedef typename OutputImageType::PixelType       OutputImagePixelType;
+  typedef typename OutputImageType::IndexType       IndexType;
+  typedef typename OutputImageType::LabelObjectType OutputLabelObjectType;
 
   /** ImageDimension constants */
   itkStaticConstMacro(InputImageDimension, unsigned int, TInputImage::ImageDimension);
@@ -84,7 +84,8 @@ protected:
 
 private:
   ConvertLabelMapFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);             //purposely not implemented
+  void operator=(const Self &);        //purposely not implemented
+
 };                                          // end of class
 } // end namespace itk
 

@@ -38,40 +38,43 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(TestImportImageContainer, ImportImageContainer);
 
-  typedef typename Superclass::ElementIdentifier  ElementIdentifier;
-  typedef typename Superclass::Element            Element;
+  typedef typename Superclass::ElementIdentifier ElementIdentifier;
+  typedef typename Superclass::Element           Element;
 
-  typedef std::allocator<TElement>                Allocator;
+  typedef std::allocator<TElement> Allocator;
 
   // Methods from itkObject
-  virtual ~TestImportImageContainer()
-    {
+  virtual
+  ~TestImportImageContainer()
+  {
     itkTotalMemoryUsed -= m_TotalSize;
     m_TotalSize = 0;
     DeallocateManagedMemory();
-    }
+  }
+
   TestImportImageContainer()
-     : m_TotalSize(0)
-     ,m_MemoryAllocatedByAllocator(false)
-    {
-    }
+    : m_TotalSize(0)
+    ,m_MemoryAllocatedByAllocator(false)
+  {}
 
 protected:
-  TElement* AllocateElements(ElementIdentifier size) const
-    {
+  TElement*
+  AllocateElements(ElementIdentifier size) const
+  {
     std::cout << "TestImportImageContainer: Allocating "
               << size << " elements of type "
               << typeid(TElement).name() << " totaling "
               << sizeof(TElement) * size << " bytes" << std::endl;
 
     TElement* data;
+
     try
       {
       // allocate normally only requires 1 argument.
       // MSVC 6.0 makes it require 2, we set the second to be
       // a null pointer which means no allocation hint
       // Sun cc compiler needs a cast to assign a void pointer to another pointer
-      data = static_cast<TElement*>(m_Allocator.allocate(size,0));
+      data = static_cast<TElement*>(m_Allocator.allocate(size,0) );
       if (data)
         {
         new (data) Element[size];
@@ -99,10 +102,11 @@ protected:
               << itkTotalMemoryUsed << " bytes" << std::endl;
 
     return data;
-    }
+  }
 
-  void DeallocateManagedMemory()
-    {
+  void
+  DeallocateManagedMemory()
+  {
     std::cout << "TestImportImageContainer: Deallocating "
               << this->Capacity() << " elements of type "
               << typeid(TElement).name() << " totaling "
@@ -110,7 +114,7 @@ protected:
 
     if (m_MemoryAllocatedByAllocator)
       {
-      TElement * ptr = this->GetImportPointer();
+      TElement *             ptr = this->GetImportPointer();
       const TElement * const end = ptr + this->Capacity();
       for (TElement * base = ptr; base<end; ++base)
         {
@@ -129,15 +133,16 @@ protected:
 
     std::cout << "TestImportImageContainer: Total memory used is "
               << itkTotalMemoryUsed << " bytes" << std::endl;
-    }
+  }
 
 private:
   TestImportImageContainer(const TestImportImageContainer&);
   void operator=(const TestImportImageContainer&);
+
   mutable TElementIdentifier m_TotalSize;
 
-  mutable Allocator          m_Allocator;
-  mutable bool               m_MemoryAllocatedByAllocator;
+  mutable Allocator m_Allocator;
+  mutable bool      m_MemoryAllocatedByAllocator;
 };
 
 class ImportImageContainerFactory : public itk::ObjectFactoryBase
@@ -149,8 +154,15 @@ public:
   typedef itk::SmartPointer<const Self> ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
-  virtual const char* GetITKSourceVersion() const { return ITK_SOURCE_VERSION; }
-  const char* GetDescription() const { return "A Factory for ImportImageContainer"; }
+  virtual const char*
+  GetITKSourceVersion() const {
+    return ITK_SOURCE_VERSION;
+  }
+
+  const char*
+  GetDescription() const {
+    return "A Factory for ImportImageContainer";
+  }
 
   /** Method for class instantiation. */
   itkFactorylessNewMacro(Self);
@@ -159,34 +171,35 @@ public:
   itkTypeMacro(ImportImageContainerFactory, itk::ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     ImportImageContainerFactory::Pointer factory = ImportImageContainerFactory::New();
     itk::ObjectFactoryBase::RegisterFactory(factory);
   }
 
 private:
-  ImportImageContainerFactory(const Self&);    //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  ImportImageContainerFactory(const Self&); //purposely not implemented
+  void operator=(const Self&);              //purposely not implemented
 
-#define OverrideTypeMacro(t)       this->RegisterOverride(\
-        typeid(itk::ImportImageContainer<unsigned long,t >).name(),\
-        typeid(TestImportImageContainer<unsigned long,t >).name(),\
-        "Test ImportImageContainerOverride",\
-        true,\
-        itk::CreateObjectFunction<TestImportImageContainer<unsigned long,t > >::New())
-
+#define OverrideTypeMacro(t)       this->RegisterOverride( \
+    typeid(itk::ImportImageContainer<unsigned long,t >).name(), \
+    typeid(TestImportImageContainer<unsigned long,t >).name(), \
+    "Test ImportImageContainerOverride", \
+    true, \
+    itk::CreateObjectFunction<TestImportImageContainer<unsigned long,t > >::New() )
 
   ImportImageContainerFactory()
-    {
-      OverrideTypeMacro(short);
-      OverrideTypeMacro(unsigned char);
-      OverrideTypeMacro(float);
-      OverrideTypeMacro(int);
-      OverrideTypeMacro(double);
-      OverrideTypeMacro(itk::RGBPixel<unsigned char>);
-      OverrideTypeMacro(itk::RGBPixel<unsigned short>);
-    }
+  {
+    OverrideTypeMacro(short);
+    OverrideTypeMacro(unsigned char);
+    OverrideTypeMacro(float);
+    OverrideTypeMacro(int);
+    OverrideTypeMacro(double);
+    OverrideTypeMacro(itk::RGBPixel<unsigned char>);
+    OverrideTypeMacro(itk::RGBPixel<unsigned short>);
+  }
+
 };
 
 /**
@@ -196,8 +209,9 @@ private:
  * itkLoad() is C (not C++) function.
  */
 static ImportImageContainerFactory::Pointer staticImportImageContainerFactory;
-itk::ObjectFactoryBase* itkLoad()
+itk::ObjectFactoryBase*
+itkLoad()
 {
-    staticImportImageContainerFactory = ImportImageContainerFactory::New();
-    return staticImportImageContainerFactory;
+  staticImportImageContainerFactory = ImportImageContainerFactory::New();
+  return staticImportImageContainerFactory;
 }

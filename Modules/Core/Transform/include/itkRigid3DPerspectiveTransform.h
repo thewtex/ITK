@@ -79,7 +79,7 @@ public:
 
   /** Standard vector type for this class. */
   typedef Vector<TScalar, itkGetStaticConstMacro(InputSpaceDimension)> OffsetType;
-  typedef typename OffsetType::ValueType                                   OffsetValueType;
+  typedef typename OffsetType::ValueType                               OffsetValueType;
 
   /** Standard vector type for this class. */
   typedef Vector<TScalar, itkGetStaticConstMacro(InputSpaceDimension)>  InputVectorType;
@@ -109,7 +109,8 @@ public:
   /** Get offset of an Rigid3DPerspectiveTransform
    * This method returns the value of the offset of the
    * Rigid3DPerspectiveTransform. */
-  const OffsetType & GetOffset() const
+  const OffsetType &
+  GetOffset() const
   {
     return m_Offset;
   }
@@ -117,7 +118,8 @@ public:
   /** Get rotation from an Rigid3DPerspectiveTransform.
    * This method returns the value of the rotation of the
    * Rigid3DPerspectiveTransform. */
-  const VersorType & GetRotation() const
+  const VersorType &
+  GetRotation() const
   {
     return m_Versor;
   }
@@ -133,13 +135,14 @@ public:
   /** Set the fixed parameters and update internal
    * transformation. This transform has no fixed paramaters
    */
-  virtual void SetFixedParameters(const ParametersType &)
-  {
-  }
+  virtual void
+  SetFixedParameters(const ParametersType &)
+  {}
 
   /** This method sets the offset of an Rigid3DPerspectiveTransform to a
    * value specified by the user. */
-  void SetOffset(const OffsetType & offset)
+  void
+  SetOffset(const OffsetType & offset)
   {
     m_Offset = offset; return;
   }
@@ -157,13 +160,15 @@ public:
   /** Set the Focal Distance of the projection
    * This method sets the focal distance for the perspective
    * projection to a value specified by the user. */
-  void SetFocalDistance(TScalar focalDistance)
+  void
+  SetFocalDistance(TScalar focalDistance)
   {
     m_FocalDistance = focalDistance;
   }
 
   /** Return the Focal Distance */
-  double GetFocalDistance(void) const
+  double
+  GetFocalDistance(void) const
   {
     return m_FocalDistance;
   }
@@ -176,13 +181,15 @@ public:
   /** These vector transforms are not implemented for this transform */
   using Superclass::TransformVector;
 
-  virtual OutputVectorType TransformVector(const InputVectorType &) const
+  virtual OutputVectorType
+  TransformVector(const InputVectorType &) const
   {
     itkExceptionMacro(
       << "TransformVector(const InputVectorType &) is not implemented for Rigid3DPerspectiveTransform");
   }
 
-  virtual OutputVnlVectorType TransformVector(const InputVnlVectorType &) const
+  virtual OutputVnlVectorType
+  TransformVector(const InputVnlVectorType &) const
   {
     itkExceptionMacro(
       << "TransformVector(const InputVnlVectorType &) is not implemented for Rigid3DPerspectiveTransform");
@@ -190,7 +197,8 @@ public:
 
   using Superclass::TransformCovariantVector;
 
-  virtual OutputCovariantVectorType TransformCovariantVector(const InputCovariantVectorType &) const
+  virtual OutputCovariantVectorType
+  TransformCovariantVector(const InputCovariantVectorType &) const
   {
     itkExceptionMacro(
       <<
@@ -198,7 +206,8 @@ public:
   }
 
   /** Return the rotation matrix */
-  const MatrixType & GetRotationMatrix() const
+  const MatrixType &
+  GetRotationMatrix() const
   {
     return m_RotationMatrix;
   }
@@ -210,8 +219,9 @@ public:
    *  allowing for thread-safety. */
   virtual void ComputeJacobianWithRespectToParameters( const InputPointType  & p, JacobianType & jacobian) const;
 
-  virtual void ComputeJacobianWithRespectToPosition(const InputPointType &,
-                                                    JacobianType &) const
+  virtual void
+  ComputeJacobianWithRespectToPosition(const InputPointType &,
+                                       JacobianType &) const
   {
     itkExceptionMacro( "ComputeJacobianWithRespectToPosition not yet implemented "
                        "for " << this->GetNameOfClass() );

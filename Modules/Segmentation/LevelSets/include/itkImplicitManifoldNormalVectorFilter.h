@@ -70,15 +70,15 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TInputImage, typename TSparseOutputImage >
-class ImplicitManifoldNormalVectorFilter:
+class ImplicitManifoldNormalVectorFilter :
   public FiniteDifferenceSparseImageFilter< TInputImage, TSparseOutputImage >
 {
 public:
   /** Standard class typedef */
   typedef ImplicitManifoldNormalVectorFilter Self;
   typedef FiniteDifferenceSparseImageFilter<
-    TInputImage,
-    TSparseOutputImage >                      Superclass;
+      TInputImage,
+      TSparseOutputImage >                      Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -99,7 +99,7 @@ public:
   typedef typename Superclass::NodeDataType   NormalVectorType;
   typedef typename Superclass::NodeValueType  NodeValueType;
   typedef typename Superclass::FiniteDifferenceFunctionType
-  FiniteDifferenceFunctionType;
+    FiniteDifferenceFunctionType;
 
   typedef typename Superclass::SparseOutputImageType SparseOutputImageType;
   typedef typename Superclass::OutputNodeType        NormalBandNodeType;
@@ -149,11 +149,13 @@ protected:
 
   /** This function does nothing. The output initialization
       is handled by Initialize. */
-  virtual void CopyInputToOutput() {}
+  virtual void
+  CopyInputToOutput() {}
 
   /** This is the stopping criterion function used in the iterative finite
       difference scheme. */
-  virtual bool Halt()
+  virtual bool
+  Halt()
   {
     if ( this->GetElapsedIterations() == m_MaxIteration )
       {
@@ -167,7 +169,8 @@ protected:
 
 protected:
   /** This function implements the unit norm constraint for normal vectors. */
-  virtual NormalVectorType DataConstraint(const NormalVectorType & data) const
+  virtual NormalVectorType
+  DataConstraint(const NormalVectorType & data) const
   {
     return ( data / ( m_MinVectorNorm + data.GetNorm() ) );
   }

@@ -33,7 +33,6 @@ LabelMapToLabelImageFilter< TInputImage, TOutputImage >
   m_OutputImage = 0;
 }
 
-
 template< typename TInputImage, typename TOutputImage >
 void
 LabelMapToLabelImageFilter< TInputImage, TOutputImage >
@@ -46,7 +45,6 @@ LabelMapToLabelImageFilter< TInputImage, TOutputImage >
   Superclass::BeforeThreadedGenerateData();
   this->m_OutputImage = this->GetOutput();
 }
-
 
 template< typename TInputImage, typename TOutputImage >
 void

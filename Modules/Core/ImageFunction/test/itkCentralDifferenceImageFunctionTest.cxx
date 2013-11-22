@@ -19,15 +19,17 @@
 #include "itkCentralDifferenceImageFunction.h"
 #include "itkImageRegionIterator.h"
 
-int itkCentralDifferenceImageFunctionTest(int, char* [] )
+int
+itkCentralDifferenceImageFunctionTest(int, char* [] )
 {
   int result = EXIT_SUCCESS;
 
-  const unsigned int                            ImageDimension = 2;
-  typedef unsigned int                          PixelType;
-  typedef itk::Image<PixelType,ImageDimension>  ImageType;
+  const unsigned int ImageDimension = 2;
 
-  ImageType::Pointer image = ImageType::New();
+  typedef unsigned int                         PixelType;
+  typedef itk::Image<PixelType,ImageDimension> ImageType;
+
+  ImageType::Pointer  image = ImageType::New();
   ImageType::SizeType size;
   size.Fill( 16 );
   ImageType::RegionType region( size );
@@ -49,7 +51,7 @@ int itkCentralDifferenceImageFunctionTest(int, char* [] )
     }
 
   // set up central difference calculator
-  typedef float CoordRepType;
+  typedef float                                                       CoordRepType;
   typedef itk::CentralDifferenceImageFunction<ImageType,CoordRepType> FunctionType;
   typedef FunctionType::OutputType                                    OutputType;
   typedef FunctionType::OutputValueType                               OutputValueType;
@@ -122,7 +124,8 @@ int itkCentralDifferenceImageFunctionTest(int, char* [] )
 
   if( indexOutput != continuousIndexOutput )
     {
-    std::cerr << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex do not match at boundary." << std::endl;
+    std::cerr << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex do not match at boundary." <<
+    std::endl;
     std::cerr << "indexOutput: " << indexOutput << " continuousIndexOutput: " << continuousIndexOutput << std::endl;
     result = EXIT_FAILURE;
     }
@@ -164,7 +167,8 @@ int itkCentralDifferenceImageFunctionTest(int, char* [] )
 
   if( indexOutput != continuousIndexOutput )
     {
-    std::cerr << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex do not match at boundary." << std::endl;
+    std::cerr << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex do not match at boundary." <<
+    std::endl;
     std::cerr << "indexOutput: " << indexOutput << " continuousIndexOutput: " << continuousIndexOutput << std::endl;
     result = EXIT_FAILURE;
     }
@@ -360,7 +364,8 @@ int itkCentralDifferenceImageFunctionTest(int, char* [] )
 
   if( outOfBoundsDerivative[0] != 0 || outOfBoundsDerivative[1] != 0 )
     {
-    std::cerr << "ERROR: Expected derivative " << outOfBoundsDerivative[1] << ", 0 with out-of-bounds point." << std::endl;
+    std::cerr << "ERROR: Expected derivative " << outOfBoundsDerivative[1] << ", 0 with out-of-bounds point." <<
+    std::endl;
     result = EXIT_FAILURE;
     }
 
@@ -374,7 +379,8 @@ int itkCentralDifferenceImageFunctionTest(int, char* [] )
 
   if( outOfBoundsDerivative[0] != 0 || outOfBoundsDerivative[1] != 0 )
     {
-    std::cerr << "ERROR: Expected derivative 0, " << outOfBoundsDerivative[0] << "with out-of-bounds point." << std::endl;
+    std::cerr << "ERROR: Expected derivative 0, " << outOfBoundsDerivative[0] << "with out-of-bounds point." <<
+    std::endl;
     result = EXIT_FAILURE;
     }
 

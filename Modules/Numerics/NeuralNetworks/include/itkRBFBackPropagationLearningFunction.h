@@ -52,6 +52,7 @@ public:
   typedef typename Superclass::ValueType ValueType;
 
   virtual void Learn(LayerType* layer,ValueType learningrate);
+
   virtual void Learn(LayerType* layer, TTargetVector error, ValueType learningrate);
 
   itkSetMacro(LearningRate1, ValueType);
@@ -64,7 +65,8 @@ public:
 protected:
 
   RBFBackPropagationLearningFunction();
-  virtual ~RBFBackPropagationLearningFunction() {};
+  virtual
+  ~RBFBackPropagationLearningFunction() {}
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;

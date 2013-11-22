@@ -77,7 +77,7 @@ AnchorOpenCloseLine< TInputPix, TCompare >
     }
   InputImagePixelType Extreme;
   while ( StartLine(buffer, Extreme, outLeftP, outRightP) )
-      {}
+        {}
 
   FinishLine(buffer, Extreme, outLeftP, outRightP);
   // this section if to make the edge behaviour the same as the more
@@ -266,6 +266,7 @@ AnchorOpenCloseLine< TInputPix, TCompare >
 {
   os << indent << "Size: " << m_Size << std::endl;
 }
+
 } // end namespace itk
 
 #endif

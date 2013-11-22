@@ -24,7 +24,8 @@
 #include "itkExtractOrthogonalSwath2DImageFilter.h"
 #include "itkImageFileWriter.h"
 
-int itkExtractOrthogonalSwath2DImageFilterTest(int argc, char* argv[])
+int
+itkExtractOrthogonalSwath2DImageFilterTest(int argc, char* argv[])
 {
   if( argc != 2)
     {
@@ -33,17 +34,17 @@ int itkExtractOrthogonalSwath2DImageFilterTest(int argc, char* argv[])
     return -1;
     }
 
-  typedef itk::Image<unsigned char, 2>         ImageType;
-  typedef itk::PolyLineParametricPath<2>       InPathType;
-  typedef itk::ChainCodePath<2>                ChainPathType;
-  typedef itk::FourierSeriesPath<2>            FSPathType;
+  typedef itk::Image<unsigned char, 2>   ImageType;
+  typedef itk::PolyLineParametricPath<2> InPathType;
+  typedef itk::ChainCodePath<2>          ChainPathType;
+  typedef itk::FourierSeriesPath<2>      FSPathType;
 
-  typedef InPathType::VertexType               VertexType;
-  typedef InPathType::OffsetType               OffsetType;
-  typedef InPathType::InputType                InPathInputType;
+  typedef InPathType::VertexType VertexType;
+  typedef InPathType::OffsetType OffsetType;
+  typedef InPathType::InputType  InPathInputType;
 
-  typedef ImageType::IndexType                 IndexType;
-  typedef ImageType::SizeType                  SizeType;
+  typedef ImageType::IndexType IndexType;
+  typedef ImageType::SizeType  SizeType;
 
   typedef itk::PathToChainCodePathFilter<InPathType,ChainPathType>
     Filter1Type;
@@ -52,14 +53,14 @@ int itkExtractOrthogonalSwath2DImageFilterTest(int argc, char* argv[])
   typedef itk::ExtractOrthogonalSwath2DImageFilter<ImageType>
     Filter3Type;
 
-  InPathType::Pointer             inPath;
-  ChainPathType::Pointer          chainPath;
-  FSPathType::Pointer             outPath;
+  InPathType::Pointer    inPath;
+  ChainPathType::Pointer chainPath;
+  FSPathType::Pointer    outPath;
 
   // Setup the image
   std::cout << "Making a 64x64 white square centered in a 128x128 black image"<<std::endl;
-  ImageType::Pointer  inImage = ImageType::New();
-  IndexType start;
+  ImageType::Pointer inImage = ImageType::New();
+  IndexType          start;
   start[0]=0;
   start[1]=0;
   ImageType::SizeType size;
@@ -91,7 +92,7 @@ int itkExtractOrthogonalSwath2DImageFilterTest(int argc, char* argv[])
 
   // Setup the path
   std::cout << "Making a square Path with v0 at (24,24) -> (24,104) -> (104,104) -> (104,24)" << std::endl;
-  VertexType        v;
+  VertexType v;
   inPath = InPathType::New();
   v.Fill(24);
   inPath->AddVertex(v);
@@ -113,14 +114,14 @@ int itkExtractOrthogonalSwath2DImageFilterTest(int argc, char* argv[])
 
   // Setup the second filter
   Filter2Type::Pointer filter2 = Filter2Type::New();
-  filter2->SetInput(filter1->GetOutput());
+  filter2->SetInput(filter1->GetOutput() );
   filter2->SetNumberOfHarmonics(7); // make a nice, round, path for the swath
   outPath=filter2->GetOutput();
 
   // Setup the third filter; THIS IS THE MAIN FILTER TO BE TESTED
   Filter3Type::Pointer filter3 = Filter3Type::New();
   filter3->SetImageInput(inImage);
-  filter3->SetPathInput(filter2->GetOutput());
+  filter3->SetPathInput(filter2->GetOutput() );
   // Set the desired size of the filter's output
   size[0]=512;
   size[1]=21*2+1;
@@ -133,52 +134,52 @@ int itkExtractOrthogonalSwath2DImageFilterTest(int argc, char* argv[])
   // Testing spacing
   std::cout << "Testing Spacing: ";
 
-  float spacing_float[2];
+  float  spacing_float[2];
   double spacing_double[2];
 
-  for(unsigned int i=0;i<2;i++)
-  {
+  for(unsigned int i=0; i<2; i++)
+    {
     spacing_float[i]=1.0;
     spacing_double[i]=1.0;
-  }
+    }
   filter3->SetSpacing(spacing_float);
   filter3->SetSpacing(spacing_double);
   const double* spacing_result = filter3->GetSpacing();
 
-  for(unsigned int i=0;i<2;i++)
-  {
-    if(spacing_result[i]!=1.0)
+  for(unsigned int i=0; i<2; i++)
     {
+    if(spacing_result[i]!=1.0)
+      {
       std::cout << "[FAILURE]" << std::endl;
       return EXIT_FAILURE;
+      }
     }
-  }
 
   std::cout << "[PASSED]" << std::endl;
 
   // Testing Origin
   std::cout << "Testing Origin: ";
 
-  float origin_float[2];
+  float  origin_float[2];
   double origin_double[2];
 
-  for(unsigned int i=0;i<2;i++)
-  {
+  for(unsigned int i=0; i<2; i++)
+    {
     origin_float[i]=0.0;
     origin_double[i]=0.0;
-  }
+    }
   filter3->SetOrigin(origin_float);
   filter3->SetOrigin(origin_double);
   const double* origin_result = filter3->GetOrigin();
 
-  for(unsigned int i=0;i<2;i++)
-  {
-    if(origin_result[i]!=0.0)
+  for(unsigned int i=0; i<2; i++)
     {
+    if(origin_result[i]!=0.0)
+      {
       std::cout << "[FAILURE]" << std::endl;
       return EXIT_FAILURE;
+      }
     }
-  }
 
   std::cout << "[PASSED]" << std::endl;
 
@@ -196,24 +197,24 @@ int itkExtractOrthogonalSwath2DImageFilterTest(int argc, char* argv[])
   // Test only pixels definitely inside or outside the original white square
   ImageType::IndexType index;
 
-  for(unsigned int col=0;col<size[0];col++)
-  {
+  for(unsigned int col=0; col<size[0]; col++)
+    {
     index[0] = col;
     index[1] = 1;
     if(outImage->GetPixel(index) != 255)
-    {
-      std::cout << "index "<<index<<" = "<<int(outImage->GetPixel(index))<<": [FAILURE]" << std::endl;
+      {
+      std::cout << "index "<<index<<" = "<<int(outImage->GetPixel(index) )<<": [FAILURE]" << std::endl;
       return EXIT_FAILURE;
-    }
+      }
 
     index[0] = col;
     index[1] = size[1]-2;
     if(outImage->GetPixel(index) != 0)
-    {
-      std::cout << "index "<<index<<" = "<<int(outImage->GetPixel(index))<<": [FAILURE]" << std::endl;
+      {
+      std::cout << "index "<<index<<" = "<<int(outImage->GetPixel(index) )<<": [FAILURE]" << std::endl;
       return EXIT_FAILURE;
+      }
     }
-  }
   std::cout << "[PASSED]" << std::endl;
 
   itk::ImageFileWriter<ImageType>::Pointer writer

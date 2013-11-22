@@ -113,6 +113,7 @@ BoxImageFilter< TInputImage, TOutputImage >
 
   os << indent << "Radius: " << m_Radius << std::endl;
 }
+
 }
 
 #endif

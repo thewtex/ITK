@@ -39,8 +39,7 @@ PointSetFunction<TInputPointSet, TOutput, TCoordRep>
 template <typename TInputPointSet, typename TOutput, typename TCoordRep>
 PointSetFunction<TInputPointSet, TOutput, TCoordRep>
 ::~PointSetFunction()
-{
-}
+{}
 
 /**
  * Standard "PrintSelf" method
@@ -51,6 +50,7 @@ PointSetFunction<TInputPointSet, TOutput, TCoordRep>
 ::PrintSelf( std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf( os, indent );
+
   os << indent << "InputPointSet: " << m_PointSet.GetPointer() << std::endl;
 }
 

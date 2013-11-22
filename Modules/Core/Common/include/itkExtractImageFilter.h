@@ -87,7 +87,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class ExtractImageFilter:
+class ExtractImageFilter :
   public InPlaceImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -126,8 +126,7 @@ public:
     DIRECTIONCOLLAPSETOIDENTITY=1,
     DIRECTIONCOLLAPSETOSUBMATRIX=2,
     DIRECTIONCOLLAPSETOGUESS=3
-  } DIRECTIONCOLLAPSESTRATEGY;
-
+    } DIRECTIONCOLLAPSESTRATEGY;
 
   /**
    * Set the strategy to be used to collapse pysical space dimensions.
@@ -153,22 +152,23 @@ public:
    * example when the application programmer knows that a 4D image
    * is 3D+time, and that the 3D sub-space is properly defined.
    */
-  void SetDirectionCollapseToStrategy(const DIRECTIONCOLLAPSESTRATEGY choosenStrategy)
-    {
+  void
+  SetDirectionCollapseToStrategy(const DIRECTIONCOLLAPSESTRATEGY choosenStrategy)
+  {
     switch(choosenStrategy)
       {
-    case DIRECTIONCOLLAPSETOGUESS:
-    case DIRECTIONCOLLAPSETOIDENTITY:
-    case DIRECTIONCOLLAPSETOSUBMATRIX:
-      break;
-    case DIRECTIONCOLLAPSETOUNKOWN:
-    default:
-      itkExceptionMacro( << "Invalid Strategy Chosen for itk::ExtractImageFilter" );
+      case DIRECTIONCOLLAPSETOGUESS:
+      case DIRECTIONCOLLAPSETOIDENTITY:
+      case DIRECTIONCOLLAPSETOSUBMATRIX:
+        break;
+      case DIRECTIONCOLLAPSETOUNKOWN:
+      default:
+        itkExceptionMacro( << "Invalid Strategy Chosen for itk::ExtractImageFilter" );
       }
 
     this->m_DirectionCollapseStrategy=choosenStrategy;
     this->Modified();
-    }
+  }
 
   /** NOTE:  The SetDirectionCollapseToUknown is explicitly not defined.
    * It is a state that a filter can be in only when it is first instantiate
@@ -178,29 +178,32 @@ public:
   /**
    * Get the currently set strategy for collapsing directions of physical space.
    */
-  DIRECTIONCOLLAPSESTRATEGY GetDirectionCollapseToStrategy() const
-    {
+  DIRECTIONCOLLAPSESTRATEGY
+  GetDirectionCollapseToStrategy() const
+  {
     return this->m_DirectionCollapseStrategy;
-    }
+  }
 
   /** \sa SetDirectionCollapseToStrategy */
-  void SetDirectionCollapseToGuess()
-    {
+  void
+  SetDirectionCollapseToGuess()
+  {
     this->SetDirectionCollapseToStrategy(DIRECTIONCOLLAPSETOGUESS);
-    }
+  }
 
   /** \sa SetDirectionCollapseToStrategy */
-  void SetDirectionCollapseToIdentity()
-    {
+  void
+  SetDirectionCollapseToIdentity()
+  {
     this->SetDirectionCollapseToStrategy(DIRECTIONCOLLAPSETOIDENTITY);
-    }
+  }
 
   /** \sa SetDirectionCollapseToStrategy */
-  void SetDirectionCollapseToSubmatrix()
-    {
+  void
+  SetDirectionCollapseToSubmatrix()
+  {
     this->SetDirectionCollapseToStrategy(DIRECTIONCOLLAPSETOSUBMATRIX);
-    }
-
+  }
 
   /** ImageDimension enumeration */
   itkStaticConstMacro(InputImageDimension, unsigned int,
@@ -209,8 +212,8 @@ public:
                       TOutputImage::ImageDimension);
 
   typedef ImageToImageFilterDetail::ExtractImageFilterRegionCopier<
-    itkGetStaticConstMacro(InputImageDimension),
-    itkGetStaticConstMacro(OutputImageDimension) > ExtractImageFilterRegionCopierType;
+      itkGetStaticConstMacro(InputImageDimension),
+      itkGetStaticConstMacro(OutputImageDimension) > ExtractImageFilterRegionCopierType;
 
   /** Set/Get the output image region.
    *  If any of the ExtractionRegion.Size = 0 for any particular dimension dim,
@@ -218,6 +221,7 @@ public:
    *  'c' dimensions less than the input image, where c = number of
    *  ExtractionRegion.Size = 0. */
   void SetExtractionRegion(InputImageRegionType extractRegion);
+
   itkGetConstMacro(ExtractionRegion, InputImageRegionType);
 
 #ifdef ITK_USE_CONCEPT_CHECKING

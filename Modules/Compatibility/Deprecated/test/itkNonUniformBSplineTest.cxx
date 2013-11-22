@@ -21,17 +21,18 @@
 /*
  * This test exercises the NonUniformBSpline class.
  */
-int itkNonUniformBSplineTest(int, char* [] )
+int
+itkNonUniformBSplineTest(int, char* [] )
 {
   typedef itk::NonUniformBSpline<3> SplineType;
 
   SplineType::Pointer mySpline = SplineType::New();
 
-  typedef SplineType::PointListType     PointListType;
-  typedef SplineType::PointType         PointType;
-  typedef SplineType::KnotListType      KnotListType;
+  typedef SplineType::PointListType PointListType;
+  typedef SplineType::PointType     PointType;
+  typedef SplineType::KnotListType  KnotListType;
 
-  typedef SplineType::ControlPointListType   ControlPointListType;
+  typedef SplineType::ControlPointListType ControlPointListType;
 
   const unsigned int orderA = 1;
 
@@ -59,15 +60,14 @@ int itkNonUniformBSplineTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   PointListType pointList;
 
   // Generate a list of points along the Z axis
   PointType point;
 
   const unsigned int numberOfPoints = 10;
-  const double Zorigin  = 0.0;
-  const double Zspacing = 1.5;
+  const double       Zorigin  = 0.0;
+  const double       Zspacing = 1.5;
 
   for(unsigned int i = 0; i < numberOfPoints; i++ )
     {
@@ -98,7 +98,6 @@ int itkNonUniformBSplineTest(int, char* [] )
     ++pitr;
     ++rpitr;
     }
-
 
   KnotListType knotList;
 
@@ -164,15 +163,14 @@ int itkNonUniformBSplineTest(int, char* [] )
   std::cout << p2 << std::endl;
   // FIXME: Validate the return value in p2
 
-
   ControlPointListType controlPointList;
 
   // Generate a list of knots (non-uniformly spaced)
   // Purposely set them between 0.0 and 1.0 so that
   // they don't get to be rescaled.
   const unsigned int numberOfControlPoints = 5;
-  const double Corigin  = 0.0;
-  const double Cspacing = 1.5;
+  const double       Corigin  = 0.0;
+  const double       Cspacing = 1.5;
 
   for(unsigned int i = 0; i < numberOfControlPoints; i++ )
     {
@@ -209,8 +207,8 @@ int itkNonUniformBSplineTest(int, char* [] )
 
   const unsigned int numberOfEvaluations = 10;
   const unsigned int basisFunctionNumber = 1;
-  const double TOrigin = 0.0;
-  const double TSpacing = 0.1;
+  const double       TOrigin = 0.0;
+  const double       TSpacing = 0.1;
 
   for( unsigned px = 0; px < numberOfEvaluations; px++ )
     {

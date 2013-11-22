@@ -22,7 +22,8 @@
 
 #include "itkSignedDanielssonDistanceMapImageFilter.h"
 
-int itkSignedDanielssonDistanceMapImageFilterTest2( int argc, char * argv[] )
+int
+itkSignedDanielssonDistanceMapImageFilterTest2( int argc, char * argv[] )
 {
   if(argc < 3)
     {
@@ -30,15 +31,15 @@ int itkSignedDanielssonDistanceMapImageFilterTest2( int argc, char * argv[] )
     return -1;
     }
 
-  const   unsigned int    ImageDimension = 2;
-  typedef unsigned char   InputPixelType;
-  typedef unsigned char   OutputPixelType;
+  const   unsigned int ImageDimension = 2;
+  typedef unsigned char InputPixelType;
+  typedef unsigned char OutputPixelType;
 
-  typedef itk::Image<InputPixelType,  ImageDimension>  InputImageType;
-  typedef itk::Image<OutputPixelType, ImageDimension>  OutputImageType;
+  typedef itk::Image<InputPixelType,  ImageDimension> InputImageType;
+  typedef itk::Image<OutputPixelType, ImageDimension> OutputImageType;
 
-  typedef itk::ImageFileReader<InputImageType>    ReaderType;
-  typedef itk::ImageFileWriter<OutputImageType>   WriterType;
+  typedef itk::ImageFileReader<InputImageType>  ReaderType;
+  typedef itk::ImageFileWriter<OutputImageType> WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName(argv[1]);
@@ -48,7 +49,7 @@ int itkSignedDanielssonDistanceMapImageFilterTest2( int argc, char * argv[] )
   ConnectedType::Pointer connectedComponents = ConnectedType::New();
   connectedComponents->SetInput( reader->GetOutput() );
 
-  typedef itk::SignedDanielssonDistanceMapImageFilter <InputImageType, OutputImageType>  FilterType;
+  typedef itk::SignedDanielssonDistanceMapImageFilter <InputImageType, OutputImageType> FilterType;
   FilterType::Pointer filter = FilterType::New();
   filter->SetInput( connectedComponents->GetOutput() );
   filter->Update();

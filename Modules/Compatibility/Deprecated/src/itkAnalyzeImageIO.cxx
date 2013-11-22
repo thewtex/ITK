@@ -122,7 +122,8 @@ GetHeaderFileName(const std::string & filename)
 }
 
 //Returns the base image filename.
-static std::string GetImageFileName(const std::string & filename)
+static std::string
+GetImageFileName(const std::string & filename)
 {
   std::string       ImageFileName (filename);
   const std::string fileExt = GetExtension(filename);
@@ -542,12 +543,14 @@ AnalyzeImageIO::~AnalyzeImageIO()
   //Purposefully left blank
 }
 
-void AnalyzeImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+AnalyzeImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
 
-bool AnalyzeImageIO::CanWriteFile(const char *FileNameToWrite)
+bool
+AnalyzeImageIO::CanWriteFile(const char *FileNameToWrite)
 {
   std::string filename(FileNameToWrite);
   // Data file name given?
@@ -593,7 +596,8 @@ bool AnalyzeImageIO::CanWriteFile(const char *FileNameToWrite)
 //              DT_INDEX_COMPLEX        DT_INDEX_RGB
 //              DT_INDEX_BINARY         DT_INDEX_UNKNOWN
 //////////////////////////////////////////////////////////////////////////
-void AnalyzeImageIO::DefineHeaderObjectDataType()
+void
+AnalyzeImageIO::DefineHeaderObjectDataType()
 {
   enum DataTypeIndex eNewType;
 
@@ -684,7 +688,8 @@ void AnalyzeImageIO::DefineHeaderObjectDataType()
     }
 }
 
-void AnalyzeImageIO::Read(void *buffer)
+void
+AnalyzeImageIO::Read(void *buffer)
 {
   //4 cases to handle
   //1: given .hdr and image is .img
@@ -754,7 +759,7 @@ void AnalyzeImageIO::Read(void *buffer)
     while ( bytesRemaining )
       {
       unsigned int bytesToRead = bytesRemaining > static_cast< SizeType >( maxChunk )
-                                 ? maxChunk : static_cast< unsigned int >( bytesRemaining );
+        ? maxChunk : static_cast< unsigned int >( bytesRemaining );
 
       int retval = gzread(file_p, p,  bytesToRead);
 
@@ -791,7 +796,8 @@ void AnalyzeImageIO::Read(void *buffer)
 // This method will only test if the header looks like an
 // Analyze Header.  Some code is redundant with ReadImageInformation
 // a StateMachine could provide a better implementation
-bool AnalyzeImageIO::CanReadFile(const char *FileNameToRead)
+bool
+AnalyzeImageIO::CanReadFile(const char *FileNameToRead)
 {
   std::string filename(FileNameToRead);
   // we check that the correct extension is given by the user
@@ -846,7 +852,8 @@ bool AnalyzeImageIO::CanReadFile(const char *FileNameToRead)
   return NotNiftiTaggedFile;
 }
 
-void AnalyzeImageIO::ReadImageInformation()
+void
+AnalyzeImageIO::ReadImageInformation()
 {
   unsigned int      dim;
   const std::string HeaderFileName = GetHeaderFileName(m_FileName);
@@ -1015,7 +1022,6 @@ void AnalyzeImageIO::ReadImageInformation()
       }
     }
   itk::EncapsulateMetaData< int >(thisDic, ITK_NumberOfDimensions, dim);
-
 
   //Important hist fields
   itk::EncapsulateMetaData< std::string >
@@ -1241,8 +1247,8 @@ AnalyzeImageIO
   itk::SpatialOrientation::ValidCoordinateOrientationFlags coord_orient =
     itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_INVALID;
   typedef itk::SpatialOrientationAdapter::DirectionType DirectionType;
-  DirectionType dir;
-  unsigned int dims = this->GetNumberOfDimensions();
+  DirectionType         dir;
+  unsigned int          dims = this->GetNumberOfDimensions();
   std::vector< double > dirx = this->GetDirection(0);
   std::vector< double > diry = this->GetDirection(1);
   std::vector< double > dirz;
@@ -1389,6 +1395,7 @@ AnalyzeImageIO
 ::GetDirection(unsigned int k) const
 {
   std::vector< double > correctedDirection = this->ImageIOBase::GetDirection(k);
+
   if ( this->m_Dimensions.size() == correctedDirection.size() )
     {
     return correctedDirection;
@@ -1523,7 +1530,7 @@ AnalyzeImageIO
       while ( bytesRemaining )
         {
         unsigned int bytesToWrite = bytesRemaining > static_cast< SizeType >( maxChunk )
-                                    ? maxChunk : static_cast< unsigned int >( bytesRemaining );
+          ? maxChunk : static_cast< unsigned int >( bytesRemaining );
 
         if ( gzwrite(file_p, p, bytesToWrite) != static_cast< int >( bytesToWrite ) )
           {
@@ -1586,4 +1593,5 @@ AnalyzeImageIO
     itksys::SystemTools::RemoveFile( unusedbaseimgname.c_str() );
     }
 }
+
 } // end namespace itk

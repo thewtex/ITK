@@ -54,13 +54,13 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImageSeriesReader.h"
 #include "itkDICOMImageIO2.h"
 #include "itkDICOMSeriesFileNames.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
 
   if( argc < 3 )
@@ -69,15 +69,14 @@ int main( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::Image<short,3>                  ImageType;
-  typedef itk::ImageSeriesReader< ImageType >  ReaderType;
+  typedef itk::Image<short,3>                 ImageType;
+  typedef itk::ImageSeriesReader< ImageType > ReaderType;
 
   itk::DICOMImageIO2::Pointer dicomIO = itk::DICOMImageIO2::New();
 
   // Get the DICOM filenames from the directory
   itk::DICOMSeriesFileNames::Pointer nameGenerator = itk::DICOMSeriesFileNames::New();
   nameGenerator->SetDirectory( argv[1] );
-
 
   try
     {
@@ -133,8 +132,8 @@ int main( int argc, char* argv[] )
     typedef itk::ImageFileWriter< ImageType > WriterType;
     WriterType::Pointer writer = WriterType::New();
 
-    std::cout  << "Writing the image as " << std::endl << std::endl;
-    std::cout  << argv[2] << std::endl << std::endl;
+    std::cout << "Writing the image as " << std::endl << std::endl;
+    std::cout << argv[2] << std::endl << std::endl;
 
     writer->SetFileName( argv[2] );
 

@@ -53,7 +53,8 @@
 #include "itkVector.h"
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -68,7 +69,7 @@ int main()
   typedef int MeasurementType;
   const unsigned int MeasurementVectorLength = 2;
   typedef itk::Vector< MeasurementType , MeasurementVectorLength >
-                                                        MeasurementVectorType;
+    MeasurementVectorType;
 
   typedef itk::Statistics::ListSample< MeasurementVectorType > ListSampleType;
   ListSampleType::Pointer listSample = ListSampleType::New();
@@ -87,7 +88,6 @@ int main()
       }
     }
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -114,7 +114,6 @@ int main()
   upperBound[1] = 5.5;
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // Now, we set up the \code{SampleToHistogramFilter} object by passing
@@ -128,7 +127,7 @@ int main()
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::SampleToHistogramFilter< ListSampleType,
-                           HistogramType > FilterType;
+                                                    HistogramType > FilterType;
   FilterType::Pointer filter = FilterType::New();
 
   filter->SetInput( listSample );

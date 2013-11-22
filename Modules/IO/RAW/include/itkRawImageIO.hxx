@@ -24,7 +24,7 @@
 namespace itk
 {
 template< typename TPixel, unsigned int VImageDimension >
-RawImageIO< TPixel, VImageDimension >::RawImageIO():
+RawImageIO< TPixel, VImageDimension >::RawImageIO() :
   ImageIOBase()
 {
   this->SetNumberOfComponents(1);
@@ -52,7 +52,8 @@ RawImageIO< TPixel, VImageDimension >::~RawImageIO()
 {}
 
 template< typename TPixel, unsigned int VImageDimension >
-void RawImageIO< TPixel, VImageDimension >::PrintSelf(std::ostream & os, Indent indent) const
+void
+RawImageIO< TPixel, VImageDimension >::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
@@ -61,7 +62,8 @@ void RawImageIO< TPixel, VImageDimension >::PrintSelf(std::ostream & os, Indent 
 }
 
 template< typename TPixel, unsigned int VImageDimension >
-SizeValueType RawImageIO< TPixel, VImageDimension >::GetHeaderSize()
+SizeValueType
+RawImageIO< TPixel, VImageDimension >::GetHeaderSize()
 {
   std::ifstream file;
 
@@ -85,16 +87,17 @@ SizeValueType RawImageIO< TPixel, VImageDimension >::GetHeaderSize()
     file.seekg(0, std::ios::end);
 
     m_HeaderSize = static_cast<SizeValueType>(
-      static_cast<typename ::itk::intmax_t>( file.tellg() )
-      - static_cast<typename ::itk::intmax_t>( this->m_Strides[m_FileDimensionality + 1] )
-    );
+        static_cast<typename::itk::intmax_t>( file.tellg() )
+        - static_cast<typename::itk::intmax_t>( this->m_Strides[m_FileDimensionality + 1] )
+        );
     }
 
   return m_HeaderSize;
 }
 
 template< typename TPixel, unsigned int VImageDimension >
-void RawImageIO< TPixel, VImageDimension >::OpenFileForReading(std::ifstream & is)
+void
+RawImageIO< TPixel, VImageDimension >::OpenFileForReading(std::ifstream & is)
 {
   if ( m_FileName == "" )
     {
@@ -121,7 +124,8 @@ void RawImageIO< TPixel, VImageDimension >::OpenFileForReading(std::ifstream & i
 }
 
 template< typename TPixel, unsigned int VImageDimension >
-void RawImageIO< TPixel, VImageDimension >::OpenFileForWriting(std::ofstream & os)
+void
+RawImageIO< TPixel, VImageDimension >::OpenFileForWriting(std::ofstream & os)
 {
   if ( m_FileName == "" )
     {
@@ -151,7 +155,8 @@ void RawImageIO< TPixel, VImageDimension >::OpenFileForWriting(std::ofstream & o
 }
 
 template< typename TPixel, unsigned int VImageDimension >
-void RawImageIO< TPixel, VImageDimension >
+void
+RawImageIO< TPixel, VImageDimension >
 ::SetHeaderSize(SizeValueType size)
 {
   if ( size != m_HeaderSize )
@@ -163,7 +168,8 @@ void RawImageIO< TPixel, VImageDimension >
 }
 
 template< typename TPixel, unsigned int VImageDimension >
-void RawImageIO< TPixel, VImageDimension >
+void
+RawImageIO< TPixel, VImageDimension >
 ::Read(void *buffer)
 {
   std::ifstream file;
@@ -233,7 +239,8 @@ void RawImageIO< TPixel, VImageDimension >
 }
 
 template< typename TPixel, unsigned int VImageDimension >
-bool RawImageIO< TPixel, VImageDimension >
+bool
+RawImageIO< TPixel, VImageDimension >
 ::CanWriteFile(const char *fname)
 {
   std::string filename(fname);
@@ -247,7 +254,8 @@ bool RawImageIO< TPixel, VImageDimension >
 }
 
 template< typename TPixel, unsigned int VImageDimension >
-void RawImageIO< TPixel, VImageDimension >
+void
+RawImageIO< TPixel, VImageDimension >
 ::Write(const void *buffer)
 {
   std::ofstream file;
@@ -275,23 +283,23 @@ void RawImageIO< TPixel, VImageDimension >
   ( this->GetComponentType() == WeakType )                              \
     {                                                                   \
     typedef ByteSwapper< StrongType > InternalByteSwapperType;          \
-    const SizeValueType numberOfPixels = numberOfBytes/(sizeof(StrongType)); \
+    const SizeValueType numberOfPixels = numberOfBytes/(sizeof(StrongType) ); \
     if ( m_ByteOrder == LittleEndian )                                  \
       {                                                                 \
       StrongType *tempBuffer = new StrongType[numberOfPixels];          \
-      memcpy((char *)tempBuffer, buffer, numberOfBytes);          \
+      memcpy( (char *)tempBuffer, buffer, numberOfBytes);          \
       InternalByteSwapperType::SwapRangeFromSystemToLittleEndian(       \
         (StrongType *)tempBuffer, numberOfComponents);                  \
-      file.write((char *)tempBuffer, numberOfBytes);                            \
+      file.write( (char *)tempBuffer, numberOfBytes);                            \
       delete[] tempBuffer;                                              \
       }                                                                 \
     else if ( m_ByteOrder == BigEndian )                                \
       {                                                                 \
       StrongType *tempBuffer = new StrongType[numberOfPixels];          \
-      memcpy((char *)tempBuffer, buffer, numberOfBytes);          \
+      memcpy( (char *)tempBuffer, buffer, numberOfBytes);          \
       InternalByteSwapperType::SwapRangeFromSystemToBigEndian(          \
         (StrongType *)tempBuffer, numberOfComponents);                  \
-      file.write((char *)tempBuffer, numberOfBytes);                            \
+      file.write( (char *)tempBuffer, numberOfBytes);                            \
       delete[] tempBuffer;                                              \
       }                                                                 \
     else                                                                \
@@ -315,5 +323,6 @@ void RawImageIO< TPixel, VImageDimension >
 
   file.close();
 }
+
 } // namespace itk
 #endif

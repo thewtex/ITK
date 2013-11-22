@@ -22,7 +22,8 @@
 #include "itkBinaryErodeImageFilter.h"
 #include "itkBinaryBallStructuringElement.h"
 
-int itkBinaryErodeImageFilterTest3(int argc, char * argv[])
+int
+itkBinaryErodeImageFilterTest3(int argc, char * argv[])
 {
   if( argc < 7 )
     {
@@ -51,22 +52,22 @@ int itkBinaryErodeImageFilterTest3(int argc, char * argv[])
   filter->SetKernel( kernel );
 
   // test default values
-  if ( filter->GetBackgroundValue( ) != itk::NumericTraits< PType >::NonpositiveMin() )
+  if ( filter->GetBackgroundValue() != itk::NumericTraits< PType >::NonpositiveMin() )
     {
     std::cerr << "Wrong default background value." << std::endl;
     return EXIT_FAILURE;
     }
-  if ( filter->GetForegroundValue( ) != itk::NumericTraits< PType >::max() )
+  if ( filter->GetForegroundValue() != itk::NumericTraits< PType >::max() )
     {
     std::cerr << "Wrong default foreground value." << std::endl;
     return EXIT_FAILURE;
     }
-  if ( filter->GetErodeValue( ) != itk::NumericTraits< PType >::max() )
+  if ( filter->GetErodeValue() != itk::NumericTraits< PType >::max() )
     {
     std::cerr << "Wrong default dilate value." << std::endl;
     return EXIT_FAILURE;
     }
-  if ( filter->GetBoundaryToForeground( ) != true )
+  if ( filter->GetBoundaryToForeground() != true )
     {
     std::cerr << "Wrong default BoundaryToForeground value." << std::endl;
     return EXIT_FAILURE;
@@ -74,7 +75,7 @@ int itkBinaryErodeImageFilterTest3(int argc, char * argv[])
 
   //Exercise Set/Get methods for Background Value
   filter->SetForegroundValue( atoi(argv[3]) );
-  if ( filter->GetForegroundValue( ) != atoi(argv[3]) )
+  if ( filter->GetForegroundValue() != atoi(argv[3]) )
     {
     std::cerr << "Set/Get Foreground value problem." << std::endl;
     return EXIT_FAILURE;
@@ -82,21 +83,21 @@ int itkBinaryErodeImageFilterTest3(int argc, char * argv[])
 
   // the same with the alias
   filter->SetErodeValue( atoi(argv[3]) );
-  if ( filter->GetErodeValue( ) != atoi(argv[3]) )
+  if ( filter->GetErodeValue() != atoi(argv[3]) )
     {
     std::cerr << "Set/Get Erode value problem." << std::endl;
     return EXIT_FAILURE;
     }
 
   filter->SetBackgroundValue( atoi(argv[4]) );
-  if ( filter->GetBackgroundValue( ) != atoi(argv[4]) )
+  if ( filter->GetBackgroundValue() != atoi(argv[4]) )
     {
     std::cerr << "Set/Get Background value problem." << std::endl;
     return EXIT_FAILURE;
     }
 
   filter->SetBoundaryToForeground( atoi(argv[5]) );
-  if ( filter->GetBoundaryToForeground( ) != (bool)atoi(argv[5]) )
+  if ( filter->GetBoundaryToForeground() != (bool)atoi(argv[5]) )
     {
     std::cerr << "Set/Get BoundaryToForeground value problem." << std::endl;
     return EXIT_FAILURE;

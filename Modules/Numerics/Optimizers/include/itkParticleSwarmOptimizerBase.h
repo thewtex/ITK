@@ -57,10 +57,10 @@ class ParticleSwarmOptimizerBase :
 {
 public:
   /** Standard "Self" typedef. */
-  typedef ParticleSwarmOptimizerBase          Self;
-  typedef SingleValuedNonLinearOptimizer      Superclass;
-  typedef SmartPointer<Self>                  Pointer;
-  typedef SmartPointer<const Self>            ConstPointer;
+  typedef ParticleSwarmOptimizerBase     Self;
+  typedef SingleValuedNonLinearOptimizer Superclass;
+  typedef SmartPointer<Self>             Pointer;
+  typedef SmartPointer<const Self>       ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( ParticleSwarmOptimizerBase, SingleValuedNonLinearOptimizer )
@@ -69,22 +69,22 @@ public:
                                  ParametersType::ValueType> > ParameterBoundsType;
 
   struct ParticleData
-  {
+    {
     ParametersType m_CurrentParameters;
     ParametersType m_CurrentVelocity;
     CostFunctionType::MeasureType m_CurrentValue;
     ParametersType m_BestParameters;
     CostFunctionType::MeasureType m_BestValue;
-  };
+    };
 
-  typedef std::vector<ParticleData>         SwarmType;
-  typedef unsigned int                      NumberOfIterationsType;
-  typedef unsigned int                      NumberOfParticlesType;
-  typedef unsigned int                      NumberOfGenerationsType;
-  typedef CostFunctionType::MeasureType     MeasureType;
-  typedef ParametersType::ValueType         ValueType;
+  typedef std::vector<ParticleData>     SwarmType;
+  typedef unsigned int                  NumberOfIterationsType;
+  typedef unsigned int                  NumberOfParticlesType;
+  typedef unsigned int                  NumberOfGenerationsType;
+  typedef CostFunctionType::MeasureType MeasureType;
+  typedef ParametersType::ValueType     ValueType;
   typedef Statistics::MersenneTwisterRandomVariateGenerator
-                                            RandomVariateGeneratorType;
+    RandomVariateGeneratorType;
 
   /** Specify whether to initialize the particles using a normal distribution
     * centered on the user supplied initial value or a uniform distribution.
@@ -101,6 +101,7 @@ public:
    * (uniform or normal particle distributions) set using an empty swarm.
    */
   void SetInitialSwarm( const SwarmType &initialSwarm );
+
   void ClearSwarm();
 
   /**
@@ -115,10 +116,10 @@ public:
   /** Start optimization. */
   void StartOptimization( void );
 
-
   /** Set/Get number of particles in the swarm - the maximal number of function
       evaluations is m_MaximalNumberOfIterations*m_NumberOfParticles */
   void SetNumberOfParticles( NumberOfParticlesType n );
+
   itkGetMacro( NumberOfParticles, NumberOfParticlesType )
 
   /** Set/Get maximal number of iterations - the maximal number of function
@@ -137,32 +138,34 @@ public:
      bounds. NOTE: It is assumed that the first entry is the minimal value,
      second is the maximal value. */
   virtual void SetParameterBounds( ParameterBoundsType & bounds );
+
   void SetParameterBounds( std::pair<ParametersType::ValueType,
-                           ParametersType::ValueType> &bounds,
+                                     ParametersType::ValueType> &bounds,
                            unsigned int n );
 
   ParameterBoundsType GetParameterBounds() const;
 
-    /** The optimization algorithm will terminate when the function improvement
-     *  in the last m_NumberOfGenerationsWithMinimalImprovement generations
-     *  is less than m_FunctionConvergenceTolerance and the maximal distance
-     *  between particles and the best particle in each dimension is less than
-     *  m_ParametersConvergenceTolerance[i] for the specified percentage of the
-     *  particles.
-     *  That is, we haven't improved the best function value for a while and in
-     *  the parameter space most (m%) of our particles attained their best value
-     *  close to the swarm's best value.
-     *  NOTE: The use of different tolerances for each dimension is desired when
-     *         optimizing over non-commensurate parameters (e.g. rotation and
-     *         translation). Alternatively, we could use ITK's parameter scaling
-     *         approach. The current approach seems more intuitive.
-     */
+  /** The optimization algorithm will terminate when the function improvement
+   *  in the last m_NumberOfGenerationsWithMinimalImprovement generations
+   *  is less than m_FunctionConvergenceTolerance and the maximal distance
+   *  between particles and the best particle in each dimension is less than
+   *  m_ParametersConvergenceTolerance[i] for the specified percentage of the
+   *  particles.
+   *  That is, we haven't improved the best function value for a while and in
+   *  the parameter space most (m%) of our particles attained their best value
+   *  close to the swarm's best value.
+   *  NOTE: The use of different tolerances for each dimension is desired when
+   *         optimizing over non-commensurate parameters (e.g. rotation and
+   *         translation). Alternatively, we could use ITK's parameter scaling
+   *         approach. The current approach seems more intuitive.
+   */
   itkSetMacro( FunctionConvergenceTolerance, MeasureType )
   itkGetMacro( FunctionConvergenceTolerance, MeasureType )
   /**Set parameters convergence tolerance using the same value for all, sz,
      parameters*/
   void SetParametersConvergenceTolerance( ValueType convergenceTolerance,
                                           unsigned int sz );
+
   itkSetMacro( ParametersConvergenceTolerance, ParametersType )
   itkGetMacro( ParametersConvergenceTolerance, ParametersType )
   itkGetMacro( PercentageParticlesConverged, double )
@@ -197,8 +200,10 @@ public:
 
 protected:
   ParticleSwarmOptimizerBase();
-  virtual ~ParticleSwarmOptimizerBase();
+  virtual
+  ~ParticleSwarmOptimizerBase();
   void PrintSelf( std::ostream& os, Indent indent ) const;
+
   void PrintParamtersType(  const ParametersType& x, std::ostream& os ) const;
 
   /**
@@ -206,7 +211,7 @@ protected:
   virtual void UpdateSwarm() = 0;
 
   ParticleSwarmOptimizerBase( const Self& ); //purposely not implemented
-  void operator=( const Self& );//purposely not implemented
+  void operator=( const Self& );             //purposely not implemented
 
   virtual void ValidateSettings();
 
@@ -216,25 +221,26 @@ protected:
   virtual void Initialize();
 
   void RandomInitialization();
+
   void FileInitialization();
 
-  bool                                         m_PrintSwarm;
-  std::ostringstream                           m_StopConditionDescription;
-  bool                                         m_InitializeNormalDistribution;
-  NumberOfParticlesType                        m_NumberOfParticles;
-  NumberOfIterationsType                       m_MaximalNumberOfIterations;
-  NumberOfGenerationsType                      m_NumberOfGenerationsWithMinimalImprovement;
-  ParameterBoundsType                          m_ParameterBounds;
-  ParametersType                               m_ParametersConvergenceTolerance;
-  double                                       m_PercentageParticlesConverged;
-  CostFunctionType::MeasureType                m_FunctionConvergenceTolerance;
-  std::vector<ParticleData>                    m_Particles;
-  CostFunctionType::MeasureType                m_FunctionBestValue;
-  std::vector<MeasureType>                     m_FunctionBestValueMemory;
-  ParametersType                               m_ParametersBestValue;
-  NumberOfIterationsType                       m_IterationIndex;
-  RandomVariateGeneratorType::IntegerType      m_Seed;
-  bool                                         m_UseSeed;
+  bool                                    m_PrintSwarm;
+  std::ostringstream                      m_StopConditionDescription;
+  bool                                    m_InitializeNormalDistribution;
+  NumberOfParticlesType                   m_NumberOfParticles;
+  NumberOfIterationsType                  m_MaximalNumberOfIterations;
+  NumberOfGenerationsType                 m_NumberOfGenerationsWithMinimalImprovement;
+  ParameterBoundsType                     m_ParameterBounds;
+  ParametersType                          m_ParametersConvergenceTolerance;
+  double                                  m_PercentageParticlesConverged;
+  CostFunctionType::MeasureType           m_FunctionConvergenceTolerance;
+  std::vector<ParticleData>               m_Particles;
+  CostFunctionType::MeasureType           m_FunctionBestValue;
+  std::vector<MeasureType>                m_FunctionBestValueMemory;
+  ParametersType                          m_ParametersBestValue;
+  NumberOfIterationsType                  m_IterationIndex;
+  RandomVariateGeneratorType::IntegerType m_Seed;
+  bool                                    m_UseSeed;
 };
 } // end namespace itk
 

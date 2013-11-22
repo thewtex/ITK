@@ -643,6 +643,7 @@ SolverCrankNicolson<VDimension>
 {
   Float DeformationEnergy = 0.0;
   Float iSolVal, jSolVal;
+
   for( unsigned int i = 0; i < this->m_NGFN; i++ )
     {
 // forming  U^T F
@@ -680,6 +681,7 @@ SolverCrankNicolson<VDimension>
   Float ForceEnergy = 0.0, FVal = 0.0;
   Float DeformationEnergy = 0.0;
   Float iSolVal, jSolVal;
+
   for( unsigned int i = 0; i < this->m_NGFN; i++ )
     {
 // forming  U^T F
@@ -737,6 +739,7 @@ SolverCrankNicolson<VDimension>
   Float maxs = 0.0, CurrentTotSolution, CurrentSolution, CurrentForce;
   Float mins2 = 0.0, maxs2 = 0.0;
   Float absmax = 0.0;
+
   for( unsigned int i = 0; i < this->m_NGFN; i++ )
     {
 #ifdef TOTE
@@ -807,6 +810,7 @@ SolverCrankNicolson<VDimension>
    */
   Float mins = 0.0, maxs = 0.0;
   Float mins2 = 0.0, maxs2 = 0.0;
+
   for( unsigned int i = 0; i < this->m_NGFN; i++ )
     {
     Float CurrentSolution = this->m_ls->GetSolutionValue(i, m_SolutionTIndex);
@@ -840,6 +844,7 @@ SolverCrankNicolson<VDimension>
 ::AverageLastTwoDisplacements(Float t)
 {
   Float maxs = 0.0;
+
   for( unsigned int i = 0; i < this->m_NGFN; i++ )
     {
     Float temp = this->m_ls->GetSolutionValue(i, m_SolutionTIndex);
@@ -872,6 +877,7 @@ SolverCrankNicolson<VDimension>
 ::PrintDisplacements()
 {
   std::cout <<  " printing current displacements " << std::endl;
+
   for( unsigned int i = 0; i < this->m_NGFN; i++ )
     {
     std::cout << this->m_ls->GetSolutionValue(i, m_TotalSolutionIndex) << std::endl;
@@ -884,6 +890,7 @@ SolverCrankNicolson<VDimension>
 ::PrintForce()
 {
   std::cout <<  " printing current forces " << std::endl;
+
   for( unsigned int i = 0; i < this->m_NGFN; i++ )
     {
     std::cout << this->m_ls->GetVectorValue(i, m_ForceTIndex) << std::endl;

@@ -22,7 +22,8 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkHessianRecursiveGaussianImageFilter.h"
 
-int itkHessianToObjectnessMeasureImageFilterTest( int argc, char *argv[] )
+int
+itkHessianToObjectnessMeasureImageFilterTest( int argc, char *argv[] )
 {
   if ( argc < 3 )
     {
@@ -48,9 +49,9 @@ int itkHessianToObjectnessMeasureImageFilterTest( int argc, char *argv[] )
 
   // Declare the type of the recursive Gaussian filter
   typedef itk::HessianRecursiveGaussianImageFilter<
-                                            ImageType >  GaussianImageFilterType;
+      ImageType >  GaussianImageFilterType;
 
-  typedef GaussianImageFilterType::OutputImageType        HessianImageType;
+  typedef GaussianImageFilterType::OutputImageType HessianImageType;
 
   // Delcare the type of objectness measure image filter
 
@@ -101,7 +102,7 @@ int itkHessianToObjectnessMeasureImageFilterTest( int argc, char *argv[] )
     }
 
   objectnessFilter->SetBrightObject(true);
-  if ( ! objectnessFilter->GetBrightObject() )
+  if ( !objectnessFilter->GetBrightObject() )
     {
     std::cerr << "Error in Set/GetBrightObject method" << std::endl;
     return EXIT_FAILURE;
@@ -117,7 +118,7 @@ int itkHessianToObjectnessMeasureImageFilterTest( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  double  betaValue = 0.5;
+  double betaValue = 0.5;
   objectnessFilter->SetBeta(betaValue);
   if( vnl_math_abs( objectnessFilter->GetBeta() - betaValue ) >= tolerance )
     {
@@ -125,15 +126,13 @@ int itkHessianToObjectnessMeasureImageFilterTest( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-
-  double  gammaValue = 0.5;
+  double gammaValue = 0.5;
   objectnessFilter->SetGamma( gammaValue );
   if( vnl_math_abs( objectnessFilter->GetGamma() - gammaValue ) >= tolerance )
     {
     std::cerr << "Error in Set/GetGamma() method" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //Verify exceptions will be thrown if the object dimension is larger than
   //the image dimension
@@ -185,7 +184,7 @@ int itkHessianToObjectnessMeasureImageFilterTest( int argc, char *argv[] )
   FileWriterType::Pointer writer = FileWriterType::New();
   writer->SetFileName(argv[2]);
   writer->UseCompressionOn();
-  writer->SetInput(objectnessFilter->GetOutput());
+  writer->SetInput(objectnessFilter->GetOutput() );
 
   try
     {

@@ -81,10 +81,10 @@ const typename MultiResolutionPDEDeformableRegistration< TFixedImage, TMovingIma
 ::MovingImageType *
 MultiResolutionPDEDeformableRegistration< TFixedImage, TMovingImage, TDisplacementField, TRealType >
 ::GetMovingImage(void) const
-{
+  {
   return dynamic_cast< const MovingImageType * >
          ( this->ProcessObject::GetInput(2) );
-}
+  }
 
 /*
  * Set the fixed image.
@@ -106,10 +106,10 @@ const typename MultiResolutionPDEDeformableRegistration< TFixedImage, TMovingIma
 ::FixedImageType *
 MultiResolutionPDEDeformableRegistration< TFixedImage, TMovingImage, TDisplacementField, TRealType >
 ::GetFixedImage(void) const
-{
+  {
   return dynamic_cast< const FixedImageType * >
          ( this->ProcessObject::GetInput(1) );
-}
+  }
 
 /*
  *
@@ -169,6 +169,7 @@ MultiResolutionPDEDeformableRegistration< TFixedImage, TMovingImage, TDisplaceme
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "NumberOfLevels: " << m_NumberOfLevels << std::endl;
   os << indent << "CurrentLevel: " << m_CurrentLevel << std::endl;
 
@@ -288,11 +289,11 @@ MultiResolutionPDEDeformableRegistration< TFixedImage, TMovingImage, TDisplaceme
       {
       // sigma accounts for the subsampling of the pyramid
       double sigma = 0.5 * static_cast< float >(
-        m_FixedImagePyramid->GetSchedule()[fixedLevel][dim] );
+          m_FixedImagePyramid->GetSchedule()[fixedLevel][dim] );
 
       // but also for a possible discrepancy in the spacing
       sigma *= fixedImage->GetSpacing()[dim]
-               / inputPtr->GetSpacing()[dim];
+        / inputPtr->GetSpacing()[dim];
 
       smoother->SetInput(tempField);
       smoother->SetSigma(sigma);
@@ -508,6 +509,7 @@ MultiResolutionPDEDeformableRegistration< TFixedImage, TMovingImage, TDisplaceme
   // request the largest possible region for the moving image
   MovingImagePointer movingPtr =
     const_cast< MovingImageType * >( this->GetMovingImage() );
+
   if ( movingPtr )
     {
     movingPtr->SetRequestedRegionToLargestPossibleRegion();
@@ -518,7 +520,7 @@ MultiResolutionPDEDeformableRegistration< TFixedImage, TMovingImage, TDisplaceme
   DisplacementFieldPointer inputPtr =
     const_cast< DisplacementFieldType * >( this->GetInput() );
   DisplacementFieldPointer outputPtr = this->GetOutput();
-  FixedImagePointer       fixedPtr =
+  FixedImagePointer        fixedPtr =
     const_cast< FixedImageType * >( this->GetFixedImage() );
 
   if ( inputPtr )
@@ -543,6 +545,7 @@ MultiResolutionPDEDeformableRegistration< TFixedImage, TMovingImage, TDisplaceme
 
   // set the output requested region to largest possible.
   DisplacementFieldType *outputPtr;
+
   outputPtr = dynamic_cast< DisplacementFieldType * >( ptr );
 
   if ( outputPtr )
@@ -550,6 +553,7 @@ MultiResolutionPDEDeformableRegistration< TFixedImage, TMovingImage, TDisplaceme
     outputPtr->SetRequestedRegionToLargestPossibleRegion();
     }
 }
+
 } // end namespace itk
 
 #endif

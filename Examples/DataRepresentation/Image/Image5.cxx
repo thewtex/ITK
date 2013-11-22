@@ -39,7 +39,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkImage.h"
 #include "itkImportImageFilter.h"
@@ -47,7 +46,8 @@
 
 #include "itkImageFileWriter.h"
 
-int main(int argc, char * argv[])
+int
+main(int argc, char * argv[])
 {
   if( argc < 2 )
     {
@@ -65,13 +65,12 @@ int main(int argc, char * argv[])
   // Software Guide : EndLatex
   //
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char   PixelType;
+  typedef unsigned char PixelType;
   const unsigned int Dimension = 3;
 
   typedef itk::Image< PixelType, Dimension > ImageType;
 
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -83,9 +82,8 @@ int main(int argc, char * argv[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImportImageFilter< PixelType, Dimension >   ImportFilterType;
+  typedef itk::ImportImageFilter< PixelType, Dimension > ImportFilterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -101,7 +99,6 @@ int main(int argc, char * argv[])
   ImportFilterType::Pointer importFilter = ImportFilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // This filter requires the user to specify the size of the image to be
@@ -116,7 +113,7 @@ int main(int argc, char * argv[])
   // Software Guide : EndLatex
   //
   // Software Guide : BeginCodeSnippet
-  ImportFilterType::SizeType  size;
+  ImportFilterType::SizeType size;
 
   size[0]  = 200;  // size along X
   size[1]  = 200;  // size along Y
@@ -131,7 +128,6 @@ int main(int argc, char * argv[])
 
   importFilter->SetRegion( region );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -153,7 +149,7 @@ int main(int argc, char * argv[])
 
   // Software Guide : BeginCodeSnippet
   // spacing isotropic volumes to 1.0
-  const itk::SpacePrecisionType  spacing[ Dimension ] =  { 1.0, 1.0, 1.0 };
+  const itk::SpacePrecisionType spacing[ Dimension ] =  { 1.0, 1.0, 1.0 };
   importFilter->SetSpacing( spacing );
   // Software Guide : EndCodeSnippet
 
@@ -169,7 +165,7 @@ int main(int argc, char * argv[])
 
   // Software Guide : BeginCodeSnippet
   const unsigned int numberOfPixels =  size[0] * size[1] * size[2];
-  PixelType * localBuffer = new PixelType[ numberOfPixels ];
+  PixelType *        localBuffer = new PixelType[ numberOfPixels ];
   // Software Guide : EndCodeSnippet
 
   const double radius = 80.0;
@@ -188,7 +184,7 @@ int main(int argc, char * argv[])
 
   // Software Guide : BeginCodeSnippet
   const double radius2 = radius * radius;
-  PixelType * it = localBuffer;
+  PixelType *  it = localBuffer;
 
   for(unsigned int z=0; z < size[2]; z++)
     {
@@ -208,7 +204,6 @@ int main(int argc, char * argv[])
       }
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -236,7 +231,6 @@ int main(int argc, char * argv[])
                                   importImageFilterWillOwnTheBuffer );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally, we can connect the output of this filter to a pipeline.
@@ -253,7 +247,6 @@ int main(int argc, char * argv[])
   writer->SetInput(  importFilter->GetOutput()  );
   // Software Guide : EndCodeSnippet
 
-
   try
     {
     writer->Update();
@@ -263,7 +256,6 @@ int main(int argc, char * argv[])
     std::cerr << "Exception caught !" << std::endl;
     std::cerr << exp << std::endl;
     }
-
 
   //  Software Guide : BeginLatex
   //

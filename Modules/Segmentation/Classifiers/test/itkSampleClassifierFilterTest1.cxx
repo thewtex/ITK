@@ -21,22 +21,23 @@
 #include "itkMaximumDecisionRule.h"
 #include "itkDistanceToCentroidMembershipFunction.h"
 
-
 // ADD DistanceToCentroidMembershipFunction (with the added SetDistanceMetric() method
 // ADD EuclideanDistanceMetri
 // Create two classes with their respective DistanceToCentroidMembershipFunction and two separate centroids
 // ADD MinimumDecisionRule
 // Run that classification.
 
-int itkSampleClassifierFilterTest1( int, char * [] )
+int
+itkSampleClassifierFilterTest1( int, char * [] )
 {
 
   const unsigned int numberOfComponents = 3;
-  typedef float      MeasurementType;
+
+  typedef float MeasurementType;
 
   const unsigned int numberOfClasses = 3;
 
-  typedef itk::Array< MeasurementType > MeasurementVectorType;
+  typedef itk::Array< MeasurementType >                        MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
 
   typedef itk::Statistics::SampleClassifierFilter< SampleType > FilterType;
@@ -79,7 +80,6 @@ int itkSampleClassifierFilterTest1( int, char * [] )
   v3[2] = 2;
   sample->PushBack( v3 );
 
-
   filter->SetInput( sample );
 
   if( filter->GetInput() != sample.GetPointer() )
@@ -96,21 +96,21 @@ int itkSampleClassifierFilterTest1( int, char * [] )
     return EXIT_FAILURE;
     }
 
-  typedef FilterType::ClassLabelVectorObjectType               ClassLabelVectorObjectType;
-  typedef FilterType::ClassLabelVectorType                     ClassLabelVectorType;
-  typedef FilterType::MembershipFunctionVectorObjectType       MembershipFunctionVectorObjectType;
-  typedef FilterType::MembershipFunctionVectorType             MembershipFunctionVectorType;
+  typedef FilterType::ClassLabelVectorObjectType         ClassLabelVectorObjectType;
+  typedef FilterType::ClassLabelVectorType               ClassLabelVectorType;
+  typedef FilterType::MembershipFunctionVectorObjectType MembershipFunctionVectorObjectType;
+  typedef FilterType::MembershipFunctionVectorType       MembershipFunctionVectorType;
 
   typedef itk::Statistics::DistanceToCentroidMembershipFunction< MeasurementVectorType >
-                                                               MembershipFunctionType;
+    MembershipFunctionType;
 
-  typedef MembershipFunctionType::Pointer                      MembershipFunctionPointer;
+  typedef MembershipFunctionType::Pointer MembershipFunctionPointer;
 
-  ClassLabelVectorObjectType::Pointer  classLabelsObject = ClassLabelVectorObjectType::New();
+  ClassLabelVectorObjectType::Pointer classLabelsObject = ClassLabelVectorObjectType::New();
   filter->SetClassLabels( classLabelsObject );
 
   MembershipFunctionVectorObjectType::Pointer membershipFunctionsObject =
-                                        MembershipFunctionVectorObjectType::New();
+    MembershipFunctionVectorObjectType::New();
   filter->SetMembershipFunctions( membershipFunctionsObject );
 
   //Run the filter without specifying any membership functions. An exception
@@ -129,31 +129,30 @@ int itkSampleClassifierFilterTest1( int, char * [] )
     std::cerr << excp << std::endl;
     }
 
-
   // Add three membership functions and rerun the filter
-  MembershipFunctionVectorType &  membershipFunctionsVector = membershipFunctionsObject->Get();
+  MembershipFunctionVectorType & membershipFunctionsVector = membershipFunctionsObject->Get();
 
   MembershipFunctionPointer membershipFunction1 = MembershipFunctionType::New();
   membershipFunction1->SetMeasurementVectorSize( numberOfComponents );
-  MembershipFunctionType::CentroidType    centroid1;
+  MembershipFunctionType::CentroidType centroid1;
   itk::NumericTraits<MembershipFunctionType::CentroidType>::SetLength( centroid1,
-    numberOfComponents );
+                                                                       numberOfComponents );
   membershipFunction1->SetCentroid( centroid1 );
   membershipFunctionsVector.push_back( membershipFunction1.GetPointer() );
 
   MembershipFunctionPointer membershipFunction2 = MembershipFunctionType::New();
   membershipFunction1->SetMeasurementVectorSize( numberOfComponents );
-  MembershipFunctionType::CentroidType    centroid2;
+  MembershipFunctionType::CentroidType centroid2;
   itk::NumericTraits<MembershipFunctionType::CentroidType>::SetLength( centroid2,
-    numberOfComponents );
+                                                                       numberOfComponents );
   membershipFunction2->SetCentroid( centroid2 );
   membershipFunctionsVector.push_back( membershipFunction2.GetPointer() );
 
   MembershipFunctionPointer membershipFunction3 = MembershipFunctionType::New();
   membershipFunction3->SetMeasurementVectorSize( numberOfComponents );
-  MembershipFunctionType::CentroidType    centroid3;
+  MembershipFunctionType::CentroidType centroid3;
   itk::NumericTraits<MembershipFunctionType::CentroidType>::SetLength( centroid3,
-    numberOfComponents );
+                                                                       numberOfComponents );
   membershipFunction3->SetCentroid( centroid3 );
   membershipFunctionsVector.push_back( membershipFunction3.GetPointer() );
 
@@ -170,21 +169,19 @@ int itkSampleClassifierFilterTest1( int, char * [] )
     std::cerr << excp << std::endl;
     }
 
-
   // Add three class labels and rerun the filter
   ClassLabelVectorType & classLabelVector  = classLabelsObject->Get();
 
-  typedef FilterType::ClassLabelType        ClassLabelType;
+  typedef FilterType::ClassLabelType ClassLabelType;
 
-  ClassLabelType  class1 = 0;
+  ClassLabelType class1 = 0;
   classLabelVector.push_back( class1 );
 
-  ClassLabelType  class2 = 1;
+  ClassLabelType class2 = 1;
   classLabelVector.push_back( class2 );
 
-  ClassLabelType  class3 = 2;
+  ClassLabelType class3 = 2;
   classLabelVector.push_back( class3 );
-
 
   //Run the filter without setting a decision rule. An exception should be
   //thrown
@@ -201,9 +198,9 @@ int itkSampleClassifierFilterTest1( int, char * [] )
     }
 
   //Set a decision rule type
-  typedef itk::Statistics::MaximumDecisionRule  DecisionRuleType;
+  typedef itk::Statistics::MaximumDecisionRule DecisionRuleType;
 
-  DecisionRuleType::Pointer    decisionRule = DecisionRuleType::New();
+  DecisionRuleType::Pointer decisionRule = DecisionRuleType::New();
   filter->SetDecisionRule( decisionRule );
 
   if( filter->GetDecisionRule() != decisionRule )
@@ -211,7 +208,6 @@ int itkSampleClassifierFilterTest1( int, char * [] )
     std::cerr << "Get/Set Decision rule error! " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   try
     {

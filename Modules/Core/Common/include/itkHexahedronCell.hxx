@@ -603,6 +603,7 @@ HexahedronCell< TCellInterface >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

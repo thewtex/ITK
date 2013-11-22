@@ -39,17 +39,17 @@ SpatialNeighborSubsampler<TSample, TRegion>
   typename LightObject::Pointer loPtr = Superclass::InternalClone();
 
   typename Self::Pointer rval =
-    dynamic_cast<Self *>(loPtr.GetPointer());
-  if(rval.IsNull())
+    dynamic_cast<Self *>(loPtr.GetPointer() );
+  if(rval.IsNull() )
     {
     itkExceptionMacro(<< "downcast to type "
                       << this->GetNameOfClass()
                       << " failed.");
     }
 
-  if (this->GetRadiusInitialized())
+  if (this->GetRadiusInitialized() )
     {
-    rval->SetRadius(this->GetRadius());
+    rval->SetRadius(this->GetRadius() );
     }
   else
     {
@@ -66,7 +66,7 @@ SpatialNeighborSubsampler<TSample, TRegion>
   itkDebugMacro("Setting Radius to " << radius);
   if ( !this->m_RadiusInitialized
        || this->m_Radius != radius
-     )
+       )
     {
     this->m_Radius = radius;
     this->m_RadiusInitialized = true;
@@ -80,6 +80,7 @@ SpatialNeighborSubsampler<TSample, TRegion>
 ::SetRadius(unsigned int radius)
 {
   RadiusType radiusND;
+
   radiusND.Fill(radius);
   this->SetRadius(radiusND);
 }
@@ -98,7 +99,7 @@ SpatialNeighborSubsampler<TSample, TRegion>
     {
     itkExceptionMacro(<< "Sample region not set.");
     }
-  if (!this->GetRegionConstraintInitialized())
+  if (!this->GetRegionConstraintInitialized() )
     {
     this->SetRegionConstraint(this->m_SampleRegion);
     }
@@ -107,12 +108,12 @@ SpatialNeighborSubsampler<TSample, TRegion>
   results->SetSample(this->m_Sample);
 
   RegionType searchRegion;
-  IndexType searchIndex;
-  SizeType searchSize;
-  IndexType endIndex;
+  IndexType  searchIndex;
+  SizeType   searchSize;
+  IndexType  endIndex;
 
   IndexType constraintIndex = this->m_RegionConstraint.GetIndex();
-  SizeType constraintSize = this->m_RegionConstraint.GetSize();
+  SizeType  constraintSize = this->m_RegionConstraint.GetSize();
 
   IndexType queryIndex;
   typename RegionType::OffsetTableType offsetTable;
@@ -124,9 +125,9 @@ SpatialNeighborSubsampler<TSample, TRegion>
 
   for (unsigned int dim = 0; dim < RegionType::ImageDimension; ++dim)
     {
-    if (queryIndex[dim] < static_cast<IndexValueType>(m_Radius[dim]))
+    if (queryIndex[dim] < static_cast<IndexValueType>(m_Radius[dim]) )
       {
-        searchIndex[dim] = vnl_math_max(NumericTraits<IndexValueType>::Zero, constraintIndex[dim]);
+      searchIndex[dim] = vnl_math_max(NumericTraits<IndexValueType>::Zero, constraintIndex[dim]);
       }
     else
       {
@@ -148,17 +149,17 @@ SpatialNeighborSubsampler<TSample, TRegion>
   searchRegion.SetIndex(searchIndex);
   searchRegion.SetSize(searchSize);
 
-  if (!this->m_RegionConstraint.IsInside(queryIndex))
+  if (!this->m_RegionConstraint.IsInside(queryIndex) )
     {
     itkWarningMacro( "query point (" << query << ") corresponding to index ("
-                     << queryIndex << ") is not inside the given region constraint ("
-                     << this->m_RegionConstraint
-                     << ").  No matching points found.");
+                                     << queryIndex << ") is not inside the given region constraint ("
+                                     << this->m_RegionConstraint
+                                     << ").  No matching points found.");
     return;
     }
 
   IndexType positionIndex = searchIndex;
-  bool someRemaining = true;
+  bool      someRemaining = true;
   typename RegionType::OffsetValueType offset = 0;
 
   // The trouble with decoupling the region from the sample is that
@@ -167,14 +168,14 @@ SpatialNeighborSubsampler<TSample, TRegion>
   // TODO Is this a safe assumption to make?
 
   if (this->m_CanSelectQuery ||
-      (positionIndex != queryIndex))
+      (positionIndex != queryIndex) )
     {
     offset = 0;
     ImageHelperType::ComputeOffset(this->m_SampleRegion.GetIndex(),
                                    positionIndex,
                                    offsetTable,
                                    offset);
-    results->AddInstance(static_cast<InstanceIdentifier>(offset));
+    results->AddInstance(static_cast<InstanceIdentifier>(offset) );
     }
 
   while (someRemaining)
@@ -187,9 +188,9 @@ SpatialNeighborSubsampler<TSample, TRegion>
         {
         offset += offsetTable[dim];
         if (this->m_CanSelectQuery ||
-            (static_cast<InstanceIdentifier>(offset) != query))
+            (static_cast<InstanceIdentifier>(offset) != query) )
           {
-          results->AddInstance(static_cast<InstanceIdentifier>(offset));
+          results->AddInstance(static_cast<InstanceIdentifier>(offset) );
           }
         someRemaining = true;
         break;
@@ -201,7 +202,7 @@ SpatialNeighborSubsampler<TSample, TRegion>
         }
       }
     }
-} // end Search method
+}   // end Search method
 
 template <typename TSample, typename TRegion>
 void
@@ -223,7 +224,7 @@ SpatialNeighborSubsampler<TSample, TRegion>
   os << std::endl;
 }
 
-}// end namespace Statistics
-}// end namespace itk
+} // end namespace Statistics
+} // end namespace itk
 
 #endif

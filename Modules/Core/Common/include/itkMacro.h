@@ -103,19 +103,19 @@ namespace itk
 
 // Setup symbol exports
 #if defined( _WIN32 ) || defined ( WIN32 )
-  #define ITK_ABI_IMPORT __declspec(dllimport)
-  #define ITK_ABI_EXPORT __declspec(dllexport)
-  #define ITK_ABI_HIDDEN
+#define ITK_ABI_IMPORT __declspec(dllimport)
+#define ITK_ABI_EXPORT __declspec(dllexport)
+#define ITK_ABI_HIDDEN
 #else
-  #if __GNUC__ >= 4
-    #define ITK_ABI_IMPORT __attribute__ ((visibility ("default")))
-    #define ITK_ABI_EXPORT __attribute__ ((visibility ("default")))
-    #define ITK_ABI_HIDDEN __attribute__ ((visibility ("hidden")))
-  #else
-    #define ITK_ABI_IMPORT
-    #define ITK_ABI_EXPORT
-    #define ITK_ABI_HIDDEN
-  #endif
+#if __GNUC__ >= 4
+#define ITK_ABI_IMPORT __attribute__ ( (visibility ("default") ) )
+#define ITK_ABI_EXPORT __attribute__ ( (visibility ("default") ) )
+#define ITK_ABI_HIDDEN __attribute__ ( (visibility ("hidden") ) )
+#else
+#define ITK_ABI_IMPORT
+#define ITK_ABI_EXPORT
+#define ITK_ABI_HIDDEN
+#endif
 #endif
 
 /** Define two object creation methods.  The first method, New(),
@@ -165,11 +165,11 @@ namespace itk
 
 #define itkCloneMacro(x)                                        \
   Pointer Clone() const                             \
-  {                                                             \
+    {                                                             \
     Pointer rval =                                  \
-      dynamic_cast<x *>(this->InternalClone().GetPointer());    \
+      dynamic_cast<x *>(this->InternalClone().GetPointer() );    \
     return rval;                                                \
-  }
+    }
 
 /** Define two object creation methods.  The first method, New(),
  * creates an object from a class but does not defer to a factory.
@@ -228,6 +228,7 @@ extern ITKCommon_EXPORT void OutputWindowDisplayWarningText(const char *);
 extern ITKCommon_EXPORT void OutputWindowDisplayGenericOutputText(const char *);
 
 extern ITKCommon_EXPORT void OutputWindowDisplayDebugText(const char *);
+
 } // end namespace itk
 
 /** This macro is used to print debug (or other information). They are
@@ -274,16 +275,16 @@ extern ITKCommon_EXPORT void OutputWindowDisplayDebugText(const char *);
 #define itkWarningStatement(x) x
 
 #if defined( ITK_CPP_FUNCTION )
-  #if defined( _WIN32 ) && !defined( __MINGW32__ ) && !defined( CABLE_CONFIGURATION ) \
+#if defined( _WIN32 ) && !defined( __MINGW32__ ) && !defined( CABLE_CONFIGURATION ) \
   && !defined( CSWIG )
-    #define ITK_LOCATION __FUNCSIG__
-  #elif defined( __GNUC__ )
-    #define ITK_LOCATION __PRETTY_FUNCTION__
-  #else
-    #define ITK_LOCATION __FUNCTION__
-  #endif
+#define ITK_LOCATION __FUNCSIG__
+#elif defined( __GNUC__ )
+#define ITK_LOCATION __PRETTY_FUNCTION__
 #else
-  #define ITK_LOCATION "unknown"
+#define ITK_LOCATION __FUNCTION__
+#endif
+#else
+#define ITK_LOCATION "unknown"
 #endif
 
 #include "itkExceptionObject.h"
@@ -309,23 +310,23 @@ extern ITKCommon_EXPORT void OutputWindowDisplayDebugText(const char *);
     }
 
 #define itkDeclareExceptionMacro(newexcp,parentexcp,whatmessage)                        \
-namespace itk {                                                                         \
-class newexcp : public parentexcp                                            \
-{                                                                                       \
+  namespace itk {                                                                         \
+  class newexcp : public parentexcp                                            \
+  {                                                                                       \
 public:                                                                                 \
-newexcp( const char *file, unsigned int lineNumber ) :                                  \
-parentexcp( file, lineNumber )                                                          \
-{                                                                                       \
-  this->SetDescription( whatmessage );                                                  \
-}                                                                                       \
-newexcp( const std::string & file, unsigned int lineNumber ) :                          \
-parentexcp( file, lineNumber )                                                          \
-{                                                                                       \
-  this->SetDescription( whatmessage );                                                  \
-}                                                                                       \
-itkTypeMacro(newexcp, parentexcp);                                                      \
-};                                                                                      \
-}
+    newexcp( const char *file, unsigned int lineNumber ) :                                  \
+      parentexcp( file, lineNumber )                                                          \
+      {                                                                                       \
+      this->SetDescription( whatmessage );                                                  \
+      }                                                                                       \
+    newexcp( const std::string & file, unsigned int lineNumber ) :                          \
+      parentexcp( file, lineNumber )                                                          \
+      {                                                                                       \
+      this->SetDescription( whatmessage );                                                  \
+      }                                                                                       \
+    itkTypeMacro(newexcp, parentexcp);                                                      \
+  };                                                                                      \
+  }
 
 #define itkSpecializedExceptionMacro(exceptiontype)                                     \
     {                                                                                   \
@@ -339,11 +340,10 @@ itkTypeMacro(newexcp, parentexcp);                                              
     ::itk::exceptiontype e_(__FILE__, __LINE__);                                        \
     std::ostringstream message;                                                         \
     message << "itk::ERROR: " x;                                                        \
-    e_.SetDescription(message.str().c_str());                                           \
+    e_.SetDescription(message.str().c_str() );                                           \
     e_.SetLocation(ITK_LOCATION);                                                       \
     throw e_; /* Explicit naming to work around Intel compiler bug.  */                 \
     }
-
 
 #define itkGenericOutputMacro(x)                                           \
     {                                                                      \
@@ -351,7 +351,7 @@ itkTypeMacro(newexcp, parentexcp);                                              
       {                                                                    \
       std::ostringstream itkmsg;                                           \
       itkmsg << "WARNING: In " __FILE__ ", line " << __LINE__ << "\n"      \
-      x << "\n\n";                                                         \
+        x << "\n\n";                                                         \
       ::itk::OutputWindowDisplayGenericOutputText( itkmsg.str().c_str() ); \
       }                                                                    \
     }
@@ -448,11 +448,11 @@ itkTypeMacro(newexcp, parentexcp);                                              
 #endif
 
 #if defined ( ITK_LEGACY_REMOVE )
-#define ITK_TEMPLATE_TXX  "error ITK_TEMPLATE_TXX is no longer a supported identifier, you should replace with ITK_MANUAL_INSTANTIATION as a replacement"
+#define ITK_TEMPLATE_TXX \
+  "error ITK_TEMPLATE_TXX is no longer a supported identifier, you should replace with ITK_MANUAL_INSTANTIATION as a replacement"
 #else
 #define ITK_TEMPLATE_TXX 1
 #endif
-
 
 // Most modern x86 CPUs have 64 byte aligned blocks which are used for
 // the cache lines. By aligning multi-threaded structures with the
@@ -467,10 +467,10 @@ itkTypeMacro(newexcp, parentexcp);                                              
 // This is particularly useful for arrays of thread private variables.
 //
 #define itkPadStruct( mincachesize, oldtype, newtype )                        \
-    struct newtype: public oldtype                                            \
-      {                                                                       \
-         char _StructPadding[mincachesize - (sizeof(oldtype)%mincachesize) ]; \
-      };
+  struct newtype : public oldtype                                            \
+    {                                                                       \
+    char _StructPadding[mincachesize - (sizeof(oldtype)%mincachesize) ]; \
+    };
 
 //
 // itkAlignedTypedef is a macro which creates a new typedef to make a
@@ -478,13 +478,13 @@ itkTypeMacro(newexcp, parentexcp);                                              
 //
 #if defined ( ITK_HAS_CPP11_ALIGNAS )
 # define itkAlignedTypedef( alignment, oldtype, newtype )   \
-  typedef oldtype newtype alignas(alignment)
+  typedef oldtype newtype alignas (alignment)
 #elif defined( ITK_HAS_GNU_ATTRIBUTE_ALIGNED )
 # define itkAlignedTypedef( alignment, oldtype, newtype )   \
-  typedef oldtype newtype __attribute__((aligned(alignment)))
+  typedef oldtype newtype __attribute__( (aligned(alignment) ) )
 #elif defined ( _MSC_VER )
 # define itkAlignedTypedef( alignment, oldtype, newtype )   \
-  typedef __declspec(align( alignment )) struct oldtype newtype
+  typedef __declspec (align ( alignment ) ) struct oldtype newtype
 #else
 # define itkAlignedTypedef( alignment, oldtype, newtype )        \
   typedef oldtype newtype
@@ -684,7 +684,8 @@ itkTypeMacro(newexcp, parentexcp);                                              
   * Use static_cast in Release builds, and dynamic_cast in Debug
   */
 template <typename TTarget, typename TSource>
-TTarget itkDynamicCastInDebugMode(TSource x)
+TTarget
+itkDynamicCastInDebugMode(TSource x)
 {
 #ifndef NDEBUG
   if(x == 0)
@@ -697,7 +698,7 @@ TTarget itkDynamicCastInDebugMode(TSource x)
     itkGenericExceptionMacro(<< "Failed dynamic cast to "
                              << typeid(TTarget).name()
                              << " object type = "
-                             << x->GetNameOfClass());
+                             << x->GetNameOfClass() );
     }
   return rval;
 #else
@@ -769,7 +770,8 @@ TTarget itkDynamicCastInDebugMode(TSource x)
   virtual const SimpleDataObjectDecorator< type > * Get##name##Input() const                                                                 \
     {                                                                                                                                        \
     itkDebugMacro( "returning input " << #name " of "                                                                                        \
-                                      << static_cast< const SimpleDataObjectDecorator< type > * >( this->ProcessObject::GetInput(#name) ) ); \
+                                      << static_cast< const SimpleDataObjectDecorator< type > * >( this->ProcessObject:: \
+                                                                                GetInput(#name) ) ); \
     return static_cast< const SimpleDataObjectDecorator< type > * >( this->ProcessObject::GetInput(#name) );                                 \
     }                                                                \
   virtual const type & Get##name() const                             \
@@ -830,7 +832,8 @@ TTarget itkDynamicCastInDebugMode(TSource x)
   virtual const DataObjectDecorator< type > * Get##name##Input() const                                                                 \
     {                                                                                                                                  \
     itkDebugMacro( "returning input " << #name " of "                                                                                  \
-                                      << static_cast< const DataObjectDecorator< type > * >( this->ProcessObject::GetInput(#name) ) ); \
+                                      << static_cast< const DataObjectDecorator< type > * >( this->ProcessObject:: \
+                                                                          GetInput(#name) ) ); \
     return static_cast< const DataObjectDecorator< type > * >( this->ProcessObject::GetInput(#name) );                                 \
     }                                                                \
   virtual const type * Get##name() const                             \
@@ -1008,7 +1011,6 @@ TTarget itkDynamicCastInDebugMode(TSource x)
     return this->m_##name.GetPointer();               \
     }
 
-
 #if defined ( ITK_FUTURE_LEGACY_REMOVE )
 // In the future, the itkGetObjectMacro will be deprecated with the ITK_LEGACY_REMOVE
 // flag.  For now, this very advanced feature is only available
@@ -1047,7 +1049,6 @@ TTarget itkDynamicCastInDebugMode(TSource x)
 
 // For backwards compatibility define ITK_EXPORT to nothing
 #define ITK_EXPORT
-
 
 /** Get a const reference to a smart pointer to an object.
  * Creates the member Get"name"() (e.g., GetPoints()). */
@@ -1120,22 +1121,23 @@ TTarget itkDynamicCastInDebugMode(TSource x)
  * provides the GPU kernel source code as a const char*
  */
 #define itkGPUKernelClassMacro(kernel)   \
-class kernel                  \
+  class kernel                  \
   {                                      \
-    public:                              \
-      static const char* GetOpenCLSource(); \
-    private:                             \
-      kernel();                          \
-      virtual ~kernel();                 \
-      kernel(const kernel &);            \
-      void operator=(const kernel &);    \
+public:                              \
+    static const char* GetOpenCLSource(); \
+private:                             \
+    kernel();                          \
+    virtual ~kernel();                 \
+    kernel(const kernel &);            \
+    void \
+    operator=(const kernel &);    \
   };
 
 #define itkGetOpenCLSourceFromKernelMacro(kernel) \
   static const char* GetOpenCLSource() \
-  {                                 \
+    {                                 \
     return kernel::GetOpenCLSource();  \
-  }
+    }
 
 }
 

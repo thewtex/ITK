@@ -93,7 +93,8 @@ public:
    * \note minimum value for floating pointer types is defined as
    * minimum positive normalize value.
    */
-  static const Self max(const Self & a)
+  static const Self
+  max(const Self & a)
   {
     Self b( a.Size() );
 
@@ -101,7 +102,8 @@ public:
     return b;
   }
 
-  static const Self min(const Self & a)
+  static const Self
+  min(const Self & a)
   {
     Self b( a.Size() );
 
@@ -109,7 +111,8 @@ public:
     return b;
   }
 
-  static const Self ZeroValue(const Self  & a)
+  static const Self
+  ZeroValue(const Self  & a)
   {
     Self b( a.Size() );
 
@@ -117,7 +120,8 @@ public:
     return b;
   }
 
-  static const Self OneValue(const Self & a)
+  static const Self
+  OneValue(const Self & a)
   {
     Self b( a.Size() );
 
@@ -125,16 +129,20 @@ public:
     return b;
   }
 
-  static const Self NonpositiveMin(const Self & a)
+  static const Self
+  NonpositiveMin(const Self & a)
   {
     Self b( a.Size() );
+
     b.Fill( NumericTraits< T >::NonpositiveMin() );
     return b;
   }
 
-  static bool IsPositive( const Self & a)
+  static bool
+  IsPositive( const Self & a)
   {
     bool flag = false;
+
     for (unsigned int i=0; i < GetLength( a ); i++)
       {
       if ( a[i] > NumericTraits< ValueType >::ZeroValue() )
@@ -145,12 +153,14 @@ public:
     return flag;
   }
 
-  static bool IsNonpositive( const Self & a)
+  static bool
+  IsNonpositive( const Self & a)
   {
     bool flag = false;
+
     for (unsigned int i=0; i < GetLength( a ); i++)
       {
-      if ( ! (a[i] > 0.0 ) )
+      if ( !(a[i] > 0.0 ) )
         {
         flag = true;
         }
@@ -158,9 +168,11 @@ public:
     return flag;
   }
 
-  static bool IsNegative( const Self & a)
+  static bool
+  IsNegative( const Self & a)
   {
     bool flag = false;
+
     for (unsigned int i=0; i < GetLength( a ); i++)
       {
       if ( a[i] < NumericTraits< ValueType >::ZeroValue() )
@@ -171,12 +183,14 @@ public:
     return flag;
   }
 
-  static bool IsNonnegative( const Self & a)
+  static bool
+  IsNonnegative( const Self & a)
   {
     bool flag = false;
+
     for (unsigned int i=0; i < GetLength( a ); i++)
       {
-      if ( ! (a[i] < 0.0 ))
+      if ( !(a[i] < 0.0 ) )
         {
         flag = true;
         }
@@ -184,27 +198,30 @@ public:
     return flag;
   }
 
-
   /** Resize the input vector to the specified size. */
-  static void SetLength(VariableLengthVector< T > & m, const unsigned int s)
+  static void
+  SetLength(VariableLengthVector< T > & m, const unsigned int s)
   {
     m.SetSize(s);
     m.Fill(NumericTraits< T >::Zero);
   }
 
   /** Return the size of the vector. */
-  static unsigned int GetLength(const VariableLengthVector< T > & m)
+  static unsigned int
+  GetLength(const VariableLengthVector< T > & m)
   {
     return m.GetSize();
   }
 
-  static void AssignToArray( const Self & v, MeasurementVectorType & mv )
+  static void
+  AssignToArray( const Self & v, MeasurementVectorType & mv )
   {
     mv = v;
   }
 
   template<typename TArray>
-  static void AssignToArray( const Self & v, TArray & mv )
+  static void
+  AssignToArray( const Self & v, TArray & mv )
   {
     for( unsigned int i=0; i<GetLength(v); i++ )
       {
@@ -218,21 +235,21 @@ public:
   //in the case of removing the code.
 
   /** \deprecated use ZeroValue() instead */
-  itkLegacyMacro(static const Self Zero(const Self  & a))
-  {
+  itkLegacyMacro(static const Self Zero(const Self  &a) )
+    {
     Self b( a.Size() );
 
     b.Fill(NumericTraits< T >::Zero);
     return b;
-  }
+    }
   /** \deprecated use OneValue() instead */
-  itkLegacyMacro(static const Self One(const Self & a))
-  {
+  itkLegacyMacro(static const Self One(const Self &a) )
+    {
     Self b( a.Size() );
 
     b.Fill(NumericTraits< T >::One);
     return b;
-  }
+    }
 #endif
 
 };

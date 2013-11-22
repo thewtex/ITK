@@ -28,7 +28,8 @@
  */
 
 template<unsigned int Dimension>
-int itkEuclideanDistancePointSetMetricTest2Run()
+int
+itkEuclideanDistancePointSetMetricTest2Run()
 {
   typedef itk::PointSet<unsigned char, Dimension> PointSetType;
 
@@ -41,7 +42,7 @@ int itkEuclideanDistancePointSetMetricTest2Run()
   movingPoints->Initialize();
 
   // Create a few points and apply a small offset to make the moving points
-  float pointMax = static_cast<float>(100.0);
+  float     pointMax = static_cast<float>(100.0);
   PointType fixedPoint;
   fixedPoint.Fill( 0.0 );
   fixedPoint[0] = 0.0;
@@ -73,7 +74,7 @@ int itkEuclideanDistancePointSetMetricTest2Run()
   unsigned int numberOfPoints = fixedPoints->GetNumberOfPoints();
 
   PointType movingPoint;
-  for( unsigned int n=0; n < numberOfPoints; n ++ )
+  for( unsigned int n=0; n < numberOfPoints; n++ )
     {
     fixedPoint = fixedPoints->GetPoint( n );
     movingPoint[0] = fixedPoint[0] + (n + 1) * 0.5;
@@ -96,7 +97,7 @@ int itkEuclideanDistancePointSetMetricTest2Run()
   // which is defined by the fixed point set since the fixed transform
   // is identity.
   typedef typename DisplacementFieldTransformType::DisplacementFieldType FieldType;
-  typedef typename FieldType::RegionType RegionType;
+  typedef typename FieldType::RegionType                                 RegionType;
 
   typename FieldType::SpacingType spacing;
   spacing.Fill( 1.0 );
@@ -181,10 +182,11 @@ int itkEuclideanDistancePointSetMetricTest2Run()
         passed = false;
         }
       }
-    std::cout << " fixed, moving, txf'ed, moving-txf: " << fixedPoint << " " << movingPoint << " " << transformedPoint << " " << movingPoint - transformedPoint << std::endl;
+    std::cout << " fixed, moving, txf'ed, moving-txf: " << fixedPoint << " " << movingPoint << " " <<
+    transformedPoint << " " << movingPoint - transformedPoint << std::endl;
     }
 
-  if( ! passed )
+  if( !passed )
     {
     std::cerr << "Not all points match after transformation with result." << std::endl;
     return EXIT_FAILURE;
@@ -199,7 +201,8 @@ int itkEuclideanDistancePointSetMetricTest2Run()
   metric->GetValueAndDerivative( value2, derivative2 );
   if( metric->GetNumberOfValidPoints() != numberExpected )
     {
-    std::cerr << "Expected " << numberExpected << " valid points, but got " << metric->GetNumberOfValidPoints() << std::endl;
+    std::cerr << "Expected " << numberExpected << " valid points, but got " << metric->GetNumberOfValidPoints() <<
+    std::endl;
     return EXIT_FAILURE;
     }
 
@@ -220,7 +223,7 @@ int itkEuclideanDistancePointSetMetricTest2Run()
       derivative2IsZero = false;
       }
     }
-  if( value2 != itk::NumericTraits<typename PointSetMetricType::MeasureType>::max() || ! derivative2IsZero )
+  if( value2 != itk::NumericTraits<typename PointSetMetricType::MeasureType>::max() || !derivative2IsZero )
     {
     std::cerr << "Failed testing with no valid points. Number of valid points: " << metric->GetNumberOfValidPoints()
               << " value2: " << value2 << " derivative2IsZero: " << derivative2IsZero << std::endl;
@@ -245,7 +248,8 @@ int itkEuclideanDistancePointSetMetricTest2Run()
   return EXIT_SUCCESS;
 }
 
-int itkEuclideanDistancePointSetMetricTest2( int, char* [] )
+int
+itkEuclideanDistancePointSetMetricTest2( int, char* [] )
 {
   int result = EXIT_SUCCESS;
 

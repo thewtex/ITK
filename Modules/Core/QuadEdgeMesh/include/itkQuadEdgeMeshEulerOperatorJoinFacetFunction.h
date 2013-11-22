@@ -30,7 +30,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TMesh, typename TQEType >
-class QuadEdgeMeshEulerOperatorJoinFacetFunction:
+class QuadEdgeMeshEulerOperatorJoinFacetFunction :
   public QuadEdgeMeshFunctionBase< TMesh, TQEType * >
 {
 public:
@@ -61,7 +61,8 @@ private:
   QuadEdgeMeshEulerOperatorJoinFacetFunction(const Self &); //purposely not
                                                             // implemented
   void operator=(const Self &);                             //purposely not
-                                                            // implemented
+
+  // implemented
 };
 } // namespace itk
 

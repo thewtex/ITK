@@ -40,6 +40,7 @@ ConvertPixelBuffer< InputPixelType, VariableLengthVector< T >, OutputConvertTrai
     outputData++;
     }
 }
+
 } // end namespace itk
 
 #endif

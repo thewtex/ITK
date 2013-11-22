@@ -66,8 +66,8 @@ ParticleSwarmOptimizerDOMWriter::GenerateData( DOMNodeType* outputdom, const voi
   s << ClearContent << ipobj->GetPersonalCoefficient();
   outputdom->SetAttribute( "PersonalCoefficient", s );
 
-  std::vector<double> lbound;
-  std::vector<double> ubound;
+  std::vector<double>                         lbound;
+  std::vector<double>                         ubound;
   ParticleSwarmOptimizer::ParameterBoundsType bounds = ipobj->GetParameterBounds();
   for ( size_t i = 0; i < bounds.size(); i++ )
     {
@@ -93,7 +93,8 @@ ParticleSwarmOptimizerDOMWriter::GenerateData( DOMNodeType* outputdom, const voi
   DOMNode::Pointer nodeptols = DOMNode::New();
   nodeptols->SetName( "ParametersConvergenceTolerance" );
   outputdom->AddChildAtEnd( nodeptols );
-  s << ClearContent << (Array<double>)ipobj->GetParametersConvergenceTolerance(); // the casting is necessary to select the right templated function
+  s << ClearContent << (Array<double>)ipobj->GetParametersConvergenceTolerance(); // the casting is necessary to select the right
+                                                                                  // templated function
   nodeptols->AddTextChildAtEnd( s );
 
   logger->Info( "writing FunctionConvergenceTolerance ...\n" );

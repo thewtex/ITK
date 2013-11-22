@@ -34,7 +34,7 @@ namespace itk
  * \ingroup ITKIOMesh
  */
 
-class ITKIOMesh_EXPORT BYUMeshIO:public MeshIOBase
+class ITKIOMesh_EXPORT BYUMeshIO : public MeshIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -99,11 +99,12 @@ public:
 protected:
   /** Write points to output stream */
   template< typename T >
-  void WritePoints(T *buffer, std::ofstream & outputFile)
-    {
+  void
+  WritePoints(T *buffer, std::ofstream & outputFile)
+  {
     NumberToString<T> convert;
-    Indent indent(1);
-    SizeValueType index = itk::NumericTraits< SizeValueType >::Zero;
+    Indent            indent(1);
+    SizeValueType     index = itk::NumericTraits< SizeValueType >::Zero;
 
     for( SizeValueType ii = 0; ii < this->m_NumberOfPoints; ii++ )
       {
@@ -114,11 +115,12 @@ protected:
         }
       outputFile << '\n';
       }
-    }
+  }
 
   template< typename T >
-  void WriteCells(T *buffer, std::ofstream & outputFile)
-    {
+  void
+  WriteCells(T *buffer, std::ofstream & outputFile)
+  {
     Indent        indent(7);
     SizeValueType index = itk::NumericTraits< SizeValueType >::Zero;
 
@@ -133,11 +135,12 @@ protected:
 
       outputFile << indent << -static_cast<long long>( buffer[index++] + 1 ) << '\n';
       }
-    }
+  }
 
 protected:
   BYUMeshIO();
-  virtual ~BYUMeshIO(){}
+  virtual
+  ~BYUMeshIO(){}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

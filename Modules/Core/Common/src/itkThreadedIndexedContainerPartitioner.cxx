@@ -23,20 +23,18 @@ namespace itk
 
 ThreadedIndexedContainerPartitioner
 ::ThreadedIndexedContainerPartitioner()
-{
-}
+{}
 
 ThreadedIndexedContainerPartitioner
 ::~ThreadedIndexedContainerPartitioner()
-{
-}
+{}
 
 ThreadIdType
 ThreadedIndexedContainerPartitioner
 ::PartitionDomain( const ThreadIdType threadId,
-                        const ThreadIdType requestedTotal,
-                        const DomainType& completeIndexRange,
-                        DomainType& subIndexRange) const
+                   const ThreadIdType requestedTotal,
+                   const DomainType& completeIndexRange,
+                   DomainType& subIndexRange) const
 {
   // completeIndexRange and subIndexRange are inclusive
 

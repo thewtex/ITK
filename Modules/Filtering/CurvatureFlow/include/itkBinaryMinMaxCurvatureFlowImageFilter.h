@@ -73,7 +73,7 @@ namespace itk
  * \ingroup ITKCurvatureFlow
  */
 template< typename TInputImage, typename TOutputImage >
-class BinaryMinMaxCurvatureFlowImageFilter:
+class BinaryMinMaxCurvatureFlowImageFilter :
   public MinMaxCurvatureFlowImageFilter< TInputImage, TOutputImage >
 {
 public:

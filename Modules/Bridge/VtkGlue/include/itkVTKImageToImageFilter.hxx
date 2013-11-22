@@ -36,18 +36,18 @@ VTKImageToImageFilter<TOutputImage>
 
   m_Exporter = vtkImageExport::New();
 
-  this->SetUpdateInformationCallback( m_Exporter->GetUpdateInformationCallback());
-  this->SetPipelineModifiedCallback( m_Exporter->GetPipelineModifiedCallback());
-  this->SetWholeExtentCallback( m_Exporter->GetWholeExtentCallback());
-  this->SetSpacingCallback( m_Exporter->GetSpacingCallback());
-  this->SetOriginCallback( m_Exporter->GetOriginCallback());
-  this->SetScalarTypeCallback( m_Exporter->GetScalarTypeCallback());
-  this->SetNumberOfComponentsCallback( m_Exporter->GetNumberOfComponentsCallback());
-  this->SetPropagateUpdateExtentCallback( m_Exporter->GetPropagateUpdateExtentCallback());
-  this->SetUpdateDataCallback( m_Exporter->GetUpdateDataCallback());
-  this->SetDataExtentCallback( m_Exporter->GetDataExtentCallback());
-  this->SetBufferPointerCallback( m_Exporter->GetBufferPointerCallback());
-  this->SetCallbackUserData( m_Exporter->GetCallbackUserData());
+  this->SetUpdateInformationCallback( m_Exporter->GetUpdateInformationCallback() );
+  this->SetPipelineModifiedCallback( m_Exporter->GetPipelineModifiedCallback() );
+  this->SetWholeExtentCallback( m_Exporter->GetWholeExtentCallback() );
+  this->SetSpacingCallback( m_Exporter->GetSpacingCallback() );
+  this->SetOriginCallback( m_Exporter->GetOriginCallback() );
+  this->SetScalarTypeCallback( m_Exporter->GetScalarTypeCallback() );
+  this->SetNumberOfComponentsCallback( m_Exporter->GetNumberOfComponentsCallback() );
+  this->SetPropagateUpdateExtentCallback( m_Exporter->GetPropagateUpdateExtentCallback() );
+  this->SetUpdateDataCallback( m_Exporter->GetUpdateDataCallback() );
+  this->SetDataExtentCallback( m_Exporter->GetDataExtentCallback() );
+  this->SetBufferPointerCallback( m_Exporter->GetBufferPointerCallback() );
+  this->SetCallbackUserData( m_Exporter->GetCallbackUserData() );
 
 }
 
@@ -98,9 +98,9 @@ template <typename TOutputImage>
 const typename VTKImageToImageFilter<TOutputImage>::Superclass *
 VTKImageToImageFilter<TOutputImage>
 ::GetImporter() const
-{
+  {
   return this;
-}
+  }
 
 } // end namespace itk
 

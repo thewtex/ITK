@@ -54,4 +54,5 @@ Bruker2DSEQImageIOFactory::GetDescription(void) const
   return "Bruker 2DSEQ ImageIO Factory, allows the loading of most Bruker 2DSEQ"
          " images into Insight";
 }
+
 } // end namespace itk

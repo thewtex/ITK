@@ -64,4 +64,5 @@ Version::GetITKSourceVersion()
 {
   return ITK_SOURCE_VERSION;
 }
+
 } // end namespace itk

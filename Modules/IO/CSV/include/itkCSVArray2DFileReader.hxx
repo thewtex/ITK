@@ -39,6 +39,7 @@ CSVArray2DFileReader<TData>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
+
   os << this->m_Array2DDataObject << std::endl;
 }
 
@@ -53,14 +54,14 @@ CSVArray2DFileReader <TData>
   this->PrepareForParsing();
 
   this->m_InputStream.clear();
-  this->m_InputStream.open(this->m_FileName.c_str());
+  this->m_InputStream.open(this->m_FileName.c_str() );
   if ( this->m_InputStream.fail() )
     {
     itkExceptionMacro(
       "The file " << this->m_FileName <<" cannot be opened for reading!"
-      << std::endl
-      << "Reason: "
-      << itksys::SystemTools::GetLastSystemError() );
+                  << std::endl
+                  << "Reason: "
+                  << itksys::SystemTools::GetLastSystemError() );
     }
 
   // Get the data dimension and set the matrix size
@@ -70,7 +71,7 @@ CSVArray2DFileReader <TData>
 
   /** initialize the matrix to NaN so that missing data will automatically be
    *  set to this value. */
-  this->m_Array2DDataObject->FillMatrix(vcl_numeric_limits<TData>::quiet_NaN());
+  this->m_Array2DDataObject->FillMatrix(vcl_numeric_limits<TData>::quiet_NaN() );
 
   std::string entry;
 
@@ -114,7 +115,7 @@ CSVArray2DFileReader <TData>
       {
       this->GetNextField(entry);
       this->m_Array2DDataObject->SetMatrixData(i,j,
-                                             this->ConvertStringToValueType<TData>(entry));
+                                               this->ConvertStringToValueType<TData>(entry) );
 
       /** if the file contains missing data, m_Line will contain less data
        * fields. So we check if m_Line is empty and if it is, we break out of
@@ -146,7 +147,6 @@ CSVArray2DFileReader<TData>
 {
   return this->GetModifiableArray2DDataObject();
 }
-
 
 } //end namespace itk
 

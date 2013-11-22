@@ -47,6 +47,7 @@ void
 VoronoiDiagram2DGenerator< TCoordRepType >::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Number Of Seeds: "
      << m_NumberOfSeeds << std::endl;
 }
@@ -287,8 +288,8 @@ VoronoiDiagram2DGenerator< TCoordRepType >::ConstructDiagram(void)
   EdgeInfo curr1;
   EdgeInfo curr2;
 
-  unsigned char                frontbnd;
-  unsigned char                backbnd;
+  unsigned char                 frontbnd;
+  unsigned char                 backbnd;
   std::vector< IdentifierType > cellPoints;
   for ( unsigned int i = 0; i < m_NumberOfSeeds; i++ )
     {
@@ -475,7 +476,8 @@ VoronoiDiagram2DGenerator< TCoordRepType >::right_of(FortuneHalfEdge *el, PointT
       {
       double dxs = topsite->m_Coord[0] - ( ( e->m_Reg[0] )->m_Coord[0] );
       above =
-        ( ( ( e->m_B ) * ( dxp * dxp - dyp * dyp ) ) < ( dxs * dyp * ( 1.0 + 2.0 * dxp / dxs + ( e->m_B ) * ( e->m_B ) ) ) );
+        ( ( ( e->m_B ) * ( dxp * dxp - dyp * dyp ) ) <
+          ( dxs * dyp * ( 1.0 + 2.0 * dxp / dxs + ( e->m_B ) * ( e->m_B ) ) ) );
       if ( ( e->m_B ) < 0.0 ) { above = !above; }
       }
     }
@@ -596,7 +598,7 @@ VoronoiDiagram2DGenerator< TCoordRepType >::dist(FortuneSite *s1, FortuneSite *s
 template< typename TCoordRepType >
 typename VoronoiDiagram2DGenerator< TCoordRepType >::FortuneHalfEdge *
 VoronoiDiagram2DGenerator< TCoordRepType >::ELgethash(int b)
-{
+  {
   if ( ( b < 0 ) || ( b >= static_cast< int >( m_ELhashsize ) ) )
     {
     return ( NULL );
@@ -617,12 +619,12 @@ VoronoiDiagram2DGenerator< TCoordRepType >::ELgethash(int b)
   m_ELHash[b] = NULL;
 
   return ( NULL );
-}
+  }
 
 template< typename TCoordRepType >
 typename VoronoiDiagram2DGenerator< TCoordRepType >::FortuneHalfEdge *
 VoronoiDiagram2DGenerator< TCoordRepType >::findLeftHE(PointType *p)
-{
+  {
   int i;
   int bucket = (int)( ( ( ( *p )[0] ) - m_Pxmin ) / m_Deltax * m_ELhashsize );
 
@@ -667,12 +669,12 @@ VoronoiDiagram2DGenerator< TCoordRepType >::findLeftHE(PointType *p)
     m_ELHash[bucket] = he;
     }
   return ( he );
-}
+  }
 
 template< typename TCoordRepType >
 typename VoronoiDiagram2DGenerator< TCoordRepType >::FortuneSite *
 VoronoiDiagram2DGenerator< TCoordRepType >::getRightReg(FortuneHalfEdge *he)
-{
+  {
   if ( ( he->m_Edge ) == NULL )
     {
     return ( m_BottomSite );
@@ -685,12 +687,12 @@ VoronoiDiagram2DGenerator< TCoordRepType >::getRightReg(FortuneHalfEdge *he)
     {
     return ( he->m_Edge->m_Reg[1] );
     }
-}
+  }
 
 template< typename TCoordRepType >
 typename VoronoiDiagram2DGenerator< TCoordRepType >::FortuneSite *
 VoronoiDiagram2DGenerator< TCoordRepType >::getLeftReg(FortuneHalfEdge *he)
-{
+  {
   if ( ( he->m_Edge ) == NULL )
     {
     return ( m_BottomSite );
@@ -703,7 +705,7 @@ VoronoiDiagram2DGenerator< TCoordRepType >::getLeftReg(FortuneHalfEdge *he)
     {
     return ( he->m_Edge->m_Reg[0] );
     }
-}
+  }
 
 template< typename TCoordRepType >
 void
@@ -813,13 +815,13 @@ VoronoiDiagram2DGenerator< TCoordRepType >::intersect(FortuneSite *newV, Fortune
 template< typename TCoordRepType >
 typename VoronoiDiagram2DGenerator< TCoordRepType >::FortuneHalfEdge *
 VoronoiDiagram2DGenerator< TCoordRepType >::getPQmin(void)
-{
+  {
   FortuneHalfEdge *curr = m_PQHash[m_PQmin].m_Next;
 
   m_PQHash[m_PQmin].m_Next = curr->m_Next;
   m_PQcount--;
   return ( curr );
-}
+  }
 
 template< typename TCoordRepType >
 void
@@ -1241,6 +1243,7 @@ VoronoiDiagram2DGenerator< TCoordRepType >::GenerateVDFortune(void)
     clip_line(newEdge);
     }
 }
+
 } //end namespace
 
 #endif

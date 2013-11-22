@@ -38,7 +38,8 @@
 #include "itkVnlForwardFFTImageFilter.h"
 #include "itkVnlInverseFFTImageFilter.h"
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc != 3 )
     {
@@ -53,9 +54,9 @@ int main( int argc, char * argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  const   unsigned int      Dimension = 2;
-  typedef unsigned short    IOPixelType;
-  typedef float             WorkPixelType;
+  const   unsigned int Dimension = 2;
+  typedef unsigned short IOPixelType;
+  typedef float          WorkPixelType;
 
   typedef itk::Image< IOPixelType,  Dimension >  IOImageType;
   typedef itk::Image< WorkPixelType, Dimension > WorkImageType;
@@ -73,8 +74,8 @@ int main( int argc, char * argv[] )
 
   // Handle padding of the image with resampling
   typedef itk::ResampleImageFilter<
-                              IOImageType,
-                              WorkImageType >  ResamplerType;
+      IOImageType,
+      WorkImageType >  ResamplerType;
 
   ResamplerType::Pointer inputresampler = ResamplerType::New();
   inputresampler->SetDefaultPixelValue(0);
@@ -82,8 +83,8 @@ int main( int argc, char * argv[] )
   // Read the image and get its size
   inputreader->Update();
 
-  IOImageType::SizeType     inputsize;
-  IOImageType::SizeType     worksize;
+  IOImageType::SizeType inputsize;
+  IOImageType::SizeType worksize;
 
   inputsize = inputreader->GetOutput()->GetLargestPossibleRegion().GetSize();
 
@@ -116,7 +117,7 @@ int main( int argc, char * argv[] )
   // Do the inverse transform = forward transform / num voxels
   typedef itk::VnlInverseFFTImageFilter < ComplexImageType > invFFTFilterType;
   invFFTFilterType::Pointer fftoutput = invFFTFilterType::New();
-  fftoutput->SetInput(fftinput->GetOutput()); // try to recover the input image
+  fftoutput->SetInput(fftinput->GetOutput() ); // try to recover the input image
 
   // undo the padding
   typedef itk::ResampleImageFilter<WorkImageType, IOImageType> ResampleOutType;
@@ -126,7 +127,7 @@ int main( int argc, char * argv[] )
   outputResampler->SetInput( fftoutput->GetOutput() );
 
   // Write the output
-  writer->SetInput(outputResampler->GetOutput());
+  writer->SetInput(outputResampler->GetOutput() );
   writer->Update();
 
   return EXIT_SUCCESS;

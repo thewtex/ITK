@@ -22,14 +22,15 @@
 #include <fstream>
 #include <algorithm>
 
-int itkKdTreeTest3( int argc , char * argv [] )
+int
+itkKdTreeTest3( int argc , char * argv [] )
 {
   if( argc < 5 )
     {
     std::cerr << "Missing parameters" << std::endl;
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << " numberOfDataPoints numberOfTestPoints "
-      << "numberOfNeighbors bucketSize [graphvizDotOutputFile]" << std::endl;
+              << "numberOfNeighbors bucketSize [graphvizDotOutputFile]" << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -41,7 +42,7 @@ int itkKdTreeTest3( int argc , char * argv [] )
     NumberGeneratorType::GetInstance();
   randomNumberGenerator->Initialize();
 
-  typedef itk::Array< double > MeasurementVectorType;
+  typedef itk::Array< double >                                 MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
 
   const SampleType::MeasurementVectorSizeType measurementVectorSize = 2;
@@ -52,7 +53,7 @@ int itkKdTreeTest3( int argc , char * argv [] )
   //
   // Generate a sample of random points
   //
-  const unsigned int numberOfDataPoints = atoi( argv[1] );
+  const unsigned int    numberOfDataPoints = atoi( argv[1] );
   MeasurementVectorType mv( measurementVectorSize );
   for ( unsigned int i = 0; i < numberOfDataPoints; ++i )
     {
@@ -218,7 +219,6 @@ int itkKdTreeTest3( int argc , char * argv [] )
     plotFile.close();
     }
 
-
   if( numberOfFailedPoints1 )
     {
     std::cerr << numberOfFailedPoints1 << " out of " << sample->Size();
@@ -231,12 +231,10 @@ int itkKdTreeTest3( int argc , char * argv [] )
     std::cerr << " points failed to find the correct closest point." << std::endl;
     }
 
-
   if( numberOfFailedPoints1 || numberOfFailedPoints2 )
     {
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Test PASSED." << std::endl;
   return EXIT_SUCCESS;

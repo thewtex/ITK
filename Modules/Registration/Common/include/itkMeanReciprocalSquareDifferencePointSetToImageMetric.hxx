@@ -160,7 +160,7 @@ MeanReciprocalSquareDifferencePointSetToImageMetric<TFixedPointSet, TMovingImage
       // which is equivalent to round up the point components.
       typedef typename OutputPointType::CoordRepType CoordRepType;
       typedef ContinuousIndex<CoordRepType, MovingImageType::ImageDimension>
-      MovingImageContinuousIndexType;
+        MovingImageContinuousIndexType;
 
       MovingImageContinuousIndexType tempIndex;
       this->m_MovingImage->TransformPhysicalPointToContinuousIndex(transformedPoint, tempIndex);
@@ -266,7 +266,7 @@ MeanReciprocalSquareDifferencePointSetToImageMetric<TFixedPointSet, TMovingImage
       // which is equivalent to round up the point components.
       typedef typename OutputPointType::CoordRepType CoordRepType;
       typedef ContinuousIndex<CoordRepType, MovingImageType::ImageDimension>
-      MovingImageContinuousIndexType;
+        MovingImageContinuousIndexType;
 
       MovingImageContinuousIndexType tempIndex;
       this->m_MovingImage->TransformPhysicalPointToContinuousIndex(transformedPoint, tempIndex);
@@ -317,6 +317,7 @@ MeanReciprocalSquareDifferencePointSetToImageMetric<TFixedPointSet, TMovingImage
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "Lambda factor = " << m_Lambda << std::endl;
 }
 

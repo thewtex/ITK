@@ -20,14 +20,15 @@
 
 #include "itkImageFileReader.h"
 
-template<typename T> void View(const char *name, T,
-                            std::string fileName,
-                            bool sharedCamera=false,
-                            const std::string & snapshotPath = "",
-                            const std::string & ext = "png")
+template<typename T> void
+View(const char *name, T,
+     std::string fileName,
+     bool sharedCamera=false,
+     const std::string & snapshotPath = "",
+     const std::string & ext = "png")
 {
-  typedef itk::Image<T, 2 >                ImageType;
-  typedef itk::ImageFileReader<ImageType>  SourceType;
+  typedef itk::Image<T, 2 >               ImageType;
+  typedef itk::ImageFileReader<ImageType> SourceType;
 
   typename SourceType::Pointer source = SourceType::New();
   source->SetFileName(fileName);
@@ -42,10 +43,10 @@ template<typename T> void View(const char *name, T,
     viewer1.ShareCameraOff();
     }
   viewer1.AddImage(source->GetOutput(),
-                  true,
+                   true,
                    std::string(name) + " flipped");
   viewer1.AddImage(source->GetOutput(),
-                  false,
+                   false,
                    std::string(name) + " not flipped");
 
   std::string path(snapshotPath);
@@ -59,17 +60,18 @@ template<typename T> void View(const char *name, T,
   viewer1.Visualize(false);
 }
 
-template<typename T> void ViewRGB(const char *name,
-                               T,
-                               std::string fileName,
-                               bool sharedCamera=false,
-                               const std::string & snapshotPath = "",
-                               const std::string & ext = "png")
+template<typename T> void
+ViewRGB(const char *name,
+        T,
+        std::string fileName,
+        bool sharedCamera=false,
+        const std::string & snapshotPath = "",
+        const std::string & ext = "png")
 {
-  typedef itk::RGBPixel<T>                      ColorPixelType;
-  typedef itk::Image<T, 2 >                     ScalarImageType;
-  typedef itk::Image<ColorPixelType, 2 >        ColorImageType;
-  typedef itk::ImageFileReader<ColorImageType>  SourceType;
+  typedef itk::RGBPixel<T>                     ColorPixelType;
+  typedef itk::Image<T, 2 >                    ScalarImageType;
+  typedef itk::Image<ColorPixelType, 2 >       ColorImageType;
+  typedef itk::ImageFileReader<ColorImageType> SourceType;
 
   typename SourceType::Pointer source = SourceType::New();
 
@@ -86,11 +88,11 @@ template<typename T> void ViewRGB(const char *name,
     }
 
   viewer1.AddRGBImage(source->GetOutput(),
-                  true,
-                   std::string(name) + " flipped");
+                      true,
+                      std::string(name) + " flipped");
   viewer1.AddRGBImage(source->GetOutput(),
-                  false,
-                   std::string(name) + " not flipped");
+                      false,
+                      std::string(name) + " not flipped");
 
   std::string path(snapshotPath);
   if (path != "")
@@ -103,7 +105,8 @@ template<typename T> void ViewRGB(const char *name,
   viewer1.Visualize(false);
 }
 
-int QuickViewTest (int argc, char *argv[])
+int
+QuickViewTest(int argc, char *argv[])
 {
   View("unsigned char", static_cast<unsigned char>(0), argv[1], true);
   View("unsigned char", static_cast<unsigned char>(0), argv[1]);
@@ -130,17 +133,17 @@ int QuickViewTest (int argc, char *argv[])
          argv[1],
          false,
          argv[2],
-         std::string("tif"));
+         std::string("tif") );
     View("unsigned char", static_cast<unsigned char>(0),
          argv[1],
          false,
          argv[2],
-         std::string("jpg"));
+         std::string("jpg") );
     View("unsigned char", static_cast<unsigned char>(0),
          argv[1],
          false,
          argv[2],
-         std::string("bmp"));
+         std::string("bmp") );
     }
 
   return EXIT_SUCCESS;

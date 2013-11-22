@@ -54,18 +54,19 @@ public:
 protected:
 
   GaussianTransferFunction();
-  virtual ~GaussianTransferFunction();
+  virtual
+  ~GaussianTransferFunction();
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
-};//class
+};  //class
 
 } // end namespace Statistics
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkGaussianTransferFunction.hxx"
+#include "itkGaussianTransferFunction.hxx"
 #endif
 
 #endif

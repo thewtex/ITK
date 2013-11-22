@@ -67,24 +67,23 @@
 
 #include "itkSphereSpatialFunction.h"
 
-
 struct node_type
-{
+  {
   unsigned int value;
   node_type *Next;
   node_type *Previous;
-};
+  };
 
-
-int itkBasicFiltersPrintTest(int , char* [])
+int
+itkBasicFiltersPrintTest(int , char* [])
 {
   typedef itk::Image<float,2>         InputType;
   typedef itk::Image<float,2>         OutputType;
   typedef itk::Image<unsigned char,2> CharType;
   typedef itk::Image<unsigned char,3> CharType3D;
 
-  typedef itk::Point<float,2>       MeshPixelType;
-  typedef itk::Mesh<MeshPixelType>  MeshType;
+  typedef itk::Point<float,2>      MeshPixelType;
+  typedef itk::Mesh<MeshPixelType> MeshType;
 
   typedef itk::Vector<float,2>     VectorType;
   typedef itk::Image<VectorType,2> VectorImageType;
@@ -104,11 +103,10 @@ int itkBasicFiltersPrintTest(int , char* [])
   // Used for InteriorExteriorMeshFilter
   typedef itk::Point<float, 3> PointType;
   typedef itk::SphereSpatialFunction< MeshType::PointDimension,
-    MeshType::PointType > SphereSpatialFunctionType;
+                                      MeshType::PointType > SphereSpatialFunctionType;
 
   // Used for SpatialFunctionImageEvaluator
   typedef itk::GaussianSpatialFunction<char,2> GaussianSpatialFunctionType;
-
 
   itk::AcosImageFilter<InputType,OutputType>::Pointer AcosImageFilterObj =
     itk::AcosImageFilter<InputType,OutputType>::New();
@@ -218,7 +216,8 @@ int itkBasicFiltersPrintTest(int , char* [])
     itk::CropImageFilter<InputType,OutputType>::New();
   std::cout << "-------------CropImageFilter" << CropImageFilterObj;
 
-  itk::CurvatureAnisotropicDiffusionImageFilter<InputType,OutputType>::Pointer CurvatureAnisotropicDiffusionImageFilterObj =
+  itk::CurvatureAnisotropicDiffusionImageFilter<InputType,
+                                                OutputType>::Pointer CurvatureAnisotropicDiffusionImageFilterObj =
     itk::CurvatureAnisotropicDiffusionImageFilter<InputType,OutputType>::New();
   std::cout << "-------------CurvatureAnisotropicDiffusionImageFilter" << CurvatureAnisotropicDiffusionImageFilterObj;
 
@@ -242,11 +241,14 @@ int itkBasicFiltersPrintTest(int , char* [])
     itk::DifferenceOfGaussiansGradientImageFilter<InputType,float>::New();
   std::cout << "-------------DifferenceOfGaussiansGradientImageFilter" << DifferenceOfGaussiansGradientImageFilterObj;
 
-  itk::DiffusionTensor3DReconstructionImageFilter<float,double,float>::Pointer DiffusionTensor3DReconstructionImageFilterObj =
+  itk::DiffusionTensor3DReconstructionImageFilter<float,double,
+                                                  float>::Pointer DiffusionTensor3DReconstructionImageFilterObj =
     itk::DiffusionTensor3DReconstructionImageFilter<float,double,float>::New();
-  std::cout << "-------------DiffusionTensor3DReconstructionImageFilter" << DiffusionTensor3DReconstructionImageFilterObj;
+  std::cout << "-------------DiffusionTensor3DReconstructionImageFilter" <<
+  DiffusionTensor3DReconstructionImageFilterObj;
 
-  itk::DilateObjectMorphologyImageFilter<InputType,OutputType,KernelType>::Pointer DilateObjectMorphologyImageFilterObj =
+  itk::DilateObjectMorphologyImageFilter<InputType,OutputType,
+                                         KernelType>::Pointer DilateObjectMorphologyImageFilterObj =
     itk::DilateObjectMorphologyImageFilter<InputType,OutputType,KernelType>::New();
   std::cout << "-------------DilateObjectMorphologyImageFilter" << DilateObjectMorphologyImageFilterObj;
 
@@ -298,7 +300,8 @@ int itkBasicFiltersPrintTest(int , char* [])
     itk::GaussianImageSource<OutputType>::New();
   std::cout << "-------------GaussianImageSource" << GaussianImageSourceObj;
 
-  itk::GradientAnisotropicDiffusionImageFilter<InputType,OutputType>::Pointer GradientAnisotropicDiffusionImageFilterObj =
+  itk::GradientAnisotropicDiffusionImageFilter<InputType,
+                                               OutputType>::Pointer GradientAnisotropicDiffusionImageFilterObj =
     itk::GradientAnisotropicDiffusionImageFilter<InputType,OutputType>::New();
   std::cout << "-------------GradientAnisotropicDiffusionImageFilter" << GradientAnisotropicDiffusionImageFilterObj;
 
@@ -310,9 +313,11 @@ int itkBasicFiltersPrintTest(int , char* [])
     itk::GradientMagnitudeImageFilter<InputType,OutputType>::New();
   std::cout << "-------------GradientMagnitudeImageFilter" << GradientMagnitudeImageFilterObj;
 
-  itk::GradientMagnitudeRecursiveGaussianImageFilter<InputType>::Pointer GradientMagnitudeRecursiveGaussianImageFilterObj =
+  itk::GradientMagnitudeRecursiveGaussianImageFilter<InputType>::Pointer
+    GradientMagnitudeRecursiveGaussianImageFilterObj =
     itk::GradientMagnitudeRecursiveGaussianImageFilter<InputType>::New();
-  std::cout << "-------------GradientMagnitudeRecursiveGaussianImageFilter" << GradientMagnitudeRecursiveGaussianImageFilterObj;
+  std::cout << "-------------GradientMagnitudeRecursiveGaussianImageFilter" <<
+  GradientMagnitudeRecursiveGaussianImageFilterObj;
 
   itk::GradientNDAnisotropicDiffusionFunction<InputType>::Pointer GradientNDAnisotropicDiffusionFunctionObj =
     itk::GradientNDAnisotropicDiffusionFunction<InputType>::New();
@@ -330,11 +335,13 @@ int itkBasicFiltersPrintTest(int , char* [])
     itk::GrayscaleErodeImageFilter<InputType,OutputType,KernelType>::New();
   std::cout << "-------------GrayscaleErodeImageFilter" << GrayscaleErodeImageFilterObj;
 
-  itk::GrayscaleFunctionDilateImageFilter<InputType,OutputType,KernelType>::Pointer GrayscaleFunctionDilateImageFilterObj =
+  itk::GrayscaleFunctionDilateImageFilter<InputType,OutputType,
+                                          KernelType>::Pointer GrayscaleFunctionDilateImageFilterObj =
     itk::GrayscaleFunctionDilateImageFilter<InputType,OutputType,KernelType>::New();
   std::cout << "-------------GrayscaleFunctionDilateImageFilter" << GrayscaleFunctionDilateImageFilterObj;
 
-  itk::GrayscaleFunctionErodeImageFilter<InputType,OutputType,KernelType>::Pointer GrayscaleFunctionErodeImageFilterObj =
+  itk::GrayscaleFunctionErodeImageFilter<InputType,OutputType,
+                                         KernelType>::Pointer GrayscaleFunctionErodeImageFilterObj =
     itk::GrayscaleFunctionErodeImageFilter<InputType,OutputType,KernelType>::New();
   std::cout << "-------------GrayscaleFunctionErodeImageFilter" << GrayscaleFunctionErodeImageFilterObj;
 

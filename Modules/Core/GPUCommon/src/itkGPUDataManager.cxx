@@ -39,62 +39,70 @@ GPUDataManager::~GPUDataManager()
     }
 }
 
-void GPUDataManager::SetBufferSize( unsigned int num )
+void
+GPUDataManager::SetBufferSize( unsigned int num )
 {
   m_BufferSize = num;
 }
 
-void GPUDataManager::SetBufferFlag( cl_mem_flags flags )
+void
+GPUDataManager::SetBufferFlag( cl_mem_flags flags )
 {
   m_MemFlags = flags;
 }
 
-void GPUDataManager::Allocate()
+void
+GPUDataManager::Allocate()
 {
   cl_int errid;
 
   if( m_BufferSize > 0 )
     {
 #ifdef VERBOSE
-      std::cout << this << "::Allocate Create GPU buffer of size " << m_BufferSize << " Bytes" << std::endl;
+    std::cout << this << "::Allocate Create GPU buffer of size " << m_BufferSize << " Bytes" << std::endl;
 #endif
     m_GPUBuffer = clCreateBuffer(m_ContextManager->GetCurrentContext(), m_MemFlags, m_BufferSize, NULL, &errid);
     OpenCLCheckError(errid, __FILE__, __LINE__, ITK_LOCATION);
     m_IsGPUBufferDirty = true;
     }
 
-
   //this->UpdateGPUBuffer();
 }
 
-void GPUDataManager::SetCPUBufferPointer( void* ptr )
+void
+GPUDataManager::SetCPUBufferPointer( void* ptr )
 {
   m_CPUBuffer = ptr;
 }
 
-void GPUDataManager::SetCPUDirtyFlag( bool isDirty )
+void
+GPUDataManager::SetCPUDirtyFlag( bool isDirty )
 {
   m_IsCPUBufferDirty = isDirty;
 }
 
-void GPUDataManager::SetGPUDirtyFlag( bool isDirty )
+void
+GPUDataManager::SetGPUDirtyFlag( bool isDirty )
 {
   m_IsGPUBufferDirty = isDirty;
 }
 
-void GPUDataManager::SetGPUBufferDirty()
+void
+GPUDataManager::SetGPUBufferDirty()
 {
   this->UpdateCPUBuffer();
   m_IsGPUBufferDirty = true;
 }
 
-void GPUDataManager::SetCPUBufferDirty()
+void
+GPUDataManager::SetCPUBufferDirty()
 {
   this->UpdateGPUBuffer();
   m_IsCPUBufferDirty = true;
 }
 
-void GPUDataManager::UpdateCPUBuffer()
+void
+GPUDataManager::UpdateCPUBuffer()
 {
   MutexHolderType holder(m_Mutex);
 
@@ -112,7 +120,8 @@ void GPUDataManager::UpdateCPUBuffer()
     }
 }
 
-void GPUDataManager::UpdateGPUBuffer()
+void
+GPUDataManager::UpdateGPUBuffer()
 {
   MutexHolderType mutexHolder(m_Mutex);
 
@@ -123,26 +132,30 @@ void GPUDataManager::UpdateGPUBuffer()
     std::cout << this << "::UpdateGPUBuffer CPU->GPU data copy " << m_CPUBuffer << "->" << m_GPUBuffer << std::endl;
 #endif
     errid = clEnqueueWriteBuffer(m_ContextManager->GetCommandQueue(
-                                   m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL, NULL);
+                                   m_CommandQueueId), m_GPUBuffer, CL_TRUE, 0, m_BufferSize, m_CPUBuffer, 0, NULL,
+                                 NULL);
     OpenCLCheckError(errid, __FILE__, __LINE__, ITK_LOCATION);
 
     m_IsGPUBufferDirty = false;
     }
 }
 
-cl_mem* GPUDataManager::GetGPUBufferPointer()
+cl_mem*
+GPUDataManager::GetGPUBufferPointer()
 {
   SetCPUBufferDirty();
   return &m_GPUBuffer;
 }
 
-void* GPUDataManager::GetCPUBufferPointer()
+void*
+GPUDataManager::GetCPUBufferPointer()
 {
   SetGPUBufferDirty();
   return m_CPUBuffer;
 }
 
-bool GPUDataManager::Update()
+bool
+GPUDataManager::Update()
 {
   if( m_IsGPUBufferDirty && m_IsCPUBufferDirty )
     {
@@ -162,7 +175,8 @@ bool GPUDataManager::Update()
  * NOTE: each device has a command queue. Therefore, changing command queue
  *       means change a compute device.
  */
-void GPUDataManager::SetCurrentCommandQueue( int queueid )
+void
+GPUDataManager::SetCurrentCommandQueue( int queueid )
 {
   if( queueid >= 0 && queueid < (int)m_ContextManager->GetNumberOfCommandQueues() )
     {
@@ -179,12 +193,14 @@ void GPUDataManager::SetCurrentCommandQueue( int queueid )
     }
 }
 
-int GPUDataManager::GetCurrentCommandQueueID()
+int
+GPUDataManager::GetCurrentCommandQueueID()
 {
   return m_CommandQueueId;
 }
 
-void GPUDataManager::Graft(const GPUDataManager* data)
+void
+GPUDataManager::Graft(const GPUDataManager* data)
 {
   if( data )
     {
@@ -211,7 +227,8 @@ void GPUDataManager::Graft(const GPUDataManager* data)
     }
 }
 
-void GPUDataManager::Initialize()
+void
+GPUDataManager::Initialize()
 {
   if( m_ContextManager->GetNumberOfCommandQueues() > 0 )
     {
@@ -231,7 +248,8 @@ void GPUDataManager::Initialize()
   m_IsCPUBufferDirty = false;
 }
 
-  void GPUDataManager::PrintSelf(std::ostream & os, Indent indent) const
+void
+GPUDataManager::PrintSelf(std::ostream & os, Indent indent) const
 {
   os << indent << "GPUDataManager (" << this << ")" << std::endl;
   os << indent << "m_BufferSize: " << m_BufferSize << std::endl;

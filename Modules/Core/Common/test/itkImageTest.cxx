@@ -20,7 +20,8 @@
 #include "itkImage.h"
 #include "itkFixedArray.h"
 
-int itkImageTest(int, char* [] )
+int
+itkImageTest(int, char* [] )
 {
 
   typedef itk::Image<float,2> Image;
@@ -31,14 +32,14 @@ int itkImageTest(int, char* [] )
   if( std::string(knownStringName) != image->GetObjectName() )
     {
     std::cerr << "ERROR:  Object name not set and recovered correctly.\n"
-      << std::string(knownStringName) << " != " << image->GetObjectName() << std::endl;
+              << std::string(knownStringName) << " != " << image->GetObjectName() << std::endl;
     return EXIT_FAILURE;
     }
   image->GetSource();
   image->DisconnectPipeline();
 
-  Image::SpacingType spacing; spacing.Fill(1.0);
-  Image::PointType origin; origin.Fill(1.0);
+  Image::SpacingType   spacing; spacing.Fill(1.0);
+  Image::PointType     origin; origin.Fill(1.0);
   Image::DirectionType direction;
   direction[0][0] = .5;
   direction[0][1] = .7;

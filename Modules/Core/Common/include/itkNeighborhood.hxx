@@ -44,12 +44,13 @@ Neighborhood< TPixel, VDimension, TContainer >
 }
 
 template< typename TPixel, unsigned int VDimension, typename TContainer >
-void Neighborhood< TPixel, VDimension, TContainer >
+void
+Neighborhood< TPixel, VDimension, TContainer >
 ::ComputeNeighborhoodOffsetTable()
 {
   m_OffsetTable.clear();
   m_OffsetTable.reserve( this->Size() );
-  OffsetType   o;
+  OffsetType         o;
   DimensionValueType i, j;
   for ( j = 0; j < VDimension; j++ )
     {
@@ -136,7 +137,8 @@ Neighborhood< TPixel, VDimension, TContainer >
 }
 
 template< typename TPixel, unsigned int VDimension, typename TContainer >
-std::slice Neighborhood< TPixel, VDimension, TContainer >
+std::slice
+Neighborhood< TPixel, VDimension, TContainer >
 ::GetSlice(unsigned int d) const
 {
   OffsetValueType n = this->Size() / 2;
@@ -165,7 +167,8 @@ Neighborhood< TPixel, VDimension, TContainer >
 }
 
 template< typename TPixel, unsigned int VDimension, typename TContainer >
-void Neighborhood< TPixel, VDimension, TContainer >
+void
+Neighborhood< TPixel, VDimension, TContainer >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   DimensionValueType i;
@@ -198,6 +201,7 @@ void Neighborhood< TPixel, VDimension, TContainer >
     }
   os << "]" << std::endl;
 }
+
 }  // namespace itk
 
 #endif

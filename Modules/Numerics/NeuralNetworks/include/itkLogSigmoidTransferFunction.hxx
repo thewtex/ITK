@@ -29,15 +29,13 @@ namespace Statistics
 template<typename ScalarType>
 LogSigmoidTransferFunction<ScalarType>
 ::LogSigmoidTransferFunction()
-{
-}
+{}
 
 /** Destructor */
 template<typename ScalarType>
 LogSigmoidTransferFunction<ScalarType>
 ::~LogSigmoidTransferFunction()
-{
-}
+{}
 
 /** Evaluate */
 template<typename ScalarType>
@@ -45,7 +43,8 @@ ScalarType
 LogSigmoidTransferFunction<ScalarType>
 ::Evaluate(const ScalarType& input)  const
 {
-  const ScalarType v = 1.0 / (1.0 + vcl_exp(-input));
+  const ScalarType v = 1.0 / (1.0 + vcl_exp(-input) );
+
   return v;
 }
 
@@ -56,6 +55,7 @@ LogSigmoidTransferFunction<ScalarType>
 ::EvaluateDerivative(const ScalarType& input)  const
 {
   ScalarType f = Evaluate(input);
+
   return f * (1 - f);
 }
 

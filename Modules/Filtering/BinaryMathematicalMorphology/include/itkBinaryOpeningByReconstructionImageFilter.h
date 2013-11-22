@@ -47,15 +47,15 @@ namespace itk {
 
 template<typename TInputImage, typename TKernel>
 class BinaryOpeningByReconstructionImageFilter :
-    public KernelImageFilter<TInputImage, TInputImage, TKernel>
+  public KernelImageFilter<TInputImage, TInputImage, TKernel>
 {
 public:
   /** Standard class typedefs. */
-  typedef BinaryOpeningByReconstructionImageFilter     Self;
+  typedef BinaryOpeningByReconstructionImageFilter Self;
   typedef KernelImageFilter<TInputImage, TInputImage, TKernel>
-                                                       Superclass;
-  typedef SmartPointer<Self>                           Pointer;
-  typedef SmartPointer<const Self>                     ConstPointer;
+    Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Standard New method. */
   itkNewMacro(Self);
@@ -64,10 +64,10 @@ public:
   itkTypeMacro(BinaryOpeningByReconstructionImageFilter,
                KernelImageFilter);
 
-  typedef TInputImage                              InputImageType;
-  typedef TInputImage                              OutputImageType;
-  typedef typename InputImageType::Pointer         InputImagePointer;
-  typedef typename OutputImageType::RegionType     OutputImageRegionType;
+  typedef TInputImage                          InputImageType;
+  typedef TInputImage                          OutputImageType;
+  typedef typename InputImageType::Pointer     InputImagePointer;
+  typedef typename OutputImageType::RegionType OutputImageRegionType;
 
   /** Declaration of pixel type. */
   typedef typename TInputImage::PixelType PixelType;
@@ -101,7 +101,7 @@ public:
 
 protected:
   BinaryOpeningByReconstructionImageFilter();
-  ~BinaryOpeningByReconstructionImageFilter() {};
+  ~BinaryOpeningByReconstructionImageFilter() {}
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   /** BinaryOpeningByReconstructionImageFilter need to make sure they request enough of an
@@ -113,17 +113,17 @@ protected:
 
   /** Single-threaded version of GenerateData.  This filter delegates
    * to GrayscaleDilateImageFilter GrayscaleErodeImageFilter. */
-  void  GenerateData ();
+  void  GenerateData();
 
 private:
   BinaryOpeningByReconstructionImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                           //purposely not implemented
 
-  PixelType  m_ForegroundValue;
+  PixelType m_ForegroundValue;
 
-  PixelType  m_BackgroundValue;
+  PixelType m_BackgroundValue;
 
-  bool       m_FullyConnected;
+  bool m_FullyConnected;
 
 }; // end of class
 

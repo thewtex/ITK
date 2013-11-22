@@ -36,8 +36,10 @@ namespace itk
 namespace fem
 {
 
-template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet, typename TInputTensorPointSet>
-FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
+template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet,
+         typename TInputTensorPointSet>
+FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet,
+                                      TInputTensorPointSet>
 ::FEMScatteredDataPointSetToImageFilter()
 {
   this->m_FEMObject = FEMObjectType::New();
@@ -49,15 +51,18 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
   itk::FEMFactoryBase::GetFactory()->RegisterDefaultTypes();
 }
 
-template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet, typename TInputTensorPointSet>
-FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
+template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet,
+         typename TInputTensorPointSet>
+FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet,
+                                      TInputTensorPointSet>
 ::~FEMScatteredDataPointSetToImageFilter()
-{
-}
+{}
 
-template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet, typename TInputTensorPointSet>
+template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet,
+         typename TInputTensorPointSet>
 void
-FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
+FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet,
+                                      TInputTensorPointSet>
 ::SetElementSpacing(const SpacingType & elementSpacing)
 {
   this->m_SpacingPerElement = elementSpacing;
@@ -72,9 +77,11 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
   this->Modified();
 }
 
-template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet, typename TInputTensorPointSet>
+template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet,
+         typename TInputTensorPointSet>
 void
-FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
+FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet,
+                                      TInputTensorPointSet>
 ::GenerateData()
 {
   // create the output image
@@ -99,7 +106,7 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
   output->SetRegions( this->m_Size );
   output->Allocate();
 
-  if(this->m_Mesh.IsNull())
+  if(this->m_Mesh.IsNull() )
     {
     // provide a rectilinear mesh based on the output deformation field if users do not specify one.
     this->GenerateRectilinearMesh();
@@ -129,12 +136,14 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
   this->ProduceDeformationField();
 }
 
-template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet, typename TInputTensorPointSet>
+template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet,
+         typename TInputTensorPointSet>
 void
-FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
+FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet,
+                                      TInputTensorPointSet>
 ::GenerateRectilinearMesh()
 {
-  if(this->m_Mesh.IsNotNull())
+  if(this->m_Mesh.IsNotNull() )
     {
     return;
     }
@@ -153,25 +162,27 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
     }
 }
 
-template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet, typename TInputTensorPointSet>
+template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet,
+         typename TInputTensorPointSet>
 void
-FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
+FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet,
+                                      TInputTensorPointSet>
 ::Generate2DQuadrilateralMesh()
 {
-  ImageType *  image  = this->GetOutput();
-  RegionType   region = image->GetLargestPossibleRegion();
-  SizeType     size   = region.GetSize();
+  ImageType * image  = this->GetOutput();
+  RegionType  region = image->GetLargestPossibleRegion();
+  SizeType    size   = region.GetSize();
 
   const double elementFraction0 = (size[0] - 1) / m_PixelsPerElement[0];
   const double elementFraction1 = (size[1] - 1) / m_PixelsPerElement[1];
 
-  this->m_NumberOfElements[0] = static_cast<int>(ceil(elementFraction0));
-  this->m_NumberOfElements[1] = static_cast<int>(ceil(elementFraction1));
+  this->m_NumberOfElements[0] = static_cast<int>(ceil(elementFraction0) );
+  this->m_NumberOfElements[1] = static_cast<int>(ceil(elementFraction1) );
 
   this->m_Mesh = MeshType::New();
 
   // create nodes
-  ContinuousIndexType  pointIndex;
+  ContinuousIndexType pointIndex;
   typename ImageType::PointType pointCoordinate;
   int globalNumbering = 0;
 
@@ -200,8 +211,8 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
       cell.TakeOwnership(new QuadrilateralType);
       cell->SetPointId(0, i + ( this->m_NumberOfElements[0] + 1 ) * j );
       cell->SetPointId(1, i + 1 + ( this->m_NumberOfElements[0] + 1 ) * j);
-      cell->SetPointId(2, i + 1 + ( this->m_NumberOfElements[0] + 1 ) * ( j + 1 ));
-      cell->SetPointId(3, i + ( this->m_NumberOfElements[0] + 1 ) * ( j + 1 ));
+      cell->SetPointId(2, i + 1 + ( this->m_NumberOfElements[0] + 1 ) * ( j + 1 ) );
+      cell->SetPointId(3, i + ( this->m_NumberOfElements[0] + 1 ) * ( j + 1 ) );
 
       this->m_Mesh->SetCell(globalNumbering, cell);
 
@@ -210,27 +221,29 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
     }
 }
 
-template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet, typename TInputTensorPointSet>
+template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet,
+         typename TInputTensorPointSet>
 void
-FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
+FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet,
+                                      TInputTensorPointSet>
 ::Generate3DHexahedralMesh()
 {
-  ImageType *  image = this->GetOutput();
-  RegionType   region = image->GetLargestPossibleRegion();
-  SizeType     size   = region.GetSize();
+  ImageType * image = this->GetOutput();
+  RegionType  region = image->GetLargestPossibleRegion();
+  SizeType    size   = region.GetSize();
 
   const double elementFraction0 = (size[0] - 1) / m_PixelsPerElement[0];
   const double elementFraction1 = (size[1] - 1) / m_PixelsPerElement[1];
   const double elementFraction2 = (size[2] - 1) / m_PixelsPerElement[2];
 
-  this->m_NumberOfElements[0] = static_cast<int>(ceil(elementFraction0));
-  this->m_NumberOfElements[1] = static_cast<int>(ceil(elementFraction1));
-  this->m_NumberOfElements[2] = static_cast<int>(ceil(elementFraction2));
+  this->m_NumberOfElements[0] = static_cast<int>(ceil(elementFraction0) );
+  this->m_NumberOfElements[1] = static_cast<int>(ceil(elementFraction1) );
+  this->m_NumberOfElements[2] = static_cast<int>(ceil(elementFraction2) );
 
   this->m_Mesh = MeshType::New();
 
   // create nodes
-  ContinuousIndexType  pointIndex;
+  ContinuousIndexType pointIndex;
   typename ImageType::PointType pointCoordinate;
 
   int globalNumbering = 0;
@@ -281,7 +294,7 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
         cell->SetPointId(3,value);
 
         // set the global point ID for the cell local ID4
-        value = i + ( m_NumberOfElements[0] + 1 ) * ( j  + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ));
+        value = i + ( m_NumberOfElements[0] + 1 ) * ( j  + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ) );
         cell->SetPointId(4, value);
 
         // set the global point ID for the cell local ID5
@@ -289,11 +302,11 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
         cell->SetPointId(5, value);
 
         // set the global point ID for the cell local ID6
-        value = i + 1 + ( m_NumberOfElements[0] + 1 ) * ( j + 1 + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ));
+        value = i + 1 + ( m_NumberOfElements[0] + 1 ) * ( j + 1 + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ) );
         cell->SetPointId(6, value);
 
         // set the global point ID for the cell local ID7
-        value = i + ( m_NumberOfElements[0] + 1 ) * ( j + 1 + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ));
+        value = i + ( m_NumberOfElements[0] + 1 ) * ( j + 1 + ( m_NumberOfElements[1] + 1 ) * ( k + 1 ) );
         cell->SetPointId(7,value);
 
         this->m_Mesh->SetCell(globalNumbering, cell);
@@ -304,9 +317,11 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
     }
 }
 
-template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet, typename TInputTensorPointSet>
+template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet,
+         typename TInputTensorPointSet>
 void
-FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
+FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet,
+                                      TInputTensorPointSet>
 ::InitializeFEMObject(FEMObjectType * femObject)
 {
   this->InitializeMaterials(femObject);
@@ -318,9 +333,11 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
   femObject->FinalizeMesh();
 }
 
-template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet, typename TInputTensorPointSet>
+template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet,
+         typename TInputTensorPointSet>
 void
-FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
+FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet,
+                                      TInputTensorPointSet>
 ::InitializeMaterials(FEMObjectType * femObject)
 {
   MaterialContainerType *materialContainer = femObject->GetModifiableMaterialContainer();
@@ -336,9 +353,11 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
   femObject->AddNextMaterial(this->m_Material);
 }
 
-template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet, typename TInputTensorPointSet>
+template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet,
+         typename TInputTensorPointSet>
 void
-FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
+FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet,
+                                      TInputTensorPointSet>
 ::InitializeNodes(FEMObjectType * femObject)
 {
   NodeContainerType *nodeContainer = femObject->GetModifiableNodeContainer();
@@ -356,7 +375,7 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
   FEMVectorType point(ImageDimension);
 
   // initialize nodes
-  while(it != meshPoints->End())
+  while(it != meshPoints->End() )
     {
     for(unsigned i = 0; i < ImageDimension; i++)
       {
@@ -365,7 +384,7 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
 
     NodeType::Pointer node = NodeType::New();
     node->SetCoordinates(point);
-    node->SetGlobalNumber(it.Index());
+    node->SetGlobalNumber(it.Index() );
 
     femObject->AddNextNode(node);
 
@@ -373,9 +392,11 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
     }
 }
 
-template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet, typename TInputTensorPointSet>
+template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet,
+         typename TInputTensorPointSet>
 void
-FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
+FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet,
+                                      TInputTensorPointSet>
 ::InitializeElements(FEMObjectType * femObject)
 {
   ElementContainerType *elementContainer = femObject->GetModifiableElementContainer();
@@ -412,13 +433,13 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
 
         while( pointIdIter != pointIdEnd )
           {
-          triangleEle->SetNode(i++, femObject->GetNode(*pointIdIter));
+          triangleEle->SetNode(i++, femObject->GetNode(*pointIdIter) );
           ++pointIdIter;
           }
 
         triangleEle->SetGlobalNumber(globalNumbering++);
         triangleEle->SetMaterial( static_cast<MaterialType *>( femObject->GetMaterial(0).GetPointer() ) );
-        femObject->AddNextElement(triangleEle.GetPointer());
+        femObject->AddNextElement(triangleEle.GetPointer() );
 
         break;
         }
@@ -436,14 +457,14 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
 
         while( pointIdIter != pointIdEnd )
           {
-          tetrahedronEle->SetNode(i++, femObject->GetNode(*pointIdIter));
+          tetrahedronEle->SetNode(i++, femObject->GetNode(*pointIdIter) );
 
           ++pointIdIter;
           }
 
         tetrahedronEle->SetGlobalNumber(globalNumbering++);
         tetrahedronEle->SetMaterial( static_cast<MaterialType *>( femObject->GetMaterial(0).GetPointer() ) );
-        femObject->AddNextElement(tetrahedronEle.GetPointer());
+        femObject->AddNextElement(tetrahedronEle.GetPointer() );
 
         break;
 
@@ -463,14 +484,14 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
 
         while( pointIdIter != pointIdEnd )
           {
-          quadrilateralEle->SetNode(i++, femObject->GetNode(*pointIdIter));
+          quadrilateralEle->SetNode(i++, femObject->GetNode(*pointIdIter) );
 
           ++pointIdIter;
           }
 
         quadrilateralEle->SetGlobalNumber(globalNumbering++);
         quadrilateralEle->SetMaterial( static_cast<MaterialType *>( femObject->GetMaterial(0).GetPointer() ) );
-        femObject->AddNextElement(quadrilateralEle.GetPointer());
+        femObject->AddNextElement(quadrilateralEle.GetPointer() );
 
         break;
 
@@ -489,14 +510,14 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
 
         while( pointIdIter != pointIdEnd )
           {
-          hexahedronEle->SetNode(i++, femObject->GetNode(*pointIdIter));
+          hexahedronEle->SetNode(i++, femObject->GetNode(*pointIdIter) );
 
           ++pointIdIter;
           }
 
         hexahedronEle->SetGlobalNumber(globalNumbering++);
         hexahedronEle->SetMaterial( static_cast<MaterialType *>( femObject->GetMaterial(0).GetPointer() ) );
-        femObject->AddNextElement(hexahedronEle.GetPointer());
+        femObject->AddNextElement(hexahedronEle.GetPointer() );
 
         break;
 
@@ -504,20 +525,22 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
 
       default:
         {
-        itkExceptionMacro("Do not support element type: " << cell->GetType());
+        itkExceptionMacro("Do not support element type: " << cell->GetType() );
         break;
         }
 
-      }//end of switch on cell type
+      } //end of switch on cell type
 
     ++cellIterator;
 
-    }//end of while not at end of cells
+    } //end of while not at end of cells
 }
 
-template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet, typename TInputTensorPointSet>
+template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet,
+         typename TInputTensorPointSet>
 void
-FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
+FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet,
+                                      TInputTensorPointSet>
 ::InitializeLoads(FEMObjectType * femObject)
 {
   LoadContainerType *loadContainer = femObject->GetModifiableLoadContainer();
@@ -547,7 +570,7 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
 
   const PointsContainer *featurePoints = input->GetPoints();
 
-  PointsIterator it = featurePoints->Begin();
+  PointsIterator    it = featurePoints->Begin();
   PointDataIterator displacementIt = displacementVector->Begin();
   typename ConfidencePointDataContainerType::ConstIterator confidenceIt;
   typename TensorPointDataContainerType::ConstIterator tensorIt;
@@ -567,7 +590,7 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
   FEMVectorType point(ImageDimension);
   FEMVectorType displacement(ImageDimension);
 
-  while(it != featurePoints->End())
+  while(it != featurePoints->End() )
     {
     for(unsigned int i = 0; i < ImageDimension; i++)
       {
@@ -582,7 +605,7 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
 
     if(this->m_ConfidencePointSet.IsNotNull() )
       {
-      load->SetConfidence( ConfidencePointDataType(confidenceIt.Value()));
+      load->SetConfidence( ConfidencePointDataType(confidenceIt.Value() ) );
       ++confidenceIt;
       }
 
@@ -601,29 +624,32 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
       ++tensorIt;
       }
 
-    femObject->AddNextLoad(fem::Load::Pointer(load));
+    femObject->AddNextLoad(fem::Load::Pointer(load) );
 
     ++displacementIt;
     ++it;
     }
 }
 
-template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet, typename TInputTensorPointSet>
+template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet,
+         typename TInputTensorPointSet>
 void
-FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
+FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet,
+                                      TInputTensorPointSet>
 ::ProduceDeformationField()
 {
   // Produce deformation field based on the solution.
 
   ImageType *output = this->GetOutput();
   RegionType region = output->GetLargestPossibleRegion();
+
   ImageRegionIterator<ImageType> iter(output, region);
 
-  PointType point;
-  unsigned int solutionIndex = 0;
+  PointType     point;
+  unsigned int  solutionIndex = 0;
   FEMVectorType globalPoint(ImageDimension);
   FEMVectorType localPoint(ImageDimension);
-  PixelType displacement;
+  PixelType     displacement;
 
   // step over all points within the region
   for( iter.GoToBegin(); !iter.IsAtEnd(); ++iter )
@@ -636,7 +662,7 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
 
     fem::Element::ConstPointer element = m_FEMSolver->GetElementAtPoint(globalPoint);
 
-    if(element.IsNull())
+    if(element.IsNull() )
       {
       for(unsigned i = 0; i < ImageDimension; i++)
         {
@@ -681,12 +707,15 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
     }
 }
 
-template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet, typename TInputTensorPointSet>
+template<typename TInputPointSet, typename TInputMesh, typename TOutputImage, typename TInputConfidencePointSet,
+         typename TInputTensorPointSet>
 void
-FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet, TInputTensorPointSet>
+FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, TInputConfidencePointSet,
+                                      TInputTensorPointSet>
 ::PrintSelf( std::ostream & os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
+
   os << indent << "  Origin:    " << this->m_Origin << std::endl;
   os << indent << "  Spacing:   " << this->m_Spacing << std::endl;
   os << indent << "  Size:      " << this->m_Size << std::endl;

@@ -19,7 +19,8 @@
 
 #include "itkMersenneTwisterRandomVariateGenerator.h"
 
-int itkCompensatedSummationTest( int, char * [] )
+int
+itkCompensatedSummationTest( int, char * [] )
 {
   typedef float FloatType;
   long int seedValue = 17;
@@ -36,7 +37,7 @@ int itkCompensatedSummationTest( int, char * [] )
   FloatType vanillaSum = 0.0;
   typedef itk::CompensatedSummation< FloatType > CompensatedSummationType;
   CompensatedSummationType floatAccumulator;
-  FloatType randomNumber;
+  FloatType                randomNumber;
   for( itk::SizeValueType ii = 0; ii < accumSize; ++ii )
     {
     randomNumber = generator->GetVariate();

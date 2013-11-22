@@ -35,7 +35,8 @@
 
 #include "itkTestingMacros.h"
 
-int itkRegionFromReferenceLabelMapFilterTest1(int argc, char * argv[])
+int
+itkRegionFromReferenceLabelMapFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 4 )
@@ -48,8 +49,8 @@ int itkRegionFromReferenceLabelMapFilterTest1(int argc, char * argv[])
 
   typedef itk::Image< unsigned char, dim > ImageType;
 
-  typedef itk::LabelObject< unsigned char, dim >   LabelObjectType;
-  typedef itk::LabelMap< LabelObjectType >         LabelMapType;
+  typedef itk::LabelObject< unsigned char, dim > LabelObjectType;
+  typedef itk::LabelMap< LabelObjectType >       LabelMapType;
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();

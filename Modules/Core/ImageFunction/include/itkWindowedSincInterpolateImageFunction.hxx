@@ -273,6 +273,7 @@ WindowedSincInterpolateImageFunction< TInputImage, VRadius,
   // Return the interpolated value
   return static_cast< OutputType >( xPixelValue );
 }
+
 } // namespace itk
 
 #endif

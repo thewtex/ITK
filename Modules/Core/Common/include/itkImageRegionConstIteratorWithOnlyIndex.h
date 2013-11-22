@@ -127,7 +127,7 @@ namespace itk
  *
  */
 template< typename TImage >
-class ImageRegionConstIteratorWithOnlyIndex:public ImageConstIteratorWithOnlyIndex< TImage >
+class ImageRegionConstIteratorWithOnlyIndex : public ImageConstIteratorWithOnlyIndex< TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -139,18 +139,18 @@ public:
    * they need to be redone here for this subclass to compile properly with gcc.
    */
   /** Types inherited from the Superclass */
-  typedef typename Superclass::IndexType             IndexType;
-  typedef typename Superclass::SizeType              SizeType;
-  typedef typename Superclass::OffsetType            OffsetType;
-  typedef typename Superclass::RegionType            RegionType;
-  typedef typename Superclass::ImageType             ImageType;
+  typedef typename Superclass::IndexType  IndexType;
+  typedef typename Superclass::SizeType   SizeType;
+  typedef typename Superclass::OffsetType OffsetType;
+  typedef typename Superclass::RegionType RegionType;
+  typedef typename Superclass::ImageType  ImageType;
 
   /** Default constructor. Needed since we provide a cast constructor. */
-  ImageRegionConstIteratorWithOnlyIndex():ImageConstIteratorWithOnlyIndex< TImage >() {}
+  ImageRegionConstIteratorWithOnlyIndex() : ImageConstIteratorWithOnlyIndex< TImage >() {}
 
   /** Constructor establishes an iterator to walk a particular image and a
    * particular region of that image. */
-  ImageRegionConstIteratorWithOnlyIndex(const TImage *ptr, const RegionType & region):
+  ImageRegionConstIteratorWithOnlyIndex(const TImage *ptr, const RegionType & region) :
     ImageConstIteratorWithOnlyIndex< TImage >(ptr, region) {}
 
   /** Constructor that can be used to cast from an ImageIterator to an
@@ -160,7 +160,10 @@ public:
    * returns ImageIterators and uses constructors to cast from an
    * ImageIterator to a ImageRegionConstIteratorWithOnlyIndex. */
   ImageRegionConstIteratorWithOnlyIndex(const ImageConstIteratorWithOnlyIndex< TImage > & it)
-  { this->ImageConstIteratorWithOnlyIndex< TImage >::operator=(it); }
+  {
+    this->ImageConstIteratorWithOnlyIndex< TImage >::operator=(it);
+
+  }
 
   /** Increment (prefix) the fastest moving dimension of the iterator's index.
    * This operator will constrain the iterator within the region (i.e. the
@@ -179,6 +182,7 @@ public:
    * will be set to be one pixel past the beginning of the region.
    * \sa operator++ */
   Self & operator--();
+
 };
 } // end namespace itk
 

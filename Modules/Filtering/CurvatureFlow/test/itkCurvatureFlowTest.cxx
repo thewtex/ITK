@@ -24,7 +24,6 @@
 #include "itkCastImageFilter.h"
 #include "itkStreamingImageFilter.h"
 
-
 namespace
 {
 // The following three classes are used to support callbacks
@@ -33,9 +32,16 @@ class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 
@@ -59,31 +65,42 @@ public:
   typedef typename Superclass::PixelType        PixelType;
   typedef typename Superclass::TimeStepType     TimeStepType;
 
-  virtual PixelType ComputeUpdate( const NeighborhoodType &, void *,
-                                   const FloatOffsetType & )
-    { return 0; }
+  virtual PixelType
+  ComputeUpdate( const NeighborhoodType &, void *,
+                 const FloatOffsetType & )
+  {
+    return 0;
+  }
 
-  virtual TimeStepType ComputeGlobalTimeStep( void * ) const
-    { return 0; }
+  virtual TimeStepType
+  ComputeGlobalTimeStep( void * ) const
+  {
+    return 0;
+  }
 
-  virtual void *GetGlobalDataPointer() const
-    { return NULL; }
+  virtual void *
+  GetGlobalDataPointer() const
+  {
+    return NULL;
+  }
 
-  virtual void ReleaseGlobalDataPointer(void *) const {}
+  virtual void
+  ReleaseGlobalDataPointer(void *) const {}
 
 protected:
   DummyFunction() {}
   ~DummyFunction() {}
 
 private:
-  DummyFunction(const Self&); //purposely not implemented
+  DummyFunction(const Self&);  //purposely not implemented
   void operator=(const Self&); //purposely not implemented
+
 };
 
 }
 
-
-int itkCurvatureFlowTest(int argc, char* argv[] )
+int
+itkCurvatureFlowTest(int argc, char* argv[] )
 {
 
   if( argc < 2 )
@@ -93,8 +110,7 @@ int itkCurvatureFlowTest(int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-   itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer());
-
+  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
   typedef float PixelType;
   enum { ImageDimension = 2 };
@@ -134,8 +150,8 @@ int itkCurvatureFlowTest(int argc, char* argv[] )
     typedef itk::DummyFunction<ImageType> FunctionType;
     filter = FilterType::New();
     FunctionType::Pointer function = FunctionType::New();
-    ImageType::Pointer dummy = ImageType::New();
-    ImageType::SizeType size;
+    ImageType::Pointer    dummy = ImageType::New();
+    ImageType::SizeType   size;
     size.Fill( 3 );
     ImageType::RegionType region(size);
     dummy->SetRegions( region );
@@ -166,7 +182,6 @@ int itkCurvatureFlowTest(int argc, char* argv[] )
   source->SetMax(1.0);
   source->Update();
 
-
   std::cout << "Run CurvatureFlowImageFiler with progress cout's" << std::endl;
   typedef itk::CurvatureFlowImageFilter<ImageType,ImageType> DenoiserType;
 
@@ -176,7 +191,7 @@ int itkCurvatureFlowTest(int argc, char* argv[] )
   denoiser->SetTimeStep( 0.05 );
   denoiser->SetNumberOfIterations( 8 );
 
-  ShowProgressObject progressWatch(denoiser);
+  ShowProgressObject                                    progressWatch(denoiser);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -204,11 +219,11 @@ int itkCurvatureFlowTest(int argc, char* argv[] )
   std::cout << "Compare stand-alone and streamer outputs" << std::endl;
   typedef itk::ImageRegionIterator<ImageType> IteratorType;
   IteratorType it1( denoiser->GetOutput(),
-    denoiser->GetOutput()->GetBufferedRegion() );
+                    denoiser->GetOutput()->GetBufferedRegion() );
   IteratorType it2( streamer->GetOutput(),
-    streamer->GetOutput()->GetBufferedRegion() );
+                    streamer->GetOutput()->GetBufferedRegion() );
 
-  bool testPass = true;
+  bool         testPass = true;
   unsigned int failedPixels = 0;
   while( !it1.IsAtEnd() )
     {
@@ -246,7 +261,6 @@ int itkCurvatureFlowTest(int argc, char* argv[] )
   writer->SetFileName(argv[1]);
   writer->SetImageIO(vtkIO);
   writer->Write();
-
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;

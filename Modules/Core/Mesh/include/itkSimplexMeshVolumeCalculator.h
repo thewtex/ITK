@@ -47,7 +47,7 @@ namespace itk
  */
 
 template< typename TInputMesh >
-class SimplexMeshVolumeCalculator:public Object
+class SimplexMeshVolumeCalculator : public Object
 {
 public:
   /** Standard "Self" typedef. */
@@ -90,7 +90,7 @@ public:
 
   typedef typename InputPointType::VectorType VectorType;
   typedef CovariantVector<
-    typename VectorType::ValueType, 3 >   CovariantVectorType;
+      typename VectorType::ValueType, 3 >   CovariantVectorType;
 
   /**
    * \class SimplexCellVisitor
@@ -109,12 +109,15 @@ public:
     {
       m_CenterMap = PointMapType::New();
     }
-    virtual ~SimplexCellVisitor() {}
+
+    virtual
+    ~SimplexCellVisitor() {}
 
     /**
      * \brief visits all polygon cells and compute the cell centers
      */
-    void Visit(IdentifierType cellId, SimplexPolygonType *poly)
+    void
+    Visit(IdentifierType cellId, SimplexPolygonType *poly)
     {
       typedef typename SimplexPolygonType::PointIdIterator PointIdIterator;
       PointIdIterator it =  poly->PointIdsBegin();
@@ -136,12 +139,14 @@ public:
       m_CenterMap->InsertElement(cellId, center);
     }
 
-    PointMapPointer GetCenterMap()
+    PointMapPointer
+    GetCenterMap()
     {
       return m_CenterMap;
     }
 
-    void SetMesh(InputMeshPointer mesh)
+    void
+    SetMesh(InputMeshPointer mesh)
     {
       m_Mesh = mesh;
     }
@@ -155,7 +160,7 @@ protected:
                                                    InputCellTraitsType,
                                                    SimplexPolygonType,
                                                    SimplexCellVisitor >
-  SimplexVisitorInterfaceType;
+    SimplexVisitorInterfaceType;
 
   typedef typename SimplexVisitorInterfaceType::Pointer SimplexVisitorInterfacePointer;
   typedef typename SimplexCellType::MultiVisitor        CellMultiVisitorType;
@@ -175,7 +180,8 @@ protected:
 
 protected:
   SimplexMeshVolumeCalculator();
-  virtual ~SimplexMeshVolumeCalculator();
+  virtual
+  ~SimplexMeshVolumeCalculator();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
@@ -213,9 +219,9 @@ private:
   double m_Wxz;
   double m_Wyz;
 
-  IndexValueType   m_Muncx;
-  IndexValueType   m_Muncy;
-  IndexValueType   m_Muncz;
+  IndexValueType m_Muncx;
+  IndexValueType m_Muncy;
+  IndexValueType m_Muncz;
 
   SizeValueType m_NumberOfTriangles;
 };

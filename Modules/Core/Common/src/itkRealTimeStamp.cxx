@@ -24,38 +24,38 @@
 // of microseconds is negative, then we decrement the number of seconds and
 // assign to the microseconds variable the complement that is a positive number.
 #define CARRY_UNITS_OVER_UNSIGNED( seconds, micro_seconds ) \
-if ( micro_seconds > 1000000L ) \
-  { \
-  seconds += 1; \
-  micro_seconds -= 1000000L; \
-  } \
+  if ( micro_seconds > 1000000L ) \
+    { \
+    seconds += 1; \
+    micro_seconds -= 1000000L; \
+    } \
 
 #define CARRY_UNITS_OVER_SIGNED( seconds, micro_seconds ) \
-if ( micro_seconds > 1000000L ) \
-  { \
-  seconds += 1; \
-  micro_seconds -= 1000000L; \
-  } \
-if ( micro_seconds < 0 ) \
-  { \
-  seconds -= 1; \
-  micro_seconds += 1000000L; \
-  }
+  if ( micro_seconds > 1000000L ) \
+    { \
+    seconds += 1; \
+    micro_seconds -= 1000000L; \
+    } \
+  if ( micro_seconds < 0 ) \
+    { \
+    seconds -= 1; \
+    micro_seconds += 1000000L; \
+    }
 
 // This macro ensures that the sign of the seconds is the same as the sign of
 // the microseconds. In other words, both of them are measured toward the same
 // direction of time.
 #define ALIGN_THE_ARROW_OF_TIME( seconds, micro_seconds ) \
-if( seconds > 0 && micro_seconds < 0 ) \
-  { \
-  seconds -= 1; \
-  micro_seconds = 1000000L - micro_seconds; \
-  } \
-if( seconds < 0 && micro_seconds > 0 ) \
-  { \
-  seconds += 1; \
-  micro_seconds = 1000000L + micro_seconds; \
-  }
+  if( seconds > 0 && micro_seconds < 0 ) \
+    { \
+    seconds -= 1; \
+    micro_seconds = 1000000L - micro_seconds; \
+    } \
+  if( seconds < 0 && micro_seconds > 0 ) \
+    { \
+    seconds += 1; \
+    micro_seconds = 1000000L + micro_seconds; \
+    }
 
 namespace itk
 {
@@ -84,8 +84,7 @@ RealTimeStamp::RealTimeStamp( SecondsCounterType seconds, MicroSecondsCounterTyp
  * Destructor.
  */
 RealTimeStamp::~RealTimeStamp()
-{
-}
+{}
 
 /**
  * Return time in microseconds.
@@ -94,6 +93,7 @@ RealTimeStamp::TimeRepresentationType
 RealTimeStamp::GetTimeInMicroSeconds() const
 {
   TimeRepresentationType result = static_cast< TimeRepresentationType >( this->m_Seconds );
+
   result *= 1e6;
   result += static_cast< TimeRepresentationType >( this->m_MicroSeconds );
 
@@ -107,6 +107,7 @@ RealTimeStamp::TimeRepresentationType
 RealTimeStamp::GetTimeInMilliSeconds() const
 {
   TimeRepresentationType result = static_cast< TimeRepresentationType >( this->m_Seconds );
+
   result *= 1e3;
   result += static_cast< TimeRepresentationType >( this->m_MicroSeconds ) / 1e3;
 
@@ -120,6 +121,7 @@ RealTimeStamp::TimeRepresentationType
 RealTimeStamp::GetTimeInSeconds() const
 {
   TimeRepresentationType result = static_cast< TimeRepresentationType >( this->m_MicroSeconds );
+
   result /= 1e6;
   result += static_cast< TimeRepresentationType >( this->m_Seconds );
 
@@ -133,6 +135,7 @@ RealTimeStamp::TimeRepresentationType
 RealTimeStamp::GetTimeInMinutes() const
 {
   const TimeRepresentationType result = this->GetTimeInSeconds() / 60.00;
+
   return result;
 }
 
@@ -143,9 +146,9 @@ RealTimeStamp::TimeRepresentationType
 RealTimeStamp::GetTimeInHours() const
 {
   const TimeRepresentationType result = this->GetTimeInSeconds() / 3600.00;
+
   return result;
 }
-
 
 /**
  * Return time in days.
@@ -154,9 +157,9 @@ RealTimeStamp::TimeRepresentationType
 RealTimeStamp::GetTimeInDays() const
 {
   const TimeRepresentationType result = this->GetTimeInSeconds() / 86400.00;
+
   return result;
 }
-
 
 /**
  * Compute the time interval between two time stamps.
@@ -176,15 +179,15 @@ RealTimeStamp::operator-( const Self & other ) const
   return difference;
 }
 
-
 /**
  * Add a time interval to this time stamp to compute a new time stamp.
  */
 RealTimeStamp
 RealTimeStamp::operator+( const RealTimeInterval & difference ) const
 {
-  SecondsCounterType seconds = this->m_Seconds + difference.m_Seconds;
+  SecondsCounterType      seconds = this->m_Seconds + difference.m_Seconds;
   MicroSecondsCounterType micro_seconds = this->m_MicroSeconds + difference.m_MicroSeconds;
+
   CARRY_UNITS_OVER_UNSIGNED( seconds, micro_seconds );
 
   Self result;
@@ -193,7 +196,6 @@ RealTimeStamp::operator+( const RealTimeInterval & difference ) const
 
   return result;
 }
-
 
 /**
  * Add a time interval to this time stamp to compute a new time stamp.
@@ -342,7 +344,6 @@ RealTimeStamp::operator<=( const Self & other ) const
   return ( this->m_MicroSeconds <= other.m_MicroSeconds );
 }
 
-
 /**
  * Compare two time Stamps.
  */
@@ -364,7 +365,8 @@ RealTimeStamp::operator!=( const Self & other ) const
 }
 
 /** Default print out of a RealTimeStamp */
-std::ostream & operator<<(std::ostream & os, const RealTimeStamp & v)
+std::ostream &
+operator<<(std::ostream & os, const RealTimeStamp & v)
 {
   os << v.GetTimeInSeconds() << " seconds ";
   return os;

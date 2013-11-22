@@ -46,7 +46,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage >
-class StatisticsImageFilter:
+class StatisticsImageFilter :
   public ImageToImageFilter< TInputImage, TInputImage >
 {
 public:
@@ -85,43 +85,67 @@ public:
   typedef SimpleDataObjectDecorator< PixelType > PixelObjectType;
 
   /** Return the computed Minimum. */
-  PixelType GetMinimum() const
-  { return this->GetMinimumOutput()->Get(); }
+  PixelType
+  GetMinimum() const
+  {
+    return this->GetMinimumOutput()->Get();
+  }
+
   PixelObjectType * GetMinimumOutput();
 
   const PixelObjectType * GetMinimumOutput() const;
 
   /** Return the computed Maximum. */
-  PixelType GetMaximum() const
-  { return this->GetMaximumOutput()->Get(); }
+  PixelType
+  GetMaximum() const
+  {
+    return this->GetMaximumOutput()->Get();
+  }
+
   PixelObjectType * GetMaximumOutput();
 
   const PixelObjectType * GetMaximumOutput() const;
 
   /** Return the computed Mean. */
-  RealType GetMean() const
-  { return this->GetMeanOutput()->Get(); }
+  RealType
+  GetMean() const
+  {
+    return this->GetMeanOutput()->Get();
+  }
+
   RealObjectType * GetMeanOutput();
 
   const RealObjectType * GetMeanOutput() const;
 
   /** Return the computed Standard Deviation. */
-  RealType GetSigma() const
-  { return this->GetSigmaOutput()->Get(); }
+  RealType
+  GetSigma() const
+  {
+    return this->GetSigmaOutput()->Get();
+  }
+
   RealObjectType * GetSigmaOutput();
 
   const RealObjectType * GetSigmaOutput() const;
 
   /** Return the computed Variance. */
-  RealType GetVariance() const
-  { return this->GetVarianceOutput()->Get(); }
+  RealType
+  GetVariance() const
+  {
+    return this->GetVarianceOutput()->Get();
+  }
+
   RealObjectType * GetVarianceOutput();
 
   const RealObjectType * GetVarianceOutput() const;
 
   /** Return the compute Sum. */
-  RealType GetSum() const
-  { return this->GetSumOutput()->Get(); }
+  RealType
+  GetSum() const
+  {
+    return this->GetSumOutput()->Get();
+  }
+
   RealObjectType * GetSumOutput();
 
   const RealObjectType * GetSumOutput() const;
@@ -171,11 +195,11 @@ private:
   StatisticsImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
 
-  Array< RealType >       m_ThreadSum;
-  Array< RealType >       m_SumOfSquares;
-  Array< SizeValueType >  m_Count;
-  Array< PixelType >      m_ThreadMin;
-  Array< PixelType >      m_ThreadMax;
+  Array< RealType >      m_ThreadSum;
+  Array< RealType >      m_SumOfSquares;
+  Array< SizeValueType > m_Count;
+  Array< PixelType >     m_ThreadMin;
+  Array< PixelType >     m_ThreadMax;
 }; // end of class
 } // end namespace itk
 

@@ -22,7 +22,6 @@
 #include "itkImageRegionConstIteratorWithIndex.h"
 #include "itkImageRegionConstIterator.h"
 
-
 /*
  *
  * This code was contributed in the Insight Journal paper:
@@ -52,6 +51,7 @@ RobustAutomaticThresholdCalculator< TInputImage, TGradientImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Input: " << m_Input.GetPointer() << std::endl;
   os << indent << "Gradient: " << m_Gradient.GetPointer() << std::endl;
   os << indent << "Valid: " << m_Valid << std::endl;
@@ -100,13 +100,13 @@ template< typename TInputImage, typename TGradientImage >
 const typename RobustAutomaticThresholdCalculator< TInputImage, TGradientImage >::InputPixelType &
 RobustAutomaticThresholdCalculator< TInputImage, TGradientImage >
 ::GetOutput() const
-{
+  {
   if ( !m_Valid )
     {
     itkExceptionMacro(<< "GetOutput() invoked, but the output have not been computed. Call Compute() first.");
     }
   return m_Output;
-}
+  }
 } // end namespace itk
 
 #endif

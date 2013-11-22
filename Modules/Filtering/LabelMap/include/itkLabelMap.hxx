@@ -122,8 +122,8 @@ LabelMap< TLabelObject >
 template< typename TLabelObject >
 typename LabelMap< TLabelObject >::LabelObjectType *
 LabelMap< TLabelObject >
-::GetLabelObject(const LabelType & label)
-{
+::GetLabelObject(const LabelType &label)
+  {
   if ( m_BackgroundValue == label )
     {
     itkExceptionMacro(<< "Label "
@@ -139,13 +139,13 @@ LabelMap< TLabelObject >
     }
 
   return it->second;
-}
+  }
 
 template< typename TLabelObject >
 const typename LabelMap< TLabelObject >::LabelObjectType *
 LabelMap< TLabelObject >
-::GetLabelObject(const LabelType & label) const
-{
+::GetLabelObject(const LabelType &label) const
+  {
   if ( m_BackgroundValue == label )
     {
     itkExceptionMacro(<< "Label "
@@ -161,7 +161,7 @@ LabelMap< TLabelObject >
     }
 
   return it->second;
-}
+  }
 
 template< typename TLabelObject >
 bool
@@ -174,8 +174,8 @@ LabelMap< TLabelObject >
 template< typename TLabelObject >
 const typename LabelMap< TLabelObject >::LabelType &
 LabelMap< TLabelObject >
-::GetPixel(const IndexType & idx) const
-{
+::GetPixel(const IndexType &idx) const
+  {
   LabelObjectContainerConstIterator end = m_LabelObjectContainer.end();
 
   for ( LabelObjectContainerConstIterator it = m_LabelObjectContainer.begin();
@@ -188,13 +188,13 @@ LabelMap< TLabelObject >
       }
     }
   return m_BackgroundValue;
-}
+  }
 
 template< typename TLabelObject >
 typename LabelMap< TLabelObject >::LabelObjectType *
 LabelMap< TLabelObject >
-::GetNthLabelObject(const SizeValueType & pos)
-{
+::GetNthLabelObject(const SizeValueType &pos)
+  {
   SizeValueType i = 0;
 
   for ( LabelObjectContainerIterator it = m_LabelObjectContainer.begin();
@@ -212,13 +212,13 @@ LabelMap< TLabelObject >
                     << ". The label map has only "
                     << this->GetNumberOfLabelObjects()
                     << " label objects registered.");
-}
+  }
 
 template< typename TLabelObject >
 const typename LabelMap< TLabelObject >::LabelObjectType *
 LabelMap< TLabelObject >
-::GetNthLabelObject(const SizeValueType & pos) const
-{
+::GetNthLabelObject(const SizeValueType &pos) const
+  {
   SizeValueType i = 0;
 
   for ( LabelObjectContainerConstIterator it = m_LabelObjectContainer.begin();
@@ -236,7 +236,7 @@ LabelMap< TLabelObject >
                     << ". The label map has only "
                     << this->GetNumberOfLabelObjects()
                     << " label objects registered.");
-}
+  }
 
 template< typename TLabelObject >
 void
@@ -252,19 +252,19 @@ LabelMap< TLabelObject >
     // increment the iterator before removing the pixel because
     // RemovePixel() can remove the object and thus invalidate the
     // iterator
-      if( it->first != iLabel )
-        {
-        LabelObjectContainerIterator tempIt = it;
-        ++it;
-        bool emitModifiedEvent = ( iLabel == m_BackgroundValue );
-        this->RemovePixel( tempIt, idx, emitModifiedEvent );
-        }
-      else
-        {
-        newLabel = false;
-        this->AddPixel( it, idx, iLabel );
-        ++it;
-        }
+    if( it->first != iLabel )
+      {
+      LabelObjectContainerIterator tempIt = it;
+      ++it;
+      bool emitModifiedEvent = ( iLabel == m_BackgroundValue );
+      this->RemovePixel( tempIt, idx, emitModifiedEvent );
+      }
+    else
+      {
+      newLabel = false;
+      this->AddPixel( it, idx, iLabel );
+      ++it;
+      }
     }
   if( newLabel )
     {
@@ -392,8 +392,8 @@ LabelMap< TLabelObject >
 template< typename TLabelObject >
 typename LabelMap< TLabelObject >::LabelObjectType *
 LabelMap< TLabelObject >
-::GetLabelObject(const IndexType & idx) const
-{
+::GetLabelObject(const IndexType &idx) const
+  {
   for ( LabelObjectContainerConstIterator it = m_LabelObjectContainer.begin();
         it != m_LabelObjectContainer.end();
         it++ )
@@ -405,7 +405,7 @@ LabelMap< TLabelObject >
     }
   itkExceptionMacro(<< "No label object at index " << idx << ".");
 //   return NULL;
-}
+  }
 
 template< typename TLabelObject >
 void
@@ -456,7 +456,7 @@ LabelMap< TLabelObject >
     else
       {
       // search for an unused label
-      LabelType label = firstLabel;
+      LabelType                         label = firstLabel;
       LabelObjectContainerConstIterator it;
       for ( it = m_LabelObjectContainer.begin();
             it != m_LabelObjectContainer.end();
@@ -591,6 +591,7 @@ LabelMap< TLabelObject >
     }
   this->Modified();
 }
+
 } // end namespace itk
 
 #endif

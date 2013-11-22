@@ -25,7 +25,8 @@
 #include "itkAddImageFilter.h"
 
 #ifndef ITKV3_COMPATIBILITY
-#error "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkExponentialDisplacementFieldImageFilter.h in ITKv4"
+#error \
+  "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkExponentialDisplacementFieldImageFilter.h in ITKv4"
 #endif
 
 namespace itk
@@ -65,7 +66,7 @@ namespace itk
  * \ingroup ITKV3Compatibility
  */
 template< typename TInputImage, typename TOutputImage >
-class ExponentialDeformationFieldImageFilter:
+class ExponentialDeformationFieldImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -138,7 +139,8 @@ public:
 
 protected:
   ExponentialDeformationFieldImageFilter();
-  virtual ~ExponentialDeformationFieldImageFilter() {}
+  virtual
+  ~ExponentialDeformationFieldImageFilter() {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -150,22 +152,22 @@ protected:
   typedef typename InputImageType::RegionType RegionType;
 
   typedef DivideImageFilter<
-    InputImageType,
-    itk::Image<InputPixelRealValueType, ImageDimension>,
-    OutputImageType >                                   DivideByConstantType;
+      InputImageType,
+      itk::Image<InputPixelRealValueType, ImageDimension>,
+      OutputImageType >                                   DivideByConstantType;
 
   typedef CastImageFilter<
-    InputImageType, OutputImageType >                   CasterType;
+      InputImageType, OutputImageType >                   CasterType;
 
   typedef WarpVectorImageFilter<
-    OutputImageType,
-    OutputImageType, OutputImageType >                  VectorWarperType;
+      OutputImageType,
+      OutputImageType, OutputImageType >                  VectorWarperType;
 
   typedef VectorLinearInterpolateNearestNeighborExtrapolateImageFunction<
-    OutputImageType, double >                            FieldInterpolatorType;
+      OutputImageType, double >                            FieldInterpolatorType;
 
   typedef AddImageFilter<
-    OutputImageType, OutputImageType, OutputImageType > AdderType;
+      OutputImageType, OutputImageType, OutputImageType > AdderType;
 
   typedef typename DivideByConstantType::Pointer     DivideByConstantPointer;
   typedef typename CasterType::Pointer               CasterPointer;
@@ -178,7 +180,8 @@ private:
   ExponentialDeformationFieldImageFilter(const Self &); //purposely not
                                                         // implemented
   void operator=(const Self &);                         //purposely not
-                                                        // implemented
+
+  // implemented
 
   bool         m_AutomaticNumberOfIterations;
   unsigned int m_MaximumNumberOfIterations;

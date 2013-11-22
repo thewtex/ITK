@@ -41,7 +41,8 @@ ConditionVariable::~ConditionVariable()
   DeleteCriticalSection(&m_ConditionVariable.m_NumberOfWaitersLock);
 }
 
-void ConditionVariable::Signal()
+void
+ConditionVariable::Signal()
 {
   EnterCriticalSection(&m_ConditionVariable.m_NumberOfWaitersLock);
   bool haveWaiters = ( m_ConditionVariable.m_NumberOfWaiters > 0 );
@@ -54,7 +55,8 @@ void ConditionVariable::Signal()
     }
 }
 
-void ConditionVariable::Broadcast()
+void
+ConditionVariable::Broadcast()
 {
   // This is needed to ensure that m_NumberOfWaiters and m_WasBroadcast are
   // consistent
@@ -90,7 +92,8 @@ void ConditionVariable::Broadcast()
     }
 }
 
-void ConditionVariable::Wait(SimpleMutexLock *mutex)
+void
+ConditionVariable::Wait(SimpleMutexLock *mutex)
 {
   // Avoid race conditions
   EnterCriticalSection(&m_ConditionVariable.m_NumberOfWaitersLock);
@@ -129,4 +132,5 @@ void ConditionVariable::Wait(SimpleMutexLock *mutex)
     WaitForSingleObject(mutex->GetMutexLock(), INFINITE);
     }
 }
+
 } //end of namespace itk

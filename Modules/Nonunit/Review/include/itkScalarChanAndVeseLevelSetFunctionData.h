@@ -58,7 +58,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TInputImage, typename TFeatureImage >
-class ScalarChanAndVeseLevelSetFunctionData:
+class ScalarChanAndVeseLevelSetFunctionData :
   public RegionBasedLevelSetFunctionData< TInputImage, TFeatureImage >
 {
 public:
@@ -104,7 +104,7 @@ public:
   double m_WeightedSumOfPixelValuesOutsideLevelSet;
 
 protected:
-  ScalarChanAndVeseLevelSetFunctionData():Superclass()
+  ScalarChanAndVeseLevelSetFunctionData() : Superclass()
   {
     m_BackgroundConstantValues = 0.;
     m_ForegroundConstantValues = 0.;
@@ -112,13 +112,15 @@ protected:
     m_WeightedSumOfPixelValuesOutsideLevelSet = 0.;
   }
 
-  virtual ~ScalarChanAndVeseLevelSetFunctionData() {}
+  virtual
+  ~ScalarChanAndVeseLevelSetFunctionData() {}
 
 private:
   ScalarChanAndVeseLevelSetFunctionData(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 };
 } //end namespace itk
 

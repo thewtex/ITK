@@ -60,10 +60,8 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -73,13 +71,12 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkMedianImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 3 )
     {
@@ -88,7 +85,6 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   //  Software Guide : BeginLatex
   //
   //  Then the pixel and image types of the input and output must be defined.
@@ -96,16 +92,15 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   unsigned char  InputPixelType;
-  typedef   unsigned char  OutputPixelType;
+  typedef   unsigned char InputPixelType;
+  typedef   unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -126,11 +121,10 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::MedianImageFilter<
-               InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -144,7 +138,6 @@ int main( int argc, char * argv[] )
   //  \index{itk::MedianImageFilter!Neighborhood}
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   InputImageType::SizeType indexRadius;
@@ -167,13 +160,11 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
   writer->Update();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -193,7 +184,6 @@ int main( int argc, char * argv[] )
   //  filter to preserve edges.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

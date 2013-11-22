@@ -20,12 +20,12 @@
 
 #include "itkImageScanlineIterator.h"
 
-
 // This routine is used to make sure that we call the "const" version
 // of GetPixel() (via the operator[])
 template <typename T, unsigned int VImageDimension>
-void TestConstPixelAccess(const itk::Image<T, VImageDimension> &in,
-                          itk::Image<T, VImageDimension> &out)
+void
+TestConstPixelAccess(const itk::Image<T, VImageDimension> &in,
+                     itk::Image<T, VImageDimension> &out)
 {
   typename itk::Image<T, VImageDimension>::IndexType regionStartIndex3D = {{5, 10, 15}};
   typename itk::Image<T, VImageDimension>::IndexType regionEndIndex3D = {{8, 15, 17}};
@@ -42,8 +42,8 @@ void TestConstPixelAccess(const itk::Image<T, VImageDimension> &in,
   out[regionEndIndex3D] = in[regionStartIndex3D];
 }
 
-
-int itkImageScanlineIteratorTest1(int, char* [] )
+int
+itkImageScanlineIteratorTest1(int, char* [] )
 {
   itk::Image<itk::Vector<unsigned short, 5>, 3>::Pointer
     o3 = itk::Image<itk::Vector<unsigned short, 5>, 3>::New();
@@ -63,7 +63,6 @@ int itkImageScanlineIteratorTest1(int, char* [] )
   ImageType::IndexType bufferStartIndex3D = {{2, 3, 5}};
   ImageType::IndexType regionStartIndex3D = {{5, 10, 12}};
   ImageType::IndexType regionEndIndex3D = {{8, 15, 17}};
-
 
   ImageType::RegionType region;
   region.SetSize(imageSize3D);
@@ -93,7 +92,6 @@ int itkImageScanlineIteratorTest1(int, char* [] )
   (*o3)[regionStartIndex3D] = vec;
   (*o3)[regionEndIndex3D] = (*o3)[regionStartIndex3D];
   TestConstPixelAccess(*o3, *o3);
-
 
   itk::ImageIterator<ImageType > standardIt(o3, region);
 
@@ -130,9 +128,8 @@ int itkImageScanlineIteratorTest1(int, char* [] )
     cit.NextLine();
     }
 
-
   // Iterate over a region, then change the region and iterate over the new region
-  {
+    {
     // Create an image
     typedef itk::Image<int, 2> TestImageType;
     TestImageType::IndexType imageCorner;
@@ -150,9 +147,9 @@ int itkImageScanlineIteratorTest1(int, char* [] )
     itk::ImageScanlineIterator<TestImageType> createImageIterator(image,imageRegion);
 
     // Set all pixels with first index == 0 to 0, and set the rest of the image to 255
-    while(!createImageIterator.IsAtEnd())
+    while(!createImageIterator.IsAtEnd() )
       {
-      while(!createImageIterator.IsAtEndOfLine())
+      while(!createImageIterator.IsAtEndOfLine() )
         {
         if(createImageIterator.GetIndex()[0] == 0)
           {
@@ -184,9 +181,9 @@ int itkImageScanlineIteratorTest1(int, char* [] )
     expectedValuesRegion1[2] = 0;
     expectedValuesRegion1[3] = 255;
     unsigned int counter = 0;
-    while(!imageIterator.IsAtEnd())
+    while(!imageIterator.IsAtEnd() )
       {
-      while(!imageIterator.IsAtEndOfLine())
+      while(!imageIterator.IsAtEndOfLine() )
         {
         if(imageIterator.Get() != expectedValuesRegion1[counter])
           {
@@ -213,9 +210,9 @@ int itkImageScanlineIteratorTest1(int, char* [] )
     expectedValuesRegion2[2] = 255;
     expectedValuesRegion2[3] = 255;
     counter = 0;
-    while(!imageIterator.IsAtEnd())
+    while(!imageIterator.IsAtEnd() )
       {
-      while(!imageIterator.IsAtEndOfLine())
+      while(!imageIterator.IsAtEndOfLine() )
         {
         if(imageIterator.Get() != expectedValuesRegion2[counter])
           {
@@ -227,7 +224,7 @@ int itkImageScanlineIteratorTest1(int, char* [] )
       imageIterator.NextLine();
       }
 
-  } // end "Change Region" test
+    } // end "Change Region" test
 
   return status;
 }

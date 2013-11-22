@@ -32,18 +32,17 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkMesh.h"
 
 // Software Guide : BeginCodeSnippet
 #include "itkLineCell.h"
 // Software Guide : EndCodeSnippet
 
-
-int main(int, char *[])
+int
+main(int, char *[])
 {
-  typedef float                             PixelType;
-  typedef itk::Mesh< PixelType, 3 >         MeshType;
+  typedef float                     PixelType;
+  typedef itk::Mesh< PixelType, 3 > MeshType;
 
   //  Software Guide : BeginLatex
   //
@@ -60,9 +59,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef MeshType::CellType                CellType;
+  typedef MeshType::CellType CellType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -74,9 +72,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::LineCell< CellType >         LineType;
+  typedef itk::LineCell< CellType > LineType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -116,9 +113,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef CellType::CellAutoPointer         CellAutoPointer;
+  typedef CellType::CellAutoPointer CellAutoPointer;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -136,7 +132,7 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  MeshType::Pointer  mesh = MeshType::New();
+  MeshType::Pointer mesh = MeshType::New();
 
   MeshType::PointType p0;
   MeshType::PointType p1;
@@ -150,7 +146,6 @@ int main(int, char *[])
   mesh->SetPoint( 1, p1 );
   mesh->SetPoint( 2, p2 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -178,7 +173,6 @@ int main(int, char *[])
   line1.TakeOwnership(  new LineType  );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The LineCells should now be associated with points in the mesh. This is
@@ -198,7 +192,6 @@ int main(int, char *[])
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   line0->SetPointId( 0, 0 ); // line between points 0 and 1
   line0->SetPointId( 1, 1 );
@@ -206,7 +199,6 @@ int main(int, char *[])
   line1->SetPointId( 0, 1 ); // line between points 1 and 2
   line1->SetPointId( 1, 2 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -252,7 +244,6 @@ int main(int, char *[])
   std::cout << "Cells  = " << mesh->GetNumberOfCells()  << std::endl;
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  In a way analogous to points, cells can be accessed using Iterators to
@@ -262,9 +253,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef MeshType::CellsContainer::Iterator  CellIterator;
+  typedef MeshType::CellsContainer::Iterator CellIterator;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -281,10 +271,9 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  CellIterator  cellIterator = mesh->GetCells()->Begin();
-  CellIterator  end          = mesh->GetCells()->End();
+  CellIterator cellIterator = mesh->GetCells()->Begin();
+  CellIterator end          = mesh->GetCells()->End();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -308,12 +297,11 @@ int main(int, char *[])
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   while( cellIterator != end )
     {
     MeshType::CellType * cellptr = cellIterator.Value();
-    LineType * line = dynamic_cast<LineType *>( cellptr );
+    LineType *           line = dynamic_cast<LineType *>( cellptr );
     std::cout << line->GetNumberOfPoints() << std::endl;
     ++cellIterator;
     }

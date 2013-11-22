@@ -30,7 +30,8 @@
 //   Main code
 //
 // -------------------------
-int itkSimilarity3DTransformTest(int, char * [] )
+int
+itkSimilarity3DTransformTest(int, char * [] )
 {
 
   typedef   double ValueType;

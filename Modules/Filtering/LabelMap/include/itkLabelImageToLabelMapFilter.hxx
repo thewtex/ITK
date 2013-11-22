@@ -42,6 +42,7 @@ LabelImageToLabelMapFilter< TInputImage, TOutputImage >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( !input )
     {
     return;
@@ -106,8 +107,8 @@ LabelImageToLabelMapFilter< TInputImage, TOutputImage >
       if ( v != static_cast< InputImagePixelType >( m_BackgroundValue ) )
         {
         // We've hit the start of a run
-        IndexType idx = it.GetIndex();
-        LengthType      length = 1;
+        IndexType  idx = it.GetIndex();
+        LengthType length = 1;
         ++it;
         while ( !it.IsAtEndOfLine() && it.Get() == v )
           {
@@ -138,16 +139,16 @@ LabelImageToLabelMapFilter< TInputImage, TOutputImage >
   for ( ThreadIdType i = 1; i < this->GetNumberOfThreads(); i++ )
     {
     for ( typename OutputImageType::Iterator it( m_TemporaryImages[i] );
-          ! it.IsAtEnd();
+          !it.IsAtEnd();
           ++it )
       {
       LabelObjectType *labelObject = it.GetLabelObject();
       if ( output->HasLabel( labelObject->GetLabel() ) )
         {
         // merge the lines in the output's object
-        LabelObjectType * lo = output->GetLabelObject( labelObject->GetLabel() );
+        LabelObjectType *                           lo = output->GetLabelObject( labelObject->GetLabel() );
         typename LabelObjectType::ConstLineIterator lit( labelObject );
-        while( ! lit.IsAtEnd() )
+        while( !lit.IsAtEnd() )
           {
           lo->AddLine( lit.GetLine() );
           ++lit;
@@ -175,5 +176,6 @@ LabelImageToLabelMapFilter< TInputImage, TOutputImage >
   os << indent << "BackgroundValue: "
      << static_cast< typename NumericTraits< OutputImagePixelType >::PrintType >( m_BackgroundValue ) << std::endl;
 }
+
 } // end namespace itk
 #endif

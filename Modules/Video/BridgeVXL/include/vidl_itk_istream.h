@@ -46,7 +46,7 @@ public:
   typedef TVideoStream                        VideoStreamType;
   typedef vidl_itk_istream< VideoStreamType > Self;
   typedef typename VideoStreamType::FrameType FrameType;
-  typedef ::itk::SizeValueType                FrameOffsetType;
+  typedef::itk::SizeValueType                 FrameOffsetType;
   typedef typename FrameType::PixelType       PixelType;
   static const unsigned int Dimensions =      FrameType::ImageDimension;
 
@@ -57,11 +57,11 @@ public:
   vidl_itk_istream(VideoStreamType* videoStream);
 
   /** Destructor */
-  virtual ~vidl_itk_istream() {}
+  virtual
+  ~vidl_itk_istream() {}
 
   /** ITK's type info */
   itkTypeMacro(vidl_itk_istream, vidl_istream);
-
 
   /**-OPEN CLOSE-------------------------------------------------------------*/
 
@@ -70,13 +70,18 @@ public:
 
   /** Close the stream. For our purposes, this just means set the VideoStream
    * pointer to NULL */
-  virtual void close() { m_VideoStream = NULL; }
-
+  virtual void
+  close() {
+    m_VideoStream = NULL;
+  }
 
   /**-STREAM INFORMATION-----------------------------------------------------*/
 
   /** Return whether or not the VideoStream is null */
-  virtual bool is_open() const { return m_VideoStream != NULL; }
+  virtual bool
+  is_open() const {
+    return m_VideoStream != NULL;
+  }
 
   /** Return true if the stream is in a valid state. To comply with vxl's
    * standard, this will return false until advance() has been called at least
@@ -105,11 +110,13 @@ public:
 
   /** Return frame rate. For use this will always return 0.0 since we don't use
    * a fixed framerate for VideoStream */
-  virtual double frame_rate() const { return 0.0; }
+  virtual double
+  frame_rate() const {
+    return 0.0;
+  }
 
   /** Return duration in seconds */
   virtual double duration() const;
-
 
   /**-STREAM MANIPULATION----------------------------------------------------*/
 
@@ -134,7 +141,6 @@ protected:
   bool m_AdvanceCalled;
 
 };  // end class vidl_itk_istream
-
 
 } // end namespace itk
 

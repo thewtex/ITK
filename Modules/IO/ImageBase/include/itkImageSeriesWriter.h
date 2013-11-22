@@ -30,18 +30,19 @@ namespace itk
  *  \brief Base exception class for IO problems during writing.
  * \ingroup ITKIOImageBase
  */
-class ITK_ABI_EXPORT ImageSeriesWriterException:public ExceptionObject
+class ITK_ABI_EXPORT ImageSeriesWriterException : public ExceptionObject
 {
 public:
   /** Has to have empty throw(). */
-  virtual ~ImageSeriesWriterException() throw( ) {};
+  virtual
+  ~ImageSeriesWriterException() throw( ) {}
 
   /** Run-time information. */
   itkTypeMacro(ImageSeriesWriterException, ExceptionObject);
 
   /** Constructor. */
   ImageSeriesWriterException(char *file, unsigned int line,
-                             const char *message = "Error in IO"):
+                             const char *message = "Error in IO") :
     ExceptionObject(file, line)
   {
     SetDescription(message);
@@ -49,11 +50,12 @@ public:
 
   /** Constructor. */
   ImageSeriesWriterException(const std::string & file, unsigned int line,
-                             const char *message = "Error in IO"):
+                             const char *message = "Error in IO") :
     ExceptionObject(file, line)
   {
     SetDescription(message);
   }
+
 };
 
 /** \class ImageSeriesWriter
@@ -79,7 +81,7 @@ public:
  * \ingroup ITKIOImageBase
  */
 template< typename TInputImage, typename TOutputImage >
-class ITKIOImageBase_HIDDEN ImageSeriesWriter:public ProcessObject
+class ITKIOImageBase_HIDDEN ImageSeriesWriter : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -133,7 +135,8 @@ public:
 
   /** Aliased to the Write() method to be consistent with the rest of the
    * pipeline. */
-  virtual void Update()
+  virtual void
+  Update()
   {
     this->Write();
   }
@@ -157,7 +160,8 @@ public:
 
   /** Set/Get the vector of strings that contains the file names. Files
    *  are processed in sequential order. */
-  void SetFileNames(const FileNamesContainer & name)
+  void
+  SetFileNames(const FileNamesContainer & name)
   {
     if ( m_FileNames != name )
       {
@@ -166,14 +170,16 @@ public:
       }
   }
 
-  const FileNamesContainer & GetFileNames() const
+  const FileNamesContainer &
+  GetFileNames() const
   {
     return m_FileNames;
   }
 
   /** Set the first file name to be processed. This deletes previous
    * filenames. */
-  void SetFileName(std::string const & name)
+  void
+  SetFileName(std::string const & name)
   {
     m_FileNames.clear();
     m_FileNames.push_back(name);
@@ -182,7 +188,8 @@ public:
 
   /** Add a single filename to the list of files. To add a vector of
    * filenames, use the AddFileNames method. */
-  void AddFileName(std::string const & name)
+  void
+  AddFileName(std::string const & name)
   {
     m_FileNames.push_back(name);
     this->Modified();
@@ -241,6 +248,7 @@ private:
   void GenerateNumericFileNames(void);
 
   void WriteFiles();
+
 };
 } // end namespace itk
 

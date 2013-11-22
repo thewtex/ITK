@@ -26,7 +26,7 @@ namespace itk
 template< typename TInputImage,
           typename TMembershipFunction >
 ImageModelEstimatorBase< TInputImage, TMembershipFunction >
-::ImageModelEstimatorBase(void):
+::ImageModelEstimatorBase(void) :
   m_NumberOfModels(0)
 {}
 
@@ -64,6 +64,7 @@ ImageModelEstimatorBase< TInputImage, TMembershipFunction >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Number of models: " << m_NumberOfModels << std::endl;
   os << indent << "                   " << std::endl;
 
@@ -97,6 +98,7 @@ ImageModelEstimatorBase< TInputImage, TMembershipFunction >
   m_MembershipFunctions.push_back(function);
   return static_cast< unsigned int >( m_MembershipFunctions.size() );
 }
+
 } // namespace itk
 
 #endif

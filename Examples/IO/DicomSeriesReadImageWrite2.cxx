@@ -50,7 +50,8 @@
 #include "itkImageFileWriter.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
 
   if( argc < 3 )
@@ -74,10 +75,10 @@ int main( int argc, char* argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef signed short    PixelType;
-  const unsigned int      Dimension = 3;
+  typedef signed short PixelType;
+  const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType, Dimension >         ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
 // Software Guide : EndCodeSnippet
 
 // Software Guide : BeginLatex
@@ -88,7 +89,7 @@ int main( int argc, char* argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::ImageSeriesReader< ImageType >        ReaderType;
+  typedef itk::ImageSeriesReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
 // Software Guide : EndCodeSnippet
 
@@ -100,7 +101,7 @@ int main( int argc, char* argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::GDCMImageIO       ImageIOType;
+  typedef itk::GDCMImageIO ImageIOType;
   ImageIOType::Pointer dicomIO = ImageIOType::New();
 
   reader->SetImageIO( dicomIO );
@@ -157,14 +158,12 @@ int main( int argc, char* argv[] )
   nameGenerator->SetDirectory( argv[1] );
 // Software Guide : EndCodeSnippet
 
-
   try
     {
     std::cout << std::endl << "The directory: " << std::endl;
     std::cout << std::endl << argv[1] << std::endl << std::endl;
     std::cout << "Contains the following DICOM Series: ";
     std::cout << std::endl << std::endl;
-
 
 // Software Guide : BeginLatex
 //
@@ -178,7 +177,7 @@ int main( int argc, char* argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-    typedef std::vector< std::string >    SeriesIdContainer;
+    typedef std::vector< std::string > SeriesIdContainer;
 
     const SeriesIdContainer & seriesUID = nameGenerator->GetSeriesUIDs();
 
@@ -190,7 +189,6 @@ int main( int argc, char* argv[] )
       ++seriesItr;
       }
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -216,7 +214,6 @@ int main( int argc, char* argv[] )
       }
 // Software Guide : EndCodeSnippet
 
-
     std::cout << std::endl << std::endl;
     std::cout << "Now reading series: " << std::endl << std::endl;
     std::cout << seriesIdentifier << std::endl;
@@ -233,7 +230,7 @@ int main( int argc, char* argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-    typedef std::vector< std::string >   FileNamesContainer;
+    typedef std::vector< std::string > FileNamesContainer;
     FileNamesContainer fileNames;
 
     fileNames = nameGenerator->GetFileNames( seriesIdentifier );
@@ -273,7 +270,6 @@ int main( int argc, char* argv[] )
       }
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // At this point, we have a volumetric image in memory that we can access by
@@ -299,9 +295,8 @@ int main( int argc, char* argv[] )
     writer->SetInput( reader->GetOutput() );
 // Software Guide : EndCodeSnippet
 
-    std::cout  << "Writing the image as " << std::endl << std::endl;
-    std::cout  << argv[2] << std::endl << std::endl;
-
+    std::cout << "Writing the image as " << std::endl << std::endl;
+    std::cout << argv[2] << std::endl << std::endl;
 
 // Software Guide : BeginLatex
 //

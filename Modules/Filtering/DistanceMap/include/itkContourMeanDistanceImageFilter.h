@@ -66,7 +66,7 @@ ected
  * \endwiki
  */
 template< typename TInputImage1, typename TInputImage2 >
-class ContourMeanDistanceImageFilter:
+class ContourMeanDistanceImageFilter :
   public ImageToImageFilter< TInputImage1, TInputImage1 >
 {
 public:
@@ -148,8 +148,8 @@ private:
   ContourMeanDistanceImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                 //purposely not implemented
 
-  RealType  m_MeanDistance;
-  bool      m_UseImageSpacing;
+  RealType m_MeanDistance;
+  bool     m_UseImageSpacing;
 }; // end of class
 } // end namespace itk
 

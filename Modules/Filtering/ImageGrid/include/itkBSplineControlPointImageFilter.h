@@ -91,20 +91,20 @@ public:
   /** Other typedef */
   typedef float RealType;
   typedef Image<RealType,
-    itkGetStaticConstMacro( ImageDimension )>       RealImageType;
-  typedef typename RealImageType::Pointer           RealImagePointer;
+                itkGetStaticConstMacro( ImageDimension )>       RealImageType;
+  typedef typename RealImageType::Pointer RealImagePointer;
 
   typedef FixedArray<unsigned,
-    itkGetStaticConstMacro( ImageDimension )>       ArrayType;
+                     itkGetStaticConstMacro( ImageDimension )>       ArrayType;
 
   /** PointSet typedef support. */
   typedef PointSet<PixelType,
-    itkGetStaticConstMacro( ImageDimension )>       PointSetType;
+                   itkGetStaticConstMacro( ImageDimension )>       PointSetType;
   typedef typename PointSetType::PixelType          PointDataType;
   typedef typename PointSetType::PointDataContainer PointDataContainerType;
   typedef Image<PointDataType,
-    itkGetStaticConstMacro( ImageDimension )>       PointDataImageType;
-  typedef typename PointDataImageType::Pointer      PointDataImagePointer;
+                itkGetStaticConstMacro( ImageDimension )>       PointDataImageType;
+  typedef typename PointDataImageType::Pointer PointDataImagePointer;
 
   /** Interpolation kernel type (default spline order = 3) */
   typedef CoxDeBoorBSplineKernelFunction<3> KernelType;
@@ -216,7 +216,8 @@ public:
 
 protected:
   BSplineControlPointImageFilter();
-  virtual ~BSplineControlPointImageFilter();
+  virtual
+  ~BSplineControlPointImageFilter();
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /**
@@ -227,7 +228,6 @@ protected:
 private:
   BSplineControlPointImageFilter( const Self& ); //purposely not implemented
   void operator=( const Self& );                 //purposely not implemented
-
 
   /**
    * Before splitting, we need to allocate memory for the output sampled
@@ -246,7 +246,7 @@ private:
    * B-spline object quickly.
    */
   void CollapsePhiLattice( PointDataImageType *, PointDataImageType *,
-    const RealType, const unsigned int );
+                           const RealType, const unsigned int );
 
   /**
    * Private function to handle the internal ivars.
@@ -254,19 +254,19 @@ private:
   void SetNumberOfLevels( ArrayType );
 
   /** Parameters for the output image. */
-  SizeType                                     m_Size;
-  SpacingType                                  m_Spacing;
-  OriginType                                   m_Origin;
-  DirectionType                                m_Direction;
+  SizeType      m_Size;
+  SpacingType   m_Spacing;
+  OriginType    m_Origin;
+  DirectionType m_Direction;
 
-  bool                                         m_DoMultilevel;
-  unsigned int                                 m_MaximumNumberOfLevels;
-  ArrayType                                    m_NumberOfControlPoints;
-  ArrayType                                    m_CloseDimension;
-  ArrayType                                    m_SplineOrder;
-  ArrayType                                    m_NumberOfLevels;
+  bool         m_DoMultilevel;
+  unsigned int m_MaximumNumberOfLevels;
+  ArrayType    m_NumberOfControlPoints;
+  ArrayType    m_CloseDimension;
+  ArrayType    m_SplineOrder;
+  ArrayType    m_NumberOfLevels;
 
-  vnl_matrix<RealType>       m_RefinedLatticeCoefficients[ImageDimension];
+  vnl_matrix<RealType> m_RefinedLatticeCoefficients[ImageDimension];
 
   typename KernelType::Pointer                 m_Kernel[ImageDimension];
   typename KernelOrder0Type::Pointer           m_KernelOrder0;
@@ -278,7 +278,7 @@ private:
 
   inline typename RealImageType::IndexType
   NumberToIndex( unsigned int number, typename RealImageType::SizeType size )
-    {
+  {
     typename RealImageType::IndexType k;
     k[0] = 1;
 
@@ -294,7 +294,7 @@ private:
       number %= k[ImageDimension-i-1];
       }
     return index;
-    }
+  }
 
 };
 

@@ -38,31 +38,32 @@
 #include "vtkInteractorStyleImage.h"
 
 const unsigned int Dimension = 2;
-typedef unsigned char                                    InputPixelType;
-typedef itk::Image< InputPixelType, Dimension >          InputImageType;
-typedef float                                            LevelSetPixelType;
-typedef itk::Image< LevelSetPixelType, Dimension >       LevelSetImageType;
-typedef itk::LevelSetDenseImage< LevelSetImageType >     LevelSetType;
+typedef unsigned char                                InputPixelType;
+typedef itk::Image< InputPixelType, Dimension >      InputImageType;
+typedef float                                        LevelSetPixelType;
+typedef itk::Image< LevelSetPixelType, Dimension >   LevelSetImageType;
+typedef itk::LevelSetDenseImage< LevelSetImageType > LevelSetType;
 
 struct NeedToPauseInformation
-{
-  itk::SimpleMutexLock            m_Mutex;
+  {
+  itk::SimpleMutexLock m_Mutex;
   itk::ConditionVariable::Pointer m_ConditionVariable;
-  bool                            m_NeedToPause;
-  bool                            m_NeedToUpdateViz;
+  bool m_NeedToPause;
+  bool m_NeedToUpdateViz;
 
-  NeedToPauseInformation():
-      m_NeedToPause( false ),
-      m_NeedToUpdateViz( false )
-    {
+  NeedToPauseInformation() :
+    m_NeedToPause( false ),
+    m_NeedToUpdateViz( false )
+  {
     m_ConditionVariable = itk::ConditionVariable::New();
-    }
-};
+  }
+
+  };
 
 /** \class ProcessingPauseCommand
  * Pause level sets processing so that the user can examine it or to render the
  * data. */
-class ProcessingPauseCommand: public itk::Command
+class ProcessingPauseCommand : public itk::Command
 {
 public:
   typedef ProcessingPauseCommand    Self;
@@ -73,30 +74,33 @@ public:
 
   ProcessingPauseCommand(){}
 
-  virtual void Execute( const itk::Object* caller, const itk::EventObject& event )
-    {
+  virtual void
+  Execute( const itk::Object* caller, const itk::EventObject& event )
+  {
     this->Execute( const_cast< itk::Object* >( caller ), event );
-    }
+  }
 
-  virtual void Execute( itk::Object* itkNotUsed(caller), const itk::EventObject& event )
-    {
-    if( itk::IterationEvent().CheckEvent( &event ))
+  virtual void
+  Execute( itk::Object* itkNotUsed(caller), const itk::EventObject& event )
+  {
+    if( itk::IterationEvent().CheckEvent( &event ) )
       {
       this->m_NeedToPauseInformation->m_Mutex.Lock();
       std::cout << "An iteration occurred, checking if we need to pause...." << std::endl;
       if( this->m_NeedToPauseInformation->m_NeedToPause || this->m_NeedToPauseInformation->m_NeedToUpdateViz )
         {
-        this->m_NeedToPauseInformation->m_ConditionVariable->Wait( &(this->m_NeedToPauseInformation->m_Mutex));
+        this->m_NeedToPauseInformation->m_ConditionVariable->Wait( &(this->m_NeedToPauseInformation->m_Mutex) );
         std::cout << "Done pausing..." << std::endl;
         }
       this->m_NeedToPauseInformation->m_Mutex.Unlock();
       }
-    }
+  }
 
-  void SetNeedToPauseInformation( NeedToPauseInformation * pauseInfo )
-    {
+  void
+  SetNeedToPauseInformation( NeedToPauseInformation * pauseInfo )
+  {
     this->m_NeedToPauseInformation = pauseInfo;
-    }
+  }
 
 private:
   NeedToPauseInformation * m_NeedToPauseInformation;
@@ -105,27 +109,30 @@ private:
 /** \class KeypressPauseCommand
  * The VTK class to detect the keypress and signal that a pause is needed.
  * */
-class KeypressPauseCommand: public vtkCommand
+class KeypressPauseCommand : public vtkCommand
 {
 public:
   typedef itk::VTKVisualizeImageLevelSetIsoValues< InputImageType, LevelSetType > VisualizationType;
 
   KeypressPauseCommand(){}
 
-  static KeypressPauseCommand * New()
-    {
+  static KeypressPauseCommand *
+  New()
+  {
     // Create the visualizer
     KeypressPauseCommand * keypressPauseCommand = new KeypressPauseCommand;
+
     keypressPauseCommand->m_Visualizer = VisualizationType::New();
     keypressPauseCommand->m_Visualizer->SetNumberOfLevels( 5 );
     keypressPauseCommand->m_Visualizer->SetLevelLimit( 4.0 );
 
     std::cout << "Visualizer created" << std::endl;
     return keypressPauseCommand;
-    }
+  }
 
-  virtual void Execute( vtkObject * vtkNotUsed(caller), unsigned long eventId, void * vtkNotUsed(callData) )
-    {
+  virtual void
+  Execute( vtkObject * vtkNotUsed(caller), unsigned long eventId, void * vtkNotUsed(callData) )
+  {
     if( vtkCommand::TimerEvent == eventId )
       {
       bool weArePaused;
@@ -169,17 +176,19 @@ public:
         }
       this->m_NeedToPauseInformation->m_Mutex.Unlock();
       }
-    }
+  }
 
-  void SetNeedToPauseInformation( NeedToPauseInformation * pauseInfo )
-    {
+  void
+  SetNeedToPauseInformation( NeedToPauseInformation * pauseInfo )
+  {
     this->m_NeedToPauseInformation = pauseInfo;
-    }
+  }
 
-  VisualizationType * GetVisualizer()
-    {
+  VisualizationType *
+  GetVisualizer()
+  {
     return this->m_Visualizer.GetPointer();
-    }
+  }
 
 private:
   NeedToPauseInformation *   m_NeedToPauseInformation;
@@ -189,12 +198,12 @@ private:
 template< typename TInputImage, typename TLevelSetType >
 void
 visualizeLevelSet( TInputImage * inputImage,
-  const int numberOfIterations,
-  ProcessingPauseCommand * pauseCommand,
-  KeypressPauseCommand * keypressCommand )
+                   const int numberOfIterations,
+                   ProcessingPauseCommand * pauseCommand,
+                   KeypressPauseCommand * keypressCommand )
 {
-  typedef typename LevelSetType::OutputType                LevelSetOutputType;
-  typedef typename LevelSetType::OutputRealType            LevelSetRealType;
+  typedef typename LevelSetType::OutputType     LevelSetOutputType;
+  typedef typename LevelSetType::OutputRealType LevelSetRealType;
 
   // Generate a binary mask that will be used as initialization for the level
   // set evolution.
@@ -225,7 +234,7 @@ visualizeLevelSet( TInputImage * inputImage,
     }
 
   typedef itk::BinaryImageToLevelSetImageAdaptor< BinaryImageType,
-    LevelSetType > BinaryImageToLevelSetType;
+                                                  LevelSetType > BinaryImageToLevelSetType;
 
   typename BinaryImageToLevelSetType::Pointer adaptor = BinaryImageToLevelSetType::New();
   adaptor->SetInputImage( binary );
@@ -249,14 +258,16 @@ visualizeLevelSet( TInputImage * inputImage,
   // Create the terms.
   //
   // // Chan and Vese internal term
-  typedef itk::LevelSetEquationChanAndVeseInternalTerm< InputImageType, LevelSetContainerType > ChanAndVeseInternalTermType;
+  typedef itk::LevelSetEquationChanAndVeseInternalTerm< InputImageType,
+                                                        LevelSetContainerType > ChanAndVeseInternalTermType;
   typename ChanAndVeseInternalTermType::Pointer cvInternalTerm = ChanAndVeseInternalTermType::New();
   cvInternalTerm->SetInput( inputImage );
   cvInternalTerm->SetCoefficient( 0.5 );
   std::cout << "Chan and Vese internal term created" << std::endl;
 
   // // Chan and Vese external term
-  typedef typename itk::LevelSetEquationChanAndVeseExternalTerm< InputImageType, LevelSetContainerType > ChanAndVeseExternalTermType;
+  typedef typename itk::LevelSetEquationChanAndVeseExternalTerm< InputImageType,
+                                                                 LevelSetContainerType > ChanAndVeseExternalTermType;
   typename ChanAndVeseExternalTermType::Pointer cvExternalTerm = ChanAndVeseExternalTermType::New();
   cvExternalTerm->SetInput( inputImage );
   std::cout << "Chan and Vese external term created" << std::endl;
@@ -278,11 +289,11 @@ visualizeLevelSet( TInputImage * inputImage,
   std::cout << "Equation container created" << std::endl;
 
   // Create stopping criteria
-  typedef typename itk::LevelSetEvolutionNumberOfIterationsStoppingCriterion< LevelSetContainerType > StoppingCriterionType;
+  typedef typename itk::LevelSetEvolutionNumberOfIterationsStoppingCriterion< LevelSetContainerType >
+    StoppingCriterionType;
   typename StoppingCriterionType::Pointer criterion = StoppingCriterionType::New();
   criterion->SetNumberOfIterations( numberOfIterations );
   std::cout << "Stopping criteria created" << std::endl;
-
 
   // Create evolution class
   typedef typename itk::LevelSetEvolution< EquationContainerType, LevelSetType > LevelSetEvolutionType;
@@ -302,60 +313,66 @@ visualizeLevelSet( TInputImage * inputImage,
 }
 
 struct VisualizationThreadData
-{
-  InputImageType *          m_InputImage;
-  unsigned int              m_NumberOfIterations;
-  ProcessingPauseCommand *  m_ProcessingPauseCommand;
-  KeypressPauseCommand *    m_KeypressPauseCommand;
-};
+  {
+  InputImageType * m_InputImage;
+  unsigned int m_NumberOfIterations;
+  ProcessingPauseCommand * m_ProcessingPauseCommand;
+  KeypressPauseCommand * m_KeypressPauseCommand;
+  };
 
-ITK_THREAD_RETURN_TYPE visualizationThreadRunner( void * threadInfo )
+ITK_THREAD_RETURN_TYPE
+visualizationThreadRunner( void * threadInfo )
 {
   itk::MultiThreader::ThreadInfoStruct* info =
     static_cast<itk::MultiThreader::ThreadInfoStruct*>( threadInfo );
 
   VisualizationThreadData * visualizationThreadData = static_cast< VisualizationThreadData * >( info->UserData );
+
   visualizeLevelSet< InputImageType, LevelSetType >( visualizationThreadData->m_InputImage,
-    visualizationThreadData->m_NumberOfIterations,
-    visualizationThreadData->m_ProcessingPauseCommand,
-    visualizationThreadData->m_KeypressPauseCommand );
+                                                     visualizationThreadData->m_NumberOfIterations,
+                                                     visualizationThreadData->m_ProcessingPauseCommand,
+                                                     visualizationThreadData->m_KeypressPauseCommand );
 
   return ITK_THREAD_RETURN_VALUE;
 }
 
-class ExitOnTimer: public vtkCommand
+class ExitOnTimer : public vtkCommand
 {
 public:
   ExitOnTimer(){}
 
-  static ExitOnTimer * New()
-    {
+  static ExitOnTimer *
+  New()
+  {
     return new ExitOnTimer;
-    }
+  }
 
-  virtual void Execute( vtkObject * caller, unsigned long eventId, void * callData )
-    {
+  virtual void
+  Execute( vtkObject * caller, unsigned long eventId, void * callData )
+  {
     if( vtkCommand::TimerEvent == eventId )
       {
-      int timerId = * static_cast<int *>( callData );
+      int timerId = *static_cast<int *>( callData );
       if( timerId == this->m_TimerId )
         {
         vtkRenderWindowInteractor * renderWindowInteractor = vtkRenderWindowInteractor::SafeDownCast( caller );
         renderWindowInteractor->ExitCallback();
         }
       }
-    }
+  }
 
-  void SetTimerId( const int id )
-    {
+  void
+  SetTimerId( const int id )
+  {
     this->m_TimerId = id;
-    }
+  }
 
 private:
   int m_TimerId;
 };
 
-int itkVTKVisualizeLevelSetsInteractivePauseTest( int argc, char* argv[] )
+int
+itkVTKVisualizeLevelSetsInteractivePauseTest( int argc, char* argv[] )
 {
   if( argc < 3 )
     {
@@ -370,14 +387,14 @@ int itkVTKVisualizeLevelSetsInteractivePauseTest( int argc, char* argv[] )
   // Image Dimension
 
   // Read input image (to be processed).
-  typedef itk::ImageFileReader< InputImageType >   ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   reader->Update();
   InputImageType::Pointer input = reader->GetOutput();
   std::cout << "Input image read" << std::endl;
 
-  int numberOfIterations;
+  int                numberOfIterations;
   std::istringstream istrm( argv[2] );
   istrm >> numberOfIterations;
 
@@ -391,7 +408,8 @@ int itkVTKVisualizeLevelSetsInteractivePauseTest( int argc, char* argv[] )
   vtkSmartPointer< vtkRenderWindow > renderWindow = vtkSmartPointer< vtkRenderWindow >::New();
   keypressPauseCommand->GetVisualizer()->SetRenderWindow( renderWindow );
 
-  vtkSmartPointer< vtkRenderWindowInteractor > renderWindowInteractor = vtkSmartPointer< vtkRenderWindowInteractor >::New();
+  vtkSmartPointer< vtkRenderWindowInteractor > renderWindowInteractor =
+    vtkSmartPointer< vtkRenderWindowInteractor >::New();
   renderWindowInteractor->SetRenderWindow( renderWindow );
   renderWindowInteractor->Initialize();
   renderWindowInteractor->CreateRepeatingTimer( 50 );
@@ -399,7 +417,7 @@ int itkVTKVisualizeLevelSetsInteractivePauseTest( int argc, char* argv[] )
   vtkSmartPointer< vtkInteractorStyleImage > interactorStyle = vtkSmartPointer< vtkInteractorStyleImage >::New();
   renderWindowInteractor->SetInteractorStyle( interactorStyle );
 
-  int timerId = renderWindowInteractor->CreateOneShotTimer( 10000 );
+  int                            timerId = renderWindowInteractor->CreateOneShotTimer( 10000 );
   vtkSmartPointer< ExitOnTimer > exitOnTimer = vtkSmartPointer< ExitOnTimer >::New();
   exitOnTimer->SetTimerId( timerId );
 
@@ -407,13 +425,11 @@ int itkVTKVisualizeLevelSetsInteractivePauseTest( int argc, char* argv[] )
   renderWindowInteractor->AddObserver( vtkCommand::TimerEvent, keypressPauseCommand );
   renderWindowInteractor->AddObserver( vtkCommand::KeyPressEvent, keypressPauseCommand );
 
-
   VisualizationThreadData visualizationThreadData;
   visualizationThreadData.m_InputImage = input.GetPointer();
   visualizationThreadData.m_NumberOfIterations = numberOfIterations;
   visualizationThreadData.m_ProcessingPauseCommand = processingPauseCommand.GetPointer();
   visualizationThreadData.m_KeypressPauseCommand = keypressPauseCommand.GetPointer();
-
 
   itk::MultiThreader::Pointer threader = itk::MultiThreader::New();
   try

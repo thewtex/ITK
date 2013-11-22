@@ -22,7 +22,8 @@
 
 #include <iostream>
 
-int itkRegularSphereQuadEdgeMeshSourceTest(int argc, char * argv [] )
+int
+itkRegularSphereQuadEdgeMeshSourceTest(int argc, char * argv [] )
 {
   if( argc != 2 )
     {
@@ -30,14 +31,14 @@ int itkRegularSphereQuadEdgeMeshSourceTest(int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::QuadEdgeMesh<float, 3>   MeshType;
+  typedef itk::QuadEdgeMesh<float, 3> MeshType;
 
-  typedef itk::RegularSphereMeshSource< MeshType >  SphereMeshSourceType;
+  typedef itk::RegularSphereMeshSource< MeshType > SphereMeshSourceType;
 
-  SphereMeshSourceType::Pointer  mySphereMeshSource = SphereMeshSourceType::New();
+  SphereMeshSourceType::Pointer mySphereMeshSource = SphereMeshSourceType::New();
 
-  typedef SphereMeshSourceType::PointType   PointType;
-  typedef SphereMeshSourceType::VectorType  VectorType;
+  typedef SphereMeshSourceType::PointType  PointType;
+  typedef SphereMeshSourceType::VectorType VectorType;
 
   PointType center;
   center.Fill( 0.0 );
@@ -77,7 +78,7 @@ int itkRegularSphereQuadEdgeMeshSourceTest(int argc, char * argv [] )
     std::cout << "Point[" << i << "]: " << pt << std::endl;
     }
 
-  typedef itk::MeshFileWriter<MeshType>   WriterType;
+  typedef itk::MeshFileWriter<MeshType> WriterType;
 
   WriterType::Pointer writer = WriterType::New();
   writer->SetInput( myMesh );

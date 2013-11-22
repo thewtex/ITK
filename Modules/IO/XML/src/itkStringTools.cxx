@@ -19,7 +19,7 @@
 #include "itkStringTools.h"
 
 #include <algorithm> // std::transform()
-#include <cctype> // std::toupper(), std::tolower()
+#include <cctype>    // std::toupper(), std::tolower()
 
 namespace itk
 {
@@ -107,7 +107,8 @@ std::string&
 StringTools::ToUpperCase( std::string& str )
 {
   // explicit cast needed to resolve ambiguity
-  std::transform( str.begin(), str.end(), str.begin(), (int(*)(int))std::toupper );
+  std::transform( str.begin(), str.end(), str.begin(), (int (*)(int) ) std::toupper );
+
   return str;
 }
 
@@ -116,7 +117,8 @@ std::string&
 StringTools::ToLowerCase( std::string& str )
 {
   // explicit cast needed to resolve ambiguity
-  std::transform( str.begin(), str.end(), str.begin(), (int(*)(int))std::tolower );
+  std::transform( str.begin(), str.end(), str.begin(), (int (*)(int) ) std::tolower );
+
   return str;
 }
 
@@ -125,6 +127,7 @@ void
 StringTools::Split( const std::string& s, std::string& lpart, std::string& rpart, const std::string& delims )
 {
   std::string::size_type pos = s.find_first_of( delims );
+
   if ( pos != std::string::npos )
     {
     lpart = s.substr( 0, pos );
@@ -145,6 +148,7 @@ void
 StringTools::Split( const std::string& s, std::vector<std::string>& result, const std::string& delims )
 {
   std::string str = s;
+
   while ( str.size() )
     {
     std::string::size_type pos = str.find_first_of( delims );
@@ -172,6 +176,7 @@ void
 StringTools::Split( const std::string& s, std::map<std::string,std::string>& result, const std::string& delims )
 {
   std::vector<std::string> items;
+
   Split( s, items, delims );
 
   for ( size_t i = 0; i < items.size(); i++ )

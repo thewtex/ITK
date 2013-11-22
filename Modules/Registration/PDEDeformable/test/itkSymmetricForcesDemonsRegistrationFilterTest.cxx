@@ -22,17 +22,23 @@
 #include "itkNearestNeighborInterpolateImageFunction.h"
 #include "itkCommand.h"
 
-
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 }
@@ -41,11 +47,11 @@ public:
 template <typename TImage>
 void
 FillWithCircle(
-TImage * image,
-double * center,
-double radius,
-typename TImage::PixelType foregnd,
-typename TImage::PixelType backgnd )
+  TImage * image,
+  double * center,
+  double radius,
+  typename TImage::PixelType foregnd,
+  typename TImage::PixelType backgnd )
 {
 
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
@@ -61,7 +67,7 @@ typename TImage::PixelType backgnd )
     double distance = 0;
     for( unsigned int j = 0; j < TImage::ImageDimension; j++ )
       {
-      distance += vnl_math_sqr((double) index[j] - center[j]);
+      distance += vnl_math_sqr( (double) index[j] - center[j]);
       }
     if( distance <= r2 ) it.Set( foregnd );
     else it.Set( backgnd );
@@ -70,13 +76,12 @@ typename TImage::PixelType backgnd )
 
 }
 
-
 // Template function to copy image regions
 template <typename TImage>
 void
 CopyImageBuffer(
-TImage *input,
-TImage *output )
+  TImage *input,
+  TImage *output )
 {
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
   Iterator outIt( output, output->GetBufferedRegion() );
@@ -87,7 +92,8 @@ TImage *output )
 
 }
 
-int itkSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
+int
+itkSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
 {
 
   typedef unsigned char PixelType;
@@ -96,17 +102,17 @@ int itkSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
   typedef itk::Vector<float,ImageDimension>     VectorType;
   typedef itk::Image<VectorType,ImageDimension> FieldType;
   typedef itk::Image<VectorType::ValueType,ImageDimension>
-                                                FloatImageType;
-  typedef ImageType::IndexType                  IndexType;
-  typedef ImageType::SizeType                   SizeType;
-  typedef ImageType::RegionType                 RegionType;
+    FloatImageType;
+  typedef ImageType::IndexType  IndexType;
+  typedef ImageType::SizeType   SizeType;
+  typedef ImageType::RegionType RegionType;
 
   //--------------------------------------------------------
   std::cout << "Generate input images and initial deformation field";
   std::cout << std::endl;
 
   FloatImageType::SizeValueType sizeArray[ImageDimension] = { 128, 128 };
-  SizeType size;
+  SizeType                      size;
   size.SetSize( sizeArray );
 
   IndexType index;
@@ -132,8 +138,8 @@ int itkSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
   initField->SetBufferedRegion( region );
   initField->Allocate();
 
-  double center[ImageDimension];
-  double radius;
+  double    center[ImageDimension];
+  double    radius;
   PixelType fgnd = 250;
   PixelType bgnd = 15;
 
@@ -170,7 +176,7 @@ int itkSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
   typedef RegistrationType::DemonsRegistrationFunctionType FunctionType;
   FunctionType * fptr;
   fptr = dynamic_cast<FunctionType *>(
-    registrator->GetDifferenceFunction().GetPointer() );
+      registrator->GetDifferenceFunction().GetPointer() );
   fptr->Print( std::cout );
 
   // exercise other member variables
@@ -183,7 +189,7 @@ int itkSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
     }
   registrator->SetStandardDeviations( v );
 
-  ShowProgressObject progressWatch(registrator);
+  ShowProgressObject                                    progressWatch(registrator);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -198,7 +204,6 @@ int itkSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
   typedef itk::NearestNeighborInterpolateImageFunction<ImageType,CoordRepType>
     InterpolatorType;
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
-
 
   warper->SetInput( moving );
   warper->SetDisplacementField( registrator->GetOutput() );
@@ -215,9 +220,9 @@ int itkSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
 
   // compare the warp and fixed images
   itk::ImageRegionIterator<ImageType> fixedIter( fixed,
-      fixed->GetBufferedRegion() );
+                                                 fixed->GetBufferedRegion() );
   itk::ImageRegionIterator<ImageType> warpedIter( warper->GetOutput(),
-      fixed->GetBufferedRegion() );
+                                                  fixed->GetBufferedRegion() );
 
   unsigned int numPixelsDifferent = 0;
   while( !fixedIter.IsAtEnd() )
@@ -294,7 +299,7 @@ int itkSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
   try
     {
     fptr = dynamic_cast<FunctionType *>(
-      registrator->GetDifferenceFunction().GetPointer() );
+        registrator->GetDifferenceFunction().GetPointer() );
     fptr->SetMovingImageInterpolator( NULL );
     registrator->SetInput( initField );
     registrator->Update();

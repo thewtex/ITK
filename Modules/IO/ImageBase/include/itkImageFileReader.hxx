@@ -46,7 +46,8 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
 {}
 
 template< typename TOutputImage, typename ConvertPixelTraits >
-void ImageFileReader< TOutputImage, ConvertPixelTraits >
+void
+ImageFileReader< TOutputImage, ConvertPixelTraits >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
@@ -86,7 +87,7 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
 {
   typename TOutputImage::Pointer output = this->GetOutput();
 
-  itkDebugMacro(<< "Reading file for GenerateOutputInformation()" << this->GetFileName());
+  itkDebugMacro(<< "Reading file for GenerateOutputInformation()" << this->GetFileName() );
 
   // Check to see if we can read the file given the name or prefix
   //
@@ -348,7 +349,8 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
 }
 
 template< typename TOutputImage, typename ConvertPixelTraits >
-void ImageFileReader< TOutputImage, ConvertPixelTraits >
+void
+ImageFileReader< TOutputImage, ConvertPixelTraits >
 ::GenerateData()
 {
   typename TOutputImage::Pointer output = this->GetOutput();
@@ -387,7 +389,7 @@ void ImageFileReader< TOutputImage, ConvertPixelTraits >
   // pixels to be read and the actual size of the pixels to be read
   // (as opposed to the sizes of the output)
   size_t sizeOfActualIORegion = m_ActualIORegion.GetNumberOfPixels()
-                                * ( m_ImageIO->GetComponentSize() * m_ImageIO->GetNumberOfComponents() );
+    * ( m_ImageIO->GetComponentSize() * m_ImageIO->GetNumberOfComponents() );
 
   try
     {
@@ -401,7 +403,7 @@ void ImageFileReader< TOutputImage, ConvertPixelTraits >
       // the pixel types don't match so a type conversion needs to be
       // performed
       itkDebugMacro( << "Buffer conversion required from: "
-                     << m_ImageIO->GetComponentTypeAsString(m_ImageIO->GetComponentType())
+                     << m_ImageIO->GetComponentTypeAsString(m_ImageIO->GetComponentType() )
                      << " to: "
                      << m_ImageIO->GetComponentTypeAsString(ioType)
                      << " ConvertPixelTraits::NumComponents "
@@ -435,8 +437,8 @@ void ImageFileReader< TOutputImage, ConvertPixelTraits >
       // we use std::copy here as it should be optimized to memcpy for
       // plain old data, but still is oop
       std::copy(reinterpret_cast< const OutputImagePixelType * >( loadBuffer ),
-                             reinterpret_cast< const OutputImagePixelType * >( loadBuffer ) + output->GetBufferedRegion().GetNumberOfPixels(),
-                             outputBuffer);
+                reinterpret_cast< const OutputImagePixelType * >( loadBuffer ) + output->GetBufferedRegion().GetNumberOfPixels(),
+                outputBuffer);
       }
     else
       {
@@ -498,10 +500,10 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
                          OutputImagePixelType,                          \
                          ConvertPixelTraits                             \
                          >                                              \
-        ::ConvertVectorImage(static_cast< type * >( inputData ),        \
-                             m_ImageIO->GetNumberOfComponents(),        \
-                             outputData,                                \
-                             numberOfPixels);                           \
+      ::ConvertVectorImage(static_cast< type * >( inputData ),        \
+                           m_ImageIO->GetNumberOfComponents(),        \
+                           outputData,                                \
+                           numberOfPixels);                           \
       }                                                                 \
     else                                                                \
       {                                                                 \
@@ -509,10 +511,10 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
                          OutputImagePixelType,                          \
                          ConvertPixelTraits                             \
                          >                                              \
-        ::Convert(static_cast< type * >( inputData ),                   \
-                  m_ImageIO->GetNumberOfComponents(),                   \
-                  outputData,                                           \
-                  numberOfPixels);                                      \
+      ::Convert(static_cast< type * >( inputData ),                   \
+                m_ImageIO->GetNumberOfComponents(),                   \
+                outputData,                                           \
+                numberOfPixels);                                      \
       }                                                                 \
     }
 
@@ -530,8 +532,8 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
   else
     {
 #define TYPENAME(x)                                     \
-    m_ImageIO->GetComponentTypeAsString                 \
-      (ImageIOBase::MapPixelType<x>::CType)
+  m_ImageIO->GetComponentTypeAsString                 \
+    (ImageIOBase::MapPixelType<x>::CType)
 
     ImageFileReaderException e(__FILE__, __LINE__);
     std::ostringstream       msg;
@@ -557,6 +559,7 @@ ImageFileReader< TOutputImage, ConvertPixelTraits >
     }
 #undef ITK_CONVERT_BUFFER_IF_BLOCK
 }
+
 } //namespace ITK
 
 #endif

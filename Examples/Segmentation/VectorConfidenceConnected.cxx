@@ -46,19 +46,17 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkVectorConfidenceConnectedImageFilter.h"
 // Software Guide : EndCodeSnippet
-
 
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkRGBPixel.h"
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 7 )
     {
@@ -67,7 +65,6 @@ int main( int argc, char *argv[] )
     std::cerr << " inputImage  outputImage seedX seedY multiplier iterations" << std::endl;
     return 1;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -78,15 +75,14 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   unsigned char                         PixelComponentType;
-  typedef   itk::RGBPixel< PixelComponentType >   InputPixelType;
-  const     unsigned int    Dimension = 2;
-  typedef itk::Image< InputPixelType, Dimension >  InputImageType;
+  typedef   unsigned char                       PixelComponentType;
+  typedef   itk::RGBPixel< PixelComponentType > InputPixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< InputPixelType, Dimension > InputImageType;
   // Software Guide : EndCodeSnippet
 
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
-
 
   // We instantiate reader and writer types
   //
@@ -99,7 +95,6 @@ int main( int argc, char *argv[] )
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 
-
   //  Software Guide : BeginLatex
   //
   //  We now declare the type of the region growing filter. In this case it
@@ -109,7 +104,7 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef  itk::VectorConfidenceConnectedImageFilter< InputImageType,
-                                    OutputImageType > ConnectedFilterType;
+                                                      OutputImageType > ConnectedFilterType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -121,9 +116,8 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   ConnectedFilterType::Pointer confidenceConnected
-                                                 = ConnectedFilterType::New();
+    = ConnectedFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -135,7 +129,6 @@ int main( int argc, char *argv[] )
   confidenceConnected->SetInput( reader->GetOutput() );
   writer->SetInput( confidenceConnected->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -158,7 +151,6 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   confidenceConnected->SetMultiplier( multiplier );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -183,7 +175,6 @@ int main( int argc, char *argv[] )
   confidenceConnected->SetNumberOfIterations( iterations );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The output of this filter is a binary image with zero-value pixels
@@ -199,7 +190,6 @@ int main( int argc, char *argv[] )
   confidenceConnected->SetReplaceValue( 255 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The initialization of the algorithm requires the user to provide a seed
@@ -214,16 +204,14 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-  InputImageType::IndexType  index;
+  InputImageType::IndexType index;
 
   index[0] = atoi( argv[3] );
   index[1] = atoi( argv[4] );
 
-
   // Software Guide : BeginCodeSnippet
   confidenceConnected->SetSeed( index );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -237,7 +225,6 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   confidenceConnected->SetInitialNeighborhoodRadius( 3 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -258,7 +245,6 @@ int main( int argc, char *argv[] )
     std::cerr << excep << std::endl;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -303,17 +289,17 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef ConnectedFilterType::MeanVectorType   MeanVectorType;
+  typedef ConnectedFilterType::MeanVectorType MeanVectorType;
 
   const MeanVectorType & mean = confidenceConnected->GetMean();
 
   std::cout << "Mean vector = " << std::endl;
   std::cout << mean << std::endl;
 
-  typedef ConnectedFilterType::CovarianceMatrixType   CovarianceMatrixType;
+  typedef ConnectedFilterType::CovarianceMatrixType CovarianceMatrixType;
 
   const CovarianceMatrixType & covariance
-                                       = confidenceConnected->GetCovariance();
+    = confidenceConnected->GetCovariance();
 
   std::cout << "Covariance matrix = " << std::endl;
   std::cout << covariance << std::endl;

@@ -48,9 +48,9 @@ template <typename TInputImage, typename TOutputImage>
 class NullImageToImageFilterDriver
 {
 public:
-  NullImageToImageFilterDriver():
+  NullImageToImageFilterDriver() :
     m_Filter( NULL )
-    {};
+  {}
 
   typedef typename TInputImage::SizeType  ImageSizeType;
   typedef typename TInputImage::PixelType InputPixelType;
@@ -59,14 +59,20 @@ public:
   /**
    * Set the image-to-image filter to drive.
    */
-  void SetFilter(ImageToImageFilter<TInputImage, TOutputImage> * filter)
-  {    m_Filter = filter;   }
+  void
+  SetFilter(ImageToImageFilter<TInputImage, TOutputImage> * filter)
+  {
+    m_Filter = filter;
+  }
 
   /**
    * Set the size of the input and output image.
    */
-  void SetImageSize(const ImageSizeType size)
-    { m_ImageSize = size; }
+  void
+  SetImageSize(const ImageSizeType size)
+  {
+    m_ImageSize = size;
+  }
 
   /**
    * Drive the filter without using the itk pipeline.
@@ -79,14 +85,15 @@ protected:
   struct Dispatch : public DispatchBase {};
 
   void InitializePixel(InputPixelType &pixel);
+
   void InitializePixel(const DispatchBase&, InputPixelType &pixel);
+
   void InitializePixel(const Dispatch<1>&, InputPixelType &pixel);
 
 private:
   ImageToImageFilter<TInputImage, TOutputImage> *m_Filter;
   ImageSizeType                                  m_ImageSize;
 };
-
 
 template <typename TInputImage, typename TOutputImage>
 void
@@ -154,7 +161,7 @@ NullImageToImageFilterDriver<TInputImage, TOutputImage>
 
   typedef ImageToImageFilter<TInputImage, TOutputImage> ImageFilterType;
   typename ImageFilterType::Pointer sourceBefore =
-     dynamic_cast< ImageFilterType * >( m_Filter->GetOutput()->GetSource().GetPointer() );
+    dynamic_cast< ImageFilterType * >( m_Filter->GetOutput()->GetSource().GetPointer() );
 
   // Execute the filter
   clock_t start = ::clock();
@@ -169,7 +176,7 @@ NullImageToImageFilterDriver<TInputImage, TOutputImage>
     dynamic_cast< ImageFilterType * >( m_Filter->GetOutput()->GetSource().GetPointer() );
 
   std::cout << sourceBefore.GetPointer() << ", " << sourceAfter.GetPointer() << std::endl;
-  if (sourceBefore.GetPointer() != sourceAfter.GetPointer())
+  if (sourceBefore.GetPointer() != sourceAfter.GetPointer() )
     {
     std::cout << std::endl << "Pipeline corrupt, filter output source different after execution." << std::endl;
     }

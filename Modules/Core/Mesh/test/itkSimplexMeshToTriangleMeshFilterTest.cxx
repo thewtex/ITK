@@ -20,17 +20,17 @@
 #include "itkTriangleMeshToSimplexMeshFilter.h"
 #include "itkSimplexMeshToTriangleMeshFilter.h"
 
-int itkSimplexMeshToTriangleMeshFilterTest( int , char * [] )
+int
+itkSimplexMeshToTriangleMeshFilterTest( int , char * [] )
 {
 
   // Declare the type of the input and output mesh
   typedef itk::DefaultStaticMeshTraits<double, 3, 3, double, double, double>
-                                                        TriangleMeshTraits;
+    TriangleMeshTraits;
   typedef itk::DefaultStaticMeshTraits<double, 3, 3, double, double, double>
-                                                        SimplexMeshTraits;
+    SimplexMeshTraits;
   typedef itk::Mesh<double,3,TriangleMeshTraits>        TriangleMeshType;
   typedef itk::SimplexMesh<double,3, SimplexMeshTraits> SimplexMeshType;
-
 
   // declare triangle mesh source
   typedef itk::RegularSphereMeshSource<TriangleMeshType> SphereMeshSourceType;
@@ -38,14 +38,14 @@ int itkSimplexMeshToTriangleMeshFilterTest( int , char * [] )
   typedef SphereMeshSourceType::VectorType               VectorType;
 
   // Declare the type of the gradient image
-  typedef itk::TriangleMeshToSimplexMeshFilter<TriangleMeshType, SimplexMeshType>  SimplexFilterType;
+  typedef itk::TriangleMeshToSimplexMeshFilter<TriangleMeshType, SimplexMeshType> SimplexFilterType;
 
-  typedef itk::SimplexMeshToTriangleMeshFilter<SimplexMeshType,TriangleMeshType>  TriangleFilterType;
-  typedef TriangleMeshType::Pointer                                               TriangleMeshPointer;
-  SphereMeshSourceType::Pointer  mySphereMeshSource = SphereMeshSourceType::New();
-  PointType center; center.Fill(0);
-  PointType::ValueType scaleInit[3] = {5,5,5};
-  VectorType scale = scaleInit;
+  typedef itk::SimplexMeshToTriangleMeshFilter<SimplexMeshType,TriangleMeshType> TriangleFilterType;
+  typedef TriangleMeshType::Pointer                                              TriangleMeshPointer;
+  SphereMeshSourceType::Pointer mySphereMeshSource = SphereMeshSourceType::New();
+  PointType                     center; center.Fill(0);
+  PointType::ValueType          scaleInit[3] = {5,5,5};
+  VectorType                    scale = scaleInit;
 
   mySphereMeshSource->SetCenter(center);
   mySphereMeshSource->SetResolution(1);
@@ -60,7 +60,7 @@ int itkSimplexMeshToTriangleMeshFilterTest( int , char * [] )
   backFilter->Print(std::cout);
 
   SimplexMeshType::Pointer simplexMesh = simplexFilter->GetOutput();
-  TriangleMeshPointer originalTriangleMesh = mySphereMeshSource->GetOutput();
+  TriangleMeshPointer      originalTriangleMesh = mySphereMeshSource->GetOutput();
 
   std::cout << "Original triangle mesh: " << std::endl;
   std::cout << originalTriangleMesh << std::endl;

@@ -28,14 +28,12 @@ namespace itk
 template< typename TIterator >
 ThreadedIteratorRangePartitioner< TIterator >
 ::ThreadedIteratorRangePartitioner()
-{
-}
+{}
 
 template< typename TIterator >
 ThreadedIteratorRangePartitioner< TIterator >
 ::~ThreadedIteratorRangePartitioner()
-{
-}
+{}
 
 template< typename TIterator >
 ThreadIdType
@@ -55,9 +53,9 @@ ThreadedIteratorRangePartitioner< TIterator >
     ++count;
     }
   ThreadIdType valuesPerThread =
-    Math::Ceil<ThreadIdType>( static_cast< double >( count ) / static_cast< double >( requestedTotal ));
+    Math::Ceil<ThreadIdType>( static_cast< double >( count ) / static_cast< double >( requestedTotal ) );
   ThreadIdType maxThreadIdUsed =
-    Math::Ceil<ThreadIdType>( static_cast< double >( count ) / static_cast< double >( valuesPerThread )) - 1;
+    Math::Ceil<ThreadIdType>( static_cast< double >( count ) / static_cast< double >( valuesPerThread ) ) - 1;
 
   if ( threadId > maxThreadIdUsed )
     {

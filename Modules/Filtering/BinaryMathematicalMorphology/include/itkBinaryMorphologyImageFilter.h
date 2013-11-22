@@ -100,7 +100,7 @@ namespace itk
  * \ingroup ITKBinaryMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class BinaryMorphologyImageFilter:
+class BinaryMorphologyImageFilter :
   public KernelImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -186,7 +186,8 @@ public:
 
 protected:
   BinaryMorphologyImageFilter();
-  virtual ~BinaryMorphologyImageFilter(){}
+  virtual
+  ~BinaryMorphologyImageFilter(){}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
@@ -204,22 +205,31 @@ protected:
 
   /** Iterator for ComponentVectorType */
   typedef typename ComponentVectorType::const_iterator
-  ComponentVectorConstIterator;
+    ComponentVectorConstIterator;
 
   /**
    * Get the difference set for a particular offset */
-  NeighborIndexContainer & GetDifferenceSet(unsigned int code)
-  { return m_KernelDifferenceSets[code]; }
+  NeighborIndexContainer &
+  GetDifferenceSet(unsigned int code)
+  {
+    return m_KernelDifferenceSets[code];
+  }
 
   /**
    * Get an iterator to the start of the connected component vector */
-  ComponentVectorConstIterator KernelCCVectorBegin()
-  { return m_KernelCCVector.begin(); }
+  ComponentVectorConstIterator
+  KernelCCVectorBegin()
+  {
+    return m_KernelCCVector.begin();
+  }
 
   /**
    * Get an iterator to the end of the connected component vector */
-  ComponentVectorConstIterator KernelCCVectorEnd()
-  { return m_KernelCCVector.end(); }
+  ComponentVectorConstIterator
+  KernelCCVectorEnd()
+  {
+    return m_KernelCCVector.end();
+  }
 
   bool m_BoundaryToForeground;
 

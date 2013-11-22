@@ -47,15 +47,15 @@ namespace itk {
 
 template<typename TInputImage, typename TKernel>
 class BinaryClosingByReconstructionImageFilter :
-    public KernelImageFilter<TInputImage, TInputImage, TKernel>
+  public KernelImageFilter<TInputImage, TInputImage, TKernel>
 {
 public:
   /** Standard class typedefs. */
-  typedef BinaryClosingByReconstructionImageFilter     Self;
+  typedef BinaryClosingByReconstructionImageFilter Self;
   typedef KernelImageFilter<TInputImage, TInputImage, TKernel>
-                                                       Superclass;
-  typedef SmartPointer<Self>                           Pointer;
-  typedef SmartPointer<const Self>                     ConstPointer;
+    Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Standard New method. */
   itkNewMacro(Self);
@@ -64,14 +64,14 @@ public:
   itkTypeMacro(BinaryClosingByReconstructionImageFilter,
                KernelImageFilter);
 
-  typedef TInputImage                              InputImageType;
-  typedef TInputImage                              OutputImageType;
-  typedef typename InputImageType::Pointer         InputImagePointer;
-  typedef typename OutputImageType::RegionType     OutputImageRegionType;
+  typedef TInputImage                          InputImageType;
+  typedef TInputImage                          OutputImageType;
+  typedef typename InputImageType::Pointer     InputImagePointer;
+  typedef typename OutputImageType::RegionType OutputImageRegionType;
 
   /** Declaration of pixel type. */
-  typedef typename TInputImage::PixelType          InputPixelType;
-  typedef typename TInputImage::PixelType          OutputPixelType;
+  typedef typename TInputImage::PixelType InputPixelType;
+  typedef typename TInputImage::PixelType OutputPixelType;
 
   /** Kernel typedef. */
   typedef TKernel KernelType;
@@ -96,7 +96,7 @@ public:
 
 protected:
   BinaryClosingByReconstructionImageFilter();
-  ~BinaryClosingByReconstructionImageFilter() {};
+  ~BinaryClosingByReconstructionImageFilter() {}
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   /** BinaryClosingByReconstructionImageFilter need to make sure they request enough of an
@@ -108,15 +108,15 @@ protected:
 
   /** Single-threaded version of GenerateData.  This filter delegates
    * to GrayscaleDilateImageFilter GrayscaleErodeImageFilter. */
-  void  GenerateData ();
+  void  GenerateData();
 
 private:
   BinaryClosingByReconstructionImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                           //purposely not implemented
 
   InputPixelType m_ForegroundValue;
 
-  bool                m_FullyConnected;
+  bool m_FullyConnected;
 
 }; // end of class
 

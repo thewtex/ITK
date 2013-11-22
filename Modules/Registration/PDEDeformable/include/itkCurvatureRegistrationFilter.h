@@ -97,16 +97,16 @@ namespace itk
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField,
           typename TImageForceFunction =
             MeanSquareRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField > >
-class CurvatureRegistrationFilter:
+class CurvatureRegistrationFilter :
   public PDEDeformableRegistrationFilter< TFixedImage, TMovingImage,
                                           TDisplacementField >
 {
 public:
   /** Standard class typedefs. */
-  typedef CurvatureRegistrationFilter                                                     Self;
+  typedef CurvatureRegistrationFilter                                                      Self;
   typedef PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField > Superclass;
-  typedef SmartPointer< Self >                                                            Pointer;
-  typedef SmartPointer< const Self >                                                      ConstPointer;
+  typedef SmartPointer< Self >                                                             Pointer;
+  typedef SmartPointer< const Self >                                                       ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -129,40 +129,46 @@ public:
 
   /** Deformation field type. */
   typedef typename Superclass::DisplacementFieldType
-  DisplacementFieldType;
+    DisplacementFieldType;
   typedef typename Superclass::DisplacementFieldPointer
-  DisplacementFieldPointer;
+    DisplacementFieldPointer;
 
   typedef typename TDisplacementField::PixelType         DisplacementFieldPixelType;
   typedef typename DisplacementFieldPixelType::ValueType DisplacementFieldComponentType;
   itkStaticConstMacro(DeformationVectorDimension, unsigned int, DisplacementFieldPixelType::Dimension);
 
-  #if defined( ITK_USE_FFTWD )
+#if defined( ITK_USE_FFTWD )
   //Prefer to use double precision
   typedef double RealTypeDFT;
-  #else
-    #if defined( ITK_USE_FFTWF )
+#else
+#if defined( ITK_USE_FFTWF )
   //Allow to use single precision
-      #warning "Using single precision for FFT computations!"
+#warning "Using single precision for FFT computations!"
   typedef double RealTypeDFT;
-    #endif
-  #endif
+#endif
+#endif
 
   typedef Image< RealTypeDFT, TDisplacementField::ImageDimension > DisplacementFieldComponentImageType;
   typedef typename DisplacementFieldComponentImageType::Pointer    DisplacementFieldComponentImagePointer;
 
   /** FiniteDifferenceFunction type. */
   typedef typename Superclass::FiniteDifferenceFunctionType
-  FiniteDifferenceFunctionType;
+    FiniteDifferenceFunctionType;
 
   /** CurvatureRegistrationFilterFunction type. */
   typedef TImageForceFunction RegistrationFunctionType;
 
   /** Set the constraint vs. image forces weight. */
-  void SetConstraintWeight(const float w) { m_ConstraintWeight = w; }
+  void
+  SetConstraintWeight(const float w) {
+    m_ConstraintWeight = w;
+  }
 
   /** Set the time step. */
-  void SetTimeStep(const TimeStepType ts) { m_TimeStep = ts; }
+  void
+  SetTimeStep(const TimeStepType ts) {
+    m_TimeStep = ts;
+  }
 
   /** Get the metric value. The metric value is the mean square difference
    * in intensity between the fixed image and transforming moving image

@@ -61,7 +61,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TLabel, unsigned int VImageDimension >
-class LabelObject:public LightObject
+class LabelObject : public LightObject
 {
 public:
   /** Standard class typedefs */
@@ -179,7 +179,7 @@ public:
    */
   class ConstLineIterator
   {
-  public:
+public:
 
     ConstLineIterator() {}
 
@@ -197,7 +197,8 @@ public:
       m_End = iter.m_End;
     }
 
-    ConstLineIterator & operator=(const ConstLineIterator & iter)
+    ConstLineIterator &
+    operator=(const ConstLineIterator & iter)
     {
       m_Iterator = iter.m_Iterator;
       m_Begin = iter.m_Begin;
@@ -205,45 +206,53 @@ public:
       return *this;
     }
 
-    const LineType & GetLine() const
+    const LineType &
+    GetLine() const
     {
       return *m_Iterator;
     }
 
-    ConstLineIterator operator++(int)
+    ConstLineIterator
+    operator++(int)
     {
       ConstLineIterator tmp = *this;
+
       ++(*this);
       return tmp;
     }
 
-    ConstLineIterator & operator++()
+    ConstLineIterator &
+    operator++()
     {
       ++m_Iterator;
       return *this;
     }
 
-  bool operator==(const ConstLineIterator & iter) const
+    bool
+    operator==(const ConstLineIterator & iter) const
     {
-    return m_Iterator == iter.m_Iterator && m_Begin == iter.m_Begin && m_End == iter.m_End;
+      return m_Iterator == iter.m_Iterator && m_Begin == iter.m_Begin && m_End == iter.m_End;
     }
 
-  bool operator!=(const ConstLineIterator & iter) const
+    bool
+    operator!=(const ConstLineIterator & iter) const
     {
-    return !( *this == iter );
+      return !( *this == iter );
     }
 
-  void GoToBegin()
+    void
+    GoToBegin()
     {
       m_Iterator = m_Begin;
     }
 
-    bool IsAtEnd() const
+    bool
+    IsAtEnd() const
     {
       return m_Iterator == m_End;
     }
 
-  private:
+private:
     typedef typename std::deque< LineType >            LineContainerType;
     typedef typename LineContainerType::const_iterator InternalIteratorType;
     InternalIteratorType m_Iterator;
@@ -257,15 +266,15 @@ public:
    */
   class ConstIndexIterator
   {
-  public:
+public:
 
-    ConstIndexIterator():
+    ConstIndexIterator() :
       m_Iterator(),
       m_Begin(),
       m_End()
-        {
-        m_Index.Fill(0);
-        }
+    {
+      m_Index.Fill(0);
+    }
 
     ConstIndexIterator(const Self *lo)
     {
@@ -282,7 +291,8 @@ public:
       m_End = iter.m_End;
     }
 
-    ConstIndexIterator & operator=(const ConstIndexIterator & iter)
+    ConstIndexIterator &
+    operator=(const ConstIndexIterator & iter)
     {
       m_Iterator = iter.m_Iterator;
       m_Index = iter.m_Index;
@@ -291,12 +301,14 @@ public:
       return *this;
     }
 
-    const IndexType & GetIndex() const
+    const IndexType &
+    GetIndex() const
     {
       return m_Index;
     }
 
-    ConstIndexIterator & operator++()
+    ConstIndexIterator &
+    operator++()
     {
       m_Index[0]++;
       if( m_Index[0] >= m_Iterator->GetIndex()[0] + (OffsetValueType)m_Iterator->GetLength() )
@@ -308,40 +320,47 @@ public:
       return *this;
     }
 
-    ConstIndexIterator operator++(int)
+    ConstIndexIterator
+    operator++(int)
     {
       ConstIndexIterator tmp = *this;
+
       ++(*this);
       return tmp;
     }
 
-    bool operator==(const ConstIndexIterator & iter) const
+    bool
+    operator==(const ConstIndexIterator & iter) const
     {
       return m_Index == iter.m_Index && m_Iterator == iter.m_Iterator && m_Begin == iter.m_Begin && m_End == iter.m_End;
     }
 
-    bool operator!=(const ConstIndexIterator & iter) const
+    bool
+    operator!=(const ConstIndexIterator & iter) const
     {
       return !( *this == iter );
     }
 
-    void GoToBegin()
+    void
+    GoToBegin()
     {
       m_Iterator = m_Begin;
       m_Index.Fill(0);
       NextValidLine();
     }
 
-    bool IsAtEnd() const
+    bool
+    IsAtEnd() const
     {
       return m_Iterator == m_End;
     }
 
-  private:
+private:
 
     typedef typename std::deque< LineType >            LineContainerType;
     typedef typename LineContainerType::const_iterator InternalIteratorType;
-    void NextValidLine()
+    void
+    NextValidLine()
     {
       // search for the next valid position
       while( m_Iterator != m_End && m_Iterator->GetLength() == 0 )
@@ -368,7 +387,7 @@ private:
   LabelObject(const Self &);    //purposely not implemented
   void operator=(const Self &); //purposely not implemented
 
-  typedef typename std::deque< LineType >    LineContainerType;
+  typedef typename std::deque< LineType > LineContainerType;
 
   LineContainerType m_LineContainer;
   LabelType         m_Label;

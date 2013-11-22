@@ -59,7 +59,7 @@ namespace itk
  * \endwiki
  */
 template< typename T, unsigned int NVectorDimension = 3 >
-class Vector:public FixedArray< T, NVectorDimension >
+class Vector : public FixedArray< T, NVectorDimension >
 {
 public:
   /** Standard class typedefs. */
@@ -84,7 +84,10 @@ public:
   typedef FixedArray< T, NVectorDimension > BaseArray;
 
   /** Get the dimension (size) of the vector. */
-  static unsigned int GetVectorDimension() { return NVectorDimension; }
+  static unsigned int
+  GetVectorDimension() {
+    return NVectorDimension;
+  }
 
   /** Set a vnl_vector_ref referencing the same memory block. */
   void SetVnlVector(const vnl_vector< T > &);
@@ -97,32 +100,34 @@ public:
 
   /** Set a vnl_vector_ref referencing the same memory block.
    * \deprecated Use SetVnlVector() instead. */
-  itkLegacyMacro(void Set_vnl_vector(const vnl_vector< T > &));
+  itkLegacyMacro(void Set_vnl_vector(const vnl_vector< T > &) );
 
   /** Get a vnl_vector_ref referencing the same memory block.
    * \deprecated Use GetVnlVector() instead. */
-  itkLegacyMacro(vnl_vector_ref< T > Get_vnl_vector(void));
+  itkLegacyMacro(vnl_vector_ref< T > Get_vnl_vector(void) );
 
   /** Get a vnl_vector with a copy of the internal memory block.
    * \deprecated Use GetVnlVector() instead. */
   itkLegacyMacro(vnl_vector< T > Get_vnl_vector(void) const);
 
   /** Default constructor and copy constructors. */
-  Vector():BaseArray() {}
+  Vector() : BaseArray() {}
 
   /** Constructor to initialize entire vector to one value. */
   Vector(const ValueType & r);
 
   /** Pass-through constructor for the Array base class. */
   template< typename TVectorValueType >
-  Vector(const Vector< TVectorValueType, NVectorDimension > & r):BaseArray(r) {}
-  Vector(const ValueType r[Dimension]):BaseArray(r) {}
+  Vector(const Vector< TVectorValueType, NVectorDimension > & r) : BaseArray(r) {}
+  Vector(const ValueType r[Dimension]) : BaseArray(r) {}
 
   /** Pass-through assignment operator for the Array base class. */
   template< typename TVectorValueType >
-  Vector & operator=(const Vector< TVectorValueType, NVectorDimension > & r)
+  Vector &
+  operator=(const Vector< TVectorValueType, NVectorDimension > & r)
   {
     BaseArray::operator=(r);
+
     return *this;
   }
 
@@ -130,7 +135,8 @@ public:
 
   /** Scalar operator*=.  Scales elements by a scalar. */
   template< typename Tt >
-  inline const Self & operator*=(const Tt & value)
+  inline const Self &
+  operator*=(const Tt & value)
   {
     for ( unsigned int i = 0; i < NVectorDimension; i++ )
       {
@@ -141,7 +147,8 @@ public:
 
   /** Scalar operator/=.  Scales (divides) elements by a scalar. */
   template< typename Tt >
-  inline const Self & operator/=(const Tt & value)
+  inline const Self &
+  operator/=(const Tt & value)
   {
     for ( unsigned int i = 0; i < NVectorDimension; i++ )
       {
@@ -172,7 +179,8 @@ public:
 
   /** Scalar operator*. Scale the elements of a vector by a scalar.
    * Return a new vector. */
-  inline Self operator*(const ValueType & value) const
+  inline Self
+  operator*(const ValueType & value) const
   {
     Self result;
 
@@ -186,7 +194,8 @@ public:
   /** Scalar operator/. Scale (divide) the elements of a vector by a scalar.
    * Return a new vector. */
   template< typename Tt >
-  inline Self operator/(const Tt & value) const
+  inline Self
+  operator/(const Tt & value) const
   {
     Self result;
 
@@ -201,10 +210,17 @@ public:
    * components must be equal for two vectors to be equal. (Of course
    * compile-time constraints on the template parameters length and type
    * prevent comparisons between vectors of different type and length.) */
-  bool operator==(const Self & v) const
-  { return Superclass::operator==(v); }
-  bool operator!=(const Self & v) const
-  { return !operator==(v); }
+  bool
+  operator==(const Self & v) const
+  {
+    return Superclass::operator==(v);
+  }
+
+  bool
+  operator!=(const Self & v) const
+  {
+    return !operator==(v);
+  }
 
   /** Returns the Euclidean Norm of the vector  */
   RealValueType GetNorm(void) const;
@@ -213,18 +229,25 @@ public:
   RealValueType GetSquaredNorm(void) const;
 
   /** Returns the number of components in this vector type */
-  static unsigned int GetNumberOfComponents() { return NVectorDimension; }
+  static unsigned int
+  GetNumberOfComponents() {
+    return NVectorDimension;
+  }
 
   /** Divides the vector componets by the vector norm */
   void Normalize(void);
 
-  void SetNthComponent(int c, const ComponentType & v)
-  {  this->operator[](c) = v; }
+  void
+  SetNthComponent(int c, const ComponentType & v)
+  {
+    this->operator[](c) = v;
+  }
 
   /** Copy from another Vector with a different representation type.
    *  Casting is done with C-Like rules  */
   template< typename TCoordRepB >
-  void CastFrom(const Vector< TCoordRepB, NVectorDimension > & pa)
+  void
+  CastFrom(const Vector< TCoordRepB, NVectorDimension > & pa)
   {
     for ( unsigned int i = 0; i < NVectorDimension; i++ )
       {
@@ -234,14 +257,14 @@ public:
 
   template<typename TCoordRepB>
   operator Vector< TCoordRepB, NVectorDimension >()
-  {
+    {
     Vector<TCoordRepB, NVectorDimension> r;
     for (unsigned int i = 0; i < NVectorDimension; i++)
-    {
-      r[i] = static_cast<TCoordRepB> ((*this)[i]);
-    }
+      {
+      r[i] = static_cast<TCoordRepB> ( (*this)[i]);
+      }
     return r;
-  }
+    }
 
 };
 
@@ -273,6 +296,7 @@ ITKCommon_EXPORT Vector< float, 3 > CrossProduct(const Vector< float, 3 > &,
 
 ITKCommon_EXPORT Vector< int, 3 > CrossProduct(const Vector< int, 3 > &,
                                                const Vector< int, 3 > &);
+
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION

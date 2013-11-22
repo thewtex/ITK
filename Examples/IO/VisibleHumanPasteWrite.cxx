@@ -23,7 +23,6 @@
 #include "itkComposeImageFilter.h"
 #include "itkRGBToVectorImageAdaptor.h"
 
-
 // Pasting enables the writing of a sub-region to a file. This example
 // updates a small portion of the 2D coronal slice. The file
 // streamed_paste_vm.mha can either not exist or can be copied from
@@ -33,8 +32,8 @@
 // Below we begin by creating a reader for the file just written that
 // is capable of streaming.
 
-
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
 
   if ( argc < 3 )
@@ -45,7 +44,6 @@ int main(int argc, char *argv[])
     return EXIT_FAILURE;
     }
 
-
   std::string inputImageFile = argv[1];
   std::string outputImageFile = argv[2];
 
@@ -53,7 +51,6 @@ int main(int argc, char *argv[])
   typedef itk::Vector< unsigned char, 3 > VRGBPixelType;
   typedef itk::Image< RGBPixelType, 2 >   RGB2DImageType;
   typedef itk::Image< VRGBPixelType, 2 >  VRGB2DImageType;
-
 
 //  we begin by creating a reader for the file just written that is
 //  capable of streaming
@@ -79,7 +76,6 @@ int main(int argc, char *argv[])
   composeRGB->SetInput2( grad->GetOutput() );
   composeRGB->SetInput3( grad->GetOutput() );
 
-
 // Next we begin to specify the paste region, by creating an
 // ImageIORegion that is half the size and centered on the entire
 // image. The ImageIORegion class is similar to the ImageRegion class
@@ -87,14 +83,13 @@ int main(int argc, char *argv[])
 // of the runtime nature of IO.
   composeRGB->UpdateOutputInformation();
   RGB2DImageType::RegionType largest = composeRGB->GetOutput()->GetLargestPossibleRegion();
-  itk::ImageIORegion halfIO(2);
+  itk::ImageIORegion         halfIO(2);
   halfIO.SetIndex( 0, largest.GetIndex(0)
-                   + (unsigned long) (0.25 * largest.GetSize(0)) );
+                   + (unsigned long) (0.25 * largest.GetSize(0) ) );
   halfIO.SetIndex( 1, largest.GetIndex(1)
-                   + (unsigned long) (0.25 * largest.GetSize(1)) );
-  halfIO.SetSize( 0, (unsigned long) (0.5 * largest.GetSize(0)) );
-  halfIO.SetSize( 1, (unsigned long) (0.5 * largest.GetSize(1)) );
-
+                   + (unsigned long) (0.25 * largest.GetSize(1) ) );
+  halfIO.SetSize( 0, (unsigned long) (0.5 * largest.GetSize(0) ) );
+  halfIO.SetSize( 1, (unsigned long) (0.5 * largest.GetSize(1) ) );
 
 // After using an adaptor to convert the color image into a vector
 // image, so that the pixel type will match the type in the file, we
@@ -102,7 +97,7 @@ int main(int argc, char *argv[])
 // enable pasting, a call to SetIORegion is made with a valid
 // region. Finally, the pipeline is updated, causing the streaming of
 // regions
-  typedef itk::RGBToVectorImageAdaptor< RGB2DImageType >  ToVectorImageAdaptorType;
+  typedef itk::RGBToVectorImageAdaptor< RGB2DImageType > ToVectorImageAdaptorType;
   ToVectorImageAdaptorType::Pointer adaptor = ToVectorImageAdaptorType::New();
   adaptor->SetImage( composeRGB->GetOutput() );
 
@@ -116,7 +111,6 @@ int main(int argc, char *argv[])
   itk::SimpleFilterWatcher watcher1(writer, "stream pasting writing");
 
   itk::SimpleFilterWatcher watcher(grad, "stream gradient magnitude");
-
 
   try
     {

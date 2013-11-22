@@ -19,11 +19,12 @@
 #include "itkContourMeanDistanceImageFilter.h"
 #include "itkFilterWatcher.h"
 
-int itkContourMeanDistanceImageFilterTest(int, char* [] )
+int
+itkContourMeanDistanceImageFilterTest(int, char* [] )
 {
 
-  typedef unsigned int  Pixel1Type;
-  typedef float         Pixel2Type;
+  typedef unsigned int Pixel1Type;
+  typedef float        Pixel2Type;
   enum { ImageDimension = 3 };
 
   typedef itk::Image<Pixel1Type,ImageDimension> Image1Type;
@@ -62,7 +63,7 @@ int itkContourMeanDistanceImageFilterTest(int, char* [] )
   region2.SetIndex( index );
 
   itk::ImageRegionIterator<Image1Type> it1( image1, region1 );
-  Pixel1Type count = itk::NumericTraits<Pixel1Type>::Zero;
+  Pixel1Type                           count = itk::NumericTraits<Pixel1Type>::Zero;
   while ( !it1.IsAtEnd() )
     {
     it1.Set( ++count );
@@ -76,63 +77,60 @@ int itkContourMeanDistanceImageFilterTest(int, char* [] )
     ++it2;
     }
 
-
   // compute the directed Mean distance h(image1,image2)
-  {
-  typedef itk::ContourMeanDistanceImageFilter<Image1Type,Image2Type> FilterType;
-  FilterType::Pointer filter = FilterType::New();
-  FilterWatcher watcher(filter, "filter");
-
-  filter->SetInput1( image1 );
-  filter->SetInput2( image2 );
-  filter->Update();
-  filter->Print( std::cout );
-
-
-  // check results
-
-  FilterType::RealType trueDistance = 8.07158;
-    // vcl_sqrt( static_cast<double>(ImageDimension) );
-  FilterType::RealType distance = filter->GetMeanDistance();
-
-  std::cout << " True     distance: " << trueDistance << std::endl;
-  std::cout << " Computed distance: " << distance << std::endl;
-
-  if ( vnl_math_abs( trueDistance - distance ) > 0.5 )
     {
-    std::cout << "Test failed. " << std::endl;
-    return EXIT_FAILURE;
+    typedef itk::ContourMeanDistanceImageFilter<Image1Type,Image2Type> FilterType;
+    FilterType::Pointer filter = FilterType::New();
+    FilterWatcher       watcher(filter, "filter");
+
+    filter->SetInput1( image1 );
+    filter->SetInput2( image2 );
+    filter->Update();
+    filter->Print( std::cout );
+
+    // check results
+
+    FilterType::RealType trueDistance = 8.07158;
+    // vcl_sqrt( static_cast<double>(ImageDimension) );
+    FilterType::RealType distance = filter->GetMeanDistance();
+
+    std::cout << " True     distance: " << trueDistance << std::endl;
+    std::cout << " Computed distance: " << distance << std::endl;
+
+    if ( vnl_math_abs( trueDistance - distance ) > 0.5 )
+      {
+      std::cout << "Test failed. " << std::endl;
+      return EXIT_FAILURE;
+      }
     }
-  }
 
   // compute the directed Mean distance h(image2,image1)
-  {
-  typedef itk::ContourMeanDistanceImageFilter<Image2Type,Image1Type> FilterType;
-  FilterType::Pointer filter = FilterType::New();
-
-  filter->SetInput1( image2 );
-  filter->SetInput2( image1 );
-  filter->Update();
-
-
-  // check results
-  FilterType::RealType trueDistance = 8.07158;
-  FilterType::RealType distance = filter->GetMeanDistance();
-
-  std::cout << " True     distance: " << trueDistance << std::endl;
-  std::cout << " Computed distance: " << distance << std::endl;
-
-  if ( vnl_math_abs( trueDistance - distance ) > 0.5 )
     {
-    std::cout << "Test failed. " << std::endl;
-    return EXIT_FAILURE;
-    }
-  }
-
-  // compute the directed Mean distance h(image2,image1) with different pixel sizes
-  {
     typedef itk::ContourMeanDistanceImageFilter<Image2Type,Image1Type> FilterType;
     FilterType::Pointer filter = FilterType::New();
+
+    filter->SetInput1( image2 );
+    filter->SetInput2( image1 );
+    filter->Update();
+
+    // check results
+    FilterType::RealType trueDistance = 8.07158;
+    FilterType::RealType distance = filter->GetMeanDistance();
+
+    std::cout << " True     distance: " << trueDistance << std::endl;
+    std::cout << " Computed distance: " << distance << std::endl;
+
+    if ( vnl_math_abs( trueDistance - distance ) > 0.5 )
+      {
+      std::cout << "Test failed. " << std::endl;
+      return EXIT_FAILURE;
+      }
+    }
+
+  // compute the directed Mean distance h(image2,image1) with different pixel sizes
+    {
+    typedef itk::ContourMeanDistanceImageFilter<Image2Type,Image1Type> FilterType;
+    FilterType::Pointer     filter = FilterType::New();
     Image1Type::SpacingType spacing1 = image1->GetSpacing();
     spacing1[0]=spacing1[0]/2;
     spacing1[1]=spacing1[1]/2;
@@ -160,7 +158,7 @@ int itkContourMeanDistanceImageFilterTest(int, char* [] )
       std::cout << "Test failed. " << std::endl;
       return EXIT_FAILURE;
       }
-  }
+    }
 
   std::cout << "Test passed. " << std::endl;
   return EXIT_SUCCESS;

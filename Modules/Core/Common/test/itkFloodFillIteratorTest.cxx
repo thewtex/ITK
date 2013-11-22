@@ -25,7 +25,8 @@
 #include "itkSphereSpatialFunction.h"
 #include "itkFloodFilledSpatialFunctionConditionalIterator.h"
 
-int itkFloodFillIteratorTest(int, char* [] )
+int
+itkFloodFillIteratorTest(int, char* [] )
 {
   const unsigned int dim = 3;
 
@@ -94,7 +95,7 @@ int itkFloodFillIteratorTest(int, char* [] )
   std::cout << "Sphere spatial function created" << std::endl;
 
   //---------Create and initialize a spatial function iterator-----------
-  TImageType::IndexType seedPos;
+  TImageType::IndexType            seedPos;
   const TImageType::IndexValueType pos[] = {10,10,10};
   seedPos.SetIndex(pos);
 

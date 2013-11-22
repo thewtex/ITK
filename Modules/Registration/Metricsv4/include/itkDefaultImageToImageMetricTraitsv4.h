@@ -57,27 +57,27 @@ public:
   typedef typename FixedImageType::PixelType  FixedImagePixelType;
   typedef typename MovingImageType::PixelType MovingImagePixelType;
 
-  typedef TCoordRep            CoordinateRepresentationType;
+  typedef TCoordRep CoordinateRepresentationType;
 
   /* Image dimension accessors */
-  typedef unsigned int   ImageDimensionType;
+  typedef unsigned int ImageDimensionType;
   itkStaticConstMacro(FixedImageDimension, ImageDimensionType,
-      FixedImageType::ImageDimension);
+                      FixedImageType::ImageDimension);
   itkStaticConstMacro(MovingImageDimension, ImageDimensionType,
-      MovingImageType::ImageDimension);
+                      MovingImageType::ImageDimension);
   itkStaticConstMacro(VirtualImageDimension, ImageDimensionType,
-      VirtualImageType::ImageDimension);
+                      VirtualImageType::ImageDimension);
 
   typedef   CovariantVector< CoordinateRepresentationType,
                              itkGetStaticConstMacro(FixedImageDimension) >
-                                                      FixedImageGradientType;
+    FixedImageGradientType;
   typedef   CovariantVector< CoordinateRepresentationType,
                              itkGetStaticConstMacro(MovingImageDimension) >
-                                                      MovingImageGradientType;
+    MovingImageGradientType;
 
   typedef   CovariantVector< CoordinateRepresentationType,
                              itkGetStaticConstMacro(VirtualImageDimension) >
-                                                      VirtualImageGradientType;
+    VirtualImageGradientType;
 
   typedef FixedImageGradientType   FixedImageComponentGradientType;
   typedef MovingImageGradientType  MovingImageComponentGradientType;
@@ -88,64 +88,64 @@ public:
 
   /** Type of the filter used to calculate the gradients. */
   typedef typename NumericTraits< FixedImagePixelType >::RealType
-                                                    FixedRealType;
+    FixedRealType;
   typedef CovariantVector< FixedRealType,
                            itkGetStaticConstMacro(FixedImageDimension) >
-                                                    FixedGradientPixelType;
+    FixedGradientPixelType;
   typedef Image< FixedGradientPixelType,
                  itkGetStaticConstMacro(FixedImageDimension) >
-                                                FixedImageGradientImageType;
+    FixedImageGradientImageType;
 
   typedef ImageToImageFilter< FixedImageType, FixedImageGradientImageType >
-                                                 FixedImageGradientFilterType;
+    FixedImageGradientFilterType;
 
   typedef typename NumericTraits< MovingImagePixelType >::RealType
-                                                 MovingRealType;
+    MovingRealType;
   typedef CovariantVector< MovingRealType,
                            itkGetStaticConstMacro(MovingImageDimension) >
-                                                 MovingGradientPixelType;
+    MovingGradientPixelType;
   typedef Image< MovingGradientPixelType,
                  itkGetStaticConstMacro(MovingImageDimension) >
-                                                    MovingImageGradientImageType;
+    MovingImageGradientImageType;
 
   typedef ImageToImageFilter< MovingImageType, MovingImageGradientImageType >
-                                                 MovingImageGradientFilterType;
+    MovingImageGradientFilterType;
 
   /** Default image gradient filter types */
   typedef GradientRecursiveGaussianImageFilter< FixedImageType,
                                                 FixedImageGradientImageType >
-                                                  DefaultFixedImageGradientFilter;
+    DefaultFixedImageGradientFilter;
   typedef GradientRecursiveGaussianImageFilter< MovingImageType,
                                                 MovingImageGradientImageType >
-                                                  DefaultMovingImageGradientFilter;
+    DefaultMovingImageGradientFilter;
 
   /** Image gradient calculator types. The TOutput template parameter
    * is chosen to match that of CentralDiffererenceImageFunction. */
   typedef ImageFunction<FixedImageType,
                         CovariantVector<double,
-                                  itkGetStaticConstMacro( FixedImageDimension )>,
+                                        itkGetStaticConstMacro( FixedImageDimension )>,
                         CoordinateRepresentationType>
-                                            FixedImageGradientCalculatorType;
+    FixedImageGradientCalculatorType;
   typedef ImageFunction<MovingImageType,
                         CovariantVector<double,
-                                  itkGetStaticConstMacro( MovingImageDimension )>,
+                                        itkGetStaticConstMacro( MovingImageDimension )>,
                         CoordinateRepresentationType>
-                                            MovingImageGradientCalculatorType;
+    MovingImageGradientCalculatorType;
 
   typedef CentralDifferenceImageFunction<FixedImageType,
                                          CoordinateRepresentationType>
-                                          DefaultFixedImageGradientCalculator;
+    DefaultFixedImageGradientCalculator;
   typedef CentralDifferenceImageFunction<MovingImageType,
                                          CoordinateRepresentationType>
-                                          DefaultMovingImageGradientCalculator;
+    DefaultMovingImageGradientCalculator;
 
   /** Only floating-point images are currently supported. To support integer images,
    * several small changes must be made to use an internal floating-point type for
    * computations rather than the image pixel type itself. */
-  #ifdef ITK_USE_CONCEPT_CHECKING
+#ifdef ITK_USE_CONCEPT_CHECKING
   itkConceptMacro( OnlyDefinedForFloatingPointTypes0, ( itk::Concept::IsFloatingPoint<FixedRealType> ) );
   itkConceptMacro( OnlyDefinedForFloatingPointTypes1, ( itk::Concept::IsFloatingPoint<MovingRealType> ) );
-  #endif // ITK_USE_CONCEPT_CHECKING
+#endif   // ITK_USE_CONCEPT_CHECKING
 };
 } // end namespace itk
 

@@ -19,7 +19,8 @@
 #include "itkConstantBoundaryCondition.h"
 #include "itkPadImageFilter.h"
 
-int itkPadImageFilterTest( int, char* [] )
+int
+itkPadImageFilterTest( int, char* [] )
 {
   typedef itk::Image< short, 2 >    ShortImage;
   typedef ShortImage::SizeType      SizeType;
@@ -28,8 +29,8 @@ int itkPadImageFilterTest( int, char* [] )
   typedef itk::PadImageFilter< ShortImage, ShortImage > FilterType;
   FilterType::Pointer padFilter = FilterType::New();
 
-  SizeType lowerBound = {{1, 2}};
-  SizeType upperBound = {{3, 4}};
+  SizeType      lowerBound = {{1, 2}};
+  SizeType      upperBound = {{3, 4}};
   SizeValueType lowerBoundArray[2] = {1, 2};
   SizeValueType upperBoundArray[2] = {3, 4};
 

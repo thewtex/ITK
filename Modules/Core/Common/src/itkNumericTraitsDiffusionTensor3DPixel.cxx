@@ -29,10 +29,10 @@ namespace itk
 #define DIFFUSIONTENSOR3DPIXELSTATICTRAITSMACRO(T)                                                      \
   template< >                                                                                           \
   const DiffusionTensor3D< T >  NumericTraits< DiffusionTensor3D< T > >::Zero = DiffusionTensor3D< T >( \
-    NumericTraits< T >::Zero);                                                                          \
+      NumericTraits< T >::Zero);                                                                          \
   template< >                                                                                           \
   const DiffusionTensor3D< T >  NumericTraits< DiffusionTensor3D< T > >::One = DiffusionTensor3D< T >(  \
-    NumericTraits< T >::One);
+      NumericTraits< T >::One);
 
 //
 // List here the specializations of the Traits:

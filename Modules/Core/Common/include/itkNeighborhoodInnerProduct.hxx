@@ -32,14 +32,14 @@ NeighborhoodInnerProduct< TImage, TOperator, TComputation >
 {
   typename OperatorType::ConstIterator o_it;
 
-  typedef typename TImage::PixelType                                    InputPixelType;
-  typedef typename NumericTraits< InputPixelType >::RealType            InputPixelRealType;
-  typedef typename NumericTraits< InputPixelRealType >::AccumulateType  AccumulateRealType;
+  typedef typename TImage::PixelType                                   InputPixelType;
+  typedef typename NumericTraits< InputPixelType >::RealType           InputPixelRealType;
+  typedef typename NumericTraits< InputPixelRealType >::AccumulateType AccumulateRealType;
 
   AccumulateRealType sum = NumericTraits< AccumulateRealType >::Zero;
 
   typedef typename NumericTraits<OutputPixelType>::ValueType
-      OutputPixelValueType;
+    OutputPixelValueType;
 
   o_it = op.Begin();
   const typename OperatorType::ConstIterator op_end = op.End();
@@ -49,8 +49,8 @@ NeighborhoodInnerProduct< TImage, TOperator, TComputation >
   for ( unsigned int i = start; o_it < op_end; i += stride, ++o_it )
     {
     sum += static_cast< AccumulateRealType >(
-      static_cast< OutputPixelValueType >( *o_it ) *
-      static_cast< InputPixelRealType >( it.GetPixel(i) ) );
+        static_cast< OutputPixelValueType >( *o_it ) *
+        static_cast< InputPixelRealType >( it.GetPixel(i) ) );
     }
 
   return static_cast< OutputPixelType >( sum );
@@ -66,14 +66,14 @@ NeighborhoodInnerProduct< TImage, TOperator, TComputation >
 {
   typename OperatorType::ConstIterator o_it;
 
-  typedef typename TImage::PixelType                                    InputPixelType;
-  typedef typename NumericTraits< InputPixelType >::RealType            InputPixelRealType;
-  typedef typename NumericTraits< InputPixelRealType >::AccumulateType  AccumulateRealType;
+  typedef typename TImage::PixelType                                   InputPixelType;
+  typedef typename NumericTraits< InputPixelType >::RealType           InputPixelRealType;
+  typedef typename NumericTraits< InputPixelRealType >::AccumulateType AccumulateRealType;
 
   AccumulateRealType sum = NumericTraits< AccumulateRealType >::Zero;
 
   typedef typename NumericTraits<OutputPixelType>::ValueType
-      OutputPixelValueType;
+    OutputPixelValueType;
 
   o_it = op.Begin();
   const typename OperatorType::ConstIterator op_end = op.End();
@@ -83,11 +83,12 @@ NeighborhoodInnerProduct< TImage, TOperator, TComputation >
   for ( unsigned int i = start; o_it < op_end; i += stride, ++o_it )
     {
     sum += static_cast< AccumulateRealType >(
-      static_cast< OutputPixelValueType >( *o_it ) *
-      static_cast< InputPixelRealType >( N[i] ) );
+        static_cast< OutputPixelValueType >( *o_it ) *
+        static_cast< InputPixelRealType >( N[i] ) );
     }
 
   return static_cast< OutputPixelType >( sum );
 }
+
 } // end namespace itk
 #endif

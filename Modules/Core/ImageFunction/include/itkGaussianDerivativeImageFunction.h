@@ -35,7 +35,7 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TInputImage, typename TOutput = double >
-class GaussianDerivativeImageFunction:
+class GaussianDerivativeImageFunction :
   public ImageFunction< TInputImage,
                         Vector< TOutput, TInputImage::ImageDimension >,
                         TOutput >
@@ -70,13 +70,13 @@ public:
                       InputImageType::ImageDimension);
 
   typedef ContinuousIndex< SpacePrecisionType, itkGetStaticConstMacro(ImageDimension2) >
-  ContinuousIndexType;
+    ContinuousIndexType;
 
   typedef Neighborhood< InputPixelType, itkGetStaticConstMacro(ImageDimension2) > NeighborhoodType;
   typedef Neighborhood< TOutput, itkGetStaticConstMacro(ImageDimension2) >        OperatorNeighborhoodType;
 
-  typedef Vector< TOutput, itkGetStaticConstMacro(ImageDimension2) >                         VectorType;
-  typedef typename Superclass::OutputType                                                    OutputType;
+  typedef Vector< TOutput, itkGetStaticConstMacro(ImageDimension2) >                          VectorType;
+  typedef typename Superclass::OutputType                                                     OutputType;
   typedef FixedArray< OperatorNeighborhoodType, 2 * itkGetStaticConstMacro(ImageDimension2) > OperatorArrayType;
   typedef NeighborhoodOperatorImageFunction< InputImageType,
                                              TOutput > OperatorImageFunctionType;
@@ -112,14 +112,20 @@ public:
 
   void SetSigma(const double sigma);
 
-  const double * GetSigma() const { return m_Sigma; }
+  const double *
+  GetSigma() const {
+    return m_Sigma;
+  }
 
   /** Set the extent of the kernel */
   void SetExtent(const double *extent);
 
   void SetExtent(const double extent);
 
-  const double * GetExtent() const { return m_Extent; }
+  const double *
+  GetExtent() const {
+    return m_Extent;
+  }
 
   /** Set the input image.
    * \warning this method caches BufferedRegion information.

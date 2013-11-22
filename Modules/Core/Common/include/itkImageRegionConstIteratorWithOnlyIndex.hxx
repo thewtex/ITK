@@ -73,6 +73,7 @@ ImageRegionConstIteratorWithOnlyIndex< TImage >
 
   return *this;
 }
+
 } // end namespace itk
 
 #endif

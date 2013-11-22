@@ -43,25 +43,26 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TImage >
-class RelabelLabelMapFilter:
-  public AttributeRelabelLabelMapFilter< TImage, typename Functor::LabelLabelObjectAccessor<typename TImage::LabelObjectType> >
+class RelabelLabelMapFilter :
+  public AttributeRelabelLabelMapFilter< TImage,
+                                         typename Functor::LabelLabelObjectAccessor<typename TImage::LabelObjectType> >
 {
 public:
   /** Standard class typedefs. */
-  typedef RelabelLabelMapFilter           Self;
+  typedef RelabelLabelMapFilter Self;
   typedef AttributeRelabelLabelMapFilter< TImage,
-     typename Functor::LabelLabelObjectAccessor<typename TImage::LabelObjectType> >
-                                          Superclass;
-  typedef SmartPointer< Self >            Pointer;
-  typedef SmartPointer< const Self >      ConstPointer;
+                                          typename Functor::LabelLabelObjectAccessor<typename TImage::LabelObjectType> >
+    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage                                        ImageType;
-  typedef typename ImageType::Pointer                   ImagePointer;
-  typedef typename ImageType::ConstPointer              ImageConstPointer;
-  typedef typename ImageType::PixelType                 PixelType;
-  typedef typename ImageType::IndexType                 IndexType;
-  typedef typename ImageType::LabelObjectType           LabelObjectType;
+  typedef TImage                              ImageType;
+  typedef typename ImageType::Pointer         ImagePointer;
+  typedef typename ImageType::ConstPointer    ImageConstPointer;
+  typedef typename ImageType::PixelType       PixelType;
+  typedef typename ImageType::IndexType       IndexType;
+  typedef typename ImageType::LabelObjectType LabelObjectType;
 
   /** ImageDimension constants */
   itkStaticConstMacro(ImageDimension, unsigned int, TImage::ImageDimension);
@@ -85,16 +86,17 @@ public:
 
 protected:
   RelabelLabelMapFilter()
-    {
+  {
     this->SetReverseOrdering( true );
-    }
+  }
+
   ~RelabelLabelMapFilter() {}
 
 private:
   RelabelLabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
+
 };                                     // end of class
 } // end namespace itk
-
 
 #endif

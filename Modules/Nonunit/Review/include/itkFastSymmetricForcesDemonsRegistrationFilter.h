@@ -70,16 +70,16 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
-class FastSymmetricForcesDemonsRegistrationFilter:
+class FastSymmetricForcesDemonsRegistrationFilter :
   public PDEDeformableRegistrationFilter< TFixedImage, TMovingImage,
                                           TDisplacementField >
 {
 public:
   /** Standard class typedefs. */
-  typedef FastSymmetricForcesDemonsRegistrationFilter                                     Self;
+  typedef FastSymmetricForcesDemonsRegistrationFilter                                      Self;
   typedef PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField > Superclass;
-  typedef SmartPointer< Self >                                                            Pointer;
-  typedef SmartPointer< const Self >                                                      ConstPointer;
+  typedef SmartPointer< Self >                                                             Pointer;
+  typedef SmartPointer< const Self >                                                       ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -117,8 +117,8 @@ public:
    *
    */
   typedef ESMDemonsRegistrationFunction<
-    FixedImageType,
-    MovingImageType, DisplacementFieldType >                DemonsRegistrationFunctionType;
+      FixedImageType,
+      MovingImageType, DisplacementFieldType >                DemonsRegistrationFunctionType;
 
   typedef typename DemonsRegistrationFunctionType::GradientType GradientType;
   virtual void SetUseGradientType(GradientType gtype);
@@ -151,24 +151,24 @@ protected:
 
   /** FiniteDifferenceFunction type. */
   typedef typename
-  Superclass::FiniteDifferenceFunctionType FiniteDifferenceFunctionType;
+    Superclass::FiniteDifferenceFunctionType FiniteDifferenceFunctionType;
 
   /** Take timestep type from the FiniteDifferenceFunction. */
   typedef typename
-  FiniteDifferenceFunctionType::TimeStepType TimeStepType;
+    FiniteDifferenceFunctionType::TimeStepType TimeStepType;
 
   /** Apply update. */
   virtual void ApplyUpdate(const TimeStepType& dt);
 
   /** other typedefs */
   typedef MultiplyImageFilter<
-    DisplacementFieldType,
-    itk::Image<TimeStepType, ImageDimension>,
-    DisplacementFieldType >                                MultiplyByConstantType;
+      DisplacementFieldType,
+      itk::Image<TimeStepType, ImageDimension>,
+      DisplacementFieldType >                                MultiplyByConstantType;
 
   typedef AddImageFilter<
-    DisplacementFieldType,
-    DisplacementFieldType, DisplacementFieldType >          AdderType;
+      DisplacementFieldType,
+      DisplacementFieldType, DisplacementFieldType >          AdderType;
 
   typedef typename MultiplyByConstantType::Pointer MultiplyByConstantPointer;
   typedef typename AdderType::Pointer              AdderPointer;

@@ -103,7 +103,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
 
   if( argc < 5 )
@@ -123,7 +124,7 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef  unsigned char  PixelType;
+  typedef  unsigned char PixelType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -133,9 +134,8 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< PixelType,  2 >   ImageType;
+  typedef itk::Image< PixelType,  2 > ImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -144,9 +144,8 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ThresholdImageFilter< ImageType >  FilterType;
+  typedef itk::ThresholdImageFilter< ImageType > FilterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -156,7 +155,7 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -167,9 +166,8 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -187,7 +185,6 @@ int main( int argc, char * argv[] )
   writer->SetInput( filter->GetOutput() );
   reader->SetFileName( argv[1] );
 
-
   //  Software Guide : BeginLatex
   //
   //  The image obtained with the reader is passed as input to the
@@ -201,7 +198,6 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   filter->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -217,7 +213,6 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   filter->SetOutsideValue( 0 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -244,10 +239,8 @@ int main( int argc, char * argv[] )
   filter->Update();
   // Software Guide : EndCodeSnippet
 
-
   writer->SetFileName( argv[2] );
   writer->Update();
-
 
   //  Software Guide : BeginLatex
   //
@@ -262,7 +255,6 @@ int main( int argc, char * argv[] )
   filter->ThresholdAbove( 180 );
   filter->Update();
   // Software Guide : EndCodeSnippet
-
 
   writer->SetFileName( argv[3] );
   writer->Update();
@@ -280,10 +272,8 @@ int main( int argc, char * argv[] )
   filter->Update();
   // Software Guide : EndCodeSnippet
 
-
   writer->SetFileName( argv[4] );
   writer->Update();
-
 
   //  Software Guide : BeginLatex
   //
@@ -302,7 +292,6 @@ int main( int argc, char * argv[] )
   //  \end{itemize}
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

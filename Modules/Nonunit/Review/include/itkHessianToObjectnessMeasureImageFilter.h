@@ -59,7 +59,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TInputImage, typename TOutputImage >
-class HessianToObjectnessMeasureImageFilter:public
+class HessianToObjectnessMeasureImageFilter : public
   ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -78,7 +78,7 @@ public:
   typedef typename OutputImageType::RegionType OutputImageRegionType;
 
   /** Image dimension */
-  itkStaticConstMacro(ImageDimension, unsigned int,  InputImageType ::ImageDimension);
+  itkStaticConstMacro(ImageDimension, unsigned int,  InputImageType::ImageDimension);
 
   typedef double                                                                    EigenValueType;
   typedef itk::FixedArray< EigenValueType, itkGetStaticConstMacro(ImageDimension) > EigenValueArrayType;
@@ -143,7 +143,8 @@ private:
   HessianToObjectnessMeasureImageFilter(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 
   // functor used to sort the eigenvalues are to be sorted
   // |e1|<=|e2|<=...<=|eN|
@@ -152,11 +153,13 @@ private:
     * \ingroup ITKReview
     */
   struct AbsLessEqualCompare {
-    bool operator()(EigenValueType a, EigenValueType b)
+    bool
+    operator()(EigenValueType a, EigenValueType b)
     {
       return vnl_math_abs(a) <= vnl_math_abs(b);
     }
-  };
+
+    };
 
   double       m_Alpha;
   double       m_Beta;

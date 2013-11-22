@@ -40,9 +40,9 @@ namespace itk {
  * \ingroup ITKLabelMap
  */
 template<typename TImage, typename TAttributeAccessor=
-    typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
+           typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
 class AttributeOpeningLabelMapFilter :
-    public InPlaceLabelMapFilter<TImage>
+  public InPlaceLabelMapFilter<TImage>
 {
 public:
   /** Standard class typedefs. */
@@ -52,11 +52,11 @@ public:
   typedef SmartPointer<const Self>       ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage                              ImageType;
-  typedef typename ImageType::Pointer         ImagePointer;
-  typedef typename ImageType::ConstPointer    ImageConstPointer;
-  typedef typename ImageType::PixelType       PixelType;
-  typedef typename ImageType::IndexType       IndexType;
+  typedef TImage                           ImageType;
+  typedef typename ImageType::Pointer      ImagePointer;
+  typedef typename ImageType::ConstPointer ImageConstPointer;
+  typedef typename ImageType::PixelType    PixelType;
+  typedef typename ImageType::IndexType    IndexType;
 
   typedef typename Superclass::LabelObjectType LabelObjectType;
 
@@ -82,7 +82,7 @@ public:
     (Concept::Convertible<int, InputImagePixelType>));
   itkConceptMacro(InputOStreamWritableCheck,
     (Concept::OStreamWritable<InputImagePixelType>));*/
-  // End concept checking
+// End concept checking
 #endif
 
   /**
@@ -103,7 +103,7 @@ public:
 
 protected:
   AttributeOpeningLabelMapFilter();
-  ~AttributeOpeningLabelMapFilter() {};
+  ~AttributeOpeningLabelMapFilter() {}
 
   void GenerateData();
 
@@ -111,7 +111,7 @@ protected:
 
 private:
   AttributeOpeningLabelMapFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                 //purposely not implemented
 
   AttributeValueType m_Lambda;
   bool               m_ReverseOrdering;

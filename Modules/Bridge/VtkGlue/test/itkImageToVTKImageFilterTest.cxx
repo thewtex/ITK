@@ -20,7 +20,8 @@
 
 #include "itkRandomImageSource.h"
 
-int itkImageToVTKImageFilterTest(int, char *[])
+int
+itkImageToVTKImageFilterTest(int, char *[])
 {
   typedef itk::Image<float, 2 >                 ImageType;
   typedef itk::RandomImageSource<ImageType>     SourceType;
@@ -32,7 +33,7 @@ int itkImageToVTKImageFilterTest(int, char *[])
   source->SetSize(size);
 
   ConnectorType::Pointer connector = ConnectorType::New();
-  connector->SetInput (source->GetOutput());
+  connector->SetInput (source->GetOutput() );
 
   connector->Update();
 

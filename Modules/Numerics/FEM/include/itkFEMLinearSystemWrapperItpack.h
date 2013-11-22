@@ -31,9 +31,9 @@ typedef double doublereal;
 
 extern "C" {
 typedef
-int ( *ItkItpackSolverFunction )(integer *, integer *, integer *, doublereal *, doublereal *, doublereal *, integer *,
-                                 integer *, doublereal *,
-                                 integer *, doublereal *, integer *);
+  int ( *ItkItpackSolverFunction )(integer *, integer *, integer *, doublereal *, doublereal *, doublereal *, integer *,
+                                   integer *, doublereal *,
+                                   integer *, doublereal *, integer *);
 }
 
 namespace itk
@@ -90,7 +90,8 @@ public:
    * Set the maximum number of iterations
    * \param i maximum number of iterations that may be performed
    */
-  void SetMaximumNumberIterations(int i)
+  void
+  SetMaximumNumberIterations(int i)
   {
     m_IPARM[0] = i;
   }
@@ -98,7 +99,8 @@ public:
   /**
    * Get the maximum number iterations that may be performed
    */
-  int  GetMaximumNumberIterations() const
+  int
+  GetMaximumNumberIterations() const
   {
     return m_IPARM[0];
   }
@@ -108,7 +110,8 @@ public:
   /**
    * Get a flag indicating the type of error reporting
    */
-  int  GetErrorReportingLevel() const
+  int
+  GetErrorReportingLevel() const
   {
     return m_IPARM[1];
   }
@@ -117,7 +120,8 @@ public:
    * Set the communication switch - meaningless in this implementation
    * \param i flag value
    */
-  void SetCommunicationSwitch(int i)
+  void
+  SetCommunicationSwitch(int i)
   {
     m_IPARM[2] = i;
   }
@@ -125,7 +129,8 @@ public:
   /**
    * Get the communication flag - meaningless in this implementation
    */
-  int  GetCommunicationSwitch() const
+  int
+  GetCommunicationSwitch() const
   {
     return m_IPARM[2];
   }
@@ -135,7 +140,8 @@ public:
   /**
    * Get the output number - meaningless in this implementation
    */
-  int  GetOutputNumber() const
+  int
+  GetOutputNumber() const
   {
     return m_IPARM[3];
   }
@@ -144,7 +150,8 @@ public:
    * Set flag indicating symmetric matrix is being used
    * \param i 1=symmetric, 0=non-symmetric
    */
-  void SetSymmetricMatrixFlag(int i)
+  void
+  SetSymmetricMatrixFlag(int i)
   {
     m_IPARM[4] = i;
   }
@@ -152,7 +159,8 @@ public:
   /**
    * Get flag indicating use of symmetric matrix (1=symmetric, 0=non-symmetric)
    */
-  int  GetSymmetricMatrixFlag()
+  int
+  GetSymmetricMatrixFlag()
   {
     return m_IPARM[4];
   }
@@ -161,7 +169,8 @@ public:
    * Set flag for ???
    * \param i ??
    */
-  void SetAdaptiveSwitch(int i)
+  void
+  SetAdaptiveSwitch(int i)
   {
     m_IPARM[5] = i;
   }
@@ -169,7 +178,8 @@ public:
   /**
    * Get flag indicating ??
    */
-  int  GetAdaptiveSwitch() const
+  int
+  GetAdaptiveSwitch() const
   {
     return m_IPARM[5];
   }
@@ -178,7 +188,8 @@ public:
    * Set flag for ??
    * \param i ??
    */
-  void SetAdaptiveCaseSwitch(int i)
+  void
+  SetAdaptiveCaseSwitch(int i)
   {
     m_IPARM[6] = i;
   }
@@ -186,7 +197,8 @@ public:
   /**
    * Get flag indicating ??
    */
-  int  GetAdaptiveCaseSwitch() const
+  int
+  GetAdaptiveCaseSwitch() const
   {
     return m_IPARM[6];
   }
@@ -196,7 +208,8 @@ public:
    * \param i size of the workspace vector
    * \note this value is set by default
    */
-  void SetWorkspaceUsed(int i)
+  void
+  SetWorkspaceUsed(int i)
   {
     m_IPARM[7] = i;
   }
@@ -205,7 +218,8 @@ public:
    * Get the size of the workspace used by solver
    * \note after solver is called this is the amount of workspace actually used
    */
-  int  GetWorkspaceUsed()
+  int
+  GetWorkspaceUsed()
   {
     return m_IPARM[7];
   }
@@ -214,7 +228,8 @@ public:
    * Set flag indicating use of red black ordering
    * \param i 1=red black ordering used, 0=not
    */
-  void SetRedBlackOrderingSwitch(int i)
+  void
+  SetRedBlackOrderingSwitch(int i)
   {
     m_IPARM[8] = i;
   }
@@ -222,7 +237,8 @@ public:
   /**
    * Get the flag indicating use of red black ordering
    */
-  int  GetRedBlackOrderingSwitch()
+  int
+  GetRedBlackOrderingSwitch()
   {
     return m_IPARM[8];
   }
@@ -231,7 +247,8 @@ public:
    * Set flag indicating ??
    * \param i ??
    */
-  void SetRemoveSwitch(int i)
+  void
+  SetRemoveSwitch(int i)
   {
     m_IPARM[9] = i;
   }
@@ -239,7 +256,8 @@ public:
   /**
    * Get flag indicating ??
    */
-  int  GetRemoveSwitch()
+  int
+  GetRemoveSwitch()
   {
     return m_IPARM[9];
   }
@@ -248,7 +266,8 @@ public:
    * Set the flag indicating use of timer routines - meaningless in this implementation
    * \param i flag
    */
-  void SetTimingSwitch(int i)
+  void
+  SetTimingSwitch(int i)
   {
     m_IPARM[10] = i;
   }
@@ -256,7 +275,8 @@ public:
   /**
    * Get the flag indicating use of the timer routines - meaningless in this implementation
    */
-  int  GetTimingSwitch()
+  int
+  GetTimingSwitch()
   {
     return m_IPARM[10];
   }
@@ -265,7 +285,8 @@ public:
    * Set the flag for level of error reporting - meaningless in this implementation
    * \param i flag for level of error analysis
    */
-  void SetErrorAnalysisSwitch(int i)
+  void
+  SetErrorAnalysisSwitch(int i)
   {
     m_IPARM[11] = i;
   }
@@ -273,7 +294,8 @@ public:
   /**
    * Get the flag for level of error reporting - meaningless in this implementation
    */
-  int  GetErrorAnalysisSwitch() const
+  int
+  GetErrorAnalysisSwitch() const
   {
     return m_IPARM[11];
   }
@@ -282,7 +304,8 @@ public:
    * Set the level of accuracy for an acceptable solution
    * \param i accuracy desired
    */
-  void   SetAccuracy(double i)
+  void
+  SetAccuracy(double i)
   {
     m_RPARM[0] = i;
   }
@@ -290,7 +313,8 @@ public:
   /**
    * Get the level of accuracy
    */
-  double GetAccuracy() const
+  double
+  GetAccuracy() const
   {
     return m_RPARM[0];
   }
@@ -299,7 +323,8 @@ public:
    * Set ??
    * \param i larges jacobian eigenvalue estimate
    */
-  void   SetLargestJacobiEigenvalueEstimate(double i)
+  void
+  SetLargestJacobiEigenvalueEstimate(double i)
   {
     m_RPARM[1] = i;
   }
@@ -307,7 +332,8 @@ public:
   /**
    * Get ??
    */
-  double GetLargestJacobiEigenvalueEstimate() const
+  double
+  GetLargestJacobiEigenvalueEstimate() const
   {
     return m_RPARM[1];
   }
@@ -316,7 +342,8 @@ public:
    * Set ??
    * \param i smalles jacobian eigenvalue estimate
    */
-  void   SetSmallestJacobiEigenvalueEstimate(double i)
+  void
+  SetSmallestJacobiEigenvalueEstimate(double i)
   {
     m_RPARM[2] = i;
   }
@@ -324,7 +351,8 @@ public:
   /**
    * Get ??
    */
-  double GetSmallestJacobiEigenvalueEstimate()
+  double
+  GetSmallestJacobiEigenvalueEstimate()
   {
     return m_RPARM[2];
   }
@@ -333,7 +361,8 @@ public:
    * Set the damping factor used by ??
    * \param i damping factor
    */
-  void   SetDampingFactor(double i)
+  void
+  SetDampingFactor(double i)
   {
     m_RPARM[3] = i;
   }
@@ -341,7 +370,8 @@ public:
   /**
    * Get the damping factor used by ??
    */
-  double GetDampingFactor() const
+  double
+  GetDampingFactor() const
   {
     return m_RPARM[3];
   }
@@ -350,7 +380,8 @@ public:
    * Set the over-relaxation parameter ??
    * \param i parameter
    */
-  void   SetOverrelaxationParameter(double i)
+  void
+  SetOverrelaxationParameter(double i)
   {
     m_RPARM[4] = i;
   }
@@ -358,7 +389,8 @@ public:
   /**
    * Get the over-relaxation parameter ??
    */
-  double GetOverrelaxationParameter()
+  double
+  GetOverrelaxationParameter()
   {
     return m_RPARM[4];
   }
@@ -367,7 +399,8 @@ public:
    * Set the ??
    * \param i ??
    */
-  void   SetEstimatedSpectralRadiusSSOR(double i)
+  void
+  SetEstimatedSpectralRadiusSSOR(double i)
   {
     m_RPARM[5] = i;
   }
@@ -375,7 +408,8 @@ public:
   /**
    * Get the ??
    */
-  double GetEstimatedSpectralRadiusSSOR() const
+  double
+  GetEstimatedSpectralRadiusSSOR() const
   {
     return m_RPARM[5];
   }
@@ -384,7 +418,8 @@ public:
    * Set the ??
    * \param i ??
    */
-  void   SetEstimatedSpectralRadiusLU(double i)
+  void
+  SetEstimatedSpectralRadiusLU(double i)
   {
     m_RPARM[6] = i;
   }
@@ -392,7 +427,8 @@ public:
   /**
    * Get the ??
    */
-  double GetEstimatedSpectralRadiusLU() const
+  double
+  GetEstimatedSpectralRadiusLU() const
   {
     return m_RPARM[6];
   }
@@ -401,7 +437,8 @@ public:
    * Set the tolerance level
    * \param i tolerance
    */
-  void   SetTolerance(double i)
+  void
+  SetTolerance(double i)
   {
     m_RPARM[7] = i;
   }
@@ -409,7 +446,8 @@ public:
   /**
    * Get the tolerance level
    */
-  double GetTolerance()
+  double
+  GetTolerance()
   {
     return m_RPARM[7];
   }
@@ -418,7 +456,8 @@ public:
    * Set the time to convergence
    * \param i ??
    */
-  void   SetTimeToConvergence(double i)
+  void
+  SetTimeToConvergence(double i)
   {
     m_RPARM[8] = i;
   }
@@ -426,7 +465,8 @@ public:
   /**
    * Get the time to convergence
    */
-  double GetTimeToConvergence()
+  double
+  GetTimeToConvergence()
   {
     return m_RPARM[8];
   }
@@ -435,7 +475,8 @@ public:
    * Set the time for call
    * \param i ??
    */
-  void   SetTimeForCall(double i)
+  void
+  SetTimeForCall(double i)
   {
     m_RPARM[9] = i;
   }
@@ -443,7 +484,8 @@ public:
   /**
    * Get the time for call
    */
-  double GetTimeForCall()
+  double
+  GetTimeForCall()
   {
     return m_RPARM[9];
   }
@@ -452,7 +494,8 @@ public:
    * Set digits in error
    * \param i number of digits in error
    */
-  void   SetDigitsInError(double i)
+  void
+  SetDigitsInError(double i)
   {
     m_RPARM[10] = i;
   }
@@ -460,7 +503,8 @@ public:
   /**
    * Get the number of digits in the error
    */
-  double GetDigitsInError() const
+  double
+  GetDigitsInError() const
   {
     return m_RPARM[10];
   }
@@ -469,7 +513,8 @@ public:
    * Set the number of digits in the residual
    * \param i number of digits in the residual
    */
-  void   SetDigitsInResidual(double i)
+  void
+  SetDigitsInResidual(double i)
   {
     m_RPARM[11] = i;
   }
@@ -477,7 +522,8 @@ public:
   /**
    * Get the number of digits in the residual
    */
-  double GetDigitsInResidual() const
+  double
+  GetDigitsInResidual() const
   {
     return m_RPARM[11];
   }
@@ -485,7 +531,8 @@ public:
   /**
    * Set numerical solving method to jacobian conjugate gradient
    */
-  void JacobianConjugateGradient()
+  void
+  JacobianConjugateGradient()
   {
     m_Method = 0;
   }
@@ -493,7 +540,8 @@ public:
   /**
    * Set numerical solving method to jacobian semi iterative
    */
-  void JacobianSemiIterative()
+  void
+  JacobianSemiIterative()
   {
     m_Method = 1;
   }
@@ -501,7 +549,8 @@ public:
   /**
    * Set numerical solving method to successive over-relaxation
    */
-  void SuccessiveOverrelaxation()
+  void
+  SuccessiveOverrelaxation()
   {
     m_Method = 2;
   }
@@ -510,7 +559,8 @@ public:
    * Set numerical solving method to symmetric successive over-relaxation
    * conjugate gradient
    */
-  void SymmetricSuccessiveOverrelaxationConjugateGradient()
+  void
+  SymmetricSuccessiveOverrelaxationConjugateGradient()
   {
     m_Method = 3;
   }
@@ -519,7 +569,8 @@ public:
    * Set numerical solving method to symmetric successive over-relaxation
    * successive over-relaxation
    */
-  void SymmetricSuccessiveOverrelaxationSuccessiveOverrelaxation()
+  void
+  SymmetricSuccessiveOverrelaxationSuccessiveOverrelaxation()
   {
     m_Method = 4;
   }
@@ -527,14 +578,16 @@ public:
   /**
    * Set numerical solving method to reduced system conjugate gradient
    */
-  void ReducedSystemConjugateGradient()
+  void
+  ReducedSystemConjugateGradient()
   {
     m_Method = 5;
   }
 
   /**
    * Set numerical solving method to reduced system semi-iteration */
-  void ReducedSystemSemiIteration()
+  void
+  ReducedSystemSemiIteration()
   {
     m_Method = 6;
   }
@@ -551,7 +604,8 @@ public:
    * \param maxNonZeroValues maximum number of entries allowed in matrix
    * \note this must be called before any matrices are initialized
    */
-  virtual void SetMaximumNonZeroValuesInMatrix(unsigned int maxNonZeroValues)
+  virtual void
+  SetMaximumNonZeroValuesInMatrix(unsigned int maxNonZeroValues)
   {
     m_MaximumNonZeroValues =
       maxNonZeroValues;
@@ -632,7 +686,8 @@ public:
   virtual void  MultiplyMatrixMatrix(unsigned int resultMatrixIndex, unsigned int leftMatrixIndex,
                                      unsigned int rightMatrixIndex);
 
-  virtual void  MultiplyMatrixVector(unsigned int resultVectorIndex, unsigned int matrixIndex, unsigned int vectorIndex);
+  virtual void  MultiplyMatrixVector(unsigned int resultVectorIndex, unsigned int matrixIndex,
+                                     unsigned int vectorIndex);
 
   /**
    * Perform a matrix*solution operation and store the result in the linear system
@@ -640,7 +695,8 @@ public:
    * \param solutionIndex index of solution to multiply
    * \param resultVectorIndex index of vector where result is store
    */
-  virtual void MultiplyMatrixSolution(unsigned int resultVectorIndex, unsigned int matrixIndex, unsigned int solutionIndex);
+  virtual void MultiplyMatrixSolution(unsigned int resultVectorIndex, unsigned int matrixIndex,
+                                      unsigned int solutionIndex);
 
 private:
 
@@ -692,10 +748,10 @@ public:
   FEMExceptionItpackSolver(const char *file, unsigned int lineNumber, std::string location, integer errorCode);
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMExceptionItpackSolver()
+  virtual
+  ~FEMExceptionItpackSolver()
   throw ( )
-  {
-  }
+  {}
 
   /** Type related information. */
   itkTypeMacro(FEMExceptionItpackSolver, FEMException);

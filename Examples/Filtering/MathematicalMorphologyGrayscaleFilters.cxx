@@ -42,15 +42,14 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkGrayscaleErodeImageFilter.h"
 #include "itkGrayscaleDilateImageFilter.h"
 #include "itkBinaryBallStructuringElement.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -59,7 +58,6 @@ int main( int argc, char * argv[] )
     std::cerr << " outputImageFileErosion  outputImageFileDilation" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -71,16 +69,15 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   const unsigned int Dimension = 2;
 
-  typedef unsigned char   InputPixelType;
-  typedef unsigned char   OutputPixelType;
+  typedef unsigned char InputPixelType;
+  typedef unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
-
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   //  Software Guide : BeginLatex
   //
@@ -102,8 +99,8 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::BinaryBallStructuringElement<
-                      InputPixelType,
-                      Dimension  >             StructuringElementType;
+      InputPixelType,
+      Dimension  >             StructuringElementType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -113,25 +110,22 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   typedef itk::GrayscaleErodeImageFilter<
-                            InputImageType,
-                            OutputImageType,
-                            StructuringElementType >  ErodeFilterType;
+      InputImageType,
+      OutputImageType,
+      StructuringElementType >  ErodeFilterType;
 
   typedef itk::GrayscaleDilateImageFilter<
-                            InputImageType,
-                            OutputImageType,
-                            StructuringElementType >  DilateFilterType;
+      InputImageType,
+      OutputImageType,
+      StructuringElementType >  DilateFilterType;
   // Software Guide : EndCodeSnippet
-
 
   // Creation of Reader and Writer filters
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writerDilation = WriterType::New();
   WriterType::Pointer writerErosion  = WriterType::New();
-
 
   //  Software Guide : BeginLatex
   //
@@ -174,7 +168,7 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  StructuringElementType  structuringElement;
+  StructuringElementType structuringElement;
 
   structuringElement.SetRadius( 1 );  // 3x3 structuring element
 
@@ -184,12 +178,10 @@ int main( int argc, char * argv[] )
   grayscaleDilate->SetKernel( structuringElement );
   // Software Guide : EndCodeSnippet
 
-
   reader->SetFileName( argv[1] );
 
   writerErosion->SetFileName(  argv[2] );
   writerDilation->SetFileName( argv[3] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -198,12 +190,10 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   grayscaleErode->SetInput(  reader->GetOutput() );
   grayscaleDilate->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -214,7 +204,6 @@ int main( int argc, char * argv[] )
   //  \index{itk::GrayscaleErodeImageFilter!Update()}
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   writerDilation->SetInput( grayscaleDilate->GetOutput() );
@@ -242,7 +231,6 @@ int main( int argc, char * argv[] )
   //  spurious details from segmented images.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

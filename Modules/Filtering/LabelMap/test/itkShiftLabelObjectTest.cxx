@@ -19,7 +19,8 @@
 #include <iostream>
 #include "itkLabelImageToLabelMapFilter.h"
 
-int itkShiftLabelObjectTest(int argc, char * argv[])
+int
+itkShiftLabelObjectTest(int argc, char * argv[])
 {
 
   if( argc != 1 )
@@ -66,7 +67,7 @@ int itkShiftLabelObjectTest(int argc, char * argv[])
 
   LabelImageToLabelMapFilterType::Pointer conversion = LabelImageToLabelMapFilterType::New();
   conversion->SetInput( image );
-  conversion->Update( );
+  conversion->Update();
 
   LabelMapType::Pointer map;
   map = conversion->GetOutput();
@@ -75,7 +76,6 @@ int itkShiftLabelObjectTest(int argc, char * argv[])
   o[0] = -1;
   o[1] = -1;
   map->GetLabelObject(1)->Shift( o );
-
 
   map->Print(std::cout);
 

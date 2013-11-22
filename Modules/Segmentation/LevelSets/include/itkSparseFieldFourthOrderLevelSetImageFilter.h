@@ -49,8 +49,8 @@ public:
 
   /** The definition for the normal vector type of the scalar image. */
   typedef Vector< NodeValueType,
-                   TImageType ::ImageDimension >
-  NodeDataType;
+                  TImageType::ImageDimension >
+    NodeDataType;
 
   /** Container for output data (normal vectors). */
   NodeDataType m_Data;
@@ -153,7 +153,7 @@ public:
  * \ingroup ITKLevelSets
  */
 template< typename TInputImage, typename TOutputImage >
-class SparseFieldFourthOrderLevelSetImageFilter:
+class SparseFieldFourthOrderLevelSetImageFilter :
   public SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -194,11 +194,11 @@ public:
 
   /** The filter type for processing the normal vectors of the level set. */
   typedef ImplicitManifoldNormalVectorFilter< OutputImageType, SparseImageType >
-  NormalVectorFilterType;
+    NormalVectorFilterType;
 
   /** The function type for processing the normal vector neighborhood. */
   typedef NormalVectorDiffusionFunction< SparseImageType >
-  NormalVectorFunctionType;
+    NormalVectorFunctionType;
 
   /** The radius type derived from the normal vector function. */
   //typedef typename NormalVectorFunctionType::RadiusType RadiusType;
@@ -231,7 +231,8 @@ public:
   /** Compute the number of layers that must be used in
       SparseFieldLevelSetImageFilter to accommodate the desired normal
       processing band. */
-  unsigned int GetMinimumNumberOfLayers() const
+  unsigned int
+  GetMinimumNumberOfLayers() const
   {
     return (int)vcl_ceil( m_CurvatureBandWidth
                           + itkGetStaticConstMacro(ImageDimension) );
@@ -239,7 +240,8 @@ public:
 
   /** This overrides SparseFieldLevelSetImageFilter's SetNumberOfLayers to make
       sure we have enough layers to do what we need. */
-  virtual void SetNumberOfLayers(const unsigned int n)
+  virtual void
+  SetNumberOfLayers(const unsigned int n)
   {
     unsigned int nm = vnl_math_max (this->GetMinimumNumberOfLayers (), n);
 
@@ -252,7 +254,8 @@ public:
 
   /** This method first calls the Superclass InitializeIteration method. Then
       it determines whether ProcessNormals should be called. */
-  virtual void InitializeIteration()
+  virtual void
+  InitializeIteration()
   {
     Superclass::InitializeIteration();
     ValueType rmschange = this->GetRMSChange();
@@ -358,12 +361,13 @@ private:
   ValueType m_NormalProcessUnsharpWeight;
 
   /** Constants used in the computations. */
-  static const SizeValueType  m_NumVertex;
-  static const ValueType      m_DimConst;
+  static const SizeValueType m_NumVertex;
+  static const ValueType     m_DimConst;
 
   SparseFieldFourthOrderLevelSetImageFilter(const Self &);
   //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

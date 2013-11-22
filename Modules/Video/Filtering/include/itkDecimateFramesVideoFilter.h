@@ -44,9 +44,9 @@ public:
   typedef DecimateFramesVideoFilter< VideoStreamType > Self;
   typedef VideoToVideoFilter< VideoStreamType,
                               VideoStreamType >        Superclass;
-  typedef SmartPointer< Self >                         Pointer;
-  typedef SmartPointer< const Self >                   ConstPointer;
-  typedef WeakPointer< const Self >                    ConstWeakPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
+  typedef WeakPointer< const Self >  ConstWeakPointer;
 
   typedef typename TVideoStream::FrameType FrameType;
   typedef typename FrameType::PixelType    PixelType;
@@ -58,13 +58,15 @@ public:
 
   /** Get/Set the spacing of the preserved frames */
   void SetPreservedFrameSpacing(SizeValueType numFrames);
+
   SizeValueType GetPreservedFrameSpacing();
 
 protected:
 
   /** Constructor and Destructor */
   DecimateFramesVideoFilter();
-  virtual ~DecimateFramesVideoFilter() {}
+  virtual
+  ~DecimateFramesVideoFilter() {}
 
   /** PrintSelf */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
@@ -72,13 +74,12 @@ protected:
   /** DecimateFramesVideoFilter is implemented as a temporal streaming and
    * spatially multithreaded filter, so we override ThreadedGenerateData */
   virtual void ThreadedGenerateData(
-                const FrameSpatialRegionType& outputRegionForThread,
-                int threadId);
+    const FrameSpatialRegionType& outputRegionForThread,
+    int threadId);
 
 private:
   DecimateFramesVideoFilter(const Self &); // purposely not implemented
   void operator=(const Self &);            // purposely not implemented
-
 
 };  // end class DecimateFramesVideoFilter
 

@@ -184,6 +184,7 @@ ImageConstIteratorWithOnlyIndex< TImage >
   it.GoToReverseBegin();
   return it;
 }
+
 #endif
 
 } // end namespace itk

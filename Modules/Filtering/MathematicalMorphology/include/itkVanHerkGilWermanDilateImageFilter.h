@@ -29,14 +29,16 @@ class MaxFunctor
 public:
   MaxFunctor(){}
   ~MaxFunctor(){}
-  inline TPixel operator()(const TPixel & A, const TPixel & B) const
+  inline TPixel
+  operator()(const TPixel & A, const TPixel & B) const
   {
     return vnl_math_max(A, B);
   }
+
 };
 
 template< typename TImage, typename TKernel >
-class VanHerkGilWermanDilateImageFilter:
+class VanHerkGilWermanDilateImageFilter :
   public VanHerkGilWermanErodeDilateImageFilter< TImage, TKernel, MaxFunctor< typename TImage::PixelType > >
 {
 public:
@@ -52,7 +54,6 @@ public:
   typedef SmartPointer< const Self > ConstPointer;
   typedef typename TImage::PixelType PixelType;
 
-
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
@@ -62,12 +63,15 @@ protected:
   {
     this->m_Boundary = NumericTraits< PixelType >::NonpositiveMin();
   }
-  virtual ~VanHerkGilWermanDilateImageFilter() {}
+
+  virtual
+  ~VanHerkGilWermanDilateImageFilter() {}
 
 private:
 
   VanHerkGilWermanDilateImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                    //purposely not implemented
+
 };
 } // namespace itk
 

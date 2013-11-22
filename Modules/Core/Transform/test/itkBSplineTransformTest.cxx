@@ -28,14 +28,14 @@
 
 #include "itkBSplineTransform.h"
 
-
 #include "itkTextOutput.h"
 
 /**
  * This module test the functionality of the BSplineTransform class.
  *
  */
-int itkBSplineTransformTest1()
+int
+itkBSplineTransformTest1()
 {
 
   // Comment the following if you want to use the itk text output window
@@ -46,9 +46,10 @@ int itkBSplineTransformTest1()
 
   const unsigned int SpaceDimension = 3;
   const unsigned int SplineOrder = 3;
+
   typedef double CoordinateRepType;
   typedef itk::BSplineTransform
-  <CoordinateRepType, SpaceDimension, SplineOrder> TransformType;
+    <CoordinateRepType, SpaceDimension, SplineOrder> TransformType;
 
   typedef TransformType::ParametersType ParametersType;
 
@@ -124,7 +125,7 @@ int itkBSplineTransformTest1()
   if( fixedParameters != returnedParameters )
     {
     std::cout << "Set fixed parameters do not equal returned fixed parameters."
-       << std::endl;
+              << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -479,7 +480,8 @@ int itkBSplineTransformTest1()
   return EXIT_SUCCESS;
 }
 
-int itkBSplineTransformTest2()
+int
+itkBSplineTransformTest2()
 {
   /**
    * This function tests the Set/GetCoefficientImage interface
@@ -492,6 +494,7 @@ int itkBSplineTransformTest2()
    * Define a vector field as Dimension number of images
    */
   const unsigned int Dimension = 2;
+
   typedef double PixelType;
 
   typedef itk::Image<PixelType, Dimension> ImageType;
@@ -601,7 +604,8 @@ int itkBSplineTransformTest2()
   return EXIT_SUCCESS;
 }
 
-int itkBSplineTransformTest3()
+int
+itkBSplineTransformTest3()
 {
 
   // This function tests the SetParametersByValue interface
@@ -611,9 +615,10 @@ int itkBSplineTransformTest3()
 
   const unsigned int SpaceDimension = 3;
   const unsigned int SplineOrder = 3;
+
   typedef double CoordinateRepType;
   typedef itk::BSplineTransform
-  <CoordinateRepType, SpaceDimension, SplineOrder> TransformType;
+    <CoordinateRepType, SpaceDimension, SplineOrder> TransformType;
 
   typedef TransformType::ParametersType ParametersType;
 
@@ -732,7 +737,8 @@ int itkBSplineTransformTest3()
   return EXIT_SUCCESS;
 }
 
-int itkBSplineTransformTest(int, char * [] )
+int
+itkBSplineTransformTest(int, char * [] )
 {
   bool failed;
 

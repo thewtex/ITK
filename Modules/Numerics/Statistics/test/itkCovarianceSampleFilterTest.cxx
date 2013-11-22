@@ -20,7 +20,8 @@
 #include "itkCovarianceSampleFilter.h"
 #include "itkImageRegionIterator.h"
 
-int itkCovarianceSampleFilterTest(int, char* [] )
+int
+itkCovarianceSampleFilterTest(int, char* [] )
 {
   std::cout << "CovarianceSampleFilter Test \n \n";
 
@@ -32,15 +33,14 @@ int itkCovarianceSampleFilterTest(int, char* [] )
   typedef itk::Image< MeasurementVectorType, 3 >                    ImageType;
   typedef itk::Image< unsigned char, 3 >                            MaskImageType;
 
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer    image = ImageType::New();
   ImageType::RegionType region;
-  ImageType::SizeType size;
-  ImageType::IndexType index;
+  ImageType::SizeType   size;
+  ImageType::IndexType  index;
   index.Fill(0);
   size.Fill(5);
   region.SetIndex(index);
   region.SetSize(size);
-
 
   image->SetBufferedRegion(region);
   image->Allocate();
@@ -48,12 +48,12 @@ int itkCovarianceSampleFilterTest(int, char* [] )
   typedef itk::ImageRegionIterator< ImageType > ImageIterator;
   ImageIterator iter(image, region);
 
-  unsigned int count = 0;
+  unsigned int          count = 0;
   MeasurementVectorType temp;
   temp.Fill(0);
 
   // fill the image
-  while (!iter.IsAtEnd())
+  while (!iter.IsAtEnd() )
     {
     temp[0] = count;
     iter.Set(temp);
@@ -78,8 +78,8 @@ int itkCovarianceSampleFilterTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-  typedef ImageToListSampleFilterType::ListSampleType                 ListSampleType;
-  typedef itk::Statistics::CovarianceSampleFilter< ListSampleType >   CovarianceSampleFilterType;
+  typedef ImageToListSampleFilterType::ListSampleType               ListSampleType;
+  typedef itk::Statistics::CovarianceSampleFilter< ListSampleType > CovarianceSampleFilterType;
 
   CovarianceSampleFilterType::Pointer covarianceFilter = CovarianceSampleFilterType::New();
 
@@ -89,8 +89,10 @@ int itkCovarianceSampleFilterTest(int, char* [] )
   try
     {
     covarianceFilter->Update();
-    std::cerr << "Exception should have been thrown since \
-                 Update() is invoked without setting an input " << std::endl;
+    std::cerr <<
+    "Exception should have been thrown since \
+                 Update() is invoked without setting an input "                                               <<
+    std::endl;
     return EXIT_FAILURE;
     }
   catch ( itk::ExceptionObject & excp )
@@ -120,35 +122,35 @@ int itkCovarianceSampleFilterTest(int, char* [] )
 
   covarianceFilter->Print( std::cout );
 
-  const double   epsilon = 1e-6;
+  const double epsilon = 1e-6;
 
   // CHECK THE RESULTS
   const CovarianceSampleFilterType::MeasurementVectorDecoratedType * meanDecorator =
-                                                covarianceFilter->GetMeanOutput();
+    covarianceFilter->GetMeanOutput();
 
-  CovarianceSampleFilterType::MeasurementVectorRealType    mean  = meanDecorator->Get();
+  CovarianceSampleFilterType::MeasurementVectorRealType mean  = meanDecorator->Get();
   std::cout << "Mean:   " << mean << std::endl;
-  CovarianceSampleFilterType::MeasurementVectorRealType    mean2 = covarianceFilter->GetMean();
+  CovarianceSampleFilterType::MeasurementVectorRealType mean2 = covarianceFilter->GetMean();
 
   if ( ( vcl_fabs( mean[0] - mean2[0]) > epsilon )  ||
        ( vcl_fabs( mean[1] - mean2[1]) > epsilon)  ||
        ( vcl_fabs( mean[2] - mean2[2]) > epsilon) )
     {
-    std::cerr << "Mean parameter value retrieved using GetMean() and the decorator\
-                  are not the same:: " <<  mean << "," << mean2 << std::endl;
+    std::cerr <<
+    "Mean parameter value retrieved using GetMean() and the decorator\
+                  are not the same:: "                                                                       << mean <<
+    "," << mean2 << std::endl;
     return EXIT_FAILURE;
     }
 
-
   const CovarianceSampleFilterType::MatrixDecoratedType * decorator = covarianceFilter->GetCovarianceMatrixOutput();
-  CovarianceSampleFilterType::MatrixType    covarianceMatrix  = decorator->Get();
+  CovarianceSampleFilterType::MatrixType                  covarianceMatrix  = decorator->Get();
 
   std::cout << "Covariance matrix:   " << covarianceMatrix << std::endl;
 
-
   typedef itk::Statistics::MeanSampleFilter< ListSampleType > MeanSampleFilterType;
   MeanSampleFilterType::Pointer meanFilter = MeanSampleFilterType::New();
-  meanFilter->SetInput( sampleGeneratingFilter->GetOutput());
+  meanFilter->SetInput( sampleGeneratingFilter->GetOutput() );
 
   try
     {
@@ -165,8 +167,10 @@ int itkCovarianceSampleFilterTest(int, char* [] )
        ( vcl_fabs( meanCalculatedUsingMeanSampleFilter[1] - mean[1]) > epsilon)  ||
        ( vcl_fabs( meanCalculatedUsingMeanSampleFilter[2] - mean[2]) > epsilon) )
     {
-    std::cerr << "Mean calculated using the MeanSampleFilter is different from\
-                 the one calculated using the covariance filter " << std::endl;
+    std::cerr <<
+    "Mean calculated using the MeanSampleFilter is different from\
+                 the one calculated using the covariance filter "
+              << std::endl;
     std::cerr << "Mean computed with covariance filter = " << mean << std::endl;
     std::cerr << "Mean computed with mean filter = " << meanCalculatedUsingMeanSampleFilter << std::endl;
     return EXIT_FAILURE;

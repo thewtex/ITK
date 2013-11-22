@@ -20,7 +20,8 @@
 #include "itkMeshSpatialObject.h"
 #include "itkTetrahedronCell.h"
 
-int itkMeshSpatialObjectTest(int, char * [] )
+int
+itkMeshSpatialObjectTest(int, char * [] )
 {
   typedef itk::DefaultDynamicMeshTraits< float , 3, 3 > MeshTrait;
   typedef itk::Mesh<float,3,MeshTrait>                  MeshType;
@@ -43,7 +44,7 @@ int itkMeshSpatialObjectTest(int, char * [] )
   int i;
   for(i=0; i < 4; ++i)
     {
-    mesh->SetPoint(i, PointType(testPointCoords[i]));
+    mesh->SetPoint(i, PointType(testPointCoords[i]) );
     }
 
   mesh->SetCellsAllocationMethod( MeshType::CellsAllocatedDynamicallyCellByCell );
@@ -61,7 +62,7 @@ int itkMeshSpatialObjectTest(int, char * [] )
 
   std::cout << "Testing GetMesh(): ";
 
-  if(mesh != meshSO->GetMesh())
+  if(mesh != meshSO->GetMesh() )
     {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
@@ -71,19 +72,18 @@ int itkMeshSpatialObjectTest(int, char * [] )
   std::cout << "Testing Bounding Box: ";
 
   if( (meshSO->GetBoundingBox()->GetBounds()[0] != 0)
-   || (meshSO->GetBoundingBox()->GetBounds()[1] != 9)
-   || (meshSO->GetBoundingBox()->GetBounds()[2] != 0)
-   || (meshSO->GetBoundingBox()->GetBounds()[3] != 9)
-   || (meshSO->GetBoundingBox()->GetBounds()[4] != 0)
-   || (meshSO->GetBoundingBox()->GetBounds()[5] != 9)
-   )
+      || (meshSO->GetBoundingBox()->GetBounds()[1] != 9)
+      || (meshSO->GetBoundingBox()->GetBounds()[2] != 0)
+      || (meshSO->GetBoundingBox()->GetBounds()[3] != 9)
+      || (meshSO->GetBoundingBox()->GetBounds()[4] != 0)
+      || (meshSO->GetBoundingBox()->GetBounds()[5] != 9)
+      )
     {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
     }
 
   std::cout<<"[PASSED]"<<std::endl;
-
 
   // Testing is inside
   std::cout << "Testing IsInside: ";
@@ -97,14 +97,14 @@ int itkMeshSpatialObjectTest(int, char * [] )
   outside[1] = 3;
   outside[2] = 0;
 
-  if(!meshSO->IsInside(inside) || meshSO->IsInside(outside))
+  if(!meshSO->IsInside(inside) || meshSO->IsInside(outside) )
     {
     std::cout<<"[FAILED]"<<std::endl;
-    if(!meshSO->IsInside(inside))
+    if(!meshSO->IsInside(inside) )
       {
       std::cout << inside << " is not inside the mesh!" << std::endl;
       }
-    if(meshSO->IsInside(outside))
+    if(meshSO->IsInside(outside) )
       {
       std::cout << outside << " is inside the mesh!" << std::endl;
       }
@@ -131,10 +131,9 @@ int itkMeshSpatialObjectTest(int, char * [] )
 
   std::cout<<"[PASSED]"<<std::endl;
 
-
   // Testing IsInside() for triangle mesh
   std::cout << "Testing IsInside() Triangle: ";
-  typedef itk::TriangleCell<CellInterfaceType>          TriangleCellType;
+  typedef itk::TriangleCell<CellInterfaceType> TriangleCellType;
 
   // Create an itkMesh
   MeshType::Pointer meshTriangle = MeshType::New();
@@ -146,7 +145,7 @@ int itkMeshSpatialObjectTest(int, char * [] )
 
   for(i=0; i < 4; ++i)
     {
-    meshTriangle->SetPoint(i, PointType(testTrianglePointCoords[i]));
+    meshTriangle->SetPoint(i, PointType(testTrianglePointCoords[i]) );
     }
 
   MeshType::PointIdentifier trianglePoint2[] = {1,2,3};
@@ -174,7 +173,7 @@ int itkMeshSpatialObjectTest(int, char * [] )
   pOut[0] = 60;
   pOut[1] = 102;
   pOut[2] = 64;
-  if(!meshTriangleSO->IsInside(pIn) || meshTriangleSO->IsInside(pOut))
+  if(!meshTriangleSO->IsInside(pIn) || meshTriangleSO->IsInside(pOut) )
     {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;

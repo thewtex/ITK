@@ -36,22 +36,22 @@ LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
 template< typename TInput, typename TLevelSetContainer >
 LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
 ::~LevelSetEquationChanAndVeseExternalTerm()
-{
-}
-
+{}
 
 template< typename TInput, typename TLevelSetContainer >
-void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
+void
+LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
 ::ComputeProduct( const LevelSetInputIndexType& iP, LevelSetOutputRealType& prod )
 {
   this->ComputeProductTerm( iP, prod );
-  LevelSetPointer levelSet = this->m_LevelSetContainer->GetLevelSet( this->m_CurrentLevelSetId );
+  LevelSetPointer        levelSet = this->m_LevelSetContainer->GetLevelSet( this->m_CurrentLevelSetId );
   LevelSetOutputRealType value = levelSet->Evaluate( iP );
   prod *= -(1 - this->m_Heaviside->Evaluate( -value ) );
 }
 
 template< typename TInput, typename TLevelSetContainer >
-void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
+void
+LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
 ::ComputeProductTerm( const LevelSetInputIndexType& iP, LevelSetOutputRealType& prod )
 {
   prod = -1 * NumericTraits< LevelSetOutputRealType >::One;
@@ -74,7 +74,7 @@ void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
       const IdListType * idList = levelSetMapItr->second.GetIdList();
 
       LevelSetIdentifierType kk;
-      LevelSetPointer levelSet;
+      LevelSetPointer        levelSet;
       LevelSetOutputRealType value;
 
       IdListConstIterator idListIt = idList->begin();
@@ -95,7 +95,7 @@ void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
   else
     {
     LevelSetIdentifierType kk;
-    LevelSetPointer levelSet;
+    LevelSetPointer        levelSet;
     LevelSetOutputRealType value;
 
     typename LevelSetContainerType::Iterator lsIt = this->m_LevelSetContainer->Begin();
@@ -115,9 +115,10 @@ void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
 }
 
 template< typename TInput, typename TLevelSetContainer >
-void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
+void
+LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
 ::UpdatePixel( const LevelSetInputIndexType& iP, const LevelSetOutputRealType & oldValue,
-             const LevelSetOutputRealType & newValue )
+               const LevelSetOutputRealType & newValue )
 {
   // Compute the product factor
   LevelSetOutputRealType prod;
@@ -129,7 +130,7 @@ void LevelSetEquationChanAndVeseExternalTerm< TInput, TLevelSetContainer >
 
   const LevelSetOutputRealType oldH = this->m_Heaviside->Evaluate( -oldValue );
   const LevelSetOutputRealType newH = this->m_Heaviside->Evaluate( -newValue );
-  const LevelSetOutputRealType change = oldH - newH;//(1 - newH) - (1 - oldH);
+  const LevelSetOutputRealType change = oldH - newH; //(1 - newH) - (1 - oldH);
 
   // Determine the change in the product factor
   const LevelSetOutputRealType productChange = -( prod * change );

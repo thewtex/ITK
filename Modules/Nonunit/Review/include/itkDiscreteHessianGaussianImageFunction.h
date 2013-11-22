@@ -43,7 +43,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TInputImage, typename TOutput = double >
-class DiscreteHessianGaussianImageFunction:
+class DiscreteHessianGaussianImageFunction :
   public ImageFunction< TInputImage,
                         SymmetricSecondRankTensor< TOutput, TInputImage::ImageDimension >,
                         TOutput >
@@ -83,14 +83,14 @@ public:
   /** Output type */
   typedef SymmetricSecondRankTensor< TOutput,
                                      TInputImage::ImageDimension >
-                                          TensorType;
+    TensorType;
   typedef typename Superclass::OutputType OutputType;
 
   typedef FixedArray< double, itkGetStaticConstMacro(ImageDimension2) > VarianceArrayType;
 
   typedef itk::GaussianDerivativeOperator< TOutput,
                                            itkGetStaticConstMacro(ImageDimension2) >
-  GaussianDerivativeOperatorType;
+    GaussianDerivativeOperatorType;
 
   /** Array to store gaussian derivative operators from zero to second order
     * (3*ImageDimension operators) */
@@ -107,7 +107,7 @@ public:
   /** Image function that performs convolution with the neighborhood
    * operator  */
   typedef NeighborhoodOperatorImageFunction
-  < InputImageType, TOutput >                           OperatorImageFunctionType;
+    < InputImageType, TOutput >                           OperatorImageFunctionType;
   typedef typename OperatorImageFunctionType::Pointer OperatorImageFunctionPointer;
 
   /** Interpolation modes */
@@ -134,7 +134,8 @@ public:
   itkSetVectorMacro(Variance, double, VarianceArrayType::Length);
 
   /** Convenience method for setting the variance for all dimensions */
-  virtual void SetVariance(double variance)
+  virtual void
+  SetVariance(double variance)
   {
     m_Variance.Fill(variance);
     this->Modified();
@@ -142,7 +143,8 @@ public:
 
   /** Convenience method for setting the variance through the standard deviation
     */
-  void SetSigma(const double sigma)
+  void
+  SetSigma(const double sigma)
   {
     SetVariance(sigma * sigma);
   }
@@ -186,7 +188,10 @@ public:
 
   /** Initialize the Gaussian kernel. Call this method before evaluating the function.
    * This method MUST be called after any changes to function parameters. */
-  virtual void Initialize() { RecomputeGaussianKernel(); }
+  virtual void
+  Initialize() {
+    RecomputeGaussianKernel();
+  }
 
 protected:
 
@@ -195,7 +200,8 @@ protected:
 
   ~DiscreteHessianGaussianImageFunction(){}
 
-  void operator=(const Self &){}
+  void
+  operator=(const Self &){}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void RecomputeGaussianKernel();

@@ -52,24 +52,24 @@ namespace itk
  */
 template<typename TTransform>
 class TransformParametersAdaptor
-: public TransformParametersAdaptorBase<TTransform>
+  : public TransformParametersAdaptorBase<TTransform>
 {
 public:
 
   /** Standard class typedefs. */
-  typedef TransformParametersAdaptor                     Self;
-  typedef TransformParametersAdaptorBase<TTransform>     Superclass;
-  typedef SmartPointer<Self>                             Pointer;
-  typedef SmartPointer<const Self>                       ConstPointer;
+  typedef TransformParametersAdaptor                 Self;
+  typedef TransformParametersAdaptorBase<TTransform> Superclass;
+  typedef SmartPointer<Self>                         Pointer;
+  typedef SmartPointer<const Self>                   ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( TransformParametersAdaptor, TransformParametersAdaptorBase );
 
   /** Typedefs associated with the transform */
-  typedef TTransform                                     TransformType;
-  typedef typename Superclass::TransformPointer          TransformPointer;
-  typedef typename Superclass::ParametersType            ParametersType;
-  typedef typename Superclass::ParametersValueType       ParametersValueType;
+  typedef TTransform                               TransformType;
+  typedef typename Superclass::TransformPointer    TransformPointer;
+  typedef typename Superclass::ParametersType      ParametersType;
+  typedef typename Superclass::ParametersValueType ParametersValueType;
 
   /** Set the transform to be adapted */
   itkSetObjectMacro( Transform, TransformType );
@@ -84,19 +84,21 @@ public:
   itkGetConstReferenceMacro( RequiredFixedParameters, ParametersType );
 
   /** Initialize the transform using the specified fixed parameters */
-  virtual void AdaptTransformParameters() {};
+  virtual void
+  AdaptTransformParameters() {}
 
 protected:
   TransformParametersAdaptor() {}
   ~TransformParametersAdaptor() {}
 
-  void PrintSelf( std::ostream & os, Indent itkNotUsed( indent ) ) const
+  void
+  PrintSelf( std::ostream & os, Indent itkNotUsed( indent ) ) const
   {
     os << "Fixed parameters: " << this->m_RequiredFixedParameters << std::endl;
   }
 
-  TransformPointer                           m_Transform;
-  ParametersType                             m_RequiredFixedParameters;
+  TransformPointer m_Transform;
+  ParametersType   m_RequiredFixedParameters;
 
 private:
   TransformParametersAdaptor( const Self & ); //purposely not implemented

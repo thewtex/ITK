@@ -26,31 +26,30 @@
 #include "itkNumericTraits.h"
 #include "itkIntTypes.h"
 
-
 namespace itk
 {
 
-class TestDataObject: public DataObject
+class TestDataObject : public DataObject
 {
 public:
   /** Standard class typedefs. */
-  typedef TestDataObject                                   Self;
-  typedef DataObject                                       Superclass;
-  typedef SmartPointer< Self >                             Pointer;
-  typedef SmartPointer< const Self >                       ConstPointer;
+  typedef TestDataObject             Self;
+  typedef DataObject                 Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 };
 
-class TestProcessObject: public ProcessObject
+class TestProcessObject : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
-  typedef TestProcessObject                                Self;
-  typedef ProcessObject                                    Superclass;
-  typedef SmartPointer< Self >                             Pointer;
-  typedef SmartPointer< const Self >                       ConstPointer;
+  typedef TestProcessObject          Self;
+  typedef ProcessObject              Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -108,17 +107,18 @@ public:
 
 }
 
-int itkDataObjectAndProcessObjectTest(int, char* [] )
+int
+itkDataObjectAndProcessObjectTest(int, char* [] )
 {
 
   // create a TestProcessObject
   itk::TestProcessObject::Pointer process = itk::TestProcessObject::New();
 
   // some vars to test the methods
-  itk::TestProcessObject::NameArray names;
+  itk::TestProcessObject::NameArray              names;
   itk::TestProcessObject::DataObjectPointerArray dataObjects;
-  itk::DataObject::Pointer dataObject;
-  itk::ModifiedTimeType mtime;
+  itk::DataObject::Pointer                       dataObject;
+  itk::ModifiedTimeType                          mtime;
 
   // and exercise various methods
   names = process->GetInputNames();
@@ -273,7 +273,6 @@ int itkDataObjectAndProcessObjectTest(int, char* [] )
   TEST_SET_GET( input0, process->GetInput(0) );
   TEST_SET_GET( input0, process->GetInput("First") );
 
-
   process->SetNthInput( 1, input1 );
   TEST_SET_GET( input1, process->GetInput(1) );
   TEST_SET_GET_VALUE( 2, process->GetNumberOfIndexedInputs() );
@@ -377,11 +376,9 @@ int itkDataObjectAndProcessObjectTest(int, char* [] )
   TEST_SET_GET_VALUE( 1, process->GetNumberOfIndexedInputs() );
   TEST_SET_GET_VALUE( input0, process->GetPrimaryInput() );
 
-
   process->SetNumberOfIndexedInputs( 0 );
   TEST_SET_GET_VALUE( 0, process->GetNumberOfIndexedInputs() );
   TEST_SET_GET_NULL_VALUE( process->GetPrimaryInput() );
-
 
   process->SetNumberOfIndexedInputs( 3 );
   TEST_SET_GET_VALUE( 3, process->GetNumberOfIndexedInputs() );
@@ -394,7 +391,6 @@ int itkDataObjectAndProcessObjectTest(int, char* [] )
   TEST_SET_GET_VALUE( 0, process->GetNumberOfIndexedInputs() );
   TEST_SET_GET_NULL_VALUE( process->GetPrimaryInput() );
 
-
   // testing RemoveInput
   process = itk::TestProcessObject::New();
   process->SetNumberOfIndexedInputs( 2 );
@@ -404,7 +400,6 @@ int itkDataObjectAndProcessObjectTest(int, char* [] )
   TEST_SET_GET_NULL_VALUE( process->GetPrimaryInput() );
   TEST_SET_GET_VALUE( 2, process->GetNumberOfIndexedInputs() );
   TEST_SET_GET_VALUE( 1, process->GetNumberOfInputs() );
-
 
   process->AddRequiredInputName("Req");
   process->SetInput( "Req", input0 );
@@ -437,11 +432,9 @@ int itkDataObjectAndProcessObjectTest(int, char* [] )
   TEST_SET_GET_VALUE( 1, process->GetNumberOfIndexedOutputs() );
   TEST_SET_GET_VALUE( input0, process->GetPrimaryOutput() );
 
-
   process->SetNumberOfIndexedOutputs( 0 );
   TEST_SET_GET_VALUE( 0, process->GetNumberOfIndexedOutputs() );
   TEST_SET_GET_NULL_VALUE( process->GetPrimaryOutput() );
-
 
   process->SetNumberOfIndexedOutputs( 3 );
   TEST_SET_GET_VALUE( 3, process->GetNumberOfIndexedOutputs() );
@@ -453,7 +446,6 @@ int itkDataObjectAndProcessObjectTest(int, char* [] )
   process->SetNumberOfIndexedOutputs( 1 );
   TEST_SET_GET_VALUE( 0, process->GetNumberOfIndexedOutputs() );
   TEST_SET_GET_NULL_VALUE( process->GetPrimaryOutput() );
-
 
   process->SetNumberOfRequiredOutputs(1);
   std::cout << process;

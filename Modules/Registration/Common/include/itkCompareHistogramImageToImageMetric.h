@@ -53,7 +53,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingImage >
-class CompareHistogramImageToImageMetric:
+class CompareHistogramImageToImageMetric :
   public HistogramImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
@@ -83,7 +83,7 @@ public:
   typedef typename Superclass::MovingImageType        MovingImageType;
   typedef typename Superclass::FixedImageConstPointer FixedImageConstPointer;
   typedef typename Superclass::MovingImageConstPointer
-  MovingImageConstPointer;
+    MovingImageConstPointer;
 
   typedef typename Superclass::HistogramType            HistogramType;
   typedef typename Superclass::HistogramSizeType        HistogramSizeType;
@@ -98,7 +98,7 @@ public:
   typedef typename Superclass::InterpolatorPointer InterpolatorPointer;
 
   typedef typename Superclass::FixedImageRegionType
-  FixedImageRegionType;
+    FixedImageRegionType;
 
   /** Get/Set the histogram to be used in the metric calculation */
   itkSetMacro(TrainingHistogram, HistogramPointerType);
@@ -124,8 +124,11 @@ public:
   itkGetConstReferenceMacro(TrainingFixedImageRegion, FixedImageRegionType);
 
   /** Return the number of parameters required by the Transform */
-  unsigned int GetNumberOfParameters(void) const
-  { return this->GetTransform()->GetNumberOfParameters(); }
+  unsigned int
+  GetNumberOfParameters(void) const
+  {
+    return this->GetTransform()->GetNumberOfParameters();
+  }
 
   /** Forms the histogram of the training images to prepare to evaluate the
    * metric. Must set all parameters first. */
@@ -136,7 +139,8 @@ protected:
   /** Constructor is protected to ensure that \c New() function is used to
       create instances. */
   CompareHistogramImageToImageMetric();
-  virtual ~CompareHistogramImageToImageMetric(){}
+  virtual
+  ~CompareHistogramImageToImageMetric(){}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Form the Histogram for the Training data */

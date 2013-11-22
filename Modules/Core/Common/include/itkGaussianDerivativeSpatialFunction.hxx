@@ -71,12 +71,12 @@ GaussianDerivativeSpatialFunction< TOutput, VImageDimension, TInput >
   for ( unsigned int i = 0; i < VImageDimension; i++ )
     {
     suffixExp += ( position[m_Direction] - m_Mean[m_Direction] )
-                 * ( position[m_Direction] - m_Mean[m_Direction] )
-                 / ( 2 * m_Sigma[m_Direction] * m_Sigma[m_Direction] );
+      * ( position[m_Direction] - m_Mean[m_Direction] )
+      / ( 2 * m_Sigma[m_Direction] * m_Sigma[m_Direction] );
     }
 
   double value = -2 * ( position[m_Direction] - m_Mean[m_Direction] ) * m_Scale * ( 1 / prefixDenom ) * vcl_exp(
-    -1 * suffixExp);
+      -1 * suffixExp);
 
   return (TOutput)value;
 }
@@ -110,6 +110,7 @@ GaussianDerivativeSpatialFunction< TOutput, VImageDimension, TInput >
   os << indent << "Normalized?: " << m_Normalized << std::endl;
   os << indent << "Direction: " << m_Direction << std::endl;
 }
+
 } // end namespace itk
 
 #endif

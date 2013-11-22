@@ -23,29 +23,29 @@
 
 namespace itk
 {
-  /** \class MultiStartOptimizerv4Template
-   *  \brief Multi-start searches over input parameters and returns the best metric value
-   *
-   *   The multi-start algorithm performs gradient descent from N (large) number of starting points and
-   *   returns the best solution. Ideal start points would sample the solution space almost uniformly, thus,
-   *   in theory, this is a global optimizer.  In this implementation, the quality of the optimization
-   *   depends on the parameter space samples that the user inputs to the optimizer.  Multi-start can be
-   *   modified in numerous ways to improve robustness of standard approaches.  These improvements usually
-   *   focus modifying the parameter sample space.  This is why we place the burden on the user to provide
-   *   the parameter samples over which to optimize.
-   *
-   * \ingroup ITKOptimizersv4
-   */
+/** \class MultiStartOptimizerv4Template
+ *  \brief Multi-start searches over input parameters and returns the best metric value
+ *
+ *   The multi-start algorithm performs gradient descent from N (large) number of starting points and
+ *   returns the best solution. Ideal start points would sample the solution space almost uniformly, thus,
+ *   in theory, this is a global optimizer.  In this implementation, the quality of the optimization
+ *   depends on the parameter space samples that the user inputs to the optimizer.  Multi-start can be
+ *   modified in numerous ways to improve robustness of standard approaches.  These improvements usually
+ *   focus modifying the parameter sample space.  This is why we place the burden on the user to provide
+ *   the parameter samples over which to optimize.
+ *
+ * \ingroup ITKOptimizersv4
+ */
 template<typename TInternalComputationValueType>
 class MultiStartOptimizerv4Template
-: public ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
+  : public ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
 {
 public:
   /** Standard class typedefs. */
-  typedef MultiStartOptimizerv4Template                                Self;
+  typedef MultiStartOptimizerv4Template                                      Self;
   typedef ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType> Superclass;
-  typedef SmartPointer< Self >                                         Pointer;
-  typedef SmartPointer< const Self >                                   ConstPointer;
+  typedef SmartPointer< Self >                                               Pointer;
+  typedef SmartPointer< const Self >                                         ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(MultiStartOptimizerv4Template, Superclass);
@@ -53,14 +53,14 @@ public:
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
-  typedef typename Superclass::ParametersType                                 ParametersType;
-  typedef std::vector< ParametersType >                                       ParametersListType;
-  typedef typename ParametersListType::size_type                              ParameterListSizeType;
+  typedef typename Superclass::ParametersType    ParametersType;
+  typedef std::vector< ParametersType >          ParametersListType;
+  typedef typename ParametersListType::size_type ParameterListSizeType;
 
   typedef ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>              OptimizerType;
-  typedef typename OptimizerType::Pointer                                           OptimizerPointer;
+  typedef typename OptimizerType::Pointer                                                 OptimizerPointer;
   typedef typename itk::GradientDescentOptimizerv4Template<TInternalComputationValueType> LocalOptimizerType;
-  typedef typename LocalOptimizerType::Pointer                                      LocalOptimizerPointer;
+  typedef typename LocalOptimizerType::Pointer                                            LocalOptimizerPointer;
 
   /** Codes of stopping conditions. */
   typedef enum {
@@ -70,27 +70,27 @@ public:
     STEP_TOO_SMALL,
     CONVERGENCE_CHECKER_PASSED,
     OTHER_ERROR
-  } StopConditionType;
+    } StopConditionType;
 
   /** Stop condition return string type */
-  typedef std::string                            StopConditionReturnStringType;
+  typedef std::string StopConditionReturnStringType;
 
   /** Stop condition internal string type */
-  typedef std::ostringstream                     StopConditionDescriptionType;
+  typedef std::ostringstream StopConditionDescriptionType;
 
   /** It should be possible to derive the internal computation type from the class object. */
-  typedef TInternalComputationValueType             InternalComputationValueType;
+  typedef TInternalComputationValueType InternalComputationValueType;
 
   /** Metric type over which this class is templated */
-  typedef typename Superclass::MetricType           MetricType;
-  typedef typename MetricType::Pointer              MetricTypePointer;
+  typedef typename Superclass::MetricType MetricType;
+  typedef typename MetricType::Pointer    MetricTypePointer;
 
   /** Derivative type */
-  typedef typename MetricType::DerivativeType       DerivativeType;
+  typedef typename MetricType::DerivativeType DerivativeType;
 
   /** Measure type */
-  typedef typename Superclass::MeasureType          MeasureType;
-  typedef std::vector< MeasureType >                MetricValuesListType;
+  typedef typename Superclass::MeasureType MeasureType;
+  typedef std::vector< MeasureType >       MetricValuesListType;
 
   /** Get stop condition enum */
   itkGetConstReferenceMacro(StopCondition, StopConditionType);
@@ -131,37 +131,41 @@ public:
   const MetricValuesListType & GetMetricValuesList() const;
 
   /** Return the parameters from the best visited position */
-  ParametersType GetBestParameters( );
+  ParametersType GetBestParameters();
 
   /** Set/Get the optimizer. */
   itkSetObjectMacro( LocalOptimizer, OptimizerType );
   itkGetModifiableObjectMacro(LocalOptimizer, OptimizerType );
 
-  inline ParameterListSizeType GetBestParametersIndex( ) { return this->m_BestParametersIndex; }
+  inline ParameterListSizeType
+  GetBestParametersIndex() {
+    return this->m_BestParametersIndex;
+  }
 
 protected:
   /** Default constructor */
   MultiStartOptimizerv4Template();
-  virtual ~MultiStartOptimizerv4Template();
+  virtual
+  ~MultiStartOptimizerv4Template();
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /* Common variables for optimization control and reporting */
-  bool                          m_Stop;
-  StopConditionType             m_StopCondition;
-  StopConditionDescriptionType  m_StopConditionDescription;
-  SizeValueType                 m_NumberOfIterations;
-  SizeValueType                 m_CurrentIteration;
-  ParametersListType            m_ParametersList;
-  MetricValuesListType          m_MetricValuesList;
-  MeasureType                   m_MinimumMetricValue;
-  MeasureType                   m_MaximumMetricValue;
-  ParameterListSizeType         m_BestParametersIndex;
-  OptimizerPointer              m_LocalOptimizer;
+  bool                         m_Stop;
+  StopConditionType            m_StopCondition;
+  StopConditionDescriptionType m_StopConditionDescription;
+  SizeValueType                m_NumberOfIterations;
+  SizeValueType                m_CurrentIteration;
+  ParametersListType           m_ParametersList;
+  MetricValuesListType         m_MetricValuesList;
+  MeasureType                  m_MinimumMetricValue;
+  MeasureType                  m_MaximumMetricValue;
+  ParameterListSizeType        m_BestParametersIndex;
+  OptimizerPointer             m_LocalOptimizer;
 
 private:
   MultiStartOptimizerv4Template( const Self & ); //purposely not implemented
-  void operator=( const Self& ); //purposely not implemented
+  void operator=( const Self& );                 //purposely not implemented
 
 };
 

@@ -22,9 +22,10 @@
 
 #include "itkGaussianSpatialObject.h"
 
-int itkGaussianSpatialObjectTest(int, char* [])
+int
+itkGaussianSpatialObjectTest(int, char* [])
 {
-  typedef itk::GaussianSpatialObject<4>   GaussianType;
+  typedef itk::GaussianSpatialObject<4> GaussianType;
 
   GaussianType::Pointer myGaussian = GaussianType::New();
   myGaussian->Print(std::cout);
@@ -35,7 +36,7 @@ int itkGaussianSpatialObjectTest(int, char* [])
   if( maximum != 2 )
     {
     std::cout << "[FAILURE]" << std::endl;
-      return EXIT_FAILURE;
+    return EXIT_FAILURE;
     }
 
   myGaussian->SetRadius(3);
@@ -45,7 +46,7 @@ int itkGaussianSpatialObjectTest(int, char* [])
   if( radius != 3 )
     {
     std::cout << "[FAILURE]" << std::endl;
-      return EXIT_FAILURE;
+    return EXIT_FAILURE;
     }
 
   myGaussian->SetSigma(1.5);
@@ -55,9 +56,8 @@ int itkGaussianSpatialObjectTest(int, char* [])
   if( sigma != 1.5 )
     {
     std::cout << "[FAILURE]" << std::endl;
-      return EXIT_FAILURE;
+    return EXIT_FAILURE;
     }
-
 
   std::cout << "[PASSED]" << std::endl;
 
@@ -74,13 +74,13 @@ int itkGaussianSpatialObjectTest(int, char* [])
 
   std::cout << "Is Inside: ";
 
-  if(!myGaussian->IsInside(in))
+  if(!myGaussian->IsInside(in) )
     {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
     }
 
-  if(myGaussian->IsInside(out))
+  if(myGaussian->IsInside(out) )
     {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
@@ -114,23 +114,22 @@ int itkGaussianSpatialObjectTest(int, char* [])
 
   if( (offset3[0]!=5) || (offset3[1]!=5)
       ||(offset3[2]!=5) ||(offset3[3]!=5)
-    )
+      )
     {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
     }
   std::cout<<"[PASSED]"<<std::endl;
 
-
   std::cout << "ComputeBoundingBox: ";
   myGaussian->ComputeBoundingBox();
   GaussianType::BoundingBoxType * boundingBox = myGaussian->GetBoundingBox();
 
-  for(unsigned int i=0;i<3;i++)
+  for(unsigned int i=0; i<3; i++)
     {
     if( (boundingBox->GetBounds()[2*i] != 7 )
         || (boundingBox->GetBounds()[2*i+1] != 16 )
-      )
+        )
       {
       std::cout<<"[FAILED]"<<std::endl;
       return EXIT_FAILURE;

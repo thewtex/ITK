@@ -24,39 +24,37 @@
  * Some typedefs to make things easier.
  */
 
+typedef itk::QuadEdgeMesh< double, 3 > MeshType;
 
-typedef itk::QuadEdgeMesh< double, 3 >  MeshType;
-
-
-typedef MeshType::CellTraits  CellTraits;
-
+typedef MeshType::CellTraits CellTraits;
 
 /**
  * The type of point stored in the mesh. Because mesh was instantiated
  * with defaults (itkDefaultDynamicMeshTraits), the point dimension is 3 and
  * the coordinate representation is float.
  */
-typedef MeshType::PointType             PointType;
-typedef PointType::VectorType           VectorType;
+typedef MeshType::PointType   PointType;
+typedef PointType::VectorType VectorType;
 
-typedef MeshType::Pointer               MeshPointer;
-typedef MeshType::ConstPointer          MeshConstPointer;
+typedef MeshType::Pointer      MeshPointer;
+typedef MeshType::ConstPointer MeshConstPointer;
 
-typedef MeshType::PointType             PointType;
+typedef MeshType::PointType PointType;
 
-typedef MeshType::PointsContainer       PointsContainer;
-typedef MeshType::PointDataContainer    PointDataContainer;
+typedef MeshType::PointsContainer    PointsContainer;
+typedef MeshType::PointDataContainer PointDataContainer;
 
-typedef PointsContainer::Iterator       PointsIterator;
-typedef PointDataContainer::Iterator    CellsIterator;
+typedef PointsContainer::Iterator    PointsIterator;
+typedef PointDataContainer::Iterator CellsIterator;
 
-int itkDynamicQuadEdgeMeshTest(int, char* [] )
+int
+itkDynamicQuadEdgeMeshTest(int, char* [] )
 {
 
   /**
    * Create the mesh through its object factory.
    */
-  MeshType::Pointer mesh(MeshType::New());
+  MeshType::Pointer mesh(MeshType::New() );
 
   PointType pointA;
   PointType pointB;
@@ -81,7 +79,6 @@ int itkDynamicQuadEdgeMeshTest(int, char* [] )
   pointsContainter->SetElement( 2, pointC );
   pointsContainter->SetElement( 3, pointD );
 
-
   std::cout << "Number of Points = " << mesh->GetNumberOfPoints() << std::endl;
 
   PointsIterator point    = pointsContainter->Begin();
@@ -92,7 +89,6 @@ int itkDynamicQuadEdgeMeshTest(int, char* [] )
     std::cout << point.Index() << " = " << point.Value() << std::endl;
     point++;
     }
-
 
   return 0;
 

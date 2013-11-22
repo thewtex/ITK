@@ -78,7 +78,7 @@ public:
    */
   class MFCTerm
   {
-  public:
+public:
     /**
      * Pointer to element, which holds the DOF that is affected by MFC
      */
@@ -99,8 +99,8 @@ public:
      */
     MFCTerm(Element::ConstPointer element_, int dof_,
             Element::Float value_) : m_element(element_), dof(dof_), value(value_)
-    {
-    }
+    {}
+
   };
 
   /**
@@ -152,6 +152,7 @@ public:
   /** Returns the array containing the left hand side boundary condition
     values*/
   const std::vector<MFCTerm> & GetLeftHandSideArray() const;
+
   std::vector<MFCTerm> & GetLeftHandSideArray();
 
   /** Returns the array containing the right hand side boundary condition

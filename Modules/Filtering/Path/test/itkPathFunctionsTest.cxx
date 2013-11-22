@@ -22,26 +22,26 @@
 #include "itkPathFunctions.h"
 #include "itkPathIterator.h"
 
-int itkPathFunctionsTest(int, char*[])
+int
+itkPathFunctionsTest(int, char*[])
 {
-  typedef  itk::Image<double, 2>                          ImageType;
-  typedef  itk::PolyLineParametricPath<2>                 InPathType;
-  typedef  itk::ChainCodePath<2>                          ChainPathType;
-  typedef  itk::FourierSeriesPath<2>                      FSPathType;
-  typedef  itk::PathIterator< ImageType, FSPathType >     IterType;
+  typedef  itk::Image<double, 2>                      ImageType;
+  typedef  itk::PolyLineParametricPath<2>             InPathType;
+  typedef  itk::ChainCodePath<2>                      ChainPathType;
+  typedef  itk::FourierSeriesPath<2>                  FSPathType;
+  typedef  itk::PathIterator< ImageType, FSPathType > IterType;
 
-  typedef  ImageType::IndexType                           IndexType;
-  typedef  InPathType::VertexType                         VertexType;
-  typedef  InPathType::OffsetType                         OffsetType;
-  typedef  InPathType::InputType                          InPathInputType;
+  typedef  ImageType::IndexType   IndexType;
+  typedef  InPathType::VertexType VertexType;
+  typedef  InPathType::OffsetType OffsetType;
+  typedef  InPathType::InputType  InPathInputType;
 
   bool passed = true;
 
-
   // Setup the image
   std::cout << "Making a 64x64 white square centered in a 128x128 black image"<<std::endl;
-  ImageType::Pointer  image = ImageType::New();
-  IndexType start;
+  ImageType::Pointer image = ImageType::New();
+  IndexType          start;
   start[0]=0;
   start[1]=0;
   ImageType::SizeType size;
@@ -60,7 +60,7 @@ int itkPathFunctionsTest(int, char*[])
   ImageItType it( image, image->GetRequestedRegion() );
   it.GoToBegin();
   ImageType::PixelType storedValue;
-  IndexType pixelIndex;
+  IndexType            pixelIndex;
   while( !it.IsAtEnd() )
     {
     pixelIndex = it.GetIndex();
@@ -80,10 +80,10 @@ int itkPathFunctionsTest(int, char*[])
 
   // Setup the path
   std::cout << "Making a square Path with v0 at (30,30) and v2 at (33,33)" << std::endl;
-  VertexType        v;
-  InPathType::Pointer     inPath    = InPathType::New();
-  ChainPathType::Pointer  chainPath = ChainPathType::New();
-  FSPathType::Pointer     path      = FSPathType::New();
+  VertexType             v;
+  InPathType::Pointer    inPath    = InPathType::New();
+  ChainPathType::Pointer chainPath = ChainPathType::New();
+  FSPathType::Pointer    path      = FSPathType::New();
   v.Fill(30);
   inPath->AddVertex(v);
   v[0]=33;
@@ -108,19 +108,19 @@ int itkPathFunctionsTest(int, char*[])
   for( iter.GoToBegin(); !iter.IsAtEnd(); ++iter )
     {
     std::cout << "Path("<<iter.GetPathPosition()<<") @ "<<iter.GetIndex()<<" = "
-         << iter.Get()<<"; Now inverting."<<std::endl;
+              << iter.Get()<<"; Now inverting."<<std::endl;
     iter.Set( 1.0 - iter.Get() );
     }
   for( iter.GoToBegin(); !iter.IsAtEnd(); ++iter )
     {
     std::cout << "Path("<<iter.GetPathPosition()<<") @ "<<iter.GetIndex()<<" = "
-         << iter.Get()<<std::endl;
+              << iter.Get()<<std::endl;
     }
   std::cout << "Should still be at end:  ";
   std::cout << "Path("<<iter.GetPathPosition()<<") @ "<<iter.GetIndex()<<" = "<<
-          iter.Get()<<std::endl;
+    iter.Get()<<std::endl;
 
-  if( (iter.GetIndex())[0] != 30 || (iter.GetIndex())[1] != 30 )
+  if( (iter.GetIndex() )[0] != 30 || (iter.GetIndex() )[1] != 30 )
     {
     std::cout << "PathFunctionsTest:  Failed to maintain a closed path" << std::endl;
     passed = false;

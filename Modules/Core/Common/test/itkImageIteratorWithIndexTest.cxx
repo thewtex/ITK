@@ -21,83 +21,87 @@
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkNumericTraits.h"
 
-
 template <typename TPixelType>
 class itkImageIteratorWithIndexTestIteratorTester
 {
 
-  public:
-    typedef TPixelType                  PixelType;
+public:
+  typedef TPixelType PixelType;
 
-    typedef itk::Image< PixelType, 3 > ImageType;
+  typedef itk::Image< PixelType, 3 > ImageType;
 
-    typedef itk::ImageRegionIteratorWithIndex< ImageType > IteratorType;
+  typedef itk::ImageRegionIteratorWithIndex< ImageType > IteratorType;
 
-    typedef itk::ImageRegionConstIteratorWithIndex< ImageType > ConstIteratorType;
+  typedef itk::ImageRegionConstIteratorWithIndex< ImageType > ConstIteratorType;
 
-    itkImageIteratorWithIndexTestIteratorTester( const PixelType & value )
-    {
-      m_Image = ImageType::New();
+  itkImageIteratorWithIndexTestIteratorTester( const PixelType & value )
+  {
+    m_Image = ImageType::New();
 
-      typename ImageType::SizeType size;
-      size.Fill(100);
+    typename ImageType::SizeType size;
+    size.Fill(100);
 
-      typename ImageType::IndexType start;
-      start.Fill(0);
+    typename ImageType::IndexType start;
+    start.Fill(0);
 
-      typename ImageType::RegionType region;
-      region.SetSize( size );
-      region.SetIndex( start );
+    typename ImageType::RegionType region;
+    region.SetSize( size );
+    region.SetIndex( start );
 
-      m_Image->SetRegions( region );
-      m_Image->Allocate();
+    m_Image->SetRegions( region );
+    m_Image->Allocate();
 
-      m_Image->FillBuffer( value );
-    }
+    m_Image->FillBuffer( value );
+  }
 
-    bool TestIterator()
-    {
-     IteratorType it( m_Image, m_Image->GetBufferedRegion() );
-     it.GoToBegin();
-     while( !it.IsAtEnd() )
-       {
-       PixelType value = it.Get();
-       PixelType testValue = value * static_cast<typename itk::NumericTraits<PixelType>::ValueType>( 2 );
-       it.Set( testValue);
-       if( it.Get() != testValue )
+  bool
+  TestIterator()
+  {
+    IteratorType it( m_Image, m_Image->GetBufferedRegion() );
+
+    it.GoToBegin();
+    while( !it.IsAtEnd() )
+      {
+      PixelType value = it.Get();
+      PixelType testValue = value * static_cast<typename itk::NumericTraits<PixelType>::ValueType>( 2 );
+      it.Set( testValue);
+      if( it.Get() != testValue )
         {
         std::cerr << "TestIterator failed!" << std::endl;
         return false;
         }
-       ++it;
-       }
-     return true;
-    }
+      ++it;
+      }
+    return true;
+  }
 
-    bool TestConstIterator()
-    {
-     ConstIteratorType it( m_Image, m_Image->GetBufferedRegion() );
-     it.GoToBegin();
-     while( !it.IsAtEnd() )
-       {
-       PixelType value = it.Get();
-       if( value != it.Get() ) // check repeatibility
-         {
-         std::cerr << "TestConstIterator failed!" << std::endl;
-         return false;
-         }
-       ++it;
-       }
-     return true;
-    }
+  bool
+  TestConstIterator()
+  {
+    ConstIteratorType it( m_Image, m_Image->GetBufferedRegion() );
 
-  private:
+    it.GoToBegin();
+    while( !it.IsAtEnd() )
+      {
+      PixelType value = it.Get();
+      if( value != it.Get() )  // check repeatibility
+        {
+        std::cerr << "TestConstIterator failed!" << std::endl;
+        return false;
+        }
+      ++it;
+      }
+    return true;
+  }
 
-    typename ImageType::Pointer m_Image;
+private:
+
+  typename ImageType::Pointer m_Image;
 
 };
 
-int itkImageIteratorWithIndexTest(int, char* [] )
+int
+itkImageIteratorWithIndexTest(int, char* [] )
 {
 
   bool testPassed = true; // let's be optimistic
@@ -106,6 +110,7 @@ int itkImageIteratorWithIndexTest(int, char* [] )
   // test the iterators on them
 
   std::cout << "Testing with Image< char, 3 > " << std::endl;
+
   itkImageIteratorWithIndexTestIteratorTester< char > TesterC( 10 );
   if( TesterC.TestIterator() == false )
     {

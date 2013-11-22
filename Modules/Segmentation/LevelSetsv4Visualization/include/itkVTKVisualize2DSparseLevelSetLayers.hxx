@@ -54,7 +54,7 @@ VTKVisualize2DSparseLevelSetLayers<
     {
     typename InputImageType::IndexType idx = it->first;
     InputPixelType* vtkpixel =
-        static_cast< InputPixelType* >( this->m_VTKImage->GetScalarPointer( idx[0], idx[1], 0 ) );
+      static_cast< InputPixelType* >( this->m_VTKImage->GetScalarPointer( idx[0], idx[1], 0 ) );
     vtkpixel[0] = 0;
     vtkpixel[1] = 255;
     vtkpixel[2] = 0;
@@ -69,7 +69,7 @@ VTKVisualize2DSparseLevelSetLayers<
     {
     typename InputImageType::IndexType idx = it->first;
     InputPixelType* vtkpixel =
-        static_cast< InputPixelType* >( this->m_VTKImage->GetScalarPointer( idx[0], idx[1], 0 ) );
+      static_cast< InputPixelType* >( this->m_VTKImage->GetScalarPointer( idx[0], idx[1], 0 ) );
     vtkpixel[0] = 255;
     vtkpixel[1] = 255;
     vtkpixel[2] = 0;
@@ -84,7 +84,7 @@ VTKVisualize2DSparseLevelSetLayers<
     {
     typename InputImageType::IndexType idx = it->first;
     InputPixelType* vtkpixel =
-        static_cast< InputPixelType* >( this->m_VTKImage->GetScalarPointer( idx[0], idx[1], 0 ) );
+      static_cast< InputPixelType* >( this->m_VTKImage->GetScalarPointer( idx[0], idx[1], 0 ) );
     vtkpixel[0] = 255;
     vtkpixel[1] = 0;
     vtkpixel[2] = 0;
@@ -114,13 +114,13 @@ VTKVisualize2DSparseLevelSetLayers<
     {
     typename InputImageType::IndexType idx = it->first;
     InputPixelType* vtkpixel =
-        static_cast< InputPixelType* >( this->m_VTKImage->GetScalarPointer( idx[0], idx[1], 0 ) );
+      static_cast< InputPixelType* >( this->m_VTKImage->GetScalarPointer( idx[0], idx[1], 0 ) );
     vtkpixel[0] = 0;
     vtkpixel[1] = 0;
     vtkpixel[2] = 255;
     ++it;
     }
-  }
+}
 
 template< typename TInputImage, typename TOutput, unsigned int VDimension >
 std::string
@@ -128,9 +128,9 @@ VTKVisualize2DSparseLevelSetLayers<
   TInputImage,
   itk::WhitakerSparseLevelSetImage< TOutput, VDimension > >
 ::GetLevelSetRepresentationName() const
-  {
+{
   return std::string( "Whitaker" );
-  }
+}
 
 // -----------------------------------------------------------------------------
 template< typename TInputImage, unsigned int VDimension >
@@ -138,16 +138,14 @@ VTKVisualize2DSparseLevelSetLayers<
   TInputImage,
   itk::ShiSparseLevelSetImage< VDimension > >
 ::VTKVisualize2DSparseLevelSetLayers() : Superclass()
-  {
-  }
+{}
 
 template< typename TInputImage, unsigned int VDimension >
 VTKVisualize2DSparseLevelSetLayers<
   TInputImage,
   itk::ShiSparseLevelSetImage< VDimension > >
 ::~VTKVisualize2DSparseLevelSetLayers()
-  {
-  }
+{}
 
 template< typename TInputImage, unsigned int VDimension >
 void
@@ -155,7 +153,7 @@ VTKVisualize2DSparseLevelSetLayers<
   TInputImage,
   itk::ShiSparseLevelSetImage< VDimension > >
 ::AddLayers()
-  {
+{
   typedef typename LevelSetType::LayerType          LayerType;
   typedef typename LevelSetType::LayerConstIterator LayerConstIterator;
 
@@ -167,7 +165,7 @@ VTKVisualize2DSparseLevelSetLayers<
     {
     typename InputImageType::IndexType idx = it->first;
     InputPixelType* vtkpixel =
-        static_cast< InputPixelType* >( this->m_VTKImage->GetScalarPointer( idx[0], idx[1], 0 ) );
+      static_cast< InputPixelType* >( this->m_VTKImage->GetScalarPointer( idx[0], idx[1], 0 ) );
     vtkpixel[0] = 0;
     vtkpixel[1] = 255;
     vtkpixel[2] = 0;
@@ -182,13 +180,13 @@ VTKVisualize2DSparseLevelSetLayers<
     {
     typename InputImageType::IndexType idx = it->first;
     InputPixelType* vtkpixel =
-        static_cast< InputPixelType* >( this->m_VTKImage->GetScalarPointer( idx[0], idx[1], 0 ) );
+      static_cast< InputPixelType* >( this->m_VTKImage->GetScalarPointer( idx[0], idx[1], 0 ) );
     vtkpixel[0] = 255;
     vtkpixel[1] = 0;
     vtkpixel[2] = 0;
     ++it;
     }
-  }
+}
 
 template< typename TInputImage, unsigned int VDimension >
 std::string
@@ -196,9 +194,9 @@ VTKVisualize2DSparseLevelSetLayers<
   TInputImage,
   itk::ShiSparseLevelSetImage< VDimension > >
 ::GetLevelSetRepresentationName() const
-  {
+{
   return std::string( "Shi" );
-  }
+}
 
 // -----------------------------------------------------------------------------
 template< typename TInputImage, unsigned int VDimension >
@@ -222,7 +220,6 @@ VTKVisualize2DSparseLevelSetLayers<
   itk::MalcolmSparseLevelSetImage< VDimension > >
 ::AddLayers()
 {
-
 
   typedef typename LevelSetType::LayerType          LayerType;
   typedef typename LevelSetType::LayerConstIterator LayerConstIterator;
@@ -249,8 +246,9 @@ VTKVisualize2DSparseLevelSetLayers<
   TInputImage,
   itk::MalcolmSparseLevelSetImage< VDimension > >
 ::GetLevelSetRepresentationName() const
-  {
+{
   return std::string( "Malcolm" );
-  }
+}
+
 }
 #endif

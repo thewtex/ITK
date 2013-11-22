@@ -18,7 +18,6 @@
 #ifndef __itkResourceProbesCollectorBase_h
 #define __itkResourceProbesCollectorBase_h
 
-
 #include "itkResourceProbe.h"
 #include "itkMemoryUsageObserver.h"
 
@@ -42,7 +41,8 @@ public:
   typedef std::map< IdType, TProbe > MapType;
 
   /** destructor */
-  virtual ~ResourceProbesCollectorBase();
+  virtual
+  ~ResourceProbesCollectorBase();
 
   /** Start a probe with a particular name. If the time probe does not
    * exist, it will be created */

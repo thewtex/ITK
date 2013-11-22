@@ -67,16 +67,16 @@ namespace itk
  * \ingroup ITKPDEDeformableRegistration
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
-class SymmetricForcesDemonsRegistrationFilter:
+class SymmetricForcesDemonsRegistrationFilter :
   public PDEDeformableRegistrationFilter< TFixedImage, TMovingImage,
                                           TDisplacementField >
 {
 public:
   /** Standard class typedefs. */
-  typedef SymmetricForcesDemonsRegistrationFilter                                         Self;
+  typedef SymmetricForcesDemonsRegistrationFilter                                          Self;
   typedef PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField > Superclass;
-  typedef SmartPointer< Self >                                                            Pointer;
-  typedef SmartPointer< const Self >                                                      ConstPointer;
+  typedef SmartPointer< Self >                                                             Pointer;
+  typedef SmartPointer< const Self >                                                       ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -95,13 +95,13 @@ public:
 
   /** Deformation field type. */
   typedef typename Superclass::DisplacementFieldType
-  DisplacementFieldType;
+    DisplacementFieldType;
   typedef typename Superclass::DisplacementFieldPointer
-  DisplacementFieldPointer;
+    DisplacementFieldPointer;
 
   /** FiniteDifferenceFunction type. */
   typedef typename Superclass::FiniteDifferenceFunctionType
-  FiniteDifferenceFunctionType;
+    FiniteDifferenceFunctionType;
 
   /** Take timestep type from the FiniteDifferenceFunction. */
   typedef typename FiniteDifferenceFunctionType::TimeStepType TimeStepType;

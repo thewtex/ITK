@@ -51,7 +51,7 @@ template<
   typename TAuxValue = float,
   unsigned int VAuxDimension = 1
   >
-class ExtensionVelocitiesImageFilter:
+class ExtensionVelocitiesImageFilter :
   public ReinitializeLevelSetImageFilter< TLevelSet >
 {
 public:
@@ -83,7 +83,7 @@ public:
   /** AuxVarType typedef support. */
   typedef AuxVarTypeDefault< TAuxValue, VAuxDimension,
                              itkGetStaticConstMacro(SetDimension) >
-  AuxVarType;
+    AuxVarType;
   typedef typename AuxVarType::AuxValueType         AuxValueType;
   typedef typename AuxVarType::AuxValueVectorType   AuxValueVectorType;
   typedef typename AuxVarType::AuxValueContainer    AuxValueContainer;

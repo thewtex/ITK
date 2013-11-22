@@ -20,7 +20,6 @@
 #include "itkTextOutput.h"
 #include "itkSimpleFilterWatcher.h"
 
-
 //namespace{
 //// The following class is used to support callbacks
 //// on the filter in the pipeline that follows later
@@ -35,16 +34,17 @@
 //};
 //}
 
-int itkFastMarchingUpwindGradientTest(int, char* [] )
+int
+itkFastMarchingUpwindGradientTest(int, char* [] )
 {
 
-  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
   // create a fastmarching object
   typedef float                   PixelType;
   typedef itk::Image<PixelType,2> FloatImage;
   typedef itk::FastMarchingUpwindGradientImageFilter<FloatImage,FloatImage>
-                                  FloatFMType;
+    FloatFMType;
 
   FloatFMType::Pointer marcher = FloatFMType::New();
 
@@ -80,7 +80,6 @@ int itkFastMarchingUpwindGradientTest(int, char* [] )
   alivePoints->InsertElement(1, node);
 
   marcher->SetAlivePoints( alivePoints );
-
 
   // setup trial points
   NodeContainer::Pointer trialPoints = NodeContainer::New();
@@ -121,7 +120,7 @@ int itkFastMarchingUpwindGradientTest(int, char* [] )
   marcher->SetOutputSize( size );
 
   // setup a speed image of ones
-  FloatImage::Pointer speedImage = FloatImage::New();
+  FloatImage::Pointer    speedImage = FloatImage::New();
   FloatImage::RegionType region;
   region.SetSize( size );
   speedImage->SetLargestPossibleRegion( region );
@@ -129,7 +128,7 @@ int itkFastMarchingUpwindGradientTest(int, char* [] )
   speedImage->Allocate();
 
   itk::ImageRegionIterator<FloatImage>
-    speedIter( speedImage, speedImage->GetBufferedRegion() );
+  speedIter( speedImage, speedImage->GetBufferedRegion() );
   for (; !speedIter.IsAtEnd(); ++speedIter )
     {
     speedIter.Set( 1.0 );
@@ -157,7 +156,7 @@ int itkFastMarchingUpwindGradientTest(int, char* [] )
   typedef FloatGradientImage::PixelType  GradientPixelType;
   FloatGradientImage::Pointer gradientOutput = marcher->GetGradientImage();
   itk::ImageRegionIterator<FloatGradientImage>
-    iterator( gradientOutput, gradientOutput->GetBufferedRegion() );
+  iterator( gradientOutput, gradientOutput->GetBufferedRegion() );
 
   bool passed = true;
 
@@ -165,8 +164,8 @@ int itkFastMarchingUpwindGradientTest(int, char* [] )
     {
 
     FloatGradientImage::IndexType tempIndex;
-    double distance;
-    GradientPixelType outputPixel;
+    double                        distance;
+    GradientPixelType             outputPixel;
 
     tempIndex = iterator.GetIndex();
     tempIndex -= offset0;
@@ -207,7 +206,6 @@ int itkFastMarchingUpwindGradientTest(int, char* [] )
 
     }
 
-
   // Test that the stopping value of the algorithm is the one passed in.
   if( marcher->GetStoppingValue() != stoppingValue )
     {
@@ -221,7 +219,7 @@ int itkFastMarchingUpwindGradientTest(int, char* [] )
   FloatImage::OffsetType offset2 = {{40,40}};
   FloatImage::OffsetType offset1 = {{50,50}};
   // This point is farthest from the AlivePoint:
-  FloatImage::OffsetType offset3 = {{0,0}};
+  FloatImage::OffsetType                offset3 = {{0,0}};
   std::vector< FloatImage::OffsetType > targetOffsets;
   targetOffsets.push_back( offset1 );
   targetOffsets.push_back( offset2 );
@@ -261,7 +259,6 @@ int itkFastMarchingUpwindGradientTest(int, char* [] )
     passed = false;
     }
 
-
   // Now stop the algorithm once ALL of the targets have been reached.
   marcher->SetTargetReachedModeToAllTargets();
   marcher->Update();
@@ -298,7 +295,6 @@ int itkFastMarchingUpwindGradientTest(int, char* [] )
     passed = false;
     }
 
-
   // Exercise other member functions
   std::cout << "TargetOffset: " << marcher->GetTargetOffset() << std::endl;
   std::cout << "SpeedConstant: " << marcher->GetSpeedConstant() << std::endl;
@@ -313,7 +309,6 @@ int itkFastMarchingUpwindGradientTest(int, char* [] )
   std::cout << std::endl;
 
 //  marcher->Print( std::cout );
-
 
   if ( passed )
     {

@@ -82,7 +82,7 @@ ProgressAccumulator
   m_BaseAccumulatedProgress = 0.0f;
 }
 
-#if ! defined ( ITK_FUTURE_LEGACY_REMOVE )
+#if !defined ( ITK_FUTURE_LEGACY_REMOVE )
 void
 ProgressAccumulator
 ::ResetProgress()
@@ -98,15 +98,17 @@ ProgressAccumulator
     it->Filter->UpdateProgress(0.0f);
     }
 }
+
 #endif
 
-#if ! defined ( ITK_FUTURE_LEGACY_REMOVE )
+#if !defined ( ITK_FUTURE_LEGACY_REMOVE )
 void
 ProgressAccumulator
 ::ResetFilterProgressAndKeepAccumulatedProgress()
 {
   // Do nothing.  After all, this method is deprecated.
 }
+
 #endif
 
 void
@@ -114,7 +116,7 @@ ProgressAccumulator
 ::ReportProgress(Object *who, const EventObject & event)
 {
   ProgressEvent pe;
-  StartEvent se;
+  StartEvent    se;
 
   if ( typeid( event ) == typeid( pe ) )
     {
@@ -146,7 +148,7 @@ ProgressAccumulator
       }
     }
   else if ( typeid( event ) == typeid( se ) )
-  {
+    {
     // When a filter is restarted, we can capture the progress it has made so far and add it
     // to the accumulated value.
     // This is especially helpful when streaming is used since the filter is restarted multiple
@@ -156,20 +158,21 @@ ProgressAccumulator
 
     FilterRecordVector::iterator it;
     for ( it = m_FilterRecord.begin(); it != m_FilterRecord.end(); ++it )
-    {
-      if( who == it->Filter )
       {
+      if( who == it->Filter )
+        {
         // On a start event, we need to capture the accumulated progress for this filter
         // and then reset this filter's progress.
         // It is not necessary to call UpdateProgress(0.0f) explicitly on the filter because this is done
         // automatically when the filter is restarted.
         m_BaseAccumulatedProgress += it->Filter->GetProgress() * it->Weight;
+        }
       }
     }
-  }
 }
 
-void ProgressAccumulator
+void
+ProgressAccumulator
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
@@ -181,4 +184,5 @@ void ProgressAccumulator
   os << indent << m_AccumulatedProgress     << std::endl;
   os << indent << m_BaseAccumulatedProgress << std::endl;
 }
+
 } // End namespace itk

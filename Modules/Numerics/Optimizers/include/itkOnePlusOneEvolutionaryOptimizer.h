@@ -67,7 +67,7 @@ namespace itk
  * \ingroup ITKOptimizers
  */
 
-class OnePlusOneEvolutionaryOptimizer:
+class OnePlusOneEvolutionaryOptimizer :
   public SingleValuedNonLinearOptimizer
 {
 public:
@@ -95,14 +95,29 @@ public:
   itkBooleanMacro(Maximize);
   itkGetConstReferenceMacro(Maximize, bool);
 
-  bool GetMinimize() const
-  { return !m_Maximize; }
-  void SetMinimize(bool v)
-  { this->SetMaximize(!v); }
-  void    MinimizeOn(void)
-  { SetMaximize(false); }
-  void    MinimizeOff(void)
-  { SetMaximize(true); }
+  bool
+  GetMinimize() const
+  {
+    return !m_Maximize;
+  }
+
+  void
+  SetMinimize(bool v)
+  {
+    this->SetMaximize(!v);
+  }
+
+  void
+  MinimizeOn(void)
+  {
+    SetMaximize(false);
+  }
+
+  void
+  MinimizeOff(void)
+  {
+    SetMaximize(true);
+  }
 
   /** Set/Get maximum iteration limit. */
   itkSetMacro(MaximumIteration, unsigned int);
@@ -140,7 +155,10 @@ public:
 
   /** Return Current Value */
   itkGetConstReferenceMacro(CurrentCost, MeasureType);
-  MeasureType GetValue() const { return this->GetCurrentCost(); }
+  MeasureType
+  GetValue() const {
+    return this->GetCurrentCost();
+  }
 
   /** Return Current Iteration */
   itkGetConstReferenceMacro(CurrentIteration, unsigned int);
@@ -156,8 +174,11 @@ public:
   /** when users call StartOptimization, this value will be set false.
    * By calling StopOptimization, this flag will be set true, and
    * optimization will stop at the next iteration. */
-  void StopOptimization()
-  { m_Stop = true; }
+  void
+  StopOptimization()
+  {
+    m_Stop = true;
+  }
 
   itkGetConstReferenceMacro(CatchGetValueException, bool);
   itkSetMacro(CatchGetValueException, bool);
@@ -170,7 +191,8 @@ public:
 protected:
   OnePlusOneEvolutionaryOptimizer();
   OnePlusOneEvolutionaryOptimizer(const OnePlusOneEvolutionaryOptimizer &);
-  virtual ~OnePlusOneEvolutionaryOptimizer();
+  virtual
+  ~OnePlusOneEvolutionaryOptimizer();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

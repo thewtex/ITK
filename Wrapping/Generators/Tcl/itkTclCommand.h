@@ -39,10 +39,10 @@ class TclCommand : public Command
 {
 public:
   ///! Standard "Self" typedef.
-  typedef TclCommand         Self;
+  typedef TclCommand Self;
 
   ///! Smart pointer typedef support.
-  typedef SmartPointer<Self>  Pointer;
+  typedef SmartPointer<Self> Pointer;
 
   ///! Run-time type information (and related methods).
   itkTypeMacro(TclCommand,Command);
@@ -51,16 +51,21 @@ public:
   itkNewMacro(Self);
 
   void SetInterpreter(Tcl_Interp*);
+
   Tcl_Interp* GetInterpreter() const;
+
   void SetCommandString(const char*);
+
   const char* GetCommandString() const;
+
   void Execute(Object*, const EventObject & );
+
   void Execute(const Object*, const EventObject & );
 
 protected:
   TclCommand();
   ~TclCommand() {}
-  TclCommand(const Self&);     // Not implemented.
+  TclCommand(const Self&);             // Not implemented.
   TclCommand & operator=(const Self&); // Not implemented.
 
   void TclExecute() const;
@@ -72,7 +77,6 @@ private:
   ///! The command to invoke in the Tcl interpreter.
   std::string m_CommandString;
 };
-
 
 } // namespace itk
 

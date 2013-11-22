@@ -42,7 +42,7 @@ QuadEdgeMeshPoint< TCoordRep, VPointDimension, TQuadEdge >
 // ---------------------------------------------------------------------
 template< typename TCoordRep, unsigned int VPointDimension, typename TQuadEdge >
 QuadEdgeMeshPoint< TCoordRep, VPointDimension, TQuadEdge >
-::QuadEdgeMeshPoint(const Self & r):Superclass(r)
+::QuadEdgeMeshPoint(const Self & r) : Superclass(r)
 {
   this->Initialize();
   m_Edge = r.m_Edge;
@@ -51,7 +51,7 @@ QuadEdgeMeshPoint< TCoordRep, VPointDimension, TQuadEdge >
 // ---------------------------------------------------------------------
 template< typename TCoordRep, unsigned int VPointDimension, typename TQuadEdge >
 QuadEdgeMeshPoint< TCoordRep, VPointDimension, TQuadEdge >
-::QuadEdgeMeshPoint(const Superclass & r):Superclass(r)
+::QuadEdgeMeshPoint(const Superclass & r) : Superclass(r)
 {
   this->Initialize();
 }
@@ -107,7 +107,8 @@ QuadEdgeMeshPoint< TCoordRep, VPointDimension, TQuadEdge >
  *          and -1 otherwise.
  */
 template< typename TCoordRep, unsigned int VPointDimension, typename TQuadEdge >
-int QuadEdgeMeshPoint< TCoordRep, VPointDimension, TQuadEdge >
+int
+QuadEdgeMeshPoint< TCoordRep, VPointDimension, TQuadEdge >
 ::GetValence() const
 {
   int valence = -1; // error code by default
@@ -163,6 +164,7 @@ QuadEdgeMeshPoint< TCoordRep, VPointDimension, TQuadEdge >
 {
   this->Superclass::operator=(point);
 }
+
 }
 
 #endif

@@ -39,7 +39,7 @@ namespace itk
  */
 template<typename TTransform, typename TImage>
 class BSplineTransformInitializer
-: public Object
+  : public Object
 {
 public:
 
@@ -59,26 +59,26 @@ public:
   typedef TTransform TransformType;
 
   /** Types defined from the input image traits */
-  typedef TImage                                   ImageType;
-  typedef typename ImageType::ConstPointer         ImagePointer;
-  typedef typename ImageType::IndexType            IndexType;
-  typedef typename ImageType::PointType            ImagePointType;
-  typedef typename ImagePointType::CoordRepType    ImagePointCoordRepType;
+  typedef TImage                                ImageType;
+  typedef typename ImageType::ConstPointer      ImagePointer;
+  typedef typename ImageType::IndexType         IndexType;
+  typedef typename ImageType::PointType         ImagePointType;
+  typedef typename ImagePointType::CoordRepType ImagePointCoordRepType;
 
   /** Types defined from transform traits */
-  typedef typename TransformType::Pointer                 TransformPointer;
-  typedef typename TransformType::RegionType              RegionType;
-  typedef typename RegionType::SizeType                   SizeType;
-  typedef typename TransformType::SpacingType             SpacingType;
-  typedef typename TransformType::OriginType              OriginType;
-  typedef typename TransformType::DirectionType           DirectionType;
-  typedef typename TransformType::PhysicalDimensionsType  PhysicalDimensionsType;
-  typedef typename TransformType::MeshSizeType            MeshSizeType;
-  typedef typename SpacingType::ComponentType             SpacingComponentType;
+  typedef typename TransformType::Pointer                TransformPointer;
+  typedef typename TransformType::RegionType             RegionType;
+  typedef typename RegionType::SizeType                  SizeType;
+  typedef typename TransformType::SpacingType            SpacingType;
+  typedef typename TransformType::OriginType             OriginType;
+  typedef typename TransformType::DirectionType          DirectionType;
+  typedef typename TransformType::PhysicalDimensionsType PhysicalDimensionsType;
+  typedef typename TransformType::MeshSizeType           MeshSizeType;
+  typedef typename SpacingType::ComponentType            SpacingComponentType;
 
   /** Dimension of parameters. */
   itkStaticConstMacro( SpaceDimension, unsigned int,
-    TransformType::SpaceDimension );
+                       TransformType::SpaceDimension );
 
   /** Set the transform to be initialized */
   itkSetObjectMacro( Transform, TransformType );
@@ -104,15 +104,16 @@ protected:
 
 private:
   BSplineTransformInitializer( const Self & ); //purposely not
-                                                         // implemented
+  // implemented
   void operator=( const Self & );                        //purposely not
-                                                         // implemented
 
-  ImagePointer                    m_Image;
-  TransformPointer                m_Transform;
+  // implemented
 
-  MeshSizeType                    m_TransformDomainMeshSize;
-  bool                            m_SetTransformDomainMeshSizeViaInitializer;
+  ImagePointer     m_Image;
+  TransformPointer m_Transform;
+
+  MeshSizeType m_TransformDomainMeshSize;
+  bool         m_SetTransformDomainMeshSizeViaInitializer;
 
 }; //class BSplineTransformInitializer
 }  // namespace itk

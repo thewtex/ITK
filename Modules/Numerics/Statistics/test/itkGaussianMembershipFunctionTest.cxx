@@ -19,15 +19,16 @@
 #include <iostream>
 #include "itkGaussianMembershipFunction.h"
 
-int itkGaussianMembershipFunctionTest(int, char* [] )
+int
+itkGaussianMembershipFunctionTest(int, char* [] )
 {
   const unsigned int MeasurementVectorSize = 1;
 
   typedef itk::FixedArray<
-    float, MeasurementVectorSize >  MeasurementVectorType;
+      float, MeasurementVectorSize >  MeasurementVectorType;
 
-  typedef itk::Statistics::GaussianMembershipFunction< MeasurementVectorType >   MembershipFunctionType;
-  typedef MembershipFunctionType::MeasurementVectorSizeType MeasurementVectorSizeType;
+  typedef itk::Statistics::GaussianMembershipFunction< MeasurementVectorType > MembershipFunctionType;
+  typedef MembershipFunctionType::MeasurementVectorSizeType                    MeasurementVectorSizeType;
 
   MembershipFunctionType::Pointer function = MembershipFunctionType::New();
   std::cout << function->GetNameOfClass() << std::endl;
@@ -50,8 +51,10 @@ int itkGaussianMembershipFunctionTest(int, char* [] )
     {
     MeasurementVectorSizeType measurementVector2 = MeasurementVectorSize + 1;
     function->SetMeasurementVectorSize( measurementVector2 );
-    std::cerr << "Exception should have been thrown since we are trying to resize\
-                  non-resizeable measurement vector type " << std::endl;
+    std::cerr <<
+    "Exception should have been thrown since we are trying to resize\
+                  non-resizeable measurement vector type "
+              << std::endl;
     //return EXIT_FAILURE;
     }
   catch( itk::ExceptionObject & excp )
@@ -59,11 +62,10 @@ int itkGaussianMembershipFunctionTest(int, char* [] )
     std::cerr << "Caughted expected exception: " << excp << std::endl;
     }
 
-
   //Test if the membership function value computed is correct
   MembershipFunctionType::MeanVectorType mean;
   ::itk::NumericTraits<MembershipFunctionType::MeanVectorType>::SetLength( mean,
-    MeasurementVectorSize);
+                                                                           MeasurementVectorSize);
   mean[0] = 1.5;
   function->SetMean( mean );
 

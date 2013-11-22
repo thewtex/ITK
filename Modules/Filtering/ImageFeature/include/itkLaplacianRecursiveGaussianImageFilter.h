@@ -41,7 +41,7 @@ namespace itk
  */
 template< typename TInputImage,
           typename TOutputImage = TInputImage >
-class LaplacianRecursiveGaussianImageFilter:
+class LaplacianRecursiveGaussianImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -72,15 +72,15 @@ public:
 
   /**  Smoothing filter type */
   typedef RecursiveGaussianImageFilter<
-    RealImageType,
-    RealImageType
-    >    GaussianFilterType;
+      RealImageType,
+      RealImageType
+      >    GaussianFilterType;
 
   /**  Derivative filter type, it will be the first in the pipeline  */
   typedef RecursiveGaussianImageFilter<
-    InputImageType,
-    RealImageType
-    >    DerivativeFilterType;
+      InputImageType,
+      RealImageType
+      >    DerivativeFilterType;
 
   /**  Pointer to a gaussian filter.  */
   typedef typename GaussianFilterType::Pointer GaussianFilterPointer;
@@ -95,7 +95,6 @@ public:
   typedef TOutputImage                                 OutputImageType;
   typedef typename          OutputImageType::PixelType OutputPixelType;
 
-
   /**  Command for observing progress of internal pipeline filters */
   typedef          MemberCommand< Self > CommandType;
   typedef typename CommandType::Pointer  CommandPointer;
@@ -109,17 +108,19 @@ public:
 
   /** Set Sigma value. Sigma is measured in the units of image spacing. */
   void SetSigma(RealType sigma);
+
   RealType GetSigma() const;
 
   /** Define which normalization factor will be used for the Gaussian
    *  \sa  RecursiveGaussianImageFilter::SetNormalizeAcrossScale
    */
-  void SetNormalizeAcrossScale(bool normalizeInScaleSpace);\
+  void SetNormalizeAcrossScale(bool normalizeInScaleSpace); \
   itkGetConstMacro(NormalizeAcrossScale, bool);
 
 protected:
   LaplacianRecursiveGaussianImageFilter();
-  virtual ~LaplacianRecursiveGaussianImageFilter() {}
+  virtual
+  ~LaplacianRecursiveGaussianImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate Data */
@@ -132,7 +133,8 @@ private:
   LaplacianRecursiveGaussianImageFilter(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 
   // special binary functor to perform A+B*ConstValue
   //
@@ -140,15 +142,23 @@ private:
   // ConstValue is the spacing scalling
   class AddMultConstFunctor
   {
-  public:
+public:
     typedef AddMultConstFunctor Self;
 
     AddMultConstFunctor( void ) : m_Value( NumericTraits<PixelType>::One ) {}
 
-    bool operator!=( const Self &other ) const { return !(*this==other); }
-    bool operator==( const Self &other ) const { return m_Value == other.m_Value; }
+    bool
+    operator!=( const Self &other ) const {
+      return !(*this==other);
+    }
 
-    inline InternalRealType operator()( const InternalRealType &a, const InternalRealType &b ) const
+    bool
+    operator==( const Self &other ) const {
+      return m_Value == other.m_Value;
+    }
+
+    inline InternalRealType
+    operator()( const InternalRealType &a, const InternalRealType &b ) const
     {
       return static_cast<InternalRealType>( a + b*m_Value );
     }

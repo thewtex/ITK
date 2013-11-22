@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TMesh, typename TQEType >
-class QuadEdgeMeshEulerOperatorFlipEdgeFunction:
+class QuadEdgeMeshEulerOperatorFlipEdgeFunction :
   public QuadEdgeMeshFunctionBase< TMesh, TQEType * >
 {
 public:
@@ -89,6 +89,7 @@ private:
   QuadEdgeMeshEulerOperatorFlipEdgeFunction(const Self &);
   //purposely not implemented
   void operator=(const Self &);
+
 };
 } // namespace itkQE
 

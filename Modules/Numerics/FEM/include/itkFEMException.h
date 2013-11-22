@@ -52,10 +52,10 @@ public:
   FEMException(const char *file, unsigned int lineNumber, std::string location = "Unknown");
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMException()
+  virtual
+  ~FEMException()
   throw ( )
-  {
-  }
+  {}
 
   /** Type related information. */
   itkTypeMacro(FEMException, ExceptionObject);
@@ -79,10 +79,10 @@ public:
   FEMExceptionIO(const char *file, unsigned int lineNumber, std::string location, std::string moreDescription);
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMExceptionIO()
+  virtual
+  ~FEMExceptionIO()
   throw ( )
-  {
-  }
+  {}
 
   /** Type related information. */
   itkTypeMacro(FEMExceptionIO, FEMException);
@@ -112,10 +112,10 @@ public:
   FEMExceptionWrongClass(const char *file, unsigned int lineNumber, std::string location);
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMExceptionWrongClass()
+  virtual
+  ~FEMExceptionWrongClass()
   throw ( )
-  {
-  }
+  {}
 
   /** Type related information. */
   itkTypeMacro(FEMExceptionWrongClass, FEMException);
@@ -136,10 +136,10 @@ public:
                              int GN);
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMExceptionObjectNotFound()
+  virtual
+  ~FEMExceptionObjectNotFound()
   throw ( )
-  {
-  }
+  {}
 
   /** Type related information. */
   itkTypeMacro(FEMExceptionObjectNotFound, FEMException);
@@ -170,10 +170,10 @@ public:
   FEMExceptionSolution(const char *file, unsigned int lineNumber, std::string location, std::string moreDescription);
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMExceptionSolution()
+  virtual
+  ~FEMExceptionSolution()
   throw ( )
-  {
-  }
+  {}
 
   /** Type related information. */
   itkTypeMacro(FEMExceptionSolution, FEMException);

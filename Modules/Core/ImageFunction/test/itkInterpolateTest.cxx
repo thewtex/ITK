@@ -22,14 +22,14 @@
 #include "itkLinearInterpolateImageFunction.h"
 #include "itkNearestNeighborInterpolateImageFunction.h"
 
-typedef itk::Size<3>                              SizeType;
-typedef itk::Image<unsigned short, 3>             ImageType;
-typedef double                                    CoordRepType;
+typedef itk::Size<3>                  SizeType;
+typedef itk::Image<unsigned short, 3> ImageType;
+typedef double                        CoordRepType;
 typedef itk::LinearInterpolateImageFunction<ImageType,CoordRepType>
-                                                  InterpolatorType;
-typedef InterpolatorType::IndexType               IndexType;
-typedef InterpolatorType::PointType               PointType;
-typedef InterpolatorType::ContinuousIndexType     ContinuousIndexType;
+  InterpolatorType;
+typedef InterpolatorType::IndexType           IndexType;
+typedef InterpolatorType::PointType           PointType;
+typedef InterpolatorType::ContinuousIndexType ContinuousIndexType;
 
 typedef itk::NearestNeighborInterpolateImageFunction<ImageType,CoordRepType>
   NNInterpolatorType;
@@ -38,8 +38,8 @@ namespace
 
 /* Define the image size and physical coordinates */
 SizeType size = {{20, 40, 80}};
-double origin [3] = { 0.5L,   0.5L,   0.5L};
-double spacing[3] = { 0.1L,   0.05L , 0.025L};
+double   origin [3] = { 0.5L,   0.5L,   0.5L};
+double   spacing[3] = { 0.1L,   0.05L , 0.025L};
 
 }
 
@@ -48,11 +48,12 @@ double spacing[3] = { 0.1L,   0.05L , 0.025L};
  * returns false otherwise
  */
 template <typename TInterpolator>
-bool TestGeometricPoint(
-const TInterpolator * interp,
-const PointType& point,
-bool isInside,
-double trueValue )
+bool
+TestGeometricPoint(
+  const TInterpolator * interp,
+  const PointType& point,
+  bool isInside,
+  double trueValue )
 {
 
   std::cout << " Point: " << point;
@@ -88,11 +89,12 @@ double trueValue )
  * returns false otherwise
  */
 template<typename TInterpolator>
-bool TestContinuousIndex(
-const TInterpolator * interp,
-const ContinuousIndexType& index,
-bool isInside,
-double trueValue )
+bool
+TestContinuousIndex(
+  const TInterpolator * interp,
+  const ContinuousIndexType& index,
+  bool isInside,
+  double trueValue )
 {
 
   std::cout << " Index: " << index;
@@ -123,16 +125,17 @@ double trueValue )
 
 }
 
-
-int itkInterpolateTest(int, char *[] )
+int
+itkInterpolateTest(int, char *[] )
 {
   int flag = 0;           /* Did this test program work? */
 
   std::cout << "Testing image interpolation methods:\n";
 
   /* Allocate a simple test image */
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer    image = ImageType::New();
   ImageType::RegionType region;
+
   region.SetSize(size);
   image->SetLargestPossibleRegion(region);
   image->SetBufferedRegion(region);
@@ -167,9 +170,9 @@ int itkInterpolateTest(int, char *[] )
      gemetric points */
   std::cout << "Evaluate at: " << std::endl;
   ContinuousIndexType cindex;
-  IndexType mindex;
-  PointType point;
-  bool passed;
+  IndexType           mindex;
+  PointType           point;
+  bool                passed;
 
   // an integer position inside the image
   itk::SpacePrecisionType darray1[3] = { 10, 20, 40};
@@ -361,7 +364,6 @@ int itkInterpolateTest(int, char *[] )
     flag = 1;
     }
 
-
   mindex.CopyWithRound( cindex );
   expectedValue = mindex[0] + mindex[1] + mindex[2];
 
@@ -371,7 +373,6 @@ int itkInterpolateTest(int, char *[] )
     {
     flag = 1;
     }
-
 
   /* Return results of test */
   if (flag != 0)

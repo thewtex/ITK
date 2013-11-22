@@ -156,6 +156,7 @@ DerivativeImageFilter< TInputImage, TOutputImage >::PrintSelf(std::ostream & os,
   os << indent << "Direction: " << m_Direction << std::endl;
   os << indent << "UseImageSpacing: " << m_UseImageSpacing << std::endl;
 }
+
 } // end namespace itk
 
 #endif

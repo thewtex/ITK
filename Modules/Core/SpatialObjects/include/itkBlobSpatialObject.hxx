@@ -18,7 +18,6 @@
 #ifndef __itkBlobSpatialObject_hxx
 #define __itkBlobSpatialObject_hxx
 
-
 #include "itkBlobSpatialObject.h"
 
 #include "itkNumericTraits.h"
@@ -49,20 +48,20 @@ template< unsigned int TDimension >
 typename BlobSpatialObject< TDimension >::PointListType &
 BlobSpatialObject< TDimension >
 ::GetPoints()
-{
+  {
   itkDebugMacro("Getting BlobPoint list");
   return m_Points;
-}
+  }
 
 /** Get the list of points which are defining the blob */
 template< unsigned int TDimension >
 const typename BlobSpatialObject< TDimension >::PointListType &
 BlobSpatialObject< TDimension >
 ::GetPoints() const
-{
+  {
   itkDebugMacro("Getting BlobPoint list");
   return m_Points;
-}
+  }
 
 /** Set the points which are defining the Blob structure */
 template< unsigned int TDimension >
@@ -244,6 +243,7 @@ BlobSpatialObject< TDimension >
   value = this->GetDefaultOutsideValue();
   return false;
 }
+
 } // end namespace itk
 
 #endif

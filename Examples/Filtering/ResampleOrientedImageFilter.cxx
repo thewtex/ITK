@@ -23,7 +23,8 @@
 
 #include "itkResampleImageFilter.h"
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 7 )
     {
@@ -33,21 +34,20 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const unsigned int                               Dimension = 2;
+  const unsigned int Dimension = 2;
   typedef unsigned char                            InputPixelType;
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< InputPixelType,  Dimension > InputImageType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
 
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
-
 
   typedef itk::ResampleImageFilter<InputImageType,OutputImageType> FilterType;
   FilterType::Pointer filter = FilterType::New();
@@ -73,7 +73,7 @@ int main( int argc, char * argv[] )
   direction(1,1) = atoi(argv[6]);
   filter->SetOutputDirection(direction);
 
-  InputImageType::SizeType   size;
+  InputImageType::SizeType size;
   size[0] = 300;  // number of pixels along X
   size[1] = 300;  // number of pixels along Y
 

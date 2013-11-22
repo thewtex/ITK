@@ -35,7 +35,8 @@
 #include "itkExpectationMaximizationMixtureModelEstimator.h"
 #include "itkWeightedCentroidKdTreeGenerator.h"
 
-int itkStatisticsPrintTest(int , char* [])
+int
+itkStatisticsPrintTest(int , char* [])
 {
   typedef float TMeasurementType;
   typedef float FrequencyType;
@@ -53,38 +54,38 @@ int itkStatisticsPrintTest(int , char* [])
   typedef itk::Statistics::Histogram< TMeasurementType > HistogramType;
 
   typedef itk::Statistics::SampleToHistogramFilter<
-    SampleType, HistogramType > SampleToHistogramFilterType;
+      SampleType, HistogramType > SampleToHistogramFilterType;
 
   typedef itk::Statistics::SampleClassifierFilter<
-    SampleType > SampleClassifierFilterType;
+      SampleType > SampleClassifierFilterType;
 
   typedef itk::Statistics::ImageClassifierFilter<
-    SampleType, ImageType, OutputImageType > ImageClassifierFilterType;
+      SampleType, ImageType, OutputImageType > ImageClassifierFilterType;
 
   typedef itk::Statistics::ImageToListSampleFilter<
-    ImageType, ScalarImageType > ImageToListSampleFilterType;
+      ImageType, ScalarImageType > ImageToListSampleFilterType;
 
   typedef itk::Statistics::ImageToListSampleAdaptor<
-    ImageType> ImageToListSampleAdaptorType;
+      ImageType> ImageToListSampleAdaptorType;
 
   typedef itk::Statistics::JointDomainImageToListSampleAdaptor<
-    ImageType> JointDomainImageToListSampleAdaptorType;
+      ImageType> JointDomainImageToListSampleAdaptorType;
 
   typedef itk::Statistics::ScalarImageToCooccurrenceMatrixFilter<
-    ScalarImageType > ScalarImageToCooccurrenceMatrixFilterType;
+      ScalarImageType > ScalarImageToCooccurrenceMatrixFilterType;
 
   typedef itk::Statistics::ScalarImageToCooccurrenceListSampleFilter<
-    ScalarImageType > ScalarImageToCooccurrenceListSampleFilterType;
+      ScalarImageType > ScalarImageToCooccurrenceListSampleFilterType;
 
   typedef itk::Statistics::ScalarImageToTextureFeaturesFilter<
-    ScalarImageType > ScalarImageToTextureFeaturesFilterType;
+      ScalarImageType > ScalarImageToTextureFeaturesFilterType;
 
   typedef itk::Statistics::MembershipSample< SampleType > MembershipSampleType;
 
   typedef itk::Statistics::MembershipFunctionBase< TMeasurementVectorType > MembershipFunctionBaseType;
 
   typedef itk::Statistics::DistanceToCentroidMembershipFunction<
-            TMeasurementVectorType > DistanceToCentroidMembershipFunctionType;
+      TMeasurementVectorType > DistanceToCentroidMembershipFunctionType;
 
   typedef itk::Statistics::DistanceMetric< TMeasurementVectorType >
     DistanceType;
@@ -105,7 +106,7 @@ int itkStatisticsPrintTest(int , char* [])
   typedef itk::Statistics::MinimumDecisionRule MinimumDecisionRuleType;
 
   typedef itk::Statistics::HistogramToTextureFeaturesFilter<
-    HistogramType > HistogramToTextureFeaturesFilterType;
+      HistogramType > HistogramToTextureFeaturesFilterType;
 
   typedef itk::Statistics::MeanSampleFilter< SampleType > MeanSampleFilterType;
 
@@ -125,9 +126,9 @@ int itkStatisticsPrintTest(int , char* [])
 
   typedef itk::Statistics::ExpectationMaximizationMixtureModelEstimator< SampleType > EMEstimatorType;
 
-  typedef itk::Statistics::WeightedCentroidKdTreeGenerator< SampleType >  TreeGeneratorType;
+  typedef itk::Statistics::WeightedCentroidKdTreeGenerator< SampleType > TreeGeneratorType;
 
-  typedef itk::Statistics::KdTreeBasedKmeansEstimator< TreeGeneratorType::KdTreeType >  KdTreeBasedKMeansEstimatorType;
+  typedef itk::Statistics::KdTreeBasedKmeansEstimator< TreeGeneratorType::KdTreeType > KdTreeBasedKMeansEstimatorType;
 
   SampleType::Pointer sampleObj = SampleType::New();
   std::cout << "----------ListSample " << sampleObj;
@@ -179,7 +180,8 @@ int itkStatisticsPrintTest(int , char* [])
   std::cout << "----------ScalarImageToCooccurrenceListSampleFilter ";
   std::cout << ScalarImageToCooccurrenceListSampleFilterObj;
 
-  ScalarImageToTextureFeaturesFilterType::Pointer ScalarImageToTextureFeaturesFilterObj = ScalarImageToTextureFeaturesFilterType::New();
+  ScalarImageToTextureFeaturesFilterType::Pointer ScalarImageToTextureFeaturesFilterObj =
+    ScalarImageToTextureFeaturesFilterType::New();
   std::cout << "----------ScalarImageToTextureFeaturesFilter ";
   std::cout << ScalarImageToTextureFeaturesFilterObj;
 
@@ -248,15 +250,15 @@ int itkStatisticsPrintTest(int , char* [])
   std::cout << "----------MinimumDecisionRuleType " << minimumDecsion;
 
   ImageClassifierFilterType::Pointer classifierFilter=
-   ImageClassifierFilterType::New();
+    ImageClassifierFilterType::New();
   std::cout << "----------ImageClassifierFilterType " << classifierFilter;
 
   EMEstimatorType::Pointer emEstimator=
-   EMEstimatorType::New();
+    EMEstimatorType::New();
   std::cout << "----------EMEstimatorType " << emEstimator;
 
   KdTreeBasedKMeansEstimatorType::Pointer kdTreeBasedEstimator=
-   KdTreeBasedKMeansEstimatorType::New();
+    KdTreeBasedKMeansEstimatorType::New();
   std::cout << "----------KdTreeBasedKMeansEstimatorType " << kdTreeBasedEstimator;
 
   return EXIT_SUCCESS;

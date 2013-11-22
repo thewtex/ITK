@@ -112,6 +112,7 @@ ScatterMatrixImageFunction< TInputImage, TCoordRep >
 
   return ( covariance );
 }
+
 } // end namespace itk
 
 #endif

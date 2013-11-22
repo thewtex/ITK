@@ -21,7 +21,8 @@
 #include <iostream>
 
 //
-int itkFEMElement3DMembraneTest(int, char *[])
+int
+itkFEMElement3DMembraneTest(int, char *[])
 {
 
   typedef itk::fem::Element ElementType;

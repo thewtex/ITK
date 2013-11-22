@@ -85,7 +85,7 @@ CovarianceSampleFilter< TSample >
     {
     MeasurementVectorRealType mean;
     (void)mean; // for complainty pants : valgrind
-    NumericTraits<MeasurementVectorRealType>::SetLength(mean, this->GetMeasurementVectorSize());
+    NumericTraits<MeasurementVectorRealType>::SetLength(mean, this->GetMeasurementVectorSize() );
     mean.Fill( NumericTraits< MeasurementRealType >::Zero );
     typename MeasurementVectorDecoratedType::Pointer decoratedMean = MeasurementVectorDecoratedType::New();
     decoratedMean->Set( mean );
@@ -135,7 +135,7 @@ CovarianceSampleFilter< TSample >
   MatrixType output = decoratedOutput->Get();
 
   MeasurementVectorDecoratedType *decoratedMeanOutput =
-    itkDynamicCastInDebugMode< MeasurementVectorDecoratedType * >(this->ProcessObject::GetOutput(1));
+    itkDynamicCastInDebugMode< MeasurementVectorDecoratedType * >(this->ProcessObject::GetOutput(1) );
 
   output.SetSize(measurementVectorSize, measurementVectorSize);
   output.Fill(0.0);
@@ -146,7 +146,7 @@ CovarianceSampleFilter< TSample >
   typename TSample::ConstIterator end = input->End();
 
   MeasurementVectorRealType diff;
-  MeasurementVectorType measurements;
+  MeasurementVectorType     measurements;
 
   NumericTraits<MeasurementVectorRealType>::SetLength(diff, measurementVectorSize);
   NumericTraits<MeasurementVectorType>::SetLength(measurements, measurementVectorSize);
@@ -219,9 +219,9 @@ template< typename TSample >
 const typename CovarianceSampleFilter< TSample >::MatrixDecoratedType *
 CovarianceSampleFilter< TSample >
 ::GetCovarianceMatrixOutput() const
-{
+  {
   return static_cast< const MatrixDecoratedType * >( this->ProcessObject::GetOutput(0) );
-}
+  }
 
 template< typename TSample >
 const typename CovarianceSampleFilter< TSample >::MatrixType
@@ -235,9 +235,9 @@ template< typename TSample >
 const typename CovarianceSampleFilter< TSample >::MeasurementVectorDecoratedType *
 CovarianceSampleFilter< TSample >
 ::GetMeanOutput() const
-{
+  {
   return static_cast< const MeasurementVectorDecoratedType * >( this->ProcessObject::GetOutput(1) );
-}
+  }
 
 template< typename TSample >
 const typename CovarianceSampleFilter< TSample >::MeasurementVectorRealType
@@ -246,6 +246,7 @@ CovarianceSampleFilter< TSample >
 {
   return this->GetMeanOutput()->Get();
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

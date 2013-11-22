@@ -41,7 +41,8 @@
 #include "itkImageRegionIterator.h"
 #include "itkAffineTransform.h"
 
-int main(int, char* [])
+int
+main(int, char* [])
 {
 // Software Guide : BeginLatex
 // The ImageMaskSpatialObject is templated over the dimensionality.
@@ -60,10 +61,9 @@ int main(int, char* [])
   typedef ImageMaskSpatialObject::ImageType     ImageType;
   typedef itk::ImageRegionIterator< ImageType > Iterator;
 
-
-  ImageType::Pointer image = ImageType::New();
-  ImageType::SizeType size = {{ 50, 50, 50 }};
-  ImageType::IndexType index = {{ 0, 0, 0 }};
+  ImageType::Pointer    image = ImageType::New();
+  ImageType::SizeType   size = {{ 50, 50, 50 }};
+  ImageType::IndexType  index = {{ 0, 0, 0 }};
   ImageType::RegionType region;
 
   region.SetSize(size);
@@ -77,8 +77,8 @@ int main(int, char* [])
   image->FillBuffer( p );
 
   ImageType::RegionType insideRegion;
-  ImageType::SizeType insideSize   = {{ 30, 30, 30 }};
-  ImageType::IndexType insideIndex = {{ 10, 10, 10 }};
+  ImageType::SizeType   insideSize   = {{ 30, 30, 30 }};
+  ImageType::IndexType  insideIndex = {{ 10, 10, 10 }};
   insideRegion.SetSize( insideSize );
   insideRegion.SetIndex( insideIndex );
 
@@ -112,14 +112,14 @@ int main(int, char* [])
 // of the image should be used to compute the metric.
 // Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet
-  ImageMaskSpatialObject::PointType  inside;
+  ImageMaskSpatialObject::PointType inside;
   inside.Fill(20);
   std::cout << "Is my point " << inside << " inside my mask? "
-    << maskSO->IsInside(inside) << std::endl;
-  ImageMaskSpatialObject::PointType  outside;
+            << maskSO->IsInside(inside) << std::endl;
+  ImageMaskSpatialObject::PointType outside;
   outside.Fill(45);
   std::cout << "Is my point " << outside << " outside my mask? "
-    << !maskSO->IsInside(outside) << std::endl;
+            << !maskSO->IsInside(outside) << std::endl;
 // Software Guide : EndCodeSnippet
 
   return EXIT_SUCCESS;

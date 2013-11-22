@@ -70,7 +70,7 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TInputImage, typename TOutputImage >
-class BSplineDecompositionImageFilter:
+class BSplineDecompositionImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -122,7 +122,8 @@ public:
 
 protected:
   BSplineDecompositionImageFilter();
-  virtual ~BSplineDecompositionImageFilter() {}
+  virtual
+  ~BSplineDecompositionImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData();
@@ -134,7 +135,7 @@ protected:
   void EnlargeOutputRequestedRegion(DataObject *output);
 
   /** These are needed by the smoothing spline routine. */
-  std::vector< CoeffType >           m_Scratch;   // temp storage for processing
+  std::vector< CoeffType > m_Scratch;             // temp storage for processing
                                                   // of Coefficients
   typename TInputImage::SizeType m_DataLength;    // Image size
 
@@ -179,6 +180,7 @@ private:
 
   /** Copies a vector of data from m_Scratch to the Coefficients image. */
   void CopyScratchToCoefficients(OutputLinearIterator &);
+
 };
 } // namespace itk
 

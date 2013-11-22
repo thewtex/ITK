@@ -51,7 +51,7 @@ MorphologicalGradientImageFilter< TInputImage, TOutputImage, TKernel >
     flatKernel = dynamic_cast< const FlatKernelType * >( &kernel );
     }
   catch ( ... )
-                  {}
+                    {}
 
   if ( flatKernel != NULL && flatKernel->GetDecomposable() )
     {
@@ -103,7 +103,7 @@ MorphologicalGradientImageFilter< TInputImage, TOutputImage, TKernel >
     flatKernel = dynamic_cast< const FlatKernelType * >( &this->GetKernel() );
     }
   catch ( ... )
-                  {}
+                    {}
 
   if ( m_Algorithm != algo )
     {
@@ -222,6 +222,7 @@ MorphologicalGradientImageFilter< TInputImage, TOutputImage, TKernel >
 ::Modified() const
 {
   Superclass::Modified();
+
   m_BasicDilateFilter->Modified();
   m_BasicErodeFilter->Modified();
   m_HistogramFilter->Modified();
@@ -240,5 +241,6 @@ MorphologicalGradientImageFilter< TInputImage, TOutputImage, TKernel >
 
   os << indent << "Algorithm: " << m_Algorithm << std::endl;
 }
+
 } // end namespace itk
 #endif

@@ -169,6 +169,7 @@ TwoOutputExampleImageFilter< TImage >
     progress.CompletedPixel();
     }
 }
+
 } // end namespace itk
 
 #endif //#if !defined( ITK_LEGACY_REMOVE )

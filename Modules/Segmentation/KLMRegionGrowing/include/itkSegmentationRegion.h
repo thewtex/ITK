@@ -43,7 +43,7 @@ namespace itk
  * \ingroup RegionGrowingSegmentation
  * \ingroup ITKKLMRegionGrowing
  */
-class SegmentationRegion:public Object
+class SegmentationRegion : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -64,7 +64,8 @@ public:
   /** Define a virtual SegmentationRegion function that is meant to be
    * used in derived classes if some operation needs to be
    * performed on a region object. */
-  virtual void ApplySegmentationRegion(){}
+  virtual void
+  ApplySegmentationRegion(){}
 
   /** Set/Get the region with parameter values
    * defining the region. */

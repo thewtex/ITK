@@ -74,19 +74,21 @@ public:
 
   /** Functor used to access pixels from a neighborhood of pixel pointers */
   typedef typename TInputImage::NeighborhoodAccessorFunctorType
-  NeighborhoodAccessorFunctorType;
+    NeighborhoodAccessorFunctorType;
 
   /** Default constructor. */
   ImageBoundaryCondition() {}
 
   /** Runtime information support. */
-  virtual const char * GetNameOfClass() const
+  virtual const char *
+  GetNameOfClass() const
   {
     return "itkImageBoundaryCondition";
   }
 
   /** Utility for printing the boundary condition. */
-  virtual void Print( std::ostream & os, Indent i = 0 ) const
+  virtual void
+  Print( std::ostream & os, Indent i = 0 ) const
   {
     os << i << this->GetNameOfClass() << " (" << this << ")" << std::endl;
   }
@@ -107,7 +109,8 @@ public:
     const NeighborhoodType *data,
     const NeighborhoodAccessorFunctorType & neighborhoodAccessorFunctor) const = 0;
 
-  virtual ~ImageBoundaryCondition() {}
+  virtual
+  ~ImageBoundaryCondition() {}
 
   /** Tell if the boundary condition can index to any location within
     * the associated iterator's neighborhood or if it has some limited
@@ -115,7 +118,10 @@ public:
     * Subclasses should override this method if they can safely limit
     * indexes to active pixels (or no pixels).
     */
-  virtual bool RequiresCompleteNeighborhood() { return true; }
+  virtual bool
+  RequiresCompleteNeighborhood() {
+    return true;
+  }
 
   /** Determines the necessary input region for an output region given
    * the largest possible region of the input image. Subclasses should
@@ -126,8 +132,9 @@ public:
    * \return The necessary input region required to determine the
    * pixel values in the outputRequestedRegion.
    */
-  virtual RegionType GetInputRequestedRegion( const RegionType & inputLargestPossibleRegion,
-                                              const RegionType & outputRequestedRegion ) const
+  virtual RegionType
+  GetInputRequestedRegion( const RegionType & inputLargestPossibleRegion,
+                           const RegionType & outputRequestedRegion ) const
   {
     (void) outputRequestedRegion;
     return inputLargestPossibleRegion;

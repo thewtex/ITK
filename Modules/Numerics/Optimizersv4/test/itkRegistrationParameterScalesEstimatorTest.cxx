@@ -26,74 +26,92 @@
  */
 template< typename TFixedImage,typename TMovingImage,typename TVirtualImage = TFixedImage,
           typename TInternalComputationValueType = double,
-          typename TMetricTraits = itk::DefaultImageToImageMetricTraitsv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType>
+          typename TMetricTraits =
+            itk::DefaultImageToImageMetricTraitsv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType>
           >
-class RegistrationParameterScalesEstimatorTestMetric:
-  public itk::ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputationValueType, TMetricTraits>
+class RegistrationParameterScalesEstimatorTestMetric :
+  public itk::ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputationValueType,
+                                   TMetricTraits>
 {
 public:
   /** Standard class typedefs. */
-  typedef RegistrationParameterScalesEstimatorTestMetric                  Self;
+  typedef RegistrationParameterScalesEstimatorTestMetric Self;
   typedef itk::ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage,
-                             TInternalComputationValueType,TMetricTraits> Superclass;
-  typedef itk::SmartPointer< Self >                                       Pointer;
-  typedef itk::SmartPointer< const Self >                                 ConstPointer;
+                                    TInternalComputationValueType,TMetricTraits> Superclass;
+  typedef itk::SmartPointer< Self >       Pointer;
+  typedef itk::SmartPointer< const Self > ConstPointer;
 
-  typedef typename Superclass::MeasureType          MeasureType;
-  typedef typename Superclass::DerivativeType       DerivativeType;
-  typedef typename Superclass::ParametersType       ParametersType;
-  typedef typename Superclass::ParametersValueType  ParametersValueType;
+  typedef typename Superclass::MeasureType         MeasureType;
+  typedef typename Superclass::DerivativeType      DerivativeType;
+  typedef typename Superclass::ParametersType      ParametersType;
+  typedef typename Superclass::ParametersValueType ParametersValueType;
 
   itkTypeMacro(RegistrationParameterScalesEstimatorTestMetric, ImageToImageMetricv4);
 
   itkNewMacro(Self);
 
   // Pure virtual functions that all Metrics must provide
-  unsigned int GetNumberOfParameters() const { return 5; }
+  unsigned int
+  GetNumberOfParameters() const {
+    return 5;
+  }
 
-  MeasureType GetValue() const
-    {
+  MeasureType
+  GetValue() const
+  {
     return 1.0;
-    }
+  }
 
-  void GetValueAndDerivative( MeasureType & value, DerivativeType & derivative ) const
-    {
+  void
+  GetValueAndDerivative( MeasureType & value, DerivativeType & derivative ) const
+  {
     value = 1.0;
     derivative.Fill(0.0);
-    }
+  }
 
-  unsigned int GetNumberOfLocalParameters() const
-  { return 0; }
+  unsigned int
+  GetNumberOfLocalParameters() const
+  {
+    return 0;
+  }
 
-  void UpdateTransformParameters( const DerivativeType &, ParametersValueType ) {}
+  void
+  UpdateTransformParameters( const DerivativeType &, ParametersValueType ) {}
 
-  const ParametersType & GetParameters() const
-  { return m_Parameters; }
+  const ParametersType &
+  GetParameters() const
+  {
+    return m_Parameters;
+  }
 
-  void Initialize(void) throw ( itk::ExceptionObject ) {}
+  void
+  Initialize(void) throw ( itk::ExceptionObject ) {}
 
-  void PrintSelf(std::ostream& os, itk::Indent indent) const
-  { Superclass::PrintSelf( os, indent ); }
+  void
+  PrintSelf(std::ostream& os, itk::Indent indent) const
+  {
+    Superclass::PrintSelf( os, indent );
+  }
 
-  ParametersType  m_Parameters;
+  ParametersType m_Parameters;
 
   // Image related types
-  typedef TFixedImage                             FixedImageType;
-  typedef TMovingImage                            MovingImageType;
-  typedef TVirtualImage                           VirtualImageType;
+  typedef TFixedImage   FixedImageType;
+  typedef TMovingImage  MovingImageType;
+  typedef TVirtualImage VirtualImageType;
 
-  typedef typename FixedImageType::ConstPointer   FixedImageConstPointer;
-  typedef typename MovingImageType::ConstPointer  MovingImageConstPointer;
-  typedef typename VirtualImageType::Pointer      VirtualImagePointer;
-  typedef typename VirtualImageType::RegionType   VirtualRegionType;
+  typedef typename FixedImageType::ConstPointer  FixedImageConstPointer;
+  typedef typename MovingImageType::ConstPointer MovingImageConstPointer;
+  typedef typename VirtualImageType::Pointer     VirtualImagePointer;
+  typedef typename VirtualImageType::RegionType  VirtualRegionType;
 
   /* Image dimension accessors */
   itkStaticConstMacro(FixedImageDimension, itk::SizeValueType,
-      FixedImageType::ImageDimension);
+                      FixedImageType::ImageDimension);
   itkStaticConstMacro(MovingImageDimension, itk::SizeValueType,
-      MovingImageType::ImageDimension);
+                      MovingImageType::ImageDimension);
   itkStaticConstMacro(VirtualImageDimension, itk::SizeValueType,
-      VirtualImageType::ImageDimension);
+                      VirtualImageType::ImageDimension);
 
 private:
 
@@ -107,37 +125,38 @@ private:
  *  Create a simple scales estimator class to use for testing here.
  */
 template < typename TMetric >
-class RegistrationParameterScalesEstimatorTest:
+class RegistrationParameterScalesEstimatorTest :
   public itk::RegistrationParameterScalesEstimator< TMetric >
 {
 public:
   /** Standard class typedefs. */
-  typedef RegistrationParameterScalesEstimatorTest                    Self;
-  typedef itk::RegistrationParameterScalesEstimator< TMetric >        Superclass;
-  typedef itk::SmartPointer< Self >                                   Pointer;
-  typedef itk::SmartPointer< const Self >                             ConstPointer;
+  typedef RegistrationParameterScalesEstimatorTest             Self;
+  typedef itk::RegistrationParameterScalesEstimator< TMetric > Superclass;
+  typedef itk::SmartPointer< Self >                            Pointer;
+  typedef itk::SmartPointer< const Self >                      ConstPointer;
 
   itkNewMacro(Self);
 
   itkTypeMacro(RegistrationParameterScalesEstimatorTest, RegistrationParameterScalesEstimator);
 
   /** Type of scales */
-  typedef typename Superclass::ScalesType                ScalesType;
+  typedef typename Superclass::ScalesType ScalesType;
   /** Type of parameters of the optimizer */
-  typedef typename Superclass::ParametersType            ParametersType;
+  typedef typename Superclass::ParametersType ParametersType;
   /** Type of float */
-  typedef typename Superclass::FloatType                 FloatType;
+  typedef typename Superclass::FloatType FloatType;
 
-  typedef typename Superclass::VirtualPointType          VirtualPointType;
-  typedef typename Superclass::VirtualIndexType          VirtualIndexType;
-  typedef typename Superclass::MovingTransformType       MovingTransformType;
-  typedef typename Superclass::FixedTransformType        FixedTransformType;
-  typedef typename Superclass::JacobianType              JacobianType;
-  typedef typename Superclass::VirtualImageConstPointer  VirtualImageConstPointer;
+  typedef typename Superclass::VirtualPointType         VirtualPointType;
+  typedef typename Superclass::VirtualIndexType         VirtualIndexType;
+  typedef typename Superclass::MovingTransformType      MovingTransformType;
+  typedef typename Superclass::FixedTransformType       FixedTransformType;
+  typedef typename Superclass::JacobianType             JacobianType;
+  typedef typename Superclass::VirtualImageConstPointer VirtualImageConstPointer;
 
   /** Estimate parameter scales with maximum squared norms of Jacobians. */
-  virtual void EstimateScales(ScalesType &parameterScales)
-    {
+  virtual void
+  EstimateScales(ScalesType &parameterScales)
+  {
     this->CheckAndSetInputs();
     this->SetSamplingStrategy( Superclass::RandomSampling );
     this->SetNumberOfRandomSamples( 1000 );
@@ -177,50 +196,55 @@ public:
         parameterScales[p] = norms[p];
         }
       }
-    }
+  }
 
-  virtual double EstimateStepScale(const ParametersType &step)
-    {
+  virtual double
+  EstimateStepScale(const ParametersType &step)
+  {
     double norm = step.two_norm();
+
     return norm;
-    }
+  }
 
   /** Estimate the scales of local steps. */
-  virtual void EstimateLocalStepScales(const ParametersType &step,
-    ScalesType &localStepScales)
-    {
-    localStepScales.SetSize(step.size());
-    }
+  virtual void
+  EstimateLocalStepScales(const ParametersType &step,
+                          ScalesType &localStepScales)
+  {
+    localStepScales.SetSize(step.size() );
+  }
 
 protected:
-  RegistrationParameterScalesEstimatorTest(){};
-  ~RegistrationParameterScalesEstimatorTest(){};
+  RegistrationParameterScalesEstimatorTest(){}
+  ~RegistrationParameterScalesEstimatorTest(){}
 
 private:
   RegistrationParameterScalesEstimatorTest(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                           //purposely not implemented
 
 };
 
 /**
  */
-int itkRegistrationParameterScalesEstimatorTest(int , char* [])
+int
+itkRegistrationParameterScalesEstimatorTest(int , char* [])
 {
 
   // Image begins
   const itk::SizeValueType ImageDimension = 2;
-  typedef double           PixelType;
+
+  typedef double PixelType;
 
   // Image Types
-  typedef itk::Image<PixelType,ImageDimension>           FixedImageType;
-  typedef itk::Image<PixelType,ImageDimension>           MovingImageType;
-  typedef itk::Image<PixelType,ImageDimension>           VirtualImageType;
+  typedef itk::Image<PixelType,ImageDimension> FixedImageType;
+  typedef itk::Image<PixelType,ImageDimension> MovingImageType;
+  typedef itk::Image<PixelType,ImageDimension> VirtualImageType;
 
-  FixedImageType::Pointer  fixedImage  = FixedImageType::New();
-  MovingImageType::Pointer movingImage = MovingImageType::New();
+  FixedImageType::Pointer   fixedImage  = FixedImageType::New();
+  MovingImageType::Pointer  movingImage = MovingImageType::New();
   VirtualImageType::Pointer virtualImage = fixedImage;
 
-  MovingImageType::SizeType    size;
+  MovingImageType::SizeType size;
   size.Fill(100);
 
   movingImage->SetRegions( size );
@@ -228,7 +252,7 @@ int itkRegistrationParameterScalesEstimatorTest(int , char* [])
   // Image done
 
   // Transform begins
-  typedef itk::AffineTransform<double, ImageDimension>      MovingTransformType;
+  typedef itk::AffineTransform<double, ImageDimension> MovingTransformType;
   MovingTransformType::Pointer movingTransform =  MovingTransformType::New();
   movingTransform->SetIdentity();
 
@@ -260,13 +284,14 @@ int itkRegistrationParameterScalesEstimatorTest(int , char* [])
   jacobianScaleEstimator->SetTransformForward(true);
   jacobianScaleEstimator->Print( std::cout );
 
-  RegistrationParameterScalesEstimatorTestType::ScalesType jacobianScales( movingTransform->GetNumberOfParameters());
+  RegistrationParameterScalesEstimatorTestType::ScalesType jacobianScales( movingTransform->GetNumberOfParameters() );
   jacobianScaleEstimator->EstimateScales(jacobianScales);
   std::cout << "Scales from max squared Jacobian norm for the affine transform = "
-    << jacobianScales << std::endl;
+            << jacobianScales << std::endl;
 
   // Check the correctness
-  RegistrationParameterScalesEstimatorTestType::ScalesType theoreticalJacobianScales( movingTransform->GetNumberOfParameters());
+  RegistrationParameterScalesEstimatorTestType::ScalesType theoreticalJacobianScales(
+    movingTransform->GetNumberOfParameters() );
   VirtualImageType::PointType upperPoint;
   virtualImage->TransformIndexToPhysicalPoint(virtualImage->GetLargestPossibleRegion().GetUpperIndex(), upperPoint);
 
@@ -309,7 +334,7 @@ int itkRegistrationParameterScalesEstimatorTest(int , char* [])
   for (itk::SizeValueType p = 0; p < jacobianScales.GetSize(); p++)
     {
     if (vcl_abs( (jacobianScales[p] - theoreticalJacobianScales[p])
-      / theoreticalJacobianScales[p] ) > 0.3 )
+                 / theoreticalJacobianScales[p] ) > 0.3 )
       {
       randomPass = false;
       break;

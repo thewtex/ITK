@@ -62,22 +62,22 @@ class SymmetricEigenAnalysis
 {
 public:
   typedef enum
-  {
+    {
     OrderByValue = 1,
     OrderByMagnitude,
     DoNotOrder
-  }
+    }
   EigenValueOrderType;
 
-  SymmetricEigenAnalysis():
-  m_Dimension(0),
-  m_Order(0),
-  m_OrderEigenValues(OrderByValue) {}
+  SymmetricEigenAnalysis() :
+    m_Dimension(0),
+    m_Order(0),
+    m_OrderEigenValues(OrderByValue) {}
 
-  SymmetricEigenAnalysis(const unsigned int dimension):
-  m_Dimension(dimension),
-  m_Order(dimension),
-  m_OrderEigenValues(OrderByValue) {}
+  SymmetricEigenAnalysis(const unsigned int dimension) :
+    m_Dimension(dimension),
+    m_Order(dimension),
+    m_OrderEigenValues(OrderByValue) {}
 
   ~SymmetricEigenAnalysis() {}
 
@@ -128,7 +128,8 @@ public:
     TEigenMatrix   & EigenVectors) const;
 
   /** Matrix order. Defaults to matrix dimension if not set */
-  void SetOrder(const unsigned int n)
+  void
+  SetOrder(const unsigned int n)
   {
     m_Order = n;
   }
@@ -136,33 +137,45 @@ public:
   /** Get the Matrix order. Will be 0 unless explicitly set, or unless a
    * call to SetDimension has been made in which case it will be the
    * matrix dimension. */
-  unsigned int GetOrder() const { return m_Order; }
+  unsigned int
+  GetOrder() const {
+    return m_Order;
+  }
 
   /** Set/Get methods to order the eigen values in ascending order.
    * This is the default. ie lambda_1 < lambda_2 < ....
    */
-  void SetOrderEigenValues(const bool b)
+  void
+  SetOrderEigenValues(const bool b)
   {
     if ( b ) { m_OrderEigenValues = OrderByValue;     }
     else   { m_OrderEigenValues = DoNotOrder;       }
   }
 
-  bool GetOrderEigenValues() const { return ( m_OrderEigenValues == OrderByValue ); }
+  bool
+  GetOrderEigenValues() const {
+    return ( m_OrderEigenValues == OrderByValue );
+  }
 
   /** Set/Get methods to order the eigen value magnitudes in ascending order.
    * In other words, |lambda_1| < |lambda_2| < .....
    */
-  void SetOrderEigenMagnitudes(const bool b)
+  void
+  SetOrderEigenMagnitudes(const bool b)
   {
     if ( b ) { m_OrderEigenValues = OrderByMagnitude; }
     else   { m_OrderEigenValues = DoNotOrder;       }
   }
 
-  bool GetOrderEigenMagnitudes() const { return ( m_OrderEigenValues == OrderByMagnitude ); }
+  bool
+  GetOrderEigenMagnitudes() const {
+    return ( m_OrderEigenValues == OrderByMagnitude );
+  }
 
   /** Set the dimension of the input matrix A. A is a square matrix of
    * size m_Dimension. */
-  void SetDimension(const unsigned int n)
+  void
+  SetDimension(const unsigned int n)
   {
     m_Dimension = n;
     if ( m_Order == 0 )
@@ -173,7 +186,10 @@ public:
 
   /** Get Matrix dimension, Will be 0 unless explicitly set by a
    * call to SetDimension. */
-  unsigned int GetDimension() const { return m_Dimension; }
+  unsigned int
+  GetDimension() const {
+    return m_Dimension;
+  }
 
 private:
   unsigned int        m_Dimension;
@@ -298,11 +314,13 @@ private:
    */
   unsigned int ComputeEigenValuesAndVectorsUsingQL(
     VectorType & d, double *e, double *z) const;
+
 };
 
 template< typename TMatrix, typename TVector, typename TEigenMatrix >
-std::ostream & operator<<(std::ostream & os,
-                          const SymmetricEigenAnalysis< TMatrix, TVector, TEigenMatrix > & s)
+std::ostream &
+operator<<(std::ostream & os,
+           const SymmetricEigenAnalysis< TMatrix, TVector, TEigenMatrix > & s)
 {
   os << "[ClassType: SymmetricEigenAnalysis]" << std::endl;
   os << "  Dimension : " << s.GetDimension() << std::endl;
@@ -311,6 +329,7 @@ std::ostream & operator<<(std::ostream & os,
   os << "  OrderEigenMagnitudes: " << s.GetOrderEigenMagnitudes() << std::endl;
   return os;
 }
+
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION

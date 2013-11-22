@@ -22,7 +22,8 @@ namespace itk
 {
 namespace fem
 {
-void LinearSystemWrapperDenseVNL::InitializeMatrix(unsigned int matrixIndex)
+void
+LinearSystemWrapperDenseVNL::InitializeMatrix(unsigned int matrixIndex)
 {
   // allocate if necessary
   if( m_Matrices == 0 )
@@ -37,7 +38,8 @@ void LinearSystemWrapperDenseVNL::InitializeMatrix(unsigned int matrixIndex)
   ( *m_Matrices )[matrixIndex]->fill(0.0);
 }
 
-bool LinearSystemWrapperDenseVNL::IsMatrixInitialized(unsigned int matrixIndex)
+bool
+LinearSystemWrapperDenseVNL::IsMatrixInitialized(unsigned int matrixIndex)
 {
   if( !m_Matrices )
     {
@@ -51,7 +53,8 @@ bool LinearSystemWrapperDenseVNL::IsMatrixInitialized(unsigned int matrixIndex)
   return true;
 }
 
-void LinearSystemWrapperDenseVNL::DestroyMatrix(unsigned int matrixIndex)
+void
+LinearSystemWrapperDenseVNL::DestroyMatrix(unsigned int matrixIndex)
 {
   if( m_Matrices )
     {
@@ -60,7 +63,8 @@ void LinearSystemWrapperDenseVNL::DestroyMatrix(unsigned int matrixIndex)
     }
 }
 
-void LinearSystemWrapperDenseVNL::InitializeVector(unsigned int vectorIndex)
+void
+LinearSystemWrapperDenseVNL::InitializeVector(unsigned int vectorIndex)
 {
   // allocate if necessary
   if( m_Vectors == 0 )
@@ -75,7 +79,8 @@ void LinearSystemWrapperDenseVNL::InitializeVector(unsigned int vectorIndex)
   ( *m_Vectors )[vectorIndex]->fill(0.0);
 }
 
-bool LinearSystemWrapperDenseVNL::IsVectorInitialized(unsigned int vectorIndex)
+bool
+LinearSystemWrapperDenseVNL::IsVectorInitialized(unsigned int vectorIndex)
 {
   if( !m_Vectors )
     {
@@ -89,7 +94,8 @@ bool LinearSystemWrapperDenseVNL::IsVectorInitialized(unsigned int vectorIndex)
   return true;
 }
 
-void LinearSystemWrapperDenseVNL::DestroyVector(unsigned int vectorIndex)
+void
+LinearSystemWrapperDenseVNL::DestroyVector(unsigned int vectorIndex)
 {
   if( m_Vectors )
     {
@@ -98,7 +104,8 @@ void LinearSystemWrapperDenseVNL::DestroyVector(unsigned int vectorIndex)
     }
 }
 
-void LinearSystemWrapperDenseVNL::InitializeSolution(unsigned int solutionIndex)
+void
+LinearSystemWrapperDenseVNL::InitializeSolution(unsigned int solutionIndex)
 {
   // allocate if necessary
   if( m_Solutions == 0 )
@@ -113,7 +120,8 @@ void LinearSystemWrapperDenseVNL::InitializeSolution(unsigned int solutionIndex)
   ( *m_Solutions )[solutionIndex]->fill(0.0);
 }
 
-bool LinearSystemWrapperDenseVNL::IsSolutionInitialized(unsigned int solutionIndex)
+bool
+LinearSystemWrapperDenseVNL::IsSolutionInitialized(unsigned int solutionIndex)
 {
   if( !m_Solutions )
     {
@@ -127,7 +135,8 @@ bool LinearSystemWrapperDenseVNL::IsSolutionInitialized(unsigned int solutionInd
   return true;
 }
 
-void LinearSystemWrapperDenseVNL::DestroySolution(unsigned int solutionIndex)
+void
+LinearSystemWrapperDenseVNL::DestroySolution(unsigned int solutionIndex)
 {
   if( m_Solutions )
     {
@@ -136,8 +145,9 @@ void LinearSystemWrapperDenseVNL::DestroySolution(unsigned int solutionIndex)
     }
 }
 
-LinearSystemWrapperDenseVNL::Float LinearSystemWrapperDenseVNL::GetSolutionValue(unsigned int i,
-                                                                                 unsigned int solutionIndex) const
+LinearSystemWrapperDenseVNL::Float
+LinearSystemWrapperDenseVNL::GetSolutionValue(unsigned int i,
+                                              unsigned int solutionIndex) const
 {
   if( m_Solutions == 0 )
     {
@@ -153,7 +163,8 @@ LinearSystemWrapperDenseVNL::Float LinearSystemWrapperDenseVNL::GetSolutionValue
     }
 }
 
-void LinearSystemWrapperDenseVNL::Solve(void)
+void
+LinearSystemWrapperDenseVNL::Solve(void)
 {
   if( ( m_Matrices->size() == 0 ) || ( m_Vectors->size() == 0 ) || ( m_Solutions->size() == 0 ) )
     {
@@ -181,7 +192,8 @@ void LinearSystemWrapperDenseVNL::Solve(void)
   ( *( ( *m_Solutions )[0] ) ) = svd.solve( ( *( ( *m_Vectors )[0] ) ) );
 }
 
-void LinearSystemWrapperDenseVNL::SwapMatrices(unsigned int MatrixIndex1, unsigned int MatrixIndex2)
+void
+LinearSystemWrapperDenseVNL::SwapMatrices(unsigned int MatrixIndex1, unsigned int MatrixIndex2)
 {
   vnl_matrix<Float> *tmp;
   tmp = ( *m_Matrices )[MatrixIndex1];
@@ -189,7 +201,8 @@ void LinearSystemWrapperDenseVNL::SwapMatrices(unsigned int MatrixIndex1, unsign
   ( *m_Matrices )[MatrixIndex2] = tmp;
 }
 
-void LinearSystemWrapperDenseVNL::SwapVectors(unsigned int VectorIndex1, unsigned int VectorIndex2)
+void
+LinearSystemWrapperDenseVNL::SwapVectors(unsigned int VectorIndex1, unsigned int VectorIndex2)
 {
   vnl_vector<Float> tmp;
   tmp = *( *m_Vectors )[VectorIndex1];
@@ -197,7 +210,8 @@ void LinearSystemWrapperDenseVNL::SwapVectors(unsigned int VectorIndex1, unsigne
   *( *m_Vectors )[VectorIndex2] = tmp;
 }
 
-void LinearSystemWrapperDenseVNL::SwapSolutions(unsigned int SolutionIndex1, unsigned int SolutionIndex2)
+void
+LinearSystemWrapperDenseVNL::SwapSolutions(unsigned int SolutionIndex1, unsigned int SolutionIndex2)
 {
   vnl_vector<Float> *tmp;
   tmp = ( *m_Solutions )[SolutionIndex1];
@@ -205,21 +219,24 @@ void LinearSystemWrapperDenseVNL::SwapSolutions(unsigned int SolutionIndex1, uns
   ( *m_Solutions )[SolutionIndex2] = tmp;
 }
 
-void LinearSystemWrapperDenseVNL::CopySolution2Vector(unsigned int SolutionIndex, unsigned int VectorIndex)
+void
+LinearSystemWrapperDenseVNL::CopySolution2Vector(unsigned int SolutionIndex, unsigned int VectorIndex)
 {
   delete ( *m_Vectors )[VectorIndex];
   ( *m_Vectors )[VectorIndex] = new vnl_vector<Float>( *( ( *m_Solutions )[SolutionIndex] ) );
 }
 
-void LinearSystemWrapperDenseVNL::CopyVector2Solution(unsigned int VectorIndex, unsigned int SolutionIndex)
+void
+LinearSystemWrapperDenseVNL::CopyVector2Solution(unsigned int VectorIndex, unsigned int SolutionIndex)
 {
   delete ( *m_Solutions )[SolutionIndex];
   ( *m_Solutions )[SolutionIndex] = new vnl_vector<Float>( *( ( *m_Vectors )[VectorIndex] ) );
 }
 
-void LinearSystemWrapperDenseVNL::MultiplyMatrixMatrix(unsigned int ResultMatrixIndex,
-                                                       unsigned int LeftMatrixIndex,
-                                                       unsigned int RightMatrixIndex)
+void
+LinearSystemWrapperDenseVNL::MultiplyMatrixMatrix(unsigned int ResultMatrixIndex,
+                                                  unsigned int LeftMatrixIndex,
+                                                  unsigned int RightMatrixIndex)
 {
   // delete (*m_Matrices)[ResultMatrixIndex];
   // (*m_Matrices)[ResultMatrixIndex] = new vnl_matrix<Float>(
@@ -229,9 +246,10 @@ void LinearSystemWrapperDenseVNL::MultiplyMatrixMatrix(unsigned int ResultMatrix
     * ( *( ( *m_Matrices )[RightMatrixIndex] ) );
 }
 
-void LinearSystemWrapperDenseVNL::MultiplyMatrixVector(unsigned int resultVectorIndex,
-                                                       unsigned int matrixIndex,
-                                                       unsigned int vectorIndex)
+void
+LinearSystemWrapperDenseVNL::MultiplyMatrixVector(unsigned int resultVectorIndex,
+                                                  unsigned int matrixIndex,
+                                                  unsigned int vectorIndex)
 {
   // delete (*m_Matrices)[ResultMatrixIndex];
   // (*m_Matrices)[ResultMatrixIndex] = new vnl_matrix<Float>(
@@ -240,17 +258,20 @@ void LinearSystemWrapperDenseVNL::MultiplyMatrixVector(unsigned int resultVector
   ( *m_Vectors )[resultVectorIndex]->pre_multiply( *( ( *m_Matrices )[matrixIndex] ) );
 }
 
-void LinearSystemWrapperDenseVNL::ScaleMatrix(Float scale, unsigned int matrixIndex)
+void
+LinearSystemWrapperDenseVNL::ScaleMatrix(Float scale, unsigned int matrixIndex)
 {
   ( *( ( *m_Matrices )[matrixIndex] ) ) = ( *( ( *m_Matrices )[matrixIndex] ) ) * scale;
 }
 
-void LinearSystemWrapperDenseVNL::ScaleVector(Float scale, unsigned int vectorIndex)
+void
+LinearSystemWrapperDenseVNL::ScaleVector(Float scale, unsigned int vectorIndex)
 {
   ( *( *m_Vectors )[vectorIndex] ) = ( *( *m_Vectors )[vectorIndex] ) * scale;
 }
 
-void LinearSystemWrapperDenseVNL::ScaleSolution(Float scale, unsigned int solutionIndex)
+void
+LinearSystemWrapperDenseVNL::ScaleSolution(Float scale, unsigned int solutionIndex)
 {
   ( *( *m_Solutions )[solutionIndex] ) = ( *( *m_Solutions )[solutionIndex] ) * scale;
 }
@@ -258,6 +279,7 @@ void LinearSystemWrapperDenseVNL::ScaleSolution(Float scale, unsigned int soluti
 LinearSystemWrapperDenseVNL::~LinearSystemWrapperDenseVNL()
 {
   unsigned int i;
+
   for( i = 0; i < m_NumberOfMatrices; i++ )
     {
     this->DestroyMatrix(i);

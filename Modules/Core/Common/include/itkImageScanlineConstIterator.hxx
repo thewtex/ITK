@@ -34,7 +34,7 @@ ImageScanlineConstIterator< TImage >
   IndexType ind = this->m_Image->ComputeIndex( static_cast< OffsetValueType >( m_SpanEndOffset -1 ) );
 
   const IndexType &startIndex = this->m_Region.GetIndex();
-  const SizeType &size = this->m_Region.GetSize();
+  const SizeType & size = this->m_Region.GetSize();
 
   // Check to see if we are past the last pixel in the region
   // Note that ++ind[0] moves to the next pixel along the row.
@@ -45,7 +45,7 @@ ImageScanlineConstIterator< TImage >
     done = ( ind[i] == startIndex[i] + static_cast< IndexValueType >( size[i] ) - 1 );
     }
 
- // if the iterator is outside the region (but not past region begin) then
+  // if the iterator is outside the region (but not past region begin) then
   // we need to wrap around the region
   unsigned int dim = 0;
   if ( !done )

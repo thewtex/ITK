@@ -26,7 +26,8 @@ namespace fem
  * Numerical integration (Gauss-Legendre formula).
  * Integrates function f(x) from x=a to x=b in n points.
  */
-double GaussIntegrate::Integrate(double ( *f )(double), double a, double b, int n)
+double
+GaussIntegrate::Integrate(double ( *f )(double), double a, double b, int n)
 {
   /**
    * This subprogram produces the gauss-legendre numerical

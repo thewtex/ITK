@@ -57,7 +57,7 @@ namespace itk
  * \ingroup ITKImageStatistics
  */
 template< typename TImage >
-class ImageMomentsCalculator:public Object
+class ImageMomentsCalculator : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -106,7 +106,8 @@ public:
   typedef typename AffineTransformType::Pointer                             AffineTransformPointer;
 
   /** Set the input image. */
-  virtual void SetImage(const ImageType *image)
+  virtual void
+  SetImage(const ImageType *image)
   {
     if ( m_Image != image )
       {
@@ -117,7 +118,8 @@ public:
   }
 
   /** Set the spatial object mask. */
-  virtual void SetSpatialObjectMask(const SpatialObject< itkGetStaticConstMacro(ImageDimension) > *so)
+  virtual void
+  SetSpatialObjectMask(const SpatialObject< itkGetStaticConstMacro(ImageDimension) > *so)
   {
     if ( m_SpatialObjectMask != so )
       {
@@ -201,7 +203,8 @@ public:
 
 protected:
   ImageMomentsCalculator();
-  virtual ~ImageMomentsCalculator();
+  virtual
+  ~ImageMomentsCalculator();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

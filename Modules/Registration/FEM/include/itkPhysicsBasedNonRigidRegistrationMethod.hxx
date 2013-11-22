@@ -22,7 +22,6 @@
 #include "itkTimeProbe.h"
 #include "itkPhysicsBasedNonRigidRegistrationMethod.h"
 
-
 namespace itk
 {
 
@@ -58,13 +57,10 @@ PhysicsBasedNonRigidRegistrationMethod<TFixedImage, TMovingImage, TMaskImage, TM
   this->AddRequiredInputName("Mesh");
 }
 
-
 template <typename TFixedImage, typename TMovingImage, typename TMaskImage, typename TMesh, typename TDeformationField>
 PhysicsBasedNonRigidRegistrationMethod<TFixedImage, TMovingImage, TMaskImage, TMesh, TDeformationField>
 ::~PhysicsBasedNonRigidRegistrationMethod()
-{
-}
-
+{}
 
 template <typename TFixedImage, typename TMovingImage, typename TMaskImage, typename TMesh, typename TDeformationField>
 void
@@ -72,6 +68,7 @@ PhysicsBasedNonRigidRegistrationMethod<TFixedImage, TMovingImage, TMaskImage, TM
 ::PrintSelf( std::ostream & os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
+
   os << indent << "m_BlockRadius: " << m_BlockRadius << std::endl
      << indent << "m_SearchRadius: " << m_SearchRadius << std::endl
      << indent << "m_SelectFraction: " << m_SelectFraction << std::endl

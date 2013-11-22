@@ -29,6 +29,7 @@ ShapedNeighborhoodIterator< TImage, TBoundaryCondition >
      << std::endl;
   Superclass::PrintSelf( os, indent.GetNextIndent() );
 }
+
 } // namespace itk
 
 #endif

@@ -56,7 +56,8 @@
 // Software Guide : BeginLatex
 // Software Guide : EndLatex
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
   if( argc < 2 )
     {
@@ -72,12 +73,11 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef signed short       PixelType;
-  const unsigned int         Dimension = 2;
+  typedef signed short PixelType;
+  const unsigned int Dimension = 2;
 
-  typedef itk::Image< PixelType, Dimension >      ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
-
 
   if( argc == 3 )
     {
@@ -95,7 +95,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< ImageType >     ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
   // Software Guide : EndCodeSnippet
@@ -108,7 +108,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::GDCMImageIO       ImageIOType;
+  typedef itk::GDCMImageIO ImageIOType;
   ImageIOType::Pointer dicomIO = ImageIOType::New();
   // Software Guide : EndCodeSnippet
 
@@ -156,7 +156,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::MetaDataDictionary   DictionaryType;
+  typedef itk::MetaDataDictionary DictionaryType;
 
   const  DictionaryType & dictionary = dicomIO->GetMetaDataDictionary();
   // Software Guide : EndCodeSnippet
@@ -194,12 +194,11 @@ int main( int argc, char* argv[] )
   // Software Guide : BeginCodeSnippet
   while( itr != end )
     {
-    itk::MetaDataObjectBase::Pointer  entry = itr->second;
+    itk::MetaDataObjectBase::Pointer entry = itr->second;
 
     MetaDataStringType::Pointer entryvalue =
       dynamic_cast<MetaDataStringType *>( entry.GetPointer() );
     // Software Guide : EndCodeSnippet
-
 
     // Software Guide : BeginLatex
     //
@@ -218,7 +217,7 @@ int main( int argc, char* argv[] )
       {
       std::string tagkey   = itr->first;
       std::string labelId;
-      bool found =  itk::GDCMImageIO::GetLabelFromTag( tagkey, labelId );
+      bool        found =  itk::GDCMImageIO::GetLabelFromTag( tagkey, labelId );
       // Software Guide : EndCodeSnippet
 
       // Software Guide : BeginLatex
@@ -275,8 +274,8 @@ int main( int argc, char* argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  std::string entryId = "0010|0010";
-    DictionaryType::ConstIterator tagItr = dictionary.Find( entryId );
+  std::string                   entryId = "0010|0010";
+  DictionaryType::ConstIterator tagItr = dictionary.Find( entryId );
   // Software Guide : EndCodeSnippet
   // Software Guide : BeginLatex
   //
@@ -289,10 +288,9 @@ int main( int argc, char* argv[] )
   if( tagItr != end )
     {
     MetaDataStringType::ConstPointer entryvalue =
-     dynamic_cast<const MetaDataStringType *>(
-                                 tagItr->second.GetPointer() );
+      dynamic_cast<const MetaDataStringType *>(
+        tagItr->second.GetPointer() );
     // Software Guide : EndCodeSnippet
-
 
     // Software Guide : BeginLatex
     //
@@ -341,7 +339,6 @@ int main( int argc, char* argv[] )
     }
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // For a full description of the DICOM dictionary please look at the file.
@@ -360,13 +357,13 @@ int main( int argc, char* argv[] )
 
   // Software Guide : BeginCodeSnippet
   itk::ImageIOBase::IOPixelType pixelType
-                                       = reader->GetImageIO()->GetPixelType();
+    = reader->GetImageIO()->GetPixelType();
   itk::ImageIOBase::IOComponentType componentType
-                                   = reader->GetImageIO()->GetComponentType();
+    = reader->GetImageIO()->GetComponentType();
   std::cout << "PixelType: " << reader->GetImageIO()
-                               ->GetPixelTypeAsString(pixelType) << std::endl;
+    ->GetPixelTypeAsString(pixelType) << std::endl;
   std::cout << "Component Type: " << reader->GetImageIO()
-                       ->GetComponentTypeAsString(componentType) << std::endl;
+    ->GetComponentTypeAsString(componentType) << std::endl;
   // Software Guide : EndCodeSnippet
 
   return EXIT_SUCCESS;

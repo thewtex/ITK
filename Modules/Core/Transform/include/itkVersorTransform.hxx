@@ -42,7 +42,7 @@ VersorTransform<TScalar>::VersorTransform(unsigned int parametersDimension) :
 /** Constructor with default arguments */
 template <typename TScalar>
 VersorTransform<TScalar>::VersorTransform(const MatrixType & matrix,
-                                              const OutputVectorType & offset) : Superclass(matrix, offset)
+                                          const OutputVectorType & offset) : Superclass(matrix, offset)
 {
   this->ComputeMatrixParameters();  // called in MatrixOffset baseclass
 }
@@ -249,6 +249,7 @@ VersorTransform<TScalar>::SetRotationMatrix(const MatrixType & matrix)
 {
   this->Superclass::SetMatrix(matrix);
 }
+
 #endif
 #endif
 

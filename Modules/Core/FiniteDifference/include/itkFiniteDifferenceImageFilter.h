@@ -129,7 +129,7 @@ namespace itk
  * \ingroup ITKFiniteDifference
  */
 template< typename TInputImage, typename TOutputImage >
-class FiniteDifferenceImageFilter:
+class FiniteDifferenceImageFilter :
   public InPlaceImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -210,8 +210,15 @@ public:
   itkSetMacro( IsInitialized, bool );
   itkGetMacro( IsInitialized, bool );
 
-  void SetStateToUninitialized() { this->SetIsInitialized( false ); }
-  void SetStateToInitialized() { this->SetIsInitialized( true ); }
+  void
+  SetStateToUninitialized() {
+    this->SetIsInitialized( false );
+  }
+
+  void
+  SetStateToInitialized() {
+    this->SetIsInitialized( true );
+  }
 
 #ifdef ITK_USE_STRICT_CONCEPT_CHECKING
   // Begin concept checking
@@ -223,7 +230,8 @@ public:
 protected:
 
   FiniteDifferenceImageFilter();
-  virtual ~FiniteDifferenceImageFilter();
+  virtual
+  ~FiniteDifferenceImageFilter();
 
   /** State that the filter is in, i.e. UNINITIALIZED or INITIALIZED */
   bool m_IsInitialized;
@@ -281,14 +289,18 @@ protected:
    * Notice that ThreadedHalt is only called by the multithreaded filters, so you
    * still should implement Halt, just in case a non-threaded filter is used.
    */
-  virtual bool ThreadedHalt( void *itkNotUsed(threadInfo) ) { return this->Halt(); }
+  virtual bool
+  ThreadedHalt( void *itkNotUsed(threadInfo) ) {
+    return this->Halt();
+  }
 
   /** This method is optionally defined by a subclass and is called before
    * the loop of iterations of calculate_change & upate. It does the global
    * initialization, i.e. in the SparseFieldLevelSetImageFilter, initialize
    * the list of layers.
    * */
-  virtual void Initialize() {}
+  virtual void
+  Initialize() {}
 
   /** This method is optionally defined by a subclass and is called immediately
    * prior to each iterative CalculateChange-ApplyUpdate cycle.  It can be
@@ -296,8 +308,11 @@ protected:
    * gradient magnitude of the image in anisotropic diffusion functions), or
    * otherwise prepare for the next iteration.
    * */
-  virtual void InitializeIteration()
-  { m_DifferenceFunction->InitializeIteration(); }
+  virtual void
+  InitializeIteration()
+  {
+    m_DifferenceFunction->InitializeIteration();
+  }
 
   /** Virtual method for resolving a single time step from a set of time steps
    * returned from processing threads.
@@ -319,7 +334,8 @@ protected:
 
   /** This method is called after the solution has been generated to allow
    * subclasses to apply some further processing to the output. */
-  virtual void PostProcessOutput() {}
+  virtual void
+  PostProcessOutput() {}
 
   /** The maximum number of iterations this filter will run */
   IdentifierType m_NumberOfIterations;

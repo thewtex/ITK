@@ -89,9 +89,9 @@ const typename TransformToDeformationFieldSource< TOutputImage,
 ::SizeType &
 TransformToDeformationFieldSource< TOutputImage, TTransformPrecisionType >
 ::GetOutputSize()
-{
+  {
   return this->m_OutputRegion.GetSize();
-}
+  }
 
 /**
  * Set the output image index.
@@ -113,9 +113,9 @@ const typename TransformToDeformationFieldSource< TOutputImage,
 ::IndexType &
 TransformToDeformationFieldSource< TOutputImage, TTransformPrecisionType >
 ::GetOutputIndex()
-{
+  {
   return this->m_OutputRegion.GetIndex();
-}
+  }
 
 /**
  * Set the output image spacing.
@@ -126,6 +126,7 @@ TransformToDeformationFieldSource< TOutputImage, TTransformPrecisionType >
 ::SetOutputSpacing(const double *spacing)
 {
   SpacingType s;
+
   for(unsigned int i = 0; i < TOutputImage::ImageDimension; ++i)
     {
     s[i] = static_cast<typename TOutputImage::SpacingValueType>(spacing[i]);
@@ -242,7 +243,7 @@ TransformToDeformationFieldSource< TOutputImage, TTransformPrecisionType >
     for ( unsigned int i = 0; i < ImageDimension; ++i )
       {
       deformation[i] = static_cast< PixelValueType >(
-        transformedPoint[i] - outputPoint[i] );
+          transformedPoint[i] - outputPoint[i] );
       }
 
     // Set it
@@ -300,9 +301,9 @@ TransformToDeformationFieldSource< TOutputImage, TTransformPrecisionType >
   ++index[0];
   outputPtr->TransformIndexToPhysicalPoint(index, outputPointNeighbour);
   transformedPointNeighbour = this->m_Transform->TransformPoint(
-    outputPointNeighbour);
+      outputPointNeighbour);
   delta = transformedPointNeighbour - transformedPoint
-          - ( outputPointNeighbour - outputPoint );
+    - ( outputPointNeighbour - outputPoint );
 
   // loop over the vector image
   while ( !outIt.IsAtEnd() )
@@ -320,7 +321,7 @@ TransformToDeformationFieldSource< TOutputImage, TTransformPrecisionType >
       for ( unsigned int i = 0; i < ImageDimension; ++i )
         {
         deformation[i] = static_cast< PixelValueType >(
-          transformedPoint[i] - outputPoint[i] );
+            transformedPoint[i] - outputPoint[i] );
         }
 
       // Set it
@@ -349,6 +350,7 @@ TransformToDeformationFieldSource< TOutputImage, TTransformPrecisionType >
 
   // get pointer to the output
   OutputImagePointer outputPtr = this->GetOutput();
+
   if ( !outputPtr )
     {
     return;
@@ -381,6 +383,7 @@ TransformToDeformationFieldSource< TOutputImage, TTransformPrecisionType >
 
   return latestTime;
 } // end GetMTime()
+
 } // end namespace itk
 
 #endif // end #ifndef _itkTransformToDeformationFieldSource_hxx

@@ -55,7 +55,7 @@ namespace itk
  */
 template< typename TOutputImage >
 class GridImageSource
-   :public GenerateImageSource< TOutputImage >
+  : public GenerateImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -85,12 +85,12 @@ public:
   typedef typename TOutputImage::DirectionType DirectionType;
   typedef typename TOutputImage::SizeType      SizeType;
 
-  typedef KernelFunctionBase<double>           KernelFunctionType;
+  typedef KernelFunctionBase<double> KernelFunctionType;
   /** Other convenient types. */
   typedef FixedArray< RealType, itkGetStaticConstMacro(ImageDimension) >
-  ArrayType;
+    ArrayType;
   typedef FixedArray< bool, itkGetStaticConstMacro(ImageDimension) >
-  BoolArrayType;
+    BoolArrayType;
   typedef vnl_vector< RealType >                           PixelArrayType;
   typedef VectorContainer< SizeValueType, PixelArrayType > PixelArrayContainerType;
 

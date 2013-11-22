@@ -42,8 +42,7 @@ template
 <typename TScalar, unsigned int NDimensions>
 CompositeTransform<TScalar, NDimensions>::
 ~CompositeTransform()
-{
-}
+{}
 
 /**
  * Get transform category
@@ -56,6 +55,7 @@ CompositeTransform<TScalar, NDimensions>
 {
   // Check if linear
   bool isLinearTransform = this->IsLinear();
+
   if( isLinearTransform )
     {
     return Self::Linear;
@@ -66,7 +66,7 @@ CompositeTransform<TScalar, NDimensions>
   for( signed long tind = static_cast<signed long>( this->GetNumberOfTransforms() ) - 1; tind >= 0; tind-- )
     {
     if( this->GetNthTransformToOptimize( tind ) &&
-      ( this->GetNthTransformConstPointer( tind )->GetTransformCategory() != Self::DisplacementField ) )
+        ( this->GetNthTransformConstPointer( tind )->GetTransformCategory() != Self::DisplacementField ) )
       {
       isDisplacementFieldTransform = false;
       break;
@@ -135,7 +135,6 @@ CompositeTransform<TScalar, NDimensions>
   return outputVector;
 }
 
-
 /**
  * Transform vector with position
  */
@@ -147,7 +146,7 @@ CompositeTransform<TScalar, NDimensions>
 ::TransformVector( const InputVectorType & inputVector, const InputPointType & inputPoint ) const
 {
   OutputVectorType outputVector( inputVector );
-  OutputPointType outputPoint( inputPoint );
+  OutputPointType  outputPoint( inputPoint );
 
   typename TransformQueueType::const_iterator it;
   /* Apply in reverse queue order.  */
@@ -175,7 +174,7 @@ CompositeTransform<TScalar, NDimensions>
 ::TransformVector( const InputVnlVectorType & inputVector, const InputPointType & inputPoint ) const
 {
   OutputVnlVectorType outputVector( inputVector );
-  OutputPointType outputPoint( inputPoint );
+  OutputPointType     outputPoint( inputPoint );
 
   typename TransformQueueType::const_iterator it;
   /* Apply in reverse queue order.  */
@@ -255,7 +254,7 @@ CompositeTransform<TScalar, NDimensions>
 ::TransformVector( const InputVectorPixelType & inputVector, const InputPointType & inputPoint ) const
 {
   OutputVectorPixelType outputVector( inputVector );
-  OutputPointType outputPoint( inputPoint );
+  OutputPointType       outputPoint( inputPoint );
 
   typename TransformQueueType::const_iterator it;
   /* Apply in reverse queue order.  */
@@ -271,7 +270,6 @@ CompositeTransform<TScalar, NDimensions>
 
   return outputVector;
 }
-
 
 /**
  * Transform covariant vector
@@ -310,7 +308,7 @@ CompositeTransform<TScalar, NDimensions>
 ::TransformCovariantVector( const InputCovariantVectorType & inputVector, const InputPointType & inputPoint ) const
 {
   OutputCovariantVectorType outputVector( inputVector );
-  OutputPointType outputPoint( inputPoint );
+  OutputPointType           outputPoint( inputPoint );
 
   typename TransformQueueType::const_iterator it;
   /* Apply in reverse queue order.  */
@@ -364,7 +362,7 @@ CompositeTransform<TScalar, NDimensions>
 ::TransformCovariantVector( const InputVectorPixelType & inputVector, const InputPointType & inputPoint ) const
 {
   OutputVectorPixelType outputVector( inputVector );
-  OutputPointType outputPoint( inputPoint );
+  OutputPointType       outputPoint( inputPoint );
 
   typename TransformQueueType::const_iterator it;
   /* Apply in reverse queue order.  */
@@ -392,7 +390,7 @@ CompositeTransform<TScalar, NDimensions>
 ::TransformDiffusionTensor3D( const InputDiffusionTensor3DType & inputTensor, const InputPointType & inputPoint ) const
 {
   OutputDiffusionTensor3DType outputTensor( inputTensor );
-  OutputPointType outputPoint( inputPoint );
+  OutputPointType             outputPoint( inputPoint );
 
   typename TransformQueueType::const_iterator it;
   /* Apply in reverse queue order.  */
@@ -420,7 +418,7 @@ CompositeTransform<TScalar, NDimensions>
 ::TransformDiffusionTensor3D( const InputVectorPixelType & inputTensor, const InputPointType & inputPoint ) const
 {
   OutputVectorPixelType outputTensor( inputTensor );
-  OutputPointType outputPoint( inputPoint );
+  OutputPointType       outputPoint( inputPoint );
 
   typename TransformQueueType::const_iterator it;
   /* Apply in reverse queue order.  */
@@ -497,10 +495,11 @@ template
 typename CompositeTransform<TScalar, NDimensions>
 ::OutputSymmetricSecondRankTensorType
 CompositeTransform<TScalar, NDimensions>
-::TransformSymmetricSecondRankTensor( const InputSymmetricSecondRankTensorType & inputTensor, const InputPointType & inputPoint ) const
+::TransformSymmetricSecondRankTensor( const InputSymmetricSecondRankTensorType & inputTensor,
+                                      const InputPointType & inputPoint ) const
 {
   OutputSymmetricSecondRankTensorType outputTensor( inputTensor );
-  OutputPointType outputPoint( inputPoint );
+  OutputPointType                     outputPoint( inputPoint );
 
   typename TransformQueueType::const_iterator it;
   /* Apply in reverse queue order.  */
@@ -525,10 +524,11 @@ template
 typename CompositeTransform<TScalar, NDimensions>
 ::OutputVectorPixelType
 CompositeTransform<TScalar, NDimensions>
-::TransformSymmetricSecondRankTensor( const InputVectorPixelType & inputTensor, const InputPointType & inputPoint ) const
+::TransformSymmetricSecondRankTensor( const InputVectorPixelType & inputTensor,
+                                      const InputPointType & inputPoint ) const
 {
   OutputVectorPixelType outputTensor( inputTensor );
-  OutputPointType outputPoint( inputPoint );
+  OutputPointType       outputPoint( inputPoint );
 
   typename TransformQueueType::const_iterator it;
   /* Apply in reverse queue order.  */
@@ -611,7 +611,8 @@ CompositeTransform<TScalar, NDimensions>
   inverse->ClearTransformQueue();
   for( it = this->m_TransformQueue.begin(); it != this->m_TransformQueue.end(); ++it )
     {
-    TransformTypePointer inverseTransform = dynamic_cast<TransformType *>( ( ( *it )->GetInverseTransform() ).GetPointer() );
+    TransformTypePointer inverseTransform =
+      dynamic_cast<TransformType *>( ( ( *it )->GetInverseTransform() ).GetPointer() );
     if( !inverseTransform )
       {
       inverse->ClearTransformQueue();
@@ -626,7 +627,8 @@ CompositeTransform<TScalar, NDimensions>
 
   /* Copy the optimization flags */
   inverse->m_TransformsToOptimizeFlags.clear();
-  for( TransformsToOptimizeFlagsType::iterator ofit = this->m_TransformsToOptimizeFlags.begin(); ofit != this->m_TransformsToOptimizeFlags.end(); ofit++ )
+  for( TransformsToOptimizeFlagsType::iterator ofit = this->m_TransformsToOptimizeFlags.begin();
+       ofit != this->m_TransformsToOptimizeFlags.end(); ofit++ )
     {
     inverse->m_TransformsToOptimizeFlags.push_front( *ofit );
     }
@@ -877,7 +879,7 @@ CompositeTransform<TScalar, NDimensions>
         /* Use vnl_vector data_block() to get data ptr */
         std::copy(&(inputParameters.data_block() )[offset],
                   &(inputParameters.data_block() )[offset]+subParameters.Size(),
-                  subParameters.data_block());
+                  subParameters.data_block() );
         /* Call SetParameters explicitly to include anything extra it does */
         (*it)->SetParameters(subParameters);
         offset += subParameters.Size();
@@ -951,7 +953,7 @@ CompositeTransform<TScalar, NDimensions>
     /* Use vnl_vector data_block() to get data ptr */
     std::copy(&(this->m_FixedParameters.data_block() )[offset],
               &(this->m_FixedParameters.data_block() )[offset]+subFixedParameters.Size(),
-              subFixedParameters.data_block());
+              subFixedParameters.data_block() );
     /* Call SetParameters explicitly to include anything extra it does */
     (*it)->SetFixedParameters(subFixedParameters);
     offset += subFixedParameters.Size();
@@ -973,7 +975,6 @@ CompositeTransform<TScalar, NDimensions>
    * we wouldn't know that in this class, so this is safest. */
   NumberOfParametersType result = NumericTraits< NumberOfParametersType >::Zero;
 
-
   for( signed long tind = (signed long) this->GetNumberOfTransforms() - 1; tind >= 0; tind-- )
     {
     if( this->GetNthTransformToOptimize( tind ) )
@@ -991,9 +992,9 @@ CompositeTransform<TScalar, NDimensions>
 ::GetNumberOfLocalParameters(void) const
 {
   if ( this->GetMTime() == this->m_LocalParametersUpdateTime )
-   {
-   return this->m_NumberOfLocalParameters;
-   }
+    {
+    return this->m_NumberOfLocalParameters;
+    }
 
   this->m_LocalParametersUpdateTime = this->GetMTime();
 
@@ -1064,7 +1065,6 @@ CompositeTransform<TScalar, NDimensions>
 
   NumberOfParametersType offset = NumericTraits< NumberOfParametersType >::Zero;
 
-
   for( signed long tind = (signed long) this->GetNumberOfTransforms() - 1;
        tind >= 0; tind-- )
     {
@@ -1116,13 +1116,14 @@ void
 CompositeTransform<TScalar, NDimensions>
 ::FlattenTransformQueue()
 {
-  TransformQueueType             transformQueue;
-  TransformQueueType             transformsToOptimizeQueue;
-  TransformsToOptimizeFlagsType  transformsToOptimizeFlags;
+  TransformQueueType            transformQueue;
+  TransformQueueType            transformsToOptimizeQueue;
+  TransformsToOptimizeFlagsType transformsToOptimizeFlags;
 
   for( SizeValueType m = 0; m < this->GetNumberOfTransforms(); m++ )
     {
-    Self * nestedCompositeTransform = dynamic_cast<Self *>( const_cast<TransformType *>( this->m_TransformQueue[m].GetPointer() ) );
+    Self * nestedCompositeTransform =
+      dynamic_cast<Self *>( const_cast<TransformType *>( this->m_TransformQueue[m].GetPointer() ) );
     if( nestedCompositeTransform )
       {
       nestedCompositeTransform->FlattenTransformQueue();
@@ -1205,9 +1206,10 @@ CompositeTransform<TScalar, NDimensions>
   // LightObject::Pointer loPtr = Superclass::InternalClone();
 
   LightObject::Pointer loPtr = CreateAnother();
+
   typename Self::Pointer clone =
-    dynamic_cast<Self *>(loPtr.GetPointer());
-  if(clone.IsNull())
+    dynamic_cast<Self *>(loPtr.GetPointer() );
+  if(clone.IsNull() )
     {
     itkExceptionMacro(<< "downcast to type " << this->GetNameOfClass() << " failed.");
     }
@@ -1219,11 +1221,11 @@ CompositeTransform<TScalar, NDimensions>
     this->m_TransformsToOptimizeFlags.begin();
 
   for(int i = 0; tqIt != this->m_TransformQueue.end() &&
-        tfIt != this->m_TransformsToOptimizeFlags.end();
+      tfIt != this->m_TransformsToOptimizeFlags.end();
       ++tqIt, ++tfIt, ++i)
     {
-    clone->AddTransform((*tqIt)->Clone().GetPointer());
-    clone->SetNthTransformToOptimize(i,(*tfIt));
+    clone->AddTransform( (*tqIt)->Clone().GetPointer() );
+    clone->SetNthTransformToOptimize(i,(*tfIt) );
     }
   return loPtr;
 }

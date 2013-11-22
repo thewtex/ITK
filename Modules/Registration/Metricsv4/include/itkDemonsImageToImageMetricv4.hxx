@@ -23,7 +23,8 @@
 namespace itk
 {
 
-template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits >
+template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+           typename TMetricTraits >
 DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInternalComputationValueType, TMetricTraits>
 ::DemonsImageToImageMetricv4()
 {
@@ -41,13 +42,14 @@ DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInternalComp
 
 }
 
-template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits >
+template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+           typename TMetricTraits >
 DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInternalComputationValueType, TMetricTraits>
 ::~DemonsImageToImageMetricv4()
-{
-}
+{}
 
-template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits >
+template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+           typename TMetricTraits >
 void
 DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInternalComputationValueType, TMetricTraits>
 ::Initialize(void) throw ( itk::ExceptionObject )
@@ -92,21 +94,22 @@ DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInternalComp
   Superclass::Initialize();
 }
 
-template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits >
+template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+           typename TMetricTraits >
 void
 DemonsImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInternalComputationValueType, TMetricTraits>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "IntensityDifferenceThreshold: "
-               << this->GetIntensityDifferenceThreshold() << std::endl
+     << this->GetIntensityDifferenceThreshold() << std::endl
      << indent << "DenominatorThreshold: " << this->GetDenominatorThreshold()
-               << std::endl
+     << std::endl
      << indent << "Normalizer: " << this->GetNormalizer() << std::endl;
 
 }
 
 } // end namespace itk
-
 
 #endif

@@ -45,7 +45,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TCoordRep = double >
-class LinearInterpolateImageFunction:
+class LinearInterpolateImageFunction :
   public InterpolateImageFunction< TInputImage, TCoordRep >
 {
 public:
@@ -77,7 +77,7 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
 
   /** Index typedef support. */
-  typedef typename Superclass::IndexType      IndexType;
+  typedef typename Superclass::IndexType IndexType;
 
   /** ContinuousIndex typedef support. */
   typedef typename Superclass::ContinuousIndexType ContinuousIndexType;
@@ -91,9 +91,10 @@ public:
    *
    * ImageFunction::IsInsideBuffer() can be used to check bounds before
    * calling the method. */
-  virtual inline OutputType EvaluateAtContinuousIndex(const
-                                                      ContinuousIndexType &
-                                                      index) const
+  virtual inline OutputType
+  EvaluateAtContinuousIndex(const
+                            ContinuousIndexType &
+                            index) const
   {
     return this->EvaluateOptimized(Dispatch< ImageDimension >(), index);
   }
@@ -112,18 +113,21 @@ private:
 
   struct DispatchBase {};
   template< unsigned int >
-  struct Dispatch: public DispatchBase {};
+  struct Dispatch : public DispatchBase {};
 
-  inline OutputType EvaluateOptimized(const Dispatch< 0 > &,
-                                      const ContinuousIndexType & ) const
+  inline OutputType
+  EvaluateOptimized(const Dispatch< 0 > &,
+                    const ContinuousIndexType & ) const
   {
     return 0;
   }
 
-  inline OutputType EvaluateOptimized(const Dispatch< 1 > &,
-                                      const ContinuousIndexType & index) const
+  inline OutputType
+  EvaluateOptimized(const Dispatch< 1 > &,
+                    const ContinuousIndexType & index) const
   {
     IndexType basei;
+
     basei[0] = Math::Floor< IndexValueType >(index[0]);
     if ( basei[0] < this->m_StartIndex[0] )
       {
@@ -133,7 +137,7 @@ private:
     const InternalComputationType & distance = index[0] - static_cast< InternalComputationType >( basei[0] );
 
     const TInputImage * const inputImagePtr = this->GetInputImage();
-    const RealType & val0 = inputImagePtr->GetPixel(basei);
+    const RealType &          val0 = inputImagePtr->GetPixel(basei);
     if ( distance <= 0. )
       {
       return ( static_cast< OutputType >( val0 ) );
@@ -149,8 +153,9 @@ private:
     return ( static_cast< OutputType >( val0 + ( val1 - val0 ) * distance ) );
   }
 
-  inline OutputType EvaluateOptimized(const Dispatch< 2 > &,
-                                      const ContinuousIndexType & index) const
+  inline OutputType
+  EvaluateOptimized(const Dispatch< 2 > &,
+                    const ContinuousIndexType & index) const
   {
     IndexType basei;
 
@@ -169,7 +174,7 @@ private:
     const InternalComputationType & distance1 = index[1] - static_cast< InternalComputationType >( basei[1] );
 
     const TInputImage * const inputImagePtr = this->GetInputImage();
-    const RealType & val00 = inputImagePtr->GetPixel(basei);
+    const RealType &          val00 = inputImagePtr->GetPixel(basei);
     if ( distance0 <= 0. && distance1 <= 0. )
       {
       return ( static_cast< OutputType >( val00 ) );
@@ -226,10 +231,12 @@ private:
     return ( static_cast< OutputType >( valx0 + ( valx1 - valx0 ) * distance1 ) );
   }
 
-  inline OutputType EvaluateOptimized(const Dispatch< 3 > &,
-                                      const ContinuousIndexType & index) const
+  inline OutputType
+  EvaluateOptimized(const Dispatch< 3 > &,
+                    const ContinuousIndexType & index) const
   {
     IndexType basei;
+
     basei[0] = Math::Floor< IndexValueType >(index[0]);
     if ( basei[0] < this->m_StartIndex[0] )
       {
@@ -252,7 +259,7 @@ private:
     const InternalComputationType & distance2 = index[2] - static_cast< InternalComputationType >( basei[2] );
 
     const TInputImage * const inputImagePtr = this->GetInputImage();
-    const RealType & val000 = inputImagePtr->GetPixel(basei);
+    const RealType &          val000 = inputImagePtr->GetPixel(basei);
     if ( distance0 <= 0. && distance1 <= 0. && distance2 <= 0. )
       {
       return ( static_cast< OutputType >( val000 ) );
@@ -487,14 +494,16 @@ private:
       }
   }
 
-  inline OutputType EvaluateOptimized(const DispatchBase &,
-                                      const ContinuousIndexType & index) const
+  inline OutputType
+  EvaluateOptimized(const DispatchBase &,
+                    const ContinuousIndexType & index) const
   {
     return this->EvaluateUnoptimized(index);
   }
 
   virtual inline OutputType EvaluateUnoptimized(
     const ContinuousIndexType & index) const;
+
 };
 } // end namespace itk
 

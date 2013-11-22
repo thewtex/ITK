@@ -34,20 +34,24 @@ public:
   typedef typename TInput::RealValueType RealValueType;
   TensorRelativeAnisotropyFunction() {}
   ~TensorRelativeAnisotropyFunction() {}
-  bool operator!=(const TensorRelativeAnisotropyFunction &) const
+  bool
+  operator!=(const TensorRelativeAnisotropyFunction &) const
   {
     return false;
   }
 
-  bool operator==(const TensorRelativeAnisotropyFunction & other) const
+  bool
+  operator==(const TensorRelativeAnisotropyFunction & other) const
   {
     return !( *this != other );
   }
 
-  inline RealValueType operator()(const TInput & x) const
+  inline RealValueType
+  operator()(const TInput & x) const
   {
     return x.GetRelativeAnisotropy();
   }
+
 };
 }  // end namespace functor
 
@@ -67,9 +71,9 @@ public:
  * \ingroup ITKDiffusionTensorImage
  */
 template< typename  TInputImage, typename  TOutputImage = Image<
-    typename NumericTraits< typename TInputImage::PixelType::ValueType >::RealType,
-    TInputImage::Dimension > >
-class TensorRelativeAnisotropyImageFilter:
+              typename NumericTraits< typename TInputImage::PixelType::ValueType >::RealType,
+              TInputImage::Dimension > >
+class TensorRelativeAnisotropyImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::TensorRelativeAnisotropyFunction<
@@ -79,9 +83,9 @@ public:
   /** Standard class typedefs. */
   typedef TensorRelativeAnisotropyImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::TensorRelativeAnisotropyFunction<
-      typename TInputImage::PixelType > >       Superclass;
+      TInputImage, TOutputImage,
+      Functor::TensorRelativeAnisotropyFunction<
+        typename TInputImage::PixelType > >       Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -98,8 +102,11 @@ public:
   itkNewMacro(Self);
 
   /** Print internal ivars */
-  void PrintSelf(std::ostream & os, Indent indent) const
-  { this->Superclass::PrintSelf(os, indent); }
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    this->Superclass::PrintSelf(os, indent);
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -110,11 +117,13 @@ public:
 
 protected:
   TensorRelativeAnisotropyImageFilter() {}
-  virtual ~TensorRelativeAnisotropyImageFilter() {}
+  virtual
+  ~TensorRelativeAnisotropyImageFilter() {}
 
 private:
   TensorRelativeAnisotropyImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                      //purposely not implemented
+
 };
 } // end namespace itk
 

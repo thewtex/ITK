@@ -22,7 +22,8 @@
 #include "itkImageSeriesReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
 
   if( argc < 4 )
@@ -33,21 +34,18 @@ int main( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
+  typedef signed short PixelType;
+  const unsigned int Dimension = 3;
 
-  typedef signed short    PixelType;
-  const unsigned int      Dimension = 3;
+  typedef itk::Image< PixelType, Dimension > ImageType;
 
-  typedef itk::Image< PixelType, Dimension >         ImageType;
-
-  typedef itk::ImageSeriesReader< ImageType >        ReaderType;
+  typedef itk::ImageSeriesReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
 
-
-  typedef itk::GDCMImageIO       ImageIOType;
+  typedef itk::GDCMImageIO ImageIOType;
   ImageIOType::Pointer dicomIO = ImageIOType::New();
 
   reader->SetImageIO( dicomIO );
-
 
   typedef itk::GDCMSeriesFileNames NamesGeneratorType;
   NamesGeneratorType::Pointer nameGenerator = NamesGeneratorType::New();
@@ -57,7 +55,6 @@ int main( int argc, char* argv[] )
 
   nameGenerator->SetDirectory( argv[1] );
 
-
   try
     {
     std::cout << std::endl << "The directory: " << std::endl;
@@ -65,8 +62,7 @@ int main( int argc, char* argv[] )
     std::cout << "Contains the following DICOM Series: ";
     std::cout << std::endl << std::endl;
 
-
-    typedef std::vector< std::string >    SeriesIdContainer;
+    typedef std::vector< std::string > SeriesIdContainer;
 
     const SeriesIdContainer & seriesUID = nameGenerator->GetSeriesUIDs();
 
@@ -77,7 +73,6 @@ int main( int argc, char* argv[] )
       std::cout << seriesItr->c_str() << std::endl;
       ++seriesItr;
       }
-
 
     std::string seriesIdentifier;
 
@@ -90,21 +85,17 @@ int main( int argc, char* argv[] )
       seriesIdentifier = seriesUID.begin()->c_str();
       }
 
-
     std::cout << std::endl << std::endl;
     std::cout << "Now reading series: " << std::endl << std::endl;
     std::cout << seriesIdentifier << std::endl;
     std::cout << std::endl << std::endl;
 
-
-    typedef std::vector< std::string >   FileNamesContainer;
+    typedef std::vector< std::string > FileNamesContainer;
     FileNamesContainer fileNames;
 
     fileNames = nameGenerator->GetFileNames( seriesIdentifier );
 
-
     reader->SetFileNames( fileNames );
-
 
     try
       {
@@ -116,8 +107,7 @@ int main( int argc, char* argv[] )
       return EXIT_FAILURE;
       }
 
-
-    typedef itk::SmoothingRecursiveGaussianImageFilter< ImageType, ImageType >  FilterType;
+    typedef itk::SmoothingRecursiveGaussianImageFilter< ImageType, ImageType > FilterType;
 
     FilterType::Pointer filter = FilterType::New();
 
@@ -133,9 +123,8 @@ int main( int argc, char* argv[] )
 
     writer->SetInput( filter->GetOutput() );
 
-    std::cout  << "Writing the image as " << std::endl << std::endl;
-    std::cout  << argv[2] << std::endl << std::endl;
-
+    std::cout << "Writing the image as " << std::endl << std::endl;
+    std::cout << argv[2] << std::endl << std::endl;
 
     try
       {
@@ -152,7 +141,6 @@ int main( int argc, char* argv[] )
     std::cout << ex << std::endl;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 }

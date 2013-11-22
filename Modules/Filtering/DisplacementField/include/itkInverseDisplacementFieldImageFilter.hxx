@@ -42,8 +42,8 @@ InverseDisplacementFieldImageFilter< TInputImage, TOutputImage >
     }
 
   typedef ThinPlateSplineKernelTransform<
-    double,
-    itkGetStaticConstMacro(ImageDimension) >  DefaultTransformType;
+      double,
+      itkGetStaticConstMacro(ImageDimension) >  DefaultTransformType;
 
   m_KernelTransform = DefaultTransformType::New();
 
@@ -78,6 +78,7 @@ InverseDisplacementFieldImageFilter< TInputImage, TOutputImage >
 ::SetOutputSpacing(const double *spacing)
 {
   SpacingType s;
+
   for(unsigned int i = 0; i < TOutputImage::ImageDimension; ++i)
     {
     s[i] = static_cast< typename SpacingType::ValueType >(spacing[i]);
@@ -120,8 +121,8 @@ InverseDisplacementFieldImageFilter< TInputImage, TOutputImage >
   LandmarkContainerPointer target = LandmarkContainer::New();
 
   typedef itk::VectorResampleImageFilter<
-    InputImageType,
-    InputImageType  > ResamplerType;
+      InputImageType,
+      InputImageType  > ResamplerType;
 
   typename ResamplerType::Pointer resampler = ResamplerType::New();
 
@@ -232,7 +233,7 @@ InverseDisplacementFieldImageFilter< TInputImage, TOutputImage >
 
   // Create an iterator that will walk the output region for this thread.
   typedef ImageRegionIteratorWithIndex<
-    TOutputImage > OutputIterator;
+      TOutputImage > OutputIterator;
 
   OutputImageRegionType region = outputPtr->GetRequestedRegion();
 
@@ -319,6 +320,7 @@ InverseDisplacementFieldImageFilter< TInputImage, TOutputImage >
 
   // get pointers to the input and output
   OutputImagePointer outputPtr = this->GetOutput();
+
   if ( !outputPtr )
     {
     return;

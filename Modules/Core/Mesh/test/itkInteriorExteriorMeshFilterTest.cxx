@@ -20,7 +20,8 @@
 #include "itkMesh.h"
 #include "itkSphereSpatialFunction.h"
 
-int itkInteriorExteriorMeshFilterTest(int, char* [] )
+int
+itkInteriorExteriorMeshFilterTest(int, char* [] )
 {
 
   // Declare the mesh pixel type.
@@ -32,26 +33,26 @@ int itkInteriorExteriorMeshFilterTest(int, char* [] )
   // By default it is a 3D mesh using itk::Point<float,3>
   // on the vertices, and an itk::VectorContainter
   // as containter for points
-  typedef itk::Mesh<PixelType>  MeshType;
+  typedef itk::Mesh<PixelType> MeshType;
 
   // Declare the type for PointsContainer
-  typedef MeshType::PointsContainer     PointsContainerType;
+  typedef MeshType::PointsContainer PointsContainerType;
 
   // Declare the type for PointsContainerPointer
   typedef MeshType::PointsContainerPointer
-                                        PointsContainerPointer;
+    PointsContainerPointer;
   // Declare the type for Points
-  typedef MeshType::PointType           PointType;
+  typedef MeshType::PointType PointType;
 
   // Create an input Mesh
   MeshType::Pointer inputMesh  = MeshType::New();
 
   // Insert data on the Mesh
-  PointsContainerPointer  points = inputMesh->GetPoints();
+  PointsContainerPointer points = inputMesh->GetPoints();
 
   // Fill a cube with points , just to get some data
-  int n = 3;  // let's start with a few of them
-  PointsContainerType::ElementIdentifier  count = 0; // count them
+  int                                    n = 3;     // let's start with a few of them
+  PointsContainerType::ElementIdentifier count = 0; // count them
 
   for(int x= -n; x <= n; x++)
     {
@@ -69,27 +70,24 @@ int itkInteriorExteriorMeshFilterTest(int, char* [] )
       }
     }
 
-
   // Declare the function type
   typedef itk::SphereSpatialFunction<
-                                MeshType::PointDimension,
-                                MeshType::PointType >
-                                            SpatialFunctionType;
-
+      MeshType::PointDimension,
+      MeshType::PointType >
+    SpatialFunctionType;
 
   // Declare the type for the filter
   typedef itk::InteriorExteriorMeshFilter<
-                                MeshType,
-                                MeshType,
-                                SpatialFunctionType  > FilterType;
-
+      MeshType,
+      MeshType,
+      SpatialFunctionType  > FilterType;
 
   // Create a Filter
   FilterType::Pointer filter = FilterType::New();
 
   // Create the Spatial Function
-  SpatialFunctionType::Pointer   spatialFunction =
-                                      SpatialFunctionType::New();
+  SpatialFunctionType::Pointer spatialFunction =
+    SpatialFunctionType::New();
 
   SpatialFunctionType::InputType center;
   center[0] = 0;
@@ -111,11 +109,9 @@ int itkInteriorExteriorMeshFilterTest(int, char* [] )
   // Get the Smart Pointer to the Filter Output
   MeshType::Pointer outputMesh = filter->GetOutput();
 
-
   // Get the the point container
   MeshType::PointsContainerPointer
-                  transformedPoints = outputMesh->GetPoints();
-
+    transformedPoints = outputMesh->GetPoints();
 
   PointsContainerType::ConstIterator it = transformedPoints->Begin();
   while( it != transformedPoints->End() )

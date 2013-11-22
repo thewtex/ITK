@@ -32,9 +32,9 @@ template< unsigned int NDimensions >
 typename MetaVesselTubeConverter< NDimensions >::MetaObjectType *
 MetaVesselTubeConverter< NDimensions>
 ::CreateMetaObject()
-{
+  {
   return dynamic_cast<MetaObjectType *>(new VesselTubeMetaObjectType);
-}
+  }
 
 /** Convert a MetaVesselTube into an Tube SpatialObject  */
 template< unsigned int NDimensions >
@@ -44,13 +44,14 @@ MetaVesselTubeConverter< NDimensions >
 {
   const VesselTubeMetaObjectType *vesselTubeMO =
     dynamic_cast<const VesselTubeMetaObjectType *>(mo);
+
   if(vesselTubeMO == 0)
     {
     itkExceptionMacro(<< "Can't convert MetaObject to MetaVesselTube" );
     }
 
   VesselTubeSpatialObjectPointer
-    vesselTubeSO = VesselTubeSpatialObjectType::New();
+         vesselTubeSO = VesselTubeSpatialObjectType::New();
   double spacing[NDimensions];
 
   unsigned int ndims = vesselTubeMO->NDims();
@@ -141,11 +142,11 @@ template< unsigned int NDimensions >
 typename MetaVesselTubeConverter< NDimensions >::MetaObjectType *
 MetaVesselTubeConverter< NDimensions >
 ::SpatialObjectToMetaObject(const SpatialObjectType *so)
-{
+  {
   const VesselTubeSpatialObjectConstPointer vesselTubeSO =
     dynamic_cast<const VesselTubeSpatialObjectType *>(so);
 
-  if(vesselTubeSO.IsNull())
+  if(vesselTubeSO.IsNull() )
     {
     itkExceptionMacro(<< "Can't downcast SpatialObject to VesselTubeSpatialObject");
     }
@@ -228,10 +229,10 @@ MetaVesselTubeConverter< NDimensions >
   for ( unsigned int ii = 0; ii < NDimensions; ii++ )
     {
     vesselTubeMO->ElementSpacing(ii, vesselTubeSO->GetIndexToObjectTransform()
-                         ->GetScaleComponent()[ii]);
+                                 ->GetScaleComponent()[ii]);
     }
   return vesselTubeMO;
-}
+  }
 
 } // end namespace itk
 

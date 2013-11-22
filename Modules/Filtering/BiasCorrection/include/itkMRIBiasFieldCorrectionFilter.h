@@ -44,7 +44,7 @@ namespace itk
  * \ingroup ITKBiasCorrection
  */
 template< typename TImage, typename TImageMask, typename TBiasField >
-class MRIBiasEnergyFunction:public SingleValuedCostFunction
+class MRIBiasEnergyFunction : public SingleValuedCostFunction
 {
 public:
   /** Standard class typedefs. */
@@ -100,12 +100,16 @@ public:
   itkSetMacro(Region, ImageRegionType);
 
   /** Sets the BiasField object. */
-  void SetBiasField(BiasFieldType *bias)
-  { m_BiasField = bias; }
+  void
+  SetBiasField(BiasFieldType *bias)
+  {
+    m_BiasField = bias;
+  }
 
   /** Sets the sampling factors of the energy function in each direction.
    *   Default is 1 in each dimension */
-  void SetSamplingFactors(SamplingFactorType factor)
+  void
+  SetSamplingFactors(SamplingFactorType factor)
   {
     for ( unsigned int i = 0; i < SpaceDimension; i++ )
       {
@@ -115,7 +119,8 @@ public:
 
   /** Get an energy value for the intensity difference between a pixel
    * and its corresponding bias. */
-  double GetEnergy0(double diff)
+  double
+  GetEnergy0(double diff)
   {
     return ( *m_InternalEnergyFunction )( diff );
   }
@@ -126,8 +131,9 @@ public:
 
   /** Dummy implementation to confirm to the SingleValuedCostFunction
    * interfaces. It is pure virtual in the superclass */
-  void GetDerivative( const ParametersType & itkNotUsed(parameters),
-                      DerivativeType & itkNotUsed(derivative) ) const
+  void
+  GetDerivative( const ParametersType & itkNotUsed(parameters),
+                 DerivativeType & itkNotUsed(derivative) ) const
   {}
 
   /** Set Mean and Sigma for the normal distributions
@@ -144,12 +150,13 @@ protected:
   MRIBiasEnergyFunction();
 
   /** Destructor: */
-  virtual ~MRIBiasEnergyFunction();
+  virtual
+  ~MRIBiasEnergyFunction();
 
 private:
 
   /** Bias field object pointer. */
-  BiasFieldType        *m_BiasField;
+  BiasFieldType *m_BiasField;
 
   /** Input image smart pointer. */
   ImagePointer m_Image;
@@ -168,6 +175,7 @@ private:
 
   MRIBiasEnergyFunction(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
+
 };                                     // end of class
 
 /** \class MRIBiasFieldCorrectionFilter
@@ -221,7 +229,7 @@ private:
  * \ingroup ITKBiasCorrection
  */
 template< typename TInputImage, typename TOutputImage, typename TMaskImage >
-class MRIBiasFieldCorrectionFilter:
+class MRIBiasFieldCorrectionFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -294,22 +302,30 @@ public:
    * Without this mask, this filter calculates the energy value using
    * all pixels in the input image.  */
   void SetInputMask(ImageMaskType *inputMask);
+
   itkGetModifiableObjectMacro(InputMask, ImageMaskType);
 
   /** Get/Set the out mask image pointer.
    * Without this mask, this filter corrects every pixel in the input image. */
   void SetOutputMask(ImageMaskType *outputMask);
+
   itkGetModifiableObjectMacro(OutputMask, ImageMaskType);
 
   /** If you set this true, this filter assumes the bias field is
    * multiplicative and internally uses log intensity values for
    * every calculation.  */
-  void IsBiasFieldMultiplicative(bool flag)
-  { m_BiasMultiplicative = flag; }
+  void
+  IsBiasFieldMultiplicative(bool flag)
+  {
+    m_BiasMultiplicative = flag;
+  }
 
   /** If the bias field is multiplicative, it returns true. */
-  bool IsBiasFieldMultiplicative()
-  { return m_BiasMultiplicative; }
+  bool
+  IsBiasFieldMultiplicative()
+  {
+    return m_BiasMultiplicative;
+  }
 
   /** Set/Gets the intensity correction flag. if the flag is true, inter-slice
    * intensity correction will be applied before bias field
@@ -358,16 +374,22 @@ public:
 
   /** Sets the initial 3D bias field estimate coefficients that will be
    * used for correcting each slab. */
-  void SetInitialBiasFieldCoefficients(const
-                                       BiasFieldType::CoefficientArrayType
-                                       & coefficients)
-  { this->Modified(); m_BiasFieldCoefficients = coefficients; }
+  void
+  SetInitialBiasFieldCoefficients(const
+                                  BiasFieldType::CoefficientArrayType
+                                  & coefficients)
+  {
+    this->Modified(); m_BiasFieldCoefficients = coefficients;
+  }
 
   /** Get the result bias field coefficients after the bias field
    * estimation (does not apply to the inter-slice intensity
    * correction) */
-  BiasFieldType::CoefficientArrayType GetEstimatedBiasFieldCoefficients()
-  { return m_EstimatedBiasFieldCoefficients; }
+  BiasFieldType::CoefficientArrayType
+  GetEstimatedBiasFieldCoefficients()
+  {
+    return m_EstimatedBiasFieldCoefficients;
+  }
 
   /** Set the tissue class statistics for energy function initialization
    * If the numbers of elements in the means and the sigmas are not equal
@@ -383,10 +405,17 @@ public:
   itkGetConstMacro(InterSliceCorrectionMaximumIteration, int);
 
   /** Set/Get the initial search radius. */
-  void SetOptimizerInitialRadius(double initRadius)
-  { m_OptimizerInitialRadius = initRadius; }
-  double GetOptimizerInitialRadius()
-  { return m_OptimizerInitialRadius; }
+  void
+  SetOptimizerInitialRadius(double initRadius)
+  {
+    m_OptimizerInitialRadius = initRadius;
+  }
+
+  double
+  GetOptimizerInitialRadius()
+  {
+    return m_OptimizerInitialRadius;
+  }
 
   /** Set/Get the search radius grow factor. */
   itkSetMacro(OptimizerGrowthFactor, double);
@@ -462,7 +491,8 @@ public:
 
 protected:
   MRIBiasFieldCorrectionFilter();
-  virtual ~MRIBiasFieldCorrectionFilter();
+  virtual
+  ~MRIBiasFieldCorrectionFilter();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Checks if the mask image's dimensionality and size matches with
@@ -484,9 +514,10 @@ protected:
   /** Converts pixel type, and
    *  copies image data from source to target. */
   template< typename TSource, typename TTarget >
-  void CopyAndConvertImage(const TSource *source,
-                           TTarget *target,
-                           typename TTarget::RegionType requestedRegion)
+  void
+  CopyAndConvertImage(const TSource *source,
+                      TTarget *target,
+                      typename TTarget::RegionType requestedRegion)
   {
     typedef ImageRegionConstIterator< TSource > SourceIterator;
     typedef ImageRegionIterator< TTarget >      TargetIterator;

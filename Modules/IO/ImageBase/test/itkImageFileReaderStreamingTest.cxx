@@ -21,7 +21,8 @@
 #include "itkPipelineMonitorImageFilter.h"
 #include "itkStreamingImageFilter.h"
 
-int itkImageFileReaderStreamingTest(int argc, char* argv[])
+int
+itkImageFileReaderStreamingTest(int argc, char* argv[])
 {
   if( argc < 2 )
     {
@@ -49,25 +50,22 @@ int itkImageFileReaderStreamingTest(int argc, char* argv[])
       }
     }
 
+  typedef unsigned char           PixelType;
+  typedef itk::Image<PixelType,3> ImageType;
 
-  typedef unsigned char             PixelType;
-  typedef itk::Image<PixelType,3>   ImageType;
-
-  typedef itk::ImageFileReader<ImageType>         ReaderType;
+  typedef itk::ImageFileReader<ImageType> ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   reader->SetUseStreaming( true );
 
   typedef itk::PipelineMonitorImageFilter<ImageType> MonitorFilter;
   MonitorFilter::Pointer monitor = MonitorFilter::New();
-  monitor->SetInput(reader->GetOutput());
-
+  monitor->SetInput(reader->GetOutput() );
 
   typedef itk::StreamingImageFilter<ImageType, ImageType> StreamingFilter;
   StreamingFilter::Pointer streamer = StreamingFilter::New();
-  streamer->SetInput(monitor->GetOutput());
+  streamer->SetInput(monitor->GetOutput() );
   streamer->SetNumberOfStreamDivisions(numberOfDataPieces);
-
 
   try
     {
@@ -87,7 +85,6 @@ int itkImageFileReaderStreamingTest(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-
   bool passed = true;
   if( expectedToStream )
     {
@@ -103,7 +100,6 @@ int itkImageFileReaderStreamingTest(int argc, char* argv[])
       passed = false;
       }
     }
-
 
   if( !passed )
     {

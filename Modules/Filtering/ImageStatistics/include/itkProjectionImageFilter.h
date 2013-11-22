@@ -51,7 +51,7 @@ namespace itk
  * \ingroup ITKImageStatistics
  */
 template< typename TInputImage, typename TOutputImage, typename TAccumulator >
-class ProjectionImageFilter:
+class ProjectionImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -103,7 +103,8 @@ public:
 
 protected:
   ProjectionImageFilter();
-  virtual ~ProjectionImageFilter() {}
+  virtual
+  ~ProjectionImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Apply changes to the output image information. */

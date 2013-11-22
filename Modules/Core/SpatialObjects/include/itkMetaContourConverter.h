@@ -33,7 +33,7 @@ namespace itk
  */
 template< unsigned int NDimensions = 3 >
 class MetaContourConverter :
-    public MetaConverterBase< NDimensions >
+  public MetaConverterBase< NDimensions >
 {
 public:
   /** Standard class typedefs */
@@ -62,17 +62,17 @@ public:
   virtual SpatialObjectPointer MetaObjectToSpatialObject(const MetaObjectType *mo);
 
   /** Convert the SpatialObject to MetaObject */
-  virtual MetaObjectType *SpatialObjectToMetaObject(const SpatialObjectType *spatialObject);
+  virtual MetaObjectType * SpatialObjectToMetaObject(const SpatialObjectType *spatialObject);
 
 protected:
   /** Create the specific MetaObject for this class */
-  virtual MetaObjectType *CreateMetaObject();
+  virtual MetaObjectType * CreateMetaObject();
 
   MetaContourConverter();
   ~MetaContourConverter() {}
 
 private:
-  MetaContourConverter(const Self &);   //purposely not implemented
+  MetaContourConverter(const Self &); //purposely not implemented
   void operator=(const Self &);       //purposely not implemented
 
 };

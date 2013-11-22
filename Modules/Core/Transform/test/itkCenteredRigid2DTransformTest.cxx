@@ -20,10 +20,10 @@
 
 #include "itkCenteredRigid2DTransform.h"
 
-
 namespace
 {
-bool CheckEqual(
+bool
+CheckEqual(
   itk::Point<double, 2> p1,
   itk::Point<double, 2> p2 )
 {
@@ -43,7 +43,8 @@ bool CheckEqual(
 
 }
 
-int itkCenteredRigid2DTransformTest(int argc, char *argv[] )
+int
+itkCenteredRigid2DTransformTest(int argc, char *argv[] )
 {
   if( argc < 1 )
     {

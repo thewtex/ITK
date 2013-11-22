@@ -49,7 +49,8 @@ public:
    *  merged regions do not gain more borders than other regions,
    *  thus avoiding pathologically slow behavior.
    */
-  bool operator>(const KLMDynamicBorderArray< TBorder > & rhs) const
+  bool
+  operator>(const KLMDynamicBorderArray< TBorder > & rhs) const
   {
     if ( m_Pointer->GetLambda() == rhs.m_Pointer->GetLambda() )
       {
@@ -66,12 +67,12 @@ public:
         // merged so that it gains many borders will result in
         // pathologically slow behavior.
         double v1 = vnl_math_max(
-          static_cast< double >( m_Pointer->GetRegion1()->GetRegionBorderSize() ),
-          static_cast< double >( m_Pointer->GetRegion2()->GetRegionBorderSize() ) );
+            static_cast< double >( m_Pointer->GetRegion1()->GetRegionBorderSize() ),
+            static_cast< double >( m_Pointer->GetRegion2()->GetRegionBorderSize() ) );
 
         double v2 = vnl_math_max(
-          static_cast< double >( rhs.m_Pointer->GetRegion1()->GetRegionBorderSize() ),
-          static_cast< double >( rhs.m_Pointer->GetRegion2()->GetRegionBorderSize() ) );
+            static_cast< double >( rhs.m_Pointer->GetRegion1()->GetRegionBorderSize() ),
+            static_cast< double >( rhs.m_Pointer->GetRegion2()->GetRegionBorderSize() ) );
 
         return ( v1 > v2 );
         }
@@ -79,7 +80,8 @@ public:
     return ( m_Pointer->GetLambda() > rhs.m_Pointer->GetLambda() );
   }
 
-  bool operator>(const KLMDynamicBorderArray< TBorder > *rhs) const
+  bool
+  operator>(const KLMDynamicBorderArray< TBorder > *rhs) const
   {
     if ( m_Pointer->GetLambda() == rhs->m_Pointer->GetLambda() )
       {
@@ -96,12 +98,12 @@ public:
         // merged so that it gains many borders will result in
         // pathologically slow behavior.
         double v1 = vnl_math_max(
-          static_cast< double >( m_Pointer->GetRegion1()->GetRegionBorderSize() ),
-          static_cast< double >( m_Pointer->GetRegion2()->GetRegionBorderSize() ) );
+            static_cast< double >( m_Pointer->GetRegion1()->GetRegionBorderSize() ),
+            static_cast< double >( m_Pointer->GetRegion2()->GetRegionBorderSize() ) );
 
         double v2 = vnl_math_max(
-          static_cast< double >( rhs->m_Pointer->GetRegion1()->GetRegionBorderSize() ),
-          static_cast< double >( rhs->m_Pointer->GetRegion2()->GetRegionBorderSize() ) );
+            static_cast< double >( rhs->m_Pointer->GetRegion1()->GetRegionBorderSize() ),
+            static_cast< double >( rhs->m_Pointer->GetRegion2()->GetRegionBorderSize() ) );
 
         return ( v1 > v2 );
         }
@@ -133,7 +135,7 @@ public:
 
 class KLMSegmentationRegion;
 
-class KLMSegmentationBorder:public SegmentationBorder
+class KLMSegmentationBorder : public SegmentationBorder
 {
 public:
   /** Standard class typedefs. */

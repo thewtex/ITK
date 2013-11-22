@@ -31,12 +31,13 @@
  */
 
 template< typename TImageType, typename TGradImageType, unsigned int TComponents >
-int itkGradientRecursiveGaussianFilterTest3Run( typename TImageType::PixelType & myPixelBorder,
-                                                typename TImageType::PixelType & myPixelFill,
-                                                typename TGradImageType::Pointer & outputImage, char * outputFilename )
+int
+itkGradientRecursiveGaussianFilterTest3Run( typename TImageType::PixelType & myPixelBorder,
+                                            typename TImageType::PixelType & myPixelFill,
+                                            typename TGradImageType::Pointer & outputImage, char * outputFilename )
 {
-  typedef TImageType      myImageType;
-  typedef TGradImageType  myGradImageType;
+  typedef TImageType     myImageType;
+  typedef TGradImageType myGradImageType;
 
   const unsigned int myComponents = TComponents;
 
@@ -44,13 +45,13 @@ int itkGradientRecursiveGaussianFilterTest3Run( typename TImageType::PixelType &
   const unsigned int myDimension = myImageType::ImageDimension;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>             myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>              mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>        myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Create the image
   typename myImageType::Pointer inputImage  = myImageType::New();
@@ -76,7 +77,7 @@ int itkGradientRecursiveGaussianFilterTest3Run( typename TImageType::PixelType &
   inputImage->Allocate();
 
   // Declare Iterator type for the input image
-  typedef itk::ImageRegionIteratorWithIndex<myImageType>  myIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex<myImageType> myIteratorType;
 
   // Create one iterator for the Input Image A (this is a light object)
   myIteratorType it( inputImage, inputImage->GetRequestedRegion() );
@@ -109,8 +110,8 @@ int itkGradientRecursiveGaussianFilterTest3Run( typename TImageType::PixelType &
     }
 
   // Declare the type for the
-  typedef itk::GradientRecursiveGaussianImageFilter<myImageType, myGradImageType >  myFilterType;
-  typedef typename myFilterType::OutputImageType                                    myGradientImageType;
+  typedef itk::GradientRecursiveGaussianImageFilter<myImageType, myGradImageType > myFilterType;
+  typedef typename myFilterType::OutputImageType                                   myGradientImageType;
 
   // Create a  Filter
   typename myFilterType::Pointer filter = myFilterType::New();
@@ -131,7 +132,7 @@ int itkGradientRecursiveGaussianFilterTest3Run( typename TImageType::PixelType &
   outputImage = filter->GetOutput();
 
   // Write the output to file
-  typedef itk::ImageFileWriter< myGradientImageType >   WriterType;
+  typedef itk::ImageFileWriter< myGradientImageType > WriterType;
 
   typename WriterType::Pointer      writer =  WriterType::New();
   writer->SetFileName( outputFilename );
@@ -145,15 +146,21 @@ int itkGradientRecursiveGaussianFilterTest3Run( typename TImageType::PixelType &
 ////////////////////////////////////////////////////////////////////
 
 template< typename TGradImage1DType, typename TGradImageVectorType >
-int itkGradientRecursiveGaussianFilterTest3Compare( typename TGradImage1DType::Pointer scalarPixelGradImage, typename TGradImageVectorType::Pointer vectorPixelGradImage,  unsigned int numDimensions )
+int
+itkGradientRecursiveGaussianFilterTest3Compare( typename TGradImage1DType::Pointer scalarPixelGradImage,
+                                                typename TGradImageVectorType::Pointer vectorPixelGradImage,
+                                                unsigned int numDimensions )
 {
-  itk::ImageRegionIteratorWithIndex< TGradImage1DType > scalarIt( scalarPixelGradImage, scalarPixelGradImage->GetBufferedRegion() );
-  itk::ImageRegionIteratorWithIndex< TGradImageVectorType > vector2DIt( vectorPixelGradImage, vectorPixelGradImage->GetBufferedRegion() );
+  itk::ImageRegionIteratorWithIndex< TGradImage1DType > scalarIt( scalarPixelGradImage,
+                                                                  scalarPixelGradImage->GetBufferedRegion() );
+  itk::ImageRegionIteratorWithIndex< TGradImageVectorType > vector2DIt( vectorPixelGradImage,
+                                                                        vectorPixelGradImage->GetBufferedRegion() );
+
   scalarIt.GoToBegin();
   vector2DIt.GoToBegin();
   typename TGradImage1DType::PixelType::ValueType tolerance = 1e-5;
 
-  while( ! scalarIt.IsAtEnd() && ! vector2DIt.IsAtEnd() )
+  while( !scalarIt.IsAtEnd() && !vector2DIt.IsAtEnd() )
     {
     typename TGradImage1DType::PixelType scalar = scalarIt.Value();
     typename TGradImageVectorType::PixelType vector = vector2DIt.Value();
@@ -161,9 +168,9 @@ int itkGradientRecursiveGaussianFilterTest3Compare( typename TGradImage1DType::P
       {
       for( unsigned int c=0; c < vector.GetNumberOfComponents() / numDimensions; c++)
         {
-      typename TGradImage1DType::PixelType::ValueType truth = scalar[d] / ( c + 1.0);
-      typename TGradImage1DType::PixelType::ValueType test = vector[d + (c * numDimensions)];
-      if( vcl_fabs(  truth - test ) > tolerance )
+        typename TGradImage1DType::PixelType::ValueType truth = scalar[d] / ( c + 1.0);
+        typename TGradImage1DType::PixelType::ValueType test = vector[d + (c * numDimensions)];
+        if( vcl_fabs(  truth - test ) > tolerance )
           {
           std::cerr << "One or more components of vector gradient image pixel are not as expected: " << std::endl
                     << "d, c, truth, test: " << d << " " << c << " " << truth << " " << test << std::endl
@@ -180,13 +187,16 @@ int itkGradientRecursiveGaussianFilterTest3Compare( typename TGradImage1DType::P
 
 ////////////////////////////////////////////////////////////////////
 
-int itkGradientRecursiveGaussianFilterTest3(int argc, char *argv[] )
+int
+itkGradientRecursiveGaussianFilterTest3(int argc, char *argv[] )
 {
   if( argc != 8 )
     {
     std::cerr << "Missing Parameters " << std::endl;
     std::cerr << "Usage: " << argv[0];
-    std::cerr << " outputImageFile1 outputImageFile2 outputImageFile3 outputImageFile4 outputImageFile5 outputImageFile6 outputImageFile7" << std::endl;
+    std::cerr <<
+    " outputImageFile1 outputImageFile2 outputImageFile3 outputImageFile4 outputImageFile5 outputImageFile6 outputImageFile7"
+              << std::endl;
     return EXIT_FAILURE;
     }
 
@@ -194,19 +204,20 @@ int itkGradientRecursiveGaussianFilterTest3(int argc, char *argv[] )
 
   const unsigned int myDimension = 3;
   const unsigned int myComponents1D = 1;
-  typedef itk::Vector<float,myDimension*myComponents1D>   myGrad1DType;
-  typedef itk::Image<myGrad1DType, myDimension>           myGradImage1DType;
+  typedef itk::Vector<float,myDimension*myComponents1D> myGrad1DType;
+  typedef itk::Image<myGrad1DType, myDimension>         myGradImage1DType;
 
   // Test with Image of 1D Vector
-  typedef itk::Vector<float, myComponents1D>          myVector1DType;
-  typedef itk::Image<myVector1DType, myDimension>     myImageVector1DType;
+  typedef itk::Vector<float, myComponents1D>      myVector1DType;
+  typedef itk::Image<myVector1DType, myDimension> myImageVector1DType;
 
-  myGradImage1DType::Pointer                          vector1DGradImage;
-  myVector1DType vector1Dborder;
-  myVector1DType vector1Dfill;
+  myGradImage1DType::Pointer vector1DGradImage;
+  myVector1DType             vector1Dborder;
+  myVector1DType             vector1Dfill;
   vector1Dborder.Fill( 0.0 );
   vector1Dfill.Fill( 100.0 );
-  int runResult = itkGradientRecursiveGaussianFilterTest3Run<myImageVector1DType, myGradImage1DType, myComponents1D>( vector1Dborder, vector1Dfill, vector1DGradImage, argv[1] );
+  int runResult = itkGradientRecursiveGaussianFilterTest3Run<myImageVector1DType, myGradImage1DType, myComponents1D>(
+      vector1Dborder, vector1Dfill, vector1DGradImage, argv[1] );
   if( runResult == EXIT_FAILURE )
     {
     std::cerr << "Failed with Image<1D-Vector> type." << std::endl;
@@ -214,15 +225,16 @@ int itkGradientRecursiveGaussianFilterTest3(int argc, char *argv[] )
     }
 
   // Test with Image of *scalar* pixels to verify same results
-  typedef float                                            myScalarPixelType;
-  typedef itk::Image<myScalarPixelType, myDimension>       myImageScalarType;
+  typedef float                                      myScalarPixelType;
+  typedef itk::Image<myScalarPixelType, myDimension> myImageScalarType;
 
-  myGradImage1DType::Pointer                               scalarPixelGradImage;
-  myScalarPixelType pixelBorder;
-  myScalarPixelType pixelFill;
+  myGradImage1DType::Pointer scalarPixelGradImage;
+  myScalarPixelType          pixelBorder;
+  myScalarPixelType          pixelFill;
   pixelBorder = itk::NumericTraits<myScalarPixelType>::Zero;
   pixelFill = static_cast<myScalarPixelType>(100.0);
-  runResult = itkGradientRecursiveGaussianFilterTest3Run<myImageScalarType, myGradImage1DType, myComponents1D>( pixelBorder, pixelFill, scalarPixelGradImage, argv[2] );
+  runResult = itkGradientRecursiveGaussianFilterTest3Run<myImageScalarType, myGradImage1DType, myComponents1D>(
+      pixelBorder, pixelFill, scalarPixelGradImage, argv[2] );
   if( runResult == EXIT_FAILURE )
     {
     std::cerr << "Failed with scalar pixel type." << std::endl;
@@ -238,13 +250,14 @@ int itkGradientRecursiveGaussianFilterTest3(int argc, char *argv[] )
   typedef itk::VariableLengthVector<float>              myVarVector2DType;
   typedef itk::Image<myVarVector2DType, myDimension>    myImageVar2DType;
 
-  myGradImage2DType::Pointer    vector2DGradImage;
-  myVector2DType                vector2Dborder;
-  myVector2DType                vector2Dfill;
+  myGradImage2DType::Pointer vector2DGradImage;
+  myVector2DType             vector2Dborder;
+  myVector2DType             vector2Dfill;
   vector2Dborder.Fill( pixelBorder );
   vector2Dfill[0] = pixelFill;
   vector2Dfill[1] = pixelFill / 2.0;
-  runResult = itkGradientRecursiveGaussianFilterTest3Run<myImage2DType, myGradImage2DType, myComponents2D>( vector2Dborder, vector2Dfill, vector2DGradImage, argv[3] );
+  runResult = itkGradientRecursiveGaussianFilterTest3Run<myImage2DType, myGradImage2DType, myComponents2D>(
+      vector2Dborder, vector2Dfill, vector2DGradImage, argv[3] );
   if( runResult == EXIT_FAILURE )
     {
     std::cerr << "Failed with 2D Vector type." << std::endl;
@@ -252,7 +265,8 @@ int itkGradientRecursiveGaussianFilterTest3(int argc, char *argv[] )
     }
 
   // Compare the scalar pixel result to 2D vector result
-  int compareResult = itkGradientRecursiveGaussianFilterTest3Compare<myGradImage1DType, myGradImage2DType>( scalarPixelGradImage, vector2DGradImage, myDimension );
+  int compareResult = itkGradientRecursiveGaussianFilterTest3Compare<myGradImage1DType, myGradImage2DType>(
+      scalarPixelGradImage, vector2DGradImage, myDimension );
   if( compareResult == EXIT_FAILURE )
     {
     std::cerr << "Failed for 2D-vector comparison." << std::endl;
@@ -260,15 +274,16 @@ int itkGradientRecursiveGaussianFilterTest3(int argc, char *argv[] )
     }
 
   // Test with Image of 2D VariableLengthVector
-  myGradImage2DType::Pointer    varVector2DGradImage;
-  myVarVector2DType             varVector2Dborder;
-  myVarVector2DType             varVector2Dfill;
+  myGradImage2DType::Pointer varVector2DGradImage;
+  myVarVector2DType          varVector2Dborder;
+  myVarVector2DType          varVector2Dfill;
   varVector2Dborder.SetSize( myComponents2D );
   varVector2Dfill.SetSize( myComponents2D );
   varVector2Dborder.Fill( 0.0 );
   varVector2Dfill[0] = 100.0;
   varVector2Dfill[1] = 50.0;
-  runResult = itkGradientRecursiveGaussianFilterTest3Run<myImageVar2DType, myGradImage2DType, myComponents2D>( varVector2Dborder, varVector2Dfill, varVector2DGradImage, argv[4] );
+  runResult = itkGradientRecursiveGaussianFilterTest3Run<myImageVar2DType, myGradImage2DType, myComponents2D>(
+      varVector2Dborder, varVector2Dfill, varVector2DGradImage, argv[4] );
   if( runResult == EXIT_FAILURE )
     {
     std::cerr << "Failed with 2D VariableLengthVector type." << std::endl;
@@ -277,8 +292,9 @@ int itkGradientRecursiveGaussianFilterTest3(int argc, char *argv[] )
 
   // Test with 2D VectorImage
   typedef itk::VectorImage<float, myDimension> myVecImageType;
-  myGradImage2DType::Pointer    vectorImage2DGradImage;
-  runResult = itkGradientRecursiveGaussianFilterTest3Run<myVecImageType, myGradImage2DType, myComponents2D>( varVector2Dborder, varVector2Dfill, vectorImage2DGradImage, argv[5] );
+  myGradImage2DType::Pointer vectorImage2DGradImage;
+  runResult = itkGradientRecursiveGaussianFilterTest3Run<myVecImageType, myGradImage2DType, myComponents2D>(
+      varVector2Dborder, varVector2Dfill, vectorImage2DGradImage, argv[5] );
   if( runResult == EXIT_FAILURE )
     {
     std::cerr << "Failed with 2D-vector VectorImage type." << std::endl;
@@ -292,14 +308,15 @@ int itkGradientRecursiveGaussianFilterTest3(int argc, char *argv[] )
   typedef itk::Vector<float, myComponents3D>            myVector3DType;
   typedef itk::Image<myVector3DType, myDimension>       myImage3DType;
 
-  myGradImage3DType::Pointer    vector3DGradImage;
-  myVector3DType                vector3Dborder;
-  myVector3DType                vector3Dfill;
+  myGradImage3DType::Pointer vector3DGradImage;
+  myVector3DType             vector3Dborder;
+  myVector3DType             vector3Dfill;
   vector3Dborder.Fill( pixelBorder );
   vector3Dfill[0] = pixelFill;
   vector3Dfill[1] = pixelFill / 2.0;
   vector3Dfill[2] = pixelFill / 3.0;
-  runResult = itkGradientRecursiveGaussianFilterTest3Run<myImage3DType, myGradImage3DType, myComponents3D>( vector3Dborder, vector3Dfill, vector3DGradImage, argv[6] );
+  runResult = itkGradientRecursiveGaussianFilterTest3Run<myImage3DType, myGradImage3DType, myComponents3D>(
+      vector3Dborder, vector3Dfill, vector3DGradImage, argv[6] );
   if( runResult == EXIT_FAILURE )
     {
     std::cerr << "Failed with 3D Vector type." << std::endl;
@@ -307,7 +324,8 @@ int itkGradientRecursiveGaussianFilterTest3(int argc, char *argv[] )
     }
 
   // Compare the scalar pixel result to 3D vector result
-  compareResult = itkGradientRecursiveGaussianFilterTest3Compare<myGradImage1DType, myGradImage3DType>( scalarPixelGradImage, vector3DGradImage, myDimension );
+  compareResult = itkGradientRecursiveGaussianFilterTest3Compare<myGradImage1DType, myGradImage3DType>(
+      scalarPixelGradImage, vector3DGradImage, myDimension );
   if( compareResult == EXIT_FAILURE )
     {
     std::cerr << "Failed for 3D-vector comparison." << std::endl;
@@ -315,18 +333,19 @@ int itkGradientRecursiveGaussianFilterTest3(int argc, char *argv[] )
     }
 
   // Test with 3D VectorImage
-  typedef itk::VectorImage<float, myDimension>          myVecImageType;
-  typedef itk::VariableLengthVector<float>              myVarVector3DType;
-  myGradImage3DType::Pointer    vectorImage3DGradImage;
-  myVarVector3DType             varVector3Dborder;
-  myVarVector3DType             varVector3Dfill;
+  typedef itk::VectorImage<float, myDimension> myVecImageType;
+  typedef itk::VariableLengthVector<float>     myVarVector3DType;
+  myGradImage3DType::Pointer vectorImage3DGradImage;
+  myVarVector3DType          varVector3Dborder;
+  myVarVector3DType          varVector3Dfill;
   varVector3Dborder.SetSize( myComponents3D );
   varVector3Dborder.Fill( vector3Dborder[0] );
   varVector3Dfill.SetSize( myComponents3D );
   varVector3Dfill[0] = vector3Dfill[0];
   varVector3Dfill[1] = vector3Dfill[1];
   varVector3Dfill[2] = vector3Dfill[2];
-  runResult = itkGradientRecursiveGaussianFilterTest3Run<myVecImageType, myGradImage3DType, myComponents3D>( varVector3Dborder, varVector3Dfill, vectorImage3DGradImage, argv[7] );
+  runResult = itkGradientRecursiveGaussianFilterTest3Run<myVecImageType, myGradImage3DType, myComponents3D>(
+      varVector3Dborder, varVector3Dfill, vectorImage3DGradImage, argv[7] );
   if( runResult == EXIT_FAILURE )
     {
     std::cerr << "Failed with 3D-vector VectorImage type." << std::endl;

@@ -49,18 +49,25 @@ class JointHistogramMutualInformationComputeJointPDFThreader
  * \ingroup ITKMetricsv4
  * */
 template < typename TJointHistogramMetric >
-class JointHistogramMutualInformationComputeJointPDFThreader< ThreadedImageRegionPartitioner< TJointHistogramMetric::VirtualImageDimension >, TJointHistogramMetric >
-  : public JointHistogramMutualInformationComputeJointPDFThreaderBase< ThreadedImageRegionPartitioner< TJointHistogramMetric::VirtualImageDimension >, TJointHistogramMetric >
+class JointHistogramMutualInformationComputeJointPDFThreader< ThreadedImageRegionPartitioner< TJointHistogramMetric::
+                                                                                              VirtualImageDimension >,
+                                                              TJointHistogramMetric >
+  : public JointHistogramMutualInformationComputeJointPDFThreaderBase< ThreadedImageRegionPartitioner<
+                                                                         TJointHistogramMetric::VirtualImageDimension >,
+                                                                       TJointHistogramMetric >
 {
 public:
   /** Standard class typedefs. */
   typedef JointHistogramMutualInformationComputeJointPDFThreader Self;
-  typedef JointHistogramMutualInformationComputeJointPDFThreaderBase< ThreadedImageRegionPartitioner< TJointHistogramMetric::VirtualImageDimension >, TJointHistogramMetric >
-                                                                 Superclass;
-  typedef SmartPointer< Self >                                   Pointer;
-  typedef SmartPointer< const Self >                             ConstPointer;
+  typedef JointHistogramMutualInformationComputeJointPDFThreaderBase< ThreadedImageRegionPartitioner<
+                                                                        TJointHistogramMetric::VirtualImageDimension >,
+                                                                      TJointHistogramMetric >
+    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
-  itkTypeMacro( JointHistogramMutualInformationComputeJointPDFThreader, JointHistogramMutualInformationComputeJointPDFThreaderBase );
+  itkTypeMacro( JointHistogramMutualInformationComputeJointPDFThreader,
+                JointHistogramMutualInformationComputeJointPDFThreaderBase );
 
   itkNewMacro( Self );
 
@@ -81,7 +88,8 @@ protected:
 
 private:
   JointHistogramMutualInformationComputeJointPDFThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  void operator=( const Self & );                                         // purposely not implemented
+
 };
 
 /** \class JointHistogramMutualInformationComputeJointPDFThreader
@@ -89,18 +97,22 @@ private:
  * \ingroup ITKMetricsv4
  * */
 template < typename TJointHistogramMetric >
-class JointHistogramMutualInformationComputeJointPDFThreader< ThreadedIndexedContainerPartitioner, TJointHistogramMetric >
-  : public JointHistogramMutualInformationComputeJointPDFThreaderBase< ThreadedIndexedContainerPartitioner, TJointHistogramMetric >
+class JointHistogramMutualInformationComputeJointPDFThreader< ThreadedIndexedContainerPartitioner,
+                                                              TJointHistogramMetric >
+  : public JointHistogramMutualInformationComputeJointPDFThreaderBase< ThreadedIndexedContainerPartitioner,
+                                                                       TJointHistogramMetric >
 {
 public:
   /** Standard class typedefs. */
   typedef JointHistogramMutualInformationComputeJointPDFThreader Self;
-  typedef JointHistogramMutualInformationComputeJointPDFThreaderBase< ThreadedIndexedContainerPartitioner, TJointHistogramMetric >
-                                                                 Superclass;
-  typedef SmartPointer< Self >                                   Pointer;
-  typedef SmartPointer< const Self >                             ConstPointer;
+  typedef JointHistogramMutualInformationComputeJointPDFThreaderBase< ThreadedIndexedContainerPartitioner,
+                                                                      TJointHistogramMetric >
+    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
-  itkTypeMacro( JointHistogramMutualInformationComputeJointPDFThreader, JointHistogramMutualInformationComputeJointPDFThreaderBase );
+  itkTypeMacro( JointHistogramMutualInformationComputeJointPDFThreader,
+                JointHistogramMutualInformationComputeJointPDFThreaderBase );
 
   itkNewMacro( Self );
 
@@ -112,8 +124,8 @@ public:
   typedef typename Superclass::VirtualIndexType VirtualIndexType;
   typedef typename Superclass::VirtualPointType VirtualPointType;
 
-  typedef TJointHistogramMetric                                          JointHistogramMetricType;
-  typedef typename JointHistogramMetricType::VirtualPointSetType  VirtualPointSetType;
+  typedef TJointHistogramMetric                                  JointHistogramMetricType;
+  typedef typename JointHistogramMetricType::VirtualPointSetType VirtualPointSetType;
 
 protected:
   JointHistogramMutualInformationComputeJointPDFThreader() {}
@@ -124,7 +136,8 @@ protected:
 
 private:
   JointHistogramMutualInformationComputeJointPDFThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  void operator=( const Self & );                                         // purposely not implemented
+
 };
 } // end namespace itk
 

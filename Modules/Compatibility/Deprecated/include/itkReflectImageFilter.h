@@ -35,7 +35,7 @@ namespace itk
  * \ingroup SingleThreaded
  */
 template< typename TInputImage, typename TOutputImage >
-class ReflectImageFilter:public ImageToImageFilter< TInputImage, TOutputImage >
+class ReflectImageFilter : public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -82,7 +82,8 @@ public:
 
 protected:
   ReflectImageFilter();
-  virtual ~ReflectImageFilter() {}
+  virtual
+  ~ReflectImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This method implements the actual reflection of the image.

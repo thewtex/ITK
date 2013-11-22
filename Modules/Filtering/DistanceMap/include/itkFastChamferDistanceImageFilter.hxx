@@ -94,7 +94,8 @@ FastChamferDistanceImageFilter< TInputImage, TOutputImage >::GetNarrowBand() con
 }
 
 template< typename TInputImage, typename TOutputImage >
-void FastChamferDistanceImageFilter< TInputImage, TOutputImage >
+void
+FastChamferDistanceImageFilter< TInputImage, TOutputImage >
 ::GenerateDataND()
 {
   const int SIGN_MASK = 1;
@@ -108,12 +109,12 @@ void FastChamferDistanceImageFilter< TInputImage, TOutputImage >
 
   const unsigned int center_voxel  = it.Size() / 2;
   int *              neighbor_type = new int[it.Size()];
-  int          i;
-  unsigned int n;
-  float        val[ImageDimension];
-  PixelType    center_value;
-  int          neighbor_start, neighbor_end;
-  BandNodeType node;
+  int                i;
+  unsigned int       n;
+  float              val[ImageDimension];
+  PixelType          center_value;
+  int                neighbor_start, neighbor_end;
+  BandNodeType       node;
 
   /** 1st Scan , using neighbors from center_voxel+1 to it.Size()-1 */
 
@@ -317,6 +318,7 @@ FastChamferDistanceImageFilter< TInputImage, TOutputImage >
 
   os << indent << "Maximal computed distance   : " << m_MaximumDistance << std::endl;
 }
+
 } // end namespace itk
 
 #endif

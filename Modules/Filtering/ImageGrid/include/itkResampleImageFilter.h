@@ -138,7 +138,7 @@ public:
   typedef LinearInterpolateImageFunction< InputImageType,
                                           TInterpolatorPrecisionType >   LinearInterpolatorType;
   typedef typename LinearInterpolatorType::Pointer
-  LinearInterpolatorPointerType;
+    LinearInterpolatorPointerType;
 
   /** Extrapolator typedef. */
   typedef ExtrapolateImageFunction< InputImageType,
@@ -164,8 +164,8 @@ public:
   typedef typename PixelConvertType::ComponentType PixelComponentType;
 
   /** Input pixel continuous index typdef */
-  typedef ContinuousIndex< SpacePrecisionType, ImageDimension >
-  ContinuousInputIndexType;
+  typedef ContinuousIndex< TTransformPrecisionType, ImageDimension >
+    ContinuousInputIndexType;
 
   /** Typedef to describe the output image region type. */
   typedef typename TOutputImage::RegionType OutputImageRegionType;
@@ -241,12 +241,12 @@ public:
   /** Get the start index of the output largest possible region. */
   itkGetConstReferenceMacro(OutputStartIndex, IndexType);
 
-   /** Set a reference image to use to define the output information.
-    *  By default, output information is specificed through the
-    *  SetOutputSpacing, Origin, and Direction methods.  Alternatively,
-    *  this method can be used to specify an image from which to
-    *  copy the information. UseReferenceImageOn must be set to utilize the
-    *  reference image. */
+  /** Set a reference image to use to define the output information.
+   *  By default, output information is specificed through the
+   *  SetOutputSpacing, Origin, and Direction methods.  Alternatively,
+   *  this method can be used to specify an image from which to
+   *  copy the information. UseReferenceImageOn must be set to utilize the
+   *  reference image. */
   void SetReferenceImage(const ReferenceImageBaseType *image);
 
   /** Get the reference image that is defining the output information. */
@@ -292,8 +292,8 @@ public:
 
 protected:
   ResampleImageFilter();
-  ~ResampleImageFilter() {
-  }
+  ~ResampleImageFilter() {}
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Override VeriyInputInformation() since this filter's inputs do
@@ -301,8 +301,8 @@ protected:
    *
    * \sa ProcessObject::VerifyInputInformation
    */
-  virtual void VerifyInputInformation() {
-  }
+  virtual void
+  VerifyInputInformation() {}
 
   /** ResampleImageFilter can be implemented as a multithreaded filter.
    * Therefore, this implementation provides a ThreadedGenerateData()

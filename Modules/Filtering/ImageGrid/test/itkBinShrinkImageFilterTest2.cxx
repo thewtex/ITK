@@ -26,7 +26,8 @@ namespace
 // This function checks that all values in an image are equivalent to
 // the physical point of the image.
 template <typename TImageType>
-bool CheckValueIsPhysicalPoint( const TImageType *img )
+bool
+CheckValueIsPhysicalPoint( const TImageType *img )
 {
 
   typedef itk::ImageRegionConstIterator<TImageType> IteratorType;
@@ -62,7 +63,8 @@ bool CheckValueIsPhysicalPoint( const TImageType *img )
 
 }
 
-int itkBinShrinkImageFilterTest2( int , char *[] )
+int
+itkBinShrinkImageFilterTest2( int , char *[] )
 {
 
   const unsigned int ImageDimension = 2;

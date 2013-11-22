@@ -18,7 +18,6 @@
 #ifndef __itkTubeSpatialObject_hxx
 #define __itkTubeSpatialObject_hxx
 
-
 #include "itkTubeSpatialObject.h"
 
 namespace itk
@@ -53,10 +52,10 @@ template< unsigned int TDimension, typename TTubePointType >
 typename TubeSpatialObject< TDimension, TTubePointType >::PointListType &
 TubeSpatialObject< TDimension, TTubePointType >
 ::GetPoints()
-{
+  {
   itkDebugMacro("Getting TubePoint list");
   return m_Points;
-}
+  }
 
 /** Get the list of points composing the tube */
 template< unsigned int TDimension, typename TTubePointType >
@@ -64,10 +63,10 @@ const typename
 TubeSpatialObject< TDimension, TTubePointType >::PointListType &
 TubeSpatialObject< TDimension, TTubePointType >
 ::GetPoints() const
-{
+  {
   itkDebugMacro("Getting TubePoint list");
   return m_Points;
-}
+  }
 
 /** Set the list of points composing the tube */
 template< unsigned int TDimension, typename TTubePointType >
@@ -130,7 +129,7 @@ TubeSpatialObject< TDimension, TTubePointType >
   if ( ( this->GetMTime() == m_OldMTime )
        && ( m_IndexToWorldTransformMTime ==
             this->GetIndexToWorldTransform()->GetMTime() )
-        )
+       )
     {
     return true; // if not modified we return
     }
@@ -153,8 +152,8 @@ TubeSpatialObject< TDimension, TTubePointType >
       // First we compute the bounding box in the index space
       typename BoundingBoxType::Pointer bb = BoundingBoxType::New();
       VectorType rad = ( *it ).GetRadius();
-      PointType ptMin = ( *it ).GetPosition() - rad;
-      PointType ptMax = ( *it ).GetPosition() + rad;
+      PointType  ptMin = ( *it ).GetPosition() - rad;
+      PointType  ptMax = ( *it ).GetPosition() + rad;
       bb->SetMinimum(ptMin);
       bb->SetMaximum(ptMax);
 
@@ -243,7 +242,7 @@ TubeSpatialObject< TDimension, TTubePointType >
              && ( lambda > -( ( *it ).GetRadius() / ( 2 * vcl_sqrt(B) ) ) )
              && ( lambda < 0 ) )
            || ( ( lambda <= 1.0 ) && ( lambda >= 0.0 ) )
-            )
+           )
         {
         PointType p;
 
@@ -288,7 +287,7 @@ TubeSpatialObject< TDimension, TTubePointType >
     while ( it != end )
       {
       tempSquareDist = transformedPoint.SquaredEuclideanDistanceTo(
-        ( *it ).GetPosition() );
+          ( *it ).GetPosition() );
       if ( tempSquareDist <= minSquareDist )
         {
         minSquareDist = tempSquareDist;
@@ -573,6 +572,7 @@ TubeSpatialObject< TDimension, TTubePointType >
     it_source++;
     }
 }
+
 } // end namespace itk
 
 #endif // end __itkTubeSpatialObject_hxx

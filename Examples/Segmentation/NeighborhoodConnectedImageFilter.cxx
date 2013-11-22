@@ -37,15 +37,12 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkNeighborhoodConnectedImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImage.h"
 #include "itkCastImageFilter.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -58,12 +55,11 @@
 #include "itkCurvatureFlowImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 7 )
     {
@@ -72,7 +68,6 @@ int main( int argc, char *argv[] )
     std::cerr << " inputImage  outputImage seedX seedY lowerThreshold upperThreshold" << std::endl;
     return 1;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -83,11 +78,10 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   float           InternalPixelType;
-  const     unsigned int    Dimension = 2;
-  typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
+  typedef   float InternalPixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
   // Software Guide : EndCodeSnippet
-
 
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
@@ -95,7 +89,6 @@ int main( int argc, char *argv[] )
   typedef itk::CastImageFilter< InternalImageType, OutputImageType >
     CastingFilterType;
   CastingFilterType::Pointer caster = CastingFilterType::New();
-
 
   // We instantiate reader and writer types
   //
@@ -107,7 +100,6 @@ int main( int argc, char *argv[] )
 
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -121,7 +113,6 @@ int main( int argc, char *argv[] )
     CurvatureFlowImageFilterType;
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Then, the filter is created by invoking the \code{New()} method and
@@ -131,9 +122,8 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   CurvatureFlowImageFilterType::Pointer smoothing =
-                         CurvatureFlowImageFilterType::New();
+    CurvatureFlowImageFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -144,7 +134,7 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::NeighborhoodConnectedImageFilter<InternalImageType,
-                                    InternalImageType > ConnectedFilterType;
+                                                InternalImageType > ConnectedFilterType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -155,9 +145,8 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   ConnectedFilterType::Pointer neighborhoodConnected
-                                                 = ConnectedFilterType::New();
+    = ConnectedFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -176,7 +165,6 @@ int main( int argc, char *argv[] )
   writer->SetInput( caster->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The CurvatureFlowImageFilter requires a couple of parameters to
@@ -190,7 +178,6 @@ int main( int argc, char *argv[] )
   smoothing->SetNumberOfIterations( 5 );
   smoothing->SetTimeStep( 0.125 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -226,14 +213,13 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  InternalImageType::SizeType   radius;
+  InternalImageType::SizeType radius;
 
   radius[0] = 2;   // two pixels along X
   radius[1] = 2;   // two pixels along Y
 
   neighborhoodConnected->SetRadius( radius );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -246,17 +232,15 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-  InternalImageType::IndexType  index;
+  InternalImageType::IndexType index;
 
   index[0] = atoi( argv[3] );
   index[1] = atoi( argv[4] );
-
 
   // Software Guide : BeginCodeSnippet
   neighborhoodConnected->SetSeed( index );
   neighborhoodConnected->SetReplaceValue( 255 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -277,7 +261,6 @@ int main( int argc, char *argv[] )
     std::cerr << excep << std::endl;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

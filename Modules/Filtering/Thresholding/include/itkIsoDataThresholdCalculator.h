@@ -55,10 +55,10 @@ class IsoDataThresholdCalculator : public HistogramThresholdCalculator<THistogra
 {
 public:
   /** Standard class typedefs. */
-  typedef IsoDataThresholdCalculator      Self;
-  typedef Object                          Superclass;
-  typedef SmartPointer<Self>              Pointer;
-  typedef SmartPointer<const Self>        ConstPointer;
+  typedef IsoDataThresholdCalculator Self;
+  typedef Object                     Superclass;
+  typedef SmartPointer<Self>         Pointer;
+  typedef SmartPointer<const Self>   ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -67,25 +67,25 @@ public:
   itkTypeMacro(IsoDataThresholdCalculator, Object);
 
   /** Type definition for the input image. */
-  typedef THistogram  HistogramType;
-  typedef TOutput     OutputType;
+  typedef THistogram HistogramType;
+  typedef TOutput    OutputType;
 
 protected:
   IsoDataThresholdCalculator() {}
-  virtual ~IsoDataThresholdCalculator() {}
+  virtual
+  ~IsoDataThresholdCalculator() {}
   void GenerateData(void);
 
-  typedef typename HistogramType::SizeValueType               SizeValueType;
-  typedef typename HistogramType::InstanceIdentifier          InstanceIdentifier;
+  typedef typename HistogramType::SizeValueType      SizeValueType;
+  typedef typename HistogramType::InstanceIdentifier InstanceIdentifier;
 
 private:
   IsoDataThresholdCalculator(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);             //purposely not implemented
 
 };
 
 } // end namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkIsoDataThresholdCalculator.hxx"

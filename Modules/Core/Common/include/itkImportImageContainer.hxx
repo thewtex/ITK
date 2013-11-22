@@ -169,7 +169,8 @@ ImportImageContainer< TElementIdentifier, TElement >
 }
 
 template< typename TElementIdentifier, typename TElement >
-TElement *ImportImageContainer< TElementIdentifier, TElement >
+TElement *
+ImportImageContainer< TElementIdentifier, TElement >
 ::AllocateElements(ElementIdentifier size) const
 {
   // Encapsulate all image memory allocation here to throw an
@@ -197,7 +198,8 @@ TElement *ImportImageContainer< TElementIdentifier, TElement >
 }
 
 template< typename TElementIdentifier, typename TElement >
-void ImportImageContainer< TElementIdentifier, TElement >
+void
+ImportImageContainer< TElementIdentifier, TElement >
 ::DeallocateManagedMemory()
 {
   // Encapsulate all image memory deallocation here
@@ -223,6 +225,7 @@ ImportImageContainer< TElementIdentifier, TElement >
   os << indent << "Size: " << m_Size << std::endl;
   os << indent << "Capacity: " << m_Capacity << std::endl;
 }
+
 } // end namespace itk
 
 #endif

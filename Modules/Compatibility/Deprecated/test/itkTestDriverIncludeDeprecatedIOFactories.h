@@ -35,7 +35,8 @@
 #include "itkTestDriverInclude.h"
 #include "itkObjectFactoryBase.h"
 
-void ProcessArgumentsAndRegisterDeprecatedIOFactories(int *ac, ArgumentStringType *av)
+void
+ProcessArgumentsAndRegisterDeprecatedIOFactories(int *ac, ArgumentStringType *av)
 {
   itk::ObjectFactoryBase::RegisterFactory( itk::BioRadImageIOFactory::New() );
   itk::ObjectFactoryBase::RegisterFactory( itk::GDCMImageIOFactory::New() );
@@ -56,4 +57,5 @@ void ProcessArgumentsAndRegisterDeprecatedIOFactories(int *ac, ArgumentStringTyp
   ProcessArguments( ac, av );
 
 }
+
 #endif

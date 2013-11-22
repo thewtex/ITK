@@ -58,10 +58,10 @@ class BSplineExponentialDiffeomorphicTransform :
 {
 public:
   /** Standard class typedefs. */
-  typedef BSplineExponentialDiffeomorphicTransform              Self;
-  typedef ConstantVelocityFieldTransform<TScalar, NDimensions>  Superclass;
-  typedef SmartPointer<Self>                                    Pointer;
-  typedef SmartPointer<const Self>                              ConstPointer;
+  typedef BSplineExponentialDiffeomorphicTransform             Self;
+  typedef ConstantVelocityFieldTransform<TScalar, NDimensions> Superclass;
+  typedef SmartPointer<Self>                                   Pointer;
+  typedef SmartPointer<const Self>                             ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( BSplineExponentialDiffeomorphicTransform, ConstantVelocityFieldTransform );
@@ -76,28 +76,28 @@ public:
   itkStaticConstMacro( Dimension, unsigned int, NDimensions );
 
   /** Types from superclass */
-  typedef typename Superclass::ScalarType               ScalarType;
-  typedef typename Superclass::DerivativeType           DerivativeType;
-  typedef typename DerivativeType::ValueType            DerivativeValueType;
+  typedef typename Superclass::ScalarType     ScalarType;
+  typedef typename Superclass::DerivativeType DerivativeType;
+  typedef typename DerivativeType::ValueType  DerivativeValueType;
 
   typedef typename Superclass::DisplacementFieldType        DisplacementFieldType;
   typedef typename Superclass::DisplacementFieldPointer     DisplacementFieldPointer;
   typedef typename Superclass::ConstantVelocityFieldType    ConstantVelocityFieldType;
   typedef typename Superclass::ConstantVelocityFieldPointer ConstantVelocityFieldPointer;
 
-  typedef typename DisplacementFieldType::PixelType     DisplacementVectorType;
+  typedef typename DisplacementFieldType::PixelType DisplacementVectorType;
 
   /**
    * typedefs for projecting the input displacement field onto a
    * B-spline field.
    */
-  typedef PointSet<ConstantVelocityFieldType, Dimension>            PointSetType;
-  typedef unsigned int                                              SplineOrderType;
+  typedef PointSet<ConstantVelocityFieldType, Dimension> PointSetType;
+  typedef unsigned int                                   SplineOrderType;
   typedef DisplacementFieldToBSplineImageFilter
     <ConstantVelocityFieldType, ConstantVelocityFieldType>          BSplineFilterType;
-  typedef typename BSplineFilterType::WeightsContainerType          WeightsContainerType;
-  typedef typename BSplineFilterType::ArrayType                     ArrayType;
-  typedef typename ArrayType::ValueType                             ArrayValueType;
+  typedef typename BSplineFilterType::WeightsContainerType WeightsContainerType;
+  typedef typename BSplineFilterType::ArrayType            ArrayType;
+  typedef typename ArrayType::ValueType                    ArrayValueType;
 
   /**
    * Update the transform's parameters by the values in \c update. We overwrite the
@@ -109,7 +109,8 @@ public:
   /**
    * Smooth the constant velocity field in-place.
    */
-  virtual ConstantVelocityFieldPointer BSplineSmoothConstantVelocityField( const ConstantVelocityFieldType *, const ArrayType & );
+  virtual ConstantVelocityFieldPointer BSplineSmoothConstantVelocityField( const ConstantVelocityFieldType *,
+                                                                           const ArrayType & );
 
   /**
    * Set/Get the spline order.
@@ -155,18 +156,19 @@ public:
 
 protected:
   BSplineExponentialDiffeomorphicTransform();
-  virtual ~BSplineExponentialDiffeomorphicTransform();
+  virtual
+  ~BSplineExponentialDiffeomorphicTransform();
 
   void PrintSelf( std::ostream &, Indent ) const;
 
 private:
   BSplineExponentialDiffeomorphicTransform( const Self& ); //purposely not implemented
-  void operator=( const Self& ); //purposely not implemented
+  void operator=( const Self& );                           //purposely not implemented
 
-  ArrayType                               m_NumberOfControlPointsForTheConstantVelocityField;
-  ArrayType                               m_NumberOfControlPointsForTheUpdateField;
+  ArrayType m_NumberOfControlPointsForTheConstantVelocityField;
+  ArrayType m_NumberOfControlPointsForTheUpdateField;
 
-  SplineOrderType                         m_SplineOrder;
+  SplineOrderType m_SplineOrder;
 };
 
 } // end namespace itk

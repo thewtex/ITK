@@ -68,7 +68,7 @@ LabelMapToBinaryImageFilter< TInputImage, TOutputImage >
   if ( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() != 0 )
     {
     numberOfThreads = vnl_math_min(
-      this->GetNumberOfThreads(), itk::MultiThreader::GetGlobalMaximumNumberOfThreads() );
+        this->GetNumberOfThreads(), itk::MultiThreader::GetGlobalMaximumNumberOfThreads() );
     }
 
   // number of threads can be constrained by the region size, so call the
@@ -145,8 +145,9 @@ LabelMapToBinaryImageFilter< TInputImage, TOutputImage >
 ::ThreadedProcessLabelObject(LabelObjectType *labelObject)
 {
   OutputImageType *output = this->GetOutput();
+
   typename LabelObjectType::ConstIndexIterator it( labelObject );
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
     output->SetPixel( it.GetIndex(), this->m_ForegroundValue );
     ++it;
@@ -168,6 +169,7 @@ LabelMapToBinaryImageFilter< TInputImage, TOutputImage >
      << std::endl;
   os << indent << "Barrier object: " << this->m_Barrier.GetPointer() << std::endl;
 }
+
 } // end namespace itk
 
 #endif

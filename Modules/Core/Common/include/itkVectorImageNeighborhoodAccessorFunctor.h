@@ -48,14 +48,14 @@ public:
   typedef typename ImageType::OffsetType        OffsetType;
 
   typedef Neighborhood< InternalPixelType *,
-                         TImage ::ImageDimension > NeighborhoodType;
+                        TImage::ImageDimension > NeighborhoodType;
 
   typedef ImageBoundaryCondition< ImageType > const
-  *ImageBoundaryConditionConstPointerType;
+    *ImageBoundaryConditionConstPointerType;
 
-  VectorImageNeighborhoodAccessorFunctor(VectorLengthType length):
+  VectorImageNeighborhoodAccessorFunctor(VectorLengthType length) :
     m_VectorLength(length), m_OffsetMultiplier(length - 1), m_Begin(NULL) {}
-  VectorImageNeighborhoodAccessorFunctor():
+  VectorImageNeighborhoodAccessorFunctor() :
     m_VectorLength(0), m_OffsetMultiplier(0), m_Begin(NULL) {}
 
   /** Set the pointer index to the start of the buffer.
@@ -71,8 +71,11 @@ public:
    *   }
    * \endcode
    */
-  inline void SetBegin(const InternalPixelType *begin)
-  { this->m_Begin = const_cast< InternalPixelType * >( begin ); }
+  inline void
+  SetBegin(const InternalPixelType *begin)
+  {
+    this->m_Begin = const_cast< InternalPixelType * >( begin );
+  }
 
   /** Method to dereference a pixel pointer. This is used from the
    * ConstNeighborhoodIterator as the equivalent operation to (*it).
@@ -81,13 +84,15 @@ public:
    * VectorImage pixel involves a different operation that simply
    * dereferencing the pointer. Here a PixelType (array of InternalPixelType s)
    * is created on the stack and returned.  */
-  inline PixelType Get(const InternalPixelType *pixelPointer) const
+  inline PixelType
+  Get(const InternalPixelType *pixelPointer) const
   {
     return PixelType(pixelPointer + ( pixelPointer - m_Begin ) * m_OffsetMultiplier, m_VectorLength);
   }
 
   /** Method to set the pixel value at a certain pixel pointer */
-  inline void Set(InternalPixelType * & pixelPointer, const PixelType & p) const
+  inline void
+  Set(InternalPixelType * & pixelPointer, const PixelType & p) const
   {
     InternalPixelType *truePixelPointer =
       pixelPointer + ( pixelPointer - m_Begin ) * m_OffsetMultiplier;
@@ -98,7 +103,8 @@ public:
       }
   }
 
-  inline PixelType BoundaryCondition(
+  inline PixelType
+  BoundaryCondition(
     const OffsetType & point_index,
     const OffsetType & boundary_offset,
     const NeighborhoodType *data,
@@ -109,7 +115,8 @@ public:
 
   /** Methods to Set/Get vector length. This should be the length of a block of
    * pixels in the VectorImage. */
-  void SetVectorLength(VectorLengthType length)
+  void
+  SetVectorLength(VectorLengthType length)
   {
     m_VectorLength = length;
     m_OffsetMultiplier = length - 1;
@@ -117,7 +124,8 @@ public:
 
   /** Methods to Set/Get vector length. This should be the length of a block of
    * pixels in the VectorImage. */
-  VectorLengthType GetVectorLength()
+  VectorLengthType
+  GetVectorLength()
   {
     return m_VectorLength;
   }

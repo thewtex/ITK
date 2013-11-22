@@ -19,10 +19,11 @@
 #include <iostream>
 #include "itkVariableLengthVector.h"
 
-int itkVariableLengthVectorTest(int, char*[])
+int
+itkVariableLengthVectorTest(int, char*[])
 {
-  typedef itk::VariableLengthVector<float>   FloatVariableLengthVectorType;
-  typedef itk::VariableLengthVector<double>  DoubleVariableLengthVectorType;
+  typedef itk::VariableLengthVector<float>  FloatVariableLengthVectorType;
+  typedef itk::VariableLengthVector<double> DoubleVariableLengthVectorType;
 
   FloatVariableLengthVectorType f( 3 );
   f[0]=1.0; f[1] = 2.0; f[2] = 3.0;
@@ -47,39 +48,39 @@ int itkVariableLengthVectorTest(int, char*[])
     std::cerr << "Casts: [FAILED]" << std::endl;
     }
 
-  {
-  double *d = new double[3];
-  d[0] = 0.1; d[1] = 0.2; d[2] = 0.3;
     {
-    DoubleVariableLengthVectorType x( d, 3, false );
+    double *d = new double[3];
+    d[0] = 0.1; d[1] = 0.2; d[2] = 0.3;
+      {
+      DoubleVariableLengthVectorType x( d, 3, false );
+      }
+      {
+      DoubleVariableLengthVectorType x( d, 3, false );
+      if( (d[0] != 0.1) || (x[0] != 0.1) )
+        {
+        std::cerr << "Memory management: [FAILED]" << std::endl;
+        }
+      std::cout << x << std::endl;
+      x.SetSize( 5 , false);
+      x[3] = 3.0;
+      x[4] = 4.0;
+      std::cout << x << std::endl;
+      if( (d[0] != 0.1) || (x[0] != 0.1) ) // increase length but preserve existing data
+        {
+        std::cerr << "Memory management: [FAILED]" << std::endl;
+        }
+      x.SetSize( 2 , false); // reduce length but preserve existing data
+      std::cout << x << std::endl;
+      if( (x.GetSize() != 2) || (d[0] != 0.1) || (x[0] != 0.1) )
+        {
+        std::cerr << "Memory management: [FAILED]" << std::endl;
+        }
+      x.SetSize( 5 , true); // increase size, destroy data.
+      x.SetSize( 7 , true); // increase size, destroy data.
+      x.SetSize( 6 , true); // decrease size, destroy data.
+      }
+    delete[] d;
     }
-    {
-    DoubleVariableLengthVectorType x( d, 3, false );
-    if( (d[0] != 0.1) || (x[0] != 0.1) )
-      {
-      std::cerr << "Memory management: [FAILED]" << std::endl;
-      }
-    std::cout << x << std::endl;
-    x.SetSize( 5 , false);
-    x[3] = 3.0;
-    x[4] = 4.0;
-    std::cout << x << std::endl;
-    if( (d[0] != 0.1) || (x[0] != 0.1) ) // increase length but preserve existing data
-      {
-      std::cerr << "Memory management: [FAILED]" << std::endl;
-      }
-    x.SetSize( 2 , false); // reduce length but preserve existing data
-    std::cout << x << std::endl;
-    if( (x.GetSize() != 2) || (d[0] != 0.1) || (x[0] != 0.1) )
-      {
-      std::cerr << "Memory management: [FAILED]" << std::endl;
-      }
-     x.SetSize( 5 , true); // increase size, destroy data.
-     x.SetSize( 7 , true); // increase size, destroy data.
-     x.SetSize( 6 , true); // decrease size, destroy data.
-     }
-  delete[] d;
-  }
 
   std::cout << "[PASSED]" << std::endl;
 

@@ -36,6 +36,7 @@ OtsuThresholdCalculator< THistogram, TOutput >
   this->GetOutput()->Set( static_cast<OutputType>( m_OtsuMultipleThresholdsCalculator->GetOutput()[0] ) );
   this->UpdateProgress(1.0);
 }
+
 } // end namespace itk
 
 #endif

@@ -46,7 +46,7 @@ template< typename TInputImage,
                                            typename NumericTraits< typename TInputImage::PixelType >::RealType,
                                            TInputImage::ImageDimension >,
                                          TInputImage::ImageDimension > >
-class HessianRecursiveGaussianImageFilter:
+class HessianRecursiveGaussianImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -75,7 +75,7 @@ public:
 
   typedef float InternalRealType;
   typedef Image<InternalRealType, TInputImage::ImageDimension >
-                RealImageType;
+    RealImageType;
 
   /**  Output Image Nth Element Adaptor
    *  This adaptor allows to use conventional scalar
@@ -88,20 +88,20 @@ public:
 
   /**  Smoothing filter type */
   typedef RecursiveGaussianImageFilter<
-    RealImageType,
-    RealImageType
-    >    GaussianFilterType;
+      RealImageType,
+      RealImageType
+      >    GaussianFilterType;
 
   /**  Derivative filter type, it will be the first in the pipeline  */
   typedef RecursiveGaussianImageFilter<
-    InputImageType,
-    RealImageType
-    >    DerivativeFilterAType;
+      InputImageType,
+      RealImageType
+      >    DerivativeFilterAType;
 
   typedef RecursiveGaussianImageFilter<
-    RealImageType,
-    RealImageType
-    >    DerivativeFilterBType;
+      RealImageType,
+      RealImageType
+      >    DerivativeFilterBType;
 
   /**  Pointer to a gaussian filter.  */
   typedef typename GaussianFilterType::Pointer GaussianFilterPointer;
@@ -127,12 +127,14 @@ public:
 
   /** Set Sigma value. Sigma is measured in the units of image spacing.  */
   void SetSigma(RealType sigma);
+
   RealType GetSigma() const;
 
   /** Define which normalization factor will be used for the Gaussian
    *  \sa  RecursiveGaussianImageFilter::SetNormalizeAcrossScale
    */
   void SetNormalizeAcrossScale(bool normalizeInScaleSpace);
+
   itkGetConstMacro(NormalizeAcrossScale, bool);
 
   /** HessianRecursiveGaussianImageFilter needs all of the input to produce an
@@ -155,7 +157,8 @@ public:
 protected:
 
   HessianRecursiveGaussianImageFilter();
-  virtual ~HessianRecursiveGaussianImageFilter() {}
+  virtual
+  ~HessianRecursiveGaussianImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate Data */

@@ -19,7 +19,6 @@
 // The class is capable of generating an itk::ListSample from an image
 // confined to a mask (if specified). This test exercises that.
 
-
 #include "itkImageToListSampleFilter.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
@@ -30,7 +29,8 @@ typedef itk::Image< unsigned char, 2 > MaskImageType;
 // Creates a 10 x 10 image of unsigned chars with pixel at location
 // (x,y) being yx. ie Pixel at (6,4) = 46.
 //
-static ImageType::Pointer CreateImage()
+static ImageType::Pointer
+CreateImage()
 {
   ImageType::Pointer image = ImageType::New();
 
@@ -59,9 +59,10 @@ static ImageType::Pointer CreateImage()
 //------------------------------------------------------------------------
 // Creates a 10 x 10 image of unsigned chars with pixel from (2,3) - (8,5) as
 // 255 and rest as 0
-static MaskImageType::Pointer CreateMaskImage()
+static MaskImageType::Pointer
+CreateMaskImage()
 {
-  MaskImageType::Pointer image = MaskImageType::New();
+  MaskImageType::Pointer   image = MaskImageType::New();
   MaskImageType::IndexType start;
   MaskImageType::SizeType  size;
 
@@ -86,9 +87,9 @@ static MaskImageType::Pointer CreateMaskImage()
   typedef itk::ImageRegionIteratorWithIndex< MaskImageType > IteratorType;
   IteratorType it( image, regionMask );
   it.GoToBegin();
-  while (!it.IsAtEnd())
+  while (!it.IsAtEnd() )
     {
-    it.Set((unsigned char)255);
+    it.Set( (unsigned char)255);
     ++it;
     }
   return image;
@@ -96,7 +97,8 @@ static MaskImageType::Pointer CreateMaskImage()
 
 //------------------------------------------------------------------------
 // Creates a 13 x 17 image for testing verification of LargestPossibleRegion
-static MaskImageType::Pointer CreateLargerMaskImage()
+static MaskImageType::Pointer
+CreateLargerMaskImage()
 {
   MaskImageType::Pointer image = MaskImageType::New();
 
@@ -116,19 +118,19 @@ static MaskImageType::Pointer CreateLargerMaskImage()
   return image;
 }
 
-
-int itkImageToListSampleFilterTest(int, char* [] )
+int
+itkImageToListSampleFilterTest(int, char* [] )
 {
   ImageType::Pointer     image     = CreateImage();
   MaskImageType::Pointer maskImage = CreateMaskImage();
 
   // Generate a list sample from "image" confined to the mask, "maskImage".
   typedef itk::Statistics::ImageToListSampleFilter<
-    ImageType, MaskImageType > ImageToListSampleFilterType;
+      ImageType, MaskImageType > ImageToListSampleFilterType;
   ImageToListSampleFilterType::Pointer filter
-                              = ImageToListSampleFilterType::New();
+    = ImageToListSampleFilterType::New();
 
-  bool pass = true;
+  bool        pass = true;
   std::string failureMeassage="";
 
   //Invoke update before adding an input. An exception should be
@@ -136,8 +138,9 @@ int itkImageToListSampleFilterTest(int, char* [] )
   try
     {
     filter->Update();
-    failureMeassage = "Exception should have been thrown since \
-                    Update() is invoked without setting an input ";
+    failureMeassage =
+      "Exception should have been thrown since \
+                    Update() is invoked without setting an input "                                                 ;
     pass = false;
     }
   catch ( itk::ExceptionObject & excp )
@@ -161,11 +164,9 @@ int itkImageToListSampleFilterTest(int, char* [] )
                      has not been set";
     }
 
-
   //generate list sample without a mask image
   filter->SetInput( image );
   filter->Update();
-
 
   //use a mask image
   filter->SetMaskImage( maskImage );
@@ -174,7 +175,6 @@ int itkImageToListSampleFilterTest(int, char* [] )
 
   std::cout << filter->GetNameOfClass() << std::endl;
   filter->Print(std::cout);
-
 
   ImageToListSampleFilterType::MaskPixelType pixelType = filter->GetMaskValue();
 
@@ -190,8 +190,8 @@ int itkImageToListSampleFilterTest(int, char* [] )
   // Check the sum of the pixels in the list sample. This should
   // be 945
   ListSampleType::ConstIterator lit = list->Begin();
-  unsigned int sum = 0;
-  while (lit != list->End())
+  unsigned int                  sum = 0;
+  while (lit != list->End() )
     {
     sum += lit.GetMeasurementVector()[0];
     ++lit;
@@ -205,7 +205,6 @@ int itkImageToListSampleFilterTest(int, char* [] )
               << sum
               << " but should be 945.";
     }
-
 
   // Set on purpose a mask of inconsistent LargestPossibleRegion
   filter->SetMaskImage( CreateLargerMaskImage() );

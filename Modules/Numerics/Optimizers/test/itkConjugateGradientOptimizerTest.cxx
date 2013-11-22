@@ -19,7 +19,6 @@
 #include "itkConjugateGradientOptimizer.h"
 #include "vnl/vnl_math.h"
 
-
 /**
  *  The objectif function is the quadratic form:
  *
@@ -42,29 +41,28 @@ class conjugateCostFunction : public itk::SingleValuedCostFunction
 {
 public:
 
-  typedef conjugateCostFunction             Self;
-  typedef itk::SingleValuedCostFunction     Superclass;
-  typedef itk::SmartPointer<Self>           Pointer;
-  typedef itk::SmartPointer<const Self>     ConstPointer;
+  typedef conjugateCostFunction         Self;
+  typedef itk::SingleValuedCostFunction Superclass;
+  typedef itk::SmartPointer<Self>       Pointer;
+  typedef itk::SmartPointer<const Self> ConstPointer;
   itkNewMacro( Self );
   itkTypeMacro( conjugateCostFunction, SingleValuedCostFunction );
 
   enum { SpaceDimension=2 };
 
-  typedef Superclass::ParametersType              ParametersType;
-  typedef Superclass::DerivativeType              DerivativeType;
+  typedef Superclass::ParametersType ParametersType;
+  typedef Superclass::DerivativeType DerivativeType;
 
-  typedef vnl_vector<double>                      VectorType;
-  typedef vnl_matrix<double>                      MatrixType;
+  typedef vnl_vector<double> VectorType;
+  typedef vnl_matrix<double> MatrixType;
 
   typedef double MeasureType;
 
-
   conjugateCostFunction()
-  {
-  }
+  {}
 
-  double GetValue( const ParametersType & position ) const
+  double
+  GetValue( const ParametersType & position ) const
   {
 
     double x = position[0];
@@ -81,8 +79,9 @@ public:
     return val;
   }
 
-  void GetDerivative( const ParametersType & position,
-                            DerivativeType & derivative ) const
+  void
+  GetDerivative( const ParametersType & position,
+                 DerivativeType & derivative ) const
   {
 
     double x = position[0];
@@ -100,22 +99,22 @@ public:
     std::cout << derivative[1] << ")" << std::endl;
   }
 
-  unsigned int GetNumberOfParameters(void) const
-    {
+  unsigned int
+  GetNumberOfParameters(void) const
+  {
     return SpaceDimension;
-    }
+  }
 
 private:
-
 
 };
 
 class CommandIterationUpdateConjugateGradient : public itk::Command
 {
 public:
-  typedef  CommandIterationUpdateConjugateGradient   Self;
-  typedef  itk::Command                              Superclass;
-  typedef itk::SmartPointer<Self>                    Pointer;
+  typedef  CommandIterationUpdateConjugateGradient Self;
+  typedef  itk::Command                            Superclass;
+  typedef itk::SmartPointer<Self>                  Pointer;
   itkNewMacro( Self );
 
 protected:
@@ -125,30 +124,33 @@ protected:
   }
 
 public:
-  typedef itk::ConjugateGradientOptimizer   OptimizerType;
-  typedef   const OptimizerType   *         OptimizerPointer;
+  typedef itk::ConjugateGradientOptimizer OptimizerType;
+  typedef   const OptimizerType *         OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
-      Execute( (const itk::Object *)caller, event);
-    }
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
+    Execute( (const itk::Object *)caller, event);
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
-      OptimizerPointer optimizer =
-        dynamic_cast< OptimizerPointer >( object );
-      if( m_FunctionEvent.CheckEvent( &event ) )
-        {
-        std::cout << m_IterationNumber++ << "   ";
-        std::cout << optimizer->GetCachedValue() << "   ";
-        std::cout << optimizer->GetCachedCurrentPosition() << std::endl;
-        }
-      else if( m_GradientEvent.CheckEvent( &event ) )
-        {
-        std::cout << "Gradient " << optimizer->GetCachedDerivative() << "   ";
-        }
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
+    OptimizerPointer optimizer =
+      dynamic_cast< OptimizerPointer >( object );
 
-    }
+    if( m_FunctionEvent.CheckEvent( &event ) )
+      {
+      std::cout << m_IterationNumber++ << "   ";
+      std::cout << optimizer->GetCachedValue() << "   ";
+      std::cout << optimizer->GetCachedCurrentPosition() << std::endl;
+      }
+    else if( m_GradientEvent.CheckEvent( &event ) )
+      {
+      std::cout << "Gradient " << optimizer->GetCachedDerivative() << "   ";
+      }
+
+  }
 
 private:
   unsigned long m_IterationNumber;
@@ -157,24 +159,22 @@ private:
   itk::GradientEvaluationIterationEvent m_GradientEvent;
 };
 
-int itkConjugateGradientOptimizerTest(int, char* [] )
+int
+itkConjugateGradientOptimizerTest(int, char* [] )
 {
   std::cout << "Conjugate Gradient Optimizer Test \n \n";
 
-  typedef  itk::ConjugateGradientOptimizer  OptimizerType;
+  typedef  itk::ConjugateGradientOptimizer OptimizerType;
 
-  typedef  OptimizerType::InternalOptimizerType  vnlOptimizerType;
+  typedef  OptimizerType::InternalOptimizerType vnlOptimizerType;
 
   // Declaration of a itkOptimizer
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
-
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
 
   // Declaration of the CostFunction adaptor
   conjugateCostFunction::Pointer costFunction = conjugateCostFunction::New();
 
-
   itkOptimizer->SetCostFunction( costFunction.GetPointer() );
-
 
   vnlOptimizerType * vnlOptimizer = itkOptimizer->GetOptimizer();
 
@@ -192,12 +192,10 @@ int itkConjugateGradientOptimizerTest(int, char* [] )
 
   vnlOptimizer->set_check_derivatives( 3 );
 
-
   OptimizerType::ParametersType initialValue(2);       // constructor requires vector size
   // We start not so far from  | 2 -2 |
   initialValue[0] =  100;
   initialValue[1] = -100;
-
 
   OptimizerType::ParametersType currentValue(2);
 
@@ -209,7 +207,6 @@ int itkConjugateGradientOptimizerTest(int, char* [] )
     CommandIterationUpdateConjugateGradient::New();
   itkOptimizer->AddObserver( itk::IterationEvent(), observer );
   itkOptimizer->AddObserver( itk::FunctionEvaluationIterationEvent(), observer );
-
 
   try
     {
@@ -223,7 +220,6 @@ int itkConjugateGradientOptimizerTest(int, char* [] )
     std::cout << "Description = " << e.GetDescription() << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Number of iters = " << itkOptimizer->GetCurrentIteration()  << std::endl;
   std::cout << "Number of evals = " << vnlOptimizer->get_num_evaluations() << std::endl;
@@ -244,7 +240,7 @@ int itkConjugateGradientOptimizerTest(int, char* [] )
   std::cout << finalPosition[0] << ",";
   std::cout << finalPosition[1] << ")" << std::endl;
 
-  bool pass = true;
+  bool   pass = true;
   double trueParameters[2] = { 2, -2 };
   for( unsigned int j = 0; j < 2; j++ )
     {
@@ -273,6 +269,5 @@ int itkConjugateGradientOptimizerTest(int, char* [] )
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;
-
 
 }

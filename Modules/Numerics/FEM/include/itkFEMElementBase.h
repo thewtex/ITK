@@ -131,7 +131,6 @@ public:
    */
   enum { InvalidDegreeOfFreedomID = 0xffffffff };
 
-
 /**
  * \class Node
  * \brief Class that stores information required to define a node.
@@ -145,7 +144,7 @@ public:
  */
   class Node : public FEMLightObject
   {
-  public:
+public:
     /** Standard class typedefs. */
     typedef Node                     Self;
     typedef FEMLightObject           Superclass;
@@ -154,37 +153,39 @@ public:
 
     /** Method for creation through the object factory. */
     // itkNewMacro(Self);
-    static Pointer New(void)
-      {
-        Pointer smartPtr = ::itk::ObjectFactory<Self>::Create();
+    static Pointer
+    New(void)
+    {
+      Pointer smartPtr = ::itk::ObjectFactory<Self>::Create();
 
-        if( smartPtr.IsNull() )
-          {
-          smartPtr = static_cast<Pointer>(new Self);
-          }
-        smartPtr->UnRegister();
-        return smartPtr;
-      }
+      if( smartPtr.IsNull() )
+        {
+        smartPtr = static_cast<Pointer>(new Self);
+        }
+      smartPtr->UnRegister();
+      return smartPtr;
+    }
 
     /** Run-time type information (and related methods). */
     itkTypeMacro(Node, FEMLightObject);
 
     /** CreateAnother method will clone the existing instance of this type,
      * including its internal member variables. */
-    virtual::itk::LightObject::Pointer CreateAnother(void) const
-      {
-        ::itk::LightObject::Pointer smartPtr;
-        Pointer copyPtr = Self::New();
+    virtual::itk::LightObject::Pointer
+    CreateAnother(void) const
+    {
+      ::itk::LightObject::Pointer smartPtr;
+      Pointer copyPtr = Self::New();
 
-        copyPtr->m_coordinates = this->m_coordinates;
-        copyPtr->m_dof = this->m_dof;
-        copyPtr->m_elements = this->m_elements;
-        copyPtr->SetGlobalNumber( this->GetGlobalNumber() );
+      copyPtr->m_coordinates = this->m_coordinates;
+      copyPtr->m_dof = this->m_dof;
+      copyPtr->m_elements = this->m_elements;
+      copyPtr->SetGlobalNumber( this->GetGlobalNumber() );
 
-        smartPtr = static_cast<Pointer>(copyPtr);
+      smartPtr = static_cast<Pointer>(copyPtr);
 
-        return smartPtr;
-      }
+      return smartPtr;
+    }
 
     /**
      * Floating point precision type.
@@ -200,80 +201,87 @@ public:
      * Default constructor
      */
     Node()
-      {
-      }
+    {}
+
     /**
      * Destructor
      */
     ~Node()
-      {
-        this->ClearDegreesOfFreedom();
-        this->m_elements.clear();
-      }
+    {
+      this->ClearDegreesOfFreedom();
+      this->m_elements.clear();
+    }
 
     /**
      * Return a reference to a vector that contains coordinates
      * of this node.
      */
-    const VectorType & GetCoordinates(void) const
-      {
-        return m_coordinates;
-      }
+    const VectorType &
+    GetCoordinates(void) const
+    {
+      return m_coordinates;
+    }
 
     /**
      * Set coordinates of a node.
      */
-    void SetCoordinates(const VectorType & coords)
-      {
-        m_coordinates = coords;
-      }
+    void
+    SetCoordinates(const VectorType & coords)
+    {
+      m_coordinates = coords;
+    }
 
     /**
      * Get DOF IDs associated with this node.
      */
-    DegreeOfFreedomIDType GetDegreeOfFreedom(unsigned int i) const
-      {
-        if( i >= m_dof.size() )
-          {
-          return InvalidDegreeOfFreedomID;
-          }
-        return m_dof[i];
-      }
+    DegreeOfFreedomIDType
+    GetDegreeOfFreedom(unsigned int i) const
+    {
+      if( i >= m_dof.size() )
+        {
+        return InvalidDegreeOfFreedomID;
+        }
+      return m_dof[i];
+    }
 
     /**
      * Set DOF IDs associated with this node.
      */
-    void SetDegreeOfFreedom(unsigned int i, DegreeOfFreedomIDType dof) const
-      {
-        if( i >= m_dof.size() )
-          {
-          m_dof.resize(i + 1, InvalidDegreeOfFreedomID);
-          }
-        m_dof[i] = dof;
-      }
+    void
+    SetDegreeOfFreedom(unsigned int i, DegreeOfFreedomIDType dof) const
+    {
+      if( i >= m_dof.size() )
+        {
+        m_dof.resize(i + 1, InvalidDegreeOfFreedomID);
+        }
+      m_dof[i] = dof;
+    }
 
-    virtual void ClearDegreesOfFreedom(void) const
-      {
-        m_dof.clear();
-      }
+    virtual void
+    ClearDegreesOfFreedom(void) const
+    {
+      m_dof.clear();
+    }
 
-  public:
+public:
     /**
      * List of pointers to elements that use this node. External code is
      * responsible for maintaining the list.
      */
     typedef std::set<Element *> SetOfElements;
     mutable SetOfElements m_elements;
-  protected:
-    virtual void PrintSelf(std::ostream& os, Indent indent) const
-      {
-        Superclass::PrintSelf(os, indent);
-        // os << indent << "DOF: " << this->m_dof << std::endl;
-        // os << indent << "Coordinates: " << this->m_coordinates << std::endl;
-        // os << indent << "Elements: " << this->m_elements << std::endl;
-      }
 
-  private:
+protected:
+    virtual void
+    PrintSelf(std::ostream& os, Indent indent) const
+    {
+      Superclass::PrintSelf(os, indent);
+      // os << indent << "DOF: " << this->m_dof << std::endl;
+      // os << indent << "Coordinates: " << this->m_coordinates << std::endl;
+      // os << indent << "Elements: " << this->m_elements << std::endl;
+    }
+
+private:
     /**
      * Vector object that holds node coordinates.
      */
@@ -408,16 +416,17 @@ public:
    *
    * \param local_dof Local number of degree of freedom within an element.
    */
-  DegreeOfFreedomIDType GetDegreeOfFreedom(unsigned int local_dof) const
-    {
-      if( local_dof > this->GetNumberOfDegreesOfFreedom() )
-        {
-        return InvalidDegreeOfFreedomID;
-        }
-      return this->GetNode(local_dof /
-                           this->GetNumberOfDegreesOfFreedomPerNode() )
-        ->GetDegreeOfFreedom(local_dof % this->GetNumberOfDegreesOfFreedomPerNode() );
-    }
+  DegreeOfFreedomIDType
+  GetDegreeOfFreedom(unsigned int local_dof) const
+  {
+    if( local_dof > this->GetNumberOfDegreesOfFreedom() )
+      {
+      return InvalidDegreeOfFreedomID;
+      }
+    return this->GetNode(local_dof /
+                         this->GetNumberOfDegreesOfFreedomPerNode() )
+           ->GetDegreeOfFreedom(local_dof % this->GetNumberOfDegreesOfFreedomPerNode() );
+  }
 
   /**
    * Return the pointer to the Material object used by the element.
@@ -435,10 +444,11 @@ public:
    *
    * \sa SetMaterial
    */
-  virtual Material::ConstPointer GetMaterial(void) const
-    {
-      return 0;
-    }
+  virtual Material::ConstPointer
+  GetMaterial(void) const
+  {
+    return 0;
+  }
 
   /**
    * Set the pointer to the Material object used by the element.
@@ -448,9 +458,9 @@ public:
    *
    * \sa GetMaterial
    */
-  virtual void SetMaterial(Material::ConstPointer)
-    {
-    }
+  virtual void
+  SetMaterial(Material::ConstPointer)
+  {}
 
   // ////////////////////////////////////////////////////////////////////////
   /**
@@ -551,10 +561,13 @@ public:
    * Sets the pointe of n-th node in an element to node.
    */
   virtual void SetNode(unsigned int n, NodeIDType node) = 0;
-  virtual void SetNode(unsigned int n, Node::Pointer node)
-    {
-      this->SetNode(n,NodeIDType(node.GetPointer()));
-    }
+
+  virtual void
+  SetNode(unsigned int n, Node::Pointer node)
+  {
+    this->SetNode(n,NodeIDType(node.GetPointer() ) );
+  }
+
   /**
    * Return a vector of global coordinates of n-th node in an element.
    *
@@ -684,18 +697,19 @@ public:
    * element class. By default this is equal to number of points in a cell
    * multiplied by number of degrees of freedom at each point.
    */
-  virtual unsigned int GetNumberOfDegreesOfFreedom(void) const
-    {
-      return this->GetNumberOfNodes() * this->GetNumberOfDegreesOfFreedomPerNode();
-    }
+  virtual unsigned int
+  GetNumberOfDegreesOfFreedom(void) const
+  {
+    return this->GetNumberOfNodes() * this->GetNumberOfDegreesOfFreedomPerNode();
+  }
 
   /**
    * Access the edge ids vector. The vector in turn contains a list of edge ids.
    */
   virtual std::vector<std::vector<int> > GetEdgeIds(void) const
-    {
-      return this->m_EdgeIds;
-    }
+  {
+    return this->m_EdgeIds;
+  }
 
   /**
    * Return the number of degrees of freedom at each node. This is also

@@ -36,7 +36,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginLatex
 //
 // The following headers are related to reading input images, writing the
@@ -66,7 +65,8 @@
 #include "itkMinimumDecisionRule.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
   if( argc < 7 )
     {
@@ -100,7 +100,6 @@ int main( int argc, char * argv [] )
 
     }
 
-
   // Software Guide : BeginLatex
   //
   // First we define the pixel type and dimension of the image that we intend to
@@ -113,8 +112,8 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef signed short        PixelType;
-  const unsigned int          Dimension = 2;
+  typedef signed short PixelType;
+  const unsigned int Dimension = 2;
 
   typedef itk::Image<PixelType, Dimension > ImageType;
 
@@ -122,7 +121,6 @@ int main( int argc, char * argv [] )
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( inputImageFileName );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -134,7 +132,7 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char       LabelPixelType;
+  typedef unsigned char LabelPixelType;
 
   typedef itk::Image<LabelPixelType, Dimension > LabelImageType;
 
@@ -142,7 +140,6 @@ int main( int argc, char * argv [] )
   LabelReaderType::Pointer labelReader = LabelReaderType::New();
   labelReader->SetFileName( inputLabelImageFileName );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -157,18 +154,17 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::FixedArray<LabelPixelType,1>  ArrayPixelType;
+  typedef itk::FixedArray<LabelPixelType,1> ArrayPixelType;
 
   typedef itk::Image< ArrayPixelType, Dimension > ArrayImageType;
 
   typedef itk::ComposeImageFilter<
-                     ImageType, ArrayImageType > ScalarToArrayFilterType;
+      ImageType, ArrayImageType > ScalarToArrayFilterType;
 
   ScalarToArrayFilterType::Pointer
     scalarToArrayFilter = ScalarToArrayFilterType::New();
   scalarToArrayFilter->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -187,7 +183,6 @@ int main( int argc, char * argv [] )
   mrfFilter->SetInput( scalarToArrayFilter->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We set now some of the parameters for the MRF filter. In particular, the
@@ -202,7 +197,6 @@ int main( int argc, char * argv [] )
   mrfFilter->SetMaximumNumberOfIterations( numberOfIterations );
   mrfFilter->SetErrorTolerance( 1e-7 );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -219,7 +213,6 @@ int main( int argc, char * argv [] )
   mrfFilter->SetSmoothingFactor( smoothingFactor );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // Given that the MRF filter need to continually relabel the pixels, it needs
@@ -232,13 +225,12 @@ int main( int argc, char * argv [] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::ImageClassifierBase<
-                              ArrayImageType,
-                              LabelImageType >   SupervisedClassifierType;
+      ArrayImageType,
+      LabelImageType >   SupervisedClassifierType;
 
   SupervisedClassifierType::Pointer classifier =
-                                         SupervisedClassifierType::New();
+    SupervisedClassifierType::New();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -253,11 +245,10 @@ int main( int argc, char * argv [] )
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::MinimumDecisionRule DecisionRuleType;
 
-  DecisionRuleType::Pointer  classifierDecisionRule = DecisionRuleType::New();
+  DecisionRuleType::Pointer classifierDecisionRule = DecisionRuleType::New();
 
   classifier->SetDecisionRule( classifierDecisionRule.GetPointer() );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -270,18 +261,17 @@ int main( int argc, char * argv [] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::DistanceToCentroidMembershipFunction<
-                                                    ArrayPixelType >
-                                                       MembershipFunctionType;
+      ArrayPixelType >
+    MembershipFunctionType;
 
   typedef MembershipFunctionType::Pointer MembershipFunctionPointer;
 
-
-  double meanDistance = 0;
+  double                               meanDistance = 0;
   MembershipFunctionType::CentroidType centroid(1);
   for( unsigned int i=0; i < numberOfClasses; i++ )
     {
     MembershipFunctionPointer membershipFunction =
-                                         MembershipFunctionType::New();
+      MembershipFunctionType::New();
 
     centroid[0] = atof( argv[i+numberOfArgumentsBeforeMeans] );
 
@@ -306,7 +296,6 @@ int main( int argc, char * argv [] )
   mrfFilter->SetSmoothingFactor( smoothingFactor );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // and we set the neighborhood radius that will define the size of the clique
@@ -323,7 +312,6 @@ int main( int argc, char * argv [] )
   // Software Guide : BeginCodeSnippet
   mrfFilter->SetNeighborhoodRadius( 1 );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -351,7 +339,6 @@ int main( int argc, char * argv [] )
   weights.push_back(1.5);
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   // We now scale weights so that the smoothing function and the image fidelity
   // functions have comparable value. This is necessary since the label
@@ -372,12 +359,11 @@ int main( int argc, char * argv [] )
   for(std::vector< double >::iterator wIt = weights.begin();
       wIt != weights.end(); ++wIt )
     {
-    *wIt = static_cast< double > ( (*wIt) * meanDistance / (2 * totalWeight));
+    *wIt = static_cast< double > ( (*wIt) * meanDistance / (2 * totalWeight) );
     }
 
   mrfFilter->SetMRFNeighborhoodWeight( weights );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -386,9 +372,8 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-    mrfFilter->SetClassifier( classifier );
+  mrfFilter->SetClassifier( classifier );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -401,13 +386,13 @@ int main( int argc, char * argv [] )
   //
   // Software Guide : EndLatex
   // Software Guide : BeginCodeSnippet
-  typedef MRFFilterType::OutputImageType  OutputImageType;
+  typedef MRFFilterType::OutputImageType OutputImageType;
   // Software Guide : EndCodeSnippet
 
   // Rescale outputs to the dynamic range of the display
   typedef itk::Image< unsigned char, Dimension > RescaledOutputImageType;
   typedef itk::RescaleIntensityImageFilter<
-             OutputImageType, RescaledOutputImageType >   RescalerType;
+      OutputImageType, RescaledOutputImageType >   RescalerType;
 
   RescalerType::Pointer intensityRescaler = RescalerType::New();
   intensityRescaler->SetOutputMinimum(   0 );
@@ -424,7 +409,6 @@ int main( int argc, char * argv [] )
   writer->SetFileName( outputImageFileName );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We are now ready for triggering the execution of the pipeline. This is done
@@ -432,7 +416,6 @@ int main( int argc, char * argv [] )
   // propagate the update request to the reader and then to the MRF filter.
   //
   // Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   try
@@ -471,7 +454,6 @@ int main( int argc, char * argv [] )
   //  and the means were estimated by ScalarImageKmeansModelEstimator.cxx.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 

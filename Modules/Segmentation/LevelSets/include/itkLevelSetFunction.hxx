@@ -203,6 +203,7 @@ void
 LevelSetFunction< TImageType >::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "WaveDT: " << m_WaveDT << std::endl;
   os << indent << "DT: " << m_DT << std::endl;
   os << indent << "UseMinimalCurvature " << m_UseMinimalCurvature << std::endl;
@@ -303,7 +304,7 @@ LevelSetFunction< TImageType >
   const NeighborhoodScalesType neighborhoodScales = this->ComputeNeighborhoodScales();
 
   ScalarValueType laplacian, x_energy, laplacian_term, propagation_term,
-                  curvature_term, advection_term, propagation_gradient;
+    curvature_term, advection_term, propagation_gradient;
   VectorType advection_field;
 
   // Global data structure
@@ -323,7 +324,7 @@ LevelSetFunction< TImageType >
                           - it.GetPixel(positionB) ) * neighborhoodScales[i];
     gd->m_dxy[i][i] = ( it.GetPixel(positionA)
                         + it.GetPixel(positionB) - 2.0 * center_value )
-                      * vnl_math_sqr(neighborhoodScales[i]);
+      * vnl_math_sqr(neighborhoodScales[i]);
 
     gd->m_dx_forward[i]  = ( it.GetPixel(positionA) - center_value ) * neighborhoodScales[i];
 
@@ -334,26 +335,26 @@ LevelSetFunction< TImageType >
     for ( j = i + 1; j < ImageDimension; j++ )
       {
       const unsigned int positionAa = static_cast< unsigned int >(
-        m_Center - m_xStride[i] - m_xStride[j] );
+          m_Center - m_xStride[i] - m_xStride[j] );
       const unsigned int positionBa = static_cast< unsigned int >(
-        m_Center - m_xStride[i] + m_xStride[j] );
+          m_Center - m_xStride[i] + m_xStride[j] );
       const unsigned int positionCa = static_cast< unsigned int >(
-        m_Center + m_xStride[i] - m_xStride[j] );
+          m_Center + m_xStride[i] - m_xStride[j] );
       const unsigned int positionDa = static_cast< unsigned int >(
-        m_Center + m_xStride[i] + m_xStride[j] );
+          m_Center + m_xStride[i] + m_xStride[j] );
 
       gd->m_dxy[i][j] = gd->m_dxy[j][i] = 0.25 * ( it.GetPixel(positionAa)
                                                    - it.GetPixel(positionBa)
                                                    - it.GetPixel(positionCa)
                                                    + it.GetPixel(positionDa) )
-                                          * neighborhoodScales[i] * neighborhoodScales[j];
+          * neighborhoodScales[i] * neighborhoodScales[j];
       }
     }
 
   if ( m_CurvatureWeight != ZERO )
     {
     curvature_term = this->ComputeCurvatureTerm(it, offset, gd) * m_CurvatureWeight
-                     * this->CurvatureSpeed(it, offset);
+      * this->CurvatureSpeed(it, offset);
 
     gd->m_MaxCurvatureChange = vnl_math_max( gd->m_MaxCurvatureChange,
                                              vnl_math_abs(curvature_term) );
@@ -416,7 +417,7 @@ LevelSetFunction< TImageType >
       for ( i = 0; i < ImageDimension; i++ )
         {
         propagation_gradient += vnl_math_sqr( vnl_math_max(gd->m_dx_backward[i], ZERO) )
-                                + vnl_math_sqr( vnl_math_min(gd->m_dx_forward[i],  ZERO) );
+          + vnl_math_sqr( vnl_math_min(gd->m_dx_forward[i],  ZERO) );
         }
       }
     else
@@ -424,7 +425,7 @@ LevelSetFunction< TImageType >
       for ( i = 0; i < ImageDimension; i++ )
         {
         propagation_gradient += vnl_math_sqr( vnl_math_min(gd->m_dx_backward[i], ZERO) )
-                                + vnl_math_sqr( vnl_math_max(gd->m_dx_forward[i],  ZERO) );
+          + vnl_math_sqr( vnl_math_max(gd->m_dx_forward[i],  ZERO) );
         }
       }
 
@@ -460,6 +461,7 @@ LevelSetFunction< TImageType >
   return (PixelType)( curvature_term - propagation_term
                       - advection_term - laplacian_term );
 }
+
 } // end namespace itk
 
 #endif

@@ -56,9 +56,9 @@ namespace itk
  * \ingroup ITKDistanceMap
  */
 template< typename TInputImage,
-  typename TOutputImage,
-  typename TVoronoiImage = TInputImage >
-class DanielssonDistanceMapImageFilter:
+          typename TOutputImage,
+          typename TVoronoiImage = TInputImage >
+class DanielssonDistanceMapImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -68,7 +68,7 @@ public:
   typedef SmartPointer< Self >                            Pointer;
   typedef SmartPointer< const Self >                      ConstPointer;
 
-  typedef DataObject::Pointer                             DataObjectPointer;
+  typedef DataObject::Pointer DataObjectPointer;
 
   /** Method for creation through the object factory */
   itkNewMacro(Self);
@@ -108,9 +108,9 @@ public:
   /** Type for output image pixel.*/
   typedef typename OutputImageType::PixelType OutputPixelType;
 
-  typedef TVoronoiImage                         VoronoiImageType;
-  typedef typename VoronoiImageType::Pointer    VoronoiImagePointer;
-  typedef typename VoronoiImageType::PixelType  VoronoiPixelType;
+  typedef TVoronoiImage                        VoronoiImageType;
+  typedef typename VoronoiImageType::Pointer   VoronoiImagePointer;
+  typedef typename VoronoiImageType::PixelType VoronoiPixelType;
 
   /** The dimension of the input and output images. */
   itkStaticConstMacro(InputImageDimension, unsigned int,
@@ -206,7 +206,8 @@ public:
 
 protected:
   DanielssonDistanceMapImageFilter();
-  virtual ~DanielssonDistanceMapImageFilter() {}
+  virtual
+  ~DanielssonDistanceMapImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Compute Danielsson distance map and Voronoi Map. */

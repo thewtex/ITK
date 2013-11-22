@@ -118,7 +118,7 @@ namespace itk
  * \ingroup ITKImageCompare
  */
 template< typename TInputImage, typename TOutputImage >
-class STAPLEImageFilter:
+class STAPLEImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -161,7 +161,8 @@ public:
   /** After the filter is updated, this method returns a std::vector<double> of
    *  all Specificity (true negative fraction, q) values for the expert
    *  input volumes. */
-  const std::vector< double > & GetSpecificity() const
+  const std::vector< double > &
+  GetSpecificity() const
   {
     return m_Specificity;
   }
@@ -169,14 +170,16 @@ public:
   /** After the filter is updated, this method returns a std::vector<double> of
    * all Sensitivity (true positive fraction, p) values for the expert input
    * volumes. */
-  const std::vector< double > & GetSensitivity() const
+  const std::vector< double > &
+  GetSensitivity() const
   {
     return m_Sensitivity;
   }
 
   /** After the filter is updated, this method returns the Sensitivity (true
    * positive fraction, p) value for the i-th expert input volume. */
-  double GetSensitivity(unsigned int i)
+  double
+  GetSensitivity(unsigned int i)
   {
     if ( i > this->GetNumberOfIndexedInputs() )
       {
@@ -187,7 +190,8 @@ public:
 
   /** After the filter is updated, this method returns the Specificity (true
    * negative fraction, q) value for the i-th expert input volume. */
-  double GetSpecificity(unsigned int i)
+  double
+  GetSpecificity(unsigned int i)
   {
     if ( i > this->GetNumberOfIndexedInputs() )
       {
@@ -231,7 +235,8 @@ protected:
     m_ConfidenceWeight = 1.0;
   }
 
-  virtual ~STAPLEImageFilter() {}
+  virtual
+  ~STAPLEImageFilter() {}
   void GenerateData();
 
   void PrintSelf(std::ostream &, Indent) const;

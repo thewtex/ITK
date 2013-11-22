@@ -228,12 +228,14 @@ Bruker2DSEQImageIO::~Bruker2DSEQImageIO()
   // Left blank on purpose.
 }
 
-void Bruker2DSEQImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+Bruker2DSEQImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
 
-void Bruker2DSEQImageIO::Read(void *buffer)
+void
+Bruker2DSEQImageIO::Read(void *buffer)
 {
   unsigned int       dim;
   const unsigned int dimensions = this->GetNumberOfDimensions();
@@ -284,13 +286,15 @@ void Bruker2DSEQImageIO::Read(void *buffer)
   this->SwapBytesIfNecessary(buffer, numberOfPixels);
 }
 
-bool Bruker2DSEQImageIO::CanReadFile(const char *FileNameToRead)
+bool
+Bruker2DSEQImageIO::CanReadFile(const char *FileNameToRead)
 {
   std::string file2Dseq = itksys::SystemTools::CollapseFullPath(FileNameToRead);
 
   itksys::SystemTools::ConvertToUnixSlashes(file2Dseq);
   std::string path = itksys::SystemTools::GetFilenamePath(file2Dseq);
   std::string filereco = path + FORWARDSLASH_DIRECTORY_SEPARATOR;
+
   filereco += RECO_FILE;
   std::string filed3proc = path + FORWARDSLASH_DIRECTORY_SEPARATOR;
   filed3proc += DTHREEPROC_FILE;
@@ -493,7 +497,8 @@ bool Bruker2DSEQImageIO::CanReadFile(const char *FileNameToRead)
   return true;
 }
 
-void Bruker2DSEQImageIO::ReadImageInformation()
+void
+Bruker2DSEQImageIO::ReadImageInformation()
 {
   unsigned int dim;
   std::string  file2Dseq =
@@ -502,6 +507,7 @@ void Bruker2DSEQImageIO::ReadImageInformation()
   itksys::SystemTools::ConvertToUnixSlashes(file2Dseq);
   std::string path = itksys::SystemTools::GetFilenamePath(file2Dseq);
   std::string filereco = path + FORWARDSLASH_DIRECTORY_SEPARATOR;
+
   filereco += RECO_FILE;
   std::string filed3proc = path + FORWARDSLASH_DIRECTORY_SEPARATOR;
   filed3proc += DTHREEPROC_FILE;
@@ -1215,7 +1221,7 @@ void Bruker2DSEQImageIO::ReadImageInformation()
     index = acqpFileString.find(ACQ_echo_time);
     if ( index != std::string::npos )
       {
-      int numEchoes = 0;
+      int                numEchoes = 0;
       std::string        tempString = ACQ_echo_time;
       std::istringstream echoTimeString( acqpFileString.substr(
                                            index + tempString.length() ) );
@@ -1267,7 +1273,7 @@ void Bruker2DSEQImageIO::ReadImageInformation()
     index = acqpFileString.find(ACQ_repetition_time);
     if ( index != std::string::npos )
       {
-      int numRepetitions = 0;
+      int                numRepetitions = 0;
       std::string        tempString = ACQ_repetition_time;
       std::istringstream reptitionTimeString( acqpFileString.substr(
                                                 index + tempString.length() ) );
@@ -1319,7 +1325,7 @@ void Bruker2DSEQImageIO::ReadImageInformation()
     index = acqpFileString.find(ACQ_inversion_time);
     if ( index != std::string::npos )
       {
-      int numInversionTimes = 0;
+      int                numInversionTimes = 0;
       std::string        tempString = ACQ_inversion_time;
       std::istringstream inversionTimeString( acqpFileString.substr(
                                                 index + tempString.length() ) );
@@ -1791,4 +1797,5 @@ void Bruker2DSEQImageIO::ReadImageInformation()
       this->SetDirection(2, dirz);
     }
 }
+
 } // end namespace itk

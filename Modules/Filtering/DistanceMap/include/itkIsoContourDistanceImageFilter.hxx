@@ -67,6 +67,7 @@ IsoContourDistanceImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Narrowbanding: " << m_NarrowBanding << std::endl;
   os << indent << "LevelSetValue: " << m_LevelSetValue << std::endl;
   os << indent << "FarValue: " << m_FarValue << std::endl;
@@ -127,9 +128,9 @@ IsoContourDistanceImageFilter< TInputImage, TOutputImage >
   // itkImageSource::SplitRequestedRegion. Sometimes this number is less than
   // the number of threads requested.
   OutputImageRegionType dummy;
-  unsigned int actualThreads = this->SplitRequestedRegion(
-    0, this->GetNumberOfThreads(),
-    dummy);
+  unsigned int          actualThreads = this->SplitRequestedRegion(
+      0, this->GetNumberOfThreads(),
+      dummy);
 
   m_Spacing = this->GetInput()->GetSpacing();
 
@@ -244,8 +245,7 @@ IsoContourDistanceImageFilter< TInputImage, TOutputImage >
     {
     ComputeValue( inNeigIt, outNeigIt, center, stride );
     }
-  }
-
+}
 
 // The execute method created by the subclass.
 template< typename TInputImage, typename TOutputImage >
@@ -278,9 +278,9 @@ IsoContourDistanceImageFilter< TInputImage, TOutputImage >
 
   //Create neighborhood iterator
   InputNeighbordIteratorType inNeigIt( radiusIn, inputPtr,
-                                      inputPtr->GetRequestedRegion() );
+                                       inputPtr->GetRequestedRegion() );
   OutputNeighborhoodIteratorType outNeigIt( radiusOut, outputPtr,
-                                           outputPtr->GetRequestedRegion() );
+                                            outputPtr->GetRequestedRegion() );
 
   //Get Stride information to move across dimension
   std::vector< OffsetValueType > stride( ImageDimension, 0 );
@@ -306,14 +306,14 @@ template< typename TInputImage, typename TOutputImage >
 void
 IsoContourDistanceImageFilter< TInputImage, TOutputImage >
 ::ComputeValue( const InputNeighbordIteratorType& inNeigIt,
-               OutputNeighborhoodIteratorType& outNeigIt,
-               unsigned int center,
-               const std::vector< OffsetValueType >& stride )
+                OutputNeighborhoodIteratorType& outNeigIt,
+                unsigned int center,
+                const std::vector< OffsetValueType >& stride )
 {
   typedef typename NumericTraits<PixelType>::RealType PixelRealType;
 
   PixelRealType val0 = static_cast< PixelRealType >( inNeigIt.GetPixel(center) )
-      - static_cast< PixelRealType >( m_LevelSetValue );
+    - static_cast< PixelRealType >( m_LevelSetValue );
   bool sign = ( val0 > 0 );
 
   PixelRealType grad0[ImageDimension];
@@ -322,13 +322,13 @@ IsoContourDistanceImageFilter< TInputImage, TOutputImage >
   for ( unsigned int ng = 0; ng < ImageDimension; ng++ )
     {
     grad0[ng] = static_cast< PixelRealType >( inNeigIt.GetNext(ng, 1) )
-        - static_cast< PixelRealType >( inNeigIt.GetPrevious(ng, 1) );
+      - static_cast< PixelRealType >( inNeigIt.GetPrevious(ng, 1) );
     }
 
   for ( unsigned int n = 0; n < ImageDimension; n++ )
     {
     PixelRealType val1 =  static_cast< PixelRealType >( inNeigIt.GetPixel(center + stride[n]) )
-        - static_cast< PixelRealType >( m_LevelSetValue );
+      - static_cast< PixelRealType >( m_LevelSetValue );
 
     bool neighSign = ( val1 > 0 );
 
@@ -339,8 +339,8 @@ IsoContourDistanceImageFilter< TInputImage, TOutputImage >
       for ( unsigned int ng = 0; ng < ImageDimension; ng++ )
         {
         grad1[ng] =
-            static_cast< PixelType >( inNeigIt.GetPixel(center + stride[n] + stride[ng]) )
-            - static_cast< PixelType >( inNeigIt.GetPixel(center + stride[n] - stride[ng]) );
+          static_cast< PixelType >( inNeigIt.GetPixel(center + stride[n] + stride[ng]) )
+          - static_cast< PixelType >( inNeigIt.GetPixel(center + stride[n] - stride[ng]) );
         }
       PixelRealType diff;
       if ( sign )
@@ -354,7 +354,7 @@ IsoContourDistanceImageFilter< TInputImage, TOutputImage >
       if ( diff < NumericTraits< PixelRealType >::min() )
         {
         itkGenericExceptionMacro( << "diff " << diff
-                                 << " < NumericTraits< PixelRealType >::min()" );
+                                  << " < NumericTraits< PixelRealType >::min()" );
         continue;
         }
 
@@ -380,11 +380,13 @@ IsoContourDistanceImageFilter< TInputImage, TOutputImage >
         PixelRealType valNew0 = val0 * val;
         PixelRealType valNew1 = val1 * val;
 
-        if ( vcl_fabs( static_cast< double >( valNew0 ) ) < vcl_fabs( static_cast< double >( outNeigIt.GetNext(n, 0) ) ) )
+        if ( vcl_fabs( static_cast< double >( valNew0 ) ) <
+             vcl_fabs( static_cast< double >( outNeigIt.GetNext(n, 0) ) ) )
           {
           outNeigIt.SetNext( n, 0, static_cast< PixelType >( valNew0 ) );
           }
-        if ( vcl_fabs( static_cast< double >( valNew1 ) ) < vcl_fabs( static_cast< double >( outNeigIt.GetNext(n, 1) ) ) )
+        if ( vcl_fabs( static_cast< double >( valNew1 ) ) <
+             vcl_fabs( static_cast< double >( outNeigIt.GetNext(n, 1) ) ) )
           {
           outNeigIt.SetNext( n, 1, static_cast< PixelType >( valNew1 ) );
           }

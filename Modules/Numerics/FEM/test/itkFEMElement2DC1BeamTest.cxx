@@ -16,12 +16,12 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSolver.h"
 #include "itkFEMSpatialObjectReader.h"
 #include "itkFEMSpatialObjectWriter.h"
 
-int itkFEMElement2DC1BeamTest(int argc, char *argv[])
+int
+itkFEMElement2DC1BeamTest(int argc, char *argv[])
 {
   if(argc < 1)
     {
@@ -76,7 +76,7 @@ int itkFEMElement2DC1BeamTest(int argc, char *argv[])
   int               numDOF = femSO->GetFEMObject()->GetNumberOfDegreesOfFreedom();
   vnl_vector<float> soln(numDOF);
   float             expectedResult[12] =
-  {0.0917665, -0.00103585, -0.00138737, 0.0901188, -0.00178768, -3.88301e-05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    {0.0917665, -0.00103585, -0.00138737, 0.0901188, -0.00178768, -3.88301e-05, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 
   bool foundError = false;
   for( int i = 0; i < numDOF; i++ )

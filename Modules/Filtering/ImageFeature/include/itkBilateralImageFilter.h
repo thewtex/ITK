@@ -72,7 +72,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class BilateralImageFilter:
+class BilateralImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -116,7 +116,7 @@ public:
 
   /** Kernel typedef. */
   typedef
-  Neighborhood< double, itkGetStaticConstMacro(ImageDimension) > KernelType;
+    Neighborhood< double, itkGetStaticConstMacro(ImageDimension) > KernelType;
   typedef typename KernelType::SizeType      SizeType;
   typedef typename KernelType::SizeValueType SizeValueType;
 
@@ -126,7 +126,7 @@ public:
 
   /** Gaussian image type */
   typedef
-  Image< double, itkGetStaticConstMacro(ImageDimension) > GaussianImageType;
+    Image< double, itkGetStaticConstMacro(ImageDimension) > GaussianImageType;
 
   /** Standard get/set macros for filter parameters.
    * DomainSigma is specified in the same units as the Image spacing.
@@ -142,7 +142,8 @@ public:
 
   /** Convenience get/set methods for setting all domain parameters to the
    * same values.  */
-  void SetDomainSigma(const double v)
+  void
+  SetDomainSigma(const double v)
   {
     m_DomainSigma.Fill(v);
   }
@@ -181,7 +182,8 @@ protected:
   BilateralImageFilter();
 
   /** Destructor. */
-  virtual ~BilateralImageFilter() {}
+  virtual
+  ~BilateralImageFilter() {}
 
   /** PrintSelf. */
   void PrintSelf(std::ostream & os, Indent indent) const;

@@ -23,7 +23,8 @@
 
 #include "itkTestingMacros.h"
 
-int itkLabelShapeKeepNObjectsImageFilterTest1(int argc, char * argv[])
+int
+itkLabelShapeKeepNObjectsImageFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 7 )

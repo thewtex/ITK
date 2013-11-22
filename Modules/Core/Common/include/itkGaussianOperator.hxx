@@ -93,7 +93,8 @@ GaussianOperator< TPixel, VDimension, TAllocator >
     m *= m;
     accumulator = 1.0 + m * ( 3.5156229 + m * ( 3.0899424 + m * ( 1.2067492
                                                                   + m
-                                                                  * ( 0.2659732 + m * ( 0.360768e-1 + m * 0.45813e-2 ) ) ) ) );
+                                                                  * ( 0.2659732 + m *
+                                                                      ( 0.360768e-1 + m * 0.45813e-2 ) ) ) ) );
     }
   else
     {
@@ -133,7 +134,8 @@ GaussianOperator< TPixel, VDimension, TAllocator >
     accumulator = d * ( 0.5 + m * ( 0.87890594 + m * ( 0.51498869 + m * ( 0.15084934
                                                                           + m
                                                                           * ( 0.2658733e-1 + m
-                                                                              * ( 0.301532e-2 + m * 0.32411e-3 ) ) ) ) ) );
+                                                                              * ( 0.301532e-2 + m *
+                                                                                  0.32411e-3 ) ) ) ) ) );
     }
   else
     {
@@ -141,7 +143,9 @@ GaussianOperator< TPixel, VDimension, TAllocator >
     accumulator = 0.2282967e-1 + m * ( -0.2895312e-1 + m * ( 0.1787654e-1
                                                              - m * 0.420059e-2 ) );
     accumulator = 0.39894228 + m * ( -0.3988024e-1 + m * ( -0.362018e-2
-                                                           + m * ( 0.163801e-2 + m * ( -0.1031555e-1 + m * accumulator ) ) ) );
+                                                           + m *
+                                                           ( 0.163801e-2 + m *
+                                                             ( -0.1031555e-1 + m * accumulator ) ) ) );
 
     accumulator *= ( vcl_exp(d) / vcl_sqrt(d) );
     }
@@ -212,6 +216,7 @@ GaussianOperator< TPixel, VDimension, TAllocator >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

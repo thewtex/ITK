@@ -38,8 +38,11 @@ template< unsigned int VRadius,
 class CosineWindowFunction
 {
 public:
-  inline TOutput operator()(const TInput & A) const
-  { return (TOutput)vcl_cos(A * m_Factor); }
+  inline TOutput
+  operator()(const TInput & A) const
+  {
+    return (TOutput)vcl_cos(A * m_Factor);
+  }
 
 private:
   /** Equal to \f$ \frac{\pi}{2 m} \f$ */
@@ -58,8 +61,11 @@ template< unsigned int VRadius,
 class HammingWindowFunction
 {
 public:
-  inline TOutput operator()(const TInput & A) const
-  { return (TOutput)0.54 + 0.46 * vcl_cos(A * m_Factor); }
+  inline TOutput
+  operator()(const TInput & A) const
+  {
+    return (TOutput)0.54 + 0.46 * vcl_cos(A * m_Factor);
+  }
 
 private:
   /** Equal to \f$ \frac{\pi}{m} \f$ */
@@ -78,8 +84,11 @@ template< unsigned int VRadius,
 class WelchWindowFunction
 {
 public:
-  inline TOutput operator()(const TInput & A) const
-  { return (TOutput)( 1.0 - A * m_Factor * A ); }
+  inline TOutput
+  operator()(const TInput & A) const
+  {
+    return (TOutput)( 1.0 - A * m_Factor * A );
+  }
 
 private:
   /** Equal to \f$ \frac{1}{m^2} \f$ */
@@ -100,7 +109,8 @@ template< unsigned int VRadius,
 class LanczosWindowFunction
 {
 public:
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     if ( A == 0.0 ) { return (TOutput)1.0; }
     double z = m_Factor * A;
@@ -124,7 +134,8 @@ template< unsigned int VRadius,
 class BlackmanWindowFunction
 {
 public:
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return (TOutput)
            ( 0.42 + 0.5 * vcl_cos(A * m_Factor1) + 0.08 * vcl_cos(A * m_Factor2) );
@@ -255,7 +266,7 @@ template<
   typename TWindowFunction = Function::HammingWindowFunction< VRadius >,
   class TBoundaryCondition = ZeroFluxNeumannBoundaryCondition< TInputImage, TInputImage >,
   class TCoordRep = double >
-class WindowedSincInterpolateImageFunction:
+class WindowedSincInterpolateImageFunction :
   public InterpolateImageFunction< TInputImage, TCoordRep >
 {
 public:
@@ -308,17 +319,19 @@ public:
 
 protected:
   WindowedSincInterpolateImageFunction();
-  virtual ~WindowedSincInterpolateImageFunction();
+  virtual
+  ~WindowedSincInterpolateImageFunction();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   WindowedSincInterpolateImageFunction(const Self &); //not implemented
   void operator=(const Self &);                       //purposely not
-                                                      // implemented
+
+  // implemented
 
   // Internal typedefs
   typedef ConstNeighborhoodIterator<
-    ImageType, TBoundaryCondition > IteratorType;
+      ImageType, TBoundaryCondition > IteratorType;
 
   // Constant to store twice the radius
   static const unsigned int m_WindowSize;
@@ -337,12 +350,14 @@ private:
   unsigned int **m_WeightOffsetTable;
 
   /** The sinc function */
-  inline double Sinc(double x) const
+  inline double
+  Sinc(double x) const
   {
     double px = vnl_math::pi * x;
 
     return ( x == 0.0 ) ? 1.0 : vcl_sin(px) / px;
   }
+
 };
 } // namespace itk
 

@@ -31,29 +31,30 @@ public:
   typedef itk::Index<VDimension> IndexType;
 
   ImagePattern()
-    {
+  {
     m_Offset = 0.0;
     for( int j = 0; j < VDimension; j++ )
       {
       m_Coeff[j] = 0.0;
       }
-    }
+  }
 
-  double Evaluate( const IndexType& index )
-    {
+  double
+  Evaluate( const IndexType& index )
+  {
     double accum = m_Offset;
+
     for( int j = 0; j < VDimension; j++ )
       {
       accum += m_Coeff[j] * (double) index[j];
       }
     return accum;
-    }
+  }
 
   double m_Coeff[VDimension];
   double m_Offset;
 
 };
-
 
 // The following three classes are used to support callbacks
 // on the filter in the pipeline that follows later
@@ -61,14 +62,21 @@ class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 
-
-int itkVectorExpandImageFilterTest(int, char* [] )
+int
+itkVectorExpandImageFilterTest(int, char* [] )
 {
   typedef float ValueType;
   enum { VectorDimension = 3 };
@@ -78,12 +86,11 @@ int itkVectorExpandImageFilterTest(int, char* [] )
 
   bool testPassed = true;
 
-
   //=============================================================
 
   std::cout << "Create the input image pattern." << std::endl;
   ImageType::RegionType region;
-  ImageType::SizeType size = {{64, 64}};
+  ImageType::SizeType   size = {{64, 64}};
   region.SetSize( size );
 
   ImageType::Pointer input = ImageType::New();
@@ -91,7 +98,7 @@ int itkVectorExpandImageFilterTest(int, char* [] )
   input->SetBufferedRegion( region );
   input->Allocate();
 
-  int j, k;
+  int                          j, k;
   ImagePattern<ImageDimension> pattern;
   pattern.m_Offset = 64;
   for( j = 0; j < ImageDimension; j++ )
@@ -107,7 +114,7 @@ int itkVectorExpandImageFilterTest(int, char* [] )
   for(; !inIter.IsAtEnd(); ++inIter )
     {
 
-    double value = pattern.Evaluate( inIter.GetIndex() );
+    double    value = pattern.Evaluate( inIter.GetIndex() );
     PixelType pixel;
     for( k = 0; k < VectorDimension; k++ )
       {
@@ -139,11 +146,11 @@ int itkVectorExpandImageFilterTest(int, char* [] )
 
   typedef ImageType::PixelType PixelType;
   typedef PixelType::ValueType ValueType;
-  ValueType padValueArray[VectorDimension] = {2.0, 7.0, 9.0};
+  ValueType            padValueArray[VectorDimension] = {2.0, 7.0, 9.0};
   ImageType::PixelType padValue( padValueArray );
 //TEST_RMV20100728   expander->SetEdgePaddingValue( padValue );
 
-  ShowProgressObject progressWatch(expander);
+  ShowProgressObject                                    progressWatch(expander);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -159,7 +166,7 @@ int itkVectorExpandImageFilterTest(int, char* [] )
 
   std::cout << "Checking the output against expected." << std::endl;
   Iterator outIter( expanderOutput,
-    expanderOutput->GetBufferedRegion() );
+                    expanderOutput->GetBufferedRegion() );
 
   // compute non-padded output region
   ImageType::RegionType validRegion =
@@ -200,7 +207,7 @@ int itkVectorExpandImageFilterTest(int, char* [] )
 
       for( k = 0; k < VectorDimension; k++ )
         {
-        if( value[k] != padValue[k] ){break;}
+        if( value[k] != padValue[k] ) {break;}
         }
       if( k < VectorDimension )
         {
@@ -210,7 +217,6 @@ int itkVectorExpandImageFilterTest(int, char* [] )
       }
 
     }
-
 
   //=============================================================
 
@@ -235,12 +241,11 @@ int itkVectorExpandImageFilterTest(int, char* [] )
   streamer->SetNumberOfStreamDivisions( 3 );
   streamer->Update();
 
-
   //=============================================================
   std::cout << "Compare standalone and streamed outputs" << std::endl;
 
   Iterator streamIter( streamer->GetOutput(),
-    streamer->GetOutput()->GetBufferedRegion() );
+                       streamer->GetOutput()->GetBufferedRegion() );
 
   outIter.GoToBegin();
   streamIter.GoToBegin();
@@ -288,7 +293,6 @@ int itkVectorExpandImageFilterTest(int, char* [] )
     std::cout << "Test failed." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   try
     {

@@ -25,7 +25,8 @@
 #include <sstream>
 #include <vector>
 
-int itkGDCMImageOrientationPatientTest( int argc, char* argv[] )
+int
+itkGDCMImageOrientationPatientTest( int argc, char* argv[] )
 {
 
   if( argc < 2 )
@@ -42,7 +43,7 @@ int itkGDCMImageOrientationPatientTest( int argc, char* argv[] )
   typedef itk::ImageFileWriter< Image2DType > Writer2DType;
   typedef itk::GDCMImageIO                    ImageIOType;
 
-  typedef itk::MetaDataDictionary   DictionaryType;
+  typedef itk::MetaDataDictionary DictionaryType;
   DictionaryType dict;
 
   // Create a 2D image
@@ -73,7 +74,7 @@ int itkGDCMImageOrientationPatientTest( int argc, char* argv[] )
   origin3D[2] = 3.0;
   value.str("");
   value << origin3D[0] << "\\" << origin3D[1] << "\\" << origin3D[2];
-  itk::EncapsulateMetaData<std::string>(dictionary,"0020|0032", value.str());
+  itk::EncapsulateMetaData<std::string>(dictionary,"0020|0032", value.str() );
 
   Image3DType::DirectionType direction3D;
   direction3D[0][0] = .6;
@@ -86,8 +87,9 @@ int itkGDCMImageOrientationPatientTest( int argc, char* argv[] )
   direction3D[1][2] = 1;
   direction3D[2][2] = 0;
   value.str("");
-  value << direction3D[0][0] << "\\" << direction3D[1][0] << "\\" << direction3D[2][0] << "\\" << direction3D[0][1] << "\\" << direction3D[1][1] << "\\" << direction3D[2][1];
-  itk::EncapsulateMetaData<std::string>(dictionary,"0020|0037", value.str());
+  value << direction3D[0][0] << "\\" << direction3D[1][0] << "\\" << direction3D[2][0] << "\\" << direction3D[0][1] <<
+  "\\" << direction3D[1][1] << "\\" << direction3D[2][1];
+  itk::EncapsulateMetaData<std::string>(dictionary,"0020|0037", value.str() );
 
   // GDCM will not write IPP unless the modality is one of CT, MR or RT.
   std::string modality("MR");
@@ -96,11 +98,11 @@ int itkGDCMImageOrientationPatientTest( int argc, char* argv[] )
   src2D->GetOutput()->SetMetaDataDictionary(dictionary);
 
   Writer2DType::Pointer writer2D = Writer2DType::New();
-  std::ostringstream filename;
+  std::ostringstream    filename;
   filename.str("");
   filename << argv[1] << "/itkGDCMImageOrientationPatientTest.dcm";
-  writer2D->SetInput(src2D->GetOutput());
-  writer2D->SetFileName(filename.str().c_str());
+  writer2D->SetInput(src2D->GetOutput() );
+  writer2D->SetFileName(filename.str().c_str() );
 
   try
     {
@@ -117,18 +119,18 @@ int itkGDCMImageOrientationPatientTest( int argc, char* argv[] )
   // Now read the dicom back and check its origin
   ReaderType::Pointer reader =
     ReaderType::New();
-  reader->SetFileName(filename.str().c_str());
+  reader->SetFileName(filename.str().c_str() );
   reader->Update();
 
   Image3DType::DirectionType readerDirection3D;
   readerDirection3D = reader->GetOutput()->GetDirection();
-  if ((readerDirection3D[0][0] != direction3D[0][0]) ||
-      (readerDirection3D[1][0] != direction3D[1][0]) ||
-      (readerDirection3D[2][0] != direction3D[2][0]) ||
-      (readerDirection3D[0][1] != direction3D[0][1]) ||
-      (readerDirection3D[1][1] != direction3D[1][1]) ||
-      (readerDirection3D[2][1] != direction3D[2][1])
-      )
+  if ( (readerDirection3D[0][0] != direction3D[0][0]) ||
+       (readerDirection3D[1][0] != direction3D[1][0]) ||
+       (readerDirection3D[2][0] != direction3D[2][0]) ||
+       (readerDirection3D[0][1] != direction3D[0][1]) ||
+       (readerDirection3D[1][1] != direction3D[1][1]) ||
+       (readerDirection3D[2][1] != direction3D[2][1])
+       )
     {
     std::cout << "ERROR: read directions does not equal written directions: "
               << readerDirection3D << " != "

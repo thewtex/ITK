@@ -31,7 +31,7 @@ namespace itk
  * are implemented here.
  * \ingroup ITKIOXML
  */
-class XMLReaderBase:public LightProcessObject
+class XMLReaderBase : public LightProcessObject
 {
 public:
   typedef XMLReaderBase Self;
@@ -65,7 +65,8 @@ public:
 
 protected:
   XMLReaderBase() {}
-  virtual ~XMLReaderBase() {}
+  virtual
+  ~XMLReaderBase() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Instantiates and invokes the XML parser for the file named by
@@ -79,6 +80,7 @@ protected:
 private:
   XMLReaderBase(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 
 /** \class XMLReader
@@ -90,7 +92,7 @@ private:
  * \ingroup ITKIOXML
  */
 template< typename T >
-class XMLReader: public XMLReaderBase
+class XMLReader : public XMLReaderBase
 {
 public:
   typedef XMLReader Self;
@@ -98,20 +100,29 @@ public:
   /** Set the output object.  Doesn't make sense for a client of the XMLReader,
    * but could be used in derived class to assign pointer to result object.
    */
-  void SetOutputObject(T *obj) { m_OutputObject = obj; }
+  void
+  SetOutputObject(T *obj) {
+    m_OutputObject = obj;
+  }
+
   /** Get the output object, after an XML File has been successfully parsed.
    */
-  T * GetOutputObject(void) { return m_OutputObject; }
+  T *
+  GetOutputObject(void) {
+    return m_OutputObject;
+  }
 
 protected:
   XMLReader() {}
-  virtual ~XMLReader() {}
+  virtual
+  ~XMLReader() {}
 
   T *m_OutputObject;
 
 private:
   XMLReader(const Self &);      //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 
 /** \class XMLWriterBase
@@ -124,7 +135,7 @@ private:
  * \ingroup ITKIOXML
  */
 template< typename T >
-class XMLWriterBase:public LightProcessObject
+class XMLWriterBase : public LightProcessObject
 {
 public:
   typedef XMLWriterBase Self;
@@ -145,53 +156,64 @@ public:
   virtual int CanWriteFile(const char *name) = 0;
 
   /** Give a pointer to the object to be written out to an XML file. */
-  void SetObject(T *toWrite) { m_InputObject = toWrite; }
+  void
+  SetObject(T *toWrite) {
+    m_InputObject = toWrite;
+  }
+
   /** Write the XML file, based on the Input Object */
   virtual int WriteFile() = 0;
 
   /** Write out a start element tag */
-  void WriteStartElement(const char *const tag, std::ofstream & file)
+  void
+  WriteStartElement(const char *const tag, std::ofstream & file)
   {
     file << '<' << tag << '>';
   }
 
   /** Write an end element tag */
-  void WriteEndElement(const char *const tag, std::ofstream & file)
+  void
+  WriteEndElement(const char *const tag, std::ofstream & file)
   {
     file << '<' << '/'  << tag << '>';
   }
 
   /** Write character data inside a tag. */
-  void WriteCharacterData(const char *const data, std::ofstream & file)
+  void
+  WriteCharacterData(const char *const data, std::ofstream & file)
   {
     file << data;
   }
 
   /** Write a start element tag */
-  void WriteStartElement(std::string & tag, std::ofstream & file)
+  void
+  WriteStartElement(std::string & tag, std::ofstream & file)
   {
     WriteStartElement(tag.c_str(), file);
   }
 
   /** Write an end element tag */
-  void WriteEndElement(std::string & tag, std::ofstream & file)
+  void
+  WriteEndElement(std::string & tag, std::ofstream & file)
   {
     WriteEndElement(tag.c_str(), file);
   }
 
   /** Write character data inside a tag. */
-  void WriteCharacterData(std::string & data, std::ofstream & file)
+  void
+  WriteCharacterData(std::string & data, std::ofstream & file)
   {
     WriteCharacterData(data.c_str(), file);
   }
 
 protected:
-  T          *m_InputObject;    // object to write out to an XML file
+  T *         m_InputObject;    // object to write out to an XML file
   std::string m_Filename;       // name of file to write.
 
 private:
   XMLWriterBase(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 }
 #endif

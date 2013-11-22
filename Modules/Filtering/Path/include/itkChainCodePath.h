@@ -46,7 +46,7 @@ namespace itk
  * \ingroup ITKPath
  */
 template< unsigned int VDimension >
-class ChainCodePath:public
+class ChainCodePath : public
   Path< unsigned int, Offset< VDimension >, VDimension >
 {
 public:
@@ -78,7 +78,8 @@ public:
   // Functions inherited from Path
 
   /** Evaluate the chaincode for the offset at the specified path-position. */
-  virtual OutputType Evaluate(const InputType & input) const
+  virtual OutputType
+  Evaluate(const InputType & input) const
   {
     return m_Chain[input];
   }
@@ -93,7 +94,8 @@ public:
   virtual OffsetType IncrementInput(InputType & input) const;
 
   /** Where does the path end (what is the last valid input value)? */
-  virtual inline InputType EndOfInput() const
+  virtual inline InputType
+  EndOfInput() const
   {
     return NumberOfSteps();  // 0 is before the first step, 1 is after it
   }
@@ -106,34 +108,39 @@ public:
   itkGetConstReferenceMacro(Start, IndexType);
 
   /** Insert a new step into the chaincode at a specified position */
-  virtual inline void InsertStep(InputType position, OffsetType step)
+  virtual inline void
+  InsertStep(InputType position, OffsetType step)
   {
     m_Chain.insert(m_Chain.begin() + position, step);
     this->Modified();
   }
 
   /** Change the direction of a step in the chaincode */
-  virtual inline void ChangeStep(InputType position, OffsetType step)
+  virtual inline void
+  ChangeStep(InputType position, OffsetType step)
   {
     m_Chain[position] = step;
     this->Modified();
   }
 
   /** Remove all steps from the chain code */
-  virtual inline void Clear()
+  virtual inline void
+  Clear()
   {
     m_Chain.clear();
     this->Modified();
   }
 
   /** How many steps in the chaincode? */
-  virtual inline ChainCodeSizeType NumberOfSteps() const
+  virtual inline ChainCodeSizeType
+  NumberOfSteps() const
   {
     return m_Chain.size();
   }
 
   /** Needed for Pipelining */
-  virtual void Initialize(void)
+  virtual void
+  Initialize(void)
   {
     m_Start = this->GetZeroIndex();
     this->Clear();

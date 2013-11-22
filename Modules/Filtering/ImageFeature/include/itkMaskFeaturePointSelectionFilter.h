@@ -28,7 +28,6 @@
 #include "itkConceptChecking.h"
 #include <vector>
 
-
 namespace itk
 {
 /** \class MaskFeaturePointSelectionFilter
@@ -58,15 +57,16 @@ namespace itk
 template<
   typename TImage,
   typename TMask = TImage,
-  typename TFeatures = PointSet< Matrix< SpacePrecisionType, TImage::ImageDimension, TImage::ImageDimension>, TImage::ImageDimension > >
-class MaskFeaturePointSelectionFilter: public ImageToMeshFilter< TImage, TFeatures >
+  typename TFeatures =
+    PointSet< Matrix< SpacePrecisionType, TImage::ImageDimension, TImage::ImageDimension>, TImage::ImageDimension > >
+class MaskFeaturePointSelectionFilter : public ImageToMeshFilter< TImage, TFeatures >
 {
 public:
   /** Standard class typedefs. */
-  typedef ImageToMeshFilter< TImage, TFeatures >  Superclass;
-  typedef MaskFeaturePointSelectionFilter         Self;
-  typedef SmartPointer< Self >                    Pointer;
-  typedef SmartPointer< const Self >              ConstPointer;
+  typedef ImageToMeshFilter< TImage, TFeatures > Superclass;
+  typedef MaskFeaturePointSelectionFilter        Self;
+  typedef SmartPointer< Self >                   Pointer;
+  typedef SmartPointer< const Self >             ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -77,34 +77,34 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned, 3u);
 
   /** Not input specific typedefs */
-  typedef ImageRegion< ImageDimension >  RegionType;
-  typedef Size< ImageDimension >         SizeType;
-  typedef Index< ImageDimension >        IndexType;
-  typedef Offset< ImageDimension >       OffsetType;
+  typedef ImageRegion< ImageDimension > RegionType;
+  typedef Size< ImageDimension >        SizeType;
+  typedef Index< ImageDimension >       IndexType;
+  typedef Offset< ImageDimension >      OffsetType;
 
   /** Image typedefs */
-  typedef TImage                            ImageType;
-  typedef typename ImageType::ConstPointer  ImageConstPointer;
-  typedef typename ImageType::PixelType     ImagePixelType;
+  typedef TImage                           ImageType;
+  typedef typename ImageType::ConstPointer ImageConstPointer;
+  typedef typename ImageType::PixelType    ImagePixelType;
 
   /** Mask image typedefs */
-  typedef TMask                            MaskType;
-  typedef typename MaskType::ConstPointer  MaskConstPointer;
-  typedef typename MaskType::PixelType     MaskPixelType;
+  typedef TMask                           MaskType;
+  typedef typename MaskType::ConstPointer MaskConstPointer;
+  typedef typename MaskType::PixelType    MaskPixelType;
 
   /** Feature points pointset typedefs */
-  typedef TFeatures                              FeaturePointsType;
-  typedef typename FeaturePointsType::Pointer    FeaturePointsPointer;
-  typedef typename FeaturePointsType::PixelType  StructureTensorType;
-  typedef typename FeaturePointsType::PointType  PointType;
+  typedef TFeatures                             FeaturePointsType;
+  typedef typename FeaturePointsType::Pointer   FeaturePointsPointer;
+  typedef typename FeaturePointsType::PixelType StructureTensorType;
+  typedef typename FeaturePointsType::PointType PointType;
 
   /** connectivity constants */
   enum
-  {
+    {
     VERTEX_CONNECTIVITY = 0,
     EDGE_CONNECTIVITY = 1,
     FACE_CONNECTIVITY = 2
-  };
+    };
 
   /** set/get non-connectivity with radius == 1 of dimension connect,
    * 0 <= connect < ImageDimension; 0 is vertex connectivity (e.g., 26 in 3D),
@@ -159,11 +159,11 @@ private:
   MaskFeaturePointSelectionFilter(const MaskFeaturePointSelectionFilter &);
   void operator=(const MaskFeaturePointSelectionFilter &);
 
-  unsigned                   m_NonConnectivity;
-  std::vector< OffsetType >  m_NonConnectivityOffsets;
-  SizeType                   m_BlockRadius;
-  double                     m_SelectFraction;
-  bool                       m_ComputeStructureTensors;
+  unsigned                  m_NonConnectivity;
+  std::vector< OffsetType > m_NonConnectivityOffsets;
+  SizeType                  m_BlockRadius;
+  double                    m_SelectFraction;
+  bool                      m_ComputeStructureTensors;
 };
 } // end namespace itk
 

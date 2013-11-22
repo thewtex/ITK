@@ -35,34 +35,34 @@ public:
   /**
    * Standard "Self" typedef.
    */
-  typedef CommandIterationUpdate   Self;
-
+  typedef CommandIterationUpdate Self;
 
   /**
    * Standard "Superclass" typedef.
    */
-  typedef itk::Command  Superclass;
-
+  typedef itk::Command Superclass;
 
   /**
    * Smart pointer typedef support.
    */
-  typedef itk::SmartPointer<Self>  Pointer;
+  typedef itk::SmartPointer<Self> Pointer;
 
   /**
    * ConstSmart pointer typedef support.
    */
-  typedef itk::SmartPointer<const Self>  ConstPointer;
+  typedef itk::SmartPointer<const Self> ConstPointer;
 
   /**
    * Execute method will print data at each iteration
    */
-  void Execute(itk::Object *caller, const itk::EventObject & event)
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
   {
     Execute( (const itk::Object *)caller, event);
   }
 
-  void Execute(const itk::Object *, const itk::EventObject & event)
+  void
+  Execute(const itk::Object *, const itk::EventObject & event)
   {
     if( typeid( event ) == typeid( itk::StartEvent ) )
       {
@@ -90,47 +90,44 @@ public:
 
   }
 
-
   /**
    * Run-time type information (and related methods).
    */
   itkTypeMacro( CommandIterationUpdate, ::itk::Command );
-
 
   /**
    * Method for creation through the object factory.
    */
   itkNewMacro( Self );
 
-
   /**
    * Type defining the optimizer
    */
-  typedef    TOptimizer     OptimizerType;
-
+  typedef    TOptimizer OptimizerType;
 
   /**
    * Set Optimizer
    */
-  void SetOptimizer( OptimizerType * optimizer )
-    {
+  void
+  SetOptimizer( OptimizerType * optimizer )
+  {
     m_Optimizer = optimizer;
     m_Optimizer->AddObserver( itk::IterationEvent(), this );
-    }
+  }
 
 protected:
 
   /**
    * Constructor
    */
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {}
 
 private:
 
   /**
    *  WeakPointer to the Optimizer
    */
-  WeakPointer<OptimizerType>   m_Optimizer;
+  WeakPointer<OptimizerType> m_Optimizer;
 };
 
 } // end namespace itk

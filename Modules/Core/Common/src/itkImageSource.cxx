@@ -26,11 +26,12 @@ namespace itk
 
 namespace
 {
-SimpleFastMutexLock globalDefaultSplitterLock;
+SimpleFastMutexLock              globalDefaultSplitterLock;
 ImageRegionSplitterBase::Pointer globalDefaultSplitter;
 }
 
-const ImageRegionSplitterBase*  ImageSourceCommon::GetGlobalDefaultSplitter(void)
+const ImageRegionSplitterBase*
+ImageSourceCommon::GetGlobalDefaultSplitter(void)
 {
   if ( globalDefaultSplitter.IsNull() )
     {
@@ -44,6 +45,5 @@ const ImageRegionSplitterBase*  ImageSourceCommon::GetGlobalDefaultSplitter(void
     }
   return globalDefaultSplitter;
 }
-
 
 }

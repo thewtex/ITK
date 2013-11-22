@@ -31,38 +31,39 @@ class SimpleMultiResolutionImageRegistrationUI
 {
 public:
   SimpleMultiResolutionImageRegistrationUI( TRegistrator * ptr )
-    {
+  {
 
     if ( !ptr ) return;
     m_Registrator = ptr;
     typename itk::SimpleMemberCommand<SimpleMultiResolutionImageRegistrationUI>::Pointer
-      iterationCommand =
-    itk::SimpleMemberCommand<SimpleMultiResolutionImageRegistrationUI>::New();
+    iterationCommand =
+      itk::SimpleMemberCommand<SimpleMultiResolutionImageRegistrationUI>::New();
 
     iterationCommand->SetCallbackFunction( this,
-      &SimpleMultiResolutionImageRegistrationUI::StartNewLevel );
+                                           &SimpleMultiResolutionImageRegistrationUI::StartNewLevel );
 
     m_Tag = m_Registrator->AddObserver( itk::IterationEvent(), iterationCommand );
 
-    }
+  }
 
-  virtual ~SimpleMultiResolutionImageRegistrationUI()
-    {
+  virtual
+  ~SimpleMultiResolutionImageRegistrationUI()
+  {
     if( m_Registrator ) { m_Registrator->RemoveObserver( m_Tag ); }
-    }
+  }
 
-   virtual void StartNewLevel()
-    {
+  virtual void
+  StartNewLevel()
+  {
     std::cout << "--- Starting level " << m_Registrator->GetCurrentLevel()
               << std::endl;
-    }
+  }
 
 protected:
   typename TRegistrator::Pointer  m_Registrator;
-  unsigned long                   m_Tag;
+  unsigned long m_Tag;
 
 };
-
 
 // This UI supports registration methods with gradient descent
 // type optimizers.
@@ -78,21 +79,25 @@ public:
     Superclass;
 
   SimpleMultiResolutionImageRegistrationUI2( TRegistration * ptr ) :
-    Superclass(ptr) {};
-  virtual ~SimpleMultiResolutionImageRegistrationUI2(){}
+    Superclass(ptr) {}
+  virtual
+  ~SimpleMultiResolutionImageRegistrationUI2(){}
 
-  void SetNumberOfIterations( itk::Array<unsigned int> & iter )
-    {
+  void
+  SetNumberOfIterations( itk::Array<unsigned int> & iter )
+  {
     m_NumberOfIterations = iter;
-    }
+  }
 
-  void SetLearningRates( itk::Array<double> & rates )
-    {
+  void
+  SetLearningRates( itk::Array<double> & rates )
+  {
     m_LearningRates = rates;
-    }
+  }
 
-  virtual void StartNewLevel()
-    {
+  virtual void
+  StartNewLevel()
+  {
 
     // call the superclass's implementation
     this->Superclass::StartNewLevel();
@@ -102,7 +107,7 @@ public:
     // Try to cast the optimizer to a gradient descent type,
     // return if casting didn't work.
     itk::GradientDescentOptimizer::Pointer optimizer = dynamic_cast< itk::GradientDescentOptimizer * >(
-      this->m_Registrator->GetModifiableOptimizer() );
+        this->m_Registrator->GetModifiableOptimizer() );
     if ( !optimizer ) return;
 
     unsigned int level = this->m_Registrator->GetCurrentLevel();
@@ -121,13 +126,12 @@ public:
               << " Learning rate: "
               << optimizer->GetLearningRate()
               << std::endl;
-    }
+  }
 
 private:
-   itk::Array<unsigned int> m_NumberOfIterations;
-   itk::Array<double>       m_LearningRates;
+  itk::Array<unsigned int> m_NumberOfIterations;
+  itk::Array<double>       m_LearningRates;
 
 };
-
 
 #endif

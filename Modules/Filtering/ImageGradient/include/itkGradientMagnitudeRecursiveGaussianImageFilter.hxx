@@ -72,6 +72,7 @@ GradientMagnitudeRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "NormalizeAcrossScale: " << m_NormalizeAcrossScale << std::endl;
   os << "Sigma: " << m_DerivativeFilter->GetSigma() << std::endl;
 }
@@ -111,6 +112,7 @@ GradientMagnitudeRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 ::SetNumberOfThreads(ThreadIdType nb)
 {
   Superclass::SetNumberOfThreads(nb);
+
   for ( unsigned int i = 0; i < ImageDimension - 1; i++ )
     {
     m_SmoothingFilters[i]->SetNumberOfThreads(nb);
@@ -206,7 +208,6 @@ GradientMagnitudeRecursiveGaussianImageFilter< TInputImage, TOutputImage >
     outputImage->ReleaseData();
     }
 
-
   typename CumulativeImageType::Pointer cumulativeImage = CumulativeImageType::New();
   cumulativeImage->SetRegions( inputImage->GetBufferedRegion() );
   cumulativeImage->Allocate();
@@ -240,7 +241,7 @@ GradientMagnitudeRecursiveGaussianImageFilter< TInputImage, TOutputImage >
       }
     m_DerivativeFilter->SetDirection(dim);
 
-    m_SqrSpacingFilter->GetFunctor(). m_Spacing = inputImage->GetSpacing()[dim];
+    m_SqrSpacingFilter->GetFunctor().m_Spacing = inputImage->GetSpacing()[dim];
     m_SqrSpacingFilter->SetInput(cumulativeImage);
 
     // run the mini pipeline for that dimension
@@ -262,6 +263,7 @@ GradientMagnitudeRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   m_SqrtFilter->UpdateLargestPossibleRegion();
   this->GraftOutput( m_SqrtFilter->GetOutput() );
 }
+
 } // end namespace itk
 
 #endif

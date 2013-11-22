@@ -21,7 +21,8 @@
 #include "itkLabelObject.h"
 #include "itkLabelMapToLabelImageFilter.h"
 
-int itkLabelMapToLabelImageFilterTest(int argc, char * argv[])
+int
+itkLabelMapToLabelImageFilterTest(int argc, char * argv[])
 {
 
   if( argc != 1 )
@@ -71,7 +72,7 @@ int itkLabelMapToLabelImageFilterTest(int argc, char * argv[])
 
   LabelMapToLabelImageFilterType::Pointer conversion = LabelMapToLabelImageFilterType::New();
   conversion->SetInput( map );
-  conversion->Update( );
+  conversion->Update();
 
   ImageType::Pointer image;
   image = conversion->GetOutput();

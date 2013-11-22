@@ -24,7 +24,6 @@
 #include "itkVector.h"
 #include "itkDefaultDynamicMeshTraits.h"
 
-
 namespace itk
 {
 /** \class BlockMatchingImageFilter
@@ -67,52 +66,56 @@ namespace itk
 template<
   typename TFixedImage,
   typename TMovingImage = TFixedImage,
-  typename TFeatures = PointSet< Matrix< SpacePrecisionType, TFixedImage::ImageDimension, TFixedImage::ImageDimension>, TFixedImage::ImageDimension >,
-  class TDisplacements = PointSet< Vector< typename TFeatures::PointType::ValueType, TFeatures::PointDimension >, TFeatures::PointDimension >,
+  typename TFeatures =
+    PointSet< Matrix< SpacePrecisionType, TFixedImage::ImageDimension,
+                      TFixedImage::ImageDimension>, TFixedImage::ImageDimension >,
+  class TDisplacements =
+    PointSet< Vector< typename TFeatures::PointType::ValueType,
+                      TFeatures::PointDimension >, TFeatures::PointDimension >,
   class TSimilarities = PointSet< SpacePrecisionType, TDisplacements::PointDimension > >
-class BlockMatchingImageFilter:
-public MeshToMeshFilter< TFeatures, TDisplacements>
+class BlockMatchingImageFilter :
+  public MeshToMeshFilter< TFeatures, TDisplacements>
 {
 public:
   itkStaticConstMacro(ImageDimension, unsigned, TFixedImage::ImageDimension);
 
   /** Not input specific typedefs */
-  typedef ImageRegion< ImageDimension >  ImageRegionType;
-  typedef Size< ImageDimension >         ImageSizeType;
-  typedef Index< ImageDimension >        ImageIndexType;
+  typedef ImageRegion< ImageDimension > ImageRegionType;
+  typedef Size< ImageDimension >        ImageSizeType;
+  typedef Index< ImageDimension >       ImageIndexType;
 
   /** Fixed image typedefs. */
-  typedef TFixedImage                            FixedImageType;
-  typedef typename FixedImageType::ConstPointer  FixedImageConstPointer;
-  typedef typename FixedImageType::PixelType     FixedImagePixelType;
+  typedef TFixedImage                           FixedImageType;
+  typedef typename FixedImageType::ConstPointer FixedImageConstPointer;
+  typedef typename FixedImageType::PixelType    FixedImagePixelType;
 
   /** Moving image typedefs. */
-  typedef TMovingImage                            MovingImageType;
-  typedef typename MovingImageType::ConstPointer  MovingImageConstPointer;
+  typedef TMovingImage                           MovingImageType;
+  typedef typename MovingImageType::ConstPointer MovingImageConstPointer;
 
   /** Feature points pointset typedefs. */
-  typedef TFeatures                                 FeaturePointsType;
-  typedef typename FeaturePointsType::Pointer       FeaturePointsPointer;
-  typedef typename FeaturePointsType::ConstPointer  FeaturePointsConstPointer;
-  typedef typename FeaturePointsType::PointType     FeaturePointsPhysicalCoordinates;
+  typedef TFeatures                                FeaturePointsType;
+  typedef typename FeaturePointsType::Pointer      FeaturePointsPointer;
+  typedef typename FeaturePointsType::ConstPointer FeaturePointsConstPointer;
+  typedef typename FeaturePointsType::PointType    FeaturePointsPhysicalCoordinates;
 
   /** Displacement vectors typedefs. */
-  typedef TDisplacements                            DisplacementsType;
-  typedef typename DisplacementsType::Pointer       DisplacementsPointer;
-  typedef typename DisplacementsType::ConstPointer  DisplacementsConstPointer;
-  typedef typename DisplacementsType::PixelType     DisplacementsVector;
+  typedef TDisplacements                           DisplacementsType;
+  typedef typename DisplacementsType::Pointer      DisplacementsPointer;
+  typedef typename DisplacementsType::ConstPointer DisplacementsConstPointer;
+  typedef typename DisplacementsType::PixelType    DisplacementsVector;
 
   /** Displacement similarities typedefs. */
-  typedef TSimilarities                            SimilaritiesType;
-  typedef typename SimilaritiesType::Pointer       SimilaritiesPointer;
-  typedef typename SimilaritiesType::ConstPointer  SimilaritiesConstPointer;
-  typedef typename SimilaritiesType::PixelType     SimilaritiesValue;
+  typedef TSimilarities                           SimilaritiesType;
+  typedef typename SimilaritiesType::Pointer      SimilaritiesPointer;
+  typedef typename SimilaritiesType::ConstPointer SimilaritiesConstPointer;
+  typedef typename SimilaritiesType::PixelType    SimilaritiesValue;
 
   /** Standard class typedefs. */
-  typedef MeshToMeshFilter< FeaturePointsType, DisplacementsType >  Superclass;
-  typedef BlockMatchingImageFilter                                  Self;
-  typedef SmartPointer< Self >                                      Pointer;
-  typedef SmartPointer< const Self >                                ConstPointer;
+  typedef MeshToMeshFilter< FeaturePointsType, DisplacementsType > Superclass;
+  typedef BlockMatchingImageFilter                                 Self;
+  typedef SmartPointer< Self >                                     Pointer;
+  typedef SmartPointer< const Self >                               ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -140,15 +143,17 @@ public:
   itkSetInputMacro(FeaturePoints, FeaturePointsType);
   itkGetInputMacro(FeaturePoints, FeaturePointsType);
 
-  inline DisplacementsType * GetDisplacements()
-    {
+  inline DisplacementsType *
+  GetDisplacements()
+  {
     return dynamic_cast< DisplacementsType * >( this->ProcessObject::GetOutput( 0 ) );
-    }
+  }
 
-  inline SimilaritiesType * GetSimilarities()
-    {
+  inline SimilaritiesType *
+  GetSimilarities()
+  {
     return dynamic_cast< SimilaritiesType * >( this->ProcessObject::GetOutput( 1 ) );
-    }
+  }
 
 protected:
   /** MakeOutput is provided for handling multiple outputs */
@@ -189,7 +194,7 @@ protected:
     */
   struct ThreadStruct {
     Pointer Filter;
-  };
+    };
 
 private:
   //purposely not implemented
@@ -197,13 +202,13 @@ private:
   void operator=( const BlockMatchingImageFilter & );
 
   // algorithm parameters
-  ImageSizeType  m_BlockRadius;
-  ImageSizeType  m_SearchRadius;
+  ImageSizeType m_BlockRadius;
+  ImageSizeType m_SearchRadius;
 
   // temporary dynamic arrays for storing threads outputs
-  SizeValueType         m_PointsCount;
-  DisplacementsVector  *m_DisplacementsVectorsArray;
-  SimilaritiesValue    *m_SimilaritiesValuesArray;
+  SizeValueType        m_PointsCount;
+  DisplacementsVector *m_DisplacementsVectorsArray;
+  SimilaritiesValue *  m_SimilaritiesValuesArray;
 
 };
 } // end namespace itk

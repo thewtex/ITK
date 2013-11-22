@@ -53,7 +53,7 @@ namespace Statistics
  */
 
 template< typename TSample >
-class MixtureModelComponentBase:
+class MixtureModelComponentBase :
   public Object
 {
 public:
@@ -71,7 +71,7 @@ public:
 
   /** typedef for the MembershipFunctionBase */
   typedef MembershipFunctionBase< MeasurementVectorType >
-  MembershipFunctionType;
+    MembershipFunctionType;
 
   /** typedef of strorage for the weights */
   typedef Array< double > WeightArrayType;
@@ -90,19 +90,22 @@ public:
    * MembershipFunctionBase objects */
   MembershipFunctionType * GetMembershipFunction();
 
-  void SetMinimalParametersChange(double change)
+  void
+  SetMinimalParametersChange(double change)
   {
     m_MinimalParametersChange = change;
   }
 
-  double GetMinimalParametersChange()
+  double
+  GetMinimalParametersChange()
   {
     return m_MinimalParametersChange;
   }
 
   virtual void SetParameters(const ParametersType & parameters);
 
-  virtual ParametersType GetFullParameters()
+  virtual ParametersType
+  GetFullParameters()
   {
     return m_Parameters;
   }
@@ -130,7 +133,8 @@ public:
 
 protected:
   MixtureModelComponentBase();
-  virtual ~MixtureModelComponentBase();
+  virtual
+  ~MixtureModelComponentBase();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** stores the pointer to the membership function.

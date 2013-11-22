@@ -187,9 +187,11 @@ SymmetricForcesDemonsRegistrationFilter< TFixedImage, TMovingImage, TDisplacemen
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Intensity difference threshold: "
      << this->GetIntensityDifferenceThreshold() << std::endl;
 }
+
 } // end namespace itk
 
 #endif

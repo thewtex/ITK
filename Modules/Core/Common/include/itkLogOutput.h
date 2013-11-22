@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT LogOutput:public Object
+class ITKCommon_EXPORT LogOutput : public Object
 {
 public:
 
@@ -63,7 +63,8 @@ protected:
   LogOutput() {}
 
   /** Destructor */
-  virtual ~LogOutput() {}
+  virtual
+  ~LogOutput() {}
 };
 }
 

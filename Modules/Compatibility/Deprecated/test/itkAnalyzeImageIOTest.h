@@ -73,12 +73,12 @@ MakeImage(const std::string & AugmentName)
   typedef itk::Image<T, VDimension>         ImageType;
   typedef itk::ImageFileReader< ImageType > ImageReaderType;
 
-  const std::string filename=std::string(typeid(T).name()) +"_"+AugmentName+"_" +std::string("test.hdr");
+  const std::string filename=std::string(typeid(T).name() ) +"_"+AugmentName+"_" +std::string("test.hdr");
 
   //Allocate Images
   enum { ImageDimension = ImageType::ImageDimension };
   typename ImageType::Pointer img;
-  typename ImageType::SizeType size; // = {{10,10,10}};
+  typename ImageType::SizeType size;   // = {{10,10,10}};
   typename ImageType::IndexType index; // = {{0,0,0}};
 
   for(unsigned i = 0; i < VDimension; i++)
@@ -101,68 +101,68 @@ MakeImage(const std::string & AugmentName)
   img->SetDirection(dir);
   img->Allocate();
 
-  { //Fill in entire image
-  itk::ImageRegionIterator<ImageType> ri(img,region);
-  try
-    {
-    while(!ri.IsAtEnd())
+    { //Fill in entire image
+    itk::ImageRegionIterator<ImageType> ri(img,region);
+    try
       {
-      ri.Set( RPI );
-      ++ri;
+      while(!ri.IsAtEnd() )
+        {
+        ri.Set( RPI );
+        ++ri;
+        }
+      }
+    catch ( itk::ExceptionObject & ex )
+      {
+      std::cerr << "Error filling array" << ex << std::endl;
+      return EXIT_FAILURE;
       }
     }
-  catch ( itk::ExceptionObject & ex )
-    {
-    std::cerr << "Error filling array" << ex << std::endl;
-    return EXIT_FAILURE;
-    }
-  }
 
-  { //Fill in left half
-  typename ImageType::IndexType RPIindex; // = {{0,0,0}};
-  typename ImageType::SizeType RPIsize; // = {{5,10,10}};
-  unsigned localdims[] = { 5,10,10 };
-  for(unsigned i = 0; i < VDimension; i++)
-    {
-    RPIindex[i] = 0;
-    RPIsize[i] = localdims[i];
+    {                                       //Fill in left half
+    typename ImageType::IndexType RPIindex; // = {{0,0,0}};
+    typename ImageType::SizeType RPIsize;   // = {{5,10,10}};
+    unsigned localdims[] = { 5,10,10 };
+    for(unsigned i = 0; i < VDimension; i++)
+      {
+      RPIindex[i] = 0;
+      RPIsize[i] = localdims[i];
+      }
+    typename ImageType::RegionType RPIregion;
+    RPIregion.SetSize( RPIsize );
+    RPIregion.SetIndex( RPIindex );
+    itk::ImageRegionIterator<ImageType > RPIiterator(img,RPIregion);
+    while(!RPIiterator.IsAtEnd() )
+      {
+      RPIiterator.Set( RPIiterator.Get() + LEFT );
+      ++RPIiterator;
+      }
     }
-  typename ImageType::RegionType RPIregion;
-  RPIregion.SetSize( RPIsize );
-  RPIregion.SetIndex( RPIindex );
-  itk::ImageRegionIterator<ImageType > RPIiterator(img,RPIregion);
-  while(!RPIiterator.IsAtEnd())
-    {
-    RPIiterator.Set( RPIiterator.Get() + LEFT );
-    ++RPIiterator;
-    }
-  }
 
-  { //Fill in anterior half
-  typename ImageType::IndexType RPIindex;// = {{0,5,0}};
-  typename ImageType::SizeType RPIsize; // = {{10,5,10}};
-  unsigned localindex[] = { 0, 5, 0 };
-  unsigned localdims[] = { 10,5,10 };
-  for(unsigned i = 0; i < VDimension; i++)
-    {
-    RPIindex[i] = localindex[i];
-    RPIsize[i] = localdims[i];
+    {                                       //Fill in anterior half
+    typename ImageType::IndexType RPIindex; // = {{0,5,0}};
+    typename ImageType::SizeType RPIsize;   // = {{10,5,10}};
+    unsigned localindex[] = { 0, 5, 0 };
+    unsigned localdims[] = { 10,5,10 };
+    for(unsigned i = 0; i < VDimension; i++)
+      {
+      RPIindex[i] = localindex[i];
+      RPIsize[i] = localdims[i];
+      }
+    typename ImageType::RegionType RPIregion;
+    RPIregion.SetSize( RPIsize );
+    RPIregion.SetIndex( RPIindex );
+    itk::ImageRegionIterator<ImageType > RPIiterator(img,RPIregion);
+    while(!RPIiterator.IsAtEnd() )
+      {
+      RPIiterator.Set( RPIiterator.Get() + ANTERIOR );
+      ++RPIiterator;
+      }
     }
-  typename ImageType::RegionType RPIregion;
-  RPIregion.SetSize( RPIsize );
-  RPIregion.SetIndex( RPIindex );
-  itk::ImageRegionIterator<ImageType > RPIiterator(img,RPIregion);
-  while(!RPIiterator.IsAtEnd())
-    {
-    RPIiterator.Set( RPIiterator.Get() + ANTERIOR );
-    ++RPIiterator;
-    }
-  }
 
   if(VDimension > 2)
-    {  //Fill in superior half
+    {                                       //Fill in superior half
     typename ImageType::IndexType RPIindex; //= {{0,0,5}};
-    typename ImageType::SizeType RPIsize; //= {{10,10,5}};
+    typename ImageType::SizeType RPIsize;   //= {{10,10,5}};
     unsigned localInd[] = { 0,0,5 };
     unsigned localSize[] = { 10,10,5 };
     for(unsigned i = 0; i < VDimension; i++)
@@ -174,14 +174,14 @@ MakeImage(const std::string & AugmentName)
     RPIregion.SetSize( RPIsize );
     RPIregion.SetIndex( RPIindex );
     itk::ImageRegionIterator<ImageType > RPIiterator(img,RPIregion);
-    while(!RPIiterator.IsAtEnd())
+    while(!RPIiterator.IsAtEnd() )
       {
       RPIiterator.Set( RPIiterator.Get() + SUPERIOR );
       ++RPIiterator;
       }
     }
 
-  typedef itk::ImageFileWriter< ImageType >      ImageWriterType;
+  typedef itk::ImageFileWriter< ImageType > ImageWriterType;
   typename ImageWriterType::Pointer ImageWriterPointer =
     ImageWriterType::New();
 
@@ -227,12 +227,13 @@ MakeImage(const std::string & AugmentName)
     e.Print(std::cerr);
     return EXIT_FAILURE;
     }
-  itk::IOTestHelper::Remove(filename.c_str());
+  itk::IOTestHelper::Remove(filename.c_str() );
   return EXIT_SUCCESS;
 }
 
 template <typename ImageType>
-typename ImageType::Pointer NewRGBImage()
+typename ImageType::Pointer
+NewRGBImage()
 {
   typename ImageType::IndexType index;
   typename ImageType::SizeType size;
@@ -251,4 +252,5 @@ typename ImageType::Pointer NewRGBImage()
 }
 
 int WriteAnalyzeTestFiles(const std::string & AugmentName);
+
 #endif

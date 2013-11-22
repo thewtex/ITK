@@ -90,10 +90,10 @@ class CompositeTransform :
 {
 public:
   /** Standard class typedefs. */
-  typedef CompositeTransform                                  Self;
-  typedef MultiTransform<TScalar, NDimensions, NDimensions>   Superclass;
-  typedef SmartPointer<Self>                                  Pointer;
-  typedef SmartPointer<const Self>                            ConstPointer;
+  typedef CompositeTransform                                Self;
+  typedef MultiTransform<TScalar, NDimensions, NDimensions> Superclass;
+  typedef SmartPointer<Self>                                Pointer;
+  typedef SmartPointer<const Self>                          ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( CompositeTransform, Transform );
@@ -102,51 +102,51 @@ public:
   itkNewMacro( Self );
 
   /** Sub transform type **/
-  typedef typename Superclass::TransformType                TransformType;
-  typedef typename Superclass::TransformTypePointer         TransformTypePointer;
+  typedef typename Superclass::TransformType        TransformType;
+  typedef typename Superclass::TransformTypePointer TransformTypePointer;
   /** InverseTransform type. */
-  typedef typename Superclass::InverseTransformBasePointer  InverseTransformBasePointer;
+  typedef typename Superclass::InverseTransformBasePointer InverseTransformBasePointer;
   /** Scalar type. */
-  typedef typename Superclass::ScalarType                 ScalarType;
+  typedef typename Superclass::ScalarType ScalarType;
   /** Parameters type. */
-  typedef typename Superclass::ParametersType             ParametersType;
-  typedef typename Superclass::ParametersValueType        ParametersValueType;
+  typedef typename Superclass::ParametersType      ParametersType;
+  typedef typename Superclass::ParametersValueType ParametersValueType;
   /** Derivative type */
-  typedef typename Superclass::DerivativeType             DerivativeType;
+  typedef typename Superclass::DerivativeType DerivativeType;
   /** Jacobian type. */
-  typedef typename Superclass::JacobianType               JacobianType;
+  typedef typename Superclass::JacobianType JacobianType;
   /** Transform category type. */
-  typedef typename Superclass::TransformCategoryType      TransformCategoryType;
+  typedef typename Superclass::TransformCategoryType TransformCategoryType;
   /** Standard coordinate point type for this class. */
-  typedef typename Superclass::InputPointType             InputPointType;
-  typedef typename Superclass::OutputPointType            OutputPointType;
+  typedef typename Superclass::InputPointType  InputPointType;
+  typedef typename Superclass::OutputPointType OutputPointType;
   /** Standard vector type for this class. */
-  typedef typename Superclass::InputVectorType            InputVectorType;
-  typedef typename Superclass::OutputVectorType           OutputVectorType;
+  typedef typename Superclass::InputVectorType  InputVectorType;
+  typedef typename Superclass::OutputVectorType OutputVectorType;
   /** Standard covariant vector type for this class */
-  typedef typename Superclass::InputCovariantVectorType   InputCovariantVectorType;
-  typedef typename Superclass::OutputCovariantVectorType  OutputCovariantVectorType;
+  typedef typename Superclass::InputCovariantVectorType  InputCovariantVectorType;
+  typedef typename Superclass::OutputCovariantVectorType OutputCovariantVectorType;
   /** Standard vnl_vector type for this class. */
-  typedef typename Superclass::InputVnlVectorType         InputVnlVectorType;
-  typedef typename Superclass::OutputVnlVectorType        OutputVnlVectorType;
+  typedef typename Superclass::InputVnlVectorType  InputVnlVectorType;
+  typedef typename Superclass::OutputVnlVectorType OutputVnlVectorType;
   /** Standard Vectorpixel type for this class */
-  typedef typename Superclass::InputVectorPixelType       InputVectorPixelType;
-  typedef typename Superclass::OutputVectorPixelType      OutputVectorPixelType;
+  typedef typename Superclass::InputVectorPixelType  InputVectorPixelType;
+  typedef typename Superclass::OutputVectorPixelType OutputVectorPixelType;
   /** Standard DiffusionTensor3D typedef for this class */
   typedef typename Superclass::InputDiffusionTensor3DType  InputDiffusionTensor3DType;
   typedef typename Superclass::OutputDiffusionTensor3DType OutputDiffusionTensor3DType;
   /** Standard SymmetricSecondRankTensor typedef for this class */
-  typedef typename Superclass::InputSymmetricSecondRankTensorType   InputSymmetricSecondRankTensorType;
-  typedef typename Superclass::OutputSymmetricSecondRankTensorType  OutputSymmetricSecondRankTensorType;
+  typedef typename Superclass::InputSymmetricSecondRankTensorType  InputSymmetricSecondRankTensorType;
+  typedef typename Superclass::OutputSymmetricSecondRankTensorType OutputSymmetricSecondRankTensorType;
 
   /** Transform queue type */
-  typedef typename Superclass::TransformQueueType         TransformQueueType;
+  typedef typename Superclass::TransformQueueType TransformQueueType;
 
   /** The number of parameters defininig this transform. */
-  typedef typename Superclass::NumberOfParametersType     NumberOfParametersType;
+  typedef typename Superclass::NumberOfParametersType NumberOfParametersType;
 
   /** Optimization flags queue type */
-  typedef std::deque<bool>                                TransformsToOptimizeFlagsType;
+  typedef std::deque<bool> TransformsToOptimizeFlagsType;
 
   /** Dimension of the domain spaces. */
   itkStaticConstMacro( InputDimension, unsigned int, NDimensions );
@@ -154,35 +154,41 @@ public:
 
   /** Active Transform state manipulation */
 
-  virtual void SetNthTransformToOptimize( SizeValueType i, bool state )
+  virtual void
+  SetNthTransformToOptimize( SizeValueType i, bool state )
   {
     this->m_TransformsToOptimizeFlags.at(i) = state;
     this->Modified();
   }
 
-  virtual void SetNthTransformToOptimizeOn( SizeValueType i )
+  virtual void
+  SetNthTransformToOptimizeOn( SizeValueType i )
   {
     this->SetNthTransformToOptimize( i, true );
   }
 
-  virtual void SetNthTransformToOptimizeOff( SizeValueType i )
+  virtual void
+  SetNthTransformToOptimizeOff( SizeValueType i )
   {
     this->SetNthTransformToOptimize( i, false );
   }
 
-  virtual void SetAllTransformsToOptimize( bool state )
+  virtual void
+  SetAllTransformsToOptimize( bool state )
   {
     this->m_TransformsToOptimizeFlags.assign(
       this->m_TransformsToOptimizeFlags.size(), state );
     this->Modified();
   }
 
-  virtual void SetAllTransformsToOptimizeOn()
+  virtual void
+  SetAllTransformsToOptimizeOn()
   {
     this->SetAllTransformsToOptimize( true );
   }
 
-  virtual void SetAllTransformsToOptimizeOff()
+  virtual void
+  SetAllTransformsToOptimizeOff()
   {
     this->SetAllTransformsToOptimize( false );
   }
@@ -190,7 +196,8 @@ public:
   /* With AddTransform() as the only way to add a transform, we
    * can have this method to easily allow user to optimize only
    * the transform added most recenlty. */
-  virtual void SetOnlyMostRecentTransformToOptimizeOn()
+  virtual void
+  SetOnlyMostRecentTransformToOptimizeOn()
   {
     this->SetAllTransformsToOptimize( false );
     this->SetNthTransformToOptimizeOn( this->GetNumberOfTransforms() - 1 );
@@ -200,20 +207,24 @@ public:
   /* NOTE: ambiguous function name here - are we getting if the Nth transform
       is set to be optimized, or the Nth of the transforms that are set to be
       optimized? */
-  virtual bool GetNthTransformToOptimize( SizeValueType i ) const
+  virtual bool
+  GetNthTransformToOptimize( SizeValueType i ) const
   {
     return this->m_TransformsToOptimizeFlags.at(i);
   }
 
   /** Access optimize flags */
-  virtual const TransformsToOptimizeFlagsType & GetTransformsToOptimizeFlags() const
+  virtual const TransformsToOptimizeFlagsType &
+  GetTransformsToOptimizeFlags() const
   {
     return this->m_TransformsToOptimizeFlags;
   }
 
-  virtual void ClearTransformQueue()
+  virtual void
+  ClearTransformQueue()
   {
     Superclass::ClearTransformQueue();
+
     this->m_TransformsToOptimizeFlags.clear();
   }
 
@@ -362,35 +373,44 @@ public:
 
 protected:
   CompositeTransform();
-  virtual ~CompositeTransform();
+  virtual
+  ~CompositeTransform();
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /** Clone the current transform */
   virtual typename LightObject::Pointer InternalClone() const;
 
-  virtual void PushFrontTransform( TransformTypePointer t  )
+  virtual void
+  PushFrontTransform( TransformTypePointer t  )
   {
     Superclass::PushFrontTransform( t );
+
     /* Add element to list of flags, and set true by default */
     this->m_TransformsToOptimizeFlags.push_front( true );
   }
 
-  virtual void PushBackTransform( TransformTypePointer t  )
+  virtual void
+  PushBackTransform( TransformTypePointer t  )
   {
     Superclass::PushBackTransform( t );
+
     /* Add element to list of flags, and set true by default */
     this->m_TransformsToOptimizeFlags.push_back( true );
   }
 
-  virtual void PopFrontTransform()
+  virtual void
+  PopFrontTransform()
   {
     Superclass::PopFrontTransform();
+
     this->m_TransformsToOptimizeFlags.pop_front();
   }
 
-  virtual void PopBackTransform()
+  virtual void
+  PopBackTransform()
   {
     Superclass::PopBackTransform();
+
     this->m_TransformsToOptimizeFlags.pop_back();
   }
 

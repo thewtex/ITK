@@ -46,7 +46,7 @@ BinaryMinMaxCurvatureFlowFunction< TImage >
 {
   typedef CurvatureFlowFunction< TImage > CurvatureFlowFunctionType;
   PixelType update = this->CurvatureFlowFunctionType::ComputeUpdate(
-    it, globalData, offset);
+      it, globalData, offset);
 
   if ( update == 0.0 )
     {
@@ -65,6 +65,7 @@ BinaryMinMaxCurvatureFlowFunction< TImage >
     return ( vnl_math_max(update, NumericTraits< PixelType >::Zero) );
     }
 }
+
 } // end namespace itk
 
 #endif

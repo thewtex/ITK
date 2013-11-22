@@ -79,6 +79,7 @@ TorusInteriorExteriorSpatialFunction< VDimension, TInput >
 
   os << indent << "Minor radius: " << m_MinorRadius << std::endl;
 }
+
 } // end namespace itk
 
 #endif

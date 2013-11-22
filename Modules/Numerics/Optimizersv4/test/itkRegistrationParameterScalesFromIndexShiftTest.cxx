@@ -26,69 +26,82 @@
  *  Create a simple metric to use for testing here.
  */
 template< typename TFixedImage,typename TMovingImage,typename TVirtualImage = TFixedImage >
-class RegistrationParameterScalesFromIndexShiftTestMetric:
+class RegistrationParameterScalesFromIndexShiftTestMetric :
   public itk::ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
 {
 public:
   /** Standard class typedefs. */
-  typedef RegistrationParameterScalesFromIndexShiftTestMetric          Self;
+  typedef RegistrationParameterScalesFromIndexShiftTestMetric Self;
   typedef itk::ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage>
-                                                                  Superclass;
-  typedef itk::SmartPointer< Self >                               Pointer;
-  typedef itk::SmartPointer< const Self >                         ConstPointer;
+    Superclass;
+  typedef itk::SmartPointer< Self >       Pointer;
+  typedef itk::SmartPointer< const Self > ConstPointer;
 
-  typedef typename Superclass::MeasureType          MeasureType;
-  typedef typename Superclass::DerivativeType       DerivativeType;
-  typedef typename Superclass::ParametersType       ParametersType;
-  typedef typename Superclass::ParametersValueType  ParametersValueType;
+  typedef typename Superclass::MeasureType         MeasureType;
+  typedef typename Superclass::DerivativeType      DerivativeType;
+  typedef typename Superclass::ParametersType      ParametersType;
+  typedef typename Superclass::ParametersValueType ParametersValueType;
 
   itkTypeMacro(RegistrationParameterScalesFromIndexShiftTestMetric, ImageToImageMetricv4);
 
   itkNewMacro(Self);
 
   // Pure virtual functions that all Metrics must provide
-  unsigned int GetNumberOfParameters() const { return 5; }
+  unsigned int
+  GetNumberOfParameters() const {
+    return 5;
+  }
 
-  MeasureType GetValue() const
-    {
+  MeasureType
+  GetValue() const
+  {
     return 1.0;
-    }
+  }
 
-  void GetValueAndDerivative( MeasureType & value, DerivativeType & derivative ) const
-    {
+  void
+  GetValueAndDerivative( MeasureType & value, DerivativeType & derivative ) const
+  {
     value = 1.0;
     derivative.Fill(0.0);
-    }
+  }
 
-  unsigned int GetNumberOfLocalParameters() const
-  { return 0; }
+  unsigned int
+  GetNumberOfLocalParameters() const
+  {
+    return 0;
+  }
 
-  void UpdateTransformParameters( const DerivativeType &, ParametersValueType ) {}
+  void
+  UpdateTransformParameters( const DerivativeType &, ParametersValueType ) {}
 
-  const ParametersType & GetParameters() const
-  { return m_Parameters; }
+  const ParametersType &
+  GetParameters() const
+  {
+    return m_Parameters;
+  }
 
-  void Initialize(void) throw ( itk::ExceptionObject ) {}
+  void
+  Initialize(void) throw ( itk::ExceptionObject ) {}
 
-  ParametersType  m_Parameters;
+  ParametersType m_Parameters;
 
   // Image related types
-  typedef TFixedImage                             FixedImageType;
-  typedef TMovingImage                            MovingImageType;
-  typedef TVirtualImage                           VirtualImageType;
+  typedef TFixedImage   FixedImageType;
+  typedef TMovingImage  MovingImageType;
+  typedef TVirtualImage VirtualImageType;
 
-  typedef typename FixedImageType::ConstPointer   FixedImageConstPointer;
-  typedef typename MovingImageType::ConstPointer  MovingImageConstPointer;
-  typedef typename VirtualImageType::Pointer      VirtualImagePointer;
-  typedef typename VirtualImageType::RegionType   VirtualRegionType;
+  typedef typename FixedImageType::ConstPointer  FixedImageConstPointer;
+  typedef typename MovingImageType::ConstPointer MovingImageConstPointer;
+  typedef typename VirtualImageType::Pointer     VirtualImagePointer;
+  typedef typename VirtualImageType::RegionType  VirtualRegionType;
 
   /* Image dimension accessors */
   itkStaticConstMacro(FixedImageDimension, itk::SizeValueType,
-      FixedImageType::ImageDimension);
+                      FixedImageType::ImageDimension);
   itkStaticConstMacro(MovingImageDimension, itk::SizeValueType,
-      MovingImageType::ImageDimension);
+                      MovingImageType::ImageDimension);
   itkStaticConstMacro(VirtualImageDimension, itk::SizeValueType,
-      VirtualImageType::ImageDimension);
+                      VirtualImageType::ImageDimension);
 
 private:
 
@@ -99,24 +112,26 @@ private:
 
 /**
  */
-int itkRegistrationParameterScalesFromIndexShiftTest(int , char* [])
+int
+itkRegistrationParameterScalesFromIndexShiftTest(int , char* [])
 {
 
   // Image begins
-  const itk::SizeValueType    ImageDimension = 2;
-  typedef double              PixelType;
-  typedef double              FloatType;
+  const itk::SizeValueType ImageDimension = 2;
+
+  typedef double PixelType;
+  typedef double FloatType;
 
   // Image Types
-  typedef itk::Image<PixelType,ImageDimension>           FixedImageType;
-  typedef itk::Image<PixelType,ImageDimension>           MovingImageType;
-  typedef itk::Image<PixelType,ImageDimension>           VirtualImageType;
+  typedef itk::Image<PixelType,ImageDimension> FixedImageType;
+  typedef itk::Image<PixelType,ImageDimension> MovingImageType;
+  typedef itk::Image<PixelType,ImageDimension> VirtualImageType;
 
-  FixedImageType::Pointer  fixedImage  = FixedImageType::New();
-  MovingImageType::Pointer movingImage = MovingImageType::New();
+  FixedImageType::Pointer   fixedImage  = FixedImageType::New();
+  MovingImageType::Pointer  movingImage = MovingImageType::New();
   VirtualImageType::Pointer virtualImage = fixedImage;
 
-  MovingImageType::SizeType    size;
+  MovingImageType::SizeType size;
   size.Fill(100);
 
   movingImage->SetRegions( size );
@@ -124,7 +139,7 @@ int itkRegistrationParameterScalesFromIndexShiftTest(int , char* [])
   // Image done
 
   // Transform begins
-  typedef itk::AffineTransform<double, ImageDimension>      MovingTransformType;
+  typedef itk::AffineTransform<double, ImageDimension> MovingTransformType;
   MovingTransformType::Pointer movingTransform =  MovingTransformType::New();
   movingTransform->SetIdentity();
 
@@ -147,18 +162,19 @@ int itkRegistrationParameterScalesFromIndexShiftTest(int , char* [])
 
   // Testing RegistrationParameterScalesFromIndexShift
   typedef itk::RegistrationParameterScalesFromIndexShift< MetricType > RegistrationParameterScalesFromShiftType;
-  RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator = RegistrationParameterScalesFromShiftType::New();
+  RegistrationParameterScalesFromShiftType::Pointer shiftScaleEstimator =
+    RegistrationParameterScalesFromShiftType::New();
 
   shiftScaleEstimator->SetMetric(metric);
 
   // Testing moving scales
-  RegistrationParameterScalesFromShiftType::ScalesType movingScales(movingTransform->GetNumberOfParameters());
+  RegistrationParameterScalesFromShiftType::ScalesType movingScales(movingTransform->GetNumberOfParameters() );
   shiftScaleEstimator->EstimateScales(movingScales);
   std::cout << "Shift scales for the affine transform = " << movingScales << std::endl;
 
   // determine truth
-  RegistrationParameterScalesFromShiftType::ScalesType theoreticalMovingScales(movingTransform->GetNumberOfParameters());
-  VirtualImageType::PointType upperPoint;
+  RegistrationParameterScalesFromShiftType::ScalesType theoreticalMovingScales(movingTransform->GetNumberOfParameters() );
+  VirtualImageType::PointType                          upperPoint;
   virtualImage->TransformIndexToPhysicalPoint(virtualImage->GetLargestPossibleRegion().GetUpperIndex(), upperPoint);
 
   itk::SizeValueType param = 0;
@@ -178,7 +194,7 @@ int itkRegistrationParameterScalesFromIndexShiftTest(int , char* [])
   bool affinePass = true;
   for (itk::SizeValueType p = 0; p < theoreticalMovingScales.GetSize(); p++)
     {
-    if (vcl_abs((movingScales[p] - theoreticalMovingScales[p]) / theoreticalMovingScales[p]) > 0.01 )
+    if (vcl_abs( (movingScales[p] - theoreticalMovingScales[p]) / theoreticalMovingScales[p]) > 0.01 )
       {
       affinePass = false;
       break;
@@ -211,7 +227,7 @@ int itkRegistrationParameterScalesFromIndexShiftTest(int , char* [])
   //
   // Testing the step scale
   //
-  MovingTransformType::ParametersType movingStep(movingTransform->GetNumberOfParameters());
+  MovingTransformType::ParametersType movingStep(movingTransform->GetNumberOfParameters() );
   movingStep = movingTransform->GetParameters(); //the step is an identity transform
   FloatType stepScale = shiftScaleEstimator->EstimateStepScale(movingStep);
   std::cout << "The step scale of shift for the affine transform = " << stepScale << std::endl;
@@ -245,18 +261,18 @@ int itkRegistrationParameterScalesFromIndexShiftTest(int , char* [])
   // Testing local scales for a transform with local support, ex. DisplacementFieldTransform
   //
   typedef itk::DisplacementFieldTransform<double, ImageDimension>
-                                                            DisplacementTransformType;
-  typedef DisplacementTransformType::DisplacementFieldType  FieldType;
-  typedef itk::Vector<double, ImageDimension>               VectorType;
+    DisplacementTransformType;
+  typedef DisplacementTransformType::DisplacementFieldType FieldType;
+  typedef itk::Vector<double, ImageDimension>              VectorType;
 
   VectorType zero;
   zero.Fill(0.0);
 
   FieldType::Pointer field = FieldType::New();
-  field->SetRegions(virtualImage->GetLargestPossibleRegion());
-  field->SetSpacing(virtualImage->GetSpacing());
-  field->SetOrigin(virtualImage->GetOrigin());
-  field->SetDirection(virtualImage->GetDirection());
+  field->SetRegions(virtualImage->GetLargestPossibleRegion() );
+  field->SetSpacing(virtualImage->GetSpacing() );
+  field->SetOrigin(virtualImage->GetOrigin() );
+  field->SetDirection(virtualImage->GetDirection() );
   field->Allocate();
   field->FillBuffer(zero);
 
@@ -271,13 +287,13 @@ int itkRegistrationParameterScalesFromIndexShiftTest(int , char* [])
 
   // Check the correctness
   RegistrationParameterScalesFromShiftType::ScalesType theoreticalLocalScales(
-    displacementTransform->GetNumberOfLocalParameters());
+    displacementTransform->GetNumberOfLocalParameters() );
   theoreticalLocalScales.Fill(1.0);
 
   bool displacementPass = true;
   for (itk::SizeValueType p = 0; p < theoreticalLocalScales.GetSize(); p++)
     {
-    if (vcl_abs((localScales[p] - theoreticalLocalScales[p]) / theoreticalLocalScales[p]) > 0.01 )
+    if (vcl_abs( (localScales[p] - theoreticalLocalScales[p]) / theoreticalLocalScales[p]) > 0.01 )
       {
       displacementPass = false;
       break;
@@ -295,14 +311,14 @@ int itkRegistrationParameterScalesFromIndexShiftTest(int , char* [])
   //
   // Testing the step scale for the displacement field transform
   //
-  DisplacementTransformType::ParametersType displacementStep(displacementTransform->GetNumberOfParameters());
+  DisplacementTransformType::ParametersType displacementStep(displacementTransform->GetNumberOfParameters() );
   displacementStep.Fill(1.0);
   FloatType localStepScale = shiftScaleEstimator->EstimateStepScale(displacementStep);
   std::cout << "The step scale of shift for the displacement field transform = " << localStepScale << std::endl;
   FloatType localLearningRate = 1.0 / localStepScale;
   std::cout << "The learning rate of shift for the displacement field transform = " << localLearningRate << std::endl;
 
-  bool localStepScalePass = false;
+  bool      localStepScalePass = false;
   FloatType theoreticalLocalStepScale = vcl_sqrt(2.0);
   if (vcl_abs( (localStepScale - theoreticalLocalStepScale) /theoreticalLocalStepScale ) < 0.01)
     {
@@ -335,7 +351,7 @@ int itkRegistrationParameterScalesFromIndexShiftTest(int , char* [])
   bool translationPass = true;
   for (itk::SizeValueType p = 0; p < theoreticalFixedScales.GetSize(); p++)
     {
-    if (vcl_abs((fixedScales[p] - theoreticalFixedScales[p]) / theoreticalFixedScales[p]) > 0.01 )
+    if (vcl_abs( (fixedScales[p] - theoreticalFixedScales[p]) / theoreticalFixedScales[p]) > 0.01 )
       {
       translationPass = false;
       break;
@@ -366,7 +382,8 @@ int itkRegistrationParameterScalesFromIndexShiftTest(int , char* [])
 
   // Check the correctness of all cases above
   std::cout << std::endl;
-  if ( translationPass && uniformForTranslation && affinePass && nonUniformForAffine && localStepScalePass && displacementPass && stepScalePass )
+  if ( translationPass && uniformForTranslation && affinePass && nonUniformForAffine && localStepScalePass &&
+       displacementPass && stepScalePass )
     {
     std::cout << "Test passed" << std::endl;
     return EXIT_SUCCESS;

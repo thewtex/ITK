@@ -192,6 +192,7 @@ BSplineDownsampleImageFilter< TInputImage, TOutputImage, ResamplerType >
                      << typeid( TOutputImage * ).name() );
     }
 }
+
 } // namespace itk
 
 #endif

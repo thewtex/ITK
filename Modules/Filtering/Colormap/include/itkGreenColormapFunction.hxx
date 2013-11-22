@@ -34,6 +34,7 @@ GreenColormapFunction< TScalar, TRGBPixel >
 
   // Set the rgb components after rescaling the values.
   RGBPixelType pixel;
+
   NumericTraits<TRGBPixel>::SetLength(pixel, 3);
 
   pixel[0] = 0;
@@ -42,6 +43,7 @@ GreenColormapFunction< TScalar, TRGBPixel >
 
   return pixel;
 }
+
 } // end namespace Function
 } // end namespace itk
 

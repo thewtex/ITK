@@ -44,28 +44,28 @@ class LBFGSBCostFunction : public itk::SingleValuedCostFunction
 {
 public:
 
-  typedef LBFGSBCostFunction                Self;
-  typedef itk::SingleValuedCostFunction     Superclass;
-  typedef itk::SmartPointer<Self>           Pointer;
-  typedef itk::SmartPointer<const Self>     ConstPointer;
+  typedef LBFGSBCostFunction            Self;
+  typedef itk::SingleValuedCostFunction Superclass;
+  typedef itk::SmartPointer<Self>       Pointer;
+  typedef itk::SmartPointer<const Self> ConstPointer;
   itkNewMacro( Self );
   itkTypeMacro( LBFGSBCostFunction, SingleValuedCostFunction );
 
   enum { SpaceDimension=2 };
 
-  typedef Superclass::ParametersType              ParametersType;
-  typedef Superclass::DerivativeType              DerivativeType;
+  typedef Superclass::ParametersType ParametersType;
+  typedef Superclass::DerivativeType DerivativeType;
 
-  typedef vnl_vector<double>                      VectorType;
-  typedef vnl_matrix<double>                      MatrixType;
+  typedef vnl_vector<double> VectorType;
+  typedef vnl_matrix<double> MatrixType;
 
   typedef double MeasureType;
 
   LBFGSBCostFunction()
-  {
-  }
+  {}
 
-  double GetValue( const ParametersType & position ) const
+  double
+  GetValue( const ParametersType & position ) const
   {
 
     double x = position[0];
@@ -82,8 +82,9 @@ public:
     return val;
   }
 
-  void GetDerivative( const ParametersType & position,
-                            DerivativeType  & derivative ) const
+  void
+  GetDerivative( const ParametersType & position,
+                 DerivativeType  & derivative ) const
   {
 
     double x = position[0];
@@ -102,15 +103,16 @@ public:
 
   }
 
-
-  unsigned int GetNumberOfParameters(void) const
-    {
+  unsigned int
+  GetNumberOfParameters(void) const
+  {
     return SpaceDimension;
-    }
+  }
+
 };
 
 /** To ensure the events get fired. */
-class EventChecker: public itk::Command
+class EventChecker : public itk::Command
 {
 public:
   typedef EventChecker            Self;
@@ -119,39 +121,52 @@ public:
 
   itkNewMacro( Self );
 
-  bool GetHadStartEvent()
-    { return m_HadStartEvent; }
-  bool GetHadIterationEvent()
-    { return m_HadIterationEvent; }
-  bool GetHadEndEvent()
-    { return m_HadEndEvent; }
+  bool
+  GetHadStartEvent()
+  {
+    return m_HadStartEvent;
+  }
 
-  void Execute( itk::Object *caller, const itk::EventObject & event )
-    {
+  bool
+  GetHadIterationEvent()
+  {
+    return m_HadIterationEvent;
+  }
+
+  bool
+  GetHadEndEvent()
+  {
+    return m_HadEndEvent;
+  }
+
+  void
+  Execute( itk::Object *caller, const itk::EventObject & event )
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute( const itk::Object *, const itk::EventObject & event)
-    {
-    if( itk::StartEvent().CheckEvent( &event ))
+  void
+  Execute( const itk::Object *, const itk::EventObject & event)
+  {
+    if( itk::StartEvent().CheckEvent( &event ) )
       {
       std::cout << "Received StartEvent." << std::endl;
       m_HadStartEvent = true;
       }
-    if( itk::IterationEvent().CheckEvent( &event ))
+    if( itk::IterationEvent().CheckEvent( &event ) )
       {
       std::cout << "Received IterationEvent." << std::endl;
       m_HadIterationEvent = true;
       }
-    if( itk::EndEvent().CheckEvent( &event ))
+    if( itk::EndEvent().CheckEvent( &event ) )
       {
       std::cout << "Received EndEvent." << std::endl;
       m_HadEndEvent = true;
       }
-    }
+  }
 
 protected:
-  EventChecker(): m_HadStartEvent( false ),
+  EventChecker() : m_HadStartEvent( false ),
     m_HadIterationEvent( false ),
     m_HadEndEvent( false )
   {}
@@ -162,38 +177,36 @@ private:
   bool m_HadEndEvent;
 };
 
-
-int itkLBFGSBOptimizerTest(int, char *[])
+int
+itkLBFGSBOptimizerTest(int, char *[])
 {
 
-  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
   std::cout << "LBFGSB Optimizer Test \n \n";
 
-  typedef  itk::LBFGSBOptimizer  OptimizerType;
+  typedef  itk::LBFGSBOptimizer OptimizerType;
 
   // Declaration of a itkOptimizer
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
 
   itkOptimizer->Print( std::cout );
-
 
   // Declaration of the CostFunction adaptor
   LBFGSBCostFunction::Pointer costFunction = LBFGSBCostFunction::New();
 
-
   itkOptimizer->SetCostFunction( costFunction.GetPointer() );
 
-  const double F_Convergence_Factor  = 1e+7;      // Function value tolerance
-  const double Projected_G_Tolerance = 1e-5;      // Proj gradient tolerance
-  const int    Max_Iterations   =   100; // Maximum number of iterations
+  const double F_Convergence_Factor  = 1e+7; // Function value tolerance
+  const double Projected_G_Tolerance = 1e-5; // Proj gradient tolerance
+  const int    Max_Iterations   =   100;     // Maximum number of iterations
 
   itkOptimizer->SetCostFunctionConvergenceFactor( F_Convergence_Factor );
   itkOptimizer->SetProjectedGradientTolerance( Projected_G_Tolerance );
   itkOptimizer->SetMaximumNumberOfIterations( Max_Iterations );
   itkOptimizer->SetMaximumNumberOfEvaluations( Max_Iterations );
 
-  const unsigned int SpaceDimension = 2;
+  const unsigned int            SpaceDimension = 2;
   OptimizerType::ParametersType initialValue(SpaceDimension);
 
   // Starting point
@@ -207,8 +220,8 @@ int itkLBFGSBOptimizerTest(int, char *[])
   itkOptimizer->SetInitialPosition( currentValue );
 
   // Set up boundary conditions
-  OptimizerType::BoundValueType lower(SpaceDimension);
-  OptimizerType::BoundValueType upper(SpaceDimension);
+  OptimizerType::BoundValueType     lower(SpaceDimension);
+  OptimizerType::BoundValueType     upper(SpaceDimension);
   OptimizerType::BoundSelectionType select(SpaceDimension);
 
   lower.Fill( -1 );
@@ -243,26 +256,26 @@ int itkLBFGSBOptimizerTest(int, char *[])
   const OptimizerType::ParametersType & finalPosition = itkOptimizer->GetCurrentPosition();
 
   std::cout << "Solution        = ("
-    << finalPosition[0] << ","
-    << finalPosition[1] << ")" << std::endl;
+            << finalPosition[0] << ","
+            << finalPosition[1] << ")" << std::endl;
   std::cout << "Final Function Value = "
-    << itkOptimizer->GetValue() << std::endl;
+            << itkOptimizer->GetValue() << std::endl;
 
   std::cout << "Infinity Norm of Projected Gradient = "
-    << itkOptimizer->GetInfinityNormOfProjectedGradient() << std::endl;
+            << itkOptimizer->GetInfinityNormOfProjectedGradient() << std::endl;
   std::cout << "End condition   = "
-    << itkOptimizer->GetStopConditionDescription() << std::endl;
+            << itkOptimizer->GetStopConditionDescription() << std::endl;
   std::cout << "Trace   = " << itkOptimizer->GetTrace() << std::endl;
   std::cout << "CostFunctionConvergenceFactor   = "
-    << itkOptimizer->GetCostFunctionConvergenceFactor() << std::endl;
+            << itkOptimizer->GetCostFunctionConvergenceFactor() << std::endl;
   std::cout << "ProjectedGradientTolerance   = "
-    << itkOptimizer->GetProjectedGradientTolerance() << std::endl;
+            << itkOptimizer->GetProjectedGradientTolerance() << std::endl;
   std::cout << "MaximumNumberOfIterations   = "
-    << itkOptimizer->GetMaximumNumberOfIterations() << std::endl;
+            << itkOptimizer->GetMaximumNumberOfIterations() << std::endl;
   std::cout << "MaximumNumberOfEvaluations   = "
-    << itkOptimizer->GetMaximumNumberOfEvaluations() << std::endl;
+            << itkOptimizer->GetMaximumNumberOfEvaluations() << std::endl;
   std::cout << "MaximumNumberOfCorrections   = "
-    << itkOptimizer->GetMaximumNumberOfCorrections() << std::endl;
+            << itkOptimizer->GetMaximumNumberOfCorrections() << std::endl;
 
   if( !eventChecker->GetHadStartEvent() )
     {
@@ -283,7 +296,7 @@ int itkLBFGSBOptimizerTest(int, char *[])
   //
   // check results to see if it is within range
   //
-  bool pass = true;
+  bool        pass = true;
   std::string errorIn;
 
   double trueParameters[2] = { 4.0/3.0, -1.0 };
@@ -302,9 +315,8 @@ int itkLBFGSBOptimizerTest(int, char *[])
     errorIn = "final function value";
     }
 
-
   if( vnl_math_abs( itkOptimizer->GetInfinityNormOfProjectedGradient()
-      -  1.77636e-15 ) > 0.01 )
+                    -  1.77636e-15 ) > 0.01 )
     {
     pass = false;
     errorIn = "infinity norm of projected gradient";

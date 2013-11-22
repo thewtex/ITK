@@ -41,7 +41,7 @@ namespace Function
  * \ingroup ITKColormap
  */
 template< typename TScalar, typename TRGBPixel >
-class GreenColormapFunction:
+class GreenColormapFunction :
   public ColormapFunction< TScalar, TRGBPixel >
 {
 public:
@@ -66,7 +66,8 @@ protected:
 
 private:
   GreenColormapFunction(const Self &); //purposely not implemented
-  void operator=(const Self &);       //purposely not implemented
+  void operator=(const Self &);        //purposely not implemented
+
 };
 } // end namespace functor
 } // end namespace itk

@@ -47,7 +47,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class SobelEdgeDetectionImageFilter:
+class SobelEdgeDetectionImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -122,7 +122,8 @@ public:
 
 protected:
   SobelEdgeDetectionImageFilter() {}
-  virtual ~SobelEdgeDetectionImageFilter() {}
+  virtual
+  ~SobelEdgeDetectionImageFilter() {}
 
   /**
    * Standard pipeline method. While this class does not implement a
@@ -133,14 +134,15 @@ protected:
    */
   void GenerateData();
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
   }
 
 private:
   SobelEdgeDetectionImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                 //purposely not implemented
 
 };
 } // end namespace itk

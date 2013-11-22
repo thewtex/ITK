@@ -22,7 +22,8 @@
 #include <fstream>
 
 template<unsigned int Dimension>
-int itkEuclideanDistancePointSetMetricTestRun()
+int
+itkEuclideanDistancePointSetMetricTestRun()
 {
   typedef itk::PointSet<unsigned char, Dimension> PointSetType;
 
@@ -41,7 +42,7 @@ int itkEuclideanDistancePointSetMetricTestRun()
     offset[d] = 1.1 + d;
     }
   unsigned long count = 0;
-  float pointSetRadius = 100.0;
+  float         pointSetRadius = 100.0;
   for( float theta = 0; theta < 2.0 * vnl_math::pi; theta += 0.1 )
     {
     PointType fixedPoint;
@@ -151,7 +152,8 @@ int itkEuclideanDistancePointSetMetricTestRun()
   return EXIT_SUCCESS;
 }
 
-int itkEuclideanDistancePointSetMetricTest( int, char* [] )
+int
+itkEuclideanDistancePointSetMetricTest( int, char* [] )
 {
   int result = EXIT_SUCCESS;
 

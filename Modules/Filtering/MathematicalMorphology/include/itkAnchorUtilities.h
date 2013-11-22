@@ -47,8 +47,8 @@ void DoAnchorFace(const TImage * input,
                   TLine line,
                   TAnchor & AnchorLine,
                   typename TBres::OffsetArray LineOffsets,
-                  std::vector<typename TImage::PixelType> & inbuffer,
-                  std::vector<typename TImage::PixelType> & outbuffer,
+                  std::vector<typename TImage::PixelType> &inbuffer,
+                  std::vector<typename TImage::PixelType> &outbuffer,
                   const typename TImage::RegionType AllImage,
                   const typename TImage::RegionType face);
 

@@ -24,28 +24,33 @@
 
 // class to support progress feeback
 
-
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::LightProcessObject * o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::LightProcessObject::Pointer m_Process;
 };
 
-
-int itkImagePCADecompositionCalculatorTest(int, char* [] )
+int
+itkImagePCADecompositionCalculatorTest(int, char* [] )
 {
 
-  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
   //Data definitions
-  const unsigned int  IMGWIDTH         =  2;
-  const unsigned int  IMGHEIGHT        =  2;
-  const unsigned int  NDIMENSION       =  2;
-
+  const unsigned int IMGWIDTH         =  2;
+  const unsigned int IMGHEIGHT        =  2;
+  const unsigned int NDIMENSION       =  2;
 
   //------------------------------------------------------
   //Create 3 simple test images with
@@ -54,7 +59,6 @@ int itkImagePCADecompositionCalculatorTest(int, char* [] )
 
   typedef
     itk::ImageRegionIterator< InputImageType > InputImageIterator;
-
 
   InputImageType::Pointer image1 = InputImageType::New();
 
@@ -160,7 +164,6 @@ int itkImagePCADecompositionCalculatorTest(int, char* [] )
 
   // setup the iterators
   InputImageIterator image8It( image8, image8->GetBufferedRegion() );
-
 
   //--------------------------------------------------------------------------
   //Manually create and store each vector
@@ -285,7 +288,6 @@ int itkImagePCADecompositionCalculatorTest(int, char* [] )
   decomposer->Compute();
   proj4_3 = decomposer->GetProjection();
 
-
   // get the basis images
   ImagePCAShapeModelEstimatorType::BasisImagePointerVector basis_check_2;
   basis_check_2 = decomposer->GetBasisImages();
@@ -296,7 +298,7 @@ int itkImagePCADecompositionCalculatorTest(int, char* [] )
   // Print the basis and projections: first the PCA basis
   std::cout << "The basis of projection is: " << std::endl;
   for (ImagePCAShapeModelEstimatorType::BasisImagePointerVector::const_iterator
-     basis_it = basis_check.begin(); basis_it != basis_check.end(); ++basis_it)
+       basis_it = basis_check.begin(); basis_it != basis_check.end(); ++basis_it)
     {
     std::cout << "[";
     InputImageIterator basisImage_it( *basis_it, (*basis_it)->GetBufferedRegion() );
@@ -306,7 +308,6 @@ int itkImagePCADecompositionCalculatorTest(int, char* [] )
       }
     std::cout << "]" << std::endl;
     }
-
 
   //Print the projections
   std::cout << "The projection of [0 2 2 0] is [" << proj3 << "]" << std::endl;
@@ -319,7 +320,7 @@ int itkImagePCADecompositionCalculatorTest(int, char* [] )
   std::cout << std::endl;
   std::cout << "Now the basis of projection is: " << std::endl;
   for (ImagePCAShapeModelEstimatorType::BasisImagePointerVector::const_iterator
-     basis_it = basis_check_2.begin(); basis_it != basis_check_2.end(); ++basis_it)
+       basis_it = basis_check_2.begin(); basis_it != basis_check_2.end(); ++basis_it)
     {
     std::cout << "[";
     InputImageIterator basisImage_it( *basis_it, (*basis_it)->GetBufferedRegion() );
@@ -329,7 +330,6 @@ int itkImagePCADecompositionCalculatorTest(int, char* [] )
       }
     std::cout << "]" << std::endl;
     }
-
 
   //Print the projections
   std::cout << "The projection of [0 2 2 0] is [" << proj3_2 << "]" << std::endl;

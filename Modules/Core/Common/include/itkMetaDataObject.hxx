@@ -48,7 +48,7 @@ MetaDataObject< MetaDataObjectType >
 
 template< typename MetaDataObjectType >
 MetaDataObject< MetaDataObjectType >
-::MetaDataObject(const MetaDataObjectType InitializerValue):
+::MetaDataObject(const MetaDataObjectType InitializerValue) :
   m_MetaDataObjectValue(InitializerValue)
 {
   //Nothing to be done here
@@ -56,7 +56,7 @@ MetaDataObject< MetaDataObjectType >
 
 template< typename MetaDataObjectType >
 MetaDataObject< MetaDataObjectType >
-::MetaDataObject(const MetaDataObject< MetaDataObjectType > & TemplateObject):
+::MetaDataObject(const MetaDataObject< MetaDataObjectType > & TemplateObject) :
   Superclass(), m_MetaDataObjectValue(TemplateObject.m_MetaDataObjectValue)
 {
   //Nothing to be done here
@@ -101,6 +101,7 @@ MetaDataObject< MetaDataObjectType >
 {
   Superclass::Print(os);
 }
+
 } // end namespace itk
 
 #endif

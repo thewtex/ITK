@@ -39,7 +39,7 @@ namespace itk
  */
 template< typename TInputImage, typename TFeatureImage, typename TOutputImage =
             LabelMap< StatisticsLabelObject< SizeValueType, TInputImage::ImageDimension > > >
-class BinaryImageToStatisticsLabelMapFilter:
+class BinaryImageToStatisticsLabelMapFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -138,26 +138,30 @@ public:
   itkBooleanMacro(ComputePerimeter);
 
   /** Set the feature image */
-  void SetFeatureImage(const TFeatureImage *input)
+  void
+  SetFeatureImage(const TFeatureImage *input)
   {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast< TFeatureImage * >( input ) );
   }
 
   /** Get the feature image */
-  const FeatureImageType * GetFeatureImage()
+  const FeatureImageType *
+  GetFeatureImage()
   {
     return static_cast< const FeatureImageType * >( this->ProcessObject::GetInput(1) );
   }
 
   /** Set the input image */
-  void SetInput1(const InputImageType *input)
+  void
+  SetInput1(const InputImageType *input)
   {
     this->SetInput(input);
   }
 
   /** Set the feature image */
-  void SetInput2(const FeatureImageType *input)
+  void
+  SetInput2(const FeatureImageType *input)
   {
     this->SetFeatureImage(input);
   }
@@ -201,7 +205,8 @@ private:
   BinaryImageToStatisticsLabelMapFilter(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 
   bool                 m_FullyConnected;
   OutputImagePixelType m_OutputBackgroundValue;

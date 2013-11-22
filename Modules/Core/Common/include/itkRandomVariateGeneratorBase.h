@@ -30,7 +30,7 @@ namespace Statistics
  * \ingroup Common
  * \ingroup ITKCommon
  */
-class RandomVariateGeneratorBase:public Object
+class RandomVariateGeneratorBase : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -47,7 +47,8 @@ public:
 
 protected:
   RandomVariateGeneratorBase() {}
-  virtual ~RandomVariateGeneratorBase() {}
+  virtual
+  ~RandomVariateGeneratorBase() {}
 
 private:
 };  // end of class

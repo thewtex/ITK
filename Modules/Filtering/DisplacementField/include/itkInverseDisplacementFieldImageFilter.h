@@ -62,7 +62,7 @@ namespace itk
  * \ingroup ITKDisplacementField
  */
 template< typename TInputImage, typename TOutputImage >
-class InverseDisplacementFieldImageFilter:
+class InverseDisplacementFieldImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -94,7 +94,7 @@ public:
    * \todo Check that input and output images have the same number of
      * dimensions; this is required for consistency.  */
   typedef KernelTransform<
-    double, itkGetStaticConstMacro(ImageDimension) > KernelTransformType;
+      double, itkGetStaticConstMacro(ImageDimension) > KernelTransformType;
   typedef typename KernelTransformType::Pointer KernelTransformPointerType;
 
   /** Image size typedef. */
@@ -190,7 +190,7 @@ protected:
 
 private:
   InverseDisplacementFieldImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);                     //purposely not implemented
+  void operator=(const Self &);                      //purposely not implemented
 
   SizeType                   m_Size;                 // Size of the output image
   KernelTransformPointerType m_KernelTransform;      // Coordinate transform to

@@ -44,7 +44,7 @@ namespace itk
  */
 
 class ITKCommon_EXPORT ImageRegionSplitterSlowDimension
-  :public ImageRegionSplitterBase
+  : public             ImageRegionSplitterBase
 {
 public:
   /** Standard class typedefs. */
@@ -58,7 +58,6 @@ public:
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(ImageRegionSplitterSlowDimension, ImageRegionSplitterBase);
-
 
 protected:
   ImageRegionSplitterSlowDimension();
@@ -76,7 +75,8 @@ protected:
 
 private:
   ImageRegionSplitterSlowDimension(const ImageRegionSplitterSlowDimension &); //purposely not implemented
-  void operator=(const ImageRegionSplitterSlowDimension &);      //purposely not implemented
+  void operator=(const ImageRegionSplitterSlowDimension &);                   //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -48,9 +48,9 @@ void DoFace(typename TImage::ConstPointer input,
             TLine line,
             const typename TBres::OffsetArray LineOffsets,
             const unsigned int KernLen,
-            std::vector<typename TImage::PixelType> & pixbuffer,
-            std::vector<typename TImage::PixelType> & fExtBuffer,
-            std::vector<typename TImage::PixelType> & rExtBuffer,
+            std::vector<typename TImage::PixelType> &pixbuffer,
+            std::vector<typename TImage::PixelType> &fExtBuffer,
+            std::vector<typename TImage::PixelType> &rExtBuffer,
             const typename TImage::RegionType AllImage,
             const typename TImage::RegionType face);
 } // namespace itk

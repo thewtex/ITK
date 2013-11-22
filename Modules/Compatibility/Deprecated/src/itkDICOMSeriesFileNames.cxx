@@ -25,7 +25,7 @@
 namespace itk
 {
 DICOMSeriesFileNames
-::DICOMSeriesFileNames():
+::DICOMSeriesFileNames() :
   m_Ascending(true),
   m_Directory(""),
   m_FileNameSortingOrder(SortByImagePositionPatient)
@@ -272,6 +272,7 @@ DICOMSeriesFileNames
     os << indent << "FileNames[" << i << "]: " << m_FileNames[i] << std::endl;
     }
 }
+
 } //namespace ITK
 
 #endif

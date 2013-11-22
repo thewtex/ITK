@@ -20,7 +20,8 @@
 #include "itkMultiplyImageFilter.h"
 
 #ifndef ITKV3_COMPATIBILITY
-#error "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkDisplacementFieldJacobianDeterminantFilter.h in ITKv4"
+#error \
+  "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkDisplacementFieldJacobianDeterminantFilter.h in ITKv4"
 #endif
 
 namespace itk
@@ -49,15 +50,15 @@ namespace itk
  */
 template <typename TInputImage, typename TConstant, typename TOutputImage>
 class MultiplyByConstantImageFilter :
-      public
-MultiplyImageFilter<TInputImage, Image<TConstant, TInputImage::ImageDimension>, TOutputImage>
+  public
+  MultiplyImageFilter<TInputImage, Image<TConstant, TInputImage::ImageDimension>, TOutputImage>
 {
 public:
-  typedef MultiplyByConstantImageFilter                             Self;
+  typedef MultiplyByConstantImageFilter Self;
   typedef MultiplyImageFilter<TInputImage, Image<TConstant, TInputImage::ImageDimension>, TOutputImage>
-                                                                    Superclass;
-  typedef SmartPointer<Self>                                        Pointer;
-  typedef SmartPointer<const Self>                                  ConstPointer;
+    Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** method for creation through object factory */
   itkNewMacro(Self);
@@ -66,7 +67,8 @@ public:
 
 protected:
   MultiplyByConstantImageFilter() {}
-  virtual ~MultiplyByConstantImageFilter() {}
+  virtual
+  ~MultiplyByConstantImageFilter() {}
 };
 
 }

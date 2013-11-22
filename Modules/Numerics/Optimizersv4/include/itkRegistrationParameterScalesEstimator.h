@@ -56,48 +56,48 @@ class RegistrationParameterScalesEstimator
 {
 public:
   /** Standard class typedefs. */
-  typedef RegistrationParameterScalesEstimator                                              Self;
-  typedef OptimizerParameterScalesEstimatorTemplate<typename TMetric::ParametersValueType>  Superclass;
-  typedef SmartPointer<Self>                                                                Pointer;
-  typedef SmartPointer<const Self>                                                          ConstPointer;
+  typedef RegistrationParameterScalesEstimator                                             Self;
+  typedef OptimizerParameterScalesEstimatorTemplate<typename TMetric::ParametersValueType> Superclass;
+  typedef SmartPointer<Self>                                                               Pointer;
+  typedef SmartPointer<const Self>                                                         ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( RegistrationParameterScalesEstimator, Superclass );
 
   /** Type of scales */
-  typedef typename Superclass::ScalesType           ScalesType;
+  typedef typename Superclass::ScalesType ScalesType;
   /** Type of parameters of the optimizer */
-  typedef typename Superclass::ParametersType       ParametersType;
+  typedef typename Superclass::ParametersType ParametersType;
   /** Type of float */
-  typedef typename Superclass::FloatType            FloatType;
+  typedef typename Superclass::FloatType FloatType;
 
-  typedef TMetric                                   MetricType;
-  typedef typename MetricType::Pointer              MetricPointer;
-  typedef typename MetricType::ConstPointer         MetricConstPointer;
+  typedef TMetric                           MetricType;
+  typedef typename MetricType::Pointer      MetricPointer;
+  typedef typename MetricType::ConstPointer MetricConstPointer;
 
   /** Type of the transform to initialize */
   typedef typename MetricType::FixedTransformType   FixedTransformType;
   typedef typename FixedTransformType::ConstPointer FixedTransformConstPointer;
 
-  typedef typename MetricType::MovingTransformType    MovingTransformType;
-  typedef typename MovingTransformType::ConstPointer  MovingTransformConstPointer;
+  typedef typename MetricType::MovingTransformType   MovingTransformType;
+  typedef typename MovingTransformType::ConstPointer MovingTransformConstPointer;
 
   /** dimension accessors */
   itkStaticConstMacro(FixedDimension, SizeValueType, TMetric::FixedDimension );
   itkStaticConstMacro(MovingDimension, SizeValueType, TMetric::MovingDimension );
   itkStaticConstMacro(VirtualDimension, SizeValueType, TMetric::VirtualDimension );
 
-  typedef typename TMetric::VirtualImageType          VirtualImageType;
-  typedef typename TMetric::VirtualImageConstPointer  VirtualImageConstPointer;
-  typedef typename TMetric::VirtualImagePointer       VirtualImagePointer;
-  typedef typename TMetric::VirtualSpacingType        VirtualSpacingType;
-  typedef typename TMetric::VirtualRegionType         VirtualRegionType;
-  typedef typename TMetric::VirtualSizeType           VirtualSizeType;
-  typedef typename TMetric::VirtualPointType          VirtualPointType;
-  typedef typename TMetric::VirtualIndexType          VirtualIndexType;
+  typedef typename TMetric::VirtualImageType         VirtualImageType;
+  typedef typename TMetric::VirtualImageConstPointer VirtualImageConstPointer;
+  typedef typename TMetric::VirtualImagePointer      VirtualImagePointer;
+  typedef typename TMetric::VirtualSpacingType       VirtualSpacingType;
+  typedef typename TMetric::VirtualRegionType        VirtualRegionType;
+  typedef typename TMetric::VirtualSizeType          VirtualSizeType;
+  typedef typename TMetric::VirtualPointType         VirtualPointType;
+  typedef typename TMetric::VirtualIndexType         VirtualIndexType;
 
-  typedef typename TMetric::VirtualPointSetType       VirtualPointSetType;
-  typedef typename TMetric::VirtualPointSetPointer    VirtualPointSetPointer;
+  typedef typename TMetric::VirtualPointSetType    VirtualPointSetType;
+  typedef typename TMetric::VirtualPointSetPointer VirtualPointSetPointer;
 
   /** The strategies to sample physical points in the virtual domain. */
   typedef enum { FullDomainSampling = 0,
@@ -106,10 +106,10 @@ public:
                  CentralRegionSampling,
                  VirtualDomainPointSetSampling }    SamplingStrategyType;
 
-  typedef std::vector<VirtualPointType>             SamplePointContainerType;
+  typedef std::vector<VirtualPointType> SamplePointContainerType;
 
   /** Type of Jacobian of transform. */
-  typedef typename TMetric::JacobianType            JacobianType;
+  typedef typename TMetric::JacobianType JacobianType;
 
   /** SetMetric sets the metric used in the estimation process.
    *  The transforms from the metric will be used for estimation, along
@@ -152,7 +152,7 @@ public:
 
 protected:
   RegistrationParameterScalesEstimator();
-  ~RegistrationParameterScalesEstimator(){};
+  ~RegistrationParameterScalesEstimator(){}
 
   virtual void PrintSelf(std::ostream &os, Indent indent) const;
 
@@ -180,10 +180,12 @@ protected:
   template< typename TTransform > bool CheckGeneralAffineTransformTemplated();
 
   /** Transform a physical point to a new physical point. */
-  template< typename TTargetPointType > void TransformPoint( const VirtualPointType &point, TTargetPointType &mappedPoint);
+  template< typename TTargetPointType > void TransformPoint( const VirtualPointType &point,
+                                                             TTargetPointType &mappedPoint);
 
   /** Transform a point to its continuous index. */
-  template< typename TContinuousIndexType > void TransformPointToContinuousIndex( const VirtualPointType &point,TContinuousIndexType &mappedIndex);
+  template< typename TContinuousIndexType > void TransformPointToContinuousIndex( const VirtualPointType &point,
+                                                                                  TContinuousIndexType &mappedIndex);
 
   /** Compute the transform Jacobian at a physical point. */
   void ComputeSquaredJacobianNorms( const VirtualPointType  & p, ParametersType & squareNorms);
@@ -231,7 +233,7 @@ protected:
   VirtualRegionType GetVirtualDomainCentralRegion();
 
   /** Get the transform in use. */
-  const TransformBaseTemplate<typename TMetric::MeasureType> *GetTransform();
+  const TransformBaseTemplate<typename TMetric::MeasureType> * GetTransform();
 
   /** Get the dimension of the target transformed to. */
   SizeValueType GetDimension();
@@ -244,25 +246,25 @@ protected:
   MetricPointer                 m_Metric;
 
   /** the samples in the virtual domain */
-  SamplePointContainerType      m_SamplePoints;
+  SamplePointContainerType m_SamplePoints;
 
   /** Keep track of the last sampling time. */
-  mutable TimeStamp             m_SamplingTime;
+  mutable TimeStamp m_SamplingTime;
 
   /**  the number of samples in the virtual domain */
-  SizeValueType                 m_NumberOfRandomSamples;
+  SizeValueType m_NumberOfRandomSamples;
 
   /** the radius of the central region for sampling */
-  IndexValueType                m_CentralRegionRadius;
+  IndexValueType m_CentralRegionRadius;
 
   typename VirtualPointSetType::ConstPointer  m_VirtualDomainPointSet;
 
   // the threadhold to decide if the number of random samples uses logarithm
-  static const SizeValueType    SizeOfSmallDomain = 1000;
+  static const SizeValueType SizeOfSmallDomain = 1000;
 
 private:
   RegistrationParameterScalesEstimator(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                       //purposely not implemented
 
   /** m_TransformForward specifies which transform scales to be estimated.
    * m_TransformForward = true (default) for the moving transform parameters.
@@ -271,13 +273,11 @@ private:
   bool m_TransformForward;
 
   // sampling stategy
-  SamplingStrategyType          m_SamplingStrategy;
+  SamplingStrategyType m_SamplingStrategy;
 
 }; //class RegistrationParameterScalesEstimator
 
-
 }  // namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRegistrationParameterScalesEstimator.hxx"

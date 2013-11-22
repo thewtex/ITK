@@ -34,7 +34,6 @@
 //   ARGUMENTS:    3 3 20
 // Software Guide : EndCommandLineArgs
 
-
 //  Software Guide : BeginLatex
 //
 //  The \doxygen{VotingBinaryIterativeHoleFillingImageFilter} applies a voting
@@ -47,11 +46,9 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -61,13 +58,12 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkVotingBinaryIterativeHoleFillingImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 5 )
     {
@@ -75,7 +71,6 @@ int main( int argc, char * argv[] )
     std::cerr << argv[0] << "  inputImageFile outputImageFile radiusX radiusY iterations" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -86,14 +81,13 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   unsigned char  PixelType;
+  typedef   unsigned char PixelType;
 
-  typedef itk::Image< PixelType, 2 >   ImageType;
+  typedef itk::Image< PixelType, 2 > ImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -114,11 +108,10 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::VotingBinaryIterativeHoleFillingImageFilter<
-                                          ImageType >  FilterType;
+      ImageType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -145,7 +138,6 @@ int main( int argc, char * argv[] )
   filter->SetRadius( indexRadius );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Since the filter is expecting a binary image as input, we must specify
@@ -162,7 +154,6 @@ int main( int argc, char * argv[] )
   filter->SetBackgroundValue(   0 );
   filter->SetForegroundValue( 255 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -185,7 +176,6 @@ int main( int argc, char * argv[] )
   filter->SetMajorityThreshold( 2 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally we specify the maximum number of iterations that this filter
@@ -203,7 +193,6 @@ int main( int argc, char * argv[] )
   filter->SetMaximumNumberOfIterations( numberOfIterations );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The input to the filter can be taken from any other filter, for example
@@ -215,7 +204,6 @@ int main( int argc, char * argv[] )
   //  \index{itk::Voting\-Binary\-Iterative\-Hole\-Filling\-Image\-Filter!GetOutput()}
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   filter->SetInput( reader->GetOutput() );
@@ -255,7 +243,6 @@ int main( int argc, char * argv[] )
   //  foreground of the image, as well as smoothing the contours of the regions.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

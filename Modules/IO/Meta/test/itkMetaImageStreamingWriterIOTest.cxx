@@ -21,7 +21,8 @@
 #include "itkImageFileWriter.h"
 #include "itkMetaImageIO.h"
 
-int itkMetaImageStreamingWriterIOTest(int argc, char*  argv[])
+int
+itkMetaImageStreamingWriterIOTest(int argc, char*  argv[])
 {
   if( argc < 3)
     {
@@ -47,9 +48,9 @@ int itkMetaImageStreamingWriterIOTest(int argc, char*  argv[])
   metaImageIO->SetUseStreamedReading(true);
 
   ImageType::RegionType region;
-  ImageType::SizeType size;
-  ImageType::SizeType fullsize;
-  ImageType::IndexType index;
+  ImageType::SizeType   size;
+  ImageType::SizeType   fullsize;
+  ImageType::IndexType  index;
 
   unsigned int numberOfPieces = 10;
 
@@ -109,7 +110,7 @@ int itkMetaImageStreamingWriterIOTest(int argc, char*  argv[])
       }
 
     // Write the image
-    itk::ImageIORegion  ioregion(3);
+    itk::ImageIORegion ioregion(3);
 
     itk::ImageIORegion::IndexType index2;
     index2.push_back( index[0] );
@@ -139,7 +140,6 @@ int itkMetaImageStreamingWriterIOTest(int argc, char*  argv[])
       return EXIT_FAILURE;
       }
     } // end for pieces
-
 
   return EXIT_SUCCESS;
 }

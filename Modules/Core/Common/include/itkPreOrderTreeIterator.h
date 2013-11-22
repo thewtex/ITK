@@ -23,7 +23,7 @@
 namespace itk
 {
 template< typename TTreeType >
-class PreOrderTreeIterator:public TreeIteratorBase< TTreeType >
+class PreOrderTreeIterator : public TreeIteratorBase< TTreeType >
 {
 public:
 
@@ -53,11 +53,12 @@ private:
 
   /** Find the next node */
   const TreeNodeType * FindNextNode() const;
+
 };
 
 /** Constructor */
 template< typename TTreeType >
-PreOrderTreeIterator< TTreeType >::PreOrderTreeIterator(const TTreeType *tree, const TreeNodeType *start):
+PreOrderTreeIterator< TTreeType >::PreOrderTreeIterator(const TTreeType *tree, const TreeNodeType *start) :
   TreeIteratorBase< TTreeType >(tree, start)
 {}
 
@@ -85,16 +86,16 @@ PreOrderTreeIterator< TTreeType >::HasNext() const
 template< typename TTreeType >
 const typename PreOrderTreeIterator< TTreeType >::ValueType &
 PreOrderTreeIterator< TTreeType >::Next()
-{
+  {
   this->m_Position = const_cast< TreeNodeType * >( FindNextNode() );
   return this->m_Position->Get();
-}
+  }
 
 /** Find the next node */
 template< typename TTreeType >
 const typename PreOrderTreeIterator< TTreeType >::TreeNodeType *
 PreOrderTreeIterator< TTreeType >::FindNextNode() const
-{
+  {
   if ( this->m_Position == NULL )
     {
     return NULL;
@@ -157,16 +158,18 @@ PreOrderTreeIterator< TTreeType >::FindNextNode() const
       }
     }
   return NULL;
-}
+  }
 
 /** Clone function */
 template< typename TTreeType >
-TreeIteratorBase< TTreeType > *PreOrderTreeIterator< TTreeType >::Clone()
+TreeIteratorBase< TTreeType > *
+PreOrderTreeIterator< TTreeType >::Clone()
 {
   PreOrderTreeIterator< TTreeType > *clone = new PreOrderTreeIterator< TTreeType >(this->m_Tree, this->m_Position);
   *clone = *this;
   return clone;
 }
+
 } // end namespace itk
 
 #endif

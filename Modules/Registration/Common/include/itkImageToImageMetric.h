@@ -48,7 +48,7 @@ namespace itk
  */
 
 template< typename TFixedImage,  typename TMovingImage >
-class ImageToImageMetric:
+class ImageToImageMetric :
   public SingleValuedCostFunction
 {
 public:
@@ -87,7 +87,7 @@ public:
   typedef Transform< CoordinateRepresentationType,
                      itkGetStaticConstMacro(MovingImageDimension),
                      itkGetStaticConstMacro(FixedImageDimension) >
-  TransformType;
+    TransformType;
 
   typedef typename TransformType::Pointer         TransformPointer;
   typedef typename TransformType::InputPointType  InputPointType;
@@ -159,7 +159,8 @@ public:
   itkGetModifiableObjectMacro(Interpolator, InterpolatorType);
 
   /** Get the number of pixels considered in the computation. */
-  SizeValueType GetNumberOfMovingImageSamples(void)
+  SizeValueType
+  GetNumberOfMovingImageSamples(void)
   {
     return this->GetNumberOfPixelsCounted();
   }
@@ -192,6 +193,7 @@ public:
 
   /** Set/Get number of threads to use for computations. */
   void SetNumberOfThreads(ThreadIdType numberOfThreads);
+
   itkGetConstReferenceMacro(NumberOfThreads, ThreadIdType);
 
   /** Set/Get gradient computation. */
@@ -209,7 +211,8 @@ public:
   void SetTransformParameters(const ParametersType & parameters) const;
 
   /** Return the number of parameters required by the Transform */
-  unsigned int GetNumberOfParameters(void) const
+  unsigned int
+  GetNumberOfParameters(void) const
   {
     return m_Transform->GetNumberOfParameters();
   }
@@ -225,16 +228,19 @@ public:
   /** Number of spatial samples to used to compute metric
    *   This sets the number of samples.  */
   virtual void SetNumberOfFixedImageSamples(SizeValueType numSamples);
+
   itkGetConstReferenceMacro(NumberOfFixedImageSamples, SizeValueType);
 
   /** Number of spatial samples to used to compute metric
    *   This sets the number of samples.  */
-  void SetNumberOfSpatialSamples(SizeValueType num)
+  void
+  SetNumberOfSpatialSamples(SizeValueType num)
   {
     this->SetNumberOfFixedImageSamples(num);
   }
 
-  SizeValueType GetNumberOfSpatialSamples(void)
+  SizeValueType
+  GetNumberOfSpatialSamples(void)
   {
     return this->GetNumberOfFixedImageSamples();
   }
@@ -254,12 +260,14 @@ public:
    * This value override IntensityThreshold, Masks, and SequentialSampling. */
   void SetUseAllPixels(bool useAllPixels);
 
-  void UseAllPixelsOn(void)
+  void
+  UseAllPixelsOn(void)
   {
     this->SetUseAllPixels(true);
   }
 
-  void UseAllPixelsOff(void)
+  void
+  UseAllPixelsOff(void)
   {
     this->SetUseAllPixels(false);
   }
@@ -284,6 +292,7 @@ public:
    * the seed. This will indeed increase the non-deterministic behavior of the
    * metric. */
   void ReinitializeSeed();
+
   void ReinitializeSeed(int seed);
 
   /** This boolean flag is only relevant when this metric is used along
@@ -309,14 +318,16 @@ public:
   typedef MultiThreader MultiThreaderType;
   /** Get the Threader. */
   itkGetModifiableObjectMacro(Threader, MultiThreaderType);
-  const TransformPointer * GetThreaderTransform()
+  const TransformPointer *
+  GetThreaderTransform()
   {
     return m_ThreaderTransform;
   }
 
 protected:
   ImageToImageMetric();
-  virtual ~ImageToImageMetric();
+  virtual
+  ~ImageToImageMetric();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -364,7 +375,7 @@ public:
   /** Container to store a set of points and fixed image values. */
   FixedImageSampleContainer m_FixedImageSamples;
 
-  SizeValueType          m_NumberOfParameters;
+  SizeValueType m_NumberOfParameters;
 
   SizeValueType m_NumberOfFixedImageSamples;
   //m_NumberOfPixelsCounted must be mutable because the const
@@ -414,8 +425,8 @@ public:
   itkStaticConstMacro(DeformationSplineOrder, unsigned int, 3);
 
   typedef BSplineBaseTransform< CoordinateRepresentationType,
-                                       FixedImageType ::ImageDimension,
-                                      itkGetStaticConstMacro(DeformationSplineOrder) >             BSplineTransformType;
+                                FixedImageType::ImageDimension,
+                                itkGetStaticConstMacro(DeformationSplineOrder) >             BSplineTransformType;
 
   typedef typename BSplineTransformType::WeightsType      BSplineTransformWeightsType;
   typedef typename BSplineTransformWeightsType::ValueType WeightsValueType;
@@ -425,9 +436,9 @@ public:
   typedef typename BSplineTransformIndexArrayType::ValueType     IndexValueType;
   typedef          Array2D< IndexValueType >                     BSplineTransformIndicesArrayType;
 
-  typedef std::vector< MovingImagePointType > MovingImagePointArrayType;
-  typedef std::vector< bool >                 BooleanArrayType;
-  typedef FixedArray< SizeValueType,  FixedImageType ::ImageDimension > BSplineParametersOffsetType;
+  typedef std::vector< MovingImagePointType >                          MovingImagePointArrayType;
+  typedef std::vector< bool >                                          BooleanArrayType;
+  typedef FixedArray< SizeValueType,  FixedImageType::ImageDimension > BSplineParametersOffsetType;
   /**
    * If a BSplineInterpolationFunction is used, this class obtain
    * image derivatives from the BSpline interpolator. Otherwise,
@@ -435,13 +446,13 @@ public:
    */
   typedef BSplineInterpolateImageFunction< MovingImageType,
                                            CoordinateRepresentationType >
-  BSplineInterpolatorType;
+    BSplineInterpolatorType;
   /** Typedefs for using central difference calculator. */
   typedef CentralDifferenceImageFunction< MovingImageType,
                                           CoordinateRepresentationType >
-  DerivativeFunctionType;
+    DerivativeFunctionType;
   typedef CovariantVector< double, itkGetStaticConstMacro(MovingImageDimension) >
-  ImageDerivativesType;
+    ImageDerivativesType;
 
   typename BSplineTransformType::Pointer m_BSplineTransform;
 
@@ -458,7 +469,7 @@ public:
   mutable BSplineTransformWeightsType    m_BSplineTransformWeights;
   mutable BSplineTransformIndexArrayType m_BSplineTransformIndices;
 
-  mutable BSplineTransformWeightsType    *m_ThreaderBSplineTransformWeights;
+  mutable BSplineTransformWeightsType *   m_ThreaderBSplineTransformWeights;
   mutable BSplineTransformIndexArrayType *m_ThreaderBSplineTransformIndices;
 
   virtual void PreComputeTransformValues(void);
@@ -497,7 +508,7 @@ public:
 
   struct MultiThreaderParameterType {
     ImageToImageMetric *metric;
-  };
+    };
 
   MultiThreaderType::Pointer m_Threader;
   MultiThreaderParameterType m_ThreaderParameter;
@@ -519,17 +530,23 @@ public:
 
   virtual inline void       GetValueThread(ThreadIdType threadID) const;
 
-  virtual inline void       GetValueThreadPreProcess(
+  virtual inline void
+  GetValueThreadPreProcess(
     ThreadIdType itkNotUsed(threadID),
     bool itkNotUsed(withinSampleThread) ) const
   {}
-  virtual inline bool       GetValueThreadProcessSample(
+  virtual inline bool
+  GetValueThreadProcessSample(
     ThreadIdType itkNotUsed(threadID),
     SizeValueType itkNotUsed(fixedImageSample),
     const MovingImagePointType & itkNotUsed(mappedPoint),
     double itkNotUsed(movingImageValue) ) const
-  { return false; }
-  virtual inline void       GetValueThreadPostProcess(
+  {
+    return false;
+  }
+
+  virtual inline void
+  GetValueThreadPostProcess(
     ThreadIdType itkNotUsed(threadID),
     bool itkNotUsed(withinSampleThread) ) const
   {}
@@ -548,18 +565,24 @@ public:
 
   virtual inline void  GetValueAndDerivativeThread(ThreadIdType threadID) const;
 
-  virtual inline void  GetValueAndDerivativeThreadPreProcess(
+  virtual inline void
+  GetValueAndDerivativeThreadPreProcess(
     ThreadIdType itkNotUsed(threadID),
     bool itkNotUsed(withinSampleThread) ) const
   {}
-  virtual inline bool  GetValueAndDerivativeThreadProcessSample(
+  virtual inline bool
+  GetValueAndDerivativeThreadProcessSample(
     ThreadIdType itkNotUsed(threadID),
     SizeValueType itkNotUsed(fixedImageSample),
     const MovingImagePointType & itkNotUsed(mappedPoint),
     double itkNotUsed(movingImageValue),
     const ImageDerivativesType & itkNotUsed(movingImageGradientValue) ) const
-  { return false; }
-  virtual inline void  GetValueAndDerivativeThreadPostProcess(
+  {
+    return false;
+  }
+
+  virtual inline void
+  GetValueAndDerivativeThreadPostProcess(
     ThreadIdType itkNotUsed(threadID),
     bool itkNotUsed(withinSampleThread) ) const
   {}

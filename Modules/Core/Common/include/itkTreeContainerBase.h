@@ -31,7 +31,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TValueType >
-class TreeContainerBase:public Object
+class TreeContainerBase : public Object
 {
 public:
 
@@ -71,12 +71,16 @@ public:
   virtual const TreeNode< TValueType > * GetRoot() const = 0;
 
   /** Set if the tree is a subtree */
-  void SetSubtree(bool val) { m_SubTree = val; }
+  void
+  SetSubtree(bool val) {
+    m_SubTree = val;
+  }
 
 protected:
 
   TreeContainerBase() : m_SubTree(false) {}
-  virtual ~TreeContainerBase() {}
+  virtual
+  ~TreeContainerBase() {}
   bool m_SubTree;
 };
 } // namespace itk

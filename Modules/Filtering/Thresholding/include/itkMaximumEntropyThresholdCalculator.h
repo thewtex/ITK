@@ -53,10 +53,10 @@ class MaximumEntropyThresholdCalculator : public HistogramThresholdCalculator<TH
 {
 public:
   /** Standard class typedefs. */
-  typedef MaximumEntropyThresholdCalculator      Self;
-  typedef Object                                 Superclass;
-  typedef SmartPointer<Self>                     Pointer;
-  typedef SmartPointer<const Self>               ConstPointer;
+  typedef MaximumEntropyThresholdCalculator Self;
+  typedef Object                            Superclass;
+  typedef SmartPointer<Self>                Pointer;
+  typedef SmartPointer<const Self>          ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -65,22 +65,22 @@ public:
   itkTypeMacro(MaximumEntropyThresholdCalculator, Object);
 
   /** Type definition for the input image. */
-  typedef THistogram  HistogramType;
-  typedef TOutput     OutputType;
+  typedef THistogram HistogramType;
+  typedef TOutput    OutputType;
 
 protected:
-  MaximumEntropyThresholdCalculator() {};
-  virtual ~MaximumEntropyThresholdCalculator() {};
+  MaximumEntropyThresholdCalculator() {}
+  virtual
+  ~MaximumEntropyThresholdCalculator() {}
   void GenerateData(void);
 
 private:
   MaximumEntropyThresholdCalculator(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                    //purposely not implemented
 
 };
 
 } // end namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkMaximumEntropyThresholdCalculator.hxx"

@@ -731,6 +731,7 @@ AutomaticTopologyMeshSource< TOutputMesh >
   pointIDs[7] = AddPoint(p7);
   return AddHexahedron(pointIDs);
 }
+
 } /** end namespace itk. */
 
 #endif

@@ -57,7 +57,7 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TSparseImageType >
-class NormalVectorDiffusionFunction:
+class NormalVectorDiffusionFunction :
   public NormalVectorFunctionBase< TSparseImageType >
 {
 public:
@@ -92,34 +92,47 @@ public:
       parameter value of 0 indicates isotropic diffusion and is the
       default. Parameter value 1 is anisotropic diffusion. When using
       anisotropic diffusion the conductance parameter should also be set. */
-  void SetNormalProcessType(int npt)
-  { m_NormalProcessType = npt; }
+  void
+  SetNormalProcessType(int npt)
+  {
+    m_NormalProcessType = npt;
+  }
 
   /** This method returns the isotropic/anisotropic filtering parameter. */
-  int GetNormalProcessType() const
-  { return m_NormalProcessType; }
+  int
+  GetNormalProcessType() const
+  {
+    return m_NormalProcessType;
+  }
 
   /** This method sets the conductance parameter used in anisotropic
    * filtering. Useful values for processing 2D and 3D shapes are between
    *  0.1 and 0.25. Lower values preserve more shape features, higher values
    *  smooth more. As the conductance parameter large, the processing becomes
    *  isotropic. Default is 0. */
-  void SetConductanceParameter(NodeValueType cp)
+  void
+  SetConductanceParameter(NodeValueType cp)
   {
     m_ConductanceParameter = cp + static_cast< NodeValueType >( 0.001 );
     // we add a minimum conductance to avoid divide by zero
     // can make this a parameter.
     m_FluxStopConstant = static_cast< NodeValueType >
-                         ( -1.0 / ( m_ConductanceParameter * m_ConductanceParameter ) );
+      ( -1.0 / ( m_ConductanceParameter * m_ConductanceParameter ) );
   }
 
   /** This method returns the conductance parameter. */
-  NodeValueType GetConductanceParameter() const
-  { return m_ConductanceParameter; }
+  NodeValueType
+  GetConductanceParameter() const
+  {
+    return m_ConductanceParameter;
+  }
 
   /** This method returns the internal variable FluxStopConstant. */
-  NodeValueType GetFluxStopConstant() const
-  { return m_FluxStopConstant; }
+  NodeValueType
+  GetFluxStopConstant() const
+  {
+    return m_FluxStopConstant;
+  }
 
   /** This function is called from LevelSetNormalImageFilter for all of the
    *  nodes to compute and store the flux vectors (first derivatives of the
@@ -139,7 +152,8 @@ protected:
 
   /** The method called in anisotropic diffusion to inhibit diffusion across
       areas with large curvature. */
-  NodeValueType FluxStopFunction(const NodeValueType v) const
+  NodeValueType
+  FluxStopFunction(const NodeValueType v) const
   {
     // the slow exp function could be replaced with a lookup table
     if ( v <= 0.0 ) { return NumericTraits< NodeValueType >::One; }
@@ -159,6 +173,7 @@ private:
 
   NormalVectorDiffusionFunction(const Self &); //purposely not implemented
   void operator=(const Self &);                //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -50,25 +50,29 @@ public:
   VectorMagnitude() {}
   ~VectorMagnitude() {}
 
-  bool operator!=(const VectorMagnitude &) const
+  bool
+  operator!=(const VectorMagnitude &) const
   {
     return false;
   }
 
-  bool operator==(const VectorMagnitude & other) const
+  bool
+  operator==(const VectorMagnitude & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return static_cast< TOutput >( A.GetNorm() );
   }
+
 };
 }
 
 template< typename TInputImage, typename TOutputImage >
-class VectorMagnitudeImageFilter:
+class VectorMagnitudeImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::VectorMagnitude< typename TInputImage::PixelType,
@@ -78,9 +82,9 @@ public:
   /** Standard class typedefs. */
   typedef VectorMagnitudeImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::VectorMagnitude< typename TInputImage::PixelType,
-                              typename TOutputImage::PixelType > > Superclass;
+      TInputImage, TOutputImage,
+      Functor::VectorMagnitude< typename TInputImage::PixelType,
+                                typename TOutputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -101,11 +105,13 @@ public:
 
 protected:
   VectorMagnitudeImageFilter() {}
-  virtual ~VectorMagnitudeImageFilter() {}
+  virtual
+  ~VectorMagnitudeImageFilter() {}
 
 private:
   VectorMagnitudeImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);                 //purposely not implemented
+  void operator=(const Self &);             //purposely not implemented
+
 };
 } // end namespace itk
 

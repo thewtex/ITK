@@ -50,7 +50,8 @@
 #include "itkCovarianceSampleFilter.h"
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -62,7 +63,8 @@ int main()
 
   // Software Guide : BeginCodeSnippet
   const unsigned int MeasurementVectorLength = 3;
-  typedef itk::Vector< float, MeasurementVectorLength > MeasurementVectorType;
+
+  typedef itk::Vector< float, MeasurementVectorLength >        MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
   SampleType::Pointer sample = SampleType::New();
   sample->SetMeasurementVectorSize( MeasurementVectorLength );

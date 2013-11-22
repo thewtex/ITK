@@ -97,5 +97,6 @@ SparseFrequencyContainer2
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end of namespace Statistics
 } // end of namespace itk

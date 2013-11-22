@@ -43,7 +43,8 @@ NormalVariateGenerator::~NormalVariateGenerator()
   delete[] m_Vec1;
 }
 
-void NormalVariateGenerator::PrintSelf(std::ostream & os, Indent indent) const
+void
+NormalVariateGenerator::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
@@ -68,7 +69,8 @@ void NormalVariateGenerator::PrintSelf(std::ostream & os, Indent indent) const
   os << indent << "actualRSD: " << m_ActualRSD << std::endl;
 }
 
-void NormalVariateGenerator::Initialize(int randomSeed)
+void
+NormalVariateGenerator::Initialize(int randomSeed)
 {
   // m_Random Seed was originally getpid()
 
@@ -98,7 +100,8 @@ void NormalVariateGenerator::Initialize(int randomSeed)
   m_ActualRSD = 0.0;
 }
 
-double NormalVariateGenerator::GetVariate()
+double
+NormalVariateGenerator::GetVariate()
 {
   if ( --m_Gaussfaze )
     {
@@ -112,7 +115,8 @@ double NormalVariateGenerator::GetVariate()
 
 /*      -----------------------------------------------------   */
 
-double NormalVariateGenerator::FastNorm(void)
+double
+NormalVariateGenerator::FastNorm(void)
 {
   int    i;
   int    inc    = 0;
@@ -362,5 +366,6 @@ recalcsumsq:
   m_ActualRSD = 1.0 / ts;   /* Reciprocal of actual Standard Devtn */
   goto startpass;
 }
+
 } // end of name space Statistics
 } // end of name space itk

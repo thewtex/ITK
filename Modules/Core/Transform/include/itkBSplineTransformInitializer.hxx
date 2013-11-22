@@ -39,8 +39,7 @@ BSplineTransformInitializer<TTransform, TImage>
 template<typename TTransform, typename TImage>
 BSplineTransformInitializer<TTransform, TImage>
 ::~BSplineTransformInitializer()
-{
-}
+{}
 
 template<typename TTransform, typename TImage>
 void
@@ -49,7 +48,7 @@ BSplineTransformInitializer<TTransform, TImage>
 {
   itkDebugMacro( "setting m_TransformDomainMeshSize to " << meshSize );
   if( this->m_SetTransformDomainMeshSizeViaInitializer == false ||
-    this->m_TransformDomainMeshSize != meshSize )
+      this->m_TransformDomainMeshSize != meshSize )
     {
     this->m_SetTransformDomainMeshSizeViaInitializer = true;
     this->m_TransformDomainMeshSize = meshSize;
@@ -78,9 +77,9 @@ BSplineTransformInitializer<TTransform, TImage>
     return;
     }
 
-  OriginType                        transformDomainOrigin;
-  PhysicalDimensionsType            transformDomainPhysicalDimensions;
-  DirectionType                     transformDomainDirection;
+  OriginType             transformDomainOrigin;
+  PhysicalDimensionsType transformDomainPhysicalDimensions;
+  DirectionType          transformDomainDirection;
 
   // Determine the image corners.  We keep track of the relative location of
   // the corners using a binary labeling system.  For example, in a 3-D
@@ -104,16 +103,16 @@ BSplineTransformInitializer<TTransform, TImage>
   // origin to determine these axes.  Thus bitwise operators are used
   // throughout the code so that the initializer is generalized to n-dimensions.
 
-  typedef typename ImagePointType::CoordRepType      CoordRepType;
+  typedef typename ImagePointType::CoordRepType CoordRepType;
 
-  typedef PointSet<CoordRepType, SpaceDimension>     PointSetType;
+  typedef PointSet<CoordRepType, SpaceDimension> PointSetType;
   typename PointSetType::Pointer cornerPoints = PointSetType::New();
   cornerPoints->Initialize();
 
-  typedef typename PointSetType::PointType           PointType;
-  typedef typename PointSetType::PointIdentifier     PointIdentifier;
-  typedef typename PointType::RealType               RealType;
-  typedef typename PointType::VectorType             VectorType;
+  typedef typename PointSetType::PointType       PointType;
+  typedef typename PointSetType::PointIdentifier PointIdentifier;
+  typedef typename PointType::RealType           RealType;
+  typedef typename PointType::VectorType         VectorType;
 
   typedef ContinuousIndex<CoordRepType, SpaceDimension> ContinuousIndexType;
 
@@ -138,8 +137,10 @@ BSplineTransformInitializer<TTransform, TImage>
     for( unsigned int i = 0; i < SpaceDimension; i++ )
       {
       whichIndex[i] = startIndex[i] + static_cast<CoordRepType>( ( ( d >> i ) &
-        1 ) * ( this->m_Image->GetRequestedRegion().GetSize()[i] + 2.0 *
-        BSplineTransformDomainEpsilon ) );
+                                                                   1 ) *
+                                                                 ( this->m_Image->GetRequestedRegion().GetSize()[i] +
+                                                                   2.0 *
+                                                                   BSplineTransformDomainEpsilon ) );
       }
     ImagePointType point;
     this->m_Image->TransformContinuousIndexToPhysicalPoint( whichIndex, point );
@@ -152,15 +153,15 @@ BSplineTransformInitializer<TTransform, TImage>
   // point is closest to the minimum of the bounding box.
 
   typedef BoundingBox<unsigned int, SpaceDimension,
-    typename PointSetType::CoordRepType,
-    typename PointSetType::PointsContainer> BoundingBoxType;
+                      typename PointSetType::CoordRepType,
+                      typename PointSetType::PointsContainer> BoundingBoxType;
   typename BoundingBoxType::Pointer bbox = BoundingBoxType::New();
   bbox->SetPoints( cornerPoints->GetPoints() );
   bbox->ComputeBoundingBox();
 
   transformDomainOrigin.Fill( 0 );
   PointIdentifier transformDomainOriginId = 0;
-  RealType minDistance = NumericTraits<RealType>::max();
+  RealType        minDistance = NumericTraits<RealType>::max();
 
   for( unsigned int d = 0; d < cornerPoints->GetNumberOfPoints(); d++ )
     {
@@ -169,7 +170,7 @@ BSplineTransformInitializer<TTransform, TImage>
     cornerPoints->GetPoint( d, &corner );
 
     RealType distance = corner.SquaredEuclideanDistanceTo(
-      bbox->GetMinimum() );
+        bbox->GetMinimum() );
     if( distance < minDistance )
       {
       transformDomainOrigin.CastFrom( corner );
@@ -188,7 +189,7 @@ BSplineTransformInitializer<TTransform, TImage>
   // axis.
 
   PointIdentifier minCornerId[SpaceDimension];
-  double minAngle[SpaceDimension];
+  double          minAngle[SpaceDimension];
 
   for( unsigned int d = 0; d < SpaceDimension; d++ )
     {
@@ -200,7 +201,7 @@ BSplineTransformInitializer<TTransform, TImage>
     for( unsigned int i = 0; i < SpaceDimension; i++ )
       {
       PointIdentifier oppositeCornerId = static_cast<PointIdentifier>(
-        vcl_pow( 2.0, static_cast<int>( i ) ) ) ^ transformDomainOriginId;
+          vcl_pow( 2.0, static_cast<int>( i ) ) ) ^ transformDomainOriginId;
 
       PointType corner;
       corner.Fill( 0.0 );

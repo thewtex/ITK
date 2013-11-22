@@ -95,6 +95,7 @@ ThresholdLabelerImageFilter< TInputImage, TOutputImage >
   this->GetFunctor().SetThresholds(m_RealThresholds);
   this->GetFunctor().SetLabelOffset(m_LabelOffset);
 }
+
 } // end namespace itk
 
 #endif

@@ -36,7 +36,7 @@ namespace itk
  * \endwiki
  */
 template< typename TImage >
-class RGBToVectorImageAdaptor:public
+class RGBToVectorImageAdaptor : public
   ImageAdaptor< TImage,
                 Accessor::RGBToVectorPixelAccessor<
                   typename TImage::PixelType::ComponentType
@@ -67,11 +67,13 @@ public:
 
 protected:
   RGBToVectorImageAdaptor() {}
-  virtual ~RGBToVectorImageAdaptor() {}
+  virtual
+  ~RGBToVectorImageAdaptor() {}
 
 private:
   RGBToVectorImageAdaptor(const Self &); //purposely not implemented
   void operator=(const Self &);          //purposely not implemented
+
 };
 } // end namespace itk
 

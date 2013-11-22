@@ -16,15 +16,14 @@
  *
  *=========================================================================*/
 
-
 #include "itkFastMarchingImageFilterBase.h"
 #include "itkFastMarchingNumberOfElementsStoppingCriterion.h"
 
 #include "itkBinaryThresholdImageFilter.h"
 #include "itkImageRegionConstIterator.h"
 
-
-int itkFastMarchingImageFilterRealWithNumberOfElementsTest(int , char* [] )
+int
+itkFastMarchingImageFilterRealWithNumberOfElementsTest(int , char* [] )
 {
   // create a fastmarching object
   typedef float PixelType;
@@ -33,7 +32,7 @@ int itkFastMarchingImageFilterRealWithNumberOfElementsTest(int , char* [] )
   typedef itk::Image< PixelType, Dimension > FloatImageType;
 
   typedef itk::FastMarchingNumberOfElementsStoppingCriterion< FloatImageType, FloatImageType >
-      CriterionType;
+    CriterionType;
 
   typedef itk::FastMarchingImageFilterBase< FloatImageType, FloatImageType >
     FastMarchingType;
@@ -44,8 +43,8 @@ int itkFastMarchingImageFilterRealWithNumberOfElementsTest(int , char* [] )
   FastMarchingType::Pointer marcher = FastMarchingType::New();
   marcher->SetStoppingCriterion( criterion );
 
-  typedef FastMarchingType::NodeType      NodeType;
-  typedef FastMarchingType::NodePairType  NodePairType;
+  typedef FastMarchingType::NodeType     NodeType;
+  typedef FastMarchingType::NodePairType NodePairType;
 //  typedef FastMarchingType::NodeContainerType NodeContainerType;
   typedef FastMarchingType::NodePairContainerType NodePairContainerType;
 
@@ -109,7 +108,7 @@ int itkFastMarchingImageFilterRealWithNumberOfElementsTest(int , char* [] )
   marcher->SetOutputSize( size );
 
   // setup a speed image of ones
-  FloatImageType::Pointer speedImage = FloatImageType::New();
+  FloatImageType::Pointer    speedImage = FloatImageType::New();
   FloatImageType::RegionType region;
   region.SetSize( size );
   speedImage->SetLargestPossibleRegion( region );
@@ -117,7 +116,7 @@ int itkFastMarchingImageFilterRealWithNumberOfElementsTest(int , char* [] )
   speedImage->Allocate();
 
   itk::ImageRegionIterator<FloatImageType>
-    speedIter( speedImage, speedImage->GetBufferedRegion() );
+  speedIter( speedImage, speedImage->GetBufferedRegion() );
   while ( !speedIter.IsAtEnd() )
     {
     speedIter.Set( 1.0 );
@@ -155,7 +154,7 @@ int itkFastMarchingImageFilterRealWithNumberOfElementsTest(int , char* [] )
     {
     thresholder->Update();
     }
-   catch( itk::ExceptionObject & excep )
+  catch( itk::ExceptionObject & excep )
     {
     std::cerr << "Exception caught !" << std::endl;
     std::cerr << excep << std::endl;

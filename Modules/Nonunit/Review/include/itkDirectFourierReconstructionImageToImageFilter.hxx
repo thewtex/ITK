@@ -26,7 +26,8 @@ namespace itk
  * Initialize member variables with meaningful values.
  */
 template< typename TInputImage, typename TOutputImage >
-DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::DirectFourierReconstructionImageToImageFilter():
+DirectFourierReconstructionImageToImageFilter< TInputImage,
+                                               TOutputImage >::DirectFourierReconstructionImageToImageFilter() :
   Superclass()
 {
   const double RADIANS = 1.0;
@@ -49,8 +50,9 @@ DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::Dire
  * Print out class state (member variables)
  */
 template< typename TInputImage, typename TOutputImage >
-void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::PrintSelf(std::ostream & os,
-                                                                                                   Indent indent) const
+void
+DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::PrintSelf(std::ostream & os,
+                                                                                      Indent indent) const
 {
   // call the superclass' implementation of this method
   Superclass::PrintSelf(os, indent);
@@ -79,7 +81,8 @@ void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >:
 * Calculate image boundaries and define output regions, spacing, origin etc.
 */
 template< typename TInputImage, typename TOutputImage >
-void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::GenerateOutputInformation()
+void
+DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::GenerateOutputInformation()
 {
   // call the superclass' implementation of this method
   Superclass::GenerateOutputInformation();
@@ -133,13 +136,15 @@ void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >:
  * Calculate necessary input image boundaries
  */
 template< typename TInputImage, typename TOutputImage >
-void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::GenerateInputRequestedRegion()
+void
+DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
   Superclass::GenerateInputRequestedRegion();
 
   OutputImagePointer outputImage = this->GetOutput();
   InputImagePointer  inputImage = const_cast< InputImageType * >( this->GetInput() );
+
   if ( !inputImage || !outputImage )
     {
     return;
@@ -165,7 +170,8 @@ void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >:
  * Actual computation
  */
 template< typename TInputImage, typename TOutputImage >
-void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::GenerateData()
+void
+DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >::GenerateData()
 {
   OutputImagePointer     outputImage = this->GetOutput();
   ConstInputImagePointer inputImage = this->GetInput();
@@ -185,7 +191,7 @@ void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >:
 
   // the number of projections needed to cover 180 degrees
   const unsigned int alpha_size = Math::Floor< unsigned int >(
-    ( 180 * ( inputROISize[m_AlphaDirection] ) ) / m_AlphaRange);
+      ( 180 * ( inputROISize[m_AlphaDirection] ) ) / m_AlphaRange);
   const double last_alpha_size = 1 + ( 180.0 * ( inputROISize[m_AlphaDirection] ) ) / m_AlphaRange - alpha_size;
   inputROIStart[m_AlphaDirection] += ( inputROISize[m_AlphaDirection] - alpha_size ) / 2;
   inputROISize[m_AlphaDirection] = alpha_size;
@@ -295,7 +301,7 @@ void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >:
 
       // link fft line into interpolator stack ...
       FFTLineInterpolator[inputIt.GetIndex()[m_AlphaDirection] - inputROIStart[m_AlphaDirection]]->SetInputImage(
-         FFT->GetOutput() );
+        FFT->GetOutput() );
 
       // ... and unlink from upstream pipeline
       FFT->GetOutput()->DisconnectPipeline();
@@ -423,6 +429,7 @@ void DirectFourierReconstructionImageToImageFilter< TInputImage, TOutputImage >:
 
   delete[] FFTLineInterpolator;
 }
+
 } // namespace
 
 #endif

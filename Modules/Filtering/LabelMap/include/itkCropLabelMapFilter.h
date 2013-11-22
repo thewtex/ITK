@@ -52,7 +52,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TInputImage >
-class CropLabelMapFilter:public ChangeRegionLabelMapFilter< TInputImage >
+class CropLabelMapFilter : public ChangeRegionLabelMapFilter< TInputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -99,7 +99,8 @@ public:
   itkSetMacro(LowerBoundaryCropSize, SizeType);
   itkGetMacro(LowerBoundaryCropSize, SizeType);
 
-  void SetCropSize(const SizeType & size)
+  void
+  SetCropSize(const SizeType & size)
   {
     this->SetUpperBoundaryCropSize(size);
     this->SetLowerBoundaryCropSize(size);

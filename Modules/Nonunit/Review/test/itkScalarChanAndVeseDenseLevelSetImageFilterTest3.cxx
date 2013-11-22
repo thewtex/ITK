@@ -19,22 +19,23 @@
 #include "itkScalarChanAndVeseDenseLevelSetImageFilter.h"
 #include "itkUnconstrainedRegionBasedLevelSetFunctionSharedData.h"
 
-int itkScalarChanAndVeseDenseLevelSetImageFilterTest3( int, char* [] )
+int
+itkScalarChanAndVeseDenseLevelSetImageFilterTest3( int, char* [] )
 {
   const unsigned int Dimension = 3;
 
-  typedef double                                  PixelType;
-  typedef itk::Image< PixelType, Dimension >      ImageType;
-  typedef itk::Image< float, Dimension >          FeatureImageType;
-  typedef ImageType                               OutputImageType;
+  typedef double                             PixelType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
+  typedef itk::Image< float, Dimension >     FeatureImageType;
+  typedef ImageType                          OutputImageType;
 
-  typedef itk::ScalarChanAndVeseLevelSetFunctionData< ImageType, FeatureImageType >  DataHelperType;
+  typedef itk::ScalarChanAndVeseLevelSetFunctionData< ImageType, FeatureImageType > DataHelperType;
 
   typedef itk::UnconstrainedRegionBasedLevelSetFunctionSharedData< ImageType, FeatureImageType, DataHelperType >
     SharedDataHelperType;
 
   typedef itk::ScalarChanAndVeseLevelSetFunction<
-    ImageType, FeatureImageType, SharedDataHelperType >     RegionBasedLevelSetFunctionType;
+      ImageType, FeatureImageType, SharedDataHelperType >     RegionBasedLevelSetFunctionType;
 
   RegionBasedLevelSetFunctionType::Pointer function = RegionBasedLevelSetFunctionType::New();
   if( function.IsNull() )
@@ -43,8 +44,8 @@ int itkScalarChanAndVeseDenseLevelSetImageFilterTest3( int, char* [] )
     }
 
   typedef itk::ScalarChanAndVeseDenseLevelSetImageFilter<
-    ImageType, FeatureImageType, OutputImageType,
-    RegionBasedLevelSetFunctionType, SharedDataHelperType > FilterType;
+      ImageType, FeatureImageType, OutputImageType,
+      RegionBasedLevelSetFunctionType, SharedDataHelperType > FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 

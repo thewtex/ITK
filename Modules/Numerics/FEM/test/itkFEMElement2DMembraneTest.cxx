@@ -21,7 +21,8 @@
 #include <iostream>
 
 //
-int itkFEMElement2DMembraneTest(int, char *[])
+int
+itkFEMElement2DMembraneTest(int, char *[])
 {
 
   typedef itk::fem::Element ElementType;

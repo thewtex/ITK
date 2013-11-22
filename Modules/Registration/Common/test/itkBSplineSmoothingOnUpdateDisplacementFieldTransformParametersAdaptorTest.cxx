@@ -19,10 +19,12 @@
 #include "itkBSplineSmoothingOnUpdateDisplacementFieldTransform.h"
 #include "itkBSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor.h"
 
-int itkBSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptorTest(int, char * [] )
+int
+itkBSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptorTest(int, char * [] )
 {
   const unsigned int SpaceDimension = 3;
-  typedef double CoordinateRepType;
+
+  typedef double                                                                                     CoordinateRepType;
   typedef itk::BSplineSmoothingOnUpdateDisplacementFieldTransform<CoordinateRepType, SpaceDimension> TransformType;
 
   /**
@@ -56,7 +58,6 @@ int itkBSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptorTest(i
   zeroVector.Fill( 0 );
   displacementField->FillBuffer( zeroVector );
 
-
   TransformType::OutputVectorType nonzeroVector;
   nonzeroVector.Fill( 10.3 );
 
@@ -77,7 +78,7 @@ int itkBSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptorTest(i
   TransformType::OutputPointType outputPointBeforeAdapt = transform->TransformPoint( point );
 
   SpacingType spacingBefore = transform->GetDisplacementField()->GetSpacing();
-  SizeType sizeBefore = transform->GetDisplacementField()->GetLargestPossibleRegion().GetSize();
+  SizeType    sizeBefore = transform->GetDisplacementField()->GetLargestPossibleRegion().GetSize();
 
   /**
    * Instantiate the adaptor
@@ -122,9 +123,8 @@ int itkBSplineSmoothingOnUpdateDisplacementFieldTransformParametersAdaptorTest(i
     return EXIT_FAILURE;
     }
 
-
   SpacingType spacingAfter = transform->GetDisplacementField()->GetSpacing();
-  SizeType sizeAfter = transform->GetDisplacementField()->GetLargestPossibleRegion().GetSize();
+  SizeType    sizeAfter = transform->GetDisplacementField()->GetLargestPossibleRegion().GetSize();
 
   std::cout << "Spacing: " << spacingBefore << "(before), " << spacingAfter << "(after)." << std::endl;
   std::cout << "Size: " << sizeBefore << "(before), " << sizeAfter << "(after)." << std::endl;

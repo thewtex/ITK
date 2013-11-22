@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
-class MeanSquareRegistrationFunction:
+class MeanSquareRegistrationFunction :
   public PDEDeformableRegistrationFunction< TFixedImage,
                                             TMovingImage, TDisplacementField >
 {
@@ -84,7 +84,7 @@ public:
   typedef typename Superclass::DisplacementFieldType DisplacementFieldType;
   typedef typename DisplacementFieldType::PixelType  DisplacementFieldPixelType;
   typedef typename Superclass::DisplacementFieldTypePointer
-  DisplacementFieldTypePointer;
+    DisplacementFieldTypePointer;
 
   /** Inherit some enums from the superclass. */
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
@@ -111,20 +111,30 @@ public:
   typedef typename GradientCalculatorType::Pointer         GradientCalculatorPointer;
 
   /** Set the moving image interpolator. */
-  void SetMovingImageInterpolator(InterpolatorType *ptr)
-  { m_MovingImageInterpolator = ptr; }
+  void
+  SetMovingImageInterpolator(InterpolatorType *ptr)
+  {
+    m_MovingImageInterpolator = ptr;
+  }
 
   /** Get the moving image interpolator. */
-  InterpolatorType * GetMovingImageInterpolator(void)
-  { return m_MovingImageInterpolator; }
+  InterpolatorType *
+  GetMovingImageInterpolator(void)
+  {
+    return m_MovingImageInterpolator;
+  }
 
   /** This class uses a constant timestep of 1. */
-  virtual TimeStepType ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) ) const
-  { return m_TimeStep; }
+  virtual TimeStepType
+  ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) ) const
+  {
+    return m_TimeStep;
+  }
 
   /** Return a pointer to a global data structure that is passed to
    * this object from the solver at each calculation.  */
-  virtual void * GetGlobalDataPointer() const
+  virtual void *
+  GetGlobalDataPointer() const
   {
     GlobalDataStruct *global = new GlobalDataStruct();
 
@@ -132,8 +142,11 @@ public:
   }
 
   /** Release memory for global data structure. */
-  virtual void ReleaseGlobalDataPointer(void *GlobalData) const
-  { delete (GlobalDataStruct *)GlobalData;  }
+  virtual void
+  ReleaseGlobalDataPointer(void *GlobalData) const
+  {
+    delete (GlobalDataStruct *)GlobalData;
+  }
 
   /** Set the object's state before each iteration. */
   virtual void InitializeIteration();
@@ -156,7 +169,7 @@ protected:
    * iterators for the fixed image. */
   struct GlobalDataStruct {
     FixedImageNeighborhoodIteratorType m_FixedImageIterator;
-  };
+    };
 
 private:
   MeanSquareRegistrationFunction(const Self &); //purposely not implemented

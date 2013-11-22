@@ -21,9 +21,11 @@
 #include "itkStreamingImageFilter.h"
 
 template <typename TPixel>
-int HDF5ReadWriteTest2(const char *fileName)
+int
+HDF5ReadWriteTest2(const char *fileName)
 {
   int success(EXIT_SUCCESS);
+
   typedef typename itk::Image<TPixel,3> ImageType;
   typename ImageType::RegionType imageRegion;
   typename ImageType::SizeType size;
@@ -44,8 +46,8 @@ int HDF5ReadWriteTest2(const char *fileName)
     itk::IOTestHelper::AllocateImageFromRegionAndSpacing<ImageType>(imageRegion,spacing);
   //
   // fill image buffer
-  vnl_random randgen(12345678);
-  itk::ImageRegionIterator<ImageType> it(im,im->GetLargestPossibleRegion());
+  vnl_random                          randgen(12345678);
+  itk::ImageRegionIterator<ImageType> it(im,im->GetLargestPossibleRegion() );
   for(it.GoToBegin(); !it.IsAtEnd(); ++it)
     {
     TPixel pix;
@@ -78,11 +80,11 @@ int HDF5ReadWriteTest2(const char *fileName)
 
   typedef typename itk::PipelineMonitorImageFilter<ImageType> MonitorFilter;
   typename MonitorFilter::Pointer monitor = MonitorFilter::New();
-  monitor->SetInput(reader->GetOutput());
+  monitor->SetInput(reader->GetOutput() );
 
   typedef typename itk::StreamingImageFilter<ImageType, ImageType> StreamingFilter;
   typename StreamingFilter::Pointer streamer = StreamingFilter::New();
-  streamer->SetInput(monitor->GetOutput());
+  streamer->SetInput(monitor->GetOutput() );
   streamer->SetNumberOfStreamDivisions(5);
 
   typename ImageType::Pointer im2;
@@ -98,10 +100,10 @@ int HDF5ReadWriteTest2(const char *fileName)
     return EXIT_FAILURE;
     }
   im2 = streamer->GetOutput();
-  itk::ImageRegionIterator<ImageType> it2(im2,im2->GetLargestPossibleRegion());
+  itk::ImageRegionIterator<ImageType> it2(im2,im2->GetLargestPossibleRegion() );
   for(it.GoToBegin(),it2.GoToBegin(); !it.IsAtEnd() && !it2.IsAtEnd(); ++it,++it2)
     {
-    if(it.Value() != it2.Value())
+    if(it.Value() != it2.Value() )
       {
       std::cout << "Original Pixel (" << it.Value()
                 << ") doesn't match read-in Pixel ("
@@ -118,11 +120,12 @@ int
 itkHDF5ImageIOStreamingReadWriteTest(int ac, char * av [])
 {
   std::string prefix("");
+
   if(ac > 1)
     {
     prefix = *++av;
     --ac;
-    itksys::SystemTools::ChangeDirectory(prefix.c_str());
+    itksys::SystemTools::ChangeDirectory(prefix.c_str() );
     }
   itk::ObjectFactoryBase::RegisterFactory(itk::HDF5ImageIOFactory::New() );
 

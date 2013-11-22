@@ -36,7 +36,7 @@ DiffusionTensor3D< T >
  */
 template< typename T >
 DiffusionTensor3D< T >
-::DiffusionTensor3D(const Superclass & r):SymmetricSecondRankTensor< T, 3 >(r)
+::DiffusionTensor3D(const Superclass & r) : SymmetricSecondRankTensor< T, 3 >(r)
 {}
 
 /**
@@ -44,7 +44,7 @@ DiffusionTensor3D< T >
  */
 template< typename T >
 DiffusionTensor3D< T >
-::DiffusionTensor3D(const ComponentType & r):SymmetricSecondRankTensor< T, 3 >(r)
+::DiffusionTensor3D(const ComponentType & r) : SymmetricSecondRankTensor< T, 3 >(r)
 {}
 
 /**
@@ -52,7 +52,7 @@ DiffusionTensor3D< T >
  */
 template< typename T >
 DiffusionTensor3D< T >
-::DiffusionTensor3D(const ComponentArrayType r):SymmetricSecondRankTensor< T, 3 >(r)
+::DiffusionTensor3D(const ComponentArrayType r) : SymmetricSecondRankTensor< T, 3 >(r)
 {}
 
 /**
@@ -64,6 +64,7 @@ DiffusionTensor3D< T >
 ::operator=(const ComponentType & r)
 {
   Superclass::operator=(r);
+
   return *this;
 }
 
@@ -76,6 +77,7 @@ DiffusionTensor3D< T >
 ::operator=(const ComponentArrayType r)
 {
   Superclass::operator=(r);
+
   return *this;
 }
 
@@ -88,6 +90,7 @@ DiffusionTensor3D< T >
 ::operator=(const Superclass & r)
 {
   Superclass::operator=(r);
+
   return *this;
 }
 
@@ -205,6 +208,7 @@ DiffusionTensor3D< T >
 
   return ( xx * xx + yy * yy + zz * zz + 2.0 * ( xy * xy + xz * xz + yz * yz ) );
 }
+
 } // end namespace itk
 
 #endif

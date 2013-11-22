@@ -23,7 +23,8 @@
 
 #include "itkTestingMacros.h"
 
-int itkBinaryStatisticsKeepNObjectsImageFilterTest1(int argc, char * argv[])
+int
+itkBinaryStatisticsKeepNObjectsImageFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 10 )

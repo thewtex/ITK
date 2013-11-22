@@ -18,7 +18,6 @@
 #ifndef __itkNrrdImageIO_h
 #define __itkNrrdImageIO_h
 
-
 #include "itkImageIOBase.h"
 #include <fstream>
 
@@ -33,7 +32,7 @@ namespace itk
  *  \ingroup IOFilters
  * \ingroup ITKIONRRD
  */
-class NrrdImageIO:public ImageIOBase
+class NrrdImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -89,6 +88,7 @@ protected:
 private:
   NrrdImageIO(const Self &);    //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

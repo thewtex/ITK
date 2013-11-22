@@ -32,9 +32,9 @@ template< unsigned int NDimensions >
 typename MetaGroupConverter< NDimensions >::MetaObjectType *
 MetaGroupConverter< NDimensions>
 ::CreateMetaObject()
-{
+  {
   return dynamic_cast<MetaObjectType *>(new GroupMetaObjectType);
-}
+  }
 
 /** Convert a metaGroup into an group SpatialObject  */
 template< unsigned int NDimensions >
@@ -43,6 +43,7 @@ MetaGroupConverter< NDimensions >
 ::MetaObjectToSpatialObject(const MetaObjectType *mo)
 {
   const GroupMetaObjectType *group = dynamic_cast<const GroupMetaObjectType *>(mo);
+
   if(group == 0)
     {
     itkExceptionMacro(<< "Can't convert MetaObject to MetaGroup" );
@@ -50,8 +51,8 @@ MetaGroupConverter< NDimensions >
 
   GroupSpatialObjectPointer groupSO = GroupSpatialObjectType::New();
 
-  double               spacing[NDimensions];
-  unsigned int         i;
+  double       spacing[NDimensions];
+  unsigned int i;
 
   for ( i = 0; i < NDimensions; i++ )
     {
@@ -73,10 +74,11 @@ template< unsigned int NDimensions >
 typename MetaGroupConverter< NDimensions >::MetaObjectType *
 MetaGroupConverter< NDimensions >
 ::SpatialObjectToMetaObject(const SpatialObjectType *so)
-{
+  {
   GroupSpatialObjectConstPointer groupSO =
     dynamic_cast<const GroupSpatialObjectType *>(so);
-  if(groupSO.IsNull())
+
+  if(groupSO.IsNull() )
     {
     itkExceptionMacro(<< "Can't downcast SpatialObject to GroupSpatialObject");
     }
@@ -104,7 +106,7 @@ MetaGroupConverter< NDimensions >
   group->ID( groupSO->GetId() );
 
   return group;
-}
+  }
 
 } // end namespace itk
 

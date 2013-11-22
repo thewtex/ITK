@@ -88,6 +88,7 @@ EuclideanDistanceMetric< TVector >
 
   return vcl_abs(temp);
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

@@ -26,10 +26,12 @@ namespace itk
 /**
  * Check that whether the file with given name is writable.
  */
-int ParticleSwarmOptimizerSAXWriter::CanWriteFile( const char* name )
+int
+ParticleSwarmOptimizerSAXWriter::CanWriteFile( const char* name )
 {
   std::ofstream ofs( name );
-  int yes = ofs.is_open();
+  int           yes = ofs.is_open();
+
   if (yes)
     {
     ofs.close();
@@ -40,14 +42,15 @@ int ParticleSwarmOptimizerSAXWriter::CanWriteFile( const char* name )
 /**
  * Method for performing XML file generation from the input object.
  */
-int ParticleSwarmOptimizerSAXWriter::WriteFile()
+int
+ParticleSwarmOptimizerSAXWriter::WriteFile()
 {
   try
     {
     if ( !this->CanWriteFile( this->m_Filename.c_str() ) )
       {
       ExceptionObject e( __FILE__, __LINE__ );
-      std::string message = "Cannot write to ";
+      std::string     message = "Cannot write to ";
       message += this->m_Filename;
       message += "!\n";
       e.SetDescription( message.c_str() );

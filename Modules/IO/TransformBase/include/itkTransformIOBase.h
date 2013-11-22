@@ -43,13 +43,13 @@ namespace itk
  * \ingroup ITKIOTransformBase
  */
 template<typename TScalar>
-class TransformIOBaseTemplate:public LightProcessObject
+class TransformIOBaseTemplate : public LightProcessObject
 {
 public:
   /** Standard class typedefs */
-  typedef TransformIOBaseTemplate   Self;
-  typedef LightProcessObject        Superclass;
-  typedef SmartPointer< Self >      Pointer;
+  typedef TransformIOBaseTemplate Self;
+  typedef LightProcessObject      Superclass;
+  typedef SmartPointer< Self >    Pointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(TransformIOBaseTemplate, Superclass);
@@ -60,10 +60,10 @@ public:
   /** For writing, a const transform list gets passed in, for
    * reading, a non-const transform list is created from the file.
    */
-  typedef typename TransformType::Pointer             TransformPointer;
-  typedef std::list< TransformPointer >               TransformListType;
-  typedef typename TransformType::ConstPointer        ConstTransformPointer;
-  typedef std::list< ConstTransformPointer >          ConstTransformListType;
+  typedef typename TransformType::Pointer      TransformPointer;
+  typedef std::list< TransformPointer >        TransformListType;
+  typedef typename TransformType::ConstPointer ConstTransformPointer;
+  typedef std::list< ConstTransformPointer >   ConstTransformListType;
 
   /** Set/Get the name of the file to be read. */
   itkSetStringMacro(FileName);
@@ -84,9 +84,20 @@ public:
   virtual bool CanWriteFile(const char *)  = 0;
 
   /** Get the list of transforms resulting from a file read */
-  TransformListType & GetTransformList() { return m_ReadTransformList; }
-  TransformListType & GetReadTransformList() { return m_ReadTransformList; }
-  ConstTransformListType & GetWriteTransformList() { return m_WriteTransformList; }
+  TransformListType &
+  GetTransformList() {
+    return m_ReadTransformList;
+  }
+
+  TransformListType &
+  GetReadTransformList() {
+    return m_ReadTransformList;
+  }
+
+  ConstTransformListType &
+  GetWriteTransformList() {
+    return m_WriteTransformList;
+  }
 
   /** Set the list of transforms before writing */
   void SetTransformList(ConstTransformListType & transformList);
@@ -104,14 +115,16 @@ public:
    * will be chosen at compile time within template classes in order to
    * patch up the type name.
    *  */
-  static inline void CorrectTransformPrecisionType( std::string & itkNotUsed(inputTransformName) )
-    {
-    itkGenericExceptionMacro(<< "Unknown ScalarType" << typeid(ScalarType).name());
-    }
+  static inline void
+  CorrectTransformPrecisionType( std::string & itkNotUsed(inputTransformName) )
+  {
+    itkGenericExceptionMacro(<< "Unknown ScalarType" << typeid(ScalarType).name() );
+  }
 
 protected:
   TransformIOBaseTemplate();
-  virtual ~TransformIOBaseTemplate();
+  virtual
+  ~TransformIOBaseTemplate();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void OpenStream(std::ofstream & outputStream, bool binary);
@@ -125,12 +138,13 @@ protected:
 
   /* The following struct returns the string name of computation type */
   /* default implementation */
-  static inline const std::string GetTypeNameString()
-    {
-    itkGenericExceptionMacro(<< "Unknown ScalarType" << typeid(ScalarType).name());
-    }
-};
+  static inline const std::string
+  GetTypeNameString()
+  {
+    itkGenericExceptionMacro(<< "Unknown ScalarType" << typeid(ScalarType).name() );
+  }
 
+};
 
 template <>
 inline void
@@ -138,11 +152,11 @@ TransformIOBaseTemplate<float>
 ::CorrectTransformPrecisionType( std::string & inputTransformName )
 {
   // output precision type is not found in input transform.
- if(inputTransformName.find("float") == std::string::npos)
-   {
-   const std::string::size_type begin = inputTransformName.find("double");
-   inputTransformName.replace(begin, 6, "float");
-   }
+  if(inputTransformName.find("float") == std::string::npos)
+    {
+    const std::string::size_type begin = inputTransformName.find("double");
+    inputTransformName.replace(begin, 6, "float");
+    }
 }
 
 template <>
@@ -151,11 +165,11 @@ TransformIOBaseTemplate<double>
 ::CorrectTransformPrecisionType( std::string & inputTransformName )
 {
   // output precision type is not found in input transform.
- if(inputTransformName.find("double") == std::string::npos)
-   {
-   const std::string::size_type begin = inputTransformName.find("float");
-   inputTransformName.replace(begin, 5, "double");
-   }
+  if(inputTransformName.find("double") == std::string::npos)
+    {
+    const std::string::size_type begin = inputTransformName.find("float");
+    inputTransformName.replace(begin, 5, "double");
+    }
 }
 
 template <>

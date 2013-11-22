@@ -46,18 +46,19 @@ namespace itk
  * \ingroup ITKDeconvolution
  *
  */
-template< typename TInputImage, typename TKernelImage = TInputImage, typename TOutputImage = TInputImage, typename TInternalPrecision=double >
+template< typename TInputImage, typename TKernelImage = TInputImage, typename TOutputImage = TInputImage,
+          typename TInternalPrecision=double >
 class TikhonovDeconvolutionImageFilter :
   public InverseDeconvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPrecision >
 {
 public:
-  typedef TikhonovDeconvolutionImageFilter                      Self;
+  typedef TikhonovDeconvolutionImageFilter Self;
   typedef InverseDeconvolutionImageFilter< TInputImage,
                                            TKernelImage,
                                            TOutputImage,
                                            TInternalPrecision > Superclass;
-  typedef SmartPointer< Self >                                  Pointer;
-  typedef SmartPointer< const Self >                            ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -122,18 +123,26 @@ template< typename TInput1, typename TInput2, typename TOutput >
 class TikhonovDeconvolutionFunctor
 {
 public:
-  TikhonovDeconvolutionFunctor() {m_RegularizationConstant = 0.0;}
+  TikhonovDeconvolutionFunctor() {
+    m_RegularizationConstant = 0.0;
+  }
+
   ~TikhonovDeconvolutionFunctor() {}
 
-  bool operator!=( const TikhonovDeconvolutionFunctor & ) const
+  bool
+  operator!=( const TikhonovDeconvolutionFunctor & ) const
   {
     return false;
   }
-  bool operator==( const TikhonovDeconvolutionFunctor & other) const
+
+  bool
+  operator==( const TikhonovDeconvolutionFunctor & other) const
   {
     return !(*this != other);
   }
-  inline TOutput operator()(const TInput1 & I, const TInput2 & H) const
+
+  inline TOutput
+  operator()(const TInput1 & I, const TInput2 & H) const
   {
     typename TOutput::value_type normH = std::norm( H );
     typename TOutput::value_type denominator = normH + m_RegularizationConstant;
@@ -148,22 +157,28 @@ public:
 
   /** Set/get the regular constant. This needs to be a non-negative
    * real value. */
-  void SetRegularizationConstant(double constant)
+  void
+  SetRegularizationConstant(double constant)
   {
     m_RegularizationConstant = constant;
   }
-  double GetRegularizationConstant() const
+
+  double
+  GetRegularizationConstant() const
   {
     return m_RegularizationConstant;
   }
 
   /** Set/get the threshold value below which complex magnitudes are considered
    * to be zero. */
-  void SetKernelZeroMagnitudeThreshold(double mu)
+  void
+  SetKernelZeroMagnitudeThreshold(double mu)
   {
     m_KernelZeroMagnitudeThreshold = mu;
   }
-  double GetKernelZeroMagnitudeThreshold() const
+
+  double
+  GetKernelZeroMagnitudeThreshold() const
   {
     return m_KernelZeroMagnitudeThreshold;
   }

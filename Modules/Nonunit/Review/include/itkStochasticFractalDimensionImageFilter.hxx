@@ -53,12 +53,12 @@ template< typename TInputImage, typename TMaskImage, typename TOutputImage >
 const typename StochasticFractalDimensionImageFilter< TInputImage, TMaskImage, TOutputImage >::MaskImageType *
 StochasticFractalDimensionImageFilter< TInputImage, TMaskImage, TOutputImage >
 ::GetMaskImage() const
-{
+  {
   const MaskImageType *maskImage =
     dynamic_cast< const MaskImageType * >( this->ProcessObject::GetInput(1) );
 
   return maskImage;
-}
+  }
 
 template< typename TInputImage, typename TMaskImage, typename TOutputImage >
 void
@@ -72,13 +72,13 @@ StochasticFractalDimensionImageFilter< TInputImage, TMaskImage, TOutputImage >
   typedef typename InputImageType::PointType  PointType;
 
   const InputImageType *inputImage = this->GetInput();
-  OutputImageType      *outputImage = this->GetOutput();
+  OutputImageType *     outputImage = this->GetOutput();
   typename InputImageType::RegionType region = inputImage->GetRequestedRegion();
 
   ProgressReporter progress(this, 0, region.GetNumberOfPixels(), 100);
 
   typedef typename NeighborhoodAlgorithm
-  ::ImageBoundaryFacesCalculator< InputImageType > FaceCalculatorType;
+    ::ImageBoundaryFacesCalculator< InputImageType > FaceCalculatorType;
   FaceCalculatorType faceCalculator;
 
   typename FaceCalculatorType::FaceListType faceList =
@@ -226,6 +226,7 @@ StochasticFractalDimensionImageFilter< TInputImage, TMaskImage, TOutputImage >
 
   os << indent << "Neighborhood radius: " << this->m_NeighborhoodRadius << std::endl;
 }
+
 } // end namespace itk
 
 #endif

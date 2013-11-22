@@ -93,7 +93,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage >
-class ContourExtractor2DImageFilter:
+class ContourExtractor2DImageFilter :
   public ImageToPathFilter< TInputImage, PolyLineParametricPath< 2 > >
 {
 public:
@@ -131,7 +131,7 @@ public:
   typedef typename NumericTraits< InputPixelType >::RealType InputRealType;
 
   typedef typename VertexListType::ConstPointer
-  VertexListConstPointer;
+    VertexListConstPointer;
   /** Control the orientation of the contours with reference to the image
  * gradient. (See class documentation.) */
   itkSetMacro(ReverseContourOrientation, bool);
@@ -173,7 +173,8 @@ public:
 protected:
 
   ContourExtractor2DImageFilter();
-  virtual ~ContourExtractor2DImageFilter();
+  virtual
+  ~ContourExtractor2DImageFilter();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GenerateData();
@@ -219,7 +220,7 @@ private:
   // pixel traversed = first pixel in contour) would be possible by either
   // changing the merging rules, which would make the contouring operation
   //slower, or by storing additional data as to which pixel was first.
-  class ContourType:public vcl_deque< VertexType >
+  class ContourType : public vcl_deque< VertexType >
   {
 public:
     unsigned int m_ContourNumber;
@@ -234,7 +235,8 @@ public:
   // declare the hash function we are using for the hash_map.
   struct VertexHash {
     typedef typename VertexType::CoordRepType CoordinateType;
-    inline SizeValueType operator()(const VertexType & k) const
+    inline SizeValueType
+    operator()(const VertexType & k) const
     {
       // Xor the hashes of the vertices together, after multiplying the
       // first by some number, so that identical (x,y) vertex indices
@@ -249,7 +251,8 @@ public:
 
     // Define hash function for floats. Based on method from
     // http://www.brpreiss.com/books/opus4/html/page217.html
-    inline SizeValueType float_hash(const CoordinateType & k) const
+    inline SizeValueType
+    float_hash(const CoordinateType & k) const
     {
       if ( k == 0 )
         {
@@ -261,7 +264,8 @@ public:
       value = ( 2 * value - 1 ) * ~0U;
       return value;
     }
-  };
+
+    };
 
   // We use a hash to associate the endpoints of each contour with the
   // contour itself. This makes it easy to look up which contour we should add

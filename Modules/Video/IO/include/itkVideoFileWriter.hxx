@@ -49,7 +49,6 @@ VideoFileWriter< TInputVideoStream >
   this->TemporalProcessObject::m_InputStencilCurrentFrameIndex = 0;
 }
 
-
 //
 // Destructor
 //
@@ -59,7 +58,6 @@ VideoFileWriter< TInputVideoStream >
 {
   this->FinishWriting();
 }
-
 
 //
 // PrintSelf
@@ -72,10 +70,10 @@ VideoFileWriter< TInputVideoStream >
   Superclass::PrintSelf(os, indent);
 
   os << indent << "FileName: " << m_FileName << std::endl;
-  if (!m_VideoIO.IsNull())
+  if (!m_VideoIO.IsNull() )
     {
     os << indent << "VideoIO:" << std::endl;
-    m_VideoIO->Print(os, indent.GetNextIndent());
+    m_VideoIO->Print(os, indent.GetNextIndent() );
     }
 }
 
@@ -89,7 +87,7 @@ void
 VideoFileWriter< TInputVideoStream >
 ::SetInput( const VideoStreamType* input )
 {
-  this->ProcessObject::SetNthInput(0, const_cast<VideoStreamType*>(input));
+  this->ProcessObject::SetNthInput(0, const_cast<VideoStreamType*>(input) );
 }
 
 //
@@ -99,15 +97,14 @@ template< typename TInputVideoStream >
 const typename VideoFileWriter< TInputVideoStream >::VideoStreamType*
 VideoFileWriter< TInputVideoStream >
 ::GetInput()
-{
+  {
   if (this->GetNumberOfInputs() < 1)
     {
     return NULL;
     }
 
-  return static_cast<VideoStreamType*>(this->ProcessObject::GetInput(0));
-}
-
+  return static_cast<VideoStreamType*>(this->ProcessObject::GetInput(0) );
+  }
 
 //
 // SetVideoIO
@@ -119,7 +116,6 @@ VideoFileWriter< TInputVideoStream >
 {
   m_VideoIO = videoIO;
 }
-
 
 //
 // Write
@@ -135,6 +131,7 @@ VideoFileWriter< TInputVideoStream >
 
   // Make sure input is available
   const VideoStreamType* input = this->GetInput();
+
   if (input == NULL)
     {
     itkExceptionMacro("No input to writer");
@@ -152,7 +149,6 @@ VideoFileWriter< TInputVideoStream >
     itkExceptionMacro("Cannot write with FramesPerSecond or FourCC unset");
     }
 
-
   //
   // Trigger the first phase of the pipeline. We don't need to propagate the
   // requested region because that will get redone during the data generation
@@ -160,22 +156,21 @@ VideoFileWriter< TInputVideoStream >
   //
 
   // Update the output information upstream
-  VideoStreamType* nonConstInput = const_cast<VideoStreamType*>(this->GetInput());
+  VideoStreamType* nonConstInput = const_cast<VideoStreamType*>(this->GetInput() );
   nonConstInput->UpdateOutputInformation();
-
 
   //
   // Set up the writer using information propagated from upstream
   //
 
   // Initialize writing information
-  if (!this->InitializeOutputParameters())
+  if (!this->InitializeOutputParameters() )
     {
     itkExceptionMacro("Could not initialize output parameters for writing");
     }
 
   // Initialize VideoIO if necessary
-  if (m_VideoIO.IsNull() && !this->InitializeVideoIO())
+  if (m_VideoIO.IsNull() && !this->InitializeVideoIO() )
     {
     itkExceptionMacro("Could not create VideoIO");
     }
@@ -202,7 +197,7 @@ VideoFileWriter< TInputVideoStream >
   for (SizeValueType i = frameStart; i < frameStart + numFrames; ++i)
     {
     nonConstInput->SetFrameRequestedSpatialRegion(i,
-      input->GetFrameLargestPossibleSpatialRegion(i));
+                                                  input->GetFrameLargestPossibleSpatialRegion(i) );
     }
 
   // Propagate the requested regions
@@ -216,9 +211,8 @@ VideoFileWriter< TInputVideoStream >
   TemporalDataObject::Pointer output = TemporalDataObject::New();
   output->SetLargestPossibleTemporalRegion(m_OutputTemporalRegion);
   output->SetRequestedTemporalRegion(m_OutputTemporalRegion);
-  output->SetBufferedTemporalRegion(TemporalRegion());
+  output->SetBufferedTemporalRegion(TemporalRegion() );
   this->ProcessObject::SetNthOutput(0, output);
-
 
   //
   // Trigger the data generation phase of the pipeline
@@ -237,7 +231,6 @@ VideoFileWriter< TInputVideoStream >
   this->FinishWriting();
 }
 
-
 //
 // FinishWriting
 //
@@ -246,7 +239,7 @@ void
 VideoFileWriter< TInputVideoStream >
 ::FinishWriting()
 {
-  if (!m_VideoIO.IsNull())
+  if (!m_VideoIO.IsNull() )
     {
     m_VideoIO->FinishReadingOrWriting();
     }
@@ -272,6 +265,7 @@ VideoFileWriter< TInputVideoStream >
 ::UpdateLargestPossibleRegion()
 {
   const VideoStreamType* input = this->GetInput();
+
   if (input == NULL)
     {
     itkExceptionMacro("No input to writer");
@@ -279,7 +273,6 @@ VideoFileWriter< TInputVideoStream >
   m_OutputTemporalRegion = input->GetLargestPossibleTemporalRegion();
   this->Write();
 }
-
 
 //-PROTECTED METHODS-----------------------------------------------------------
 
@@ -292,15 +285,16 @@ VideoFileWriter< TInputVideoStream >
 ::TemporalStreamingGenerateData()
 {
   // Get a non-const pointer to the input and output
-  const VideoStreamType* input = dynamic_cast<const VideoStreamType*>(this->GetInput());
-  TemporalDataObject* output = dynamic_cast<TemporalDataObject*>(this->GetOutput(0));
+  const VideoStreamType* input = dynamic_cast<const VideoStreamType*>(this->GetInput() );
+  TemporalDataObject*    output = dynamic_cast<TemporalDataObject*>(this->GetOutput(0) );
+
   if (!output)
     {
     itkExceptionMacro("Could not cast output to TemporalDataObject");
     }
 
   // Get the frame we're going to write
-  SizeValueType frameNum = output->GetRequestedTemporalRegion().GetFrameStart();
+  SizeValueType    frameNum = output->GetRequestedTemporalRegion().GetFrameStart();
   const FrameType* frame = input->GetFrame(frameNum);
   if (!frame)
     {
@@ -308,7 +302,7 @@ VideoFileWriter< TInputVideoStream >
     }
 
   // Write the frame out
-  m_VideoIO->Write(static_cast<const void*>(frame->GetBufferPointer()));
+  m_VideoIO->Write(static_cast<const void*>(frame->GetBufferPointer() ) );
 }
 
 //
@@ -348,7 +342,6 @@ VideoFileWriter< TInputVideoStream >
   return true;
 }
 
-
 //
 // InitializeVideoIO
 //
@@ -360,10 +353,10 @@ VideoFileWriter< TInputVideoStream >
   if (m_FileName.length() != 0)
     {
     m_VideoIO = itk::VideoIOFactory::CreateVideoIO(
-                             itk::VideoIOFactory::WriteMode, m_FileName.c_str());
+        itk::VideoIOFactory::WriteMode, m_FileName.c_str() );
 
     // Return true if a VideoIO was successfully created
-    if (!m_VideoIO.IsNull())
+    if (!m_VideoIO.IsNull() )
       {
       // Get the pixel type
       m_ComponentType = m_VideoIO->GetComponentType();

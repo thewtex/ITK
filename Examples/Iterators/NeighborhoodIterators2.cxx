@@ -54,16 +54,17 @@
 #include "itkNeighborhoodInnerProduct.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   if ( argc < 4 )
     {
-      std::cerr << "Missing parameters. " << std::endl;
-      std::cerr << "Usage: " << std::endl;
-      std::cerr << argv[0]
-                << " inputImageFile outputImageFile direction"
-                << std::endl;
-      return -1;
+    std::cerr << "Missing parameters. " << std::endl;
+    std::cerr << "Usage: " << std::endl;
+    std::cerr << argv[0]
+              << " inputImageFile outputImageFile direction"
+              << std::endl;
+    return -1;
     }
 
   typedef float                             PixelType;
@@ -87,10 +88,10 @@ int main( int argc, char ** argv )
     }
 
   ImageType::Pointer output = ImageType::New();
-  output->SetRegions(reader->GetOutput()->GetRequestedRegion());
+  output->SetRegions(reader->GetOutput()->GetRequestedRegion() );
   output->Allocate();
 
-  IteratorType out(output, reader->GetOutput()->GetRequestedRegion());
+  IteratorType out(output, reader->GetOutput()->GetRequestedRegion() );
 
   // Software Guide : BeginLatex
   //
@@ -125,8 +126,8 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginCodeSnippet
   NeighborhoodIteratorType::RadiusType radius = sobelOperator.GetRadius();
-  NeighborhoodIteratorType it( radius, reader->GetOutput(),
-                               reader->GetOutput()->GetRequestedRegion() );
+  NeighborhoodIteratorType             it( radius, reader->GetOutput(),
+                                           reader->GetOutput()->GetRequestedRegion() );
 
   itk::NeighborhoodInnerProduct<ImageType> innerProduct;
   // Software Guide : EndCodeSnippet
@@ -161,7 +162,7 @@ int main( int argc, char ** argv )
   typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   typedef itk::RescaleIntensityImageFilter<
-               ImageType, WriteImageType > RescaleFilterType;
+      ImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
@@ -171,7 +172,7 @@ int main( int argc, char ** argv )
 
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
-  writer->SetInput(rescaler->GetOutput());
+  writer->SetInput(rescaler->GetOutput() );
   try
     {
     writer->Update();

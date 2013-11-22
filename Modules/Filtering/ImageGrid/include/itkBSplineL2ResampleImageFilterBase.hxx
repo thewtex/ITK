@@ -53,7 +53,8 @@ BSplineL2ResampleImageFilterBase< TInputImage, TOutputImage >
 }
 
 template< typename TInputImage, typename TOutputImage >
-void BSplineL2ResampleImageFilterBase< TInputImage, TOutputImage >
+void
+BSplineL2ResampleImageFilterBase< TInputImage, TOutputImage >
 ::InitializePyramidSplineFilter(int SplineOrder)
 {
   switch ( SplineOrder )
@@ -201,6 +202,7 @@ void BSplineL2ResampleImageFilterBase< TInputImage, TOutputImage >
       break;
     }
 }
+
 } // namespace itk
 
 #endif

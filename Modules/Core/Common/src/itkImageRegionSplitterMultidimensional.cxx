@@ -26,8 +26,7 @@ namespace itk
  */
 ImageRegionSplitterMultidimensional
 ::ImageRegionSplitterMultidimensional()
-{
-}
+{}
 
 void
 ImageRegionSplitterMultidimensional
@@ -82,17 +81,18 @@ ImageRegionSplitterMultidimensional
     }
   splittedRegionIndex[0] = offset;
 
-
   // Assign the output split region to the input region in-place
   for ( unsigned int i = 0; i < dim; i++ )
     {
-    const SizeValueType inputRegionSize = regionSize[i];
-    const IndexValueType indexOffset = Math::Floor<IndexValueType>( ( splittedRegionIndex[i] ) * ( inputRegionSize / double(splits[i]) ) );
+    const SizeValueType  inputRegionSize = regionSize[i];
+    const IndexValueType indexOffset =
+      Math::Floor<IndexValueType>( ( splittedRegionIndex[i] ) * ( inputRegionSize / double(splits[i]) ) );
 
     regionIndex[i] += indexOffset;
     if ( splittedRegionIndex[i] < splits[i] - 1 )
       {
-      regionSize[i] = Math::Floor<SizeValueType>( ( splittedRegionIndex[i] + 1 ) * ( inputRegionSize / double(splits[i]) ) ) - indexOffset;
+      regionSize[i] = Math::Floor<SizeValueType>(
+          ( splittedRegionIndex[i] + 1 ) * ( inputRegionSize / double(splits[i]) ) ) - indexOffset;
       }
     else
       {
@@ -103,7 +103,6 @@ ImageRegionSplitterMultidimensional
 
   return numberOfPieces;
 }
-
 
 /**
  * given the requestedNumber of regions to split the "region" argument
@@ -120,7 +119,7 @@ ImageRegionSplitterMultidimensional
 {
   // size of each splited region
   std::vector<double> splitRegionSize(dim); // Note: stack allocation preferred
-  unsigned int numberOfPieces = 1;
+  unsigned int        numberOfPieces = 1;
 
   // initialize arrays
   for ( unsigned int i = 0; i < dim; ++i )

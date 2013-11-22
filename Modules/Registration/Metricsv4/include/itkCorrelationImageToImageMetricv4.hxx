@@ -23,7 +23,8 @@
 namespace itk
 {
 
-template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
+template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+          typename TMetricTraits>
 CorrelationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInternalComputationValueType, TMetricTraits>
 ::CorrelationImageToImageMetricv4()
 {
@@ -41,13 +42,14 @@ CorrelationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInterna
     }
 }
 
-template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
+template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+          typename TMetricTraits>
 CorrelationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInternalComputationValueType, TMetricTraits>
 ::~CorrelationImageToImageMetricv4()
-{
-}
+{}
 
-template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
+template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+          typename TMetricTraits>
 void
 CorrelationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInternalComputationValueType, TMetricTraits>
 ::PrintSelf(std::ostream& os, Indent indent) const
@@ -55,8 +57,8 @@ CorrelationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInterna
   Superclass::PrintSelf(os, indent);
 }
 
-
-template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits>
+template <typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+          typename TMetricTraits>
 void
 CorrelationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInternalComputationValueType, TMetricTraits>
 ::InitializeForIteration() const
@@ -78,7 +80,8 @@ CorrelationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInterna
       {
       itkExceptionMacro("FixedSampledPointSet must have 1 or more points.");
       }
-    typename ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Self >::DomainType range;
+    typename ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner,
+                                                                Self >::DomainType range;
     range[0] = 0;
     range[1] = numberOfPoints - 1;
     this->m_HelperSparseThreader->Execute( const_cast< Self* >(this), range );
@@ -95,10 +98,8 @@ CorrelationImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage, TInterna
    * will be stored during helper::AfterThreadedExecution()
    */
 
-
 }
 
 } // end namespace itk
-
 
 #endif

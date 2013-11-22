@@ -74,10 +74,10 @@ public:
    */
   int GetNode() const;
 
-  LoadNode():
+  LoadNode() :
     m_Point(0)
-  {
-  }                             // default constructor
+  {}                             // default constructor
+
   LoadNode(Element::ConstPointer element_, unsigned int pt_, vnl_vector<Float> F_) :
     m_Point(pt_), m_Force(F_)
   {

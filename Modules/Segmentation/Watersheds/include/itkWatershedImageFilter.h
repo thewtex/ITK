@@ -18,7 +18,6 @@
 #ifndef __itkWatershedImageFilter_h
 #define __itkWatershedImageFilter_h
 
-
 #include "itkImageToImageFilter.h"
 #include "itkWatershedSegmentTreeGenerator.h"
 #include "itkWatershedRelabeler.h"
@@ -147,7 +146,7 @@ namespace itk
  * \ingroup ITKWatersheds
  */
 template< typename TInputImage >
-class WatershedImageFilter:
+class WatershedImageFilter :
   public ImageToImageFilter< TInputImage, Image< IdentifierType,
                                                  TInputImage::ImageDimension > >
 {
@@ -191,7 +190,8 @@ public:
   /** Overloaded to link the input to this filter with the input of the
       mini-pipeline */
   using Superclass::SetInput;
-  void SetInput(const InputImageType *input)
+  void
+  SetInput(const InputImageType *input)
   {
     // if the input is changed, we'll need to clear the cached tree
     // when we execute
@@ -205,12 +205,13 @@ public:
     m_Segmenter->SetInputImage( const_cast< InputImageType * >( input ) );
   }
 
-  virtual void SetInput(unsigned int i, const TInputImage *image)
+  virtual void
+  SetInput(unsigned int i, const TInputImage *image)
   {
     if ( i != 0 )
-                  { itkExceptionMacro(<< "Filter has only one input."); }
+                      { itkExceptionMacro(<< "Filter has only one input."); }
     else
-                  { this->SetInput(image); }
+                      { this->SetInput(image); }
   }
 
   /** Set/Get the input thresholding parameter.  Units are a percentage of
@@ -228,17 +229,17 @@ public:
   /** Get the basic segmentation from the Segmenter member filter. */
   typename watershed::Segmenter< InputImageType >::OutputImageType *
   GetBasicSegmentation()
-  {
+    {
     m_Segmenter->Update();
     return m_Segmenter->GetOutputImage();
-  }
+    }
 
   /** Get the segmentation tree from from the TreeGenerator member filter. */
   typename watershed::SegmentTreeGenerator< ScalarType >::SegmentTreeType *
   GetSegmentTree()
-  {
+    {
     return m_TreeGenerator->GetOutputSegmentTree();
-  }
+    }
 
   // Override since the filter produces all of its output
   void EnlargeOutputRequestedRegion(DataObject *data);
@@ -258,7 +259,8 @@ public:
 
 protected:
   WatershedImageFilter();
-  virtual ~WatershedImageFilter() {}
+  virtual
+  ~WatershedImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** An opportunity to Allocate/Deallocate bulk data.
@@ -266,8 +268,8 @@ protected:
   virtual void PrepareOutputs();
 
 private:
-  WatershedImageFilter(const Self &);  //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  WatershedImageFilter(const Self &); //purposely not implemented
+  void operator=(const Self &);       //purposely not implemented
 
   /** A Percentage of the maximum depth (max - min pixel value) in the input
    *  image.  This percentage will be used to threshold the minimum values in

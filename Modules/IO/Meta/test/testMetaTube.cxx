@@ -23,7 +23,8 @@
 #include <metaEllipse.h>
 #include "itksys/SystemTools.hxx"
 
-int testMetaTube(int argc, char * argv[])
+int
+testMetaTube(int argc, char * argv[])
 {
   if (argc > 1)
     {
@@ -44,24 +45,24 @@ int testMetaTube(int argc, char * argv[])
   TubePnt* pnt;
 
   unsigned int i;
-  for(i=0;i<10;i++)
-  {
+  for(i=0; i<10; i++)
+    {
     pnt = new TubePnt(3);
     pnt->m_X[0]=pnt->m_X[1]=pnt->m_X[2]=static_cast<float>(i);
     pnt->m_R=static_cast<float>(i);
     tube1->GetPoints().push_back(pnt);
-  }
+    }
 
   std::cout << "  Creating second tube ..." << std::endl;
   MetaTube* tube2 = new MetaTube(3);
   tube2->ID(1);
-  for(i=0;i<5;i++)
-  {
+  for(i=0; i<5; i++)
+    {
     pnt = new TubePnt(3);
     pnt->m_X[0]=pnt->m_X[1]=pnt->m_X[2]=static_cast<float>(i);
     pnt->m_R=static_cast<float>(i);
     tube2->GetPoints().push_back(pnt);
-  }
+    }
 
   // Add an ellipse
   std::cout << "  Creating ellipse ..." << std::endl;
@@ -89,30 +90,30 @@ int testMetaTube(int argc, char * argv[])
   std::cout << "  ... read scene " << std::endl;
 
   typedef  MetaScene::ObjectListType ListType;
-  ListType * list = myScene2.GetObjectList();
+  ListType *         list = myScene2.GetObjectList();
   ListType::iterator it = list->begin();
 
   std::cout << "  ... beginning loop " << std::endl;
-  for(i=0;i< list->size();i++)
-  {
+  for(i=0; i< list->size(); i++)
+    {
 
     (*it)->PrintInfo();
-    if(!strncmp((*it)->ObjectTypeName(),"Tube",4))
-    {
+    if(!strncmp( (*it)->ObjectTypeName(),"Tube",4) )
+      {
       typedef MetaTube::PointListType PointListType;
-      MetaTube* tube = dynamic_cast<MetaTube*>(*it);
+      MetaTube*               tube = dynamic_cast<MetaTube*>(*it);
       PointListType::iterator it2 = tube->GetPoints().begin();
 
-      for(unsigned int j=0;j< tube->GetPoints().size();j++)
-      {
+      for(unsigned int j=0; j< tube->GetPoints().size(); j++)
+        {
         std::cout << (*it2)->m_X[0]
-        << " " << (*it2)->m_X[1] << " " << (*it2)->m_X[2] << std::endl;
+                  << " " << (*it2)->m_X[1] << " " << (*it2)->m_X[2] << std::endl;
         ++it2;
+        }
       }
-    }
 
     ++it;
-  }
+    }
 
   std::cout << "done" << std::endl;
   return EXIT_SUCCESS;

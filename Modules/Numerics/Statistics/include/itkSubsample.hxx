@@ -131,7 +131,7 @@ template< typename TSample >
 const typename Subsample< TSample >::MeasurementVectorType &
 Subsample< TSample >
 ::GetMeasurementVector(InstanceIdentifier id) const
-{
+  {
   if ( id >= m_IdHolder.size() )
     {
     itkExceptionMacro("MeasurementVector " << id << " does not exist");
@@ -140,7 +140,7 @@ Subsample< TSample >
   // translate the id to its Sample container id
   InstanceIdentifier idInTheSample = m_IdHolder[id];
   return m_Sample->GetMeasurementVector(idInTheSample);
-}
+  }
 
 template< typename TSample >
 inline typename Subsample< TSample >::AbsoluteFrequencyType
@@ -186,13 +186,13 @@ template< typename TSample >
 inline const typename Subsample< TSample >::MeasurementVectorType &
 Subsample< TSample >
 ::GetMeasurementVectorByIndex(unsigned int index) const
-{
+  {
   if ( index >= m_IdHolder.size() )
     {
     itkExceptionMacro("Index out of range");
     }
   return m_Sample->GetMeasurementVector(m_IdHolder[index]);
-}
+  }
 
 template< typename TSample >
 inline typename Subsample< TSample >::AbsoluteFrequencyType
@@ -239,6 +239,7 @@ Subsample< TSample >
     this->m_TotalFrequency    = that->m_TotalFrequency;
     }
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

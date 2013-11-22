@@ -63,7 +63,7 @@ namespace itk
  * \ingroup ITKLevelSets
   */
 template< typename TImageType >
-class LevelSetFunction:
+class LevelSetFunction :
   public FiniteDifferenceFunction< TImageType >
 {
 public:
@@ -119,63 +119,110 @@ public:
     ScalarValueType m_dx_backward[itkGetStaticConstMacro(ImageDimension)];
 
     ScalarValueType m_GradMagSqr;
-  };
+    };
 
   /** Advection field.  Default implementation returns a vector of zeros. */
-  virtual VectorType AdvectionField(const NeighborhoodType &,
-                                    const FloatOffsetType &, GlobalDataStruct * = 0)  const
-  { return m_ZeroVectorConstant; }
+  virtual VectorType
+  AdvectionField(const NeighborhoodType &,
+                 const FloatOffsetType &, GlobalDataStruct * = 0)  const
+  {
+    return m_ZeroVectorConstant;
+  }
 
   /** Propagation speed.  This term controls surface expansion/contraction.
    *  Default implementation returns zero. */
-  virtual ScalarValueType PropagationSpeed(
+  virtual ScalarValueType
+  PropagationSpeed(
     const NeighborhoodType &,
     const FloatOffsetType &, GlobalDataStruct * = 0) const
-  { return NumericTraits< ScalarValueType >::Zero; }
+  {
+    return NumericTraits< ScalarValueType >::Zero;
+  }
 
   /** Curvature speed.  Can be used to spatially modify the effects of
       curvature . The default implementation returns one. */
-  virtual ScalarValueType CurvatureSpeed(const NeighborhoodType &,
-                                         const FloatOffsetType &, GlobalDataStruct * = 0
-                                         ) const
-  { return NumericTraits< ScalarValueType >::One; }
+  virtual ScalarValueType
+  CurvatureSpeed(const NeighborhoodType &,
+                 const FloatOffsetType &, GlobalDataStruct * = 0
+                 ) const
+  {
+    return NumericTraits< ScalarValueType >::One;
+  }
 
   /** Laplacian smoothing speed.  Can be used to spatially modify the
     effects of laplacian smoothing of the level set function */
-  virtual ScalarValueType LaplacianSmoothingSpeed(
+  virtual ScalarValueType
+  LaplacianSmoothingSpeed(
     const NeighborhoodType &,
     const FloatOffsetType &, GlobalDataStruct * = 0) const
-  { return NumericTraits< ScalarValueType >::One; }
+  {
+    return NumericTraits< ScalarValueType >::One;
+  }
 
   /** Alpha.  Scales all advection term values. */
-  virtual void SetAdvectionWeight(const ScalarValueType a)
-  { m_AdvectionWeight = a; }
-  ScalarValueType GetAdvectionWeight() const
-  { return m_AdvectionWeight; }
+  virtual void
+  SetAdvectionWeight(const ScalarValueType a)
+  {
+    m_AdvectionWeight = a;
+  }
+
+  ScalarValueType
+  GetAdvectionWeight() const
+  {
+    return m_AdvectionWeight;
+  }
 
   /** Beta.  Scales all propagation term values. */
-  virtual void SetPropagationWeight(const ScalarValueType p)
-  { m_PropagationWeight = p; }
-  ScalarValueType GetPropagationWeight() const
-  { return m_PropagationWeight; }
+  virtual void
+  SetPropagationWeight(const ScalarValueType p)
+  {
+    m_PropagationWeight = p;
+  }
+
+  ScalarValueType
+  GetPropagationWeight() const
+  {
+    return m_PropagationWeight;
+  }
 
   /** Gamma. Scales all curvature weight values */
-  virtual void SetCurvatureWeight(const ScalarValueType c)
-  { m_CurvatureWeight = c; }
-  ScalarValueType GetCurvatureWeight() const
-  { return m_CurvatureWeight; }
+  virtual void
+  SetCurvatureWeight(const ScalarValueType c)
+  {
+    m_CurvatureWeight = c;
+  }
+
+  ScalarValueType
+  GetCurvatureWeight() const
+  {
+    return m_CurvatureWeight;
+  }
 
   /** Weight of the laplacian smoothing term */
-  void SetLaplacianSmoothingWeight(const ScalarValueType c)
-  { m_LaplacianSmoothingWeight = c; }
-  ScalarValueType GetLaplacianSmoothingWeight() const
-  { return m_LaplacianSmoothingWeight; }
+  void
+  SetLaplacianSmoothingWeight(const ScalarValueType c)
+  {
+    m_LaplacianSmoothingWeight = c;
+  }
+
+  ScalarValueType
+  GetLaplacianSmoothingWeight() const
+  {
+    return m_LaplacianSmoothingWeight;
+  }
 
   /** Epsilon. */
-  void SetEpsilonMagnitude(const ScalarValueType e)
-  { m_EpsilonMagnitude = e; }
-  ScalarValueType GetEpsilonMagnitude() const
-  { return m_EpsilonMagnitude; }
+  void
+  SetEpsilonMagnitude(const ScalarValueType e)
+  {
+    m_EpsilonMagnitude = e;
+  }
+
+  ScalarValueType
+  GetEpsilonMagnitude() const
+  {
+    return m_EpsilonMagnitude;
+  }
 
   /** Compute the equation value. */
   virtual PixelType ComputeUpdate( const NeighborhoodType & neighborhood,
@@ -197,7 +244,8 @@ public:
    * data should also be initialized in this method.  Global data can be used
    * for caching any values used or reused by the FunctionObject.  Each thread
    * should receive its own global data struct. */
-  virtual void * GetGlobalDataPointer() const
+  virtual void *
+  GetGlobalDataPointer() const
   {
     GlobalDataStruct *ans = new GlobalDataStruct();
 
@@ -216,8 +264,11 @@ public:
    * data pointer, it passes it to this method, which frees the memory.
    * The solver cannot free the memory because it does not know the type
    * to which the pointer points. */
-  virtual void ReleaseGlobalDataPointer(void *GlobalData) const
-  { delete (GlobalDataStruct *)GlobalData; }
+  virtual void
+  ReleaseGlobalDataPointer(void *GlobalData) const
+  {
+    delete (GlobalDataStruct *)GlobalData;
+  }
 
   /**  */
   virtual ScalarValueType ComputeCurvatureTerm(const NeighborhoodType &,
@@ -241,22 +292,26 @@ public:
                                                     );
 
   /** */
-  void SetUseMinimalCurvature(bool b)
+  void
+  SetUseMinimalCurvature(bool b)
   {
     m_UseMinimalCurvature = b;
   }
 
-  bool GetUseMinimalCurvature() const
+  bool
+  GetUseMinimalCurvature() const
   {
     return m_UseMinimalCurvature;
   }
 
-  void UseMinimalCurvatureOn()
+  void
+  UseMinimalCurvatureOn()
   {
     this->SetUseMinimalCurvature(true);
   }
 
-  void UseMinimalCurvatureOff()
+  void
+  UseMinimalCurvatureOff()
   {
     this->SetUseMinimalCurvature(false);
   }
@@ -265,12 +320,14 @@ public:
       calculation.  Changing this value from the default is not recommended or
       necessary, but can be used to speed up the surface evolution at the risk
       of creating an unstable solution. */
-  static void SetMaximumCurvatureTimeStep(double n)
+  static void
+  SetMaximumCurvatureTimeStep(double n)
   {
     m_DT = n;
   }
 
-  static double GetMaximumCurvatureTimeStep()
+  static double
+  GetMaximumCurvatureTimeStep()
   {
     return m_DT;
   }
@@ -279,12 +336,14 @@ public:
       calculation.  Changing this value from the default is not recommended or
       necessary, but can be used to speed up the surface evolution at the risk
       of creating an unstable solution. */
-  static void SetMaximumPropagationTimeStep(double n)
+  static void
+  SetMaximumPropagationTimeStep(double n)
   {
     m_WaveDT = n;
   }
 
-  static double GetMaximumPropagationTimeStep()
+  static double
+  GetMaximumPropagationTimeStep()
   {
     return m_WaveDT;
   }
@@ -294,12 +353,13 @@ protected:
   {
     m_EpsilonMagnitude = static_cast< ScalarValueType >( 1.0e-5 );
     m_AdvectionWeight = m_PropagationWeight =
-                          m_CurvatureWeight = m_LaplacianSmoothingWeight =
-                                                NumericTraits< ScalarValueType >::Zero;
+        m_CurvatureWeight = m_LaplacianSmoothingWeight =
+            NumericTraits< ScalarValueType >::Zero;
     m_UseMinimalCurvature = false;
   }
 
-  virtual ~LevelSetFunction() {}
+  virtual
+  ~LevelSetFunction() {}
   void PrintSelf(std::ostream & s, Indent indent) const;
 
   /** Constants used in the time step calculation. */
@@ -342,6 +402,7 @@ protected:
 private:
   LevelSetFunction(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };
 } // namespace itk
 

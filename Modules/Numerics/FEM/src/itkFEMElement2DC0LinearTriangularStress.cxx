@@ -23,7 +23,8 @@ namespace itk
 namespace fem
 {
 // Overload the CreateAnother() method.
-::itk::LightObject::Pointer Element2DC0LinearTriangularStress::CreateAnother(void) const
+::itk::LightObject::Pointer
+Element2DC0LinearTriangularStress::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
   Pointer copyPtr = Self::New();
@@ -41,8 +42,7 @@ namespace fem
 
 Element2DC0LinearTriangularStress
 ::Element2DC0LinearTriangularStress() : Superclass()
-{
-}
+{}
 
 Element2DC0LinearTriangularStress
 ::Element2DC0LinearTriangularStress(NodeIDType n1_, NodeIDType n2_, NodeIDType n3_,
@@ -68,7 +68,8 @@ Element2DC0LinearTriangularStress
     }
 }
 
-void Element2DC0LinearTriangularStress::PrintSelf(std::ostream& os, Indent indent) const
+void
+Element2DC0LinearTriangularStress::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }

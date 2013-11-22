@@ -300,6 +300,7 @@ ImageMetricLoad<TMoving, TFixed>
   // ------------------------------------------------------------
 
   VectorType OutVec;
+
   for( unsigned int k = 0; k < ImageDimension; k++ )
     {
     if( vnl_math_isnan(Gpos[k])  || vnl_math_isinf(Gpos[k])
@@ -705,8 +706,7 @@ ImageMetricLoad<TMoving, TFixed>
           measure[row + 1][col + 1] = m_Metric->GetValue(parameters);
           }
         catch( ... )
-          {
-          }
+            {}
 
         datatotal += measure[row + 1][col + 1];
         }
@@ -758,8 +758,7 @@ ImageMetricLoad<TMoving, TFixed>
             measure3D[row + 1][col + 1][z + 1] = m_Metric->GetValue(parameters);
             }
           catch( ... )
-            {
-            }
+              {}
 
           datatotal += measure3D[row + 1][col + 1][z + 1];
           }
@@ -819,7 +818,7 @@ ImageMetricLoad<TMoving, TFixed>
 
   //Element::VectorType force_tmp;
   //
-  Element::Float w;
+  Element::Float      w;
   Element::VectorType force(Ndofs, 0.0);
   for( unsigned int i = 0; i < Nip; i++ )
     {
@@ -884,6 +883,7 @@ ImageMetricLoad<TMoving, TFixed>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Metric Gradient Image: " << this->m_MetricGradientImage << std::endl;
   os << indent << "Moving Image: " << this->m_RefImage << std::endl;
   os << indent << "Fixed Image: " << this->m_TarImage << std::endl;

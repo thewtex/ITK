@@ -21,102 +21,103 @@
 #include "itkNullImageToImageFilterDriver.hxx"
 #include "itkFilterWatcher.h"
 
-int itkDiscreteGaussianImageFilterTest(int , char * [] )
+int
+itkDiscreteGaussianImageFilterTest(int , char * [] )
 {
   try
     {
-      const unsigned int Dimension = 3;
-      typedef itk::Image<float, Dimension> ImageType;
+    const unsigned int Dimension = 3;
+    typedef itk::Image<float, Dimension> ImageType;
 
-      // Set up filter
-      typedef itk::DiscreteGaussianImageFilter<ImageType, ImageType> FilterType;
-      typedef FilterType::ArrayType                                  ArrayType;
+    // Set up filter
+    typedef itk::DiscreteGaussianImageFilter<ImageType, ImageType> FilterType;
+    typedef FilterType::ArrayType                                  ArrayType;
 
-      FilterType::Pointer filter = FilterType::New();
-      FilterWatcher watcher( filter );
+    FilterType::Pointer filter = FilterType::New();
+    FilterWatcher       watcher( filter );
 
-      // Test other set/get functions
-      ArrayType array;
-      array[0] = 0.05;
-      array[1] = 0.06;
-      array[2] = 0.07;
-      filter->SetMaximumError( array );
+    // Test other set/get functions
+    ArrayType array;
+    array[0] = 0.05;
+    array[1] = 0.06;
+    array[2] = 0.07;
+    filter->SetMaximumError( array );
 
-      array.Fill( 0.04 );
-      filter->SetMaximumError( array.GetDataPointer() );
+    array.Fill( 0.04 );
+    filter->SetMaximumError( array.GetDataPointer() );
 
-      // set some parameters
-      filter->SetVariance( 1.0 );
-      filter->SetMaximumError( .01 );
-      filter->SetMaximumKernelWidth( 32 );
-      filter->SetFilterDimensionality( Dimension );
-      filter->SetUseImageSpacing( true );
+    // set some parameters
+    filter->SetVariance( 1.0 );
+    filter->SetMaximumError( .01 );
+    filter->SetMaximumKernelWidth( 32 );
+    filter->SetFilterDimensionality( Dimension );
+    filter->SetUseImageSpacing( true );
 
-      // Test some functions
-      ArrayType varReturned = filter->GetVariance();
-      for ( unsigned int i = 0; i < Dimension; ++i )
+    // Test some functions
+    ArrayType varReturned = filter->GetVariance();
+    for ( unsigned int i = 0; i < Dimension; ++i )
       {
-        if ( varReturned[ i ] != 1.0 )
+      if ( varReturned[ i ] != 1.0 )
         {
-          std::cout << "GetVariance()[" << i << "] failed. Expected: "
-            << 1.0
-            << " but got: "
-            << varReturned[ i ] << std::endl;
-          return EXIT_FAILURE;
-        }
-      }
-      ArrayType maxErrorReturned = filter->GetMaximumError();
-      for ( unsigned int i = 0; i < Dimension; ++i )
-        {
-        if ( maxErrorReturned[ i ] != 0.01 )
-          {
-          std::cout << "GetMaximumError()[" << i << "] failed. Expected: "
-            << 0.01
-            << " but got: "
-            << maxErrorReturned[ i ] << std::endl;
-          return EXIT_FAILURE;
-          }
-        }
-      if ( filter->GetMaximumKernelWidth() != 32 )
-        {
-        std::cout << "GetMaximumKernelWidth failed. Expected: "
-          << 32
-          << " but got: "
-          << filter->GetMaximumKernelWidth() << std::endl;
+        std::cout << "GetVariance()[" << i << "] failed. Expected: "
+                  << 1.0
+                  << " but got: "
+                  << varReturned[ i ] << std::endl;
         return EXIT_FAILURE;
         }
-      if ( filter->GetFilterDimensionality() != Dimension )
-      {
-        std::cout << "GetFilterDimensionality failed. Expected: "
-          << Dimension
-          << " but got: "
-          << filter->GetFilterDimensionality() << std::endl;
-        return EXIT_FAILURE;
       }
-      if ( filter->GetUseImageSpacing() != true )
+    ArrayType maxErrorReturned = filter->GetMaximumError();
+    for ( unsigned int i = 0; i < Dimension; ++i )
       {
-        std::cout << "GetUseImageSpacing failed. Expected: "
-          << true
-          << " but got: "
-          << filter->GetUseImageSpacing() << std::endl;
+      if ( maxErrorReturned[ i ] != 0.01 )
+        {
+        std::cout << "GetMaximumError()[" << i << "] failed. Expected: "
+                  << 0.01
+                  << " but got: "
+                  << maxErrorReturned[ i ] << std::endl;
         return EXIT_FAILURE;
+        }
+      }
+    if ( filter->GetMaximumKernelWidth() != 32 )
+      {
+      std::cout << "GetMaximumKernelWidth failed. Expected: "
+                << 32
+                << " but got: "
+                << filter->GetMaximumKernelWidth() << std::endl;
+      return EXIT_FAILURE;
+      }
+    if ( filter->GetFilterDimensionality() != Dimension )
+      {
+      std::cout << "GetFilterDimensionality failed. Expected: "
+                << Dimension
+                << " but got: "
+                << filter->GetFilterDimensionality() << std::endl;
+      return EXIT_FAILURE;
+      }
+    if ( filter->GetUseImageSpacing() != true )
+      {
+      std::cout << "GetUseImageSpacing failed. Expected: "
+                << true
+                << " but got: "
+                << filter->GetUseImageSpacing() << std::endl;
+      return EXIT_FAILURE;
       }
 
-      // Run Test
-      itk::Size<3> sz;
-      sz[0] = 100; //atoi(argv[1]);
-      sz[1] = 100; // atoi(argv[2]);
-      sz[2] = 40;
+    // Run Test
+    itk::Size<3> sz;
+    sz[0] = 100;   //atoi(argv[1]);
+    sz[1] = 100;   // atoi(argv[2]);
+    sz[2] = 40;
 
-      itk::NullImageToImageFilterDriver< ImageType, ImageType > test1;
-      test1.SetImageSize(sz);
-      test1.SetFilter(filter.GetPointer());
-      test1.Execute();
+    itk::NullImageToImageFilterDriver< ImageType, ImageType > test1;
+    test1.SetImageSize(sz);
+    test1.SetFilter(filter.GetPointer() );
+    test1.Execute();
     }
   catch(itk::ExceptionObject &err)
     {
-      (&err)->Print(std::cerr);
-      return EXIT_FAILURE;
+    (&err)->Print(std::cerr);
+    return EXIT_FAILURE;
     }
 
   return EXIT_SUCCESS;

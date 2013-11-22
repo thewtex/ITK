@@ -29,7 +29,8 @@ FiniteCylinderSpatialFunction< VDimension, TInput >
 {
   // a normalized {1,1,...1} vector is
   // { 1.0 / sqrt( VDmim ), ... }
-  const double orientationVal = 1.0 / vcl_sqrt(static_cast<double>(VDimension));
+  const double orientationVal = 1.0 / vcl_sqrt(static_cast<double>(VDimension) );
+
   m_Orientation.Fill(orientationVal);
   m_NormalizedOrientation.Fill(orientationVal);
   m_AxisLength = 1.0f; // Length of cylinder axis.
@@ -98,7 +99,8 @@ FiniteCylinderSpatialFunction< VDimension, TInput >
   const double distanceFromCenter = dot_product( medialAxisVector.GetVnlVector(), pointVector.GetVnlVector() );
 
   if ( vcl_fabs(distanceFromCenter) <= ( halfAxisLength )
-       && m_Radius >= vcl_sqrt( vcl_pow(pointVector.GetVnlVector().magnitude(), 2.0) - vcl_pow(distanceFromCenter, 2.0) ) )
+       && m_Radius >=
+       vcl_sqrt( vcl_pow(pointVector.GetVnlVector().magnitude(), 2.0) - vcl_pow(distanceFromCenter, 2.0) ) )
     {
     return 1;
     }
@@ -106,7 +108,8 @@ FiniteCylinderSpatialFunction< VDimension, TInput >
 }
 
 template< unsigned int VDimension, typename TInput >
-void FiniteCylinderSpatialFunction< VDimension, TInput >
+void
+FiniteCylinderSpatialFunction< VDimension, TInput >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   unsigned int i;
@@ -129,6 +132,7 @@ void FiniteCylinderSpatialFunction< VDimension, TInput >
     }
   os << std::endl;
 }
+
 } // end namespace itk
 
 #endif

@@ -38,9 +38,9 @@ namespace Statistics
  */
 template< typename TImage >
 struct ImageJointDomainTraits {
-  typedef ImageJointDomainTraits                     Self;
-  typedef PixelTraits< typename TImage::PixelType >  PixelTraitsType;
-  typedef typename PixelTraitsType::ValueType        RangeDomainMeasurementType;
+  typedef ImageJointDomainTraits                    Self;
+  typedef PixelTraits< typename TImage::PixelType > PixelTraitsType;
+  typedef typename PixelTraitsType::ValueType       RangeDomainMeasurementType;
 
   itkStaticConstMacro(ImageDimension, unsigned int, TImage::ImageDimension);
   itkStaticConstMacro(Dimension,
@@ -54,8 +54,8 @@ struct ImageJointDomainTraits {
   typedef typename JoinTraitsType::ValueType                                 MeasurementType;
 
   typedef FixedArray< MeasurementType, itkGetStaticConstMacro(Dimension) >
-  MeasurementVectorType;
-};  // end of ImageJointDomainTraits
+    MeasurementVectorType;
+  }; // end of ImageJointDomainTraits
 
 /** \class JointDomainImageToListSampleAdaptor
  *  \brief This adaptor returns measurement vectors composed of an
@@ -88,7 +88,7 @@ struct ImageJointDomainTraits {
  */
 
 template< typename TImage >
-class JointDomainImageToListSampleAdaptor:
+class JointDomainImageToListSampleAdaptor :
   public ListSample< typename ImageJointDomainTraits< TImage >::MeasurementVectorType >
 {
 public:
@@ -97,7 +97,7 @@ public:
   typedef JointDomainImageToListSampleAdaptor Self;
 
   typedef ListSample<
-    typename ImageJointDomainTraits< TImage >::MeasurementVectorType >   Superclass;
+      typename ImageJointDomainTraits< TImage >::MeasurementVectorType >   Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -163,8 +163,8 @@ public:
   typedef FixedArray< RangeDomainMeasurementType,
                       itkGetStaticConstMacro(RangeDomainDimension) >          RangeDomainMeasurementVectorType;
 
-  typedef std::vector< InstanceIdentifier >                                   InstanceIdentifierVectorType;
-  typedef FixedArray< float, itkGetStaticConstMacro(MeasurementVectorSize) >  NormalizationFactorsType;
+  typedef std::vector< InstanceIdentifier >                                  InstanceIdentifierVectorType;
+  typedef FixedArray< float, itkGetStaticConstMacro(MeasurementVectorSize) > NormalizationFactorsType;
 
   /** Sets the normalization factors */
   void SetNormalizationFactors(NormalizationFactorsType & factors);
@@ -201,40 +201,47 @@ public:
       m_Adaptor            = iter.m_Adaptor;
     }
 
-    ConstIterator & operator=(const ConstIterator & iter)
+    ConstIterator &
+    operator=(const ConstIterator & iter)
     {
       m_InstanceIdentifier = iter.m_InstanceIdentifier;
       return *this;
     }
 
-    AbsoluteFrequencyType GetFrequency() const
+    AbsoluteFrequencyType
+    GetFrequency() const
     {
       return 1;
     }
 
-    const MeasurementVectorType & GetMeasurementVector() const
+    const MeasurementVectorType &
+    GetMeasurementVector() const
     {
       m_MeasurementVectorCache = m_Adaptor->GetMeasurementVector(m_InstanceIdentifier);
       return this->m_MeasurementVectorCache;
     }
 
-    InstanceIdentifier GetInstanceIdentifier() const
+    InstanceIdentifier
+    GetInstanceIdentifier() const
     {
       return m_InstanceIdentifier;
     }
 
-    ConstIterator & operator++()
+    ConstIterator &
+    operator++()
     {
       ++m_InstanceIdentifier;
       return *this;
     }
 
-    bool operator!=(const ConstIterator & it)
+    bool
+    operator!=(const ConstIterator & it)
     {
       return ( m_InstanceIdentifier != it.m_InstanceIdentifier );
     }
 
-    bool operator==(const ConstIterator & it)
+    bool
+    operator==(const ConstIterator & it)
     {
       return ( m_InstanceIdentifier == it.m_InstanceIdentifier );
     }
@@ -262,19 +269,20 @@ private:
    * \brief Iterator
    * \ingroup ITKStatistics
    */
-  class Iterator:public ConstIterator
+  class Iterator : public ConstIterator
   {
     friend class JointDomainImageToListSampleAdaptor;
 
 public:
 
-    Iterator(Self *adaptor):ConstIterator(adaptor)
+    Iterator(Self *adaptor) : ConstIterator(adaptor)
     {}
 
-    Iterator(const Iterator & iter):ConstIterator(iter)
+    Iterator(const Iterator & iter) : ConstIterator(iter)
     {}
 
-    Iterator & operator=(const Iterator & iter)
+    Iterator &
+    operator=(const Iterator & iter)
     {
       this->ConstIterator::operator=(iter);
       return *this;
@@ -290,14 +298,15 @@ protected:
 
     Iterator(
       const JointDomainImageToListSampleAdaptor *adaptor,
-      InstanceIdentifier iid):ConstIterator(adaptor, iid)
+      InstanceIdentifier iid) : ConstIterator(adaptor, iid)
     {}
 
 private:
   };
 
   /** returns an iterator that points to the beginning of the container */
-  Iterator Begin()
+  Iterator
+  Begin()
   {
     Iterator iter(this, 0);
 
@@ -305,7 +314,8 @@ private:
   }
 
   /** returns an iterator that points to the end of the container */
-  Iterator End()
+  Iterator
+  End()
   {
     Iterator iter( this, m_Image->GetPixelContainer()->Size() );
 
@@ -313,7 +323,8 @@ private:
   }
 
   /** returns an iterator that points to the beginning of the container */
-  ConstIterator Begin() const
+  ConstIterator
+  Begin() const
   {
     ConstIterator iter(this, 0);
 
@@ -321,7 +332,8 @@ private:
   }
 
   /** returns an iterator that points to the end of the container */
-  ConstIterator End() const
+  ConstIterator
+  End() const
   {
     ConstIterator iter( this, m_Image->GetPixelContainer()->Size() );
 
@@ -330,7 +342,8 @@ private:
 
 protected:
   JointDomainImageToListSampleAdaptor();
-  virtual ~JointDomainImageToListSampleAdaptor() {}
+  virtual
+  ~JointDomainImageToListSampleAdaptor() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

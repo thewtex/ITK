@@ -34,9 +34,7 @@ LevelSetEquationLaplacianTerm< TInput, TLevelSetContainer >
 template< typename TInput, typename TLevelSetContainer >
 LevelSetEquationLaplacianTerm< TInput, TLevelSetContainer >
 ::~LevelSetEquationLaplacianTerm()
-{
-}
-
+{}
 
 template< typename TInput, typename TLevelSetContainer >
 void
@@ -50,15 +48,13 @@ template< typename TInput, typename TLevelSetContainer >
 void
 LevelSetEquationLaplacianTerm< TInput, TLevelSetContainer >
 ::Initialize( const LevelSetInputIndexType& )
-{
-}
+{}
 
 template< typename TInput, typename TLevelSetContainer >
 void
 LevelSetEquationLaplacianTerm< TInput, TLevelSetContainer >
 ::Update()
-{
-}
+{}
 
 template< typename TInput, typename TLevelSetContainer >
 void
@@ -66,8 +62,7 @@ LevelSetEquationLaplacianTerm< TInput, TLevelSetContainer >
 ::UpdatePixel( const LevelSetInputIndexType& itkNotUsed( iP ),
                const LevelSetOutputRealType& itkNotUsed( oldValue ),
                const LevelSetOutputRealType& itkNotUsed( newValue ) )
-{
-}
+{}
 
 template< typename TInput, typename TLevelSetContainer >
 typename LevelSetEquationLaplacianTerm< TInput, TLevelSetContainer >::LevelSetOutputRealType

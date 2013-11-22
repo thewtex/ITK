@@ -26,7 +26,7 @@ namespace itk
 /** Set the Input Image */
 template< typename TInputImage, typename TOutput >
 DiscreteGaussianDerivativeImageFunction< TInputImage, TOutput >
-::DiscreteGaussianDerivativeImageFunction():
+::DiscreteGaussianDerivativeImageFunction() :
   m_MaximumError(0.005),
   m_MaximumKernelWidth(30),
   m_NormalizeAcrossScale(true),
@@ -65,6 +65,7 @@ DiscreteGaussianDerivativeImageFunction< TInputImage, TOutput >
 ::SetInputImage(const InputImageType *ptr)
 {
   Superclass::SetInputImage(ptr);
+
   m_OperatorImageFunction->SetInputImage(ptr);
 }
 
@@ -140,7 +141,7 @@ DiscreteGaussianDerivativeImageFunction< TInputImage, TOutput >
 
   // Now create an image filter to perform successive convolutions
   typedef itk::NeighborhoodOperatorImageFilter< KernelImageType, KernelImageType >
-  NeighborhoodFilterType;
+    NeighborhoodFilterType;
   typename NeighborhoodFilterType::Pointer convolutionFilter = NeighborhoodFilterType::New();
 
   for ( unsigned int direction = 0; direction < itkGetStaticConstMacro(ImageDimension2); ++direction )
@@ -178,7 +179,6 @@ DiscreteGaussianDerivativeImageFunction< TInputImage, TOutput >
 
   m_OperatorImageFunction->SetOperator(m_DerivativeKernel);
   derivative = m_OperatorImageFunction->EvaluateAtIndex(index);
-
 
   return derivative;
 }
@@ -223,7 +223,7 @@ DiscreteGaussianDerivativeImageFunction< TInputImage, TOutput >
     {
     typedef unsigned int NumberOfNeighborsType;
 
-    unsigned int  dim; // index over dimension
+    unsigned int          dim; // index over dimension
     NumberOfNeighborsType numberOfNeighbors = 1 << ImageDimension2;
 
     // Compute base index = closet index below point
@@ -245,9 +245,9 @@ DiscreteGaussianDerivativeImageFunction< TInputImage, TOutput >
 
     for ( NumberOfNeighborsType counter = 0; counter < numberOfNeighbors; counter++ )
       {
-      double       overlap = 1.0;    // fraction overlap
-      NumberOfNeighborsType upper = counter;  // each bit indicates upper/lower neighbour
-      IndexType    neighIndex;
+      double                overlap = 1.0;   // fraction overlap
+      NumberOfNeighborsType upper = counter; // each bit indicates upper/lower neighbour
+      IndexType             neighIndex;
 
       // get neighbor index and overlap fraction
       for ( dim = 0; dim < ImageDimension2; dim++ )
@@ -281,6 +281,7 @@ DiscreteGaussianDerivativeImageFunction< TInputImage, TOutput >
     return ( static_cast< OutputType >( value ) );
     }
 }
+
 } // end namespace itk
 
 #endif

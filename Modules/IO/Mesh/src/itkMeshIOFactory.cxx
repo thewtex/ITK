@@ -32,14 +32,11 @@ namespace itk
 
 MeshIOFactory
 ::MeshIOFactory()
-{
-}
+{}
 
 MeshIOFactory
 ::~MeshIOFactory()
-{
-}
-
+{}
 
 MeshIOBase::Pointer
 MeshIOFactory
@@ -87,7 +84,6 @@ MeshIOFactory
   return 0;
 }
 
-
 void
 MeshIOFactory
 ::RegisterBuiltInFactories()
@@ -113,6 +109,5 @@ MeshIOFactory
       }
     }
 }
-
 
 } // end namespace itk

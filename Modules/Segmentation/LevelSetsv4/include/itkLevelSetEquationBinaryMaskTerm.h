@@ -42,12 +42,12 @@ namespace itk
 template< typename TInput, // Input image or mesh
           typename TLevelSetContainer >
 class LevelSetEquationBinaryMaskTerm :
-    public LevelSetEquationTermBase< TInput, TLevelSetContainer >
+  public LevelSetEquationTermBase< TInput, TLevelSetContainer >
 {
 public:
-  typedef LevelSetEquationBinaryMaskTerm                  Self;
-  typedef SmartPointer< Self >                            Pointer;
-  typedef SmartPointer< const Self >                      ConstPointer;
+  typedef LevelSetEquationBinaryMaskTerm Self;
+  typedef SmartPointer< Self >           Pointer;
+  typedef SmartPointer< const Self >     ConstPointer;
   typedef LevelSetEquationTermBase< TInput,
                                     TLevelSetContainer >  Superclass;
 
@@ -63,24 +63,24 @@ public:
   typedef typename Superclass::InputPixelType     InputPixelType;
   typedef typename Superclass::InputPixelRealType InputPixelRealType;
 
-  typedef typename Superclass::LevelSetContainerType      LevelSetContainerType;
-  typedef typename Superclass::LevelSetContainerPointer   LevelSetContainerPointer;
-  typedef typename Superclass::LevelSetType               LevelSetType;
-  typedef typename Superclass::LevelSetPointer            LevelSetPointer;
-  typedef typename Superclass::LevelSetOutputPixelType    LevelSetOutputPixelType;
-  typedef typename Superclass::LevelSetOutputRealType     LevelSetOutputRealType;
-  typedef typename Superclass::LevelSetInputIndexType     LevelSetInputIndexType;
-  typedef typename Superclass::LevelSetGradientType       LevelSetGradientType;
-  typedef typename Superclass::LevelSetHessianType        LevelSetHessianType;
-  typedef typename Superclass::LevelSetIdentifierType     LevelSetIdentifierType;
+  typedef typename Superclass::LevelSetContainerType    LevelSetContainerType;
+  typedef typename Superclass::LevelSetContainerPointer LevelSetContainerPointer;
+  typedef typename Superclass::LevelSetType             LevelSetType;
+  typedef typename Superclass::LevelSetPointer          LevelSetPointer;
+  typedef typename Superclass::LevelSetOutputPixelType  LevelSetOutputPixelType;
+  typedef typename Superclass::LevelSetOutputRealType   LevelSetOutputRealType;
+  typedef typename Superclass::LevelSetInputIndexType   LevelSetInputIndexType;
+  typedef typename Superclass::LevelSetGradientType     LevelSetGradientType;
+  typedef typename Superclass::LevelSetHessianType      LevelSetHessianType;
+  typedef typename Superclass::LevelSetIdentifierType   LevelSetIdentifierType;
 
-  typedef typename Superclass::HeavisideType              HeavisideType;
-  typedef typename Superclass::HeavisideConstPointer      HeavisideConstPointer;
+  typedef typename Superclass::HeavisideType         HeavisideType;
+  typedef typename Superclass::HeavisideConstPointer HeavisideConstPointer;
 
   typedef typename Superclass::LevelSetDataType LevelSetDataType;
 
-  typedef typename Superclass::DomainMapImageFilterType   DomainMapImageFilterType;
-  typedef typename Superclass::CacheImageType             CacheImageType;
+  typedef typename Superclass::DomainMapImageFilterType DomainMapImageFilterType;
+  typedef typename Superclass::CacheImageType           CacheImageType;
 
   itkSetObjectMacro( Mask, InputImageType );
 
@@ -95,13 +95,14 @@ public:
 
   /** Supply updates at pixels to keep the term parameters always updated */
   virtual void UpdatePixel( const LevelSetInputIndexType& iP,
-                           const LevelSetOutputRealType & oldValue,
-                           const LevelSetOutputRealType & newValue );
+                            const LevelSetOutputRealType & oldValue,
+                            const LevelSetOutputRealType & newValue );
 
 protected:
   LevelSetEquationBinaryMaskTerm();
 
-  virtual ~LevelSetEquationBinaryMaskTerm();
+  virtual
+  ~LevelSetEquationBinaryMaskTerm();
 
   /** Returns the term contribution for a given location iP, i.e.
    *  \f$ \omega_i( p ) \f$. */
@@ -112,12 +113,12 @@ protected:
   virtual LevelSetOutputRealType Value( const LevelSetInputIndexType& iP,
                                         const LevelSetDataType& iData );
 
-
   InputImagePointer m_Mask;
 
 private:
   LevelSetEquationBinaryMaskTerm( const Self& ); // purposely not implemented
-  void operator = ( const Self& ); // purposely not implemented
+  void operator =( const Self& );                // purposely not implemented
+
 };
 
 }

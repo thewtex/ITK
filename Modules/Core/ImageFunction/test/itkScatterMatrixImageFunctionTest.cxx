@@ -16,14 +16,15 @@
  *
  *=========================================================================*/
 
-
 #include "itkScatterMatrixImageFunction.h"
 
-int itkScatterMatrixImageFunctionTest(int, char* [] )
+int
+itkScatterMatrixImageFunctionTest(int, char* [] )
 {
 
   const unsigned int Dimension = 3;
-  typedef unsigned char   PixelComponentType;
+
+  typedef unsigned char PixelComponentType;
   const unsigned int VectorDimension = 4;
 
   typedef itk::FixedArray< PixelComponentType, VectorDimension > PixelType;
@@ -31,10 +32,10 @@ int itkScatterMatrixImageFunctionTest(int, char* [] )
   typedef itk::ScatterMatrixImageFunction< ImageType >           FunctionType;
 
   // Create and allocate the image
-  ImageType::Pointer      image = ImageType::New();
-  ImageType::SizeType     size;
-  ImageType::IndexType    start;
-  ImageType::RegionType   region;
+  ImageType::Pointer    image = ImageType::New();
+  ImageType::SizeType   size;
+  ImageType::IndexType  start;
+  ImageType::RegionType region;
 
   size[0] = 20;
   size[1] = 20;
@@ -63,13 +64,13 @@ int itkScatterMatrixImageFunctionTest(int, char* [] )
 
   function->SetNeighborhoodRadius( 5 );
 
-  ImageType::IndexType    index;
+  ImageType::IndexType index;
 
   index[0] = 10;
   index[1] = 10;
   index[2] = 10;
 
-  FunctionType::OutputType  scatterMatrix;
+  FunctionType::OutputType scatterMatrix;
 
   scatterMatrix = function->EvaluateAtIndex( index );
   std::cout << "function->EvaluateAtIndex( index ): " << scatterMatrix << std::endl;

@@ -18,14 +18,15 @@
 
 #include "itkImageSeriesReader.h"
 
-int itkImageSeriesReaderVectorTest(int ac, char* av[])
+int
+itkImageSeriesReaderVectorTest(int ac, char* av[])
 {
 
   if(ac < 3)
-  {
+    {
     std::cerr << "usage: itkIOTests itkImageSeriesReaderDimensionsTest inputFileName(s)" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   typedef itk::VectorImage< unsigned short, 3>            VectorImageType;
   typedef itk::Image< itk::Vector<unsigned short, 3>, 3 > ImageOfVectorType;
@@ -35,11 +36,10 @@ int itkImageSeriesReaderVectorTest(int ac, char* av[])
 
   VectorImageSeriesReader::FileNamesContainer fnames;
   for (int i = 1; i < ac; ++i)
-      fnames.push_back(av[i]);
-
+    fnames.push_back(av[i]);
 
   std::cout << "testing reading a image series into VecorImage" << std::endl;
-   try
+  try
     {
     VectorImageSeriesReader::Pointer reader = VectorImageSeriesReader::New();
     reader->SetFileNames(fnames);

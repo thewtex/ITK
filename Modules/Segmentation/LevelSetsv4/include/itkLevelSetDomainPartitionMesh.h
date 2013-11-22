@@ -34,21 +34,21 @@ class LevelSetDomainPartitionMesh :
 {
 public:
 
-  typedef LevelSetDomainPartitionMesh           Self;
-  typedef LevelSetDomainPartitionBase< TMesh >  Superclass;
-  typedef SmartPointer< Self >                  Pointer;
-  typedef SmartPointer< const Self >            ConstPointer;
+  typedef LevelSetDomainPartitionMesh          Self;
+  typedef LevelSetDomainPartitionBase< TMesh > Superclass;
+  typedef SmartPointer< Self >                 Pointer;
+  typedef SmartPointer< const Self >           ConstPointer;
 
   itkStaticConstMacro( PointDimension, unsigned int, TMesh::PointDimension);
 
   itkTypeMacro( LevelSetDomainPartitionMesh,
                 LevelSetDomainPartitionBase );
 
-  typedef TMesh                                     MeshType;
-  typedef typename MeshType::Pointer                MeshPointer;
-  typedef typename MeshType::ConstPointer           MeshConstPointer;
-  typedef typename MeshType::PointType              PointType;
-  typedef typename MeshType::PointIdentifierType    PointIdentifierType;
+  typedef TMesh                                  MeshType;
+  typedef typename MeshType::Pointer             MeshPointer;
+  typedef typename MeshType::ConstPointer        MeshConstPointer;
+  typedef typename MeshType::PointType           PointType;
+  typedef typename MeshType::PointIdentifierType PointIdentifierType;
 
   typedef typename MeshType::PointsContainerConstPointer  PointsContainerConstPointer;
   typedef typename MeshType::PointsContainerConstIterator PointsContainerConstIterator;
@@ -61,7 +61,8 @@ public:
 
 protected:
   LevelSetDomainPartitionMesh();
-  virtual ~LevelSetDomainPartitionMesh();
+  virtual
+  ~LevelSetDomainPartitionMesh();
 
   /** Populate a list mesh with each node being a list of overlapping
    *  level set support at that pixel */
@@ -73,10 +74,10 @@ protected:
 
 private:
   LevelSetDomainPartitionMesh(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);              //purposely not implemented
 
-  MeshPointer     m_Mesh;
-  ListMeshType    m_ListDomain;
+  MeshPointer  m_Mesh;
+  ListMeshType m_ListDomain;
 };
 
 } //end namespace itk

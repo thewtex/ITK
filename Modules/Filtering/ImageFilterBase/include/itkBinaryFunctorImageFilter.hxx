@@ -22,7 +22,6 @@
 #include "itkImageScanlineIterator.h"
 #include "itkProgressReporter.h"
 
-
 namespace itk
 {
 /**
@@ -86,7 +85,7 @@ template< typename TInputImage1, typename TInputImage2,
 const typename BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >::Input1ImagePixelType &
 BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
 ::GetConstant1() const
-{
+  {
   itkDebugMacro("Getting constant 1");
   const DecoratedInput1ImagePixelType *input = dynamic_cast< const DecoratedInput1ImagePixelType * >(
       this->ProcessObject::GetInput(0) );
@@ -95,8 +94,7 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
     itkExceptionMacro(<<"Constant 1 is not set");
     }
   return input->Get();
-}
-
+  }
 
 /**
  * Connect one of the operands for pixel-wise addition
@@ -147,7 +145,7 @@ template< typename TInputImage1, typename TInputImage2,
 const typename BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >::Input2ImagePixelType &
 BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
 ::GetConstant2() const
-{
+  {
   itkDebugMacro("Getting constant 2");
   const DecoratedInput2ImagePixelType *input = dynamic_cast< const DecoratedInput2ImagePixelType * >(
       this->ProcessObject::GetInput(1) );
@@ -156,8 +154,7 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
     itkExceptionMacro(<<"Constant 2 is not set");
     }
   return input->Get();
-}
-
+  }
 
 template< typename TInputImage1, typename TInputImage2,
           typename TOutputImage, typename TFunction  >
@@ -213,8 +210,9 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
     dynamic_cast< const TInputImage1 * >( ProcessObject::GetInput(0) );
   const TInputImage2 *inputPtr2 =
     dynamic_cast< const TInputImage2 * >( ProcessObject::GetInput(1) );
-  TOutputImage *outputPtr = this->GetOutput(0);
+  TOutputImage *      outputPtr = this->GetOutput(0);
   const SizeValueType size0 = outputRegionForThread.GetSize(0);
+
   if( size0 == 0)
     {
     return;
@@ -225,11 +223,9 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
     {
     ImageScanlineConstIterator< TInputImage1 > inputIt1(inputPtr1, outputRegionForThread);
     ImageScanlineConstIterator< TInputImage2 > inputIt2(inputPtr2, outputRegionForThread);
-    ImageScanlineIterator< TOutputImage > outputIt(outputPtr, outputRegionForThread);
-
+    ImageScanlineIterator< TOutputImage >      outputIt(outputPtr, outputRegionForThread);
 
     ProgressReporter progress( this, threadId, numberOfLinesToProcess );
-
 
     while ( !inputIt1.IsAtEnd() )
       {
@@ -250,10 +246,10 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
   else if( inputPtr1 )
     {
     ImageScanlineConstIterator< TInputImage1 > inputIt1(inputPtr1, outputRegionForThread);
-    ImageScanlineIterator< TOutputImage > outputIt(outputPtr, outputRegionForThread);
+    ImageScanlineIterator< TOutputImage >      outputIt(outputPtr, outputRegionForThread);
 
     const Input2ImagePixelType & input2Value = this->GetConstant2();
-    ProgressReporter progress( this, threadId, numberOfLinesToProcess );
+    ProgressReporter             progress( this, threadId, numberOfLinesToProcess );
 
     while ( !inputIt1.IsAtEnd() )
       {
@@ -271,11 +267,10 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
   else if( inputPtr2 )
     {
     ImageScanlineConstIterator< TInputImage2 > inputIt2(inputPtr2, outputRegionForThread);
-    ImageScanlineIterator< TOutputImage > outputIt(outputPtr, outputRegionForThread);
+    ImageScanlineIterator< TOutputImage >      outputIt(outputPtr, outputRegionForThread);
 
     const Input1ImagePixelType & input1Value = this->GetConstant1();
-    ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
-
+    ProgressReporter             progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );
 
     while ( !inputIt2.IsAtEnd() )
       {
@@ -295,6 +290,7 @@ BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage, TFunction >
     itkGenericExceptionMacro(<<"At most one of the inputs can be a constant.");
     }
 }
+
 } // end namespace itk
 
 #endif

@@ -59,14 +59,14 @@ namespace itk
  */
 template< typename TInputImage, typename TOutputImage >
 class ZeroFluxNeumannPadImageFilter :
-    public PadImageFilter< TInputImage, TOutputImage >
+  public PadImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
-  typedef ZeroFluxNeumannPadImageFilter              Self;
-  typedef PadImageFilter<TInputImage, TOutputImage>  Superclass;
-  typedef SmartPointer<Self>                         Pointer;
-  typedef SmartPointer<const Self>                   ConstPointer;
+  typedef ZeroFluxNeumannPadImageFilter             Self;
+  typedef PadImageFilter<TInputImage, TOutputImage> Superclass;
+  typedef SmartPointer<Self>                        Pointer;
+  typedef SmartPointer<const Self>                  ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -80,16 +80,16 @@ public:
   typedef typename Superclass::InputImageRegionType  RegionType;
 
   /** Typedef to describe the type of pixel. */
-  typedef typename Superclass::OutputImagePixelType  OutputImagePixelType;
-  typedef typename Superclass::InputImagePixelType   InputImagePixelType;
+  typedef typename Superclass::OutputImagePixelType OutputImagePixelType;
+  typedef typename Superclass::InputImagePixelType  InputImagePixelType;
 
   /** Typedef to describe the output and input image index and size types. */
-  typedef typename Superclass::OutputImageIndexType  OutputImageIndexType;
-  typedef typename Superclass::InputImageIndexType   InputImageIndexType;
-  typedef typename Superclass::OutputImageSizeType   OutputImageSizeType;
-  typedef typename Superclass::InputImageSizeType    InputImageSizeType;
-  typedef typename Superclass::InputImageIndexType   IndexType;
-  typedef typename Superclass::InputImageSizeType    SizeType;
+  typedef typename Superclass::OutputImageIndexType OutputImageIndexType;
+  typedef typename Superclass::InputImageIndexType  InputImageIndexType;
+  typedef typename Superclass::OutputImageSizeType  OutputImageSizeType;
+  typedef typename Superclass::InputImageSizeType   InputImageSizeType;
+  typedef typename Superclass::InputImageIndexType  IndexType;
+  typedef typename Superclass::InputImageSizeType   SizeType;
 
   /** ImageDimension constants */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -100,23 +100,23 @@ public:
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
   itkConceptMacro(OutputEqualityComparableCheck,
-    (Concept::EqualityComparable< OutputImagePixelType >));
+                  (Concept::EqualityComparable< OutputImagePixelType >) );
   itkConceptMacro(InputConvertibleToOutputCheck,
-    (Concept::Convertible< InputImagePixelType, OutputImagePixelType >));
+                  (Concept::Convertible< InputImagePixelType, OutputImagePixelType >) );
   itkConceptMacro(SameDimensionCheck,
-    (Concept::SameDimension< ImageDimension, OutputImageDimension >));
+                  (Concept::SameDimension< ImageDimension, OutputImageDimension >) );
   itkConceptMacro(OutputOStreamWritableCheck,
-    (Concept::OStreamWritable< OutputImagePixelType >));
+                  (Concept::OStreamWritable< OutputImagePixelType >) );
   // End concept checking
 #endif
 
 protected:
   ZeroFluxNeumannPadImageFilter();
-  ~ZeroFluxNeumannPadImageFilter() {};
+  ~ZeroFluxNeumannPadImageFilter() {}
 
 private:
   ZeroFluxNeumannPadImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                //purposely not implemented
 
   ZeroFluxNeumannBoundaryCondition< TInputImage, TOutputImage > m_InternalBoundaryCondition;
 };

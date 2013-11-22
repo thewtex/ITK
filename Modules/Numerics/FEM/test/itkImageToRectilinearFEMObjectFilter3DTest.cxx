@@ -16,12 +16,12 @@
  *
  *=========================================================================*/
 
-
 #include "itkImageToRectilinearFEMObjectFilter.h"
 #include "itkImageFileReader.h"
 #include "itkFEMElement3DC0LinearHexahedronMembrane.h"
 
-int itkImageToRectilinearFEMObjectFilter3DTest(int argc, char *argv[])
+int
+itkImageToRectilinearFEMObjectFilter3DTest(int argc, char *argv[])
 {
   if(argc < 12)
     {
@@ -161,7 +161,6 @@ int itkImageToRectilinearFEMObjectFilter3DTest(int argc, char *argv[])
     std::cout << " [PASSED]" << std::endl;
     }
 
-
   std::cout << "Material Property Test :";
 
   ElasticityType * m1 = dynamic_cast<itk::fem::MaterialLinearElasticity *>( femObject->GetMaterial(0).GetPointer() );
@@ -170,18 +169,17 @@ int itkImageToRectilinearFEMObjectFilter3DTest(int argc, char *argv[])
        (m1->GetCrossSectionalArea() != 0.02) ||
        (m1->GetMomentOfInertia() != 0.004) )
     {
-      std::cout << " [FAILED]" << std::endl;
-      std::cout << "\tExpected  3000.0, 0.02, 0.004" << " Obtained ";
-      std::cout << m1->GetYoungsModulus() << ", ";
-      std::cout << m1->GetCrossSectionalArea() << ", ";
-      std::cout << m1->GetMomentOfInertia() << std::endl;
-      foundError = true;
+    std::cout << " [FAILED]" << std::endl;
+    std::cout << "\tExpected  3000.0, 0.02, 0.004" << " Obtained ";
+    std::cout << m1->GetYoungsModulus() << ", ";
+    std::cout << m1->GetCrossSectionalArea() << ", ";
+    std::cout << m1->GetMomentOfInertia() << std::endl;
+    foundError = true;
     }
   else
     {
     std::cout << " [PASSED]" << std::endl;
     }
-
 
   const unsigned int numberOfNodesToTest = static_cast<unsigned int>( atoi( argv[10] ) );
   for( unsigned int i = 0; i < numberOfNodesToTest; i++ )

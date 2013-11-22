@@ -63,12 +63,12 @@ CurvatureFlowFunction< TImage >
 ::ComputeUpdate( const NeighborhoodType & it, void *itkNotUsed(gd),
                  const FloatOffsetType & itkNotUsed(offset) )
 {
-  PixelRealType firstderiv[ImageDimension];
-  PixelRealType secderiv[ImageDimension];
-  PixelRealType crossderiv[ImageDimension][ImageDimension];
+  PixelRealType  firstderiv[ImageDimension];
+  PixelRealType  secderiv[ImageDimension];
+  PixelRealType  crossderiv[ImageDimension][ImageDimension];
   IdentifierType center;
   IdentifierType stride[ImageDimension];
-  unsigned int  i, j;
+  unsigned int   i, j;
 
   const NeighborhoodScalesType neighborhoodScales = this->ComputeNeighborhoodScales();
 
@@ -96,11 +96,11 @@ CurvatureFlowFunction< TImage >
     for ( j = i + 1; j < ImageDimension; j++ )
       {
       crossderiv[i][j] = 0.25 * (
-        it.GetPixel(center - stride[i] - stride[j])
-        - it.GetPixel(center - stride[i] + stride[j])
-        - it.GetPixel(center + stride[i] - stride[j])
-        + it.GetPixel(center + stride[i] + stride[j]) )
-                         * neighborhoodScales[i] * neighborhoodScales[j];
+          it.GetPixel(center - stride[i] - stride[j])
+          - it.GetPixel(center - stride[i] + stride[j])
+          - it.GetPixel(center + stride[i] - stride[j])
+          + it.GetPixel(center + stride[i] + stride[j]) )
+        * neighborhoodScales[i] * neighborhoodScales[j];
       }
 
     // accumlate the gradient magnitude squared
@@ -135,13 +135,14 @@ CurvatureFlowFunction< TImage >
     for ( j = i + 1; j < ImageDimension; j++ )
       {
       update -= 2 * firstderiv[i] * firstderiv[j]
-                * crossderiv[i][j];
+        * crossderiv[i][j];
       }
     }
 
   update /= magnitudeSqr;
   return static_cast< PixelType >( update );
 }
+
 } // end namespace itk
 
 #endif

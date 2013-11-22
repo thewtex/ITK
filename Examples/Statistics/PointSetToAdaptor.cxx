@@ -37,7 +37,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkPointSetToListSampleAdaptor.h"
 // Software Guide : EndCodeSnippet
@@ -51,7 +50,8 @@
 #include "itkPointSet.h"
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -92,7 +92,7 @@ int main()
   typedef itk::FixedArray< float, 1 >               MeasurementVectorType;
   typedef itk::PointSet< MeasurementVectorType, 2 > ArrayPointSetType;
   typedef itk::ScalarToArrayCastPointSetFilter< FloatPointSet2DType,
-                             ArrayPointSetType >    CasterType;
+                                                ArrayPointSetType >    CasterType;
 
   CasterType::Pointer caster = CasterType::New();
   caster->SetInput( random->GetOutput() );
@@ -108,7 +108,7 @@ int main()
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::PointSetToListSampleAdaptor<
-                                               ArrayPointSetType > SampleType;
+      ArrayPointSetType > SampleType;
   SampleType::Pointer sample = SampleType::New();
   // Software Guide : EndCodeSnippet
 

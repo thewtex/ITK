@@ -54,7 +54,7 @@ namespace itk
  * \ingroup ITKImageGrid
  */
 template<unsigned int VSplineOrder = 3, typename TRealValueType = double>
-class CoxDeBoorBSplineKernelFunction:
+class CoxDeBoorBSplineKernelFunction :
   public KernelFunctionBase<TRealValueType>
 {
 public:
@@ -64,7 +64,7 @@ public:
   typedef SmartPointer<Self>                 Pointer;
   typedef SmartPointer<const Self>           ConstPointer;
 
-  typedef typename Superclass::RealType  RealType;
+  typedef typename Superclass::RealType RealType;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self );
@@ -106,7 +106,8 @@ public:
 
 protected:
   CoxDeBoorBSplineKernelFunction();
-  virtual ~CoxDeBoorBSplineKernelFunction();
+  virtual
+  ~CoxDeBoorBSplineKernelFunction();
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
@@ -126,10 +127,10 @@ private:
    * Springer 1997, p. 50.
    */
   PolynomialType CoxDeBoor( const unsigned short, const VectorType,
-    const unsigned int, const unsigned int );
+                            const unsigned int, const unsigned int );
 
-  MatrixType                       m_BSplineShapeFunctions;
-  unsigned int                     m_SplineOrder;
+  MatrixType   m_BSplineShapeFunctions;
+  unsigned int m_SplineOrder;
 };
 } // end namespace itk
 

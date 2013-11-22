@@ -30,17 +30,15 @@ namespace itk
 
 template<typename TScalar, unsigned int NDimensions>
 GaussianExponentialDiffeomorphicTransform<TScalar, NDimensions>
-::GaussianExponentialDiffeomorphicTransform():
+::GaussianExponentialDiffeomorphicTransform() :
   m_GaussianSmoothingVarianceForTheUpdateField( 0.5 ),
   m_GaussianSmoothingVarianceForTheConstantVelocityField( 0.5 )
-{
-}
+{}
 
 template<typename TScalar, unsigned int NDimensions>
 GaussianExponentialDiffeomorphicTransform<TScalar, NDimensions>::
 ~GaussianExponentialDiffeomorphicTransform()
-{
-}
+{}
 
 template<typename TScalar, unsigned int NDimensions>
 void
@@ -51,6 +49,7 @@ GaussianExponentialDiffeomorphicTransform<TScalar, NDimensions>
   // Smooth the update field
   //
   bool smoothUpdateField = true;
+
   if( this->m_GaussianSmoothingVarianceForTheUpdateField <= 0.0 )
     {
     itkDebugMacro( "Not smooothing the update field." );
@@ -66,7 +65,8 @@ GaussianExponentialDiffeomorphicTransform<TScalar, NDimensions>
   const typename ConstantVelocityFieldType::RegionType & bufferedRegion = velocityField->GetBufferedRegion();
   const SizeValueType numberOfPixels = bufferedRegion.GetNumberOfPixels();
 
-  DisplacementVectorType *updateFieldPointer = reinterpret_cast<DisplacementVectorType *>( const_cast<DerivativeType &>( update ).data_block() );
+  DisplacementVectorType *updateFieldPointer =
+    reinterpret_cast<DisplacementVectorType *>( const_cast<DerivativeType &>( update ).data_block() );
 
   typedef ImportImageFilter<DisplacementVectorType, NDimensions> ImporterType;
   const bool importFilterWillReleaseMemory = false;
@@ -127,7 +127,8 @@ GaussianExponentialDiffeomorphicTransform<TScalar, NDimensions>
     // we smooth it using the parent class smoothing functionality
 
     ConstantVelocityFieldPointer velocitySmoothField =
-      this->GaussianSmoothConstantVelocityField( updatedVelocityField, this->m_GaussianSmoothingVarianceForTheConstantVelocityField );
+      this->GaussianSmoothConstantVelocityField( updatedVelocityField,
+                                                 this->m_GaussianSmoothingVarianceForTheConstantVelocityField );
 
     this->SetConstantVelocityField( velocitySmoothField );
     }
@@ -200,15 +201,17 @@ GaussianExponentialDiffeomorphicTransform<TScalar, NDimensions>
   const typename ConstantVelocityFieldType::SizeType size = region.GetSize();
   const typename ConstantVelocityFieldType::IndexType startIndex = region.GetIndex();
 
-  ImageRegionIteratorWithIndex<ConstantVelocityFieldType> fieldIt( field, field->GetLargestPossibleRegion() );
-  ImageRegionConstIteratorWithIndex<ConstantVelocityFieldType> smoothedFieldIt( smoothField, smoothField->GetLargestPossibleRegion() );
+  ImageRegionIteratorWithIndex<ConstantVelocityFieldType>      fieldIt( field, field->GetLargestPossibleRegion() );
+  ImageRegionConstIteratorWithIndex<ConstantVelocityFieldType> smoothedFieldIt( smoothField,
+                                                                                smoothField->GetLargestPossibleRegion() );
   for( fieldIt.GoToBegin(), smoothedFieldIt.GoToBegin(); !fieldIt.IsAtEnd(); ++fieldIt, ++smoothedFieldIt )
     {
     typename ConstantVelocityFieldType::IndexType index = fieldIt.GetIndex();
     bool isOnBoundary = false;
     for ( unsigned int dimension = 0; dimension < Dimension; ++dimension )
       {
-      if( index[dimension] == startIndex[dimension] || index[dimension] == static_cast<IndexValueType>( size[dimension] ) - startIndex[dimension] - 1 )
+      if( index[dimension] == startIndex[dimension] || index[dimension] ==
+          static_cast<IndexValueType>( size[dimension] ) - startIndex[dimension] - 1 )
         {
         isOnBoundary = true;
         break;
@@ -222,7 +225,7 @@ GaussianExponentialDiffeomorphicTransform<TScalar, NDimensions>
       {
       fieldIt.Set( smoothedFieldIt.Get() * weight1 + fieldIt.Get() * weight2 );
       }
-  }
+    }
 
   return field;
 }
@@ -237,11 +240,12 @@ GaussianExponentialDiffeomorphicTransform<TScalar, NDimensions>
 {
   Superclass::PrintSelf( os, indent );
 
-  os << indent << "Calculate number of integration steps automatically = " << this->m_CalculateNumberOfIntegrationStepsAutomatically << std::endl;
+  os << indent << "Calculate number of integration steps automatically = " <<
+    this->m_CalculateNumberOfIntegrationStepsAutomatically << std::endl;
   os << indent << "Gaussian variance for the velocity field = "
-    << this->m_GaussianSmoothingVarianceForTheConstantVelocityField << std::endl;
+     << this->m_GaussianSmoothingVarianceForTheConstantVelocityField << std::endl;
   os << indent << "Gaussian variance for the update field = "
-    << this->m_GaussianSmoothingVarianceForTheUpdateField << std::endl;
+     << this->m_GaussianSmoothingVarianceForTheUpdateField << std::endl;
 }
 
 } // namespace itk

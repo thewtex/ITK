@@ -112,21 +112,21 @@ public:
 
   /** Create types that are iterators for each of the container types. */
   typedef typename
-  ElementContainerType::ConstIterator         ElementContainerConstIterator;
+    ElementContainerType::ConstIterator         ElementContainerConstIterator;
   typedef typename
-  ElementContainerType::Iterator              ElementContainerIterator;
+    ElementContainerType::Iterator              ElementContainerIterator;
   typedef typename
-  NodeContainerType::ConstIterator            NodeContainerConstIterator;
+    NodeContainerType::ConstIterator            NodeContainerConstIterator;
   typedef typename
-  NodeContainerType::Iterator                 NodeContainerIterator;
+    NodeContainerType::Iterator                 NodeContainerIterator;
   typedef typename
-  LoadContainerType::ConstIterator            LoadContainerConstIterator;
+    LoadContainerType::ConstIterator            LoadContainerConstIterator;
   typedef typename
-  LoadContainerType::Iterator                 LoadContainerIterator;
+    LoadContainerType::Iterator                 LoadContainerIterator;
   typedef typename
-  MaterialContainerType::ConstIterator        MaterialContainerConstIterator;
+    MaterialContainerType::ConstIterator        MaterialContainerConstIterator;
   typedef typename
-  MaterialContainerType::Iterator             MaterialContainerIterator;
+    MaterialContainerType::Iterator             MaterialContainerIterator;
 
   // Copy the contents
   void DeepCopy(FEMObject *Copy);
@@ -138,37 +138,43 @@ public:
   itkGetModifiableObjectMacro(MaterialContainer, MaterialContainerType);
 
   /** Get the Degrees of Freedom for the FE model */
-  unsigned int GetNumberOfDegreesOfFreedom(void) const
+  unsigned int
+  GetNumberOfDegreesOfFreedom(void) const
   {
     return m_NGFN;
   }
 
   /** Get the Degrees of Freedom for the FE model */
-  unsigned int GetNumberOfMultiFreedomConstraints(void) const
+  unsigned int
+  GetNumberOfMultiFreedomConstraints(void) const
   {
     return m_NMFC;
   }
 
   /** Get the Number of nodes in the FE mesh */
-  unsigned int GetNumberOfNodes(void) const
+  unsigned int
+  GetNumberOfNodes(void) const
   {
     return m_NodeContainer->Size();
   }
 
   /** Get the Number of elements in the FE mesh */
-  unsigned int GetNumberOfElements(void) const
+  unsigned int
+  GetNumberOfElements(void) const
   {
     return m_ElementContainer->Size();
   }
 
   /** Get the Number of Loads in the FE problem */
-  unsigned int GetNumberOfLoads(void) const
+  unsigned int
+  GetNumberOfLoads(void) const
   {
     return m_LoadContainer->Size();
   }
 
   /** Get the Number of Materials in the FE problem */
-  unsigned int GetNumberOfMaterials(void) const
+  unsigned int
+  GetNumberOfMaterials(void) const
   {
     return m_MaterialContainer->Size();
   }
@@ -196,14 +202,18 @@ public:
   /**
    * Add next material data to the material array
    */
-  void AddNextMaterial(Material::Pointer mat)
+  void
+  AddNextMaterial(Material::Pointer mat)
   {
-    this->AddNextMaterialInternal(mat.GetPointer());
+    this->AddNextMaterialInternal(mat.GetPointer() );
   }
-  void AddNextMaterial(MaterialLinearElasticity::Pointer mat)
+
+  void
+  AddNextMaterial(MaterialLinearElasticity::Pointer mat)
   {
-    this->AddNextMaterialInternal(mat.GetPointer());
+    this->AddNextMaterialInternal(mat.GetPointer() );
   }
+
   /**
    * Insert material data at the specified index location
    */
@@ -212,20 +222,48 @@ public:
   /**
    * Add next load data to the load array
    */
-  void AddNextLoad(Load::Pointer ld)
-  { this->AddNextLoadInternal(ld.GetPointer()); }
-  void AddNextLoad(LoadNode::Pointer ld)
-  { this->AddNextLoadInternal(ld.GetPointer()); }
-  void AddNextLoad(LoadBCMFC::Pointer ld)
-  { this->AddNextLoadInternal(ld.GetPointer()); }
-  void AddNextLoad(LoadBC::Pointer ld)
-  { this->AddNextLoadInternal(ld.GetPointer()); }
-  void AddNextLoad(LoadEdge::Pointer ld)
-  { this->AddNextLoadInternal(ld.GetPointer()); }
-  void AddNextLoad(LoadGravConst::Pointer ld)
-  { this->AddNextLoadInternal(ld.GetPointer()); }
-  void AddNextLoad(LoadLandmark::Pointer ld)
-  { this->AddNextLoadInternal(ld.GetPointer()); }
+  void
+  AddNextLoad(Load::Pointer ld)
+  {
+    this->AddNextLoadInternal(ld.GetPointer() );
+  }
+
+  void
+  AddNextLoad(LoadNode::Pointer ld)
+  {
+    this->AddNextLoadInternal(ld.GetPointer() );
+  }
+
+  void
+  AddNextLoad(LoadBCMFC::Pointer ld)
+  {
+    this->AddNextLoadInternal(ld.GetPointer() );
+  }
+
+  void
+  AddNextLoad(LoadBC::Pointer ld)
+  {
+    this->AddNextLoadInternal(ld.GetPointer() );
+  }
+
+  void
+  AddNextLoad(LoadEdge::Pointer ld)
+  {
+    this->AddNextLoadInternal(ld.GetPointer() );
+  }
+
+  void
+  AddNextLoad(LoadGravConst::Pointer ld)
+  {
+    this->AddNextLoadInternal(ld.GetPointer() );
+  }
+
+  void
+  AddNextLoad(LoadLandmark::Pointer ld)
+  {
+    this->AddNextLoadInternal(ld.GetPointer() );
+  }
+
   /**
    * Insert material data at the specified index location
    */
@@ -235,18 +273,21 @@ public:
    * Get the element at the specified index location
    */
   Element::ConstPointer GetElement(ElementIdentifier index) const;
+
   Element::Pointer GetElement(ElementIdentifier index);
 
   /**
    * Get the element at with the specified global number
    */
   Element::ConstPointer GetElementWithGlobalNumber(int globalNumber) const;
+
   Element::Pointer GetElementWithGlobalNumber(int globalNumber);
 
   /**
    * Get the node at the specified index location
    */
   Element::Node::Pointer GetNode(NodeIdentifier index);
+
   Element::Node::ConstPointer GetNode(NodeIdentifier index) const;
 
   /**
@@ -258,18 +299,21 @@ public:
    * Get the material data at the specified index location
    */
   Material::ConstPointer GetMaterial(MaterialIdentifier index) const;
+
   Material::Pointer GetMaterial(MaterialIdentifier index);
 
   /**
    * Get the Material at with the specified global number
    */
   Material::ConstPointer GetMaterialWithGlobalNumber(int globalNumber) const;
+
   Material::Pointer GetMaterialWithGlobalNumber(int globalNumber);
 
   /**
    * Get the load data at the specified index location
    */
   Load::ConstPointer GetLoad(LoadIdentifier index) const;
+
   Load::Pointer GetLoad(LoadIdentifier index);
 
   /**
@@ -317,6 +361,7 @@ protected:
   void GenerateMFC(void);
 
   void AddNextMaterialInternal(Material *mat);
+
   /**
   * Number of global degrees of freedom in a system
   */
@@ -338,6 +383,7 @@ private:
   void operator=(const Self &); // purposely not implemented
 
   void AddNextLoadInternal(Load *l);
+
 };  // End Class: FEMObject
 
 }

@@ -21,31 +21,32 @@
 #include "itkSubtractImageFilter.h"
 #include "itkFilterWatcher.h"
 
-int itkAcosImageFilterAndAdaptorTest(int, char* [] )
+int
+itkAcosImageFilterAndAdaptorTest(int, char* [] )
 {
 
   // Define the dimension of the images
   const unsigned int ImageDimension = 3;
 
   // Declare the types of the images
-  typedef itk::Image<float, ImageDimension>  InputImageType;
-  typedef itk::Image<float, ImageDimension>  OutputImageType;
+  typedef itk::Image<float, ImageDimension> InputImageType;
+  typedef itk::Image<float, ImageDimension> OutputImageType;
 
   // Declare Iterator types apropriated for each image
   typedef itk::ImageRegionIteratorWithIndex<
-                                  InputImageType>  InputIteratorType;
+      InputImageType>  InputIteratorType;
 
   typedef itk::ImageRegionIteratorWithIndex<
-                                  OutputImageType>  OutputIteratorType;
+      OutputImageType>  OutputIteratorType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<ImageDimension>         IndexType;
+  typedef itk::Index<ImageDimension> IndexType;
 
   // Declare the type of the size
-  typedef itk::Size<ImageDimension>          SizeType;
+  typedef itk::Size<ImageDimension> SizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<ImageDimension>   RegionType;
+  typedef itk::ImageRegion<ImageDimension> RegionType;
 
   // Create two images
   InputImageType::Pointer inputImage  = InputImageType::New();
@@ -77,20 +78,19 @@ int itkAcosImageFilterAndAdaptorTest(int, char* [] )
   std::cout << "Content of the Input " << std::endl;
   it.GoToBegin();
   while( !it.IsAtEnd() )
-  {
+    {
     it.Set( value );
     std::cout << it.Get() << std::endl;
     ++it;
-  }
+    }
 
   // Declare the type for the Acos filter
   typedef itk::AcosImageFilter< InputImageType,
-                               OutputImageType  >  FilterType;
-
+                                OutputImageType  >  FilterType;
 
   // Create an Acos Filter
   FilterType::Pointer filter = FilterType::New();
-  FilterWatcher watch(filter);
+  FilterWatcher       watch(filter);
 
   // Connect the input images
   filter->SetInput( inputImage );
@@ -98,13 +98,12 @@ int itkAcosImageFilterAndAdaptorTest(int, char* [] )
   // Get the Smart Pointer to the Filter Output
   OutputImageType::Pointer outputImage = filter->GetOutput();
 
-
   // Execute the filter
   filter->Update();
-  filter->SetFunctor(filter->GetFunctor());
+  filter->SetFunctor(filter->GetFunctor() );
 
   // Create an iterator for going through the image output
-  OutputIteratorType ot(outputImage, outputImage->GetRequestedRegion());
+  OutputIteratorType ot(outputImage, outputImage->GetRequestedRegion() );
 
   //  Check the content of the result image
   std::cout << "Verification of the output " << std::endl;
@@ -135,16 +134,16 @@ int itkAcosImageFilterAndAdaptorTest(int, char* [] )
   //---------------------------------------
 
   typedef itk::AcosImageAdaptor<InputImageType,
-                          OutputImageType::PixelType>  AdaptorType;
+                                OutputImageType::PixelType>  AdaptorType;
 
   AdaptorType::Pointer acosAdaptor = AdaptorType::New();
 
   acosAdaptor->SetImage( inputImage );
 
   typedef itk::SubtractImageFilter<
-                        OutputImageType,
-                        AdaptorType,
-                        OutputImageType   > DiffFilterType;
+      OutputImageType,
+      AdaptorType,
+      OutputImageType   > DiffFilterType;
 
   DiffFilterType::Pointer diffFilter = DiffFilterType::New();
 
@@ -161,7 +160,7 @@ int itkAcosImageFilterAndAdaptorTest(int, char* [] )
   std::cout << "Verification of the output " << std::endl;
 
   // Create an iterator for going through the image output
-  OutputIteratorType dt(diffImage, diffImage->GetRequestedRegion());
+  OutputIteratorType dt(diffImage, diffImage->GetRequestedRegion() );
 
   dt.GoToBegin();
   while( !dt.IsAtEnd() )
@@ -179,7 +178,6 @@ int itkAcosImageFilterAndAdaptorTest(int, char* [] )
       }
     ++dt;
     }
-
 
   return EXIT_SUCCESS;
 }

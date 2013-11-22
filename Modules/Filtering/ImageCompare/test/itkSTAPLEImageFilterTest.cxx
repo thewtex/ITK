@@ -25,38 +25,61 @@ class StaplerBase
 {
 public:
   StaplerBase()  {}
-  virtual ~StaplerBase() {}
+  virtual
+  ~StaplerBase() {}
 
-  void SetOutputFileName( const char *s )
-  { m_OutputFile = s; }
+  void
+  SetOutputFileName( const char *s )
+  {
+    m_OutputFile = s;
+  }
 
-  const std::string &GetOutputFileName() const
-  { return m_OutputFile; }
+  const std::string &
+  GetOutputFileName() const
+  {
+    return m_OutputFile;
+  }
 
-  void AddFileName( const char *s )
+  void
+  AddFileName( const char *s )
   {
     std::string tmp(s);
+
     m_Files.push_back(tmp);
   }
 
-  const std::string &GetFileName( unsigned int i ) const
-  { return m_Files[i]; }
+  const std::string &
+  GetFileName( unsigned int i ) const
+  {
+    return m_Files[i];
+  }
 
-  void ClearFileNames()
-  { m_Files.clear(); }
+  void
+  ClearFileNames()
+  {
+    m_Files.clear();
+  }
 
-  unsigned int GetNumberOfFiles() const
-  { return m_Files.size(); }
+  unsigned int
+  GetNumberOfFiles() const
+  {
+    return m_Files.size();
+  }
 
   virtual double GetSensitivity( unsigned int ) = 0;
+
   virtual double GetSpecificity( unsigned int ) = 0;
+
   virtual unsigned short GetForeground() const  = 0;
+
   virtual void SetForeground( unsigned short )  = 0;
+
   virtual void SetConfidenceWeight( double ) = 0;
+
   virtual double GetConfidenceWeight() const = 0;
 
-
   virtual int Execute() = 0;
+
   virtual unsigned int GetElapsedIterations() = 0;
 
 protected:
@@ -71,32 +94,58 @@ public:
   typedef itk::Image< double, VDimension >         OutputImageType;
   typedef itk::Image< unsigned short, VDimension > InputImageType;
   typedef itk::STAPLEImageFilter<InputImageType, OutputImageType>
-                                                   StapleFilterType;
+    StapleFilterType;
 
   Stapler()
   {
     m_Stapler = StapleFilterType::New();
     this->SetForeground(1);
   }
-  virtual ~Stapler() {}
 
-  virtual double GetConfidenceWeight( ) const
-  { return m_Stapler->GetConfidenceWeight(); }
-  virtual void SetConfidenceWeight( double w )
-  { m_Stapler->SetConfidenceWeight( w); }
+  virtual
+  ~Stapler() {}
 
-  virtual double GetSensitivity( unsigned int i )
-  { return m_Stapler->GetSensitivity(i); }
-  virtual double GetSpecificity( unsigned int i )
-  { return m_Stapler->GetSpecificity(i); }
+  virtual double
+  GetConfidenceWeight() const
+  {
+    return m_Stapler->GetConfidenceWeight();
+  }
 
-  virtual unsigned short GetForeground() const
-  { return m_Stapler->GetForegroundValue(); }
-  virtual void SetForeground( unsigned short l )
-  { m_Stapler->SetForegroundValue( l ); }
+  virtual void
+  SetConfidenceWeight( double w )
+  {
+    m_Stapler->SetConfidenceWeight( w);
+  }
 
-  virtual unsigned int GetElapsedIterations()
-  { return m_Stapler->GetElapsedIterations(); }
+  virtual double
+  GetSensitivity( unsigned int i )
+  {
+    return m_Stapler->GetSensitivity(i);
+  }
+
+  virtual double
+  GetSpecificity( unsigned int i )
+  {
+    return m_Stapler->GetSpecificity(i);
+  }
+
+  virtual unsigned short
+  GetForeground() const
+  {
+    return m_Stapler->GetForegroundValue();
+  }
+
+  virtual void
+  SetForeground( unsigned short l )
+  {
+    m_Stapler->SetForegroundValue( l );
+  }
+
+  virtual unsigned int
+  GetElapsedIterations()
+  {
+    return m_Stapler->GetElapsedIterations();
+  }
 
   virtual int Execute();
 
@@ -104,9 +153,9 @@ private:
   typename StapleFilterType::Pointer m_Stapler;
 };
 
-
 template< unsigned int VDimension >
-int Stapler<VDimension>::Execute()
+int
+Stapler<VDimension>::Execute()
 {
   int i;
 
@@ -124,7 +173,7 @@ int Stapler<VDimension>::Execute()
       reader = itk::ImageFileReader<InputImageType>::New();
       reader->SetFileName( m_Files[i].c_str() );
       reader->Update();
-      m_Stapler->SetInput(i, reader->GetOutput());
+      m_Stapler->SetInput(i, reader->GetOutput() );
       }
     catch (itk::ExceptionObject &e)
       {
@@ -136,7 +185,7 @@ int Stapler<VDimension>::Execute()
   try
     {
     writer->SetFileName( m_OutputFile.c_str() );
-    writer->SetInput(m_Stapler->GetOutput());
+    writer->SetInput(m_Stapler->GetOutput() );
     writer->Update();
     }
   catch( itk::ExceptionObject &e )
@@ -148,10 +197,10 @@ int Stapler<VDimension>::Execute()
   return 0;
 }
 
-
-int itkSTAPLEImageFilterTest( int argc, char * argv[])
+int
+itkSTAPLEImageFilterTest( int argc, char * argv[])
 {
-  int i;
+  int          i;
   StaplerBase *stapler;
 
   if (argc < 5)
@@ -181,9 +230,9 @@ int itkSTAPLEImageFilterTest( int argc, char * argv[])
     stapler->AddFileName( argv[i+5] );
     }
 
-  stapler->SetConfidenceWeight( static_cast<double>( atof(argv[4]) ));
+  stapler->SetConfidenceWeight( static_cast<double>( atof(argv[4]) ) );
   stapler->SetOutputFileName( argv[2] );
-  stapler->SetForeground( static_cast<unsigned short>( atoi(argv[3])) );
+  stapler->SetForeground( static_cast<unsigned short>( atoi(argv[3]) ) );
 
   // Execute the stapler
   int ret = stapler->Execute();

@@ -115,6 +115,7 @@ LabelToRGBImageFilter< TLabelImage, TOutputImage >
      << static_cast< typename NumericTraits< OutputPixelType >::PrintType >( m_BackgroundColor )
      << std::endl;
 }
+
 } // end namespace itk
 
 #endif

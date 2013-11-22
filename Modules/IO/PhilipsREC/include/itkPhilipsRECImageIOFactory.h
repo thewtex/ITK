@@ -35,7 +35,7 @@ namespace itk
  *
  * \ingroup ITKIOPhilipsREC
  */
-class ITKIOPhilipsREC_EXPORT PhilipsRECImageIOFactory:public ObjectFactoryBase
+class ITKIOPhilipsREC_EXPORT PhilipsRECImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -51,7 +51,8 @@ public:
 
   /** Method for class instantiation. */
   itkFactorylessNewMacro(Self);
-  static PhilipsRECImageIOFactory * FactoryNew()
+  static PhilipsRECImageIOFactory *
+  FactoryNew()
   {
     return new PhilipsRECImageIOFactory;
   }
@@ -60,7 +61,8 @@ public:
   itkTypeMacro(PhilipsRECImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     PhilipsRECImageIOFactory::Pointer factory =
       PhilipsRECImageIOFactory::New();
@@ -75,6 +77,7 @@ protected:
 private:
   PhilipsRECImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -58,14 +58,14 @@ namespace itk
  * \ingroup ITKIOCSV
  */
 template <typename TValueType, unsigned int NRows = 0, unsigned int NColumns = 0>
-class CSVNumericObjectFileWriter:public LightProcessObject
+class CSVNumericObjectFileWriter : public LightProcessObject
 {
 public:
   /** Standard class typedefs */
-  typedef CSVNumericObjectFileWriter    Self;
-  typedef LightProcessObject            Superclass;
-  typedef SmartPointer <Self>           Pointer;
-  typedef SmartPointer <const Self>     ConstPointer;
+  typedef CSVNumericObjectFileWriter Self;
+  typedef LightProcessObject         Superclass;
+  typedef SmartPointer <Self>        Pointer;
+  typedef SmartPointer <const Self>  ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -96,8 +96,11 @@ public:
   void SetInput(const itkMatrixType* obj);
 
   void ColumnHeadersPushBack(const std::string & );
+
   void RowHeadersPushBack(const std::string & );
+
   void SetColumnHeaders(const StringVectorType & columnheaders);
+
   void SetRowHeaders(const StringVectorType & rowheaders);
 
   /* Checks that all essential components are plugged in */
@@ -113,20 +116,22 @@ public:
 protected:
 
   CSVNumericObjectFileWriter();
-  virtual ~CSVNumericObjectFileWriter() {}
+  virtual
+  ~CSVNumericObjectFileWriter() {}
   void PrintSelf(std::ostream &os, Indent indent) const;
 
 private:
-  std::string               m_FileName;
-  TValueType               *m_InputObject;
-  char                      m_FieldDelimiterCharacter;
-  SizeValueType             m_Rows;
-  SizeValueType             m_Columns;
-  StringVectorType          m_ColumnHeaders;
-  StringVectorType          m_RowHeaders;
+  std::string      m_FileName;
+  TValueType *     m_InputObject;
+  char             m_FieldDelimiterCharacter;
+  SizeValueType    m_Rows;
+  SizeValueType    m_Columns;
+  StringVectorType m_ColumnHeaders;
+  StringVectorType m_RowHeaders;
 
   CSVNumericObjectFileWriter(const Self &);  //purposely not implemented
-  void operator=(const Self &);                //purposely not implemented
+  void operator=(const Self &);              //purposely not implemented
+
 };
 
 } //end namespace itk

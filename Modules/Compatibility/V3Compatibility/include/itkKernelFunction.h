@@ -21,7 +21,8 @@
 #include "itkKernelFunctionBase.h"
 
 #ifndef ITKV3_COMPATIBILITY
-#error "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkKernelFunctionBase.h in ITKv4"
+#error \
+  "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkKernelFunctionBase.h in ITKv4"
 #endif
 
 namespace itk
@@ -33,7 +34,7 @@ namespace itk
  * \ingroup Functions
  * \ingroup ITKV3Compatibility
  */
-class ITKCommon_EXPORT KernelFunction:public KernelFunctionBase< double >
+class ITKCommon_EXPORT KernelFunction : public KernelFunctionBase< double >
 {
 public:
   /** Standard class typedefs. */
@@ -51,10 +52,15 @@ public:
   virtual RealType Evaluate(const RealType & u) const = 0;
 
 protected:
-  KernelFunction() {};
-  virtual ~KernelFunction() {};
-  void PrintSelf(std::ostream & os, Indent indent) const
-  { Superclass::PrintSelf(os, indent); }
+  KernelFunction() {}
+  virtual
+  ~KernelFunction() {}
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+  }
+
 };
 } // end namespace itk
 

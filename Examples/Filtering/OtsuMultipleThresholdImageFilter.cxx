@@ -39,7 +39,8 @@
 #include <iomanip>
 #include <stdio.h>
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 5 )
     {
@@ -50,11 +51,11 @@ int main( int argc, char * argv[] )
     }
 
   //Convenience typedefs
-  typedef  unsigned short  InputPixelType;
-  typedef  unsigned char   OutputPixelType;
+  typedef  unsigned short InputPixelType;
+  typedef  unsigned char  OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
 
   // Software Guide : BeginLatex
   //
@@ -68,12 +69,12 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::ScalarImageToHistogramGenerator<
-                         InputImageType > ScalarImageToHistogramGeneratorType;
+      InputImageType > ScalarImageToHistogramGeneratorType;
 
   typedef ScalarImageToHistogramGeneratorType::HistogramType HistogramType;
 
   typedef itk::OtsuMultipleThresholdsCalculator< HistogramType >
-                                                               CalculatorType;
+    CalculatorType;
   // Software Guide : EndCodeSnippet
 
   typedef itk::ImageFileReader< InputImageType >  ReaderType;
@@ -88,7 +89,7 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::BinaryThresholdImageFilter<
-  InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
   // Software Guide : EndCodeSnippet
 
   //Create using static New() method
@@ -98,7 +99,7 @@ int main( int argc, char * argv[] )
     = ScalarImageToHistogramGeneratorType::New();
 
   CalculatorType::Pointer calculator = CalculatorType::New();
-  FilterType::Pointer filter = FilterType::New();
+  FilterType::Pointer     filter = FilterType::New();
   // Software Guide : EndCodeSnippet
 
   ReaderType::Pointer reader = ReaderType::New();
@@ -126,11 +127,10 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   scalarImageToHistogramGenerator->SetInput( reader->GetOutput() );
   calculator->SetInputHistogram(
-                               scalarImageToHistogramGenerator->GetOutput() );
+    scalarImageToHistogramGenerator->GetOutput() );
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //Invoke pipeline
   try
@@ -158,7 +158,7 @@ int main( int argc, char * argv[] )
   // Software Guide : EndLatex
   //Get Thresholds
   // Software Guide : BeginCodeSnippet
-  const CalculatorType::OutputType &thresholdVector = calculator->GetOutput();
+  const CalculatorType::OutputType &         thresholdVector = calculator->GetOutput();
   CalculatorType::OutputType::const_iterator itNum = thresholdVector.begin();
   // Software Guide : EndCodeSnippet
 
@@ -172,10 +172,10 @@ int main( int argc, char * argv[] )
   for(; itNum < thresholdVector.end(); itNum++)
     {
     std::cout << "OtsuThreshold["
-              << (int)(itNum - thresholdVector.begin())
+              << (int)(itNum - thresholdVector.begin() )
               << "] = "
               << static_cast<itk::NumericTraits<
-                          CalculatorType::MeasurementType>::PrintType>(*itNum)
+                     CalculatorType::MeasurementType>::PrintType>(*itNum)
               << std::endl;
     // Software Guide : EndCodeSnippet
 
@@ -188,7 +188,7 @@ int main( int argc, char * argv[] )
 
     std::ostringstream outputFilename;
     outputFilename << outputFileBase
-                   << std::setfill('0') << std::setw(3) << (itNum - thresholdVector.begin())
+                   << std::setfill('0') << std::setw(3) << (itNum - thresholdVector.begin() )
                    << "."
                    << argv[3];
     writer->SetFileName( outputFilename.str() );

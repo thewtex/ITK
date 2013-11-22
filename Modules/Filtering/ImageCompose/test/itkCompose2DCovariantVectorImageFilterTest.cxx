@@ -19,15 +19,16 @@
 #include <iostream>
 #include "itkComposeImageFilter.h"
 
-int itkCompose2DCovariantVectorImageFilterTest(int , char * [])
+int
+itkCompose2DCovariantVectorImageFilterTest(int , char * [])
 {
   typedef unsigned char              PixelType;
   typedef itk::Image< PixelType, 3 > InputImageType;
 
-  typedef itk::CovariantVector<float, 2>    OutputPixelType;
-  typedef itk::Image< OutputPixelType, 3 >  OutputImageType;
+  typedef itk::CovariantVector<float, 2>   OutputPixelType;
+  typedef itk::Image< OutputPixelType, 3 > OutputImageType;
 
-  typedef itk::ComposeImageFilter< InputImageType, OutputImageType >  FilterType;
+  typedef itk::ComposeImageFilter< InputImageType, OutputImageType > FilterType;
 
   typedef InputImageType::RegionType RegionType;
   typedef InputImageType::SizeType   SizeType;
@@ -68,13 +69,13 @@ int itkCompose2DCovariantVectorImageFilterTest(int , char * [])
     }
 
   catch( itk::ExceptionObject & excp )
-   {
-   std::cerr << "Exception caught !" << std::endl;
-   std::cerr << excp << std::endl;
-   return EXIT_FAILURE;
-   }
+    {
+    std::cerr << "Exception caught !" << std::endl;
+    std::cerr << excp << std::endl;
+    return EXIT_FAILURE;
+    }
 
-  typedef FilterType::OutputImageType  OutputImageType;
+  typedef FilterType::OutputImageType OutputImageType;
 
   OutputImageType::Pointer twoVectorImage = filter->GetOutput();
 
@@ -91,7 +92,7 @@ int itkCompose2DCovariantVectorImageFilterTest(int , char * [])
 
   ot.GoToBegin();
 
-  typedef OutputImageType::PixelType  OutputPixelType;
+  typedef OutputImageType::PixelType OutputPixelType;
 
   while( !ot.IsAtEnd() )
     {

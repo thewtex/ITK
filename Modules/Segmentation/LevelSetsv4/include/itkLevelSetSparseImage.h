@@ -41,10 +41,10 @@ class LevelSetSparseImage :
   public DiscreteLevelSetImage< TOutput, VDimension >
 {
 public:
-  typedef LevelSetSparseImage                           Self;
-  typedef SmartPointer< Self >                          Pointer;
-  typedef SmartPointer< const Self >                    ConstPointer;
-  typedef DiscreteLevelSetImage< TOutput, VDimension >  Superclass;
+  typedef LevelSetSparseImage                          Self;
+  typedef SmartPointer< Self >                         Pointer;
+  typedef SmartPointer< const Self >                   ConstPointer;
+  typedef DiscreteLevelSetImage< TOutput, VDimension > Superclass;
 
   /** Run-time type information */
   itkTypeMacro ( LevelSetSparseImage, DiscreteLevelSetImage );
@@ -58,27 +58,27 @@ public:
   typedef typename Superclass::HessianType      HessianType;
   typedef typename Superclass::LevelSetDataType LevelSetDataType;
 
-  typedef int8_t                                  LayerIdType;
-  typedef std::list< LayerIdType >                LayerIdListType;
+  typedef int8_t                   LayerIdType;
+  typedef std::list< LayerIdType > LayerIdListType;
 
-  typedef LabelObject< LayerIdType, VDimension >  LabelObjectType;
-  typedef typename LabelObjectType::Pointer       LabelObjectPointer;
-  typedef typename LabelObjectType::LengthType    LabelObjectLengthType;
-  typedef typename LabelObjectType::LineType      LabelObjectLineType;
+  typedef LabelObject< LayerIdType, VDimension > LabelObjectType;
+  typedef typename LabelObjectType::Pointer      LabelObjectPointer;
+  typedef typename LabelObjectType::LengthType   LabelObjectLengthType;
+  typedef typename LabelObjectType::LineType     LabelObjectLineType;
 
-  typedef LabelMap< LabelObjectType >         LabelMapType;
-  typedef typename LabelMapType::Pointer      LabelMapPointer;
-  typedef typename LabelMapType::RegionType   RegionType;
+  typedef LabelMap< LabelObjectType >       LabelMapType;
+  typedef typename LabelMapType::Pointer    LabelMapPointer;
+  typedef typename LabelMapType::RegionType RegionType;
 
   typedef std::map< InputType, OutputType,
                     Functor::IndexLexicographicCompare< VDimension > >
-                                                  LayerType;
-  typedef typename LayerType::iterator            LayerIterator;
-  typedef typename LayerType::const_iterator      LayerConstIterator;
+    LayerType;
+  typedef typename LayerType::iterator       LayerIterator;
+  typedef typename LayerType::const_iterator LayerConstIterator;
 
-  typedef std::map< LayerIdType, LayerType >      LayerMapType;
-  typedef typename LayerMapType::iterator         LayerMapIterator;
-  typedef typename LayerMapType::const_iterator   LayerMapConstIterator;
+  typedef std::map< LayerIdType, LayerType >    LayerMapType;
+  typedef typename LayerMapType::iterator       LayerMapIterator;
+  typedef typename LayerMapType::const_iterator LayerMapConstIterator;
 
   /** Returns the layer affiliation of a given location inputIndex */
   virtual LayerIdType Status( const InputType& inputIndex ) const;
@@ -94,6 +94,7 @@ public:
 
   /** Set/Get the label map for computing the sparse representation */
   virtual void SetLabelMap( LabelMapType* iLabelMap );
+
   itkGetModifiableObjectMacro(LabelMap, LabelMapType );
 
   /** Graft data object as level set object */
@@ -106,11 +107,12 @@ public:
 protected:
   LevelSetSparseImage();
 
-  virtual ~LevelSetSparseImage();
+  virtual
+  ~LevelSetSparseImage();
 
-  LayerMapType      m_Layers;
-  LabelMapPointer   m_LabelMap;
-  LayerIdListType   m_InternalLabelList;
+  LayerMapType    m_Layers;
+  LabelMapPointer m_LabelMap;
+  LayerIdListType m_InternalLabelList;
 
   /** Initialize the sparse field layers */
   virtual void InitializeLayers() = 0;
@@ -128,8 +130,9 @@ protected:
 private:
 
   LevelSetSparseImage( const Self& ); // purposely not implemented
-  void operator = ( const Self& ); // purposely not implemented
-  };
+  void operator =( const Self& );     // purposely not implemented
+
+};
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION

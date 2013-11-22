@@ -29,7 +29,7 @@ namespace itk
  * \brief This class describe a cylinder in 3D only.
  * \ingroup ITKSpatialObjects
  */
-class CylinderSpatialObject:
+class CylinderSpatialObject :
   public SpatialObject< 3 >
 {
 public:
@@ -99,6 +99,7 @@ protected:
 
   /** Print the object informations in a stream. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end namespace itk
 

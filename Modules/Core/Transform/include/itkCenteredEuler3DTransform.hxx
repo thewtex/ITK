@@ -26,30 +26,26 @@ namespace itk
 template <typename TScalar>
 CenteredEuler3DTransform<TScalar>::CenteredEuler3DTransform() :
   Superclass(ParametersDimension)
-{
-}
+{}
 
 // Constructor with default arguments
 template <typename TScalar>
 CenteredEuler3DTransform<TScalar>::CenteredEuler3DTransform(unsigned int parametersDimension) :
   Superclass(parametersDimension)
-{
-}
+{}
 
 // Constructor with default arguments
 template <typename TScalar>
 CenteredEuler3DTransform<TScalar>::CenteredEuler3DTransform(const MatrixType & matrix,
-                                                                const OutputPointType & offset) :
+                                                            const OutputPointType & offset) :
   Superclass(matrix, offset)
-{
-}
+{}
 
 // Destructor
 template <typename TScalar>
 CenteredEuler3DTransform<TScalar>::
 ~CenteredEuler3DTransform()
-{
-}
+{}
 
 //
 // Set Parameters

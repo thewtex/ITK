@@ -32,10 +32,11 @@ template< typename TElementIdentifier, typename TElement >
 typename MapContainer< TElementIdentifier, TElement >::Element &
 MapContainer< TElementIdentifier, TElement >
 ::ElementAt(ElementIdentifier id)
-{
+  {
   this->Modified();
   return this->MapType::operator[](id);
-}
+
+  }
 
 /**
  * Get a reference to the element at the given index.
@@ -45,9 +46,9 @@ template< typename TElementIdentifier, typename TElement >
 const typename MapContainer< TElementIdentifier, TElement >::Element &
 MapContainer< TElementIdentifier, TElement >
 ::ElementAt(ElementIdentifier id) const
-{
+  {
   return this->MapType::find(id)->second;
-}
+  }
 
 /**
  * Get a reference to the element at the given index.
@@ -60,10 +61,11 @@ template< typename TElementIdentifier, typename TElement >
 typename MapContainer< TElementIdentifier, TElement >::Element &
 MapContainer< TElementIdentifier, TElement >
 ::CreateElementAt(ElementIdentifier id)
-{
+  {
   this->Modified();
   return this->MapType::operator[](id);
-}
+
+  }
 
 /**
  * Get the element at the specified index.  There is no check for
@@ -87,6 +89,7 @@ MapContainer< TElementIdentifier, TElement >
 ::SetElement(ElementIdentifier id, Element element)
 {
   MapType::operator[](id) = element;
+
   this->Modified();
 }
 
@@ -126,6 +129,7 @@ MapContainer< TElementIdentifier, TElement >
 ::GetElementIfIndexExists(ElementIdentifier id, Element *element) const
 {
   MapConstIterator it = this->MapType::find(id);
+
   if( it != this->MapType::end() )
     {
     if( element )
@@ -265,6 +269,7 @@ MapContainer< TElementIdentifier, TElement >
 {
   this->MapType::clear();
 }
+
 } // end namespace itk
 
 #endif

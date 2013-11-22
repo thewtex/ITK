@@ -23,7 +23,8 @@
 
 //Testing the weighed centroid Kd tree generator using varaiable length vector
 //sample
-int itkWeightedCentroidKdTreeGeneratorTest9(int argc , char * argv [] )
+int
+itkWeightedCentroidKdTreeGeneratorTest9(int argc , char * argv [] )
 {
   if( argc < 4 )
     {
@@ -39,7 +40,7 @@ int itkWeightedCentroidKdTreeGeneratorTest9(int argc , char * argv [] )
   NumberGeneratorType::Pointer randomNumberGenerator = NumberGeneratorType::New();
   randomNumberGenerator->Initialize();
 
-  typedef itk::VariableLengthVector< double > MeasurementVectorType;
+  typedef itk::VariableLengthVector< double >                  MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
 
   const SampleType::MeasurementVectorSizeType measurementVectorSize = 2;
@@ -50,7 +51,7 @@ int itkWeightedCentroidKdTreeGeneratorTest9(int argc , char * argv [] )
   //
   // Generate a sample of random points
   //
-  const unsigned int numberOfDataPoints = atoi( argv[1] );
+  const unsigned int    numberOfDataPoints = atoi( argv[1] );
   MeasurementVectorType mv( measurementVectorSize );
   for (unsigned int i = 0; i < numberOfDataPoints; ++i )
     {
@@ -80,7 +81,7 @@ int itkWeightedCentroidKdTreeGeneratorTest9(int argc , char * argv [] )
 
   MeasurementVectorType queryPoint( measurementVectorSize );
 
-  unsigned int numberOfNeighbors = 1;
+  unsigned int                           numberOfNeighbors = 1;
   TreeType::InstanceIdentifierVectorType neighbors;
 
   MeasurementVectorType result( measurementVectorSize );
@@ -97,7 +98,7 @@ int itkWeightedCentroidKdTreeGeneratorTest9(int argc , char * argv [] )
   typedef itk::Statistics::EuclideanDistanceMetric< MeasurementVectorType > DistanceMetricType;
   DistanceMetricType::OriginType origin;
   ::itk::NumericTraits<DistanceMetricType::OriginType>::SetLength( origin,
-    measurementVectorSize);
+                                                                   measurementVectorSize);
   DistanceMetricType::Pointer distanceMetric = DistanceMetricType::New();
 
   bool testFailed = false;
@@ -119,7 +120,7 @@ int itkWeightedCentroidKdTreeGeneratorTest9(int argc , char * argv [] )
     for ( unsigned int i = 0; i < numberOfNeighbors; ++i )
       {
       const double distance =
-        distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i] ));
+        distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i] ) );
 
       if( distance > vnl_math::eps )
         {
@@ -163,11 +164,11 @@ int itkWeightedCentroidKdTreeGeneratorTest9(int argc , char * argv [] )
     // Compute the distance to the "presumed" nearest neighbor
     //
     double result_dist = vcl_sqrt(
-          (result[0] - queryPoint[0]) *
-          (result[0] - queryPoint[0]) +
-          (result[1] - queryPoint[1]) *
-          (result[1] - queryPoint[1])
-          );
+        (result[0] - queryPoint[0]) *
+        (result[0] - queryPoint[0]) +
+        (result[1] - queryPoint[1]) *
+        (result[1] - queryPoint[1])
+        );
 
     //
     // Compute the distance to all other points, to verify
@@ -206,7 +207,6 @@ int itkWeightedCentroidKdTreeGeneratorTest9(int argc , char * argv [] )
 
     }
 
-
   if( argc > 4 )
     {
     //
@@ -217,7 +217,6 @@ int itkWeightedCentroidKdTreeGeneratorTest9(int argc , char * argv [] )
     tree->PlotTree( plotFile );
     plotFile.close();
     }
-
 
   if( numberOfFailedPoints )
     {

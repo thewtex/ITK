@@ -28,7 +28,8 @@
 #include "itkAtanRegularizedHeavisideStepFunction.h"
 #include "itkLevelSetDomainMapImageFilter.h"
 
-int itkMultiLevelSetDenseImageSubset2DTest( int argc, char* argv[] )
+int
+itkMultiLevelSetDenseImageSubset2DTest( int argc, char* argv[] )
 {
   if( argc < 1 )
     {
@@ -49,15 +50,15 @@ int itkMultiLevelSetDenseImageSubset2DTest( int argc, char* argv[] )
   typedef LevelSetType::OutputRealType                   LevelSetOutputRealType;
   typedef itk::ImageRegionIteratorWithIndex< ImageType > IteratorType;
 
-  typedef itk::IdentifierType                                     IdentifierType;
-  typedef itk::LevelSetContainer< IdentifierType, LevelSetType >  LevelSetContainerType;
+  typedef itk::IdentifierType                                    IdentifierType;
+  typedef itk::LevelSetContainer< IdentifierType, LevelSetType > LevelSetContainerType;
 
   typedef itk::LevelSetEquationChanAndVeseInternalTerm< InputImageType, LevelSetContainerType >
-                                                                      ChanAndVeseInternalTermType;
+    ChanAndVeseInternalTermType;
   typedef itk::LevelSetEquationChanAndVeseExternalTerm< InputImageType, LevelSetContainerType >
-                                                                      ChanAndVeseExternalTermType;
+    ChanAndVeseExternalTermType;
   typedef itk::LevelSetEquationTermContainer< InputImageType, LevelSetContainerType >
-                                                                      TermContainerType;
+    TermContainerType;
 
   typedef itk::LevelSetEquationContainer< TermContainerType >           EquationContainerType;
   typedef itk::LevelSetEvolution< EquationContainerType, LevelSetType > LevelSetEvolutionType;
@@ -72,7 +73,7 @@ int itkMultiLevelSetDenseImageSubset2DTest( int argc, char* argv[] )
   typedef itk::Image< short, Dimension >                       CacheImageType;
   typedef itk::ImageRegionIteratorWithIndex< IdListImageType > IdIteratorType;
   typedef itk::LevelSetDomainMapImageFilter< IdListImageType, CacheImageType >
-                                                               DomainMapImageFilterType;
+    DomainMapImageFilterType;
 
   // load binary input
   InputImageType::SizeType size;
@@ -212,15 +213,15 @@ int itkMultiLevelSetDenseImageSubset2DTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
   levelSetNotYetAdded = lscontainer->AddLevelSet( 1, levelSet2, false );
-    if ( !levelSetNotYetAdded )
-      {
-      return EXIT_FAILURE;
-      }
+  if ( !levelSetNotYetAdded )
+    {
+    return EXIT_FAILURE;
+    }
   levelSetNotYetAdded = lscontainer->AddLevelSet( 2, levelSet3, false );
-    if ( !levelSetNotYetAdded )
-      {
-      return EXIT_FAILURE;
-      }
+  if ( !levelSetNotYetAdded )
+    {
+    return EXIT_FAILURE;
+    }
   std::cout << "Level set container created" << std::endl;
 
   // Create ChanAndVese internal term for phi_{1}
@@ -235,7 +236,6 @@ int itkMultiLevelSetDenseImageSubset2DTest( int argc, char* argv[] )
   cvExternalTerm0->SetCoefficient( 1.0 );
   std::cout << "LevelSet 0: CV external term created" << std::endl;
 
-
   // Create ChanAndVese internal term for phi_{2}
   ChanAndVeseInternalTermType::Pointer cvInternalTerm1 = ChanAndVeseInternalTermType::New();
   cvInternalTerm1->SetInput( input );
@@ -248,7 +248,6 @@ int itkMultiLevelSetDenseImageSubset2DTest( int argc, char* argv[] )
   cvExternalTerm1->SetCoefficient( 1.0 );
   std::cout << "LevelSet 1: CV external term created" << std::endl;
 
-
   // Create ChanAndVese internal term for phi_{3}
   ChanAndVeseInternalTermType::Pointer cvInternalTerm2 = ChanAndVeseInternalTermType::New();
   cvInternalTerm2->SetInput( input );
@@ -260,7 +259,6 @@ int itkMultiLevelSetDenseImageSubset2DTest( int argc, char* argv[] )
   cvExternalTerm2->SetInput( input );
   cvExternalTerm2->SetCoefficient( 1.0 );
   std::cout << "LevelSet 2: CV external term created" << std::endl;
-
 
   // Create Term Container
   TermContainerType::Pointer termContainer0 = TermContainerType::New();
@@ -298,7 +296,7 @@ int itkMultiLevelSetDenseImageSubset2DTest( int argc, char* argv[] )
   std::cout << "Equation container created" << std::endl;
 
   typedef itk::LevelSetEvolutionNumberOfIterationsStoppingCriterion< LevelSetContainerType >
-      StoppingCriterionType;
+    StoppingCriterionType;
   StoppingCriterionType::Pointer criterion = StoppingCriterionType::New();
   criterion->SetNumberOfIterations( 10 );
   std::cout << "Stopping criterion created" << std::endl;

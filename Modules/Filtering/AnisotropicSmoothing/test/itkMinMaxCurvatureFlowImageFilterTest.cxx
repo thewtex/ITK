@@ -29,9 +29,16 @@ class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 }
@@ -57,15 +64,17 @@ int testMinMaxCurvatureFlow(
  * We then test the ability of MinMaxCurvatureFlowImageFilter to denoise
  * the image.
  */
-int itkMinMaxCurvatureFlowImageFilterTest(int, char* [] )
+int
+itkMinMaxCurvatureFlowImageFilterTest(int, char* [] )
 {
 
-  double radius;
-  int numberOfRuns;
-  unsigned int niter[MAXRUNS];
+  double        radius;
+  int           numberOfRuns;
+  unsigned int  niter[MAXRUNS];
   unsigned long radii[MAXRUNS];
 
   itk::Size<2> size2D;
+
   size2D[0] = 32; size2D[1] = 32;
   radius = 10.0;
   // numberOfRuns = 2;  /* reduced to speedup purify */
@@ -73,8 +82,7 @@ int itkMinMaxCurvatureFlowImageFilterTest(int, char* [] )
   niter[0] = 100; niter[1] = 100;
   radii[0] = 1; radii[1] = 3;
   int err2D = testMinMaxCurvatureFlow( size2D, radius, numberOfRuns,
-    niter, radii );
-
+                                       niter, radii );
 
   /* Dummy tests to test 3D and ND.
      Tests were taking too long on purify.
@@ -90,7 +98,7 @@ int itkMinMaxCurvatureFlowImageFilterTest(int, char* [] )
   niter[0] = 1;
   radii[1] = 1;
   int err3D = testMinMaxCurvatureFlow( size3D, radius, numberOfRuns,
-    niter, radii );
+                                       niter, radii );
 
   itk::Size<4> size4D;
   size4D[0] = 8; size4D[1] = 8; size4D[2] = 8; size4D[3] = 8;
@@ -100,7 +108,7 @@ int itkMinMaxCurvatureFlowImageFilterTest(int, char* [] )
   niter[0] = 1;
   radii[1] = 1;
   int err4D = testMinMaxCurvatureFlow( size4D, radius, numberOfRuns,
-    niter, radii );
+                                       niter, radii );
 
   std::cout << "2D Test passed: " << !err2D << std::endl;
   std::cout << "3D Test passed: " << !err3D << std::endl;
@@ -114,15 +122,15 @@ int itkMinMaxCurvatureFlowImageFilterTest(int, char* [] )
 
 }
 
-
 template<unsigned int VImageDimension>
-int testMinMaxCurvatureFlow(
+int
+testMinMaxCurvatureFlow(
   itk::Size<VImageDimension> & size, // ND image size
   double radius,                     // ND-sphere radius
   int numberOfRuns,                  // number of times to run the filter
   unsigned int niter[],              // number of iterations
   unsigned long radii[]              // stencil radius
-)
+  )
 {
 
   typedef float PixelType;
@@ -138,14 +146,13 @@ int testMinMaxCurvatureFlow(
    * Create an image containing a circle/sphere with intensity of 0
    * and background of 255 with added salt and pepper noise.
    */
-  double sqrRadius = vnl_math_sqr( radius );  // radius of the circle/sphere
-  double fractionNoise = 0.30;              // salt & pepper noise fraction
-  PixelType foreground = 0.0;               // intensity value of the foreground
-  PixelType background = 255.0;             // intensity value of the background
+  double    sqrRadius = vnl_math_sqr( radius ); // radius of the circle/sphere
+  double    fractionNoise = 0.30;               // salt & pepper noise fraction
+  PixelType foreground = 0.0;                   // intensity value of the foreground
+  PixelType background = 255.0;                 // intensity value of the background
 
   std::cout << "Create an image of circle/sphere with noise" << std::endl;
   typename ImageType::Pointer circleImage = ImageType::New();
-
 
   typename ImageType::RegionType region;
   region.SetSize( size );
@@ -155,7 +162,6 @@ int testMinMaxCurvatureFlow(
   circleImage->Allocate();
 
   IteratorType circleIter( circleImage, circleImage->GetBufferedRegion() );
-
 
   for (; !circleIter.IsAtEnd(); ++circleIter )
     {
@@ -179,7 +185,7 @@ int testMinMaxCurvatureFlow(
     if ( vnl_sample_uniform( 0.0, 1.0 ) < fractionNoise )
       {
       value = vnl_sample_uniform( vnl_math_min(foreground,background),
-        vnl_math_max(foreground,background) );
+                                  vnl_math_max(foreground,background) );
       }
 
     circleIter.Set( value );
@@ -197,13 +203,12 @@ int testMinMaxCurvatureFlow(
   denoiser->SetTimeStep( 0.05 );
 
   // attach a progress watcher to the denoiser
-  ShowProgressObject progressWatch(denoiser);
+  ShowProgressObject                                    progressWatch(denoiser);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
                                &ShowProgressObject::ShowProgress);
   denoiser->AddObserver( itk::ProgressEvent(), command);
-
 
   typename ImageType::Pointer swapPointer = circleImage;
 
@@ -228,7 +233,6 @@ int testMinMaxCurvatureFlow(
     swapPointer->DisconnectPipeline();
     }
 
-
   /**
    * Check the quality of the output by comparing it against a
    * clean image of the circle/sphere.
@@ -240,7 +244,7 @@ int testMinMaxCurvatureFlow(
   std::cout << "Checking the output..." << std::endl;
 
   IteratorType outIter( swapPointer,
-    swapPointer->GetBufferedRegion() );
+                        swapPointer->GetBufferedRegion() );
 
   PixelType tolerance = vnl_math_abs( foreground - background ) * 0.1;
 
@@ -292,9 +296,9 @@ int testMinMaxCurvatureFlow(
    */
   denoiser->Print( std::cout );
 
- /**
-  * Exercise error handling
-  */
+  /**
+   * Exercise error handling
+   */
   typedef itk::CurvatureFlowFunction<ImageType> WrongFunctionType;
   typename WrongFunctionType::Pointer wrongFunction = WrongFunctionType::New();
 
@@ -317,7 +321,6 @@ int testMinMaxCurvatureFlow(
     std::cout << "Test failed." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;

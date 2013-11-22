@@ -23,7 +23,8 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkRegionalMinimaImageFilterTest2(int argc, char * argv[])
+int
+itkRegionalMinimaImageFilterTest2(int argc, char * argv[])
 {
   const int dim = 2;
 
@@ -36,7 +37,6 @@ int itkRegionalMinimaImageFilterTest2(int argc, char * argv[])
               << std::endl;
     return EXIT_FAILURE;
     }
-
 
   typedef unsigned char                PixelType;
   typedef itk::Image< PixelType, dim > ImageType;
@@ -57,7 +57,6 @@ int itkRegionalMinimaImageFilterTest2(int argc, char * argv[])
   writer->SetInput( filter->GetOutput() );
   writer->SetFileName( argv[4] );
   writer->Update();
-
 
   // produce the same output with other filters
   typedef itk::HConcaveImageFilter< ImageType, ImageType > ConcaveType;

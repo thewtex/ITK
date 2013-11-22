@@ -28,7 +28,8 @@
  *  Only typedef are tested in this file.
  */
 
-int itkImageRegistrationMethodTest_11(int, char* [] )
+int
+itkImageRegistrationMethodTest_11(int, char* [] )
 {
 
   bool pass = true;
@@ -36,41 +37,39 @@ int itkImageRegistrationMethodTest_11(int, char* [] )
   const unsigned int dimension = 3;
 
   // Fixed Image Type
-  typedef itk::Image<float,dimension>                    FixedImageType;
+  typedef itk::Image<float,dimension> FixedImageType;
 
   // Moving Image Type
-  typedef itk::Image<char,dimension>                     MovingImageType;
+  typedef itk::Image<char,dimension> MovingImageType;
 
   // Transform Type
-  typedef itk::TranslationTransform< double,dimension >  TransformType;
+  typedef itk::TranslationTransform< double,dimension > TransformType;
 
   // Optimizer Type
-  typedef itk::GradientDescentOptimizer                  OptimizerType;
+  typedef itk::GradientDescentOptimizer OptimizerType;
 
   // Metric Type
   typedef itk::MeanReciprocalSquareDifferenceImageToImageMetric<
-                                    FixedImageType,
-                                    MovingImageType >    MetricType;
+      FixedImageType,
+      MovingImageType >    MetricType;
 
   // Interpolation technique
-  typedef itk:: LinearInterpolateImageFunction<
-                                    MovingImageType,
-                                    double          >    InterpolatorType;
+  typedef itk::LinearInterpolateImageFunction<
+      MovingImageType,
+      double          >    InterpolatorType;
 
   // Registration Method
   typedef itk::ImageRegistrationMethod<
-                                    FixedImageType,
-                                    MovingImageType >    RegistrationType;
+      FixedImageType,
+      MovingImageType >    RegistrationType;
 
-
-  MetricType::Pointer         metric        = MetricType::New();
-  TransformType::Pointer      transform     = TransformType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  FixedImageType::Pointer     fixedImage    = FixedImageType::New();
-  MovingImageType::Pointer    movingImage   = MovingImageType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
-
+  MetricType::Pointer       metric        = MetricType::New();
+  TransformType::Pointer    transform     = TransformType::New();
+  OptimizerType::Pointer    optimizer     = OptimizerType::New();
+  FixedImageType::Pointer   fixedImage    = FixedImageType::New();
+  MovingImageType::Pointer  movingImage   = MovingImageType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
   registration->SetMetric(        metric        );
   registration->SetOptimizer(     optimizer     );
@@ -78,7 +77,6 @@ int itkImageRegistrationMethodTest_11(int, char* [] )
   registration->SetFixedImage(    fixedImage    );
   registration->SetMovingImage(   movingImage   );
   registration->SetInterpolator(  interpolator  );
-
 
   if( !pass )
     {
@@ -88,6 +86,5 @@ int itkImageRegistrationMethodTest_11(int, char* [] )
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;
-
 
 }

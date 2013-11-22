@@ -25,7 +25,7 @@ namespace itk
 /** Default constructor. Needed since we provide a cast constructor. */
 template< typename TImage >
 ImageRandomNonRepeatingConstIteratorWithIndex< TImage >
-::ImageRandomNonRepeatingConstIteratorWithIndex():ImageConstIteratorWithIndex< TImage >()
+::ImageRandomNonRepeatingConstIteratorWithIndex() : ImageConstIteratorWithIndex< TImage >()
 {
   m_NumberOfPixelsInRegion    = 0L;
   m_NumberOfSamplesRequested  = 0L;
@@ -37,7 +37,7 @@ ImageRandomNonRepeatingConstIteratorWithIndex< TImage >
  * particular region of that image. */
 template< typename TImage >
 ImageRandomNonRepeatingConstIteratorWithIndex< TImage >
-::ImageRandomNonRepeatingConstIteratorWithIndex(const ImageType *ptr, const RegionType & region):
+::ImageRandomNonRepeatingConstIteratorWithIndex(const ImageType *ptr, const RegionType & region) :
   ImageConstIteratorWithIndex< TImage >(ptr, region)
 {
   m_NumberOfPixelsInRegion   = region.GetNumberOfPixels();
@@ -45,7 +45,6 @@ ImageRandomNonRepeatingConstIteratorWithIndex< TImage >
   m_NumberOfSamplesDone      = 0L;
   m_Permutation = new RandomPermutation(m_NumberOfPixelsInRegion);
 }
-
 
 //----------------------------------------------------------------------
 //    Assignment Operator
@@ -58,6 +57,7 @@ ImageRandomNonRepeatingConstIteratorWithIndex< TImage >
   if(this != &it)
     {
     this->ImageConstIteratorWithIndex< TImage >::operator=(it);
+
     if(m_Permutation)
       {
       *m_Permutation = *(it.m_Permutation);
@@ -124,10 +124,10 @@ ImageRandomNonRepeatingConstIteratorWithIndex< TImage >
   for (PositionValueType pixel = 0; pixel < m_NumberOfPixelsInRegion; pixel++ )
     {
     PositionValueType position = pixel;
-    IndexType              positionIndex;
+    IndexType         positionIndex;
     for ( unsigned int dim = 0; dim < TImage::ImageDimension; dim++ )
       {
-      const SizeValueType sizeInThisDimension = this->m_Region.GetSize()[dim];
+      const SizeValueType     sizeInThisDimension = this->m_Region.GetSize()[dim];
       const PositionValueType residual = position % sizeInThisDimension;
       positionIndex[dim] =  residual + this->m_BeginIndex[dim];
       position -= residual;
@@ -151,7 +151,7 @@ ImageRandomNonRepeatingConstIteratorWithIndex< TImage >
   PositionValueType position = ( *( this->m_Permutation ) )[m_NumberOfSamplesDone % m_NumberOfSamplesRequested];
   for ( unsigned int dim = 0; dim < TImage::ImageDimension; dim++ )
     {
-    const SizeValueType sizeInThisDimension = this->m_Region.GetSize()[dim];
+    const SizeValueType     sizeInThisDimension = this->m_Region.GetSize()[dim];
     const PositionValueType residual = position % sizeInThisDimension;
     this->m_PositionIndex[dim] =  residual + this->m_BeginIndex[dim];
     position -= residual;
@@ -160,6 +160,7 @@ ImageRandomNonRepeatingConstIteratorWithIndex< TImage >
 
   this->m_Position = this->m_Image->GetBufferPointer() + this->m_Image->ComputeOffset(this->m_PositionIndex);
 }
+
 } // end namespace itk
 
 #endif

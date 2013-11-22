@@ -239,6 +239,7 @@ SpatialObject< TDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "Bounding Box:" << std::endl;
   os << indent << m_Bounds << std::endl;
   os << "Geometric properties:" << std::endl;
@@ -260,9 +261,9 @@ template< unsigned int TDimension >
 typename SpatialObject< TDimension >::BoundingBoxType *
 SpatialObject< TDimension >
 ::GetBoundingBox() const
-{
+  {
   return m_Bounds.GetPointer();
-}
+  }
 
 /** Add a child to the object */
 template< unsigned int TDimension >
@@ -367,49 +368,48 @@ template< unsigned int TDimension >
 typename SpatialObject< TDimension >::TransformType *
 SpatialObject< TDimension >
 ::GetObjectToNodeTransform(void)
-{
+  {
   return m_AffineGeometryFrame->GetObjectToNodeTransform();
-}
+  }
 
 /** Get the local transformation (const) */
 template< unsigned int TDimension >
 const typename SpatialObject< TDimension >::TransformType *
 SpatialObject< TDimension >
 ::GetObjectToNodeTransform(void) const
-{
+  {
   return m_AffineGeometryFrame->GetObjectToNodeTransform();
-}
+  }
 
 /** Get the local transformation */
 template< unsigned int TDimension >
 typename SpatialObject< TDimension >::TransformType *
 SpatialObject< TDimension >
 ::GetObjectToParentTransform(void)
-{
+  {
   return static_cast< TreeNodeType * >(
-           m_TreeNode.GetPointer() )->GetNodeToParentNodeTransform();
+    m_TreeNode.GetPointer() )->GetNodeToParentNodeTransform();
   //return m_ObjectToNodeTransform.GetPointer();
-}
+  }
 
 /** Get the local transformation (const) */
 template< unsigned int TDimension >
 const typename SpatialObject< TDimension >::TransformType *
 SpatialObject< TDimension >
 ::GetObjectToParentTransform(void) const
-{
+  {
   return static_cast< TreeNodeType * >(
-           m_TreeNode.GetPointer() )->GetNodeToParentNodeTransform();
-}
-
+    m_TreeNode.GetPointer() )->GetNodeToParentNodeTransform();
+  }
 
 /** Get the local transformation (const) */
 template< unsigned int TDimension >
 const typename SpatialObject< TDimension >::TransformType *
 SpatialObject< TDimension >
 ::GetIndexToObjectTransform(void) const
-{
+  {
   return m_AffineGeometryFrame->GetIndexToObjectTransform();
-}
+  }
 
 /** Set the global to local transformation */
 template< unsigned int TDimension >
@@ -576,7 +576,7 @@ SpatialObject< TDimension >
 
   typename BoundingBoxType::PointType pnt;
   pnt.Fill(NumericTraits< typename
-                               BoundingBoxType::PointType::ValueType >::Zero);
+                          BoundingBoxType::PointType::ValueType >::Zero);
   m_Bounds->SetMinimum(pnt);
   m_Bounds->SetMaximum(pnt);
   m_BoundsMTime = this->GetMTime();
@@ -590,7 +590,7 @@ template< unsigned int TDimension >
 typename SpatialObject< TDimension >::ChildrenListType *
 SpatialObject< TDimension >
 ::GetChildren(unsigned int depth, char *name) const
-{
+  {
   if ( !m_TreeNode )
     {
     return 0;
@@ -611,7 +611,7 @@ SpatialObject< TDimension >
 
   delete children;
   return childrenSO;
-}
+  }
 
 /** Set children list */
 template< unsigned int TDimension >
@@ -724,7 +724,8 @@ SpatialObject< TDimension >
 
 /** Update the Output information */
 template< unsigned int TDimension >
-void SpatialObject< TDimension >
+void
+SpatialObject< TDimension >
 ::UpdateOutputInformation()
 {
   if ( this->GetSource() )
@@ -878,9 +879,9 @@ template< unsigned int TDimension >
 typename SpatialObject< TDimension >::PropertyType *
 SpatialObject< TDimension >
 ::GetProperty(void)
-{
+  {
   return m_Property;
-}
+  }
 
 template< unsigned int TDimension >
 void
@@ -930,27 +931,27 @@ template< unsigned int TDimension >
 typename SpatialObject< TDimension >::TransformType *
 SpatialObject< TDimension >
 ::GetNodeToParentNodeTransform(void)
-{
+  {
   if ( m_TreeNode )
     {
     return static_cast< TreeNodeType * >(
-             m_TreeNode.GetPointer() )->GetNodeToParentNodeTransform();
+      m_TreeNode.GetPointer() )->GetNodeToParentNodeTransform();
     }
   return NULL;
-}
+  }
 
 template< unsigned int TDimension >
 const typename SpatialObject< TDimension >::TransformType *
 SpatialObject< TDimension >
 ::GetNodeToParentNodeTransform(void) const
-{
+  {
   if ( m_TreeNode )
     {
     return static_cast< TreeNodeType * >(
-             m_TreeNode.GetPointer() )->GetNodeToParentNodeTransform();
+      m_TreeNode.GetPointer() )->GetNodeToParentNodeTransform();
     }
   return NULL;
-}
+  }
 
 /** Return the type of the spatial object as a string
  *  This is used by the SpatialObjectFactory */
@@ -968,7 +969,8 @@ SpatialObject< TDimension >::GetSpatialObjectTypeAsString() const
 
 /** Copy the information from another spatial object */
 template< unsigned int TDimension >
-void SpatialObject< TDimension >
+void
+SpatialObject< TDimension >
 ::CopyInformation(const DataObject *data)
 {
   // Standard call to the superclass' method
@@ -1012,6 +1014,7 @@ void SpatialObject< TDimension >
   this->SetId( source->GetId() );
   this->SetParentId( source->GetParentId() );
 }
+
 } // end of namespace itk
 
 #endif // __SpatialObject_hxx

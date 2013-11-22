@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 // Native ITK stuff
 #include "itkFilterWatcher.h"
 
@@ -34,7 +33,8 @@ This file tests:
   itkDifferenceOfGaussiansGradientImageFilter
 */
 
-int itkDifferenceOfGaussiansGradientTest(int, char* [] )
+int
+itkDifferenceOfGaussiansGradientTest(int, char* [] )
 {
   const unsigned int dim = 3;
 
@@ -43,9 +43,9 @@ int itkDifferenceOfGaussiansGradientTest(int, char* [] )
 
   //-----------------Create a new input image--------------------
   // Image size and spacing parameters
-  TImageType::SizeValueType     sourceImageSize[]  = { 20,20,20 };
-  TImageType::SpacingValueType  sourceImageSpacing[] = { 1.0,1.0,1.0 };
-  TImageType::PointValueType    sourceImageOrigin[] = { 0,0,0 };
+  TImageType::SizeValueType    sourceImageSize[]  = { 20,20,20 };
+  TImageType::SpacingValueType sourceImageSpacing[] = { 1.0,1.0,1.0 };
+  TImageType::PointValueType   sourceImageOrigin[] = { 0,0,0 };
 
   // Creates the sourceImage (but doesn't set the size or allocate memory)
   TImageType::Pointer sourceImage = TImageType::New();
@@ -103,7 +103,7 @@ int itkDifferenceOfGaussiansGradientTest(int, char* [] )
   printf("Sphere spatial function created\n");
 
   //---------Create and initialize a spatial function iterator-----------
-  TImageType::IndexType seedPos;
+  TImageType::IndexType            seedPos;
   const TImageType::IndexValueType pos[] = {10,10,10};
   seedPos.SetIndex(pos);
 
@@ -112,7 +112,7 @@ int itkDifferenceOfGaussiansGradientTest(int, char* [] )
   TItType sfi = TItType(sourceImage, spatialFunc, seedPos);
 
   // for coverage, recover the seeds
-  const TItType::SeedsContainerType &seeds(sfi.GetSeeds());
+  const TItType::SeedsContainerType &seeds(sfi.GetSeeds() );
   //
   // show seed indices
   std::cout << "Seeds for FloodFilledSpatialFunctionConditionalIterator"
@@ -159,9 +159,9 @@ int itkDifferenceOfGaussiansGradientTest(int, char* [] )
 
   // Create a differennce of gaussians gradient filter
   typedef itk::DifferenceOfGaussiansGradientImageFilter<TOutputType,
-    double> TDOGFilterType;
+                                                        double> TDOGFilterType;
   TDOGFilterType::Pointer DOGFilter = TDOGFilterType::New();
-  FilterWatcher watcher(DOGFilter);
+  FilterWatcher           watcher(DOGFilter);
 
   // We're filtering the output of the binomial filter
   DOGFilter->SetInput(blurredImage);
@@ -179,7 +179,7 @@ int itkDifferenceOfGaussiansGradientTest(int, char* [] )
 
   //-------------Test vector magnitude-------------
   typedef itk::VectorMagnitudeImageFilter<TDOGFilterType::TOutputImage,
-    itk::Image<unsigned char, dim> > VectorMagType;
+                                          itk::Image<unsigned char, dim> > VectorMagType;
 
   VectorMagType::Pointer vectorMagFilter = VectorMagType::New();
 

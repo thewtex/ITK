@@ -21,7 +21,6 @@
 #include "itkFFTComplexToComplexImageFilter.h"
 #include "itkFFTWCommon.h"
 
-
 namespace itk
 {
 /** \class FFTWComplexToComplexImageFilter
@@ -53,14 +52,14 @@ namespace itk
  * \sa FFTWGlobalConfiguration
  */
 template< typename TImage >
-class FFTWComplexToComplexImageFilter:
+class FFTWComplexToComplexImageFilter :
   public FFTComplexToComplexImageFilter< TImage >
 {
 public:
-  typedef FFTWComplexToComplexImageFilter                      Self;
-  typedef FFTComplexToComplexImageFilter< TImage >             Superclass;
-  typedef SmartPointer< Self >                                 Pointer;
-  typedef SmartPointer< const Self >                           ConstPointer;
+  typedef FFTWComplexToComplexImageFilter          Self;
+  typedef FFTComplexToComplexImageFilter< TImage > Superclass;
+  typedef SmartPointer< Self >                     Pointer;
+  typedef SmartPointer< const Self >               ConstPointer;
 
   /** Standard class typedefs. */
   typedef TImage                               ImageType;
@@ -103,48 +102,53 @@ public:
    * FFTW_PATIENT, FFTW_EXHAUSTIVE provided by FFTWGlobalConfiguration.
    * /sa FFTWGlobalConfiguration
    */
-  virtual void SetPlanRigor( const int & value )
+  virtual void
+  SetPlanRigor( const int & value )
   {
     // use that method to check the value
     FFTWGlobalConfiguration::GetPlanRigorName( value );
+
     if( m_PlanRigor != value )
       {
       m_PlanRigor = value;
       this->Modified();
       }
   }
+
   itkGetConstReferenceMacro( PlanRigor, int );
-  void SetPlanRigor( const std::string & name )
+  void
+  SetPlanRigor( const std::string & name )
   {
     this->SetPlanRigor( FFTWGlobalConfiguration::GetPlanRigorValue( name ) );
   }
 
 protected:
   FFTWComplexToComplexImageFilter()
-    {
+  {
     m_PlanRigor = FFTWGlobalConfiguration::GetPlanRigor();
-    }
-  virtual ~FFTWComplexToComplexImageFilter()
-    {
-    }
+  }
+
+  virtual
+  ~FFTWComplexToComplexImageFilter()
+  {}
 
   virtual void UpdateOutputData(DataObject *output);
 
   virtual void BeforeThreadedGenerateData();
+
   void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, ThreadIdType threadId );
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   FFTWComplexToComplexImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                  //purposely not implemented
 
   bool m_CanUseDestructiveAlgorithm;
 
   int m_PlanRigor;
 
 };
-
 
 } // namespace itk
 

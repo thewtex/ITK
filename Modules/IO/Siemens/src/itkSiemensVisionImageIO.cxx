@@ -35,7 +35,8 @@ SiemensVisionImageIO::~SiemensVisionImageIO()
   //Purposefully left blank
 }
 
-bool SiemensVisionImageIO::CanReadFile(const char *FileNameToRead)
+bool
+SiemensVisionImageIO::CanReadFile(const char *FileNameToRead)
 {
   this->SetFileName(FileNameToRead);
   //
@@ -63,7 +64,8 @@ bool SiemensVisionImageIO::CanReadFile(const char *FileNameToRead)
   return true;
 }
 
-GEImageHeader * SiemensVisionImageIO::ReadHeader(const char *FileNameToRead)
+GEImageHeader *
+SiemensVisionImageIO::ReadHeader(const char *FileNameToRead)
 {
   if ( !this->CanReadFile(FileNameToRead) )
     {
@@ -76,12 +78,12 @@ GEImageHeader * SiemensVisionImageIO::ReadHeader(const char *FileNameToRead)
 #if defined( DEBUGHEADER )
 #define DB(x) std::cerr << #x << " " << x << std::endl
 #else
-#define DB(x)
+    #define DB(x)
 #endif
 
-#define GE_PROD_STR    "SIEMENS"
-#define TEMPLEN 2048
-  char tmpStr[TEMPLEN], tmpStr2[TEMPLEN], tmpStr3[TEMPLEN];
+    #define GE_PROD_STR    "SIEMENS"
+    #define TEMPLEN 2048
+  char           tmpStr[TEMPLEN], tmpStr2[TEMPLEN], tmpStr3[TEMPLEN];
   GEImageHeader *hdr = new GEImageHeader;
   if ( hdr == 0 )
     {
@@ -307,5 +309,6 @@ GEImageHeader * SiemensVisionImageIO::ReadHeader(const char *FileNameToRead)
 
   hdr->offset = HDR_TOTAL_LENGTH;
   return hdr;
-}
+  }
+
 } // end namespace itk

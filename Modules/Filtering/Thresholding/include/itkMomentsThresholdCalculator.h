@@ -49,10 +49,10 @@ class MomentsThresholdCalculator : public HistogramThresholdCalculator<THistogra
 {
 public:
   /** Standard class typedefs. */
-  typedef MomentsThresholdCalculator      Self;
-  typedef Object                          Superclass;
-  typedef SmartPointer<Self>              Pointer;
-  typedef SmartPointer<const Self>        ConstPointer;
+  typedef MomentsThresholdCalculator Self;
+  typedef Object                     Superclass;
+  typedef SmartPointer<Self>         Pointer;
+  typedef SmartPointer<const Self>   ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -61,22 +61,22 @@ public:
   itkTypeMacro(MomentsThresholdCalculator, Object);
 
   /** Type definition for the input image. */
-  typedef THistogram  HistogramType;
-  typedef TOutput     OutputType;
+  typedef THistogram HistogramType;
+  typedef TOutput    OutputType;
 
 protected:
-  MomentsThresholdCalculator() {};
-  virtual ~MomentsThresholdCalculator() {};
+  MomentsThresholdCalculator() {}
+  virtual
+  ~MomentsThresholdCalculator() {}
   void GenerateData(void);
 
 private:
   MomentsThresholdCalculator(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);             //purposely not implemented
 
 };
 
 } // end namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkMomentsThresholdCalculator.hxx"

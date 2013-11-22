@@ -48,7 +48,7 @@ namespace itk
  * \ingroup ITKTransform
  */
 template< typename TTransform, typename TImage >
-class BSplineDeformableTransformInitializer:public Object
+class BSplineDeformableTransformInitializer : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -96,7 +96,8 @@ public:
    * total number of grid nodes inside the image will be \$ 5 x 5 x 5 \$ .
    * This method will override the settings of any previous call to
    * SetGridSizeInsideTheImage().  */
-  void SetNumberOfGridNodesInsideTheImage(unsigned int numberOfNodes)
+  void
+  SetNumberOfGridNodesInsideTheImage(unsigned int numberOfNodes)
   {
     this->m_GridSizeInsideTheImage.Fill(numberOfNodes);
     this->Modified();
@@ -115,7 +116,8 @@ private:
   BSplineDeformableTransformInitializer(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 
   TransformPointer m_Transform;
 
@@ -132,7 +134,8 @@ private:
 #endif
 
 #else  // def ITKV3_COMPATIBILITY
-#error "itkBSplineDeformableTransformInitializer.h should only be included for ITKv3 compatibility. Build with ITKV3_COMPATIBILITY=ON to use this"
+#error \
+  "itkBSplineDeformableTransformInitializer.h should only be included for ITKv3 compatibility. Build with ITKV3_COMPATIBILITY=ON to use this"
 #endif // def ITKV3_COMPATIBILITY
 
 #endif /* __itkBSplineDeformableTransformInitializer_h */

@@ -22,80 +22,91 @@
 
 namespace itk
 {
-  namespace Function
+namespace Function
+{
+template< typename TInput, typename TOutput >
+class TanHelper
+{
+public:
+  TanHelper() {}
+  ~TanHelper() {}
+  bool
+  operator!=(const TanHelper &) const
   {
-    template< typename TInput, typename TOutput >
-    class TanHelper
-    {
-    public:
-      TanHelper() {}
-      ~TanHelper() {}
-      bool operator!=(const TanHelper &) const
-      {
-        return false;
-      }
-
-      bool operator==(const TanHelper & other) const
-      {
-        return !( *this != other );
-      }
-
-      inline TOutput operator()(const TInput & A) const
-      { return (TOutput)vcl_tan( (double)A ); }
-    };
+    return false;
   }
 
-  template< typename TInputImage, typename TOutputImage >
-  class TanHelperImageFilter:
-    public UnaryFunctorImageFilter< TInputImage, TOutputImage,
-                             Function::TanHelper< typename TInputImage::PixelType,
-                                            typename TOutputImage::PixelType >   >
+  bool
+  operator==(const TanHelper & other) const
   {
-  public:
-    /** Standard class typedefs. */
-    typedef TanHelperImageFilter Self;
-    typedef UnaryFunctorImageFilter<
+    return !( *this != other );
+  }
+
+  inline TOutput
+  operator()(const TInput & A) const
+  {
+    return (TOutput)vcl_tan( (double)A );
+  }
+
+};
+}
+
+template< typename TInputImage, typename TOutputImage >
+class TanHelperImageFilter :
+  public UnaryFunctorImageFilter< TInputImage, TOutputImage,
+                                  Function::TanHelper< typename TInputImage::PixelType,
+                                                       typename TOutputImage::PixelType >   >
+{
+public:
+  /** Standard class typedefs. */
+  typedef TanHelperImageFilter Self;
+  typedef UnaryFunctorImageFilter<
       TInputImage, TOutputImage,
       Function::TanHelper< typename TInputImage::PixelType,
-                     typename TOutputImage::PixelType > >  Superclass;
+                           typename TOutputImage::PixelType > >  Superclass;
 
-    typedef SmartPointer< Self >       Pointer;
-    typedef SmartPointer< const Self > ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
-    /** Method for creation through the object factory. */
-    itkNewMacro(Self);
+  /** Method for creation through the object factory. */
+  itkNewMacro(Self);
 
-    /** Runtime information support. */
-    itkTypeMacro(TanHelperImageFilter,
-                 UnaryFunctorImageFilter);
+  /** Runtime information support. */
+  itkTypeMacro(TanHelperImageFilter,
+               UnaryFunctorImageFilter);
 
-  #ifdef ITK_USE_CONCEPT_CHECKING
-    // Begin concept checking
-    itkConceptMacro( InputConvertibleToDoubleCheck,
-                     ( Concept::Convertible< typename TInputImage::PixelType, double > ) );
-    itkConceptMacro( DoubleConvertibleToOutputCheck,
-                     ( Concept::Convertible< double, typename TOutputImage::PixelType > ) );
-    // End concept checking
-  #endif
-  protected:
-    TanHelperImageFilter() {}
-    virtual ~TanHelperImageFilter() {}
-  private:
-    TanHelperImageFilter(const Self &); //purposely not implemented
-    void operator=(const Self &); //purposely not implemented
-  };
+#ifdef ITK_USE_CONCEPT_CHECKING
+  // Begin concept checking
+  itkConceptMacro( InputConvertibleToDoubleCheck,
+                   ( Concept::Convertible< typename TInputImage::PixelType, double > ) );
+  itkConceptMacro( DoubleConvertibleToOutputCheck,
+                   ( Concept::Convertible< double, typename TOutputImage::PixelType > ) );
+  // End concept checking
+#endif
+
+protected:
+  TanHelperImageFilter() {}
+  virtual
+  ~TanHelperImageFilter() {}
+
+private:
+  TanHelperImageFilter(const Self &); //purposely not implemented
+  void operator=(const Self &);       //purposely not implemented
+
+};
 
 }
 
-int itkSimpleFilterWatcherTest (int, char*[])
+int
+itkSimpleFilterWatcherTest(int, char*[])
 {
   // Test out the code
-  typedef itk::SimpleFilterWatcher        WatcherType;
-  typedef itk::Image<char,3>              ImageType;
+  typedef itk::SimpleFilterWatcher WatcherType;
+  typedef itk::Image<char,3>       ImageType;
   typedef itk::TanHelperImageFilter<
-    ImageType, ImageType>                 FilterType;
+      ImageType, ImageType>                 FilterType;
   FilterType::Pointer filter = FilterType::New();
-  const char * comment = "comment";
+  const char *        comment = "comment";
 
   // Test constructor that takes a ProcessObject.
   WatcherType watcher1( filter, comment );
@@ -108,7 +119,7 @@ int itkSimpleFilterWatcherTest (int, char*[])
        || watcher1.GetIterations() != watcher2.GetIterations()
        || watcher1.GetQuiet() != watcher2.GetQuiet()
        || watcher1.GetComment() != watcher2.GetComment() )
-    //|| watcher1.GetTimeProbe() != watcher2.GetTimeProbe() )
+  //|| watcher1.GetTimeProbe() != watcher2.GetTimeProbe() )
     {
     std::cout << "Copy constructor failed." << std::endl;
     return EXIT_FAILURE;
@@ -125,7 +136,7 @@ int itkSimpleFilterWatcherTest (int, char*[])
        || watcher3.GetIterations() != watcher2.GetIterations()
        || watcher3.GetQuiet() != watcher2.GetQuiet()
        || watcher3.GetComment() != watcher2.GetComment() )
-    //|| watcher3.GetTimeProbe() != watcher2.GetTimeProbe() )
+  //|| watcher3.GetTimeProbe() != watcher2.GetTimeProbe() )
     {
     std::cout << "Operator= failed." << std::endl;
     return EXIT_FAILURE;

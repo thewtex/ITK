@@ -60,7 +60,7 @@ namespace itk
 
 template< typename TPixel, unsigned int VDimension = 2,
           typename TAllocator = NeighborhoodAllocator< TPixel > >
-class BinaryBallStructuringElement:
+class BinaryBallStructuringElement :
   public Neighborhood< TPixel, VDimension, TAllocator >
 {
 public:
@@ -97,17 +97,20 @@ public:
   BinaryBallStructuringElement() {}
 
   /** Default destructor. */
-  virtual ~BinaryBallStructuringElement() {}
+  virtual
+  ~BinaryBallStructuringElement() {}
 
   /** Copy constructor. */
-  BinaryBallStructuringElement(const Self & other):
+  BinaryBallStructuringElement(const Self & other) :
     Neighborhood< TPixel, VDimension, TAllocator >(other)
   {}
 
   /** Assignment operator. */
-  Self & operator=(const Self & other)
+  Self &
+  operator=(const Self & other)
   {
     Superclass::operator=(other);
+
     return *this;
   }
 

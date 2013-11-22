@@ -26,7 +26,8 @@
 #include "itkPatchBasedDenoisingImageFilter.h"
 
 template <typename ImageT>
-int doDenoising(const std::string & inputFileName, const std::string & outputFileName)
+int
+doDenoising(const std::string & inputFileName, const std::string & outputFileName)
 {
   typedef itk::ImageFileReader< ImageT > ReaderType;
 
@@ -40,41 +41,41 @@ int doDenoising(const std::string & inputFileName, const std::string & outputFil
   typename ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( inputFileName );
   try
-  {
+    {
     reader->Update();
-  }
+    }
   catch( itk::ExceptionObject & excp )
-  {
+    {
     std::cerr << "Problem encountered while reading image file : " << inputFileName << std::endl;
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   // create filter and initialize
   // give image to filter and run it
   // get filter output and write to file
 
   typename FilterType::Pointer filter = FilterType::New();
-  filter->SetInput(reader->GetOutput());
+  filter->SetInput(reader->GetOutput() );
 
   // use 2 threads for consistency
   filter->SetNumberOfThreads(2);
 
   // denoise the image
   try
-  {
+    {
     filter->Update();
-  }
+    }
   catch (itk::ExceptionObject & excp)
-  {
+    {
     std::ostringstream itkmsg;                                            \
     itkmsg << "Error: In " __FILE__ ", line " << __LINE__ << "\n"
            << "Caught exception <" << excp
            << "> while running patch-based denoising image filter."
            << "\n\n";
-    ::itk::OutputWindowDisplayWarningText(itkmsg.str().c_str());
+    ::itk::OutputWindowDisplayWarningText(itkmsg.str().c_str() );
     return EXIT_FAILURE;
-  }
+    }
 
   // write the denoised image to file
   typename WriterType::Pointer writer = WriterType::New();
@@ -84,30 +85,31 @@ int doDenoising(const std::string & inputFileName, const std::string & outputFil
             << filter->GetOutput()->GetNumberOfComponentsPerPixel()
             << " to file." << std::endl;
   try
-  {
+    {
     writer->Update();
-  }
+    }
   catch( itk::ExceptionObject & excp )
-  {
+    {
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   return EXIT_SUCCESS;
 }
 
-int itkPatchBasedDenoisingImageFilterDefaultTest( int argc, char * argv [] )
+int
+itkPatchBasedDenoisingImageFilterDefaultTest( int argc, char * argv [] )
 {
 
   if( argc < 3 )
-  {
+    {
     std::cerr << "Missing command line arguments" << std::endl;
     std::cerr << "Usage :  " << argv[0]
               << " inputImageFileName outputImageFileName"
               << " numDimensions"
               << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   const std::string inFileName(argv[1]);
 
@@ -117,7 +119,7 @@ int itkPatchBasedDenoisingImageFilterDefaultTest( int argc, char * argv [] )
 
   typedef float PixelComponentType;
   //
-  typedef PixelComponentType                           OneComponentType;
+  typedef PixelComponentType OneComponentType;
   //
   typedef itk::Image< OneComponentType, 2 > OneComponent2DImage;
   typedef itk::Image< OneComponentType, 3 > OneComponent3DImage;
@@ -126,19 +128,19 @@ int itkPatchBasedDenoisingImageFilterDefaultTest( int argc, char * argv [] )
   if (numDimensions == 2)
     {
     return doDenoising<OneComponent2DImage>(inFileName, outFileName);
-  }
+    }
   //
   else if (numDimensions == 3)
-  {
+    {
     return doDenoising<OneComponent3DImage>(inFileName, outFileName);
-  }
+    }
   else
-  {
+    {
     std::cout << numDimensions << " dimensions "
               << "isn't supported in this test driver."
               << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   // shouldn't reach this point, return failure here to keep the compiler happy
   return EXIT_FAILURE;

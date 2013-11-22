@@ -63,8 +63,9 @@ public:
   typedef TType InternalType;
 
   /** Set output using the value in input */
-  inline void Set(InternalType & output, const ExternalType & input,
-                  const unsigned long offset) const
+  inline void
+  Set(InternalType & output, const ExternalType & input,
+      const unsigned long offset) const
   {
     InternalType *truePixel = ( &output ) + offset * m_OffsetMultiplier;
 
@@ -75,7 +76,8 @@ public:
   }
 
   /** Get the value from input */
-  inline ExternalType Get(const InternalType & input, const SizeValueType offset) const
+  inline ExternalType
+  Get(const InternalType & input, const SizeValueType offset) const
   {
     // Do not create a local for this method, to use return value
     // optimization.
@@ -83,14 +85,18 @@ public:
   }
 
   /** Set the length of each vector in the VectorImage */
-  void SetVectorLength(VectorLengthType l)
+  void
+  SetVectorLength(VectorLengthType l)
   {
     m_VectorLength = l;
     m_OffsetMultiplier = ( l - 1 );
   }
 
   /** Get Vector lengths */
-  VectorLengthType GetVectorLength() const { return m_VectorLength; }
+  VectorLengthType
+  GetVectorLength() const {
+    return m_VectorLength;
+  }
 
   DefaultVectorPixelAccessor() : m_VectorLength(0), m_OffsetMultiplier(0) {}
 
@@ -101,7 +107,8 @@ public:
     m_OffsetMultiplier = l - 1;
   }
 
-  virtual ~DefaultVectorPixelAccessor() {}
+  virtual
+  ~DefaultVectorPixelAccessor() {}
 
 private:
   VectorLengthType m_VectorLength;

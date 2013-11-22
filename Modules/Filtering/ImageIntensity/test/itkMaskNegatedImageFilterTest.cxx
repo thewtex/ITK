@@ -16,33 +16,33 @@
  *
  *=========================================================================*/
 
-
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkMaskNegatedImageFilter.h"
 
-int itkMaskNegatedImageFilterTest(int, char* [] )
+int
+itkMaskNegatedImageFilterTest(int, char* [] )
 {
 
   // Define the dimension of the images
   const unsigned int myDimension = 3;
 
   // Declare the types of the images
-  typedef itk::Image<float, myDimension>           InputImageType;
-  typedef itk::Image<unsigned short, myDimension>  MaskImageType;
-  typedef itk::Image<float, myDimension>           OutputImageType;
+  typedef itk::Image<float, myDimension>          InputImageType;
+  typedef itk::Image<unsigned short, myDimension> MaskImageType;
+  typedef itk::Image<float, myDimension>          OutputImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>         myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>          mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>        myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Create two images
   InputImageType::Pointer inputImage  = InputImageType::New();
-  MaskImageType::Pointer inputMask    = MaskImageType::New();
+  MaskImageType::Pointer  inputMask    = MaskImageType::New();
 
   // Define their size, and start index
   mySizeType size;
@@ -71,7 +71,6 @@ int itkMaskNegatedImageFilterTest(int, char* [] )
   inputMask->SetRequestedRegion( region );
   inputMask->Allocate();
 
-
   // Declare Iterator types apropriated for each image
   typedef itk::ImageRegionIteratorWithIndex<InputImageType>  InputIteratorType;
   typedef itk::ImageRegionIteratorWithIndex<MaskImageType>   MaskIteratorType;
@@ -83,11 +82,11 @@ int itkMaskNegatedImageFilterTest(int, char* [] )
   // Initialize the content of Image A
   std::cout << "First operand " << std::endl;
   while( !inputIterator.IsAtEnd() )
-  {
+    {
     inputIterator.Set( 255.0 );
     std::cout << inputIterator.Get() << std::endl;
     ++inputIterator;
-  }
+    }
 
   // Create one iterator for Image B (this is a light object)
   MaskIteratorType maskIterator( inputMask, inputMask->GetBufferedRegion() );
@@ -98,10 +97,10 @@ int itkMaskNegatedImageFilterTest(int, char* [] )
   for(unsigned int i = 0; i<2; ++i, ++maskIterator) maskIterator.Set( 0 );
 
   while( !maskIterator.IsAtEnd() )
-  {
+    {
     maskIterator.Set( 3 );
     ++maskIterator;
-  }
+    }
 
   for(unsigned int i = 0; i< 3; ++i, --maskIterator) maskIterator.Set( 0 );
 
@@ -114,14 +113,12 @@ int itkMaskNegatedImageFilterTest(int, char* [] )
 
   // Declare the type for the MaskNegated filter
   typedef itk::MaskNegatedImageFilter<
-                           InputImageType,
-                           MaskImageType,
-                           OutputImageType  >       myFilterType;
-
+      InputImageType,
+      MaskImageType,
+      OutputImageType  >       myFilterType;
 
   // Create an MaskNegated Filter
   myFilterType::Pointer filter = myFilterType::New();
-
 
   // Connect the input images
   filter->SetInput1( inputImage );
@@ -131,13 +128,12 @@ int itkMaskNegatedImageFilterTest(int, char* [] )
   // Get the Smart Pointer to the Filter Output
   OutputImageType::Pointer outputImage = filter->GetOutput();
 
-
   // Execute the filter
   filter->Update();
-  filter->SetFunctor(filter->GetFunctor());
+  filter->SetFunctor(filter->GetFunctor() );
 
   // Create an iterator for going through the image output
-  OutputIteratorType outputIterator(outputImage, outputImage->GetBufferedRegion());
+  OutputIteratorType outputIterator(outputImage, outputImage->GetBufferedRegion() );
 
   //  Print the content of the result image
   std::cout << " Result " << std::endl;
@@ -147,19 +143,18 @@ int itkMaskNegatedImageFilterTest(int, char* [] )
     ++outputIterator;
     }
 
-
   filter->Print( std::cout );
 
   // Test named mutator/accessors
-  {
-  filter->SetMaskImage( inputMask );
-  myFilterType::MaskImageType::ConstPointer retrievedMask = filter->GetMaskImage();
-  if(retrievedMask != inputMask)
     {
-    std::cerr << "Mask not retrieved successfully!" << std::endl;
-    return EXIT_FAILURE;
+    filter->SetMaskImage( inputMask );
+    myFilterType::MaskImageType::ConstPointer retrievedMask = filter->GetMaskImage();
+    if(retrievedMask != inputMask)
+      {
+      std::cerr << "Mask not retrieved successfully!" << std::endl;
+      return EXIT_FAILURE;
+      }
     }
-  }
 
   // All objects should be automatically destroyed at this point
   return EXIT_SUCCESS;

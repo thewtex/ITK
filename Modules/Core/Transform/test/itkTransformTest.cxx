@@ -58,101 +58,123 @@ public:
   typedef typename Superclass::OutputDiffusionTensor3DType OutputDiffusionTensor3DType;
 
   typedef typename Superclass::InputSymmetricSecondRankTensorType
-  InputSymmetricSecondRankTensorType;
+    InputSymmetricSecondRankTensorType;
   typedef typename Superclass::OutputSymmetricSecondRankTensorType
-  OutputSymmetricSecondRankTensorType;
+    OutputSymmetricSecondRankTensorType;
 
-  virtual OutputPointType TransformPoint(const InputPointType  & itkNotUsed(inputPoint) ) const
+  virtual OutputPointType
+  TransformPoint(const InputPointType  & itkNotUsed(inputPoint) ) const
   {
     OutputPointType outPoint;
+
     outPoint.Fill( 22.0 );
     return outPoint;
   }
 
   using Superclass::TransformVector;
-  virtual OutputVectorType TransformVector(const InputVectorType  & itkNotUsed(inputVector) ) const
+  virtual OutputVectorType
+  TransformVector(const InputVectorType  & itkNotUsed(inputVector) ) const
   {
     OutputVectorType outVector;
+
     outVector.Fill( 12.2 );
     return outVector;
   }
 
-  virtual OutputVnlVectorType TransformVector(const InputVnlVectorType  & itkNotUsed(inputVector) ) const
+  virtual OutputVnlVectorType
+  TransformVector(const InputVnlVectorType  & itkNotUsed(inputVector) ) const
   {
     OutputVnlVectorType outVector( 15.0 );
+
     return outVector;
   }
 
-  virtual OutputVectorPixelType TransformVector(const InputVectorPixelType  & itkNotUsed(inputVector) ) const
+  virtual OutputVectorPixelType
+  TransformVector(const InputVectorPixelType  & itkNotUsed(inputVector) ) const
   {
     OutputVectorPixelType outVector;
+
     outVector.Fill( 88.8 );
     return outVector;
   }
 
   using Superclass::TransformCovariantVector;
-  virtual OutputCovariantVectorType TransformCovariantVector(const InputCovariantVectorType  & itkNotUsed(inputVector) ) const
+  virtual OutputCovariantVectorType
+  TransformCovariantVector(const InputCovariantVectorType  & itkNotUsed(inputVector) ) const
   {
     OutputCovariantVectorType outVector;
+
     outVector.Fill( 8.9 );
     return outVector;
   }
 
-  virtual OutputVectorPixelType TransformCovariantVector(const InputVectorPixelType  & itkNotUsed(inputVector) ) const
+  virtual OutputVectorPixelType
+  TransformCovariantVector(const InputVectorPixelType  & itkNotUsed(inputVector) ) const
   {
     OutputVectorPixelType outVector;
+
     outVector.Fill( 6.9 );
     return outVector;
   }
 
   using Superclass::TransformDiffusionTensor3D;
-  virtual OutputDiffusionTensor3DType TransformDiffusionTensor3D( const InputDiffusionTensor3DType & itkNotUsed( tensor ) ) const
+  virtual OutputDiffusionTensor3DType
+  TransformDiffusionTensor3D( const InputDiffusionTensor3DType & itkNotUsed( tensor ) ) const
   {
     OutputDiffusionTensor3DType outTensor;
+
     outTensor.Fill( 2.1 );
     return outTensor;
   }
 
-  virtual OutputVectorPixelType TransformDiffusionTensor3D( const InputVectorPixelType & itkNotUsed( tensor ) ) const
+  virtual OutputVectorPixelType
+  TransformDiffusionTensor3D( const InputVectorPixelType & itkNotUsed( tensor ) ) const
   {
     OutputVectorPixelType outTensor;
+
     outTensor.Fill( 29.1 );
     return outTensor;
   }
 
   using Superclass::TransformSymmetricSecondRankTensor;
-  virtual OutputSymmetricSecondRankTensorType TransformSymmetricSecondRankTensor(
+  virtual OutputSymmetricSecondRankTensorType
+  TransformSymmetricSecondRankTensor(
     const InputSymmetricSecondRankTensorType & itkNotUsed( tensor ) ) const
   {
     OutputSymmetricSecondRankTensorType outTensor;
+
     outTensor.Fill( 10.0 );
     return outTensor;
   }
 
-  virtual OutputVectorPixelType TransformSymmetricSecondRankTensor(
+  virtual OutputVectorPixelType
+  TransformSymmetricSecondRankTensor(
     const InputVectorPixelType & itkNotUsed( tensor ) ) const
   {
     OutputVectorPixelType outTensor;
+
     outTensor.Fill( 55.9 );
     return outTensor;
   }
 
-  virtual void SetParameters(const ParametersType &)
-  {
-  }
+  virtual void
+  SetParameters(const ParametersType &)
+  {}
 
-  virtual void SetFixedParameters(const ParametersType &)
-  {
-  }
+  virtual void
+  SetFixedParameters(const ParametersType &)
+  {}
 
-  virtual void ComputeJacobianWithRespectToParameters(const InputPointType &,
-                                                      JacobianType & jacobian) const
+  virtual void
+  ComputeJacobianWithRespectToParameters(const InputPointType &,
+                                         JacobianType & jacobian) const
   {
     jacobian.SetSize(3, 6);
     jacobian.Fill(1);
   }
 
-  inline virtual void ComputeJacobianWithRespectToPosition(
+  inline virtual void
+  ComputeJacobianWithRespectToPosition(
     const InputPointType &,
     JacobianType & jacobian ) const
   {
@@ -169,7 +191,7 @@ template <
 class TransformTester
 {
 public:
-  typedef TransformTester                                             Self;
+  typedef TransformTester Self;
 
   typedef TransformTestHelper<double, NInputDimensions, NOutputDimensions> TransformType;
 
@@ -190,13 +212,15 @@ public:
   typedef typename TransformType::OutputDiffusionTensor3DType OutputDiffusionTensor3DType;
 
   typedef typename TransformType::InputSymmetricSecondRankTensorType
-  InputSymmetricSecondRankTensorType;
+    InputSymmetricSecondRankTensorType;
   typedef typename TransformType::OutputSymmetricSecondRankTensorType
-  OutputSymmetricSecondRankTensorType;
+    OutputSymmetricSecondRankTensorType;
 
-  bool RunTests( void )
+  bool
+  RunTests( void )
   {
     std::cout << "Testing itkTransform<" << NInputDimensions << "," << NOutputDimensions << ">" << std::endl;
+
     typename TransformType::Pointer transform = TransformType::New();
 
     InputPointType pnt;
@@ -296,7 +320,7 @@ public:
     update.Fill(1);
     try
       {
-    transform->UpdateTransformParameters( update );
+      transform->UpdateTransformParameters( update );
       }
     catch( itk::ExceptionObject & e )
       {
@@ -312,13 +336,14 @@ public:
 
 };
 
-
 }
 }
 
-int itkTransformTest(int, char * [] )
+int
+itkTransformTest(int, char * [] )
 {
   itk::itkTransformTestHelpers::TransformTester<double,3,3> tester33;
+
   tester33.RunTests();
   std::cout << "passed 3 3" << std::endl;
 
@@ -329,7 +354,6 @@ int itkTransformTest(int, char * [] )
   itk::itkTransformTestHelpers::TransformTester<double,2,3> tester23;
   tester23.RunTests();
   std::cout << "passed 2 3" << std::endl;
-
 
   std::cout << "[ PASSED ]" << std::endl;
   return EXIT_SUCCESS;

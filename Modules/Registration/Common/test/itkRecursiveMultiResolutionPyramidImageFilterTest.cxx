@@ -26,17 +26,19 @@ namespace
  * The pattern is a 3D gaussian in the middle
  * and some directional pattern on the outside.
  */
-double F( double x, double y, double z )
+double
+F( double x, double y, double z )
 {
   const double s = 50;
-  double value = 200.0 * vcl_exp( - ( x*x + y*y + z*z )/(s*s) );
+  double       value = 200.0 * vcl_exp( -( x*x + y*y + z*z )/(s*s) );
+
   x -= 8; y += 3; z += 0;
   double r = vcl_sqrt( x*x + y*y + z*z );
   if( r > 35 )
     {
     value = 2 * ( vnl_math_abs( x ) +
-      0.8 * vnl_math_abs( y ) +
-      0.5 * vnl_math_abs( z ) );
+                  0.8 * vnl_math_abs( y ) +
+                  0.5 * vnl_math_abs( z ) );
     }
   if( r < 4 )
     {
@@ -47,21 +49,28 @@ double F( double x, double y, double z )
 
 }
 
-
 // The following three classes are used to support callbacks
 // on the filter in the pipeline that follows later
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 }
 
-int itkRecursiveMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
+int
+itkRecursiveMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
 {
 
 //------------------------------------------------------------
@@ -69,9 +78,9 @@ int itkRecursiveMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
 //------------------------------------------------------------
 
   // Allocate Images
-  typedef signed short             PixelType;
-  typedef itk::Image<PixelType,3>  InputImageType;
-  typedef itk::Image<float,3>      OutputImageType;
+  typedef signed short            PixelType;
+  typedef itk::Image<PixelType,3> InputImageType;
+  typedef itk::Image<float,3>     OutputImageType;
   enum { ImageDimension = InputImageType::ImageDimension };
   bool useShrinkFilter(false);
   if(argc > 1)
@@ -89,8 +98,8 @@ int itkRecursiveMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
     std::cout << std::endl;
     }
 
-  InputImageType::SizeType size = {{100,100,40}};
-  InputImageType::IndexType index = {{0,0,0}};
+  InputImageType::SizeType   size = {{100,100,40}};
+  InputImageType::IndexType  index = {{0,0,0}};
   InputImageType::RegionType region;
   region.SetSize( size );
   region.SetIndex( index );
@@ -115,9 +124,8 @@ int itkRecursiveMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
 
   Iterator ti(imgTarget,region);
 
-
-  while(!ti.IsAtEnd())
-  {
+  while(!ti.IsAtEnd() )
+    {
     p[0] = ti.GetIndex()[0];
     p[1] = ti.GetIndex()[1];
     p[2] = ti.GetIndex()[2];
@@ -127,7 +135,7 @@ int itkRecursiveMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
     const double z = d[2];
     ti.Set( (PixelType) F(x,y,z) );
     ++ti;
-  }
+    }
 
   // set image origin to be center of the image
   double transCenter[3];
@@ -138,20 +146,19 @@ int itkRecursiveMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
 
   imgTarget->SetOrigin( transCenter );
 
-
- /**
-  * Setup a multi-resolution pyramid
-  */
+  /**
+   * Setup a multi-resolution pyramid
+   */
   typedef itk::RecursiveMultiResolutionPyramidImageFilter<InputImageType,OutputImageType>
-                                    PyramidType;
+    PyramidType;
   typedef PyramidType::ScheduleType ScheduleType;
   PyramidType::Pointer pyramid = PyramidType::New();
   pyramid->SetUseShrinkImageFilter(useShrinkFilter);
 
   pyramid->SetInput( imgTarget );
 
-  bool pass = true;
-  unsigned int numLevels;
+  bool                                     pass = true;
+  unsigned int                             numLevels;
   itk::Vector<unsigned int,ImageDimension> factors;
 
   // set schedule by specifying the number of levels;
@@ -238,7 +245,7 @@ int itkRecursiveMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
   std::cout << "Run RecursiveMultiResolutionPyramidImageFilter in standalone mode with progress";
   std::cout << std::endl;
 
-  ShowProgressObject progressWatch(pyramid);
+  ShowProgressObject                                    progressWatch(pyramid);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -250,7 +257,6 @@ int itkRecursiveMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
 //  update pyramid at a particular level
   unsigned int testLevel = 2;
   pyramid->GetOutput( testLevel )->Update();
-
 
 // test output at another level
   testLevel = 2;
@@ -269,7 +275,7 @@ int itkRecursiveMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
   for( j = 0; j < ImageDimension; j++ )
     {
     if( outputSpacing[j] !=
-      inputSpacing[j] * (double) schedule[testLevel][j] )
+        inputSpacing[j] * (double) schedule[testLevel][j] )
       {
       break;
       }
@@ -287,7 +293,6 @@ int itkRecursiveMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
     pyramid->GetInput()->Print(std::cout);
     pyramid->GetOutput( testLevel )->Print(std::cout);
     }
-
 
   // run in streamed mode
   std::cout << "Run ImagePyramid with streamer";
@@ -314,9 +319,9 @@ int itkRecursiveMultiResolutionPyramidImageFilterTest(int argc, char* argv[] )
   std::cout << "Compare standalone and streamed outputs" << std::endl;
   typedef itk::ImageRegionIterator<OutputImageType> OutputIterator;
   OutputIterator iter1( pyramid->GetOutput( testLevel ),
-    pyramid->GetOutput( testLevel )->GetBufferedRegion() );
+                        pyramid->GetOutput( testLevel )->GetBufferedRegion() );
   OutputIterator iter2( streamer->GetOutput(),
-    streamer->GetOutput()->GetBufferedRegion() );
+                        streamer->GetOutput()->GetBufferedRegion() );
 
   while( !iter1.IsAtEnd() )
     {

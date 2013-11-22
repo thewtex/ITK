@@ -56,7 +56,7 @@ namespace itk
  */
 
 class ITKCommon_EXPORT ImageRegionSplitterMultidimensional
-  : public ImageRegionSplitterBase
+  : public             ImageRegionSplitterBase
 {
 public:
   /** Standard class typedefs. */
@@ -74,7 +74,6 @@ public:
 protected:
   ImageRegionSplitterMultidimensional();
 
-
   virtual unsigned int GetNumberOfSplitsInternal(unsigned int dim,
                                                  const IndexValueType regionIndex[],
                                                  const SizeValueType regionSize[],
@@ -91,7 +90,8 @@ protected:
 private:
   ImageRegionSplitterMultidimensional(const Self &); //purposely not implemented
   void operator=(const Self &);                      //purposely not
-                                                     //implemented
+
+  //implemented
 
   static unsigned int ComputeSplits(unsigned int dim,
                                     unsigned int requestedNumber,

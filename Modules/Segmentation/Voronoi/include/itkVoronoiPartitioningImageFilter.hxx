@@ -26,7 +26,7 @@ namespace itk
 /* constructor: seting the default value of the parameters */
 template< typename TInputImage, typename TOutputImage >
 VoronoiPartitioningImageFilter< TInputImage, TOutputImage >
-::VoronoiPartitioningImageFilter():
+::VoronoiPartitioningImageFilter() :
   m_SigmaThreshold(10)
 {}
 
@@ -110,6 +110,7 @@ VoronoiPartitioningImageFilter< TInputImage, TOutputImage >
   RegionType region = this->GetInput()->GetRequestedRegion();
 
   itk::ImageRegionIteratorWithIndex< OutputImageType > oit(this->GetOutput(), region);
+
   while ( !oit.IsAtEnd() )
     {
     oit.Set(0);
@@ -139,6 +140,7 @@ VoronoiPartitioningImageFilter< TInputImage, TOutputImage >
   RegionType region = this->GetInput()->GetRequestedRegion();
 
   itk::ImageRegionIteratorWithIndex< OutputImageType > oit(this->GetOutput(), region);
+
   while ( !oit.IsAtEnd() )
     {
     oit.Set(0);
@@ -207,6 +209,7 @@ VoronoiPartitioningImageFilter< TInputImage, TOutputImage >
 
   os << indent << "SigmaThreshold: " << m_SigmaThreshold << std::endl;
 }
+
 } //end namespace
 
 #endif

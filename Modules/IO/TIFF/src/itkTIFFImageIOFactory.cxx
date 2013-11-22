@@ -50,9 +50,10 @@ TIFFImageIOFactory::GetDescription(void) const
 
 static bool TIFFImageIOFactoryHasBeenRegistered;
 
-void TIFFImageIOFactoryRegister__Private(void)
+void
+TIFFImageIOFactoryRegister__Private(void)
 {
-  if( ! TIFFImageIOFactoryHasBeenRegistered )
+  if( !TIFFImageIOFactoryHasBeenRegistered )
     {
     TIFFImageIOFactoryHasBeenRegistered = true;
     TIFFImageIOFactory::RegisterOneFactory();

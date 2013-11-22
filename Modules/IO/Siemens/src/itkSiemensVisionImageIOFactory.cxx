@@ -21,7 +21,8 @@
 
 namespace itk
 {
-void SiemensVisionImageIOFactory::PrintSelf(std::ostream &, Indent) const
+void
+SiemensVisionImageIOFactory::PrintSelf(std::ostream &, Indent) const
 {}
 
 SiemensVisionImageIOFactory::SiemensVisionImageIOFactory()
@@ -53,9 +54,10 @@ SiemensVisionImageIOFactory::GetDescription() const
 
 static bool SiemensVisionImageIOFactoryHasBeenRegistered;
 
-void ITKIOSiemens_EXPORT SiemensVisionImageIOFactoryRegister__Private(void)
+void ITKIOSiemens_EXPORT
+SiemensVisionImageIOFactoryRegister__Private(void)
 {
-  if( ! SiemensVisionImageIOFactoryHasBeenRegistered )
+  if( !SiemensVisionImageIOFactoryHasBeenRegistered )
     {
     SiemensVisionImageIOFactoryHasBeenRegistered = true;
     SiemensVisionImageIOFactory::RegisterOneFactory();

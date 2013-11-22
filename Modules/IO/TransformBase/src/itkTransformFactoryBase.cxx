@@ -45,7 +45,7 @@
 
 namespace itk
 {
-TransformFactoryBase *TransformFactoryBase:: m_Factory = 0;
+TransformFactoryBase *TransformFactoryBase::m_Factory = 0;
 
 namespace TransformFactoryBasePrivate
 {
@@ -58,7 +58,8 @@ TransformFactoryBase::TransformFactoryBase()
 TransformFactoryBase::~TransformFactoryBase()
 {}
 
-void TransformFactoryBase::RegisterDefaultTransforms()
+void
+TransformFactoryBase::RegisterDefaultTransforms()
 {
   //
   // make sure that the the factory instance has
@@ -253,4 +254,5 @@ TransformFactoryBase::GetDescription() const
 {
   return "Transform FactoryBase";
 }
+
 } // end namespace itk

@@ -66,7 +66,7 @@ namespace itk
  *
  */
 
-class ITKIOMesh_EXPORT MeshIOBase:public LightProcessObject
+class ITKIOMesh_EXPORT MeshIOBase : public LightProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -149,10 +149,11 @@ public:
   template< typename T >
   struct MapComponentType {
     static const IOComponentType CType = UNKNOWNCOMPONENTTYPE;
-  };
+    };
 
   template< typename T >
-  void SetPixelType(const T & itkNotUsed(dummy), bool UsePointPixel = true)
+  void
+  SetPixelType(const T & itkNotUsed(dummy), bool UsePointPixel = true)
   {
     if ( UsePointPixel )
       {
@@ -169,7 +170,8 @@ public:
   }
 
   template< typename T >
-  void SetPixelType(const RGBPixel< T > & itkNotUsed(dummy), bool UsePointPixel = true)
+  void
+  SetPixelType(const RGBPixel< T > & itkNotUsed(dummy), bool UsePointPixel = true)
   {
     if ( UsePointPixel )
       {
@@ -186,7 +188,8 @@ public:
   }
 
   template< typename T >
-  void SetPixelType(const RGBAPixel< T > & itkNotUsed(dummy), bool UsePointPixel = true)
+  void
+  SetPixelType(const RGBAPixel< T > & itkNotUsed(dummy), bool UsePointPixel = true)
   {
     if ( UsePointPixel )
       {
@@ -203,7 +206,8 @@ public:
   }
 
   template< typename T, unsigned int VLength >
-  void SetPixelType(const Vector< T, VLength > & itkNotUsed(dummy), bool UsePointPixel = true)
+  void
+  SetPixelType(const Vector< T, VLength > & itkNotUsed(dummy), bool UsePointPixel = true)
   {
     if ( UsePointPixel )
       {
@@ -220,7 +224,8 @@ public:
   }
 
   template< typename T, unsigned int VLength >
-  void SetPixelType(const CovariantVector< T, VLength > & itkNotUsed(dummy), bool UsePointPixel = true)
+  void
+  SetPixelType(const CovariantVector< T, VLength > & itkNotUsed(dummy), bool UsePointPixel = true)
   {
     if ( UsePointPixel )
       {
@@ -237,7 +242,8 @@ public:
   }
 
   template< typename T, unsigned int VLength >
-  void SetPixelType(const FixedArray< T, VLength > & itkNotUsed(dummy), bool UsePointPixel = true)
+  void
+  SetPixelType(const FixedArray< T, VLength > & itkNotUsed(dummy), bool UsePointPixel = true)
   {
     if ( UsePointPixel )
       {
@@ -254,7 +260,8 @@ public:
   }
 
   template< typename T, unsigned int VLength >
-  void SetPixelType(const SymmetricSecondRankTensor< T, VLength > itkNotUsed(dummy), bool UsePointPixel = true)
+  void
+  SetPixelType(const SymmetricSecondRankTensor< T, VLength > itkNotUsed(dummy), bool UsePointPixel = true)
   {
     if ( UsePointPixel )
       {
@@ -271,7 +278,8 @@ public:
   }
 
   template< typename T >
-  void SetPixelType(const DiffusionTensor3D< T > & itkNotUsed(dummy), bool UsePointPixel = true)
+  void
+  SetPixelType(const DiffusionTensor3D< T > & itkNotUsed(dummy), bool UsePointPixel = true)
   {
     if ( UsePointPixel )
       {
@@ -288,7 +296,8 @@ public:
   }
 
   template< typename T, unsigned int NR, unsigned int NC >
-  void SetPixelType(const Matrix< T, NR, NC > & itkNotUsed(dummy), bool UsePointPixel = true)
+  void
+  SetPixelType(const Matrix< T, NR, NC > & itkNotUsed(dummy), bool UsePointPixel = true)
   {
     if ( UsePointPixel )
       {
@@ -305,7 +314,8 @@ public:
   }
 
   template< typename T >
-  void SetPixelType(const std::complex< T > & itkNotUsed(dummy), bool UsePointPixel = true)
+  void
+  SetPixelType(const std::complex< T > & itkNotUsed(dummy), bool UsePointPixel = true)
   {
     if ( UsePointPixel )
       {
@@ -322,7 +332,8 @@ public:
   }
 
   template< typename T >
-  void SetPixelType(const Array< T > & array, bool UsePointPixel = true)
+  void
+  SetPixelType(const Array< T > & array, bool UsePointPixel = true)
   {
     if ( UsePointPixel )
       {
@@ -339,7 +350,8 @@ public:
   }
 
   template< typename T >
-  void SetPixelType(const VariableLengthVector< T > & vector, bool UsePointPixel = true)
+  void
+  SetPixelType(const VariableLengthVector< T > & vector, bool UsePointPixel = true)
   {
     if ( UsePointPixel )
       {
@@ -356,7 +368,8 @@ public:
   }
 
   template< typename T >
-  void SetPixelType(const VariableSizeMatrix< T > & matrix, bool UsePointPixel = true)
+  void
+  SetPixelType(const VariableSizeMatrix< T > & matrix, bool UsePointPixel = true)
   {
     if ( UsePointPixel )
       {
@@ -416,12 +429,14 @@ public:
   itkSetEnumMacro(FileType, FileType);
   itkGetEnumMacro(FileType, FileType);
 
-  void SetFileTypeToASCII()
+  void
+  SetFileTypeToASCII()
   {
     this->SetFileType(ASCII);
   }
 
-  void SetFileTypeToBinary()
+  void
+  SetFileTypeToBinary()
   {
     this->SetFileType(BINARY);
   }
@@ -440,12 +455,14 @@ public:
   itkSetEnumMacro(ByteOrder, ByteOrder);
   itkGetEnumMacro(ByteOrder, ByteOrder);
 
-  void SetByteOrderToBigEndian()
+  void
+  SetByteOrderToBigEndian()
   {
     this->SetByteOrder(BigEndian);
   }
 
-  void SetByteOrderToLittleEndian()
+  void
+  SetByteOrderToLittleEndian()
   {
     this->SetByteOrder(LittleEndian);
   }
@@ -513,7 +530,8 @@ public:
 
 protected:
   MeshIOBase();
-  virtual ~MeshIOBase(){}
+  virtual
+  ~MeshIOBase(){}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -525,7 +543,8 @@ protected:
 
   /** Read data from input file stream to buffer with ascii style */
   template< typename T >
-  void ReadBufferAsAscii(T *buffer, std::ifstream & inputFile, SizeValueType numberOfComponents)
+  void
+  ReadBufferAsAscii(T *buffer, std::ifstream & inputFile, SizeValueType numberOfComponents)
   {
     for ( SizeValueType i = 0; i < numberOfComponents; i++ )
       {
@@ -535,7 +554,8 @@ protected:
 
   /** Read data from input file to buffer with binary style */
   template< typename T >
-  void ReadBufferAsBinary(T *buffer, std::ifstream & inputFile, SizeValueType numberOfComponents)
+  void
+  ReadBufferAsBinary(T *buffer, std::ifstream & inputFile, SizeValueType numberOfComponents)
   {
     inputFile.read( reinterpret_cast< char * >( buffer ), numberOfComponents * sizeof( T ) );
 
@@ -557,7 +577,9 @@ protected:
 
   /** Write buffer to output file stream with ascii style */
   template< typename T >
-  void WriteBufferAsAscii(T *buffer, std::ofstream & outputFile, SizeValueType numberOfLines, SizeValueType numberOfComponents)
+  void
+  WriteBufferAsAscii(T *buffer, std::ofstream & outputFile, SizeValueType numberOfLines,
+                     SizeValueType numberOfComponents)
   {
     NumberToString<T> convert;
     for ( SizeValueType ii = 0; ii < numberOfLines; ii++ )
@@ -572,7 +594,8 @@ protected:
 
   /** Write buffer to output file stream with binary style */
   template< typename TOutput, typename TInput >
-  void WriteBufferAsBinary(TInput *buffer, std::ofstream & outputFile, SizeValueType numberOfComponents)
+  void
+  WriteBufferAsBinary(TInput *buffer, std::ofstream & outputFile, SizeValueType numberOfComponents)
   {
     if ( typeid( TInput ) == typeid( TOutput ) )
       {
@@ -613,7 +636,8 @@ protected:
     write all kind of cells as it is stored in cells container. It is used when
     cells container have only one kind of cells */
   template< typename TInput, typename TOutput >
-  void ReadCellsBuffer(TInput *input, TOutput *output)
+  void
+  ReadCellsBuffer(TInput *input, TOutput *output)
   {
     if ( input && output )
       {
@@ -635,7 +659,8 @@ protected:
     write specified type of cells(used when input cells container composes
     multiple type of cells and only want to write a specified cell type */
   template< typename TInput, typename TOutput >
-  void ReadCellsBuffer(TInput *input, TOutput *output, MeshIOBase::CellGeometryType type)
+  void
+  ReadCellsBuffer(TInput *input, TOutput *output, MeshIOBase::CellGeometryType type)
   {
     if ( input && output )
       {
@@ -665,7 +690,9 @@ protected:
   /** Write cells to a data buffer, used when readding mesh, used for cellType
     with constant number of points */
   template< typename TInput, typename TOutput >
-  void WriteCellsBuffer(TInput *input, TOutput *output, CellGeometryType cellType, unsigned int numberOfPoints, SizeValueType numberOfCells)
+  void
+  WriteCellsBuffer(TInput *input, TOutput *output, CellGeometryType cellType, unsigned int numberOfPoints,
+                   SizeValueType numberOfCells)
   {
     if ( input && output )
       {
@@ -686,7 +713,8 @@ protected:
   /** Write cells to a data buffer, used when readding mesh, used for cellType
     with non-constant number of points */
   template< typename TInput, typename TOutput >
-  void WriteCellsBuffer(TInput *input, TOutput *output, CellGeometryType cellType, SizeValueType numberOfCells)
+  void
+  WriteCellsBuffer(TInput *input, TOutput *output, CellGeometryType cellType, SizeValueType numberOfCells)
   {
     if ( input && output )
       {
@@ -759,10 +787,10 @@ private:
 };
 #define MESHIOBASE_TYPEMAP(type, ctype)            \
   template< >                                      \
-  struct MeshIOBase:: MapComponentType< type >     \
-  {                                                \
+  struct MeshIOBase::MapComponentType< type >     \
+    {                                                \
     static const IOComponentType CType = ctype;    \
-  }
+    }
 
 MESHIOBASE_TYPEMAP(unsigned char, UCHAR);
 MESHIOBASE_TYPEMAP(char, CHAR);

@@ -26,7 +26,8 @@
 #include "itkShrinkImageFilter.h"
 #include "itkBinaryMask3DMeshSource.h"
 
-int itkDeformableTest(int , char *[])
+int
+itkDeformableTest(int , char *[])
 {
   const itk::Size<3u>::SizeValueType WIDTH = 32;
   const itk::Size<3u>::SizeValueType HEIGHT = 32;
@@ -36,24 +37,24 @@ int itkDeformableTest(int , char *[])
   const unsigned int myDimension = 3;
 
   // Declare the types of the images
-  typedef itk::Image<double, myDimension>           myImageType;
+  typedef itk::Image<double, myDimension> myImageType;
 
   // Declare the types of the output images
-  typedef itk::Image<unsigned short, myDimension>   binaryImageType;
+  typedef itk::Image<unsigned short, myDimension> binaryImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>       myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>        mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
   typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Declare the type of the Mesh
-  typedef itk::Mesh<double>   DMesh;
+  typedef itk::Mesh<double> DMesh;
 
-  typedef DMesh::PointType   OPointType;
+  typedef DMesh::PointType OPointType;
 
   // Declare the type of the gradient image
   typedef itk::CovariantVector<double, myDimension> myGradientType;
@@ -66,25 +67,25 @@ int itkDeformableTest(int , char *[])
   typedef itk::BinaryMask3DMeshSource<binaryImageType,DMesh>  myMeshSource;
   typedef itk::LaplacianImageFilter<myImageType, myImageType> myLaplacianFilterType;
   typedef itk::GradientVectorFlowImageFilter<myGradientImageType, myGradientImageType>
-                                              myGVFFilterType;
+    myGVFFilterType;
 
   typedef itk::GradientImageFilter<myImageType, double, double>
-                                              myGFilterType;
+    myGFilterType;
 
   typedef itk::GradientToMagnitudeImageFilter<myGradientImageType, myImageType>
-                                              myGToMFilterType;
+    myGToMFilterType;
 
-  typedef itk::DeformableMesh3DFilter<DMesh, DMesh>  DFilter;
+  typedef itk::DeformableMesh3DFilter<DMesh, DMesh> DFilter;
 
-  binaryImageType::Pointer       biimg=binaryImageType::New();
-  myGradientImageType::Pointer   gdimg=myGradientImageType::New();
+  binaryImageType::Pointer     biimg=binaryImageType::New();
+  myGradientImageType::Pointer gdimg=myGradientImageType::New();
 
   typedef itk::ImageRegionIteratorWithIndex<myImageType>         myIteratorType;
   typedef itk::ImageRegionIteratorWithIndex<myGradientImageType> myGradientIteratorType;
 
-  binaryImageType::SizeType      bisize={{WIDTH,HEIGHT,DEPTH}};
-  binaryImageType::IndexType     biindex;
-  binaryImageType::RegionType    biregion;
+  binaryImageType::SizeType   bisize={{WIDTH,HEIGHT,DEPTH}};
+  binaryImageType::IndexType  biindex;
+  binaryImageType::RegionType biregion;
   biindex.Fill(0);
   biregion.SetSize(bisize);
   biregion.SetIndex(biindex);
@@ -109,7 +110,7 @@ int itkDeformableTest(int , char *[])
   // Create the image
   myImageType::Pointer inputImage  = myImageType::New();
 
-  mySizeType size={{WIDTH,HEIGHT,DEPTH}};
+  mySizeType  size={{WIDTH,HEIGHT,DEPTH}};
   myIndexType start;
   start.Fill(0);
 
@@ -130,14 +131,13 @@ int itkDeformableTest(int , char *[])
 
   /////////////////////////////////////////////////////////////////////////
 
-
   while( !it.IsAtEnd() )
-  {
+    {
     it.Set( 0.0 );
     bit.Set( 0 );
     ++it;
     ++bit;
-  }
+    }
 
   size[0] = 16;
   size[1] = 16;
@@ -152,18 +152,17 @@ int itkDeformableTest(int , char *[])
   region.SetIndex( start );
   biregion.SetSize( size );
   biregion.SetIndex( start );
-  itk::ImageRegionIteratorWithIndex <myImageType> itb( inputImage, region );
+  itk::ImageRegionIteratorWithIndex <myImageType>     itb( inputImage, region );
   itk::ImageRegionIteratorWithIndex <binaryImageType> bitb( biimg, biregion );
 
   // Initialize the content the internal region
   while( !itb.IsAtEnd() )
-  {
+    {
     itb.Set( 100.0 );
     bitb.Set ( 255 );
     ++itb;
     ++bitb;
-  }
-
+    }
 
   //////////////////////////////////////////////////////////////////////////
 
@@ -180,14 +179,13 @@ int itkDeformableTest(int , char *[])
   drequestedRegion = dshrink->GetOutput()->GetRequestedRegion();
 
   typedef itk::GradientRecursiveGaussianImageFilter<
-                                            myImageType,
-                                            myGradientImageType
-                                            >  myFilterType;
-
+      myImageType,
+      myGradientImageType
+      >  myFilterType;
 
   // Create a  Filter
-  myFilterType::Pointer grfilter = myFilterType::New();
-  myGFilterType::Pointer gfilter = myGFilterType::New();
+  myFilterType::Pointer     grfilter = myFilterType::New();
+  myGFilterType::Pointer    gfilter = myGFilterType::New();
   myGToMFilterType::Pointer gtomfilter = myGToMFilterType::New();
 
   // Connect the input images
@@ -197,15 +195,15 @@ int itkDeformableTest(int , char *[])
   grfilter->SetSigma( 1.0 );
 
   myLaplacianFilterType::Pointer m_LFilter = myLaplacianFilterType::New();
-  myGVFFilterType::Pointer m_GVFFilter = myGVFFilterType::New();
+  myGVFFilterType::Pointer       m_GVFFilter = myGVFFilterType::New();
 
-  m_GVFFilter->SetInput(gfilter->GetOutput());
+  m_GVFFilter->SetInput(gfilter->GetOutput() );
   m_GVFFilter->SetLaplacianFilter(m_LFilter);
   m_GVFFilter->SetNoiseLevel(500);
 
-  gtomfilter->SetInput(grfilter->GetOutput());
+  gtomfilter->SetInput(grfilter->GetOutput() );
 
-  gfilter->SetInput(gtomfilter->GetOutput());
+  gfilter->SetInput(gtomfilter->GetOutput() );
   gfilter->Update();
 
   std::cout << "The gradient map created!" << std::endl;
@@ -233,9 +231,9 @@ int itkDeformableTest(int , char *[])
   myMeshSource::Pointer m_bmmeshsource = myMeshSource::New();
 
   DFilter::Pointer m_dfilter = DFilter::New();
-  m_dfilter->SetInput(m_bmmeshsource->GetOutput());
+  m_dfilter->SetInput(m_bmmeshsource->GetOutput() );
 //  m_dfilter->SetGradient(m_GVFFilter->GetOutput());
-  m_dfilter->SetGradient(gfilter->GetOutput());
+  m_dfilter->SetGradient(gfilter->GetOutput() );
 
   m_bmmeshsource->SetInput( shrink->GetOutput() );
   m_bmmeshsource->SetObjectValue( 255 );

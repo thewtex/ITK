@@ -63,7 +63,7 @@ namespace itk
 
 template< typename TInputImage, typename TMaskImage, typename TOutputImage, typename TKernel =
             FlatStructuringElement< TInputImage::ImageDimension > >
-class MaskedRankImageFilter:
+class MaskedRankImageFilter :
   public MaskedMovingHistogramImageFilter< TInputImage, TMaskImage, TOutputImage, TKernel,
                                            Function::RankHistogram< typename TInputImage::PixelType > >
 {
@@ -95,7 +95,7 @@ public:
   typedef typename TOutputImage::PixelType           OutputPixelType;
   typedef typename TInputImage::PixelType            InputPixelType;
 
-  typedef typename Superclass::HistogramType         HistogramType;
+  typedef typename Superclass::HistogramType HistogramType;
 
   /** Image related typedefs. */
   itkStaticConstMacro(ImageDimension, unsigned int,
@@ -113,7 +113,8 @@ public:
   itkSetMacro(Rank, float)
   itkGetConstMacro(Rank, float)
 
-  bool GetUseVectorBasedAlgorithm()
+  bool
+  GetUseVectorBasedAlgorithm()
   {
     return HistogramType::UseVectorBasedAlgorithm();
   }

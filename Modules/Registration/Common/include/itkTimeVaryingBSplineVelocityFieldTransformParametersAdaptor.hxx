@@ -50,8 +50,7 @@ TimeVaryingBSplineVelocityFieldTransformParametersAdaptor<TTransform>
 template<typename TTransform>
 TimeVaryingBSplineVelocityFieldTransformParametersAdaptor<TTransform>
 ::~TimeVaryingBSplineVelocityFieldTransformParametersAdaptor()
-{
-}
+{}
 
 template<typename TTransform>
 void
@@ -150,7 +149,8 @@ TimeVaryingBSplineVelocityFieldTransformParametersAdaptor<TTransform>
   OriginType origin;
   for( SizeValueType i = 0; i < TotalDimension; i++ )
     {
-    RealType domainPhysicalDimensions = ( this->m_RequiredTransformDomainSize[i] - 1.0 ) * this->m_RequiredTransformDomainSpacing[i];
+    RealType domainPhysicalDimensions =
+      ( this->m_RequiredTransformDomainSize[i] - 1.0 ) * this->m_RequiredTransformDomainSpacing[i];
 
     ParametersValueType gridSpacing = domainPhysicalDimensions /
       static_cast<ParametersValueType>( this->m_RequiredTransformDomainMeshSize[i] );
@@ -160,7 +160,7 @@ TimeVaryingBSplineVelocityFieldTransformParametersAdaptor<TTransform>
   for( SizeValueType i = 0; i < TotalDimension; i++ )
     {
     this->m_RequiredFixedParameters[TotalDimension + i] = static_cast<ParametersValueType>(
-      origin[i] + this->m_RequiredTransformDomainOrigin[i] );
+        origin[i] + this->m_RequiredTransformDomainOrigin[i] );
     }
 
   // Set the domain sampled size parameters
@@ -218,7 +218,8 @@ TimeVaryingBSplineVelocityFieldTransformParametersAdaptor<TTransform>
     {
     RealType domainPhysicalDimensions = static_cast<RealType>( this->m_RequiredTransformDomainSize[i] - 1.0 ) *
       this->m_RequiredTransformDomainSpacing[i];
-    RealType gridSpacing = domainPhysicalDimensions / static_cast<RealType>( this->m_RequiredTransformDomainMeshSize[i] );
+    RealType gridSpacing = domainPhysicalDimensions /
+      static_cast<RealType>( this->m_RequiredTransformDomainMeshSize[i] );
     origin[i] = 0.5 * gridSpacing * ( this->m_SplineOrder - 1 );
     }
   origin = this->m_RequiredTransformDomainDirection * origin;
@@ -257,9 +258,9 @@ TimeVaryingBSplineVelocityFieldTransformParametersAdaptor<TTransform>
     return;
     }
 
-  SizeType requiredLatticeSize = this->GetRequiredControlPointLatticeSize();
-  OriginType requiredLatticeOrigin = this->GetRequiredControlPointLatticeOrigin();
-  SpacingType requiredLatticeSpacing = this->GetRequiredControlPointLatticeSpacing();
+  SizeType      requiredLatticeSize = this->GetRequiredControlPointLatticeSize();
+  OriginType    requiredLatticeOrigin = this->GetRequiredControlPointLatticeOrigin();
+  SpacingType   requiredLatticeSpacing = this->GetRequiredControlPointLatticeSpacing();
   DirectionType requiredLatticeDirection = this->GetRequiredControlPointLatticeDirection();
 
   const RegionType & latticeRegion =
@@ -269,13 +270,16 @@ TimeVaryingBSplineVelocityFieldTransformParametersAdaptor<TTransform>
   typedef Image<RealType, TotalDimension> ComponentImageType;
 
   //  Resample the coefficient images
-  typedef BSplineResampleImageFunction<ComponentImageType, ParametersValueType> CoefficientUpsampleFunctionType;
+  typedef BSplineResampleImageFunction<ComponentImageType,
+                                       ParametersValueType>
+                                                                                           CoefficientUpsampleFunctionType;
   typedef ResampleImageFilter<ComponentImageType, ComponentImageType, ParametersValueType> UpsampleFilterType;
-  typedef BSplineDecompositionImageFilter<ComponentImageType, ComponentImageType> DecompositionFilterType;
+  typedef BSplineDecompositionImageFilter<ComponentImageType, ComponentImageType>          DecompositionFilterType;
 
   VectorType zeroVector( 0.0 );
 
-  TimeVaryingVelocityFieldControlPointLatticePointer requiredLattice = TimeVaryingVelocityFieldControlPointLatticeType::New();
+  TimeVaryingVelocityFieldControlPointLatticePointer requiredLattice =
+    TimeVaryingVelocityFieldControlPointLatticeType::New();
   requiredLattice->SetRegions( requiredLatticeSize );
   requiredLattice->SetOrigin( requiredLatticeOrigin );
   requiredLattice->SetSpacing( requiredLatticeSpacing );
@@ -286,7 +290,8 @@ TimeVaryingBSplineVelocityFieldTransformParametersAdaptor<TTransform>
   // Loop over dimension: each direction is upsampled separately.
   for( SizeValueType j = 0; j < TotalDimension-1; j++ )
     {
-    typedef VectorIndexSelectionCastImageFilter<TimeVaryingVelocityFieldControlPointLatticeType, ComponentImageType> SelectionFilterType;
+    typedef VectorIndexSelectionCastImageFilter<TimeVaryingVelocityFieldControlPointLatticeType,
+                                                ComponentImageType> SelectionFilterType;
     typename SelectionFilterType::Pointer selector = SelectionFilterType::New();
     selector->SetInput( this->m_Transform->GetTimeVaryingVelocityFieldControlPointLattice() );
     selector->SetIndex( j );
@@ -318,8 +323,10 @@ TimeVaryingBSplineVelocityFieldTransformParametersAdaptor<TTransform>
     decompositionFilter->SetInput( upsampler->GetOutput() );
     decompositionFilter->Update();
 
-    ImageRegionConstIterator<ComponentImageType> ItD( decompositionFilter->GetOutput(), decompositionFilter->GetOutput()->GetLargestPossibleRegion() );
-    ImageRegionIterator<TimeVaryingVelocityFieldControlPointLatticeType> ItL( requiredLattice, requiredLattice->GetLargestPossibleRegion() );
+    ImageRegionConstIterator<ComponentImageType> ItD(
+      decompositionFilter->GetOutput(), decompositionFilter->GetOutput()->GetLargestPossibleRegion() );
+    ImageRegionIterator<TimeVaryingVelocityFieldControlPointLatticeType> ItL( requiredLattice,
+                                                                              requiredLattice->GetLargestPossibleRegion() );
 
     for( ItD.GoToBegin(), ItL.GoToBegin(); !ItD.IsAtEnd(); ++ItD, ++ItL )
       {

@@ -21,7 +21,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int itkPolylineMask2DImageFilterTest(int argc, char * argv [] )
+int
+itkPolylineMask2DImageFilterTest(int argc, char * argv [] )
 {
 
   if( argc < 3 )
@@ -36,12 +37,12 @@ int itkPolylineMask2DImageFilterTest(int argc, char * argv [] )
   const unsigned int Dimension = 2;
   typedef unsigned char PixelType;
 
-  typedef itk::Image<PixelType, Dimension>        InputImageType;
-  typedef itk::Image<PixelType, Dimension>        OutputImageType;
-  typedef itk::PolyLineParametricPath<Dimension>  InputPolylineType;
+  typedef itk::Image<PixelType, Dimension>       InputImageType;
+  typedef itk::Image<PixelType, Dimension>       OutputImageType;
+  typedef itk::PolyLineParametricPath<Dimension> InputPolylineType;
 
   // Read input image
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
 
   std::cout << "Input filename = " << argv[1] << std::endl;
@@ -90,12 +91,10 @@ int itkPolylineMask2DImageFilterTest(int argc, char * argv [] )
   v3[1] =  64.0;
   inputPolyline->AddVertex(v3);
 
-
   // Declare the type for the Mask image filter
   typedef itk::PolylineMask2DImageFilter<
-                           InputImageType, InputPolylineType,
-                           OutputImageType  >     InputFilterType;
-
+      InputImageType, InputPolylineType,
+      OutputImageType  >     InputFilterType;
 
   // Create a mask  Filter
   InputFilterType::Pointer filter = InputFilterType::New();

@@ -44,7 +44,7 @@ ExpandImageFilter< TInputImage, TOutputImage >
     DefaultInterpolatorType::New();
 
   m_Interpolator = static_cast< InterpolatorType * >(
-    interp.GetPointer() );
+      interp.GetPointer() );
 
 //TEST_RMV20100728   // Set default padding value to zero
 //TEST_RMV20100728   m_EdgePaddingValue = NumericTraits<OutputPixelType>::Zero;
@@ -61,6 +61,7 @@ ExpandImageFilter< TInputImage, TOutputImage >
   Superclass::PrintSelf(os, indent);
 
   unsigned int j;
+
   os << indent << "ExpandFactors: [";
   for ( j = 0; j < ImageDimension - 1; j++ )
     {
@@ -222,11 +223,11 @@ ExpandImageFilter< TInputImage, TOutputImage >
     {
     inputRequestedRegionSize[i] =
       (SizeValueType)vcl_ceil( (double)outputRequestedRegionSize[i]
-                      / (double)m_ExpandFactors[i] ) + 1;
+                               / (double)m_ExpandFactors[i] ) + 1;
 
     inputRequestedRegionStartIndex[i] =
       (SizeValueType)vcl_floor( (double)outputRequestedRegionStartIndex[i]
-                       / (double)m_ExpandFactors[i] );
+                                / (double)m_ExpandFactors[i] );
     }
 
   typename TInputImage::RegionType inputRequestedRegion;
@@ -302,6 +303,7 @@ ExpandImageFilter< TInputImage, TOutputImage >
 
   outputPtr->SetLargestPossibleRegion(outputLargestPossibleRegion);
 }
+
 } // end namespace itk
 
 #endif

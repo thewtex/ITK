@@ -41,7 +41,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TInput, typename TOutput >
-class FunctionBase:public Object
+class FunctionBase : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -69,6 +69,7 @@ protected:
 private:
   FunctionBase(const Self &);   //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

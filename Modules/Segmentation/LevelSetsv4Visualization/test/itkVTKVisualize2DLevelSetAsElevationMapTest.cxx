@@ -29,7 +29,8 @@
 #include "vtkSmartPointer.h"
 
 template< typename TImage >
-void GenerateImage( typename TImage::Pointer ioImage )
+void
+GenerateImage( typename TImage::Pointer ioImage )
 {
   typename TImage::IndexType  index;
   index.Fill( 0 );
@@ -65,7 +66,8 @@ void GenerateImage( typename TImage::Pointer ioImage )
 
 }
 
-int itkVTKVisualize2DLevelSetAsElevationMapTest( int , char* [] )
+int
+itkVTKVisualize2DLevelSetAsElevationMapTest( int , char* [] )
 {
   typedef unsigned char PixelType;
   const unsigned int Dimension = 2;
@@ -90,9 +92,9 @@ int itkVTKVisualize2DLevelSetAsElevationMapTest( int , char* [] )
   while( !it.IsAtEnd() )
     {
     LevelSetImageType::IndexType idx = it.GetIndex();
-    LevelSetOutputType value =
-        static_cast< LevelSetOutputType >( ( idx[0] - 25 ) * ( idx[0] - 25 ) +
-                                           ( idx[1] - 25 ) * ( idx[1] - 25 ) );
+    LevelSetOutputType           value =
+      static_cast< LevelSetOutputType >( ( idx[0] - 25 ) * ( idx[0] - 25 ) +
+                                         ( idx[1] - 25 ) * ( idx[1] - 25 ) );
     value = vcl_sqrt( value ) - 20;
     it.Set( value );
     ++it;
@@ -109,8 +111,8 @@ int itkVTKVisualize2DLevelSetAsElevationMapTest( int , char* [] )
   viewer->SetHeightScaling( 0.1 );
   viewer->Update();
 
-  vtkPolyData* levelsetSurface = viewer->GetElevationMapMesh();
-  vtkCellArray*          cells = levelsetSurface->GetPolys();
+  vtkPolyData*  levelsetSurface = viewer->GetElevationMapMesh();
+  vtkCellArray* cells = levelsetSurface->GetPolys();
 
   vtkSmartPointer<vtkMassProperties> massProperty = vtkSmartPointer<vtkMassProperties>::New();
 #if VTK_MAJOR_VERSION <= 5

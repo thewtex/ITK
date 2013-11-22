@@ -46,8 +46,9 @@ public:
    * \param[in] iV
    * \return \f$ \boldsymbol{iU} \cdot \boldsymbol{iV} \f$
    */
-  VectorType operator()(const VectorType & iU,
-                        const VectorType & iV) const
+  VectorType
+  operator()(const VectorType & iU,
+             const VectorType & iV) const
   {
     VectorType oCross;
 
@@ -72,6 +73,7 @@ public:
 
     return oCross;
   }
+
 };
 }
 

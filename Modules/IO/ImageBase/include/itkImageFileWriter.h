@@ -30,7 +30,7 @@ namespace itk
  * \class ImageFileWriterException
  * \ingroup ITKIOImageBase
  */
-class ITK_ABI_EXPORT ImageFileWriterException:public ExceptionObject
+class ITK_ABI_EXPORT ImageFileWriterException : public ExceptionObject
 {
 public:
   /** Run-time information. */
@@ -39,19 +39,20 @@ public:
   /** Constructor. */
   ImageFileWriterException(const char *file, unsigned int line,
                            const char *message = "Error in IO",
-                           const char *loc = "Unknown"):
+                           const char *loc = "Unknown") :
     ExceptionObject(file, line, message, loc)
   {}
 
   /** Constructor. */
   ImageFileWriterException(const std::string & file, unsigned int line,
                            const char *message = "Error in IO",
-                           const char *loc = "Unknown"):
+                           const char *loc = "Unknown") :
     ExceptionObject(file, line, message, loc)
   {}
 
   /** Has to have empty throw(). */
-  virtual ~ImageFileWriterException() throw( )
+  virtual
+  ~ImageFileWriterException() throw( )
   {}
 };
 
@@ -82,7 +83,7 @@ public:
  * \endwiki
  */
 template< typename TInputImage >
-class ITKIOImageBase_HIDDEN ImageFileWriter:public ProcessObject
+class ITKIOImageBase_HIDDEN ImageFileWriter : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -125,7 +126,8 @@ public:
    * correct choice and will allow a file to be created regardless of
    * the file extension. If the factory has set the ImageIO, the
    * extension must be supported by the specified ImageIO. */
-  void SetImageIO(ImageIOBase *io)
+  void
+  SetImageIO(ImageIOBase *io)
   {
     if ( this->m_ImageIO != io )
       {
@@ -134,6 +136,7 @@ public:
       }
     m_FactorySpecifiedImageIO = false;
   }
+
   itkGetModifiableObjectMacro(ImageIO, ImageIOBase);
 
   /** A special version of the Update() method for writers.  It
@@ -149,7 +152,8 @@ public:
    * is written. */
   void SetIORegion(const ImageIORegion & region);
 
-  const ImageIORegion & GetIORegion(void) const
+  const ImageIORegion &
+  GetIORegion(void) const
   {
     return m_PasteIORegion;
   }
@@ -161,7 +165,8 @@ public:
 
   /** Aliased to the Write() method to be consistent with the rest of the
    * pipeline. */
-  virtual void Update()
+  virtual void
+  Update()
   {
     this->Write();
   }
@@ -171,7 +176,8 @@ public:
    * Updates the pipeline, streaming it the NumberOfStreamDivisions times.
    * Existing PasteIORegion is reset.
    */
-  virtual void UpdateLargestPossibleRegion()
+  virtual void
+  UpdateLargestPossibleRegion()
   {
     m_PasteIORegion = ImageIORegion(TInputImage::ImageDimension);
     m_UserSpecifiedIORegion = false;

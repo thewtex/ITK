@@ -89,9 +89,9 @@ template< typename TOutputImage >
 const typename RandomImageSource< TOutputImage >::SizeValueType *
 RandomImageSource< TOutputImage >
 ::GetSize() const
-{
+  {
   return this->m_Size.GetSize();
-}
+  }
 
 template< typename TOutputImage >
 void
@@ -147,25 +147,25 @@ template< typename TOutputImage >
 const typename RandomImageSource< TOutputImage >::PointValueType *
 RandomImageSource< TOutputImage >
 ::GetOrigin() const
-{
+  {
   for ( unsigned int i = 0; i < TOutputImage::ImageDimension; i++ )
     {
     this->m_OriginArray[i] = this->m_Origin[i];
     }
   return this->m_OriginArray;
-}
+  }
 
 template< typename TOutputImage >
 const typename RandomImageSource< TOutputImage >::SpacingValueType *
 RandomImageSource< TOutputImage >
 ::GetSpacing() const
-{
+  {
   for ( unsigned int i = 0; i < TOutputImage::ImageDimension; i++ )
     {
     this->m_SpacingArray[i] = this->m_Spacing[i];
     }
   return this->m_SpacingArray;
-}
+  }
 
 /**
  *
@@ -176,6 +176,7 @@ RandomImageSource< TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Max: "
      << static_cast< typename NumericTraits< OutputImagePixelType >::PrintType >( m_Max )
      << std::endl;
@@ -269,6 +270,7 @@ RandomImageSource< TOutputImage >
     progress.CompletedPixel();
     }
 }
+
 } // end namespace itk
 
 #endif

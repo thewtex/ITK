@@ -33,7 +33,8 @@
 #include "itkImageFileWriter.h"
 #include "itkFilterWatcher.h"
 
-int itkBSplineDownsampleImageFilterTest( int argc, char * argv [] )
+int
+itkBSplineDownsampleImageFilterTest( int argc, char * argv [] )
 {
 
   if( argc < 4 )
@@ -44,10 +45,10 @@ int itkBSplineDownsampleImageFilterTest( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-  typedef unsigned char   PixelType;
-  const unsigned int      Dimension = 3;
+  typedef unsigned char PixelType;
+  const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType, Dimension >   ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
 
   typedef itk::BSplineDownsampleImageFilter< ImageType, ImageType > DownsamplerFilterType;
 

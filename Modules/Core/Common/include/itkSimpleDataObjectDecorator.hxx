@@ -82,6 +82,7 @@ SimpleDataObjectDecorator< T >
   os << indent << "Component  : " << typeid( this->m_Component ).name() << std::endl;
   os << indent << "Initialized: " << this->m_Initialized << std::endl;
 }
+
 } // end namespace itk
 
 #endif

@@ -20,10 +20,11 @@
 namespace
 {
 
-bool TestGaussianOperator( double variance,
-                           double error,
-                           unsigned int width,
-                           unsigned int order )
+bool
+TestGaussianOperator( double variance,
+                      double error,
+                      unsigned int width,
+                      unsigned int order )
 {
 
   typedef itk::GaussianDerivativeOperator< double, 1 > GaussianOp;
@@ -64,28 +65,29 @@ bool TestGaussianOperator( double variance,
     return true;
     }
 
-    std::cout << "---operator---" << std::endl;
-    GaussianOp::Iterator i = op.Begin();
-    i += op.Size()/2;
-    for(; i != op.End(); ++i )
-      {
-      std::cout << *i << std::endl;
-      }
-    std::cout << "---end--" << std::endl;
+  std::cout << "---operator---" << std::endl;
+  GaussianOp::Iterator i = op.Begin();
+  i += op.Size()/2;
+  for(; i != op.End(); ++i )
+    {
+    std::cout << *i << std::endl;
+    }
+  std::cout << "---end--" << std::endl;
 
-    return false;
-
-}
+  return false;
 
 }
 
-int itkGaussianDerivativeOperatorTest( int argc, char *argv[] )
+}
+
+int
+itkGaussianDerivativeOperatorTest( int argc, char *argv[] )
 {
 
   if (argc == 5 )
     {
-    double variance = atof(argv[1]);
-    double error = atof(argv[2]);
+    double       variance = atof(argv[1]);
+    double       error = atof(argv[2]);
     unsigned int width = atoi(argv[3]);
     unsigned int order = atoi(argv[4]);
 
@@ -97,7 +99,6 @@ int itkGaussianDerivativeOperatorTest( int argc, char *argv[] )
     std::cerr << "Usage: " << argv[0] << " [ variance error width order ]" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // Exercise code
 
@@ -111,7 +112,6 @@ int itkGaussianDerivativeOperatorTest( int argc, char *argv[] )
 
   // assignement
   op2 = op1;
-
 
   bool pass = true;
 

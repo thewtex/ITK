@@ -26,7 +26,8 @@
 #include "itkAndImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkValuedRegionalMinimaImageFilterTest(int argc, char * argv[])
+int
+itkValuedRegionalMinimaImageFilterTest(int argc, char * argv[])
 {
   const int dim = 2;
 
@@ -39,15 +40,15 @@ int itkValuedRegionalMinimaImageFilterTest(int argc, char * argv[])
     return EXIT_FAILURE;
     }
 
-  typedef unsigned char                 PixelType;
-  typedef itk::Image< PixelType, dim >  ImageType;
+  typedef unsigned char                PixelType;
+  typedef itk::Image< PixelType, dim > ImageType;
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[2] );
 
   typedef itk::ValuedRegionalMinimaImageFilter< ImageType, ImageType >
-                                                              FilterType;
+    FilterType;
   FilterType::Pointer filter = FilterType::New();
   filter->SetInput( reader->GetOutput() );
   filter->SetFullyConnected( atoi(argv[1]) );

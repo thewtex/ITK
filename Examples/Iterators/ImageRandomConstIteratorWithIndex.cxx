@@ -50,7 +50,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   // Verify the number of parameters on the command line.
   if ( argc < 3 )
@@ -60,22 +61,22 @@ int main( int argc, char *argv[] )
     std::cerr << argv[0]
               << " inputImageFile numberOfSamples"
               << std::endl;
-      return -1;
+    return -1;
     }
 
 // Software Guide : BeginCodeSnippet
   const unsigned int Dimension = 2;
 
-  typedef unsigned short                                      PixelType;
-  typedef itk::Image< PixelType, Dimension >                  ImageType;
+  typedef unsigned short                     PixelType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
   typedef itk::ImageRandomConstIteratorWithIndex<
-                                          ImageType > ConstIteratorType;
+      ImageType > ConstIteratorType;
 // Software Guide : EndCodeSnippet
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
 
   ImageType::ConstPointer inputImage;
-  ReaderType::Pointer reader = ReaderType::New();
+  ReaderType::Pointer     reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   try
     {
@@ -114,7 +115,7 @@ int main( int argc, char *argv[] )
 
 // Software Guide : BeginCodeSnippet
   float mean = 0.0f;
-  for ( inputIt.GoToBegin(); ! inputIt.IsAtEnd(); ++inputIt)
+  for ( inputIt.GoToBegin(); !inputIt.IsAtEnd(); ++inputIt)
     {
     mean += static_cast<float>( inputIt.Get() );
     }

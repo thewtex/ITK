@@ -54,6 +54,7 @@ SpatialObjectTreeContainer< TDimension >::SetRoot(const SpatialObjectPointer ele
     }
   return true;
 }
+
 } // namespace itk
 
 #endif

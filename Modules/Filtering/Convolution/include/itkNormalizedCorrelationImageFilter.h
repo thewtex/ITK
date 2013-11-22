@@ -48,14 +48,14 @@ namespace itk
  */
 template< typename TInputImage, typename TMaskImage, typename TOutputImage, typename TOperatorValueType =
             typename TOutputImage::PixelType >
-class NormalizedCorrelationImageFilter:
+class NormalizedCorrelationImageFilter :
   public NeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueType >
 {
 public:
   /** Standard "Self" & Superclass typedef. */
   typedef NormalizedCorrelationImageFilter Self;
   typedef NeighborhoodOperatorImageFilter<
-    TInputImage, TOutputImage, TOperatorValueType > Superclass;
+      TInputImage, TOutputImage, TOperatorValueType > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -114,7 +114,8 @@ public:
   /** Set the template used in the calculation of the normalized
    * correlation. The elements of the template must be set prior to
    * calling SetTemplate(). */
-  void SetTemplate(const OutputNeighborhoodType & t)
+  void
+  SetTemplate(const OutputNeighborhoodType & t)
   {
     this->SetOperator(t);
   }
@@ -135,7 +136,8 @@ public:
 
 protected:
   NormalizedCorrelationImageFilter() {}
-  virtual ~NormalizedCorrelationImageFilter() {}
+  virtual
+  ~NormalizedCorrelationImageFilter() {}
 
   /** NormalizedCorrelationImageFilter needs to request enough of an
    * input image to account for template size.  The input requested
@@ -160,12 +162,16 @@ protected:
                             ThreadIdType threadId);
 
   /** Standard PrintSelf method */
-  void PrintSelf(std::ostream & os, Indent indent) const
-  {  Superclass::PrintSelf(os, indent); }
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+  }
 
 private:
   NormalizedCorrelationImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                   //purposely not implemented
+
 };
 } // end namespace itk
 

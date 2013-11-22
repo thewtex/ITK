@@ -19,10 +19,10 @@
 #include "itkMeshFileReader.h"
 #include "itkMeshFileWriter.h"
 
-
 #include "itkCleanQuadEdgeMeshFilter.h"
 
-int itkCleanQuadEdgeMeshFilterTest( int argc, char* argv[] )
+int
+itkCleanQuadEdgeMeshFilterTest( int argc, char* argv[] )
 {
   // ** ERROR MESSAGE AND HELP ** //
   if( argc < 3 )
@@ -35,20 +35,20 @@ int itkCleanQuadEdgeMeshFilterTest( int argc, char* argv[] )
     }
 
   // ** TYPEDEF **
-  typedef double        Coord;
-  const unsigned int    Dimension = 3;
+  typedef double Coord;
+  const unsigned int Dimension = 3;
 
-  typedef itk::QuadEdgeMesh< Coord, Dimension >  MeshType;
-  typedef itk::MeshFileReader< MeshType >        ReaderType;
-  typedef itk::MeshFileWriter< MeshType >        WriterType;
+  typedef itk::QuadEdgeMesh< Coord, Dimension > MeshType;
+  typedef itk::MeshFileReader< MeshType >       ReaderType;
+  typedef itk::MeshFileWriter< MeshType >       WriterType;
 
   // ** READ THE FILE IN **
-  ReaderType::Pointer reader = ReaderType::New( );
+  ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
 
   try
     {
-    reader->Update( );
+    reader->Update();
     }
   catch( itk::ExceptionObject & excp )
     {
@@ -57,9 +57,9 @@ int itkCleanQuadEdgeMeshFilterTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  MeshType::Pointer mesh = reader->GetOutput( );
+  MeshType::Pointer mesh = reader->GetOutput();
 
-  Coord tol;
+  Coord             tol;
   std::stringstream ssout( argv[2] );
   ssout >>tol;
 
@@ -70,10 +70,10 @@ int itkCleanQuadEdgeMeshFilterTest( int argc, char* argv[] )
   filter->Update();
 
   // ** WRITE OUTPUT **
-  WriterType::Pointer writer = WriterType::New( );
-  writer->SetInput( filter->GetOutput( ) );
+  WriterType::Pointer writer = WriterType::New();
+  writer->SetInput( filter->GetOutput() );
   writer->SetFileName( argv[3] );
-  writer->Update( );
+  writer->Update();
 
   // ** PRINT **
   std::cout << filter;

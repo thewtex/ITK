@@ -35,7 +35,7 @@ namespace itk
  */
 
 template< unsigned int TDimension = 3 >
-class EllipseSpatialObject:
+class EllipseSpatialObject :
   public SpatialObject< TDimension >
 {
 public:
@@ -110,6 +110,7 @@ protected:
 
   /** Print the object informations in a stream. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end namespace itk
 

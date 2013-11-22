@@ -29,43 +29,45 @@ namespace itk
    *
    * \ingroup ITKIOMINC
    */
-  class MINCTransformIOFactory:public ObjectFactoryBase
+class MINCTransformIOFactory : public ObjectFactoryBase
+{
+public:
+  /** Standard class typedefs. */
+  typedef MINCTransformIOFactory     Self;
+  typedef ObjectFactoryBase          Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
+
+  /** Class methods used to interface with the registered factories. */
+  virtual const char * GetITKSourceVersion(void) const;
+
+  virtual const char * GetDescription(void) const;
+
+  /** Method for class instantiation. */
+  itkFactorylessNewMacro(Self);
+
+  /** Run-time type information (and related methods). */
+  itkTypeMacro(MINCTransformIOFactory, ObjectFactoryBase);
+
+  /** Register one factory of this type  */
+  static void
+  RegisterOneFactory(void)
   {
-  public:
-    /** Standard class typedefs. */
-    typedef MINCTransformIOFactory     Self;
-    typedef ObjectFactoryBase          Superclass;
-    typedef SmartPointer< Self >       Pointer;
-    typedef SmartPointer< const Self > ConstPointer;
+    MINCTransformIOFactory::Pointer metaFactory = MINCTransformIOFactory::New();
 
-    /** Class methods used to interface with the registered factories. */
-    virtual const char * GetITKSourceVersion(void) const;
+    ObjectFactoryBase::RegisterFactory(metaFactory);
+  }
 
-    virtual const char * GetDescription(void) const;
+protected:
+  MINCTransformIOFactory();
+  ~MINCTransformIOFactory();
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-    /** Method for class instantiation. */
-    itkFactorylessNewMacro(Self);
+private:
+  MINCTransformIOFactory(const Self &);  //purposely not implemented
+  void operator=(const Self &);          //purposely not implemented
 
-    /** Run-time type information (and related methods). */
-    itkTypeMacro(MINCTransformIOFactory, ObjectFactoryBase);
-
-    /** Register one factory of this type  */
-    static void RegisterOneFactory(void)
-    {
-      MINCTransformIOFactory::Pointer metaFactory = MINCTransformIOFactory::New();
-
-      ObjectFactoryBase::RegisterFactory(metaFactory);
-    }
-
-  protected:
-    MINCTransformIOFactory();
-    ~MINCTransformIOFactory();
-    virtual void PrintSelf(std::ostream & os, Indent indent) const;
-
-  private:
-    MINCTransformIOFactory(const Self &); //purposely not implemented
-    void operator=(const Self &);        //purposely not implemented
-  };
+};
 } // end namespace itk
 
 #endif //__itkMINCTransformIOFactory_h

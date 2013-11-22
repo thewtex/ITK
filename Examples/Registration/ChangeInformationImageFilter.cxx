@@ -50,7 +50,8 @@
 #include "itkChangeInformationImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 3 )
     {
@@ -68,15 +69,15 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   unsigned char  PixelType;
+  typedef   unsigned char PixelType;
 
   const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType,  Dimension >   ImageType;
+  typedef itk::Image< PixelType,  Dimension > ImageType;
   // Software Guide : EndCodeSnippet
 
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -96,7 +97,7 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ChangeInformationImageFilter< ImageType >  FilterType;
+  typedef itk::ChangeInformationImageFilter< ImageType > FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
@@ -151,8 +152,8 @@ int main( int argc, char * argv[] )
     {
     double additionalAngle = atof( argv[7] );
 
-    itk::Versor< itk::SpacePrecisionType >  rotation;
-    double angleInRadians = additionalAngle * vnl_math::pi / 180.0;
+    itk::Versor< itk::SpacePrecisionType > rotation;
+    double                                 angleInRadians = additionalAngle * vnl_math::pi / 180.0;
     rotation.SetRotationAroundZ( angleInRadians );
 
     ImageType::DirectionType newDirection = direction * rotation.GetMatrix();

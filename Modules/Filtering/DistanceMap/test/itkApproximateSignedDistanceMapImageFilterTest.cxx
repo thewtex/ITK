@@ -21,7 +21,7 @@
 
 #include "itkImageFileWriter.h"
 
-namespace{
+namespace {
 
 // simple signed distance function
 template <typename TPoint>
@@ -29,6 +29,7 @@ double
 SimpleSignedDistance( const TPoint & p )
 {
   TPoint center;
+
   center.Fill( 32 );
   double radius = 16;
 
@@ -43,7 +44,8 @@ SimpleSignedDistance( const TPoint & p )
 
 }
 
-int itkApproximateSignedDistanceMapImageFilterTest(int argc, char* argv[] )
+int
+itkApproximateSignedDistanceMapImageFilterTest(int argc, char* argv[] )
 {
   if(argc < 2)
     {
@@ -67,7 +69,7 @@ int itkApproximateSignedDistanceMapImageFilterTest(int argc, char* argv[] )
   const InputPixelType InsideValue = 100;
   const InputPixelType OutsideValue = 0;
 
-  InputImageType::Pointer image = InputImageType::New();
+  InputImageType::Pointer  image = InputImageType::New();
   InputImageType::SizeType size;
   size.Fill( 64 );
   InputImageType::RegionType region( size );
@@ -87,7 +89,6 @@ int itkApproximateSignedDistanceMapImageFilterTest(int argc, char* argv[] )
     ++iter;
     }
 
-
   // Set up  image filter
   typedef itk::ApproximateSignedDistanceMapImageFilter<InputImageType,OutputImageType> DistanceType;
   DistanceType::Pointer distance = DistanceType::New();
@@ -105,7 +106,6 @@ int itkApproximateSignedDistanceMapImageFilterTest(int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-
   try
     {
 
@@ -113,7 +113,7 @@ int itkApproximateSignedDistanceMapImageFilterTest(int argc, char* argv[] )
 
     typedef itk::RescaleIntensityImageFilter<OutputImageType, WriterImageType> RescaleType;
     RescaleType::Pointer rescale = RescaleType::New();
-    rescale->SetInput(distance->GetOutput());
+    rescale->SetInput(distance->GetOutput() );
     rescale->SetOutputMinimum(0);
     rescale->SetOutputMaximum(255);
 
@@ -125,15 +125,15 @@ int itkApproximateSignedDistanceMapImageFilterTest(int argc, char* argv[] )
     }
   catch (itk::ExceptionObject &err)
     {
-      (&err)->Print(std::cerr);
-      return EXIT_FAILURE;
+    (&err)->Print(std::cerr);
+    return EXIT_FAILURE;
     }
 
   OutputPixelType maxDeviation = 0;
 
   typedef itk::ImageRegionConstIteratorWithIndex<OutputImageType> OutputIterator;
   OutputIterator oiter( distance->GetOutput(),
-                       distance->GetOutput()->GetLargestPossibleRegion() );
+                        distance->GetOutput()->GetLargestPossibleRegion() );
   oiter.GoToBegin();
 
   while( !oiter.IsAtEnd() )

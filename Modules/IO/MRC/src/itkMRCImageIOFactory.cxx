@@ -60,7 +60,8 @@ MRCImageIOFactory::GetDescription(void) const
 
 static bool MRCImageIOFactoryHasBeenRegistered;
 
-void MRCImageIOFactoryRegister__Private(void)
+void ITKIOMRC_EXPORT
+MRCImageIOFactoryRegister__Private(void)
 {
   if( !MRCImageIOFactoryHasBeenRegistered )
     {

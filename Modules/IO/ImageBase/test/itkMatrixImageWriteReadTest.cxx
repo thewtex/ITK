@@ -20,8 +20,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
-int itkMatrixImageWriteReadTest( int ac, char* av[] )
+int
+itkMatrixImageWriteReadTest( int ac, char* av[] )
 {
   if(ac < 1)
     {
@@ -29,8 +29,8 @@ int itkMatrixImageWriteReadTest( int ac, char* av[] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::Matrix<float,3,3>                      MatrixPixelType;
-  typedef itk::Image<MatrixPixelType, 3>              MatrixImageType;
+  typedef itk::Matrix<float,3,3>         MatrixPixelType;
+  typedef itk::Image<MatrixPixelType, 3> MatrixImageType;
 
   MatrixImageType::Pointer matrixImage1 = MatrixImageType::New();
 
@@ -95,7 +95,6 @@ int itkMatrixImageWriteReadTest( int ac, char* av[] )
     return EXIT_FAILURE;
     }
 
-
   typedef itk::ImageFileReader<  MatrixImageType > MatrixReaderType;
 
   MatrixReaderType::Pointer matrixReader = MatrixReaderType::New();
@@ -145,7 +144,6 @@ int itkMatrixImageWriteReadTest( int ac, char* av[] )
     ++mItr;
     ++tItr;
     }
-
 
   return EXIT_SUCCESS;
 

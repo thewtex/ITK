@@ -75,7 +75,7 @@ namespace watershed
  * \ingroup ITKWatersheds
  */
 template< typename TScalar >
-class SegmentTreeGenerator:public ProcessObject
+class SegmentTreeGenerator : public ProcessObject
 {
 public:
   /**  Standard itk smart pointer declarations    */
@@ -102,12 +102,14 @@ public:
   typedef typename SegmentTreeType::Pointer            SegmentTreeTypePointer;
 
   /** Get/Set the input table of segments to process */
-  SegmentTableType * GetInputSegmentTable()
+  SegmentTableType *
+  GetInputSegmentTable()
   {
     return static_cast< SegmentTableType * >( this->ProcessObject::GetInput(0) );
   }
 
-  void SetInputSegmentTable(SegmentTableType *st)
+  void
+  SetInputSegmentTable(SegmentTableType *st)
   {
     // Reset the highest calculated flood level if we are given a
     // different input image.
@@ -121,19 +123,22 @@ public:
   /** Get/Set input table of equivalencies to pre-merge before
    * running the tree generator algorithm.  Only useful for
    * streaming applications */
-  void SetInputEquivalencyTable(EquivalencyTableType *eq)
+  void
+  SetInputEquivalencyTable(EquivalencyTableType *eq)
   {
     this->ProcessObject::SetNthInput(1, eq);
   }
 
-  EquivalencyTableType * GetInputEquivalencyTable()
+  EquivalencyTableType *
+  GetInputEquivalencyTable()
   {
     return
       static_cast< EquivalencyTableType * >( this->ProcessObject::GetInput(1) );
   }
 
   /** Get/Set the output data */
-  SegmentTreeType * GetOutputSegmentTree()
+  SegmentTreeType *
+  GetOutputSegmentTree()
   {
     return static_cast< SegmentTreeType * >
            ( this->ProcessObject::GetOutput(0) );
@@ -194,9 +199,11 @@ public:
 
 protected:
   SegmentTreeGenerator();
-  virtual ~SegmentTreeGenerator() {}
+  virtual
+  ~SegmentTreeGenerator() {}
   SegmentTreeGenerator(const Self &) {}
-  void operator=(const Self &) {}
+  void
+  operator=(const Self &) {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generates an initial list of all potentential merges in

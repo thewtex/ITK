@@ -42,7 +42,8 @@ public:
     m_End = iter.m_End;
   }
 
-  DataObjectConstIterator & operator=(const DataObjectConstIterator & iter)
+  DataObjectConstIterator &
+  operator=(const DataObjectConstIterator & iter)
   {
     if(this != &iter)
       {
@@ -53,48 +54,57 @@ public:
     return *this;
   }
 
-  const DataObject * GetDataObject() const
+  const DataObject *
+  GetDataObject() const
   {
     return m_Iterator->second;
   }
 
-  const DataObjectIdentifierType & GetName() const
+  const DataObjectIdentifierType &
+  GetName() const
   {
     return m_Iterator->first;
   }
 
-  DataObjectConstIterator operator++(int)
+  DataObjectConstIterator
+  operator++(int)
   {
     DataObjectConstIterator tmp = *this;
+
     ++(*this);
     return tmp;
   }
 
-  DataObjectConstIterator & operator++()
+  DataObjectConstIterator &
+  operator++()
   {
     ++m_Iterator;
     return *this;
   }
 
-  bool operator==(const DataObjectConstIterator & iter) const
-    {
+  bool
+  operator==(const DataObjectConstIterator & iter) const
+  {
     return m_Iterator == iter.m_Iterator && m_Begin == iter.m_Begin && m_End == iter.m_End;
-    }
+  }
 
-  bool operator!=(const DataObjectConstIterator & iter) const
-    {
+  bool
+  operator!=(const DataObjectConstIterator & iter) const
+  {
     return !( *this == iter );
-    }
+  }
 
-  void GoToBegin()
-    {
-      m_Iterator = m_Begin;
-    }
+  void
+  GoToBegin()
+  {
+    m_Iterator = m_Begin;
+  }
 
-    bool IsAtEnd() const
-    {
-      return m_Iterator == m_End;
-    }
+  bool
+  IsAtEnd() const
+  {
+    return m_Iterator == m_End;
+  }
 
 protected:
   typedef ProcessObject::DataObjectPointerMap::const_iterator InternalIteratorType;

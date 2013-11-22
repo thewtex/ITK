@@ -31,7 +31,7 @@ template< typename TImage >
 ImageRegionExclusionConstIteratorWithIndex< TImage >
 ::ImageRegionExclusionConstIteratorWithIndex(const ImageType *ptr,
                                              const RegionType & region) :
-Superclass(ptr, region)
+  Superclass(ptr, region)
 {}
 
 template< typename TImage >
@@ -39,7 +39,9 @@ ImageRegionExclusionConstIteratorWithIndex< TImage >
 ::ImageRegionExclusionConstIteratorWithIndex(const Superclass & it)
 {
   Superclass::operator=(it);
+
 }
+
 //----------------------------------------------------------------------
 //  Set the region to exclude from the walk
 //----------------------------------------------------------------------
@@ -185,6 +187,7 @@ ImageRegionExclusionConstIteratorWithIndex< TImage >
       {
       this->m_Position -= this->m_OffsetTable[0];
       this->Superclass::operator++();
+
       }
     }
 
@@ -211,12 +214,12 @@ ImageRegionExclusionConstIteratorWithIndex< TImage >
       {
       this->m_Position += this->m_OffsetTable[0];
       this->Superclass::operator--();
+
       }
     }
 
   return *this;
 }
-
 
 } // end namespace itk
 

@@ -27,11 +27,13 @@
 
 #include "itkUniformRandomSpatialNeighborSubsampler.h"
 
-int itkUniformRandomSpatialNeighborSubsamplerTest(int argc, char* argv[] )
+int
+itkUniformRandomSpatialNeighborSubsamplerTest(int argc, char* argv[] )
 {
   std::cout << "UniformRandomSpatialNeighborSubsampler Test \n \n";
 
   std::string outFile = "";
+
   if (argc > 1)
     {
     outFile = argv[1];
@@ -42,16 +44,16 @@ int itkUniformRandomSpatialNeighborSubsamplerTest(int argc, char* argv[] )
   typedef FloatImage::IndexType  IndexType;
   typedef FloatImage::SizeType   SizeType;
   typedef itk::ZeroFluxNeumannBoundaryCondition< FloatImage >
-                                 BoundaryCondition;
+    BoundaryCondition;
   typedef itk::Statistics::ImageToNeighborhoodSampleAdaptor< FloatImage, BoundaryCondition >
-                                 AdaptorType;
+    AdaptorType;
   typedef itk::Statistics::UniformRandomSpatialNeighborSubsampler< AdaptorType, RegionType >
-                                 SamplerType;
+    SamplerType;
   typedef itk::ImageFileWriter< FloatImage >
-                                 WriterType;
+    WriterType;
 
   FloatImage::Pointer inImage = FloatImage::New();
-  SizeType sz;
+  SizeType            sz;
   sz.Fill(35);
   IndexType idx;
   idx.Fill(0);
@@ -76,32 +78,32 @@ int itkUniformRandomSpatialNeighborSubsamplerTest(int argc, char* argv[] )
 
   // test clone mechanism
   SamplerType::Pointer sampler = sampler_orig->Clone().GetPointer();
-  if (sampler->GetSample() != sampler_orig->GetSample())
+  if (sampler->GetSample() != sampler_orig->GetSample() )
     {
     std::cerr << "Clone did not copy the sample correctly!" << std::endl;
     return EXIT_FAILURE;
     }
-  if (sampler->GetSampleRegion() != sampler_orig->GetSampleRegion())
+  if (sampler->GetSampleRegion() != sampler_orig->GetSampleRegion() )
     {
     std::cerr << "Clone did not copy the region correctly!" << std::endl;
     return EXIT_FAILURE;
     }
-  if (sampler->GetRadius() != sampler_orig->GetRadius())
+  if (sampler->GetRadius() != sampler_orig->GetRadius() )
     {
     std::cerr << "Clone did not copy the radius correctly!" << std::endl;
     return EXIT_FAILURE;
     }
-  if (sampler->GetNumberOfResultsRequested() != sampler_orig->GetNumberOfResultsRequested())
+  if (sampler->GetNumberOfResultsRequested() != sampler_orig->GetNumberOfResultsRequested() )
     {
     std::cerr << "Clone did not copy the number of results requested correctly!" << std::endl;
     return EXIT_FAILURE;
     }
-  if (sampler->GetSeed() != sampler_orig->GetSeed())
+  if (sampler->GetSeed() != sampler_orig->GetSeed() )
     {
     std::cerr << "Clone did not copy the seed correctly!" << std::endl;
     return EXIT_FAILURE;
     }
-  if (sampler->GetCanSelectQuery() != sampler_orig->GetCanSelectQuery())
+  if (sampler->GetCanSelectQuery() != sampler_orig->GetCanSelectQuery() )
     {
     std::cerr << "Clone did not copy CanSelectQuery correctly!" << std::endl;
     return EXIT_FAILURE;

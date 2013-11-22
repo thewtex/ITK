@@ -28,8 +28,7 @@ namespace fem
 template <typename TBaseClass>
 Element3DMembrane1DOF<TBaseClass>
 ::Element3DMembrane1DOF() : Superclass(), m_Mat(0)
-{
-}
+{}
 
 // ////////////////////////////////////////////////////////////////////////
 /*
@@ -78,7 +77,8 @@ Element3DMembrane1DOF<TBaseClass>
 }
 
 template <typename TBaseClass>
-void Element3DMembrane1DOF<TBaseClass>
+void
+Element3DMembrane1DOF<TBaseClass>
 ::GetStiffnessMatrix(MatrixType & Ke) const
 {
   Superclass::GetStiffnessMatrix(Ke);
@@ -90,6 +90,7 @@ Element3DMembrane1DOF<TBaseClass>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Materials: " << this->m_Mat << std::endl;
 }
 

@@ -52,10 +52,10 @@ class KittlerIllingworthThresholdCalculator : public HistogramThresholdCalculato
 {
 public:
   /** Standard class typedefs. */
-  typedef KittlerIllingworthThresholdCalculator      Self;
-  typedef Object                                     Superclass;
-  typedef SmartPointer<Self>                         Pointer;
-  typedef SmartPointer<const Self>                   ConstPointer;
+  typedef KittlerIllingworthThresholdCalculator Self;
+  typedef Object                                Superclass;
+  typedef SmartPointer<Self>                    Pointer;
+  typedef SmartPointer<const Self>              ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -64,33 +64,36 @@ public:
   itkTypeMacro(KittlerIllingworthThresholdCalculator, Object);
 
   /** Type definition for the input image. */
-  typedef THistogram  HistogramType;
-  typedef TOutput     OutputType;
+  typedef THistogram HistogramType;
+  typedef TOutput    OutputType;
 
 protected:
   KittlerIllingworthThresholdCalculator() {}
-  virtual ~KittlerIllingworthThresholdCalculator() {}
+  virtual
+  ~KittlerIllingworthThresholdCalculator() {}
 
   void GenerateData(void);
 
-  typedef typename HistogramType::TotalAbsoluteFrequencyType  TotalAbsoluteFrequencyType;
-  typedef typename HistogramType::AbsoluteFrequencyType       AbsoluteFrequencyType;
-  typedef typename HistogramType::InstanceIdentifier          InstanceIdentifier;
-  typedef typename HistogramType::SizeValueType               SizeValueType;
+  typedef typename HistogramType::TotalAbsoluteFrequencyType TotalAbsoluteFrequencyType;
+  typedef typename HistogramType::AbsoluteFrequencyType      AbsoluteFrequencyType;
+  typedef typename HistogramType::InstanceIdentifier         InstanceIdentifier;
+  typedef typename HistogramType::SizeValueType              SizeValueType;
 
 private:
   KittlerIllingworthThresholdCalculator(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                        //purposely not implemented
 
   IndexValueType Mean();
+
   double A( InstanceIdentifier j);
+
   double B( InstanceIdentifier j);
+
   double C( InstanceIdentifier j);
 
 };
 
 } // end namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkKittlerIllingworthThresholdCalculator.hxx"

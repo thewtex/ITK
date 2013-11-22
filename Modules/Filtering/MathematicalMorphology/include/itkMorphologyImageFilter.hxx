@@ -89,5 +89,6 @@ MorphologyImageFilter< TInputImage, TOutputImage, TKernel >
 
   os << indent << "Boundary condition: " << typeid( *m_BoundaryCondition ).name() << std::endl;
 }
+
 } // end namespace itk
 #endif

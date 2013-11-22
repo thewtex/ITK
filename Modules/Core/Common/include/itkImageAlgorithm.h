@@ -39,7 +39,6 @@ namespace itk
 
 template <typename TPixelType, unsigned int VImageDimension > class VectorImage;
 
-
 /** \class ImageAlgorithm
  * \brief A container of static functions which can operate on Images
  * with Iterators.
@@ -51,14 +50,14 @@ template <typename TPixelType, unsigned int VImageDimension > class VectorImage;
  * \ingroup ITKCommon
  */
 struct ImageAlgorithm
-{
+  {
 
 #if defined(ITK_HAS_STLTR1_TR1_TYPE_TRAITS) || defined(ITK_HAS_STLTR1_TYPE_TRAITS)
-    typedef ITK_STD_TR1_NAMESPACE::true_type  TrueType;
-    typedef ITK_STD_TR1_NAMESPACE::false_type FalseType;
+  typedef ITK_STD_TR1_NAMESPACE::true_type  TrueType;
+  typedef ITK_STD_TR1_NAMESPACE::false_type FalseType;
 #else
-    typedef itk::TrueType  TrueType;
-    typedef itk::FalseType FalseType;
+  typedef itk::TrueType  TrueType;
+  typedef itk::FalseType FalseType;
 #endif
 
 /**
@@ -83,51 +82,54 @@ struct ImageAlgorithm
  * method being called.
  */
   template<typename InputImageType, typename OutputImageType>
-  static void Copy( const InputImageType *inImage, OutputImageType *outImage,
-                    const typename InputImageType::RegionType &inRegion,
-                    const typename OutputImageType::RegionType &outRegion )
+  static void
+  Copy( const InputImageType *inImage, OutputImageType *outImage,
+        const typename InputImageType::RegionType &inRegion,
+        const typename OutputImageType::RegionType &outRegion )
   {
     ImageAlgorithm::DispatchedCopy( inImage, outImage, inRegion, outRegion );
   }
 
 /** \cond HIDE_SPECIALIZATION_DOCUMENTATION */
   template<typename TPixel1, typename TPixel2, unsigned int VImageDimension>
-  static void Copy( const Image<TPixel1, VImageDimension> * inImage,
-                               Image<TPixel2, VImageDimension> * outImage,
-                               const typename Image<TPixel1, VImageDimension>::RegionType &inRegion,
-                               const typename Image<TPixel2, VImageDimension>::RegionType &outRegion )
+  static void
+  Copy( const Image<TPixel1, VImageDimension> * inImage,
+        Image<TPixel2, VImageDimension> * outImage,
+        const typename Image<TPixel1, VImageDimension>::RegionType &inRegion,
+        const typename Image<TPixel2, VImageDimension>::RegionType &outRegion )
   {
     typedef Image<TPixel1, VImageDimension> _ImageType1;
     typedef Image<TPixel2, VImageDimension> _ImageType2;
     ImageAlgorithm::DispatchedCopy( inImage, outImage, inRegion, outRegion
 #if defined(ITK_HAS_STLTR1_TR1_TYPE_TRAITS) || defined(ITK_HAS_STLTR1_TYPE_TRAITS)
-                                   , ITK_STD_TR1_NAMESPACE::is_convertible<typename _ImageType1::PixelType,
-                                   typename _ImageType2::PixelType>()
+                                    , ITK_STD_TR1_NAMESPACE::is_convertible<typename _ImageType1::PixelType,
+                                                                            typename _ImageType2::PixelType>()
 #else
                                     // note the above trait is
                                     // primarily used to get a better
                                     // error message
                                     , TrueType()
 #endif
-      );
+                                    );
   }
 
   template<typename TPixel1, typename TPixel2, unsigned int VImageDimension>
-  static void Copy( const VectorImage<TPixel1, VImageDimension> * inImage,
-                               VectorImage<TPixel2, VImageDimension> * outImage,
-                               const typename VectorImage<TPixel1, VImageDimension>::RegionType &inRegion,
-                               const typename VectorImage<TPixel2, VImageDimension>::RegionType &outRegion )
+  static void
+  Copy( const VectorImage<TPixel1, VImageDimension> * inImage,
+        VectorImage<TPixel2, VImageDimension> * outImage,
+        const typename VectorImage<TPixel1, VImageDimension>::RegionType &inRegion,
+        const typename VectorImage<TPixel2, VImageDimension>::RegionType &outRegion )
   {
     typedef VectorImage<TPixel1, VImageDimension> _ImageType1;
     typedef VectorImage<TPixel2, VImageDimension> _ImageType2;
     ImageAlgorithm::DispatchedCopy( inImage, outImage, inRegion, outRegion
 #if defined(ITK_HAS_STLTR1_TR1_TYPE_TRAITS) || defined(ITK_HAS_STLTR1_TYPE_TRAITS)
-                                   , ITK_STD_TR1_NAMESPACE::is_convertible<typename _ImageType1::PixelType,
-                                   typename _ImageType2::PixelType>()
+                                    , ITK_STD_TR1_NAMESPACE::is_convertible<typename _ImageType1::PixelType,
+                                                                            typename _ImageType2::PixelType>()
 #else
                                     , TrueType()
 #endif
-      );
+                                    );
   }
 
 /** \endcond */
@@ -147,41 +149,44 @@ private:
   template<typename InputImageType, typename OutputImageType>
   static void DispatchedCopy( const InputImageType *inImage, OutputImageType *outImage,
                               const typename InputImageType::RegionType &inRegion,
-                              const typename OutputImageType::RegionType &outRegion, FalseType isSpecialized = FalseType() );
-
+                              const typename OutputImageType::RegionType &outRegion,
+                              FalseType isSpecialized = FalseType() );
 
   /** A utility class to get the number of internal pixels to make up
    * a pixel.
    */
   template <typename TImageType>
   struct PixelSize
-  {
-    static size_t Get( const TImageType *)
+    {
+    static size_t
+    Get( const TImageType *)
     {
       return 1;
     }
-  };
+
+    };
 
 /** \cond HIDE_SPECIALIZATION_DOCUMENTATION */
   template <typename TPixelType, unsigned int VImageDimension>
   struct PixelSize< VectorImage<TPixelType, VImageDimension> >
-  {
+    {
     typedef VectorImage<TPixelType, VImageDimension> ImageType;
-    static size_t Get( const  ImageType * i )
+    static size_t
+    Get( const  ImageType * i )
     {
       const size_t vectorLength = ImageType::AccessorFunctorType::GetVectorLength(i);
+
       return vectorLength;
     }
-  };
+
+    };
 /** \endcond */
 
-};
+  };
 } // end namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageAlgorithm.hxx"
 #endif
-
 
 #endif //__itkImageAlgorithm_h

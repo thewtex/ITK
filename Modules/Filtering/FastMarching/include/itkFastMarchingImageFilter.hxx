@@ -28,7 +28,7 @@ namespace itk
 {
 template< typename TLevelSet, typename TSpeedImage >
 FastMarchingImageFilter< TLevelSet, TSpeedImage >
-::FastMarchingImageFilter():
+::FastMarchingImageFilter() :
   m_TrialHeap()
 {
   this->ProcessObject::SetNumberOfRequiredInputs(0);
@@ -68,6 +68,7 @@ FastMarchingImageFilter< TLevelSet, TSpeedImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Alive points: " << m_AlivePoints.GetPointer() << std::endl;
   os << indent << "Trial points: " << m_TrialPoints.GetPointer() << std::endl;
   os << indent << "Speed constant: " << m_SpeedConstant << std::endl;
@@ -154,7 +155,7 @@ FastMarchingImageFilter< TLevelSet, TSpeedImage >
 
   // set all output value to infinity
   typedef ImageRegionIterator< LevelSetImageType >
-  OutputIterator;
+    OutputIterator;
 
   OutputIterator outIt ( output, output->GetBufferedRegion() );
 
@@ -175,7 +176,6 @@ FastMarchingImageFilter< TLevelSet, TSpeedImage >
   LabelIterator typeIt( m_LabelImage,
                         m_LabelImage->GetBufferedRegion() );
 
-
   typeIt.GoToBegin();
   while( !typeIt.IsAtEnd() )
     {
@@ -184,7 +184,7 @@ FastMarchingImageFilter< TLevelSet, TSpeedImage >
     }
 
   // process input alive points
-  AxisNodeType node;
+  AxisNodeType  node;
   NodeIndexType idx;
 
   if ( m_AlivePoints )
@@ -362,7 +362,7 @@ FastMarchingImageFilter< TLevelSet, TSpeedImage >
   const SpeedImageType *speedImage,
   LevelSetImageType *output)
 {
-  IndexType neighIndex = index;
+  IndexType     neighIndex = index;
   unsigned char label;
 
   for ( unsigned int j = 0; j < SetDimension; j++ )
@@ -416,6 +416,7 @@ FastMarchingImageFilter< TLevelSet, TSpeedImage >
 
   // just to make sure the index is initialized (really cautious)
   AxisNodeType node;
+
   node.SetIndex( index );
 
   for ( unsigned int j = 0; j < SetDimension; j++ )
@@ -482,7 +483,7 @@ FastMarchingImageFilter< TLevelSet, TSpeedImage >
 
     if ( solution >= value )
       {
-      const int    axis = node.GetAxis();
+      const int axis = node.GetAxis();
       // spaceFactor = \frac{1}{spacing[axis]^2}
       const double spaceFactor = vnl_math_sqr(1.0 / spacing[axis]);
       aa += spaceFactor;
@@ -522,6 +523,7 @@ FastMarchingImageFilter< TLevelSet, TSpeedImage >
 
   return solution;
 }
+
 } // namespace itk
 
 #endif

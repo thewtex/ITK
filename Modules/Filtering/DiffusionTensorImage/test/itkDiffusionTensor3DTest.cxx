@@ -21,7 +21,8 @@
 #include "itkDiffusionTensor3D.h"
 #include "itkImageRegionIterator.h"
 
-int itkDiffusionTensor3DTest(int, char* [] )
+int
+itkDiffusionTensor3DTest(int, char* [] )
 {
   // Test it all
   float val[6] = {1.8, 0.2, 0.5, 3.4, 2.0, 1.2};
@@ -39,9 +40,10 @@ int itkDiffusionTensor3DTest(int, char* [] )
   pixelArray[1] = pixelInit1;
 
   std::cout << "sizeof(pixel) = " << sizeof (pixel) << std::endl;
-  if (sizeof(pixel) != 6 * sizeof(Float3DTensorType::ComponentType))
+  if (sizeof(pixel) != 6 * sizeof(Float3DTensorType::ComponentType) )
     {
-    std::cerr << "ERROR: sizeof(pixel) == " << sizeof(pixel) << " but is should be " << 6 * sizeof(Float3DTensorType::ComponentType) << std::endl;
+    std::cerr << "ERROR: sizeof(pixel) == " << sizeof(pixel) << " but is should be " << 6 *
+    sizeof(Float3DTensorType::ComponentType) << std::endl;
     return EXIT_FAILURE;
     }
   std::cout << "pixel.GetNumberOfComponents = " << pixel.GetNumberOfComponents() << std::endl;
@@ -101,11 +103,13 @@ int itkDiffusionTensor3DTest(int, char* [] )
 
   for (unsigned int j = 0; j < 2; j++)
     {
-    std::cout << "pixelArray["<< j << "].GetNumberOfComponents = " << pixelArray[j].GetNumberOfComponents() << std::endl;
+    std::cout << "pixelArray["<< j << "].GetNumberOfComponents = " << pixelArray[j].GetNumberOfComponents() <<
+    std::endl;
     std::cout << "pixelArray[" << j << "].GetNthComponent()" << std::endl;
     for (unsigned int i = 0; i < pixelArray[j].GetNumberOfComponents(); i++)
       {
-      std::cout << "\tpixelArray[" << j << "].GetNthComponent(" << i << ") = " << static_cast<int>(pixelArray[j].GetNthComponent(i)) << std::endl;
+      std::cout << "\tpixelArray[" << j << "].GetNthComponent(" << i << ") = " <<
+      static_cast<int>(pixelArray[j].GetNthComponent(i) ) << std::endl;
       }
     }
 
@@ -145,13 +149,13 @@ int itkDiffusionTensor3DTest(int, char* [] )
   std::cout << "product by scalar = " << pc << std::endl;
 
   /** Create an Image of tensors  */
-  typedef Float3DTensorType           PixelType;
-  typedef itk::Image< PixelType, 3 >  ImageType;
+  typedef Float3DTensorType          PixelType;
+  typedef itk::Image< PixelType, 3 > ImageType;
 
   ImageType::Pointer dti = ImageType::New();
 
-  ImageType::SizeType  size;
-  ImageType::IndexType start;
+  ImageType::SizeType   size;
+  ImageType::IndexType  start;
   ImageType::RegionType region;
 
   size[0] = 128;
@@ -204,8 +208,8 @@ int itkDiffusionTensor3DTest(int, char* [] )
     }
 
   // Test Eigen values computation
-  {
-    typedef itk::DiffusionTensor3D<double>         Double3DTensorType;
+    {
+    typedef itk::DiffusionTensor3D<double> Double3DTensorType;
 
     Double3DTensorType tensor2;
 
@@ -227,8 +231,8 @@ int itkDiffusionTensor3DTest(int, char* [] )
     std::cout << "DiffusionTensor3D = " << std::endl;
     std::cout << tensor2 << std::endl;
 
-    Double3DTensorType::EigenValuesArrayType     eigenValues;
-    Double3DTensorType::EigenVectorsMatrixType   eigenVectors;
+    Double3DTensorType::EigenValuesArrayType   eigenValues;
+    Double3DTensorType::EigenVectorsMatrixType eigenVectors;
 
     tensor2.ComputeEigenAnalysis( eigenValues, eigenVectors );
 
@@ -240,8 +244,8 @@ int itkDiffusionTensor3DTest(int, char* [] )
 
     const double tolerance = 1e-4;
 
-    {
-      Double3DTensorType::EigenValuesArrayType     expectedValues;
+      {
+      Double3DTensorType::EigenValuesArrayType expectedValues;
       expectedValues[0] = v[0];
       expectedValues[1] = v[1];
       expectedValues[2] = v[2];
@@ -256,7 +260,7 @@ int itkDiffusionTensor3DTest(int, char* [] )
           return EXIT_FAILURE;
           }
         }
-    }
+      }
 
     // Now let's do something more involved...
     tensor2(0,0) =  7.0;
@@ -280,8 +284,8 @@ int itkDiffusionTensor3DTest(int, char* [] )
     std::cout << "EigenVectors = " << std::endl;
     std::cout << eigenVectors << std::endl;
 
-    {
-      Double3DTensorType::EigenValuesArrayType     expectedValues;
+      {
+      Double3DTensorType::EigenValuesArrayType expectedValues;
       expectedValues[0] =  0.0;
       expectedValues[1] =  4.0;
       expectedValues[2] = 10.0;
@@ -296,7 +300,7 @@ int itkDiffusionTensor3DTest(int, char* [] )
           return EXIT_FAILURE;
           }
         }
-    }
+      }
 
     // Now let's do one where we know the rotation...
     tensor2(0,0) =  9.0;
@@ -320,8 +324,8 @@ int itkDiffusionTensor3DTest(int, char* [] )
     std::cout << "EigenVectors = " << std::endl;
     std::cout << eigenVectors << std::endl;
 
-    {
-      Double3DTensorType::EigenValuesArrayType     expectedValues;
+      {
+      Double3DTensorType::EigenValuesArrayType expectedValues;
       expectedValues[0] = -1.61577;
       expectedValues[1] =  0.00000;
       expectedValues[2] = 13.61580;
@@ -336,13 +340,12 @@ int itkDiffusionTensor3DTest(int, char* [] )
           return EXIT_FAILURE;
           }
         }
+      }
+
     }
 
-
-  }
-
   // Test GetTrace() and GetFractionalAnisotropy methods
-  {
+    {
 
     typedef itk::DiffusionTensor3D<double>          Double3DTensorType;
     typedef Double3DTensorType::AccumulateValueType AccumulateValueType;
@@ -361,7 +364,7 @@ int itkDiffusionTensor3DTest(int, char* [] )
     tensor3(2,2) =  29.0;
 
     AccumulateValueType expectedTrace =
-              itk::NumericTraits< AccumulateValueType >::Zero;
+      itk::NumericTraits< AccumulateValueType >::Zero;
 
     expectedTrace += tensor3(0,0);
     expectedTrace += tensor3(1,1);
@@ -390,7 +393,6 @@ int itkDiffusionTensor3DTest(int, char* [] )
       return EXIT_FAILURE;
       }
 
-
     // Test the value of Fractional Anisotropy
     const RealValueType expectedFractionalAnisotropy = 0.349177;
 
@@ -415,12 +417,11 @@ int itkDiffusionTensor3DTest(int, char* [] )
       return EXIT_FAILURE;
       }
 
-
-  } // end of Test GetTrace() method
+    } // end of Test GetTrace() method
 
   //Test Numeric Traits
-  {
-    typedef itk::DiffusionTensor3D<int>             TensorType;
+    {
+    typedef itk::DiffusionTensor3D<int> TensorType;
 
     typedef itk::NumericTraits<TensorType>::ValueType      ValueType;
     typedef itk::NumericTraits<TensorType>::AbsType        AbsType;
@@ -438,15 +439,15 @@ int itkDiffusionTensor3DTest(int, char* [] )
     std::cout << minTensor <<std::endl;
 
     TensorType nonpositiveMinTensor
-                          = itk::NumericTraits<TensorType>::NonpositiveMin();
+      = itk::NumericTraits<TensorType>::NonpositiveMin();
     std::cout << nonpositiveMinTensor <<std::endl;
 
     TensorType zeroValue
-                          = itk::NumericTraits<TensorType>::ZeroValue();
+      = itk::NumericTraits<TensorType>::ZeroValue();
     std::cout << zeroValue <<std::endl;
 
     TensorType oneValue
-                          = itk::NumericTraits<TensorType>::OneValue();
+      = itk::NumericTraits<TensorType>::OneValue();
     std::cout << oneValue <<std::endl;
 
     TensorType zero = itk::NumericTraits<TensorType>::Zero;
@@ -454,11 +455,11 @@ int itkDiffusionTensor3DTest(int, char* [] )
 
     TensorType one = itk::NumericTraits<TensorType>::One;
     std::cout << one <<std::endl;
-  }
+    }
 
   //Test casting constructors
-  {
-    typedef itk::DiffusionTensor3D<int>     Int3DTensorType;
+    {
+    typedef itk::DiffusionTensor3D<int> Int3DTensorType;
 
     Int3DTensorType intTensor;
     intTensor[0] =   1;
@@ -479,18 +480,18 @@ int itkDiffusionTensor3DTest(int, char* [] )
 
     //Check that all floatTensors have are the same
     float precision = 1e-6;
-    for (unsigned int i=0;i<Float3DTensorType::InternalDimension;++i)
-    {
+    for (unsigned int i=0; i<Float3DTensorType::InternalDimension; ++i)
+      {
       float intVal = static_cast<float>(intTensor[i]);
       if ( (floatTensor[i] - intVal) > precision ||
-          (floatTensor2[i] - intVal) > precision ||
-          (floatTensor3[i] - intVal) > precision )
-      {
+           (floatTensor2[i] - intVal) > precision ||
+           (floatTensor3[i] - intVal) > precision )
+        {
         std::cerr << "Error failed casting/templated Constructor Test" << std::endl;
         return EXIT_FAILURE;
+        }
       }
     }
-  }
 
   return (passed ? EXIT_SUCCESS : EXIT_FAILURE);
 }

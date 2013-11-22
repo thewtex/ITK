@@ -28,7 +28,7 @@ namespace itk
    * \brief Create instances of VTKPolyDataMeshIO objects using an object factory.
    * \ingroup ITKIOMesh
    */
-class ITKIOMesh_EXPORT VTKPolyDataMeshIOFactory:public ObjectFactoryBase
+class ITKIOMesh_EXPORT VTKPolyDataMeshIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -49,12 +49,13 @@ public:
   itkTypeMacro(VTKPolyDataMeshIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
-    {
+  static void
+  RegisterOneFactory(void)
+  {
     VTKPolyDataMeshIOFactory::Pointer vtkFactory = VTKPolyDataMeshIOFactory::New();
 
     ObjectFactoryBase::RegisterFactory(vtkFactory);
-    }
+  }
 
 protected:
   VTKPolyDataMeshIOFactory();
@@ -65,6 +66,7 @@ protected:
 private:
   VTKPolyDataMeshIOFactory(const Self &); // purposely not implemented
   void operator=(const Self &);           // purposely not implemented
+
 };
 } // end namespace itk
 

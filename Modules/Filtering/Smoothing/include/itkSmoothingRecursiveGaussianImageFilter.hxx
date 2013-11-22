@@ -83,6 +83,7 @@ SmoothingRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 ::SetNumberOfThreads(ThreadIdType nb)
 {
   Superclass::SetNumberOfThreads(nb);
+
   for ( unsigned int i = 0; i < ImageDimension - 1; i++ )
     {
     m_SmoothingFilters[i]->SetNumberOfThreads(nb);

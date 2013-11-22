@@ -66,7 +66,7 @@ MorphologicalWatershedFromMarkersImageFilter< TInputImage, TLabelImage >
     const_cast< InputImageType * >( this->GetInput() );
 
   if ( !markerPtr || !inputPtr )
-        { return; }
+            { return; }
 
   // We need to
   // configure the inputs such that all the data is available.
@@ -117,7 +117,7 @@ MorphologicalWatershedFromMarkersImageFilter< TInputImage, TLabelImage >
   // we can't found the exact number of pixel to process in the 2nd pass, so we
   // use the maximum number possible.
   ProgressReporter
-  progress(this, 0, markerImage->GetRequestedRegion().GetNumberOfPixels() * 2);
+    progress(this, 0, markerImage->GetRequestedRegion().GetNumberOfPixels() * 2);
 
   // mask and marker must have the same size
   if ( markerImage->GetRequestedRegion().GetSize() != inputImage->GetRequestedRegion().GetSize() )
@@ -138,7 +138,7 @@ MorphologicalWatershedFromMarkersImageFilter< TInputImage, TLabelImage >
   typedef ConstShapedNeighborhoodIterator< LabelImageType > MarkerIteratorType;
   typename MarkerIteratorType::ConstIterator nmIt;
   MarkerIteratorType
-  markerIt( radius, markerImage, markerImage->GetRequestedRegion() );
+    markerIt( radius, markerImage, markerImage->GetRequestedRegion() );
   // add a boundary constant to avoid adding pixels on the border in the fah
   ConstantBoundaryCondition< LabelImageType > lcbc;
   lcbc.SetConstant( NumericTraits< LabelImagePixelType >::max() );
@@ -148,7 +148,7 @@ MorphologicalWatershedFromMarkersImageFilter< TInputImage, TLabelImage >
   // iterator for the input image
   typedef ConstShapedNeighborhoodIterator< InputImageType > InputIteratorType;
   InputIteratorType
-  inputIt( radius, inputImage, inputImage->GetRequestedRegion() );
+    inputIt( radius, inputImage, inputImage->GetRequestedRegion() );
   typename InputIteratorType::ConstIterator niIt;
   setConnectivity(&inputIt, m_FullyConnected);
 
@@ -157,7 +157,7 @@ MorphologicalWatershedFromMarkersImageFilter< TInputImage, TLabelImage >
   typedef typename OutputIteratorType::OffsetType      OffsetType;
   typename OutputIteratorType::Iterator noIt;
   OutputIteratorType
-  outputIt( radius, outputImage, outputImage->GetRequestedRegion() );
+    outputIt( radius, outputImage, outputImage->GetRequestedRegion() );
   setConnectivity(&outputIt, m_FullyConnected);
 
   //---------------------------------------------------------------------------
@@ -298,7 +298,7 @@ MorphologicalWatershedFromMarkersImageFilter< TInputImage, TLabelImage >
               break;
               }
             else
-                  { marker = o; }
+                      { marker = o; }
             }
           }
         if ( !collision )
@@ -460,5 +460,6 @@ MorphologicalWatershedFromMarkersImageFilter< TInputImage, TLabelImage >
   os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
   os << indent << "MarkWatershedLine: "  << m_MarkWatershedLine << std::endl;
 }
+
 } // end namespace itk
 #endif

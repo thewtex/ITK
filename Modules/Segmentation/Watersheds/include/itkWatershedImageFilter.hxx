@@ -72,7 +72,7 @@ WatershedImageFilter< TInputImage >
 
 template< typename TInputImage >
 WatershedImageFilter< TInputImage >
-::WatershedImageFilter():m_Threshold(0.0), m_Level(0.0)
+::WatershedImageFilter() : m_Threshold(0.0), m_Level(0.0)
 {
   // Set up the mini-pipeline for the first execution.
   m_Segmenter    = watershed::Segmenter< InputImageType >::New();
@@ -111,6 +111,7 @@ WatershedImageFilter< TInputImage >
 ::EnlargeOutputRequestedRegion(DataObject *data)
 {
   Superclass::EnlargeOutputRequestedRegion(data);
+
   data->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -209,9 +210,11 @@ WatershedImageFilter< TInputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Threshold: " << m_Threshold << std::endl;
   os << indent << "Level: " << m_Level << std::endl;
 }
+
 } // end namespace itk
 
 #endif

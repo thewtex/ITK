@@ -42,13 +42,13 @@ public:
 
 private:
   GPUImageOps();
-  virtual ~GPUImageOps();
+  virtual
+  ~GPUImageOps();
 
   GPUImageOps(const Self &);                   //purposely not implemented
   void operator=(const Self &);                //purposely not implemented
 
 };
-
 
 } // end of namespace itk
 

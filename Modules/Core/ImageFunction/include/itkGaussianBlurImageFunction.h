@@ -40,7 +40,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutput = double >
-class GaussianBlurImageFunction:
+class GaussianBlurImageFunction :
   public ImageFunction< TInputImage, TOutput >
 {
 public:
@@ -71,19 +71,19 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, InputImageType::ImageDimension);
 
   typedef GaussianOperator<
-    TOutput, itkGetStaticConstMacro(ImageDimension) >                            GaussianOperatorType;
+      TOutput, itkGetStaticConstMacro(ImageDimension) >                            GaussianOperatorType;
   typedef Neighborhood< TOutput, itkGetStaticConstMacro(ImageDimension) >        NeighborhoodType;
   typedef FixedArray< NeighborhoodType, itkGetStaticConstMacro(ImageDimension) > OperatorArrayType;
 
-  typedef GaussianSpatialFunction< TOutput, 1 >                        GaussianFunctionType;
-  typedef typename GaussianFunctionType::Pointer                       GaussianFunctionPointer;
-  typedef typename NumericTraits< InputPixelType >::RealType           InputPixelRealType;
+  typedef GaussianSpatialFunction< TOutput, 1 >              GaussianFunctionType;
+  typedef typename GaussianFunctionType::Pointer             GaussianFunctionPointer;
+  typedef typename NumericTraits< InputPixelType >::RealType InputPixelRealType;
   typedef itk::Image<
-    InputPixelRealType, itkGetStaticConstMacro(ImageDimension) >       InternalImageType;
-  typedef typename InternalImageType::Pointer                          InternalImagePointer;
+      InputPixelRealType, itkGetStaticConstMacro(ImageDimension) >       InternalImageType;
+  typedef typename InternalImageType::Pointer InternalImagePointer;
 
-  typedef NeighborhoodOperatorImageFunction< InputImageType, TOutput >    OperatorImageFunctionType;
-  typedef typename OperatorImageFunctionType::Pointer                     OperatorImageFunctionPointer;
+  typedef NeighborhoodOperatorImageFunction< InputImageType, TOutput > OperatorImageFunctionType;
+  typedef typename OperatorImageFunctionType::Pointer                  OperatorImageFunctionPointer;
 
   typedef NeighborhoodOperatorImageFunction< InternalImageType, TOutput > OperatorInternalImageFunctionType;
   typedef typename OperatorInternalImageFunctionType::Pointer             OperatorInternalImageFunctionPointer;
@@ -176,12 +176,12 @@ private:
   virtual TOutput EvaluateAtIndex(
     const IndexType & index, const OperatorArrayType & operatorArray) const;
 
-  SigmaArrayType                        m_Sigma;
-  OperatorImageFunctionPointer          m_OperatorImageFunction;
-  OperatorInternalImageFunctionPointer  m_OperatorInternalImageFunction;
-  mutable OperatorArrayType             m_OperatorArray;
-  mutable OperatorArrayType             m_ContinuousOperatorArray;
-  InternalImagePointer                  m_InternalImage;
+  SigmaArrayType                       m_Sigma;
+  OperatorImageFunctionPointer         m_OperatorImageFunction;
+  OperatorInternalImageFunctionPointer m_OperatorInternalImageFunction;
+  mutable OperatorArrayType            m_OperatorArray;
+  mutable OperatorArrayType            m_ContinuousOperatorArray;
+  InternalImagePointer                 m_InternalImage;
 
   /** The maximum error of the gaussian blurring kernel in each dimensional
    * direction. For definition of maximum error, see GaussianOperator.

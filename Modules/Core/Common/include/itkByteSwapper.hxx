@@ -38,14 +38,30 @@ namespace itk
 // Machine definitions
 #ifdef CMAKE_WORDS_BIGENDIAN
 template< typename T >
-bool ByteSwapper< T >::SystemIsBigEndian() { return true; }
+bool
+ByteSwapper< T >::SystemIsBigEndian() {
+  return true;
+}
+
 template< typename T >
-bool ByteSwapper< T >::SystemIsLittleEndian() { return false; }
+bool
+ByteSwapper< T >::SystemIsLittleEndian() {
+  return false;
+}
+
 #else
 template< typename T >
-bool ByteSwapper< T >::SystemIsBigEndian() { return false; }
+bool
+ByteSwapper< T >::SystemIsBigEndian() {
+  return false;
+}
+
 template< typename T >
-bool ByteSwapper< T >::SystemIsLittleEndian() { return true; }
+bool
+ByteSwapper< T >::SystemIsLittleEndian() {
+  return true;
+}
+
 #endif
 
 //------Big Endian methods----------------------------------------------
@@ -269,9 +285,10 @@ void
 ByteSwapper< T >
 ::Swap2(void *pin)
 {
-  unsigned short *      p = reinterpret_cast< unsigned short * >( pin );
+  unsigned short *     p = reinterpret_cast< unsigned short * >( pin );
   const unsigned short h1 = (*p) << static_cast<short unsigned int>(8);
   const unsigned short h2 = (*p) >> static_cast<short unsigned int>(8);
+
   *p = h1 | h2;
 }
 
@@ -282,6 +299,7 @@ ByteSwapper< T >
 ::Swap2Range(void *ptr, BufferSizeType num)
 {
   char * pos = reinterpret_cast< char * >( ptr );
+
   for ( BufferSizeType i = 0; i < num; i++ )
     {
     const char one_byte = pos[0];
@@ -298,6 +316,7 @@ ByteSwapper< T >
 ::SwapWrite2Range(void *ptr, BufferSizeType num, OStreamType *fp)
 {
   BufferSizeType chunkSize = 1000000;
+
   if ( num < chunkSize )
     {
     chunkSize = num;
@@ -352,7 +371,7 @@ void
 ByteSwapper< T >
 ::Swap4Range(void *ptr, BufferSizeType num)
 {
-  char *         pos = reinterpret_cast< char * >( ptr );
+  char * pos = reinterpret_cast< char * >( ptr );
 
   for ( BufferSizeType i = 0; i < num; i++ )
     {
@@ -442,7 +461,7 @@ void
 ByteSwapper< T >
 ::Swap8Range(void *ptr, BufferSizeType num)
 {
-  char *         pos = reinterpret_cast< char * >( ptr );
+  char * pos = reinterpret_cast< char * >( ptr );
 
   for ( BufferSizeType i = 0; i < num; i++ )
     {
@@ -472,6 +491,7 @@ ByteSwapper< T >
 ::SwapWrite8Range(void *ptr, BufferSizeType num, OStreamType *fp)
 {
   BufferSizeType chunkSize = 1000000;
+
   if ( num < chunkSize )
     {
     chunkSize = num;
@@ -494,6 +514,7 @@ ByteSwapper< T >
     }
   delete[] cpy;
 }
+
 } // end namespace itk
 
 #endif

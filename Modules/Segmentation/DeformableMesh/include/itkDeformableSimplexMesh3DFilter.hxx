@@ -81,6 +81,7 @@ DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Alpha = " << this->GetAlpha() << std::endl;
   os << indent << "Beta = " << this->GetBeta() << std::endl;
   os << indent << "Gamma = " << this->GetGamma() << std::endl;
@@ -125,7 +126,7 @@ DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
   while ( m_Step < m_Iterations )
     {
     const float progress = static_cast< float >( m_Step )
-                           / static_cast< float >( m_Iterations );
+      / static_cast< float >( m_Iterations );
 
     this->UpdateProgress(progress);
 
@@ -238,12 +239,12 @@ const typename
 DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >::GradientImageType *
 DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
 ::GetGradient() const
-{
+  {
   const GradientImageType *gradientImage =
     dynamic_cast< const GradientImageType * >( this->ProcessObject::GetInput(1) );
 
   return gradientImage;
-}
+  }
 
 /* Compute normals. */
 template< typename TInputMesh, typename TOutputMesh >
@@ -277,7 +278,7 @@ DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
     normal.Fill(0.0);
 
     z.SetVnlVector( itk_cross_3d( ( data->neighbors[1] - data->neighbors[0] ).GetVnlVector(),
-                                    ( data->neighbors[2] - data->neighbors[0] ).GetVnlVector() ) );
+                                  ( data->neighbors[2] - data->neighbors[0] ).GetVnlVector() ) );
     z.Normalize();
     normal += z;
 
@@ -342,7 +343,7 @@ DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
     this->ComputeExternalForce(data,gradientImage);
 
     displacement.SetVnlVector( m_Alpha * ( data->internalForce ).GetVnlVector()
-                                 + ( data->externalForce ).GetVnlVector() );
+                               + ( data->externalForce ).GetVnlVector() );
 
     data->pos += displacement;
     nonConstPoints->InsertElement(dataIt.Index(), data->pos);
@@ -377,9 +378,9 @@ DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
   //    diffAbsSum = vcl_abs(eps1Diff)+vcl_abs(eps2Diff)+vcl_abs(eps3Diff);
 
   tangentForce.SetVnlVector(eps1Diff * ( data->neighbors[0] ).GetVnlVector()
-                              + eps2Diff * ( data->neighbors[1] ).GetVnlVector()
-                              + eps3Diff * ( data->neighbors[2] ).GetVnlVector()
-                              );
+                            + eps2Diff * ( data->neighbors[1] ).GetVnlVector()
+                            + eps3Diff * ( data->neighbors[2] ).GetVnlVector()
+                            );
 
   r = data->circleRadius;
   d = data->distance;
@@ -462,11 +463,11 @@ DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
     tmp_vec_3[2] = gradient3[2] - gradient0[2];
 
     vec_for[0] = vec_for[0] + ( ( data->pos )[0] - coord[0] ) * tmp_vec_1[0]
-                 + ( ( data->pos )[1] - coord[1] ) * tmp_vec_2[0] + ( ( data->pos )[2] - coord[2] ) * tmp_vec_3[0];
+      + ( ( data->pos )[1] - coord[1] ) * tmp_vec_2[0] + ( ( data->pos )[2] - coord[2] ) * tmp_vec_3[0];
     vec_for[1] = vec_for[1] + ( ( data->pos )[1] - coord[1] ) * tmp_vec_2[1]
-                 + ( ( data->pos )[0] - coord[0] ) * tmp_vec_1[1] + ( ( data->pos )[2] - coord[2] ) * tmp_vec_3[1];
+      + ( ( data->pos )[0] - coord[0] ) * tmp_vec_1[1] + ( ( data->pos )[2] - coord[2] ) * tmp_vec_3[1];
     vec_for[2] = vec_for[2] + ( ( data->pos )[2] - coord[2] ) * tmp_vec_3[2]
-                 + ( ( data->pos )[1] - coord[1] ) * tmp_vec_2[2] + ( ( data->pos )[0] - coord[0] ) * tmp_vec_1[2];
+      + ( ( data->pos )[1] - coord[1] ) * tmp_vec_2[2] + ( ( data->pos )[0] - coord[0] ) * tmp_vec_1[2];
     }
   else
     {
@@ -577,7 +578,8 @@ DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
 }
 
 template< typename TInputMesh, typename TOutputMesh >
-double DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
+double
+DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
 ::L_Func(double r, double d, double phi)
 {
   double r2 = r * r;
@@ -637,6 +639,7 @@ DeformableSimplexMesh3DFilter< TInputMesh, TOutputMesh >
 
   return eps;
 }
+
 } /* end namespace itk. */
 
 #endif //__itkDeformableSimplexMesh3DFilter_TXX

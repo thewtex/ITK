@@ -39,7 +39,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TImage >
-class ShapeUniqueLabelMapFilter:
+class ShapeUniqueLabelMapFilter :
   public InPlaceLabelMapFilter< TImage >
 {
 public:
@@ -98,7 +98,8 @@ public:
    */
   itkGetConstMacro(Attribute, AttributeType);
   itkSetMacro(Attribute, AttributeType);
-  void SetAttribute(const std::string & s)
+  void
+  SetAttribute(const std::string & s)
   {
     this->SetAttribute( LabelObjectType::GetAttributeFromName(s) );
   }
@@ -110,7 +111,8 @@ protected:
   void GenerateData();
 
   template< typename TAttributeAccessor >
-  void TemplatedGenerateData(const TAttributeAccessor & accessor)
+  void
+  TemplatedGenerateData(const TAttributeAccessor & accessor)
   {
     // Allocate the output
     this->AllocateOutputs();
@@ -124,7 +126,7 @@ protected:
     // TODO: really report the progress
 
     for ( typename ImageType::Iterator it2( this->GetLabelMap() );
-          ! it2.IsAtEnd();
+          !it2.IsAtEnd();
           ++it2 )
       {
       LabelObjectType *lo = it2.GetLabelObject();
@@ -133,7 +135,7 @@ protected:
       lo->Optimize();
 
       typename LabelObjectType::ConstLineIterator lit( lo );
-      while( ! lit.IsAtEnd() )
+      while( !lit.IsAtEnd() )
         {
         pq.push( LineOfLabelObject(lit.GetLine(), lo) );
         ++lit;
@@ -243,7 +245,7 @@ protected:
             prevLength = idx[0] - prevIdx[0];
             if ( prevLength != 0 )
               {
-              lines.back(). line.SetLength(idx[0] - prevIdx[0]);
+              lines.back().line.SetLength(idx[0] - prevIdx[0]);
               }
             else
               {
@@ -294,7 +296,7 @@ protected:
 
     // remove objects without lines
     typename ImageType::Iterator it( this->GetLabelMap() );
-    while ( ! it.IsAtEnd() )
+    while ( !it.IsAtEnd() )
       {
       typename LabelObjectType::LabelType label = it.GetLabel();
       LabelObjectType *labelObject = it.GetLabelObject();
@@ -332,12 +334,13 @@ private:
 
     LineType line;
     LabelObjectType *labelObject;
-  };
+    };
 
   class LineOfLabelObjectComparator
   {
 public:
-    bool operator()(const LineOfLabelObject & lla, const LineOfLabelObject & llb)
+    bool
+    operator()(const LineOfLabelObject & lla, const LineOfLabelObject & llb)
     {
       for ( int i = ImageDimension - 1; i >= 0; i-- )
         {
@@ -352,6 +355,7 @@ public:
         }
       return false;
     }
+
   };
 }; // end of class
 } // end namespace itk

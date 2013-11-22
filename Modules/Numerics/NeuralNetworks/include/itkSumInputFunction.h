@@ -57,19 +57,21 @@ public:
 protected:
 
   SumInputFunction();
-  virtual ~SumInputFunction();
+  virtual
+  ~SumInputFunction();
 
   unsigned int m_Size;
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
+
 };
 
 } // end namespace Statistics
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkSumInputFunction.hxx"
+#include "itkSumInputFunction.hxx"
 #endif
 
 #endif

@@ -20,7 +20,7 @@
 namespace itk
 {
 MemoryProbe
-::MemoryProbe():
+::MemoryProbe() :
   ResourceProbe< MemoryProbe::MemoryLoadType, double >("Memory", "kB")
 {}
 
@@ -34,4 +34,5 @@ MemoryProbe
 {
   return static_cast< MemoryProbe::MemoryLoadType >( m_MemoryObserver.GetMemoryUsage() );
 }
+
 } // end namespace itk

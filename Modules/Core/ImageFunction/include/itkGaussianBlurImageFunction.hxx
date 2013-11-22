@@ -294,7 +294,7 @@ GaussianBlurImageFunction< TInputImage, TOutput >
   typename InternalImageType::RegionType regionS = region;
   regionS.Crop( inputImage->GetBufferedRegion() );
 
-  itk::ImageLinearConstIteratorWithIndex< InputImageType >     it(inputImage, regionS);
+  itk::ImageLinearConstIteratorWithIndex< InputImageType > it(inputImage, regionS);
   itk::ImageLinearIteratorWithIndex< InternalImageType >   itN(m_InternalImage, regionN);
   it.SetDirection(1);
   itN.SetDirection(1);
@@ -370,7 +370,6 @@ GaussianBlurImageFunction< TInputImage, TOutput >
     NeighborhoodType gaussianNeighborhood;
     gaussianNeighborhood.SetRadius(size);
 
-
     itk::FixedArray< double, 1 > s;
     s[0] = m_Sigma[direction];
     m_GaussianFunction->SetSigma(s);
@@ -444,6 +443,7 @@ GaussianBlurImageFunction< TInputImage, TOutput >
 
   return this->EvaluateAtIndex(index, m_ContinuousOperatorArray);
 }
+
 } // end namespace itk
 
 #endif

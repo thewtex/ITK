@@ -20,7 +20,8 @@
 #include <metaSurface.h>
 #include "itksys/SystemTools.hxx"
 
-int testMetaSurface(int argc, char * argv[])
+int
+testMetaSurface(int argc, char * argv[])
 {
   if (argc > 1)
     {
@@ -33,8 +34,8 @@ int testMetaSurface(int argc, char * argv[])
   SurfacePnt* pnt;
 
   unsigned int i;
-  for(i=0;i<10;i++)
-  {
+  for(i=0; i<10; i++)
+    {
     pnt = new SurfacePnt(3);
     pnt->m_X[0]=(float)0.2;
     pnt->m_X[1]=static_cast<float>(i);
@@ -43,8 +44,7 @@ int testMetaSurface(int argc, char * argv[])
     pnt->m_V[1]=static_cast<float>(i);
     pnt->m_V[2]=static_cast<float>(i);
     surface->GetPoints().push_back(pnt);
-  }
-
+    }
 
   std::cout << "Writing ASCII test file ...";
 
@@ -57,33 +57,33 @@ int testMetaSurface(int argc, char * argv[])
   surface->Read("mySurface.meta");
   surface->PrintInfo();
 
-  MetaSurface::PointListType list =  surface->GetPoints();
+  MetaSurface::PointListType                 list =  surface->GetPoints();
   MetaSurface::PointListType::const_iterator it = list.begin();
 
   unsigned int d;
-  while(it != list.end())
-  {
+  while(it != list.end() )
+    {
 
     for(d = 0; d < 3; d++)
-    {
+      {
       std::cout << (*it)->m_X[d] << " ";
-    }
+      }
     std::cout << std::endl;
     for(d = 0; d < 3; d++)
-    {
+      {
       std::cout << (*it)->m_V[d] << " ";
-    }
+      }
     std::cout << std::endl;
     ++it;
-  }
+    }
 
   delete surface;
 
   // Testing Binary Data
   MetaSurface* surfaceBin = new MetaSurface(3);
 
-  for(i=0;i<10;i++)
-  {
+  for(i=0; i<10; i++)
+    {
     pnt = new SurfacePnt(3);
     pnt->m_X[0]=(float)0.2;
     pnt->m_X[1]=static_cast<float>(i);
@@ -92,8 +92,7 @@ int testMetaSurface(int argc, char * argv[])
     pnt->m_V[1]=static_cast<float>(i);
     pnt->m_V[2]=static_cast<float>(i);
     surfaceBin->GetPoints().push_back(pnt);
-  }
-
+    }
 
   std::cout << "Writing Binary test file ...";
   surfaceBin->BinaryData(true);
@@ -110,20 +109,20 @@ int testMetaSurface(int argc, char * argv[])
   MetaSurface::PointListType list2 =  surfaceBin->GetPoints();
   it = list2.begin();
 
-  while(it != list2.end())
-  {
-    for(d = 0; d < 3; d++)
+  while(it != list2.end() )
     {
+    for(d = 0; d < 3; d++)
+      {
       std::cout << (*it)->m_X[d] << " ";
-    }
+      }
     std::cout << std::endl;
     for(d = 0; d < 3; d++)
-    {
+      {
       std::cout << (*it)->m_V[d] << " ";
-    }
+      }
     std::cout << std::endl;
     ++it;
-  }
+    }
 
   delete surfaceBin;
   std::cout << "done" << std::endl;

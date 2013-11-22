@@ -59,7 +59,7 @@ namespace itk
 template< typename TVRef,  typename TFRef,
           typename TPrimalData, typename TDualData,
           bool PrimalDual = true >
-class GeometricalQuadEdge:public QuadEdge
+class GeometricalQuadEdge : public QuadEdge
 {
 public:
   /** Hierarchy typedefs. */
@@ -111,20 +111,33 @@ public:
 public:
   /** Memory creation methods. */
   GeometricalQuadEdge();
-  virtual ~GeometricalQuadEdge() {}
+  virtual
+  ~GeometricalQuadEdge() {}
 
   /** Set methods. */
-  inline void SetOrigin(const OriginRefType v)
-  { m_Origin = v; }
+  inline void
+  SetOrigin(const OriginRefType v)
+  {
+    m_Origin = v;
+  }
 
-  inline void SetDestination(const OriginRefType v)
-  { this->GetSym()->SetOrigin(v); }
+  inline void
+  SetDestination(const OriginRefType v)
+  {
+    this->GetSym()->SetOrigin(v);
+  }
 
-  inline void SetRight(const DualOriginRefType v)
-  { this->GetRot()->SetOrigin(v); }
+  inline void
+  SetRight(const DualOriginRefType v)
+  {
+    this->GetRot()->SetOrigin(v);
+  }
 
-  inline void SetLeft(const DualOriginRefType v)
-  { this->GetInvRot()->SetOrigin(v); }
+  inline void
+  SetLeft(const DualOriginRefType v)
+  {
+    this->GetInvRot()->SetOrigin(v);
+  }
 
   /**
    * Set the Left() of all the edges in the Lnext() ring of "this"
@@ -136,18 +149,48 @@ public:
   bool SetLnextRingWithSameLeftFace(const DualOriginRefType faceGeom,
                                     int maxSize = 100);
 
-  inline void UnsetOrigin()   { m_Origin = m_NoPoint; }
-  inline void UnsetDestination()  { this->GetSym()->UnsetOrigin(); }
-  inline void UnsetRight() { this->GetRot()->UnsetOrigin(); }
-  inline void UnsetLeft()  { this->GetInvRot()->UnsetOrigin(); }
+  inline void
+  UnsetOrigin()   {
+    m_Origin = m_NoPoint;
+  }
+
+  inline void
+  UnsetDestination()  {
+    this->GetSym()->UnsetOrigin();
+  }
+
+  inline void
+  UnsetRight() {
+    this->GetRot()->UnsetOrigin();
+  }
+
+  inline void
+  UnsetLeft()  {
+    this->GetInvRot()->UnsetOrigin();
+  }
 
   /** Get methods. */
   //ORIENTATION_NOTE: this definition of GetLeft (or GetRight)
   // implicitely assumes that the Onext order is counter-clockwise !
-  inline const OriginRefType GetOrigin() const { return ( m_Origin ); }
-  inline const OriginRefType GetDestination()  const { return ( GetSym()->GetOrigin() ); }
-  inline const DualOriginRefType GetRight() const { return ( GetRot()->GetOrigin() ); }
-  inline const DualOriginRefType GetLeft() const { return ( GetInvRot()->GetOrigin() ); }
+  inline const OriginRefType
+  GetOrigin() const {
+    return ( m_Origin );
+  }
+
+  inline const OriginRefType
+  GetDestination()  const {
+    return ( GetSym()->GetOrigin() );
+  }
+
+  inline const DualOriginRefType
+  GetRight() const {
+    return ( GetRot()->GetOrigin() );
+  }
+
+  inline const DualOriginRefType
+  GetLeft() const {
+    return ( GetInvRot()->GetOrigin() );
+  }
 
   /** Boolean accessors. */
   bool IsOriginSet() const;
@@ -159,40 +202,79 @@ public:
   bool IsLeftSet() const;
 
   /** Extra data set methods. */
-  inline void SetPrimalData(const PrimalDataType data)
-  { m_Data = data; this->SetPrimalData(); }
-  inline void SetDualData(const DualDataType data)
-  { this->GetRot()->SetPrimalData(data); }
+  inline void
+  SetPrimalData(const PrimalDataType data)
+  {
+    m_Data = data; this->SetPrimalData();
+  }
 
-  inline void SetPrimalData() { m_DataSet = true; }
-  inline void SetDualData()   { this->GetRot()->SetPrimalData(); }
+  inline void
+  SetDualData(const DualDataType data)
+  {
+    this->GetRot()->SetPrimalData(data);
+  }
 
-  inline void UnsetPrimalData() { m_Data = false; }
-  inline void UnsetDualData()   { this->GetRot()->UnsetPrimalData(); }
+  inline void
+  SetPrimalData() {
+    m_DataSet = true;
+  }
+
+  inline void
+  SetDualData()   {
+    this->GetRot()->SetPrimalData();
+  }
+
+  inline void
+  UnsetPrimalData() {
+    m_Data = false;
+  }
+
+  inline void
+  UnsetDualData()   {
+    this->GetRot()->UnsetPrimalData();
+  }
 
   /** Extra data get methods. */
-  inline PrimalDataType GetPrimalData() { return ( m_Data ); }
-  inline DualDataType   GetDualData()
-  { return ( this->GetRot()->GetPrimalData() ); }
+  inline PrimalDataType
+  GetPrimalData() {
+    return ( m_Data );
+  }
+
+  inline DualDataType
+  GetDualData()
+  {
+    return ( this->GetRot()->GetPrimalData() );
+  }
 
   /** Boolean accessors. */
-  inline bool IsPrimalDataSet() { return ( m_DataSet ); }
-  inline bool IsDualDataSet()
-  { return ( this->GetRot()->IsPrimalDataSet() ); }
+  inline bool
+  IsPrimalDataSet() {
+    return ( m_DataSet );
+  }
+
+  inline bool
+  IsDualDataSet()
+  {
+    return ( this->GetRot()->IsPrimalDataSet() );
+  }
 
   /**
    * @return Returns true when "this" has no faces set on both sides.
    *         Return false otherwise.
    */
-  inline bool IsWire()
-  { return ( !( this->IsLeftSet() ) && !( this->IsRightSet() ) ); }
+  inline bool
+  IsWire()
+  {
+    return ( !( this->IsLeftSet() ) && !( this->IsRightSet() ) );
+  }
 
   /**
    * @return Returns true when "this" is on the boundary i.e.
    *         one and only one of the faces is set. Return false
    *         otherwise.
    */
-  inline bool IsAtBorder()
+  inline bool
+  IsAtBorder()
   {
     return ( ( this->IsLeftSet() && !this->IsRightSet() )
              || ( !this->IsLeftSet() && this->IsRightSet() ) );
@@ -202,8 +284,11 @@ public:
    * @return Returns true when "this" has faces set on both sides.
    *         Return false otherwise.
    */
-  inline bool IsInternal() const
-  { return ( this->IsLeftSet() && this->IsRightSet() ); }
+  inline bool
+  IsInternal() const
+  {
+    return ( this->IsLeftSet() && this->IsRightSet() );
+  }
 
   bool IsOriginInternal() const;
 
@@ -223,11 +308,20 @@ public:
   bool ReorderOnextRingBeforeAddFace(Self *second);
 
   /** Disconnection methods. */
-  inline bool IsOriginDisconnected()
-  { return ( this == this->GetOnext() ); }
-  inline bool IsDestinationDisconnected()
-  { return ( this->GetSym()->IsOriginDisconnected() ); }
-  inline bool IsDisconnected()
+  inline bool
+  IsOriginDisconnected()
+  {
+    return ( this == this->GetOnext() );
+  }
+
+  inline bool
+  IsDestinationDisconnected()
+  {
+    return ( this->GetSym()->IsOriginDisconnected() );
+  }
+
+  inline bool
+  IsDisconnected()
   {
     return ( this->IsOriginDisconnected()
              && this->IsDestinationDisconnected() );
@@ -235,8 +329,15 @@ public:
 
   void Disconnect();
 
-  inline void SetIdent(const LineCellIdentifier & User_Value) { this->m_LineCellIdent = User_Value; }
-  inline LineCellIdentifier GetIdent() { return ( this->m_LineCellIdent ); }
+  inline void
+  SetIdent(const LineCellIdentifier & User_Value) {
+    this->m_LineCellIdent = User_Value;
+  }
+
+  inline LineCellIdentifier
+  GetIdent() {
+    return ( this->m_LineCellIdent );
+  }
 
 public:
   // Reserved OriginRefType designated to represent the absence of Origin

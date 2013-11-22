@@ -23,7 +23,8 @@
 
 #include "itkTestingMacros.h"
 
-int itkLabelImageToStatisticsLabelMapFilterTest1(int argc, char * argv[])
+int
+itkLabelImageToStatisticsLabelMapFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 9 )
@@ -51,7 +52,7 @@ int itkLabelImageToStatisticsLabelMapFilterTest1(int argc, char * argv[])
   //converting Label image to Statistics label map
   // don't set the output type to test the default value of the template parameter
   typedef itk::LabelImageToStatisticsLabelMapFilter< ImageType, ImageType > I2LType;
-  I2LType::Pointer i2l = I2LType::New();
+  I2LType::Pointer         i2l = I2LType::New();
   itk::SimpleFilterWatcher watcher1( i2l );
 
   i2l->SetInput( reader->GetOutput() );
@@ -109,7 +110,7 @@ int itkLabelImageToStatisticsLabelMapFilterTest1(int argc, char * argv[])
   TEST_SET_GET_VALUE( numberOfBins, i2l->GetNumberOfBins() );
 
   typedef itk::LabelMapToLabelImageFilter< I2LType::OutputImageType, ImageType> L2IType;
-  L2IType::Pointer l2i = L2IType::New();
+  L2IType::Pointer         l2i = L2IType::New();
   itk::SimpleFilterWatcher watcher2( l2i );
 
   l2i->SetInput( i2l->GetOutput() );

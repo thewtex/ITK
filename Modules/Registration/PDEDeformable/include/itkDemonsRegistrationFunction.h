@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKPDEDeformableRegistration
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
-class DemonsRegistrationFunction:
+class DemonsRegistrationFunction :
   public PDEDeformableRegistrationFunction< TFixedImage,
                                             TMovingImage,
                                             TDisplacementField >
@@ -118,26 +118,36 @@ public:
 
   /** Moving image gradient calculator type. */
   typedef CentralDifferenceImageFunction< MovingImageType, CoordRepType >
-  MovingImageGradientCalculatorType;
+    MovingImageGradientCalculatorType;
   typedef typename MovingImageGradientCalculatorType::Pointer
-  MovingImageGradientCalculatorPointer;
+    MovingImageGradientCalculatorPointer;
 
   /** Set the moving image interpolator. */
-  void SetMovingImageInterpolator(InterpolatorType *ptr)
-  { m_MovingImageInterpolator = ptr; }
+  void
+  SetMovingImageInterpolator(InterpolatorType *ptr)
+  {
+    m_MovingImageInterpolator = ptr;
+  }
 
   /** Get the moving image interpolator. */
-  InterpolatorType * GetMovingImageInterpolator(void)
-  { return m_MovingImageInterpolator; }
+  InterpolatorType *
+  GetMovingImageInterpolator(void)
+  {
+    return m_MovingImageInterpolator;
+  }
 
   /** This class uses a constant timestep of 1. */
-  virtual TimeStepType ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) )
+  virtual TimeStepType
+  ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) )
   const
-  { return m_TimeStep; }
+  {
+    return m_TimeStep;
+  }
 
   /** Return a pointer to a global data structure that is passed to
    * this object from the solver at each calculation.  */
-  virtual void * GetGlobalDataPointer() const
+  virtual void *
+  GetGlobalDataPointer() const
   {
     GlobalDataStruct *global = new GlobalDataStruct();
 
@@ -163,20 +173,33 @@ public:
   /** Get the metric value. The metric value is the mean square difference
    * in intensity between the fixed image and transforming moving image
    * computed over the the overlapping region between the two images. */
-  virtual double GetMetric() const
-  { return m_Metric; }
+  virtual double
+  GetMetric() const
+  {
+    return m_Metric;
+  }
 
   /** Get the rms change in displacement field. */
-  virtual double GetRMSChange() const
-  { return m_RMSChange; }
+  virtual double
+  GetRMSChange() const
+  {
+    return m_RMSChange;
+  }
 
   /** Select if the fixed image or moving image gradient is used for
    * the computating the demon forces. The fixed image gradient is used
    * by default. */
-  virtual void SetUseMovingImageGradient(bool flag)
-  { m_UseMovingImageGradient = flag; }
-  virtual bool GetUseMovingImageGradient() const
-  { return m_UseMovingImageGradient; }
+  virtual void
+  SetUseMovingImageGradient(bool flag)
+  {
+    m_UseMovingImageGradient = flag;
+  }
+
+  virtual bool
+  GetUseMovingImageGradient() const
+  {
+    return m_UseMovingImageGradient;
+  }
 
   /** Set/Get the threshold below which the absolute difference of
    * intensity yields a match. When the intensities match between a
@@ -193,7 +216,7 @@ protected:
 
   /** FixedImage image neighborhood iterator type. */
   typedef ConstNeighborhoodIterator< FixedImageType >
-  FixedImageNeighborhoodIteratorType;
+    FixedImageNeighborhoodIteratorType;
 
   /** A global data type for this class of equation. Used to store
    * information for computing the metric. */
@@ -201,7 +224,7 @@ protected:
     double m_SumOfSquaredDifference;
     SizeValueType m_NumberOfPixelsProcessed;
     double m_SumOfSquaredChange;
-  };
+    };
 
 private:
   DemonsRegistrationFunction(const Self &); //purposely not implemented

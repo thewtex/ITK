@@ -65,6 +65,7 @@ InvertIntensityImageFilter< TInputImage, TOutputImage >
      << static_cast< typename NumericTraits< InputPixelType >::PrintType >( m_Maximum )
      << std::endl;
 }
+
 } // end namespace itk
 
 #endif

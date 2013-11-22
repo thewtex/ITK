@@ -23,7 +23,8 @@
 #include "itkJoinImageFilter.h"
 #include "itkHistogramToLogProbabilityImageFilter.h"
 
-int itkHistogramToLogProbabilityImageFilterTest2( int argc, char * argv [] )
+int
+itkHistogramToLogProbabilityImageFilterTest2( int argc, char * argv [] )
 {
 
   if( argc < 3 )
@@ -33,9 +34,8 @@ int itkHistogramToLogProbabilityImageFilterTest2( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-
-  const unsigned int                Dimension = 2;
-  typedef unsigned char             PixelComponentType;
+  const unsigned int Dimension = 2;
+  typedef unsigned char PixelComponentType;
 
   typedef itk::Image< PixelComponentType, Dimension > ScalarImageType;
   typedef itk::ImageFileReader< ScalarImageType >     ReaderType;
@@ -62,7 +62,7 @@ int itkHistogramToLogProbabilityImageFilterTest2( int argc, char * argv [] )
 
   JoinFilterType::Pointer joinFilter = JoinFilterType::New();
 
-  typedef JoinFilterType::OutputImageType     ArrayImageType;
+  typedef JoinFilterType::OutputImageType ArrayImageType;
 
   joinFilter->SetInput1( reader1->GetOutput() );
   joinFilter->SetInput2( reader2->GetOutput() );
@@ -70,7 +70,7 @@ int itkHistogramToLogProbabilityImageFilterTest2( int argc, char * argv [] )
   typedef itk::Statistics::ImageToHistogramFilter< ArrayImageType >
     HistogramFilterType;
 
-  typedef HistogramFilterType::HistogramMeasurementVectorType  HistogramMeasurementVectorType;
+  typedef HistogramFilterType::HistogramMeasurementVectorType HistogramMeasurementVectorType;
 
   const unsigned int NumberOfComponents = 2;
 
@@ -92,7 +92,6 @@ int itkHistogramToLogProbabilityImageFilterTest2( int argc, char * argv [] )
   imageMin[1] = minmaxFilter->GetMinimum();
   imageMax[1] = minmaxFilter->GetMaximum();
 
-
   HistogramFilterType::Pointer histogramFilter = HistogramFilterType::New();
 
   histogramFilter->SetInput( joinFilter->GetOutput() );
@@ -111,8 +110,7 @@ int itkHistogramToLogProbabilityImageFilterTest2( int argc, char * argv [] )
 
   histogramFilter->Update();
 
-
-  typedef HistogramFilterType::HistogramType  HistogramType;
+  typedef HistogramFilterType::HistogramType HistogramType;
   const HistogramType * histogram = histogramFilter->GetOutput();
 
   typedef itk::HistogramToLogProbabilityImageFilter< HistogramType > HistogramToImageFilterType;
@@ -122,7 +120,7 @@ int itkHistogramToLogProbabilityImageFilterTest2( int argc, char * argv [] )
 
   typedef HistogramToImageFilterType::OutputImageType OutputImageType;
 
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
 
   writer->SetFileName( argv[3] );

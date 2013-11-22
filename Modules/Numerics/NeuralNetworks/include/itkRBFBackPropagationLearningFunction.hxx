@@ -49,36 +49,35 @@ RBFBackPropagationLearningFunction<LayerType,TTargetVector>
   typedef typename RbfLayerType::InternalVectorType  ArrayType;
   typename LayerType::ValuePointer currentdeltavalues = inputweightset->GetTotalDeltaValues();
   vnl_matrix<ValueType> DW_temp(currentdeltavalues,inputweightset->GetNumberOfOutputNodes(),
-                                           inputweightset->GetNumberOfInputNodes());
+                                inputweightset->GetNumberOfInputNodes() );
   typename LayerType::ValuePointer DBValues = inputweightset->GetDeltaBValues();
   vnl_vector<ValueType> DB;
-  DB.set_size(inputweightset->GetNumberOfOutputNodes());
+  DB.set_size(inputweightset->GetNumberOfOutputNodes() );
   DB.fill(0);
   DB.copy_in(DBValues);
 
   if(layer->GetLayerTypeCode() == LayerInterfaceType::OUTPUTLAYER) //If output layer do back propagation
     {
     DW_temp *= lr;
-    inputweightset->SetDWValues(DW_temp.data_block());
+    inputweightset->SetDWValues(DW_temp.data_block() );
     DB *= lr;
-    inputweightset->SetDBValues(DB.data_block());
+    inputweightset->SetDBValues(DB.data_block() );
     }
   else //else update centers, widths using gradient descent
     {
     DW_temp *= m_LearningRate2;
     DB *= m_LearningRate3;
 
-    inputweightset->SetDWValues(DW_temp.data_block());
-    inputweightset->SetDBValues(DB.data_block());
+    inputweightset->SetDWValues(DW_temp.data_block() );
+    inputweightset->SetDBValues(DB.data_block() );
     }
 }
 
 template<typename LayerType, typename TTargetVector>
 void
 RBFBackPropagationLearningFunction<LayerType,TTargetVector>
-::Learn(LayerType* itkNotUsed(layer), TTargetVector itkNotUsed(errors), ValueType itkNotUsed(lr))
-{
-}
+::Learn(LayerType* itkNotUsed(layer), TTargetVector itkNotUsed(errors), ValueType itkNotUsed(lr) )
+{}
 
 /** Print the object */
 template<typename LayerType, typename TTargetVector>

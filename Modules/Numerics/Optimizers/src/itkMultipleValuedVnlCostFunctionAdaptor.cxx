@@ -22,7 +22,7 @@ namespace itk
 /**  Constructor.  */
 MultipleValuedVnlCostFunctionAdaptor
 ::MultipleValuedVnlCostFunctionAdaptor(
-  unsigned int spaceDimension, unsigned int numberOfValues):
+  unsigned int spaceDimension, unsigned int numberOfValues) :
   vnl_least_squares_function(spaceDimension, numberOfValues)
 {
   this->m_ScalesInitialized = false;
@@ -37,13 +37,14 @@ MultipleValuedVnlCostFunctionAdaptor
   //Only the inverse is used computes the inverse at each iteration.
   //provides 1 commone place where the inverse can be computes
   //and validated.
-  m_InverseScales.SetSize(scales.GetSize());
+  m_InverseScales.SetSize(scales.GetSize() );
 
   for( unsigned int i = 0; i < scales.size(); ++i )
     {
     if ( scales[i] <= NumericTraits<double>::epsilon() )
       {
-      itkGenericExceptionMacro("ERROR: Scales must have value greater than epsilon! Scale[" << i << "] = " << scales[i] );
+      itkGenericExceptionMacro("ERROR: Scales must have value greater than epsilon! Scale[" << i << "] = " <<
+        scales[i] );
       }
     m_InverseScales[i] = NumericTraits<double>::One / scales[i];
     }
@@ -146,7 +147,7 @@ MultipleValuedVnlCostFunctionAdaptor
     }
 
   *ff = static_cast< InternalMeasureType >(
-    this->m_CostFunction->GetValue(parameters) );
+      this->m_CostFunction->GetValue(parameters) );
   this->m_CostFunction->GetDerivative(parameters, externalGradient);
 
   this->ConvertExternalToInternalGradient(externalGradient, *g);
@@ -170,6 +171,7 @@ MultipleValuedVnlCostFunctionAdaptor
   const unsigned int cols = input.cols();
 
   const ScalesType & invScales = this->GetInverseScales();
+
   for ( unsigned int i = 0; i < rows; i++ )
     {
     for ( unsigned int j = 0; j < cols; j++ )
@@ -258,4 +260,5 @@ MultipleValuedVnlCostFunctionAdaptor
 {
   return m_CachedCurrentParameters;
 }
+
 } // end namespace itk

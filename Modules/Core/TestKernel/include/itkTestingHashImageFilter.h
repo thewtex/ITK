@@ -18,7 +18,6 @@
 #ifndef __itkTestingHashImageFilter_h
 #define __itkTestingHashImageFilter_h
 
-
 #include "itkSimpleDataObjectDecorator.h"
 #include "itkInPlaceImageFilter.h"
 
@@ -42,8 +41,8 @@ namespace Testing
  * \ingroup ITKTestKernel
  */
 template < typename TImageType >
-class HashImageFilter:
-    public InPlaceImageFilter< TImageType, TImageType >
+class HashImageFilter :
+  public InPlaceImageFilter< TImageType, TImageType >
 {
 public:
   /** Standard Self typedef */
@@ -64,15 +63,26 @@ public:
   typedef typename DataObject::Pointer DataObjectPointer;
 
   /** Type of DataObjects used for scalar outputs */
-  typedef SimpleDataObjectDecorator< std::string >  HashObjectType;
+  typedef SimpleDataObjectDecorator< std::string > HashObjectType;
 
   /** Get the computed Hash values */
-  std::string GetHash() const
-  { return this->GetHashOutput()->Get(); }
-  HashObjectType* GetHashOutput()
-  { return static_cast< HashObjectType *>( this->ProcessObject::GetOutput(1) ); }
-  const HashObjectType* GetHashOutput() const
-  { return static_cast<const HashObjectType *>( this->ProcessObject::GetOutput(1) ); }
+  std::string
+  GetHash() const
+  {
+    return this->GetHashOutput()->Get();
+  }
+
+  HashObjectType*
+  GetHashOutput()
+  {
+    return static_cast< HashObjectType *>( this->ProcessObject::GetOutput(1) );
+  }
+
+  const HashObjectType*
+  GetHashOutput() const
+  {
+    return static_cast<const HashObjectType *>( this->ProcessObject::GetOutput(1) );
+  }
 
   /** Make a DataObject of the correct type to be used as the specified
    * output. */
@@ -97,8 +107,9 @@ protected:
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual
-    void ThreadedGenerateData(const typename Superclass::OutputImageRegionType &,
-                              ThreadIdType) {}
+  void
+  ThreadedGenerateData(const typename Superclass::OutputImageRegionType &,
+                       ThreadIdType) {}
 
   // See superclass for doxygen documentation
   //
@@ -120,7 +131,6 @@ private:
 
 } // end namespace Testing
 } // end namespace itk
-
 
 #include "itkTestingHashImageFilter.hxx"
 

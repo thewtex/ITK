@@ -32,45 +32,51 @@ template<typename TFilter>
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef CommandIterationUpdate                                          Self;
-  typedef itk::Command                                                    Superclass;
-  typedef itk::SmartPointer<Self>                                         Pointer;
+  typedef CommandIterationUpdate  Self;
+  typedef itk::Command            Superclass;
+  typedef itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
-  typedef typename TFilter::FixedImageType                                FixedImageType;
+  typedef typename TFilter::FixedImageType FixedImageType;
   itkStaticConstMacro( ImageDimension, unsigned int, FixedImageType::ImageDimension ); /** ImageDimension constants */
 
-  typedef itk::ShrinkImageFilter<FixedImageType, FixedImageType>          ShrinkFilterType;
-  typedef typename TFilter::OutputTransformType::ScalarType               RealType;
-  typedef itk::DisplacementFieldTransform<RealType, ImageDimension>       DisplacementFieldTransformType;
-  typedef typename DisplacementFieldTransformType::DisplacementFieldType  DisplacementFieldType;
+  typedef itk::ShrinkImageFilter<FixedImageType, FixedImageType>         ShrinkFilterType;
+  typedef typename TFilter::OutputTransformType::ScalarType              RealType;
+  typedef itk::DisplacementFieldTransform<RealType, ImageDimension>      DisplacementFieldTransformType;
+  typedef typename DisplacementFieldTransformType::DisplacementFieldType DisplacementFieldType;
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {}
 
 public:
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *) caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     const TFilter * filter =
       dynamic_cast< const TFilter * >( object );
+
     if( typeid( event ) != typeid( itk::IterationEvent ) )
-      { return; }
+            { return; }
 
     unsigned int currentLevel = filter->GetCurrentLevel();
-    typename TFilter::ShrinkFactorsPerDimensionContainerType shrinkFactors = filter->GetShrinkFactorsPerDimension( currentLevel );
+    typename TFilter::ShrinkFactorsPerDimensionContainerType shrinkFactors = filter->GetShrinkFactorsPerDimension(
+        currentLevel );
     typename TFilter::SmoothingSigmasArrayType smoothingSigmas = filter->GetSmoothingSigmasPerLevel();
-    typename TFilter::TransformParametersAdaptorsContainerType adaptors = filter->GetTransformParametersAdaptorsPerLevel();
+    typename TFilter::TransformParametersAdaptorsContainerType adaptors =
+      filter->GetTransformParametersAdaptorsPerLevel();
 
     std::cout << "  Current level = " << currentLevel << std::endl;
     std::cout << "    shrink factor = " << shrinkFactors << std::endl;
     std::cout << "    smoothing sigma = " << smoothingSigmas[currentLevel] << std::endl;
-    std::cout << "    required fixed parameters = " << adaptors[currentLevel]->GetRequiredFixedParameters() << std::endl;
+    std::cout << "    required fixed parameters = " << adaptors[currentLevel]->GetRequiredFixedParameters() <<
+    std::endl;
 
     /*
     testing "itkGetConstObjectMacro" at each iteration
@@ -83,10 +89,12 @@ public:
     const typename FixedImageType::SizeType ImageSize = shrinkFilter->GetOutput()->GetBufferedRegion().GetSize();
 
     const typename DisplacementFieldType::SizeType FixedDisplacementFieldSize =
-      const_cast<DisplacementFieldTransformType *>( filter->GetFixedToMiddleTransform() )->GetDisplacementField()->GetBufferedRegion().GetSize();
+      const_cast<DisplacementFieldTransformType *>( filter->GetFixedToMiddleTransform() )->GetDisplacementField()->
+      GetBufferedRegion().GetSize();
 
     const typename DisplacementFieldType::SizeType MovingDisplacementFieldSize =
-      const_cast<DisplacementFieldTransformType *>( filter->GetMovingToMiddleTransform() )->GetDisplacementField()->GetBufferedRegion().GetSize();
+      const_cast<DisplacementFieldTransformType *>( filter->GetMovingToMiddleTransform() )->GetDisplacementField()->
+      GetBufferedRegion().GetSize();
 
     if( ( FixedDisplacementFieldSize == ImageSize ) && ( MovingDisplacementFieldSize == ImageSize ) )
       {
@@ -95,14 +103,16 @@ public:
     else
       {
       itkExceptionMacro( "Internal transforms should be consistent with input image size at each iteration.  "
-         << "Image size = " << ImageSize << ".  Fixed field size = " << FixedDisplacementFieldSize
-         << ".  Moving field size = " << MovingDisplacementFieldSize << "." );
+                         << "Image size = " << ImageSize << ".  Fixed field size = " << FixedDisplacementFieldSize
+                         << ".  Moving field size = " << MovingDisplacementFieldSize << "." );
       }
-    }
+  }
+
 };
 
 template<unsigned int TDimension>
-int PerformDisplacementFieldImageRegistration( int itkNotUsed( argc ), char *argv[] )
+int
+PerformDisplacementFieldImageRegistration( int itkNotUsed( argc ), char *argv[] )
 {
   const unsigned int ImageDimension = TDimension;
 
@@ -126,7 +136,7 @@ int PerformDisplacementFieldImageRegistration( int itkNotUsed( argc ), char *arg
   movingImage->Update();
   movingImage->DisconnectPipeline();
 
-  typedef itk::AffineTransform<double, ImageDimension> AffineTransformType;
+  typedef itk::AffineTransform<double, ImageDimension>                                         AffineTransformType;
   typedef itk::ImageRegistrationMethodv4<FixedImageType, MovingImageType, AffineTransformType> AffineRegistrationType;
   typename AffineRegistrationType::Pointer affineSimple = AffineRegistrationType::New();
   affineSimple->SetFixedImage( fixedImage );
@@ -144,7 +154,7 @@ int PerformDisplacementFieldImageRegistration( int itkNotUsed( argc ), char *arg
   // Set the number of iterations
   typedef itk::GradientDescentOptimizerv4 GradientDescentOptimizerv4Type;
   GradientDescentOptimizerv4Type * optimizer = reinterpret_cast<GradientDescentOptimizerv4Type *>(
-    const_cast<typename AffineRegistrationType::OptimizerType *>( affineSimple->GetOptimizer() ) );
+      const_cast<typename AffineRegistrationType::OptimizerType *>( affineSimple->GetOptimizer() ) );
 #ifdef NDEBUG
   optimizer->SetNumberOfIterations( 100 );
 #else
@@ -171,7 +181,8 @@ int PerformDisplacementFieldImageRegistration( int itkNotUsed( argc ), char *arg
 
   typedef itk::CompositeTransform<RealType, ImageDimension> CompositeTransformType;
   typename CompositeTransformType::Pointer compositeTransform = CompositeTransformType::New();
-  compositeTransform->AddTransform( const_cast<typename AffineRegistrationType::OutputTransformType *>( affineSimple->GetOutput()->Get() ) );
+  compositeTransform->AddTransform( const_cast<typename AffineRegistrationType::OutputTransformType *>( affineSimple->
+                                                                                                        GetOutput()->Get() ) );
 
   typedef itk::ResampleImageFilter<MovingImageType, FixedImageType> AffineResampleFilterType;
   typename AffineResampleFilterType::Pointer affineResampler = AffineResampleFilterType::New();
@@ -184,7 +195,8 @@ int PerformDisplacementFieldImageRegistration( int itkNotUsed( argc ), char *arg
   affineResampler->SetDefaultPixelValue( 0 );
   affineResampler->Update();
 
-  std::string affineMovingImageFileName = std::string( argv[4] ) + std::string( "MovingImageAfterAffineTransform.nii.gz" );
+  std::string affineMovingImageFileName = std::string( argv[4] ) +
+    std::string( "MovingImageAfterAffineTransform.nii.gz" );
 
   typedef itk::ImageFileWriter<FixedImageType> AffineWriterType;
   typename AffineWriterType::Pointer affineWriter = AffineWriterType::New();
@@ -211,10 +223,12 @@ int PerformDisplacementFieldImageRegistration( int itkNotUsed( argc ), char *arg
   inverseDisplacementField->FillBuffer( zeroVector );
 
   typedef itk::SyNImageRegistrationMethod<FixedImageType, MovingImageType> DisplacementFieldRegistrationType;
-  typename DisplacementFieldRegistrationType::Pointer displacementFieldRegistration = DisplacementFieldRegistrationType::New();
+  typename DisplacementFieldRegistrationType::Pointer displacementFieldRegistration =
+    DisplacementFieldRegistrationType::New();
 
   typedef typename DisplacementFieldRegistrationType::OutputTransformType OutputTransformType;
-  typename OutputTransformType::Pointer outputTransform = const_cast<OutputTransformType *>( displacementFieldRegistration->GetOutput()->Get() );
+  typename OutputTransformType::Pointer outputTransform =
+    const_cast<OutputTransformType *>( displacementFieldRegistration->GetOutput()->Get() );
   outputTransform->SetDisplacementField( displacementField );
   outputTransform->SetInverseDisplacementField( inverseDisplacementField );
 
@@ -269,7 +283,8 @@ int PerformDisplacementFieldImageRegistration( int itkNotUsed( argc ), char *arg
     shrinkFilter->SetInput( displacementField );
     shrinkFilter->Update();
 
-    typename DisplacementFieldTransformAdaptorType::Pointer fieldTransformAdaptor = DisplacementFieldTransformAdaptorType::New();
+    typename DisplacementFieldTransformAdaptorType::Pointer fieldTransformAdaptor =
+      DisplacementFieldTransformAdaptorType::New();
     fieldTransformAdaptor->SetRequiredSpacing( shrinkFilter->GetOutput()->GetSpacing() );
     fieldTransformAdaptor->SetRequiredSize( shrinkFilter->GetOutput()->GetBufferedRegion().GetSize() );
     fieldTransformAdaptor->SetRequiredDirection( shrinkFilter->GetOutput()->GetDirection() );
@@ -347,7 +362,8 @@ int PerformDisplacementFieldImageRegistration( int itkNotUsed( argc ), char *arg
   inverseResampler->SetDefaultPixelValue( 0 );
   inverseResampler->Update();
 
-  std::string inverseWarpedFixedImageFileName = std::string( argv[4] ) + std::string( "InverseWarpedFixedImage.nii.gz" );
+  std::string inverseWarpedFixedImageFileName = std::string( argv[4] ) +
+    std::string( "InverseWarpedFixedImage.nii.gz" );
 
   typedef itk::ImageFileWriter<MovingImageType> InverseWriterType;
   typename InverseWriterType::Pointer inverseWriter = InverseWriterType::New();
@@ -366,25 +382,27 @@ int PerformDisplacementFieldImageRegistration( int itkNotUsed( argc ), char *arg
   return EXIT_SUCCESS;
 }
 
-int itkSyNImageRegistrationTest( int argc, char *argv[] )
+int
+itkSyNImageRegistrationTest( int argc, char *argv[] )
 {
   if ( argc < 5 )
     {
-    std::cout << argv[0] << " imageDimension fixedImage movingImage outputPrefix numberOfDeformableIterations learningRate" << std::endl;
+    std::cout << argv[0] <<
+    " imageDimension fixedImage movingImage outputPrefix numberOfDeformableIterations learningRate" << std::endl;
     exit( 1 );
     }
 
   switch( atoi( argv[1] ) )
-   {
-   case 2:
-     PerformDisplacementFieldImageRegistration<2>( argc, argv );
-     break;
-   case 3:
-     PerformDisplacementFieldImageRegistration<3>( argc, argv );
-     break;
-   default:
+    {
+    case 2:
+      PerformDisplacementFieldImageRegistration<2>( argc, argv );
+      break;
+    case 3:
+      PerformDisplacementFieldImageRegistration<3>( argc, argv );
+      break;
+    default:
       std::cerr << "Unsupported dimension" << std::endl;
       exit( EXIT_FAILURE );
-   }
+    }
   return EXIT_SUCCESS;
 }

@@ -35,6 +35,7 @@ MaximumEntropyThresholdCalculator<THistogram, TOutput>
 ::GenerateData(void)
 {
   const HistogramType * histogram = this->GetInput();
+
   // histogram->Print(std::cout);
   if ( histogram->GetTotalFrequency() == 0 )
     {
@@ -48,16 +49,16 @@ MaximumEntropyThresholdCalculator<THistogram, TOutput>
 
   unsigned int size = histogram->GetSize(0);
 
-  int threshold=-1;
-  int ih, it;
-  int first_bin;
-  int last_bin;
-  double tot_ent;  /* total entropy */
-  double max_ent;  /* max entropy */
-  double ent_back; /* entropy of the background pixels at a given threshold */
-  double ent_obj;  /* entropy of the object pixels at a given threshold */
+  int                 threshold=-1;
+  int                 ih, it;
+  int                 first_bin;
+  int                 last_bin;
+  double              tot_ent;          /* total entropy */
+  double              max_ent;          /* max entropy */
+  double              ent_back;         /* entropy of the background pixels at a given threshold */
+  double              ent_obj;          /* entropy of the object pixels at a given threshold */
   std::vector<double> norm_histo(size); /* normalized histogram */
-  std::vector<double> P1(size); /* cumulative normalized histogram */
+  std::vector<double> P1(size);         /* cumulative normalized histogram */
   std::vector<double> P2(size);
 
   const double tolerance = 2.220446049250313E-16; // should get this
@@ -82,7 +83,7 @@ MaximumEntropyThresholdCalculator<THistogram, TOutput>
   first_bin=0;
   for (ih = 0; (unsigned)ih < size; ih++ )
     {
-    if ( !(vcl_abs(P1[ih])<tolerance))
+    if ( !(vcl_abs(P1[ih])<tolerance) )
       {
       first_bin = ih;
       break;
@@ -93,7 +94,7 @@ MaximumEntropyThresholdCalculator<THistogram, TOutput>
   last_bin=size - 1;
   for (ih = size - 1; ih >= first_bin; ih-- )
     {
-    if ( !(vcl_abs(P2[ih])<tolerance))
+    if ( !(vcl_abs(P2[ih])<tolerance) )
       {
       last_bin = ih;
       break;
@@ -116,7 +117,7 @@ MaximumEntropyThresholdCalculator<THistogram, TOutput>
         }
       }
 
-  /* Entropy of the object pixels */
+    /* Entropy of the object pixels */
     ent_obj = 0.0;
     for ( ih = it + 1; (unsigned)ih < size; ih++ )
       {

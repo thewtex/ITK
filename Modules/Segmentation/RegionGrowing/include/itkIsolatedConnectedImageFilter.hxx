@@ -82,6 +82,7 @@ IsolatedConnectedImageFilter< TInputImage, TOutputImage >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   if ( this->GetInput() )
     {
     InputImagePointer image =
@@ -96,6 +97,7 @@ IsolatedConnectedImageFilter< TInputImage, TOutputImage >
 ::EnlargeOutputRequestedRegion(DataObject *output)
 {
   Superclass::EnlargeOutputRequestedRegion(output);
+
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -159,19 +161,19 @@ template< typename TInputImage, typename TOutputImage >
 const typename IsolatedConnectedImageFilter< TInputImage, TOutputImage >::SeedsContainerType &
 IsolatedConnectedImageFilter< TInputImage, TOutputImage >
 ::GetSeeds1() const
-{
+  {
   itkDebugMacro("returning Seeds1");
   return this->m_Seeds1;
-}
+  }
 
 template< typename TInputImage, typename TOutputImage >
 const typename IsolatedConnectedImageFilter< TInputImage, TOutputImage >::SeedsContainerType &
 IsolatedConnectedImageFilter< TInputImage, TOutputImage >
 ::GetSeeds2() const
-{
+  {
   itkDebugMacro("returning Seeds2");
   return this->m_Seeds2;
-}
+  }
 
 /** Add seed point 2. */
 template< typename TInputImage, typename TOutputImage >
@@ -410,6 +412,7 @@ IsolatedConnectedImageFilter< TInputImage, TOutputImage >
     }
   iterate.CompletedStep();
 }
+
 } // end namespace itk
 
 #endif

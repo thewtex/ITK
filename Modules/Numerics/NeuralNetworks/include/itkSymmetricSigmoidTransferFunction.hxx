@@ -36,8 +36,7 @@ SymmetricSigmoidTransferFunction<ScalarType>
 template<typename ScalarType>
 SymmetricSigmoidTransferFunction<ScalarType>
 ::~SymmetricSigmoidTransferFunction()
-{
-}
+{}
 
 template<typename ScalarType>
 ScalarType
@@ -45,6 +44,7 @@ SymmetricSigmoidTransferFunction<ScalarType>
 ::Evaluate(const ScalarType& input)  const
 {
   ScalarType val;
+
   if(input<-m_Range)
     {
     val=-0.5;
@@ -55,7 +55,7 @@ SymmetricSigmoidTransferFunction<ScalarType>
     }
   else
     {
-    val= (ScalarType)1.0/(1.0+vcl_exp(-input))-0.5;
+    val= (ScalarType)1.0/(1.0+vcl_exp(-input) )-0.5;
     }
   return val;
 }
@@ -67,9 +67,9 @@ SymmetricSigmoidTransferFunction<ScalarType>
 ::EvaluateDerivative(const ScalarType& input)  const
 {
   ScalarType f = Evaluate(input);
-  return (m_Offset+(0.25-f*f));
-}
 
+  return (m_Offset+(0.25-f*f) );
+}
 
 /** Print the object */
 template<typename ScalarType>
@@ -85,6 +85,5 @@ SymmetricSigmoidTransferFunction<ScalarType>
 
 } // end namespace Statistics
 } // end namespace itk
-
 
 #endif

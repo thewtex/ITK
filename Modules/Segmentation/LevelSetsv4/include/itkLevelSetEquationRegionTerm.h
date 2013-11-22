@@ -25,7 +25,7 @@ namespace itk
 template< typename TInput,
           typename TLevelSetContainer >
 class LevelSetEquationRegionTerm :
-    public LevelSetEquationTermBase< TInput, TLevelSetContainer >
+  public LevelSetEquationTermBase< TInput, TLevelSetContainer >
 {
 public:
   typedef LevelSetEquationRegionTerm                             Self;
@@ -47,11 +47,13 @@ protected:
   LevelSetEquationRegionTerm() : Superclass()
   {}
 
-  virtual ~LevelSetEquationRegionTerm() {}
+  virtual
+  ~LevelSetEquationRegionTerm() {}
 
 private:
   LevelSetEquationRegionTerm( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
+
 };
 }
 #endif // __itkLevelSetEquationRegionTerm_h

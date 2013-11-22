@@ -38,7 +38,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TOutputMesh >
-class RegularSphereMeshSource:public MeshSource< TOutputMesh >
+class RegularSphereMeshSource : public MeshSource< TOutputMesh >
 {
 public:
   /** Standard "Self" typedef. */
@@ -72,8 +72,8 @@ public:
   typedef typename TriCellType::SelfAutoPointer       TriCellAutoPointer;
   typedef typename TriCellType::CellAutoPointer       CellAutoPointer;
 
-  typedef std::pair< IdentifierType, IdentifierType >         IndexPairType;
-  typedef itk::MapContainer< IndexPairType, IdentifierType >  PointMapType;
+  typedef std::pair< IdentifierType, IdentifierType >        IndexPairType;
+  typedef itk::MapContainer< IndexPairType, IdentifierType > PointMapType;
 
   /** Set the resolution level to be used for generating cells in the Sphere.
    *  High values of this parameter will produce sphere with more triangles. */
@@ -113,6 +113,7 @@ protected:
 private:
   RegularSphereMeshSource(const Self &); //purposely not implemented
   void operator=(const Self &);          //purposely not implemented
+
 };
 } // end namespace itk
 

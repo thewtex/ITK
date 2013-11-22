@@ -64,7 +64,7 @@ template< typename TInputImage, typename TFeatureImage, typename TOutputImage,
           typename TFunction = ScalarChanAndVeseLevelSetFunction< TInputImage, TFeatureImage >,
           class TSharedData = typename TFunction::SharedDataType,
           typename TIdCell = unsigned int >
-class ScalarChanAndVeseSparseLevelSetImageFilter:
+class ScalarChanAndVeseSparseLevelSetImageFilter :
   public MultiphaseSparseFiniteDifferenceImageFilter< TInputImage, TFeatureImage,
                                                       TOutputImage, TFunction, TIdCell >
 {
@@ -105,7 +105,7 @@ public:
 
   typedef typename Superclass::TimeStepType TimeStepType;
   typedef typename Superclass::FiniteDifferenceFunctionType
-  FiniteDifferenceFunctionType;
+    FiniteDifferenceFunctionType;
 
   typedef typename Superclass::IdCellType IdCellType;
 
@@ -127,7 +127,8 @@ public:
 
   /** Set/Get the feature image to be used for speed function of the level set
    *  equation.  Equivalent to calling Set/GetInput(1, ..) */
-  virtual void SetFeatureImage(const FeatureImagePointer f)
+  virtual void
+  SetFeatureImage(const FeatureImagePointer f)
   {
     this->SetInput(f);
   }
@@ -150,6 +151,7 @@ protected:
   virtual void UpdatePixel(unsigned int functionIndex,
                            unsigned int idx, NeighborhoodIterator< InputImageType > & iterator,
                            ValueType & newValue, bool & status);
+
 };
 } //end namespace itk
 

@@ -29,24 +29,29 @@ class FileFreeImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
-  typedef FileFreeImageIOFactory    Self;
-  typedef ObjectFactoryBase         Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef FileFreeImageIOFactory   Self;
+  typedef ObjectFactoryBase        Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
   virtual const char* GetITKSourceVersion(void) const;
+
   virtual const char* GetDescription(void) const;
 
   /** Method for class instantiation. */
   itkFactorylessNewMacro(Self);
-  static FileFreeImageIOFactory* FactoryNew() { return new FileFreeImageIOFactory;}
+  static FileFreeImageIOFactory*
+  FactoryNew() {
+    return new FileFreeImageIOFactory;
+  }
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(FileFreeImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     FileFreeImageIOFactory::Pointer fileFreeFactory = FileFreeImageIOFactory::New();
     ObjectFactoryBase::RegisterFactory(fileFreeFactory);
@@ -58,7 +63,7 @@ protected:
 
 private:
   FileFreeImageIOFactory(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);         //purposely not implemented
 
 };
 

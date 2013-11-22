@@ -37,26 +37,30 @@ class ComplexToModulus
 public:
   ComplexToModulus() {}
   ~ComplexToModulus() {}
-  bool operator!=(const ComplexToModulus &) const
+  bool
+  operator!=(const ComplexToModulus &) const
   {
     return false;
   }
 
-  bool operator==(const ComplexToModulus & other) const
+  bool
+  operator==(const ComplexToModulus & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return (TOutput)( vcl_sqrt( A.real() * A.real()
                                 + A.imag() * A.imag() ) );
   }
+
 };
 }
 
 template< typename TInputImage, typename TOutputImage >
-class ComplexToModulusImageFilter:
+class ComplexToModulusImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::ComplexToModulus<
@@ -67,9 +71,9 @@ public:
   /** Standard class typedefs. */
   typedef ComplexToModulusImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::ComplexToModulus< typename TInputImage::PixelType,
-                               typename TOutputImage::PixelType > > Superclass;
+      TInputImage, TOutputImage,
+      Functor::ComplexToModulus< typename TInputImage::PixelType,
+                                 typename TOutputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -94,11 +98,13 @@ public:
 
 protected:
   ComplexToModulusImageFilter() {}
-  virtual ~ComplexToModulusImageFilter() {}
+  virtual
+  ~ComplexToModulusImageFilter() {}
 
 private:
   ComplexToModulusImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);              //purposely not implemented
+
 };
 } // end namespace itk
 

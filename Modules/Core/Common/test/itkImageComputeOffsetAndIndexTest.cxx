@@ -22,7 +22,8 @@
 #include "itkTimeProbesCollectorBase.h"
 
 template <typename TImage>
-void ComputeIndex(TImage *image, unsigned int count, unsigned int repeat)
+void
+ComputeIndex(TImage *image, unsigned int count, unsigned int repeat)
 {
   typename TImage::IndexType index;
   for (unsigned j = 0; j < repeat; j++)
@@ -36,7 +37,8 @@ void ComputeIndex(TImage *image, unsigned int count, unsigned int repeat)
 }
 
 template <typename TImage>
-void ComputeFastIndex(TImage *image, unsigned int count, unsigned int repeat)
+void
+ComputeFastIndex(TImage *image, unsigned int count, unsigned int repeat)
 {
   typename TImage::IndexType index;
   index.Fill( 0 );
@@ -48,16 +50,17 @@ void ComputeFastIndex(TImage *image, unsigned int count, unsigned int repeat)
     for (unsigned int i = 0; i < count; i++)
       {
       itk::ImageHelper<TImage::ImageDimension,TImage::ImageDimension>::ComputeIndex(bufferedRegionIndex,
-        i,
-        offsetTable,
-        index);
+                                                                                    i,
+                                                                                    offsetTable,
+                                                                                    index);
       }
     }
   std::cout << "Last index: " << index << std::endl;
 }
 
 template <typename TImage>
-void ComputeOffset(TImage *image, unsigned int count, unsigned int repeat)
+void
+ComputeOffset(TImage *image, unsigned int count, unsigned int repeat)
 {
   typename TImage::OffsetValueType offset = 0;
   typename TImage::OffsetValueType accum = 0;
@@ -80,7 +83,8 @@ void ComputeOffset(TImage *image, unsigned int count, unsigned int repeat)
 }
 
 template <typename TImage>
-void ComputeFastOffset(TImage *image, unsigned int count, unsigned int repeat)
+void
+ComputeFastOffset(TImage *image, unsigned int count, unsigned int repeat)
 {
   typename TImage::OffsetValueType offset = 0;
   typename TImage::OffsetValueType accum = 0;
@@ -96,10 +100,11 @@ void ComputeFastOffset(TImage *image, unsigned int count, unsigned int repeat)
     for (unsigned int i = 0; i < count; i++)
       {
       offset = 0;
-      itk::ImageHelper<TImage::ImageDimension,TImage::ImageDimension>::ComputeOffset(image->GetBufferedRegion().GetIndex(),
-                                                                                    index,
-                                                                                    offsetTable,
-                                                                                    offset);
+      itk::ImageHelper<TImage::ImageDimension,TImage::ImageDimension>::ComputeOffset(
+        image->GetBufferedRegion().GetIndex(),
+        index,
+        offsetTable,
+        offset);
       accum += offset;
       index += indexIncr;
       }
@@ -107,112 +112,113 @@ void ComputeFastOffset(TImage *image, unsigned int count, unsigned int repeat)
   std::cout << "Last offset: " << offset << ": " << accum << std::endl;
 }
 
-int itkImageComputeOffsetAndIndexTest(int, char* [] )
+int
+itkImageComputeOffsetAndIndexTest(int, char* [] )
 {
 
-  itk::TimeProbesCollectorBase   collector;
+  itk::TimeProbesCollectorBase collector;
 
 #define TRY_FAST_INDEX(dim) \
-  { \
-  typedef char                        PixelType; \
-  typedef itk::Image< PixelType, dim> ImageType; \
-  ImageType::Pointer myImage = ImageType::New(); \
-  ImageType::SizeType   size; \
-  ImageType::IndexType  index; \
-  ImageType::RegionType region; \
-  size.Fill(50); \
-  index.Fill(0); \
-  region.SetSize(size); \
-  region.SetIndex(index); \
-  myImage->SetLargestPossibleRegion( region ); \
-  myImage->SetBufferedRegion( region ); \
-  myImage->SetRequestedRegion( region ); \
-  myImage->Allocate(); \
-  collector.Start("ComputeIndexFast " #dim"D"); \
-  unsigned int totalSize = 1; \
-  for (unsigned int i = 0; i < dim; i++) totalSize *= size[i]; \
-  unsigned int repeat = 1000; \
-  if (dim > 2 ) repeat = 100; \
-  if (dim > 3) repeat = 10; \
-  if (dim > 4) repeat = 1; \
-  ComputeFastIndex<ImageType>(myImage, totalSize, repeat); \
-  collector.Stop("ComputeIndexFast " #dim"D"); \
-  }
+    { \
+    typedef char                        PixelType; \
+    typedef itk::Image< PixelType, dim> ImageType; \
+    ImageType::Pointer    myImage = ImageType::New(); \
+    ImageType::SizeType   size; \
+    ImageType::IndexType  index; \
+    ImageType::RegionType region; \
+    size.Fill(50); \
+    index.Fill(0); \
+    region.SetSize(size); \
+    region.SetIndex(index); \
+    myImage->SetLargestPossibleRegion( region ); \
+    myImage->SetBufferedRegion( region ); \
+    myImage->SetRequestedRegion( region ); \
+    myImage->Allocate(); \
+    collector.Start("ComputeIndexFast " #dim "D"); \
+    unsigned int totalSize = 1; \
+    for (unsigned int i = 0; i < dim; i++) totalSize *= size[i]; \
+    unsigned int repeat = 1000; \
+    if (dim > 2 ) repeat = 100; \
+    if (dim > 3) repeat = 10; \
+    if (dim > 4) repeat = 1; \
+    ComputeFastIndex<ImageType>(myImage, totalSize, repeat); \
+    collector.Stop("ComputeIndexFast " #dim "D"); \
+    }
 #define TRY_INDEX(dim) \
-  { \
-  typedef char                        PixelType; \
-  typedef itk::Image< PixelType, dim> ImageType; \
-  ImageType::Pointer myImage = ImageType::New(); \
-  ImageType::SizeType   size; \
-  ImageType::IndexType  index; \
-  ImageType::RegionType region; \
-  size.Fill(50); \
-  index.Fill(0); \
-  region.SetSize(size); \
-  region.SetIndex(index); \
-  myImage->SetLargestPossibleRegion( region ); \
-  myImage->SetBufferedRegion( region ); \
-  myImage->SetRequestedRegion( region ); \
-  myImage->Allocate(); \
-  collector.Start("ComputeIndex " #dim"D"); \
-  unsigned int totalSize = 1; \
-  for (unsigned int i = 0; i < dim; i++) totalSize *= size[i]; \
-  unsigned int repeat = 1000; \
-  if (dim > 2 ) repeat = 100; \
-  if (dim > 3) repeat = 10; \
-  if (dim > 4) repeat = 1; \
-  ComputeIndex<ImageType>(myImage, totalSize, repeat); \
-  collector.Stop("ComputeIndex " #dim"D"); \
-  }
+    { \
+    typedef char                        PixelType; \
+    typedef itk::Image< PixelType, dim> ImageType; \
+    ImageType::Pointer    myImage = ImageType::New(); \
+    ImageType::SizeType   size; \
+    ImageType::IndexType  index; \
+    ImageType::RegionType region; \
+    size.Fill(50); \
+    index.Fill(0); \
+    region.SetSize(size); \
+    region.SetIndex(index); \
+    myImage->SetLargestPossibleRegion( region ); \
+    myImage->SetBufferedRegion( region ); \
+    myImage->SetRequestedRegion( region ); \
+    myImage->Allocate(); \
+    collector.Start("ComputeIndex " #dim "D"); \
+    unsigned int totalSize = 1; \
+    for (unsigned int i = 0; i < dim; i++) totalSize *= size[i]; \
+    unsigned int repeat = 1000; \
+    if (dim > 2 ) repeat = 100; \
+    if (dim > 3) repeat = 10; \
+    if (dim > 4) repeat = 1; \
+    ComputeIndex<ImageType>(myImage, totalSize, repeat); \
+    collector.Stop("ComputeIndex " #dim "D"); \
+    }
 
 #define TRY_FAST_OFFSET(dim) \
-  { \
-  typedef char                        PixelType; \
-  typedef itk::Image< PixelType, dim> ImageType; \
-  ImageType::Pointer myImage = ImageType::New(); \
-  ImageType::SizeType   size; \
-  ImageType::IndexType  index; \
-  ImageType::RegionType region; \
-  size.Fill(50); \
-  index.Fill(0); \
-  region.SetSize(size); \
-  region.SetIndex(index); \
-  myImage->SetLargestPossibleRegion( region ); \
-  myImage->SetBufferedRegion( region ); \
-  myImage->SetRequestedRegion( region ); \
-  myImage->Allocate(); \
-  collector.Start("ComputeOffsetFast " #dim"D"); \
-  unsigned int repeat = 1; \
-  if (dim < 4 ) repeat = 100; \
-  unsigned int totalSize = 1; \
-  for (unsigned int i = 0; i < dim; i++) totalSize *= size[i]; \
-  ComputeFastOffset<ImageType>(myImage, size[0], totalSize*repeat); \
-  collector.Stop("ComputeOffsetFast " #dim"D"); \
-  }
+    { \
+    typedef char                        PixelType; \
+    typedef itk::Image< PixelType, dim> ImageType; \
+    ImageType::Pointer    myImage = ImageType::New(); \
+    ImageType::SizeType   size; \
+    ImageType::IndexType  index; \
+    ImageType::RegionType region; \
+    size.Fill(50); \
+    index.Fill(0); \
+    region.SetSize(size); \
+    region.SetIndex(index); \
+    myImage->SetLargestPossibleRegion( region ); \
+    myImage->SetBufferedRegion( region ); \
+    myImage->SetRequestedRegion( region ); \
+    myImage->Allocate(); \
+    collector.Start("ComputeOffsetFast " #dim "D"); \
+    unsigned int repeat = 1; \
+    if (dim < 4 ) repeat = 100; \
+    unsigned int totalSize = 1; \
+    for (unsigned int i = 0; i < dim; i++) totalSize *= size[i]; \
+    ComputeFastOffset<ImageType>(myImage, size[0], totalSize*repeat); \
+    collector.Stop("ComputeOffsetFast " #dim "D"); \
+    }
 #define TRY_OFFSET(dim) \
-  { \
-  typedef char                        PixelType; \
-  typedef itk::Image< PixelType, dim> ImageType; \
-  ImageType::Pointer myImage = ImageType::New(); \
-  ImageType::SizeType   size; \
-  ImageType::IndexType  index; \
-  ImageType::RegionType region; \
-  size.Fill(50); \
-  index.Fill(0); \
-  region.SetSize(size); \
-  region.SetIndex(index); \
-  myImage->SetLargestPossibleRegion( region ); \
-  myImage->SetBufferedRegion( region ); \
-  myImage->SetRequestedRegion( region ); \
-  myImage->Allocate(); \
-  collector.Start("ComputeOffset " #dim"D"); \
-  unsigned int repeat = 1; \
-  if (dim < 4 ) repeat = 100;                  \
-  unsigned int totalSize = 1; \
-  for (unsigned int i = 0; i < dim; i++) totalSize *= size[i]; \
-  ComputeOffset<ImageType>(myImage, size[0], totalSize*repeat); \
-  collector.Stop("ComputeOffset " #dim"D"); \
-  }
+    { \
+    typedef char                        PixelType; \
+    typedef itk::Image< PixelType, dim> ImageType; \
+    ImageType::Pointer    myImage = ImageType::New(); \
+    ImageType::SizeType   size; \
+    ImageType::IndexType  index; \
+    ImageType::RegionType region; \
+    size.Fill(50); \
+    index.Fill(0); \
+    region.SetSize(size); \
+    region.SetIndex(index); \
+    myImage->SetLargestPossibleRegion( region ); \
+    myImage->SetBufferedRegion( region ); \
+    myImage->SetRequestedRegion( region ); \
+    myImage->Allocate(); \
+    collector.Start("ComputeOffset " #dim "D"); \
+    unsigned int repeat = 1; \
+    if (dim < 4 ) repeat = 100;                  \
+    unsigned int totalSize = 1; \
+    for (unsigned int i = 0; i < dim; i++) totalSize *= size[i]; \
+    ComputeOffset<ImageType>(myImage, size[0], totalSize*repeat); \
+    collector.Stop("ComputeOffset " #dim "D"); \
+    }
 
   TRY_INDEX(1);
   TRY_INDEX(2);

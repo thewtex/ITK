@@ -24,9 +24,7 @@
 #include "itkQuaternionRigidTransformGradientDescentOptimizer.h"
 #include "itkOnePlusOneEvolutionaryOptimizer.h"
 
-
 #include <iostream>
-
 
 /**
  *
@@ -37,11 +35,12 @@
  *  only code conformance.
  */
 
-int itkOptimizersHierarchyTest(int, char* [] )
+int
+itkOptimizersHierarchyTest(int, char* [] )
 {
   bool pass = true;
 
-  typedef itk::Optimizer              OptimizerType;
+  typedef itk::Optimizer OptimizerType;
   OptimizerType::Pointer genericOptimizer = OptimizerType::New();
 
   unsigned int spaceDimension = 10;
@@ -57,12 +56,12 @@ int itkOptimizersHierarchyTest(int, char* [] )
   genericOptimizer->SetScales( parameterScale );
 
   const OptimizerType::ScalesType & parameterScaleGot =
-                                 genericOptimizer->GetScales();
+    genericOptimizer->GetScales();
 
   const double tolerance = 1e-10;
 
   for(unsigned int i=0; i<spaceDimension; i++)
-  {
+    {
     if( vnl_math_abs( parameterScaleGot[i] - parameterScale[i] ) > tolerance )
       {
       std::cout << "Test failed." << std::endl;
@@ -71,13 +70,13 @@ int itkOptimizersHierarchyTest(int, char* [] )
       std::cout << "Scale was got as: " << parameterScaleGot << std::endl;
       return EXIT_FAILURE;
       }
-  }
+    }
 
   OptimizerType::ParametersType initialPositionGot =
-                                   genericOptimizer->GetInitialPosition();
+    genericOptimizer->GetInitialPosition();
 
   for(unsigned int i=0; i<spaceDimension; i++)
-  {
+    {
     if( vnl_math_abs( initialPositionGot[i] - initialPosition[i] ) > tolerance )
       {
       std::cout << "Test failed." << std::endl;
@@ -86,90 +85,90 @@ int itkOptimizersHierarchyTest(int, char* [] )
       std::cout << "InitialPosition was got as: " << initialPositionGot << std::endl;
       return EXIT_FAILURE;
       }
-  }
+    }
 
-  typedef itk::NonLinearOptimizer     NonLinearOptimizerType;
+  typedef itk::NonLinearOptimizer NonLinearOptimizerType;
   NonLinearOptimizerType::Pointer nonLinearOptimizer =
-                                    NonLinearOptimizerType::New();
-  if(nonLinearOptimizer.IsNull())
+    NonLinearOptimizerType::New();
+  if(nonLinearOptimizer.IsNull() )
     {
     pass=false;
     }
 
   typedef itk::SingleValuedNonLinearOptimizer
-                                SingleValuedNonLinearOptimizerType;
+    SingleValuedNonLinearOptimizerType;
   SingleValuedNonLinearOptimizerType::Pointer singleValuedOptimizer =
-                                SingleValuedNonLinearOptimizerType::New();
-  if(singleValuedOptimizer.IsNull())
+    SingleValuedNonLinearOptimizerType::New();
+  if(singleValuedOptimizer.IsNull() )
     {
     pass=false;
     }
 
   // This cannot be instantiated due to abstract function SetCostFunction()
   typedef itk::SingleValuedNonLinearVnlOptimizer
-                                SingleValuedNonLinearVnlOptimizerType;
+    SingleValuedNonLinearVnlOptimizerType;
 
   // This is only type checking. This class is not expected to be instantiated
-  typedef itk::CostFunction     CostFunctionType;
+  typedef itk::CostFunction CostFunctionType;
 
   // This is only type checking. This class is not expected to be instantiated
-  typedef itk::SingleValuedCostFunction     SingleValuedCostFunctionType;
+  typedef itk::SingleValuedCostFunction SingleValuedCostFunctionType;
 
-  typedef itk::AmoebaOptimizer    AmoebaOptimizerType;
-  AmoebaOptimizerType::Pointer   amoeba = AmoebaOptimizerType::New();
-  if(amoeba.IsNull())
+  typedef itk::AmoebaOptimizer AmoebaOptimizerType;
+  AmoebaOptimizerType::Pointer amoeba = AmoebaOptimizerType::New();
+  if(amoeba.IsNull() )
     {
     pass=false;
     }
 
-  typedef itk::ConjugateGradientOptimizer    ConjugateGradientOptimizerType;
-  ConjugateGradientOptimizerType::Pointer  conjugate
-                                    = ConjugateGradientOptimizerType::New();
-  if(conjugate.IsNull())
+  typedef itk::ConjugateGradientOptimizer ConjugateGradientOptimizerType;
+  ConjugateGradientOptimizerType::Pointer conjugate
+    = ConjugateGradientOptimizerType::New();
+  if(conjugate.IsNull() )
     {
     pass=false;
     }
 
-  typedef itk::LBFGSOptimizer    LBFGSOptimizerType;
-  LBFGSOptimizerType::Pointer   lbfgs = LBFGSOptimizerType::New();
-  if(lbfgs.IsNull())
+  typedef itk::LBFGSOptimizer LBFGSOptimizerType;
+  LBFGSOptimizerType::Pointer lbfgs = LBFGSOptimizerType::New();
+  if(lbfgs.IsNull() )
     {
     pass=false;
     }
 
   // Note that a "Versor" is a Unit Quaternion
-  typedef itk::VersorTransformOptimizer    VersorOptimizerType;
-  VersorOptimizerType::Pointer   versoropt = VersorOptimizerType::New();
-  if(versoropt.IsNull())
+  typedef itk::VersorTransformOptimizer VersorOptimizerType;
+  VersorOptimizerType::Pointer versoropt = VersorOptimizerType::New();
+  if(versoropt.IsNull() )
     {
     pass=false;
     }
 
-  typedef itk::QuaternionRigidTransformGradientDescentOptimizer    QuaternionOptimizerType;
-  QuaternionOptimizerType::Pointer   quaternionopt = QuaternionOptimizerType::New();
-  if(quaternionopt.IsNull())
+  typedef itk::QuaternionRigidTransformGradientDescentOptimizer QuaternionOptimizerType;
+  QuaternionOptimizerType::Pointer quaternionopt = QuaternionOptimizerType::New();
+  if(quaternionopt.IsNull() )
     {
     pass=false;
     }
 
   typedef itk::OnePlusOneEvolutionaryOptimizer OnePlusOneEvolutionaryOptimizerType;
   OnePlusOneEvolutionaryOptimizerType::Pointer onePlusOne =
-                                          OnePlusOneEvolutionaryOptimizerType::New();
-  if(onePlusOne.IsNull())
+    OnePlusOneEvolutionaryOptimizerType::New();
+  if(onePlusOne.IsNull() )
     {
     pass=false;
     }
 
   typedef itk::CumulativeGaussianOptimizer CumulativeGaussianOptimizerType;
-  CumulativeGaussianOptimizerType::Pointer   cumgaussopt = CumulativeGaussianOptimizerType::New();
-  if(cumgaussopt.IsNull())
+  CumulativeGaussianOptimizerType::Pointer cumgaussopt = CumulativeGaussianOptimizerType::New();
+  if(cumgaussopt.IsNull() )
     {
     pass=false;
     }
 
   typedef itk::CumulativeGaussianCostFunction CumulativeGaussianCostFunctionType;
-  CumulativeGaussianCostFunctionType::Pointer   cumgausstype = CumulativeGaussianCostFunctionType::New();
-  if(cumgausstype.IsNull())
+  CumulativeGaussianCostFunctionType::Pointer cumgausstype = CumulativeGaussianCostFunctionType::New();
+  if(cumgausstype.IsNull() )
     {
     pass=false;
     }

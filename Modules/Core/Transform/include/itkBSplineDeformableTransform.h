@@ -128,15 +128,17 @@ public:
   // explicitly.
   // TODO: shouldn't it be done with the Clone() method?
   itkSimpleNewMacro(Self);
-  virtual ::itk::LightObject::Pointer CreateAnother(void) const
-    {
+  virtual::itk::LightObject::Pointer
+  CreateAnother(void) const
+  {
     ::itk::LightObject::Pointer smartPtr;
     Pointer copyPtr = Self::New().GetPointer();
+
     //THE FOLLOWING LINE IS DIFFERENT FROM THE DEFAULT MACRO!
     copyPtr->m_BulkTransform =  this->GetBulkTransform();
     smartPtr = static_cast<Pointer>( copyPtr );
     return smartPtr;
-    }
+  }
 
   /** implement type-specific clone method*/
   itkCloneMacro(Self);
@@ -178,7 +180,6 @@ public:
   typedef Point <TScalar, itkGetStaticConstMacro( SpaceDimension )> InputPointType;
   typedef Point <TScalar, itkGetStaticConstMacro( SpaceDimension )> OutputPointType;
 
-
   /** This method sets the fixed parameters of the transform.
    * For a BSpline deformation transform, the parameters are the following:
    *    Grid Size, Grid Origin, and Grid Spacing
@@ -217,19 +218,23 @@ public:
   virtual void SetCoefficientImages( const CoefficientImageArray & images );
 
 #ifdef ITKV3_COMPATIBILITY
-  virtual void SetCoefficientImage( const CoefficientImageArray & images )
-    {
+  virtual void
+  SetCoefficientImage( const CoefficientImageArray & images )
+  {
     this->SetCoefficientImages( images );
-    }
+  }
+
   /* Only for backwards compatibility with ITKv3. */
-  CoefficientImageArray GetCoefficientImage()
-    {
+  CoefficientImageArray
+  GetCoefficientImage()
+  {
     return this->GetCoefficientImages();
-    }
+  }
+
 #endif
 
   /** Typedefs for specifying the extent of the grid. */
-  typedef typename Superclass::RegionType    RegionType;
+  typedef typename Superclass::RegionType RegionType;
 
   typedef typename Superclass::IndexType     IndexType;
   typedef typename Superclass::SizeType      SizeType;
@@ -256,7 +261,7 @@ public:
    */
   using Superclass::TransformPoint;
   virtual void TransformPoint( const InputPointType & inputPoint, OutputPointType & outputPoint,
-    WeightsType & weights, ParameterIndexArrayType & indices, bool & inside ) const;
+                               WeightsType & weights, ParameterIndexArrayType & indices, bool & inside ) const;
 
   virtual void ComputeJacobianWithRespectToParameters( const InputPointType &, JacobianType & ) const;
 
@@ -266,8 +271,8 @@ public:
   /** Return the number of parameters per dimension */
   NumberOfParametersType GetNumberOfParametersPerDimension() const;
 
-  typedef typename Superclass::SpacingType   PhysicalDimensionsType;
-  typedef typename Superclass::PixelType     PixelType;
+  typedef typename Superclass::SpacingType PhysicalDimensionsType;
+  typedef typename Superclass::PixelType   PixelType;
 
   typedef typename Superclass::MeshSizeType MeshSizeType;
 
@@ -312,7 +317,8 @@ protected:
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
   BSplineDeformableTransform();
-  virtual ~BSplineDeformableTransform();
+  virtual
+  ~BSplineDeformableTransform();
 
 private:
 
@@ -332,7 +338,7 @@ private:
   virtual void SetCoefficientImageInformationFromFixedParameters();
 
   BSplineDeformableTransform( const Self & ); // purposely not implemented
-  void operator=( const Self & );   // purposely not implemented
+  void operator=( const Self & );             // purposely not implemented
 
   /** Check if a continuous index is inside the valid region. */
   virtual bool InsideValidRegion( ContinuousIndexType & ) const;

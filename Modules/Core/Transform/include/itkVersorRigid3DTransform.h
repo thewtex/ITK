@@ -112,8 +112,7 @@ protected:
   VersorRigid3DTransform(unsigned int paramDim);
   VersorRigid3DTransform();
   ~VersorRigid3DTransform()
-  {
-  }
+  {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

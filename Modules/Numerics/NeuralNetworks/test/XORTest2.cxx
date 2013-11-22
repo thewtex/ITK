@@ -20,7 +20,7 @@
 #include "itkListSample.h"
 #include <fstream>
 
-#define ROUND(x) (floor(x+0.5))
+#define ROUND(x) (floor(x+0.5) )
 
 int
 XORTest2(int argc, char* argv[])
@@ -32,7 +32,7 @@ XORTest2(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-  char* dataFileName = argv[1];
+  char*     dataFileName = argv[1];
   const int num_input_nodes = 2;
   const int num_hidden_nodes = 2;
   const int num_output_nodes = 1;
@@ -45,15 +45,15 @@ XORTest2(int argc, char* argv[])
   typedef itk::Statistics::IterativeSupervisedTrainingFunction<SampleType, TargetType, double> TrainingFcnType;
 
   MeasurementVectorType mv;
-  TargetVectorType tv;
-  SampleType::Pointer sample = SampleType::New();
-  TargetType::Pointer targets = TargetType::New();
+  TargetVectorType      tv;
+  SampleType::Pointer   sample = SampleType::New();
+  TargetType::Pointer   targets = TargetType::New();
   sample->SetMeasurementVectorSize( num_input_nodes);
   targets->SetMeasurementVectorSize( num_output_nodes);
 
   std::ifstream infile1;
   infile1.open(dataFileName, std::ios::in);
-  if (infile1.fail())
+  if (infile1.fail() )
     {
     std::cout << argv[0] << " Cannot open file for reading: "
               << dataFileName << std::endl;
@@ -62,7 +62,7 @@ XORTest2(int argc, char* argv[])
 
   infile1 >> mv[0] >> mv[1] >> tv[0];
 
-  while (!infile1.eof())
+  while (!infile1.eof() )
     {
     std::cout << "Input =" << mv << std::endl;
     std::cout << "target =" << tv << std::endl;
@@ -74,7 +74,9 @@ XORTest2(int argc, char* argv[])
 
   std::cout << sample->Size() << std::endl;
 
-  typedef itk::Statistics::OneHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType, TargetVectorType> OneHiddenLayerBackPropagationNeuralNetworkType;
+  typedef itk::Statistics::OneHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType,
+                                                                      TargetVectorType>
+    OneHiddenLayerBackPropagationNeuralNetworkType;
   OneHiddenLayerBackPropagationNeuralNetworkType::Pointer net1 = OneHiddenLayerBackPropagationNeuralNetworkType::New();
   net1->SetNumOfInputNodes(num_input_nodes);
   net1->SetNumOfFirstHiddenNodes(num_hidden_nodes);
@@ -97,22 +99,22 @@ XORTest2(int argc, char* argv[])
   ov.Fill(0.0);
   SampleType::ConstIterator iter1 = sample->Begin();
   TargetType::ConstIterator iter2 = targets->Begin();
-  unsigned int error1 = 0;
-  unsigned int error2 = 0;
-  int flag;
-  std::ofstream outfile;
+  unsigned int              error1 = 0;
+  unsigned int              error2 = 0;
+  int                       flag;
+  std::ofstream             outfile;
   outfile.open("out1.txt",std::ios::out);
-  if (outfile.fail())
+  if (outfile.fail() )
     {
     std::cout << argv[0] << " Cannot open file for writing: "
               << "out1.txt" << std::endl;
     return EXIT_FAILURE;
     }
-  while (iter1 != sample->End())
+  while (iter1 != sample->End() )
     {
     mv = iter1.GetMeasurementVector();
     tv = iter2.GetMeasurementVector();
-    ov.SetVnlVector(net1->GenerateOutput(mv));
+    ov.SetVnlVector(net1->GenerateOutput(mv) );
     flag = 0;
     if (vcl_fabs(tv[0]-ov[0])>0.2)
       {
@@ -138,7 +140,7 @@ XORTest2(int argc, char* argv[])
             << " vectors are misclassified." << std::endl;
   std::cout<<"Network Weights and Biases after Training= "<<std::endl;
   std::cout << net1 << std::endl;
-  if ((error1 + error2) > 2)
+  if ( (error1 + error2) > 2)
     {
     std::cout << "Test failed." << std::endl;
     return EXIT_FAILURE;

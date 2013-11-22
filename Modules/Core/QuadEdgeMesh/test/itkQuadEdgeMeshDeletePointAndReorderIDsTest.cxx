@@ -18,7 +18,8 @@
 
 #include "itkQuadEdgeMesh.h"
 
-int itkQuadEdgeMeshDeletePointAndReorderIDsTest( int , char* [] )
+int
+itkQuadEdgeMeshDeletePointAndReorderIDsTest( int , char* [] )
 {
 
   typedef double PixelType;
@@ -29,7 +30,7 @@ int itkQuadEdgeMeshDeletePointAndReorderIDsTest( int , char* [] )
   typedef MeshType::CellType                        CellType;
   typedef itk::QuadEdgeMeshPolygonCell< CellType >  QEPolygonCellType;
 
-  MeshType::Pointer  mesh = MeshType::New();
+  MeshType::Pointer   mesh = MeshType::New();
   MeshType::PointType pts[ 5 ];
   MeshType::PixelType ptData = 0.;
 
@@ -47,13 +48,13 @@ int itkQuadEdgeMeshDeletePointAndReorderIDsTest( int , char* [] )
 
   // create a tetahedra and one isolated point: id = 0
   int specialCells[12] =
-  {  4,  1,  2,
-     4,  2,  3,
-     3,  1,  4,
-     1,  3,  2 };
+        {  4,  1,  2,
+        4,  2,  3,
+        3,  1,  4,
+        1,  3,  2 };
 
   CellType::CellAutoPointer cellpointer;
-  QEPolygonCellType *poly;
+  QEPolygonCellType *       poly;
   for(int i=0; i<4; i++)
     {
     poly = new QEPolygonCellType( 3 );
@@ -65,8 +66,8 @@ int itkQuadEdgeMeshDeletePointAndReorderIDsTest( int , char* [] )
     }
 
   // Point exists along with pointData
-  if(  ! mesh->GetPoints()->IndexExists( 0 )
-    || ! mesh->GetPointData()->IndexExists( 0 ) )
+  if(  !mesh->GetPoints()->IndexExists( 0 )
+       || !mesh->GetPointData()->IndexExists( 0 ) )
     {
     return EXIT_FAILURE;
     }
@@ -75,26 +76,26 @@ int itkQuadEdgeMeshDeletePointAndReorderIDsTest( int , char* [] )
   // form corresponding containers
   mesh->DeletePoint( 0 );
   if(  mesh->GetPoints()->IndexExists( 0 )
-    || mesh->GetPointData()->IndexExists( 0 ) )
+       || mesh->GetPointData()->IndexExists( 0 ) )
     {
     return EXIT_FAILURE;
     }
 
   // Squeeze point IDs. ID=0 should reappear but have a different value
   // actually it should have the value of the previously last point
-  mesh->SqueezePointsIds( );
-  if(  ! mesh->GetPoints()->IndexExists( 0 )
-    || ! mesh->GetPointData()->IndexExists( 0 ) )
+  mesh->SqueezePointsIds();
+  if(  !mesh->GetPoints()->IndexExists( 0 )
+       || !mesh->GetPointData()->IndexExists( 0 ) )
     {
     // should check coordinates
 
     // check data
     mesh->GetPointData( 0, &ptData );
     if( ptData != 4 )
-    {
-    return EXIT_FAILURE;
+      {
+      return EXIT_FAILURE;
+      }
     }
-  }
 
   return EXIT_SUCCESS;
 }

@@ -45,7 +45,7 @@ namespace itk
 template<
   typename TInputImage,
   typename TCoordRep = float >
-class VectorCentralDifferenceImageFunction:
+class VectorCentralDifferenceImageFunction :
   public ImageFunction< TInputImage,
                         Matrix< double,
                                 TInputImage::PixelType::Dimension,
@@ -110,7 +110,8 @@ public:
    *
    *  ImageFunction::IsInsideBuffer() can be used to check bounds before
    * calling the method. */
-  virtual OutputType Evaluate(const PointType & point) const
+  virtual OutputType
+  Evaluate(const PointType & point) const
   {
     IndexType index;
 
@@ -118,7 +119,8 @@ public:
     return this->EvaluateAtIndex(index);
   }
 
-  virtual OutputType EvaluateAtContinuousIndex(
+  virtual OutputType
+  EvaluateAtContinuousIndex(
     const ContinuousIndexType & cindex) const
   {
     IndexType index;
@@ -150,7 +152,8 @@ private:
   VectorCentralDifferenceImageFunction(const Self &); //purposely not
                                                       // implemented
   void operator=(const Self &);                       //purposely not
-                                                      // implemented
+
+  // implemented
 
   // flag to take or not the image direction into account
   // when computing the derivatives.

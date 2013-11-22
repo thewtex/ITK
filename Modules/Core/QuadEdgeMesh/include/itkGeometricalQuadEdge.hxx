@@ -48,7 +48,8 @@ GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >
  */
 template< typename TVRef, typename TFRef,
           typename TPrimalData, typename TDualData, bool PrimalDual >
-bool GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::SetLnextRingWithSameLeftFace(
+bool
+GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::SetLnextRingWithSameLeftFace(
   const DualOriginRefType faceGeom,
   int maxSize)
 {
@@ -80,7 +81,8 @@ bool GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::Se
  */
 template< typename TVRef, typename TFRef,
           typename TPrimalData, typename TDualData, bool PrimalDual >
-bool GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::IsLnextOfTriangle()
+bool
+GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::IsLnextOfTriangle()
 {
   return ( this->IsLnextSharingSameFace(3) );
 }
@@ -94,7 +96,8 @@ bool GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::Is
  */
 template< typename TVRef, typename TFRef,
           typename TPrimalData, typename TDualData, bool PrimalDual >
-bool GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::IsInOnextRing(Self *b)
+bool
+GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::IsInOnextRing(Self *b)
 {
   for ( IteratorGeom it  = this->BeginGeomOnext();
         it != this->EndGeomOnext();
@@ -117,7 +120,8 @@ bool GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::Is
  */
 template< typename TVRef, typename TFRef,
           typename TPrimalData, typename TDualData, bool PrimalDual >
-bool GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::IsInLnextRing(Self *b)
+bool
+GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::IsInLnextRing(Self *b)
 {
   for ( IteratorGeom it  = this->BeginGeomLnext();
         it != this->EndGeomLnext();
@@ -164,7 +168,8 @@ GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >
  */
 template< typename TVRef, typename TFRef,
           typename TPrimalData, typename TDualData, bool PrimalDual >
-bool GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::IsLnextSharingSameFace(int maxSize)
+bool
+GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::IsLnextSharingSameFace(int maxSize)
 {
   IteratorGeom it = this->BeginGeomLnext();
 
@@ -224,7 +229,7 @@ template< typename TVRef, typename TFRef,
           typename TPrimalData, typename TDualData, bool PrimalDual >
 typename GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::Self *
 GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::GetNextBorderEdgeWithUnsetLeft(Self *edgeTest)
-{
+  {
   // Definition: an edge is said to be a boundary edge when it is adjacent to
   // noface i.e. when at least one of the faces edge->GetLeft() or
   // edge->GetRight() is unset.  Definition: an point is said to be a boundary
@@ -332,13 +337,14 @@ GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::GetNext
   // No border edge found
   itkQEDebugMacro("Unfound border edge.");
   return ( 0 );
-}
+  }
 
 /**
  */
 template< typename TVRef, typename TFRef,
           typename TPrimalData, typename TDualData, bool PrimalDual >
-bool GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::InsertAfterNextBorderEdgeWithUnsetLeft(
+bool
+GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::InsertAfterNextBorderEdgeWithUnsetLeft(
   Self *isol,
   Self *hint)
 {
@@ -406,7 +412,8 @@ bool GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::In
  */
 template< typename TVRef, typename TFRef,
           typename TPrimalData, typename TDualData, bool PrimalDual >
-bool GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::ReorderOnextRingBeforeAddFace(
+bool
+GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::ReorderOnextRingBeforeAddFace(
   Self *second)
 {
   // Assume "this->Originv()" is a boundary point P that is thrice adjacent
@@ -595,7 +602,8 @@ bool GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::Re
 // ---------------------------------------------------------------------
 template< typename TVRef, typename TFRef,
           typename TPrimalData, typename TDualData, bool PrimalDual >
-void GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::Disconnect()
+void
+GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >::Disconnect()
 {
   if ( this->IsDisconnected() )
     {
@@ -706,6 +714,7 @@ GeometricalQuadEdge< TVRef, TFRef, TPrimalData, TDualData, PrimalDual >
 
   return p1->IsOriginSet();
 }
+
 } // end of namespace itk
 
 #endif

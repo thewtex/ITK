@@ -56,7 +56,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class ValuedRegionalMaximaImageFilter:
+class ValuedRegionalMaximaImageFilter :
   public
   ValuedRegionalExtremaImageFilter< TInputImage, TOutputImage,
                                     std::greater< typename TInputImage::PixelType >,
@@ -100,11 +100,13 @@ protected:
       NumericTraits< typename TOutputImage::PixelType >::NonpositiveMin() );
   }
 
-  virtual ~ValuedRegionalMaximaImageFilter() {}
+  virtual
+  ~ValuedRegionalMaximaImageFilter() {}
 
 private:
   ValuedRegionalMaximaImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                  //purposely not implemented
+
 };                                               // end
                                                  // ValuedRegionalMaximaImageFilter
 } //end namespace itk

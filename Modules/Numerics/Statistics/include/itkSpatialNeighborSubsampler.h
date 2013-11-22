@@ -45,15 +45,15 @@ namespace Statistics {
  */
 
 template < typename TSample, typename TRegion >
-  class SpatialNeighborSubsampler : public RegionConstrainedSubsampler<TSample, TRegion>
+class SpatialNeighborSubsampler : public RegionConstrainedSubsampler<TSample, TRegion>
 {
 public:
   /** Standard class typedefs */
-  typedef SpatialNeighborSubsampler<TSample, TRegion>    Self;
-  typedef RegionConstrainedSubsampler<TSample, TRegion>  Superclass;
-  typedef typename Superclass::Baseclass                 Baseclass;
-  typedef SmartPointer<Self>                             Pointer;
-  typedef SmartPointer<const Self>                       ConstPointer;
+  typedef SpatialNeighborSubsampler<TSample, TRegion>   Self;
+  typedef RegionConstrainedSubsampler<TSample, TRegion> Superclass;
+  typedef typename Superclass::Baseclass                Baseclass;
+  typedef SmartPointer<Self>                            Pointer;
+  typedef SmartPointer<const Self>                      ConstPointer;
 
   /** Run-time type information (and related methods) */
   itkTypeMacro(SpatialNeighborSubsampler, RegionConstrainedSubsampler);
@@ -62,10 +62,10 @@ public:
   itkNewMacro(Self);
 
   /** typedef alias for the source data container */
-  typedef typename Superclass::SampleType                  SampleType;
-  typedef typename Superclass::SampleConstPointer          SampleConstPointer;
-  typedef typename Superclass::MeasurementVectorType       MeasurementVectorType;
-  typedef typename Superclass::InstanceIdentifier          InstanceIdentifier;
+  typedef typename Superclass::SampleType            SampleType;
+  typedef typename Superclass::SampleConstPointer    SampleConstPointer;
+  typedef typename Superclass::MeasurementVectorType MeasurementVectorType;
+  typedef typename Superclass::InstanceIdentifier    InstanceIdentifier;
 
   typedef typename Superclass::SubsampleType            SubsampleType;
   typedef typename Superclass::SubsamplePointer         SubsamplePointer;
@@ -86,6 +86,7 @@ public:
 
   /** Method to set the radius */
   void SetRadius(const RadiusType& radius);
+
   void SetRadius(unsigned int radius);
 
   /** Method to get the radius */
@@ -111,7 +112,8 @@ protected:
   virtual typename LightObject::Pointer InternalClone() const;
 
   SpatialNeighborSubsampler();
-  virtual ~SpatialNeighborSubsampler() {};
+  virtual
+  ~SpatialNeighborSubsampler() {}
 
   virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
@@ -120,9 +122,9 @@ protected:
 
 private:
   SpatialNeighborSubsampler(const Self&); // purposely not implemented
-  void operator=(const Self&); // purposely not implemented
+  void operator=(const Self&);            // purposely not implemented
 
-}; // end of class SpatialNeighborSubsampler
+};  // end of class SpatialNeighborSubsampler
 
 } // end of namespace Statistics
 } // end of namespace itk

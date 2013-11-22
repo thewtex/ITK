@@ -49,6 +49,7 @@ public:
 
   /** Build a line between two pixels. */
   IndexArray BuildLine(IndexType p0, IndexType p1);
+
 };
 }
 

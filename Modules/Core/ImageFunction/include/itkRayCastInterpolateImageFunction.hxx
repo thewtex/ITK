@@ -63,7 +63,8 @@ public:
   /**
    * Set the image class
    */
-  void SetImage(const InputImageType *input)
+  void
+  SetImage(const InputImageType *input)
   {
     m_Image = input;
   }
@@ -101,7 +102,8 @@ public:
   double GetCurrentIntensity(void) const;
 
   /// Return the ray point spacing in mm
-  double GetRayPointSpacing(void) const
+  double
+  GetRayPointSpacing(void) const
   {
     typename InputImageType::SpacingType spacing = this->m_Image->GetSpacing();
 
@@ -634,7 +636,7 @@ RayCastHelper< TInputImage, TCoordRep >
         for ( i = 0; i < 3; i++ )
           {
           interDist += ( cubeInter[j][i] - cubeInter[k][i] )
-                       * ( cubeInter[j][i] - cubeInter[k][i] );
+            * ( cubeInter[j][i] - cubeInter[k][i] );
           }
         if ( interDist > maxInterDist )
           {
@@ -815,11 +817,11 @@ RayCastHelper< TInputImage, TCoordRep >
 
     m_RayVoxelStartPosition[1] += ( (int)m_RayVoxelStartPosition[0]
                                     - m_RayVoxelStartPosition[0] ) * m_VoxelIncrement[1] * m_VoxelIncrement[0]
-                                  + 0.5 * m_VoxelIncrement[1] - 0.5;
+      + 0.5 * m_VoxelIncrement[1] - 0.5;
 
     m_RayVoxelStartPosition[2] += ( (int)m_RayVoxelStartPosition[0]
                                     - m_RayVoxelStartPosition[0] ) * m_VoxelIncrement[2] * m_VoxelIncrement[0]
-                                  + 0.5 * m_VoxelIncrement[2] - 0.5;
+      + 0.5 * m_VoxelIncrement[2] - 0.5;
 
     m_RayVoxelStartPosition[0] = (int)m_RayVoxelStartPosition[0] + 0.5 * m_VoxelIncrement[0];
 
@@ -863,11 +865,11 @@ RayCastHelper< TInputImage, TCoordRep >
 
     m_RayVoxelStartPosition[0] += ( (int)m_RayVoxelStartPosition[1]
                                     - m_RayVoxelStartPosition[1] ) * m_VoxelIncrement[0] * m_VoxelIncrement[1]
-                                  + 0.5 * m_VoxelIncrement[0] - 0.5;
+      + 0.5 * m_VoxelIncrement[0] - 0.5;
 
     m_RayVoxelStartPosition[2] += ( (int)m_RayVoxelStartPosition[1]
                                     - m_RayVoxelStartPosition[1] ) * m_VoxelIncrement[2] * m_VoxelIncrement[1]
-                                  + 0.5 * m_VoxelIncrement[2] - 0.5;
+      + 0.5 * m_VoxelIncrement[2] - 0.5;
 
     m_RayVoxelStartPosition[1] = (int)m_RayVoxelStartPosition[1] + 0.5 * m_VoxelIncrement[1];
 
@@ -911,11 +913,11 @@ RayCastHelper< TInputImage, TCoordRep >
 
     m_RayVoxelStartPosition[0] += ( (int)m_RayVoxelStartPosition[2]
                                     - m_RayVoxelStartPosition[2] ) * m_VoxelIncrement[0] * m_VoxelIncrement[2]
-                                  + 0.5 * m_VoxelIncrement[0] - 0.5;
+      + 0.5 * m_VoxelIncrement[0] - 0.5;
 
     m_RayVoxelStartPosition[1] += ( (int)m_RayVoxelStartPosition[2]
                                     - m_RayVoxelStartPosition[2] ) * m_VoxelIncrement[1] * m_VoxelIncrement[2]
-                                  + 0.5 * m_VoxelIncrement[1] - 0.5;
+      + 0.5 * m_VoxelIncrement[1] - 0.5;
 
     m_RayVoxelStartPosition[2] = (int)m_RayVoxelStartPosition[2] + 0.5 * m_VoxelIncrement[2];
 
@@ -1261,20 +1263,20 @@ RayCastHelper< TInputImage, TCoordRep >
     {
     case TRANSVERSE_IN_X:
       {
-      y = m_Position3Dvox[1].GetSum() - vcl_floor(m_Position3Dvox[1].GetSum());
-      z = m_Position3Dvox[2].GetSum() - vcl_floor(m_Position3Dvox[2].GetSum());
+      y = m_Position3Dvox[1].GetSum() - vcl_floor(m_Position3Dvox[1].GetSum() );
+      z = m_Position3Dvox[2].GetSum() - vcl_floor(m_Position3Dvox[2].GetSum() );
       break;
       }
     case TRANSVERSE_IN_Y:
       {
-      y = m_Position3Dvox[0].GetSum() - vcl_floor(m_Position3Dvox[0].GetSum());
-      z = m_Position3Dvox[2].GetSum() - vcl_floor(m_Position3Dvox[2].GetSum());
+      y = m_Position3Dvox[0].GetSum() - vcl_floor(m_Position3Dvox[0].GetSum() );
+      z = m_Position3Dvox[2].GetSum() - vcl_floor(m_Position3Dvox[2].GetSum() );
       break;
       }
     case TRANSVERSE_IN_Z:
       {
-      y = m_Position3Dvox[0].GetSum() - vcl_floor(m_Position3Dvox[0].GetSum());
-      z = m_Position3Dvox[1].GetSum() - vcl_floor(m_Position3Dvox[1].GetSum());
+      y = m_Position3Dvox[0].GetSum() - vcl_floor(m_Position3Dvox[0].GetSum() );
+      z = m_Position3Dvox[1].GetSum() - vcl_floor(m_Position3Dvox[1].GetSum() );
       break;
       }
     default:
@@ -1393,7 +1395,8 @@ RayCastHelper< TInputImage, TCoordRep >
     m_RayIntersectionVoxelIndex[i] = 0;
     }
 }
-}; // end of anonymous namespace
+
+}  // end of anonymous namespace
 
 namespace itk
 {
@@ -1478,6 +1481,7 @@ RayCastInterpolateImageFunction< TInputImage, TCoordRep >
 
   return this->Evaluate(point);
 }
+
 } // namespace itk
 
 #endif

@@ -65,18 +65,18 @@ template< typename TInputSpatialObject, typename TOutputPointSet >
 const typename SpatialObjectToPointSetFilter< TInputSpatialObject, TOutputPointSet >::InputSpatialObjectType *
 SpatialObjectToPointSetFilter< TInputSpatialObject, TOutputPointSet >
 ::GetInput(void)
-{
+  {
   return static_cast< const TInputSpatialObject * >( this->GetPrimaryInput() );
-}
+  }
 
 /** Get the input Spatial Object */
 template< typename TInputSpatialObject, typename TOutputPointSet >
 const typename SpatialObjectToPointSetFilter< TInputSpatialObject, TOutputPointSet >::InputSpatialObjectType *
 SpatialObjectToPointSetFilter< TInputSpatialObject, TOutputPointSet >
 ::GetInput(unsigned int idx)
-{
+  {
   return static_cast< const TInputSpatialObject * >( this->ProcessObject::GetInput(idx) );
-}
+  }
 
 /** Update */
 template< typename TInputSpatialObject, typename TOutputPointSet >
@@ -90,7 +90,7 @@ SpatialObjectToPointSetFilter< TInputSpatialObject, TOutputPointSet >
   const InputSpatialObjectType *inputObject  = this->GetInput();
   typename OutputPointSetType::Pointer outputPointSet = this->GetOutput();
 
-  typedef typename OutputPointSetType::PointIdentifier  PointIdentifier;
+  typedef typename OutputPointSetType::PointIdentifier PointIdentifier;
 
   const PointBasedSpatialObjectType * inputPointSO =
     dynamic_cast< const PointBasedSpatialObjectType * >( inputObject );
@@ -178,9 +178,11 @@ SpatialObjectToPointSetFilter< TInputSpatialObject, TOutputPointSet >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Children depth : " << m_ChildrenDepth << std::endl;
   os << indent << "Sampling Factor : " << m_SamplingFactor << std::endl;
 }
+
 } // end namespace itk
 
 #endif

@@ -42,7 +42,8 @@
 #include <list>
 #include <fstream>
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
 
   // Verify the number of parameters in the command line
@@ -63,7 +64,7 @@ int main( int argc, char* argv[] )
 
 // Software Guide : BeginCodeSnippet
   typedef signed short InputPixelType;
-  const unsigned int   InputDimension = 2;
+  const unsigned int InputDimension = 2;
 
   typedef itk::Image< InputPixelType, InputDimension > InputImageType;
 // Software Guide : EndCodeSnippet
@@ -91,7 +92,7 @@ int main( int argc, char* argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::GDCMImageIO           ImageIOType;
+  typedef itk::GDCMImageIO ImageIOType;
 
   ImageIOType::Pointer gdcmImageIO = ImageIOType::New();
 
@@ -139,7 +140,7 @@ int main( int argc, char* argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileWriter< InputImageType >  Writer1Type;
+  typedef itk::ImageFileWriter< InputImageType > Writer1Type;
 
   Writer1Type::Pointer writer1 = Writer1Type::New();
 
@@ -198,14 +199,13 @@ int main( int argc, char* argv[] )
   typedef itk::Image< WritePixelType, 2 > WriteImageType;
 
   typedef itk::RescaleIntensityImageFilter<
-               InputImageType, WriteImageType > RescaleFilterType;
+      InputImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
   // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -217,7 +217,7 @@ int main( int argc, char* argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileWriter< WriteImageType >  Writer2Type;
+  typedef itk::ImageFileWriter< WriteImageType > Writer2Type;
 
   Writer2Type::Pointer writer2 = Writer2Type::New();
 
@@ -233,7 +233,6 @@ int main( int argc, char* argv[] )
 // try/catch block.
 //
 // Software Guide : EndLatex
-
 
   try
     {
@@ -255,7 +254,7 @@ int main( int argc, char* argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileWriter< WriteImageType >  Writer3Type;
+  typedef itk::ImageFileWriter< WriteImageType > Writer3Type;
 
   Writer3Type::Pointer writer3 = Writer3Type::New();
 

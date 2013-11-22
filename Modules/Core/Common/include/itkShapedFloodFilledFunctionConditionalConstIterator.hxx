@@ -27,7 +27,7 @@ template< typename TImage, typename TFunction >
 ShapedFloodFilledFunctionConditionalConstIterator< TImage, TFunction >
 ::ShapedFloodFilledFunctionConditionalConstIterator(const ImageType *imagePtr,
                                                     FunctionType *fnPtr,
-                                                    IndexType startIndex):
+                                                    IndexType startIndex) :
   m_FullyConnected(false)
 {
   this->m_Image = imagePtr;
@@ -42,7 +42,7 @@ template< typename TImage, typename TFunction >
 ShapedFloodFilledFunctionConditionalConstIterator< TImage, TFunction >
 ::ShapedFloodFilledFunctionConditionalConstIterator(const ImageType *imagePtr,
                                                     FunctionType *fnPtr,
-                                                    std::vector< IndexType > & startIndex):
+                                                    std::vector< IndexType > & startIndex) :
   m_Function(fnPtr),
   m_FullyConnected(false)
 {
@@ -61,7 +61,7 @@ ShapedFloodFilledFunctionConditionalConstIterator< TImage, TFunction >
 template< typename TImage, typename TFunction >
 ShapedFloodFilledFunctionConditionalConstIterator< TImage, TFunction >
 ::ShapedFloodFilledFunctionConditionalConstIterator(const ImageType *imagePtr,
-                                                    FunctionType *fnPtr):
+                                                    FunctionType *fnPtr) :
   m_FullyConnected(false)
 {
   this->m_Image = imagePtr;
@@ -244,6 +244,7 @@ ShapedFloodFilledFunctionConditionalConstIterator< TImage, TFunction >
 {
   return this->m_FullyConnected;
 }
+
 } // end namespace itk
 
 #endif

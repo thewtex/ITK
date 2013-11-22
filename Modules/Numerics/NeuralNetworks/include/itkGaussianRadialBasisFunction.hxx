@@ -31,15 +31,13 @@ namespace Statistics
 template<typename ScalarType>
 GaussianRadialBasisFunction< ScalarType>
 ::GaussianRadialBasisFunction()
-{
-}
+{}
 
 /** Destructor */
 template<typename ScalarType>
 GaussianRadialBasisFunction< ScalarType>
 ::~GaussianRadialBasisFunction()
-{
-}
+{}
 
 /** Evaluate function */
 template<typename ScalarType>
@@ -49,7 +47,8 @@ GaussianRadialBasisFunction< ScalarType>
 {
   ScalarType val;
   ScalarType radius = Superclass::GetRadius();
-  val = vcl_exp(-0.5*vcl_pow(input,2)/vcl_pow(radius,2));
+
+  val = vcl_exp(-0.5*vcl_pow(input,2)/vcl_pow(radius,2) );
   return val;
 }
 
@@ -58,16 +57,17 @@ template<typename ScalarType>
 ScalarType
 GaussianRadialBasisFunction< ScalarType>
 ::EvaluateDerivative(const ScalarType& dist,const ArrayType& input,
-                          char mode,int element_id) const
+                     char mode,int element_id) const
 {
   ScalarType val = 0;
   ScalarType radius=Superclass::GetRadius();
-  ArrayType center = Superclass::GetCenter();
+  ArrayType  center = Superclass::GetCenter();
+
   if(mode=='u') //w.r.t centers
     {
     ScalarType temp1= vcl_pow(radius,2);
     val=Evaluate(dist)
-                      *(input.GetElement(element_id)-center.GetElement(element_id))/temp1;
+      *(input.GetElement(element_id)-center.GetElement(element_id) )/temp1;
     }
   else if(mode=='s') // w.r.t radius
     {

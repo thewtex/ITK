@@ -310,6 +310,7 @@ VTKImageImport< TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   if ( m_DataExtentCallback )
     {
     os << "DataExtentCallback: " << m_DataExtentCallback << std::endl;
@@ -367,6 +368,7 @@ VTKImageImport< TOutputImage >
     os << "CallbackUserData: " << m_CallbackUserData << std::endl;
     }
 }
+
 } // namespace itk
 
 #endif

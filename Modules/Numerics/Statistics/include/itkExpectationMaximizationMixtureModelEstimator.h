@@ -58,7 +58,7 @@ namespace Statistics
  */
 
 template< typename TSample >
-class ExpectationMaximizationMixtureModelEstimator:public Object
+class ExpectationMaximizationMixtureModelEstimator : public Object
 {
 public:
   /** Standard class typedef */
@@ -80,18 +80,18 @@ public:
   /** Typedef requried to generate dataobject decorated output that can
     * be plugged into SampleClassifierFilter */
   typedef GaussianMembershipFunction< MeasurementVectorType >
-  GaussianMembershipFunctionType;
+    GaussianMembershipFunctionType;
 
   typedef typename GaussianMembershipFunctionType::Pointer
-  GaussianMembershipFunctionPointer;
+    GaussianMembershipFunctionPointer;
 
   typedef MembershipFunctionBase< MeasurementVectorType > MembershipFunctionType;
   typedef typename MembershipFunctionType::ConstPointer   MembershipFunctionPointer;
   typedef std::vector< MembershipFunctionPointer >        MembershipFunctionVectorType;
   typedef SimpleDataObjectDecorator<
-    MembershipFunctionVectorType >                        MembershipFunctionVectorObjectType;
+      MembershipFunctionVectorType >                        MembershipFunctionVectorObjectType;
   typedef typename
-  MembershipFunctionVectorObjectType::Pointer MembershipFunctionVectorObjectPointer;
+    MembershipFunctionVectorObjectType::Pointer MembershipFunctionVectorObjectPointer;
 
   /** Type of the mixture model component base class */
   typedef MixtureModelComponentBase< TSample > ComponentType;
@@ -101,7 +101,7 @@ public:
 
   /** Type of the membership function base class */
   typedef MembershipFunctionBase< MeasurementVectorType >
-  ComponentMembershipFunctionType;
+    ComponentMembershipFunctionType;
 
   /** Type of the array of the proportion values */
   typedef Array< double > ProportionVectorType;
@@ -123,9 +123,9 @@ public:
 
   /** typedef for decorated array of proportion */
   typedef SimpleDataObjectDecorator<
-    ProportionVectorType >                 MembershipFunctionsWeightsArrayObjectType;
+      ProportionVectorType >                 MembershipFunctionsWeightsArrayObjectType;
   typedef typename
-  MembershipFunctionsWeightsArrayObjectType::Pointer MembershipFunctionsWeightsArrayPointer;
+    MembershipFunctionsWeightsArrayObjectType::Pointer MembershipFunctionsWeightsArrayPointer;
 
   /** Get method for data decorated Membership functions weights array */
   const MembershipFunctionsWeightsArrayObjectType * GetMembershipFunctionsWeightsArray() const;
@@ -139,7 +139,8 @@ public:
   int GetMaximumIteration() const;
 
   /** Gets the current iteration. */
-  int GetCurrentIteration()
+  int
+  GetCurrentIteration()
   {
     return m_CurrentIteration;
   }
@@ -169,7 +170,8 @@ public:
 
 protected:
   ExpectationMaximizationMixtureModelEstimator();
-  virtual ~ExpectationMaximizationMixtureModelEstimator() {}
+  virtual
+  ~ExpectationMaximizationMixtureModelEstimator() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   bool CalculateDensities();

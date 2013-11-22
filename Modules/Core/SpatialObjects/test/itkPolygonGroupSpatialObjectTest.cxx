@@ -22,8 +22,8 @@
 
 static float testPoints[11][2] =
   {
-    {1,1},{1,2},{1.25,2},{1.25,1.25},{1.75,1.25},
-    {1.75,1.5},{1.5,1.5},{1.5,2},{2,2},{2,1},{1,1}
+      {1,1},{1,2},{1.25,2},{1.25,1.25},{1.75,1.25},
+      {1.75,1.5},{1.5,1.5},{1.5,2},{2,2},{2,1},{1,1}
   };
 
 typedef itk::PolygonGroupSpatialObject<3> PolygonGroup3DType;
@@ -40,7 +40,7 @@ buildPolygonGroup(PolygonGroup3DPointer &PolygonGroup)
         = itk::PolygonSpatialObject<3>::New();
       strand->Print(std::cout);
 
-      if(!PolygonGroup->AddStrand(strand))
+      if(!PolygonGroup->AddStrand(strand) )
         {
         std::cerr << "Error adding point" << std::endl;
         return -1;
@@ -55,7 +55,7 @@ buildPolygonGroup(PolygonGroup3DPointer &PolygonGroup)
         pos[1] = testPoints[i][1];
         pos[2] = z;
         itk::PolygonSpatialObject<3>::PointType curpoint(pos);
-        if(!strand->AddPoint(curpoint))
+        if(!strand->AddPoint(curpoint) )
           {
           std::cerr << "Error adding point" << std::endl;
           return -1;
@@ -86,7 +86,7 @@ buildPolygonGroup(PolygonGroup3DPointer &PolygonGroup)
         // try replacing it.
         PolygonGroup->ReplaceStrand(strand,strand);
 
-        if(!strand->IsClosed())
+        if(!strand->IsClosed() )
           {
           std::cerr << "Strand should be closed" << std::endl;
           return -1;
@@ -101,7 +101,7 @@ buildPolygonGroup(PolygonGroup3DPointer &PolygonGroup)
         pos[1] = testPoints[5][1];
         pos[2] = z;
         itk::PolygonSpatialObject<3>::PointType testpoint(pos);
-        if(!strand->DeletePoint(testpoint))
+        if(!strand->DeletePoint(testpoint) )
           {
           std::cerr << "Polygon: Delete Point failed" << std::endl;
           }
@@ -112,13 +112,13 @@ buildPolygonGroup(PolygonGroup3DPointer &PolygonGroup)
         p2[1] = testPoints[4][1];
         p2[2] = z;
         itk::PolygonSpatialObject<3>::PointType insertafter(p2);
-        if(!strand->InsertPoint(insertafter,testpoint))
+        if(!strand->InsertPoint(insertafter,testpoint) )
           {
           std::cerr << "Polygon: Insert Point failed" << std::endl;
           }
         //
         // try replacing the point.
-        if(!strand->ReplacePoint(insertafter,insertafter))
+        if(!strand->ReplacePoint(insertafter,insertafter) )
           {
           std::cerr << "Polygon: Replace Point failed" << std::endl;
           }
@@ -129,7 +129,7 @@ buildPolygonGroup(PolygonGroup3DPointer &PolygonGroup)
         p3[1] = testPoints[10][1];
         p3[2] = z;
         itk::PolygonSpatialObject<3>::PointType endpt(p3);
-        if(!strand->RemoveSegment(testpoint,endpt))
+        if(!strand->RemoveSegment(testpoint,endpt) )
           {
           std::cerr << "Polygon: RemoveSegment failed" << std::endl;
           }
@@ -147,7 +147,7 @@ buildPolygonGroup(PolygonGroup3DPointer &PolygonGroup)
           pos[2] = z;
           itk::PolygonSpatialObject<3>::PointType curpoint(pos);
 
-          if(!strand->AddPoint(curpoint))
+          if(!strand->AddPoint(curpoint) )
             {
             std::cerr << "Error adding point" << std::endl;
             return -1;
@@ -186,13 +186,13 @@ buildPolygonGroup(PolygonGroup3DPointer &PolygonGroup)
         outsidepos[1] = 1.3;
         outsidepos[2] = z;
         itk::PolygonSpatialObject<3>::PointType outsidepoint(outsidepos);
-        if(!strand->IsInside(insidepoint))
+        if(!strand->IsInside(insidepoint) )
           {
           std::cerr << " 1.75, 1.75, 0 should be inside strand" << std::endl;
           return -1;
 
           }
-        if(strand->IsInside(outsidepoint))
+        if(strand->IsInside(outsidepoint) )
           {
           std::cerr << " 1.6, 1.3, 0 should be outside strand" << std::endl;
           return -1;
@@ -209,7 +209,8 @@ buildPolygonGroup(PolygonGroup3DPointer &PolygonGroup)
   return 0;
 }
 
-int itkPolygonGroupSpatialObjectTest(int, char *[])
+int
+itkPolygonGroupSpatialObjectTest(int, char *[])
 {
   PolygonGroup3DPointer PolygonGroup = PolygonGroup3DType::New();
 
@@ -230,7 +231,7 @@ int itkPolygonGroupSpatialObjectTest(int, char *[])
               << std::endl;
     return 1;
     }
-  if(!PolygonGroup->IsClosed())
+  if(!PolygonGroup->IsClosed() )
     {
     std::cerr << "PolygonGroup->IsClosed() returned false, should be true"
               << std::endl;
@@ -243,19 +244,18 @@ int itkPolygonGroupSpatialObjectTest(int, char *[])
   insidepos[1] = 1.75;
   insidepos[2] = 5.0;
   itk::PolygonSpatialObject<3>::PointType insidepoint(insidepos);
-  if(!PolygonGroup->IsInside(insidepoint))
+  if(!PolygonGroup->IsInside(insidepoint) )
     {
     std::cerr << "1.75,1.75,5 is inside PolygonGroup, IsInside returns false"
               << std::endl;
     }
-
 
   double outsidepos[3];
   outsidepos[0] = 1.6;
   outsidepos[1] = 1.3;
   outsidepos[2] = 11.5;
   itk::PolygonSpatialObject<3>::PointType outsidepoint(outsidepos);
-  if(PolygonGroup->IsInside(outsidepoint))
+  if(PolygonGroup->IsInside(outsidepoint) )
     {
     std::cerr << "1.6,1.3,11.5" << "is not inside PolygonGroup, IsInside returns true"
               << std::endl;

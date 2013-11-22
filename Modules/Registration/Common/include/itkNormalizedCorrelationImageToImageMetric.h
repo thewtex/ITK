@@ -35,11 +35,15 @@ namespace itk
  * Interpolator. The correlation is normalized by the autocorrelations of both
  * the fixed and moving images.
  *
+ * A more negative metric value indicates a greater degree of correlation
+ * between the fixed and moving image. This makes the metric simpler to use
+ * with optimizers that strive to minimize their cost function by default.
+ *
  * \ingroup RegistrationMetrics
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingImage >
-class NormalizedCorrelationImageToImageMetric:
+class NormalizedCorrelationImageToImageMetric :
   public ImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
@@ -94,14 +98,16 @@ public:
 
 protected:
   NormalizedCorrelationImageToImageMetric();
-  virtual ~NormalizedCorrelationImageToImageMetric() {}
+  virtual
+  ~NormalizedCorrelationImageToImageMetric() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   NormalizedCorrelationImageToImageMetric(const Self &); //purposely not
                                                          // implemented
   void operator=(const Self &);                          //purposely not
-                                                         // implemented
+
+  // implemented
 
   bool m_SubtractMean;
 };

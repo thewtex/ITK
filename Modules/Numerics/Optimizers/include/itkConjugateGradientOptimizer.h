@@ -30,7 +30,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class ConjugateGradientOptimizer:
+class ConjugateGradientOptimizer :
   public SingleValuedNonLinearVnlOptimizer
 
 {
@@ -72,7 +72,8 @@ public:
 
 protected:
   ConjugateGradientOptimizer();
-  virtual ~ConjugateGradientOptimizer();
+  virtual
+  ~ConjugateGradientOptimizer();
 
   typedef Superclass::CostFunctionAdaptorType CostFunctionAdaptorType;
 

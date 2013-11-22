@@ -23,7 +23,8 @@
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkNrrdDiffusionTensor3DImageReadTensorDoubleWriteTensorDoubleTest( int ac, char* av[] )
+int
+itkNrrdDiffusionTensor3DImageReadTensorDoubleWriteTensorDoubleTest( int ac, char* av[] )
 {
   if(ac < 2)
     {
@@ -36,7 +37,7 @@ int itkNrrdDiffusionTensor3DImageReadTensorDoubleWriteTensorDoubleTest( int ac, 
   typedef itk::Image<InPixelType, 3>     InImage;
   typedef itk::Image<OutPixelType, 3>    OutImage;
 
-  typedef itk::ImageFileReader<InImage>  ReaderType;
+  typedef itk::ImageFileReader<InImage> ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
@@ -74,7 +75,6 @@ int itkNrrdDiffusionTensor3DImageReadTensorDoubleWriteTensorDoubleTest( int ac, 
     std::cerr << e << std::endl;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 

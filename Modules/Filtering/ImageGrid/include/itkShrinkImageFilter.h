@@ -64,7 +64,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class ShrinkImageFilter:
+class ShrinkImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -106,6 +106,7 @@ public:
    * a minimum value of 1. Default is 1 for all dimensions. */
   itkSetMacro(ShrinkFactors, ShrinkFactorsType);
   void SetShrinkFactors(unsigned int factor);
+
   void SetShrinkFactor(unsigned int i, unsigned int factor);
 
   /** Get the shrink factors. */

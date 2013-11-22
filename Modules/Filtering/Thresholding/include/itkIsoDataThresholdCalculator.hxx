@@ -35,12 +35,13 @@ IsoDataThresholdCalculator<THistogram, TOutput>
 ::GenerateData(void)
 {
   const HistogramType * histogram = this->GetInput();
+
   // histogram->Print(std::cout);
   if ( histogram->GetTotalFrequency() == 0 )
     {
     itkExceptionMacro(<< "Histogram is empty");
     }
-  SizeValueType size = histogram->GetSize(0);
+  SizeValueType    size = histogram->GetSize(0);
   ProgressReporter progress(this, 0, size );
   if( size == 1 )
     {
@@ -75,7 +76,9 @@ IsoDataThresholdCalculator<THistogram, TOutput>
     for( InstanceIdentifier i = 0; i <= currentPos; i++)
       {
       totl += static_cast< double >( histogram->GetFrequency(i, 0) );
-      l += static_cast< double >( histogram->GetMeasurement(i, 0) ) * static_cast< double >( histogram->GetFrequency(i, 0) );
+      l +=
+        static_cast< double >( histogram->GetMeasurement(i,
+                                                         0) ) * static_cast< double >( histogram->GetFrequency(i, 0) );
       }
     // compute the mean of the higher values
     double h = 0;
@@ -84,7 +87,9 @@ IsoDataThresholdCalculator<THistogram, TOutput>
     for( InstanceIdentifier i = currentPos + 1; i < size; i++)
       {
       toth += static_cast< double >( histogram->GetFrequency(i, 0) );
-      h += static_cast< double >( histogram->GetMeasurement(i, 0) ) * static_cast< double >( histogram->GetFrequency(i, 0) );
+      h +=
+        static_cast< double >( histogram->GetMeasurement(i,
+                                                         0) ) * static_cast< double >( histogram->GetFrequency(i, 0) );
       }
     // a test to avoid a potential division by 0
     if( ( totl > vnl_math::eps ) && ( toth > vnl_math::eps ) )

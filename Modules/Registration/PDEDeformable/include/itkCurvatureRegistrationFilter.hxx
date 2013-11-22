@@ -109,13 +109,15 @@ CurvatureRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField, TIma
     {
     fftw_free(m_DisplacementFieldComponentImage);
     }
-  m_DisplacementFieldComponentImage = static_cast< RealTypeDFT * >( fftw_malloc( numberOfPixels * sizeof( RealTypeDFT ) ) );
+  m_DisplacementFieldComponentImage =
+    static_cast< RealTypeDFT * >( fftw_malloc( numberOfPixels * sizeof( RealTypeDFT ) ) );
 
   if ( m_DisplacementFieldComponentImageDCT )
     {
     fftw_free(m_DisplacementFieldComponentImageDCT);
     }
-  m_DisplacementFieldComponentImageDCT = static_cast< RealTypeDFT * >( fftw_malloc( numberOfPixels * sizeof( RealTypeDFT ) ) );
+  m_DisplacementFieldComponentImageDCT =
+    static_cast< RealTypeDFT * >( fftw_malloc( numberOfPixels * sizeof( RealTypeDFT ) ) );
 
   fftw_r2r_kind fftForward[ImageDimension];
   fftw_r2r_kind fftBackward[ImageDimension];
@@ -157,16 +159,16 @@ CurvatureRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField, TIma
     fftw_destroy_plan(m_PlanForwardDCT);
     }
   m_PlanForwardDCT = fftw_plan_r2r
-                       (ImageDimension, fixedImageDimensionsFFTW, m_DisplacementFieldComponentImage,
-                       m_DisplacementFieldComponentImageDCT, fftForward, FFTW_MEASURE | FFTW_DESTROY_INPUT);
+      (ImageDimension, fixedImageDimensionsFFTW, m_DisplacementFieldComponentImage,
+      m_DisplacementFieldComponentImageDCT, fftForward, FFTW_MEASURE | FFTW_DESTROY_INPUT);
 
   if ( m_PlanBackwardDCT )
     {
     fftw_destroy_plan(m_PlanBackwardDCT);
     }
   m_PlanBackwardDCT = fftw_plan_r2r
-                        (ImageDimension, fixedImageDimensionsFFTW, m_DisplacementFieldComponentImageDCT,
-                        m_DisplacementFieldComponentImage, fftBackward, FFTW_MEASURE | FFTW_DESTROY_INPUT);
+      (ImageDimension, fixedImageDimensionsFFTW, m_DisplacementFieldComponentImageDCT,
+      m_DisplacementFieldComponentImage, fftBackward, FFTW_MEASURE | FFTW_DESTROY_INPUT);
 
   // compute components of diagonal matrix elements
   for ( unsigned int dim = 0; dim < ImageDimension; ++dim )
@@ -220,19 +222,19 @@ CurvatureRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField, TIma
   (void)dt;
   DisplacementFieldPointer update = this->GetUpdateBuffer();
 
-  ImageRegionConstIterator< DisplacementFieldType >    itInDeformation;
-  ImageRegionIterator< DisplacementFieldType >         itOutDeformation;
-  ImageRegionConstIterator< DisplacementFieldType >    itInUpdate;
+  ImageRegionConstIterator< DisplacementFieldType >   itInDeformation;
+  ImageRegionIterator< DisplacementFieldType >        itOutDeformation;
+  ImageRegionConstIterator< DisplacementFieldType >   itInUpdate;
   ImageRegionConstIteratorWithIndex< FixedImageType > fixedImageIteratorWithIndex;
 
   itInDeformation = ImageRegionConstIterator< DisplacementFieldType >
-                      ( this->GetDisplacementField(), this->GetDisplacementField()->GetLargestPossibleRegion() );
+      ( this->GetDisplacementField(), this->GetDisplacementField()->GetLargestPossibleRegion() );
   itOutDeformation = ImageRegionIterator< DisplacementFieldType >
-                       ( this->GetDisplacementField(), this->GetDisplacementField()->GetLargestPossibleRegion() );
+      ( this->GetDisplacementField(), this->GetDisplacementField()->GetLargestPossibleRegion() );
   itInUpdate = ImageRegionConstIterator< DisplacementFieldType >
-                 ( update, update->GetLargestPossibleRegion() );
+      ( update, update->GetLargestPossibleRegion() );
   fixedImageIteratorWithIndex = ImageRegionConstIteratorWithIndex< FixedImageType >
-                                  ( this->GetFixedImage(), this->GetFixedImage()->GetLargestPossibleRegion() );
+      ( this->GetFixedImage(), this->GetFixedImage()->GetLargestPossibleRegion() );
 
   const SizeValueType numberOfPixels = this->GetFixedImage()->GetLargestPossibleRegion().GetNumberOfPixels();
 
@@ -256,8 +258,8 @@ CurvatureRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField, TIma
           ( offset1 < numberOfPixels ) && !itInDeformation.IsAtEnd() && !itInUpdate.IsAtEnd();
           ++offset1 )
       {
-      this->m_DisplacementFieldComponentImage[offset1] = this->m_TimeStep *itInUpdate. Value()[l]
-                                                        + itInDeformation.Value()[l];
+      this->m_DisplacementFieldComponentImage[offset1] = this->m_TimeStep *itInUpdate.Value()[l]
+        + itInDeformation.Value()[l];
       ++itInUpdate;
       ++itInDeformation;
       }
@@ -296,6 +298,7 @@ CurvatureRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField, TIma
 
   this->GetDisplacementField()->Modified();
 }
+
 } // end namespace itk
 
 #endif //defined(ITK_USE_FFTWF) || defined(ITK_USE_FFTWD)

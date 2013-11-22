@@ -23,7 +23,8 @@
 #include "itkDefaultDynamicMeshTraits.h"
 #include "itkTimeProbe.h"
 
-int itkTriangleMeshToSimplexMeshFilter2Test(int , char *[] )
+int
+itkTriangleMeshToSimplexMeshFilter2Test(int , char *[] )
 {
 
   // Declare the type of the input and output mesh
@@ -32,19 +33,18 @@ int itkTriangleMeshToSimplexMeshFilter2Test(int , char *[] )
   typedef itk::Mesh<double,3,MeshTraits>        TriangleMeshType;
   typedef itk::SimplexMesh<double,3,MeshTraits> SimplexMeshType;
 
-
   // declare triangle mesh source
-  typedef itk::RegularSphereMeshSource<TriangleMeshType>  SphereMeshSourceType;
-  typedef SphereMeshSourceType::PointType                 PointType;
-  typedef SphereMeshSourceType::VectorType                VectorType;
+  typedef itk::RegularSphereMeshSource<TriangleMeshType> SphereMeshSourceType;
+  typedef SphereMeshSourceType::PointType                PointType;
+  typedef SphereMeshSourceType::VectorType               VectorType;
 
   // Declare the type of the gradient image
-  typedef itk::TriangleMeshToSimplexMeshFilter<TriangleMeshType, SimplexMeshType>  SimplexFilterType;
+  typedef itk::TriangleMeshToSimplexMeshFilter<TriangleMeshType, SimplexMeshType> SimplexFilterType;
 
-  SphereMeshSourceType::Pointer  mySphereMeshSource = SphereMeshSourceType::New();
-  PointType center; center.Fill(0);
-  PointType::ValueType scaleInit[3] = {10,10,10};
-  VectorType scale = scaleInit;
+  SphereMeshSourceType::Pointer mySphereMeshSource = SphereMeshSourceType::New();
+  PointType                     center; center.Fill(0);
+  PointType::ValueType          scaleInit[3] = {10,10,10};
+  VectorType                    scale = scaleInit;
 
   mySphereMeshSource->SetCenter(center);
   mySphereMeshSource->SetResolution(2);
@@ -57,7 +57,7 @@ int itkTriangleMeshToSimplexMeshFilter2Test(int , char *[] )
   SimplexMeshType::Pointer simplexMesh = simplexFilter->GetOutput();
   simplexMesh->DisconnectPipeline();
 
-  typedef  SimplexMeshType::NeighborListType              NeighborsListType;
+  typedef  SimplexMeshType::NeighborListType NeighborsListType;
   NeighborsListType* neighbors = 0;
 
   for (int i=0; i < 7; i++)
@@ -69,7 +69,7 @@ int itkTriangleMeshToSimplexMeshFilter2Test(int , char *[] )
     for (unsigned int pointIndex = 0; pointIndex < lastIndex; pointIndex++)
       {
       neighbors = simplexMesh->GetNeighbors( pointIndex, i );
-      if (pointIndex != (lastIndex - 1))
+      if (pointIndex != (lastIndex - 1) )
         {
         delete neighbors;
         }

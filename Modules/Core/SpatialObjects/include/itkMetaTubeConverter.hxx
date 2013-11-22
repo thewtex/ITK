@@ -32,9 +32,9 @@ template< unsigned int NDimensions >
 typename MetaTubeConverter< NDimensions >::MetaObjectType *
 MetaTubeConverter< NDimensions>
 ::CreateMetaObject()
-{
+  {
   return dynamic_cast<MetaObjectType *>(new TubeMetaObjectType);
-}
+  }
 
 /** Convert a metaTube into an Tube SpatialObject  */
 template< unsigned int NDimensions >
@@ -44,6 +44,7 @@ MetaTubeConverter< NDimensions >
 {
   const TubeMetaObjectType *tubeMO =
     dynamic_cast<const TubeMetaObjectType *>(mo);
+
   if(tubeMO == 0)
     {
     itkExceptionMacro(<< "Can't convert MetaObject to MetaTube" );
@@ -130,10 +131,11 @@ template< unsigned int NDimensions >
 typename MetaTubeConverter< NDimensions >::MetaObjectType *
 MetaTubeConverter< NDimensions >
 ::SpatialObjectToMetaObject(const SpatialObjectType *spatialObject)
-{
+  {
   TubeSpatialObjectConstPointer tubeSO =
     dynamic_cast<const TubeSpatialObjectType *>(spatialObject);
-  if(tubeSO.IsNull())
+
+  if(tubeSO.IsNull() )
     {
     itkExceptionMacro(<< "Can't downcast SpatialObject to TubeSpatialObject");
     }
@@ -207,10 +209,10 @@ MetaTubeConverter< NDimensions >
   for ( unsigned int i = 0; i < NDimensions; i++ )
     {
     tubeMO->ElementSpacing(i, tubeSO->GetIndexToObjectTransform()
-                         ->GetScaleComponent()[i]);
+                           ->GetScaleComponent()[i]);
     }
   return tubeMO;
-}
+  }
 
 } // end namespace itk
 

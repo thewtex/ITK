@@ -101,7 +101,7 @@ namespace itk
 template< typename TInputImage,
           typename TFeatureImage,
           typename TOutputPixelType = float >
-class CurvesLevelSetImageFilter:
+class CurvesLevelSetImageFilter :
   public SegmentationLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPixelType >
 {
 public:
@@ -127,14 +127,18 @@ public:
   itkNewMacro(Self);
 
   /** Set the value of sigma used to compute derivatives */
-  void SetDerivativeSigma(float value)
+  void
+  SetDerivativeSigma(float value)
   {
     m_CurvesFunction->SetDerivativeSigma(value);
     this->Modified();
   }
 
-  float GetDerivativeSigma() const
-  { return m_CurvesFunction->GetDerivativeSigma(); }
+  float
+  GetDerivativeSigma() const
+  {
+    return m_CurvesFunction->GetDerivativeSigma();
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking

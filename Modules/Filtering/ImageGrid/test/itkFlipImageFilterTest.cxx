@@ -21,20 +21,20 @@
 #include "itkFilterWatcher.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-int itkFlipImageFilterTest(int, char* [] )
+int
+itkFlipImageFilterTest(int, char* [] )
 {
 
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   typedef unsigned char PixelType;
   enum { ImageDimension = 3 };
   typedef itk::Image<PixelType,ImageDimension> ImageType;
   typedef itk::FlipImageFilter<ImageType>      FlipperType;
 
-
   // define a small input test
-  ImageType::IndexType index = {{ 10, 20, 30 }};
-  ImageType::SizeType size = {{5,4,3}};
+  ImageType::IndexType  index = {{ 10, 20, 30 }};
+  ImageType::SizeType   size = {{5,4,3}};
   ImageType::RegionType region;
   region.SetSize( size );
   region.SetIndex( index );
@@ -67,12 +67,11 @@ int itkFlipImageFilterTest(int, char* [] )
     ++inputIter;
     }
 
-
   // permute the image
   FlipperType::Pointer flipper = FlipperType::New();
-  FilterWatcher watcher(flipper);
+  FilterWatcher        watcher(flipper);
 
-  bool bArray[ImageDimension] = { true, false, true };
+  bool                           bArray[ImageDimension] = { true, false, true };
   FlipperType::FlipAxesArrayType flipAxes( bArray );
 
   flipper->SetFlipAxes( flipAxes );
@@ -109,10 +108,10 @@ int itkFlipImageFilterTest(int, char* [] )
       {
       if ( flipAxes[j] )
         {
-        double temp = - 1 * ( static_cast<double>( inputIndex[j] ) *
-           inputSpacing[j] + inputOrigin[j]);
-        outputIndex[j] = itk::Math::Round<IndexValueType>(( temp - outputOrigin[j] ) /
-           outputSpacing[j] );
+        double temp = -1 * ( static_cast<double>( inputIndex[j] ) *
+                             inputSpacing[j] + inputOrigin[j]);
+        outputIndex[j] = itk::Math::Round<IndexValueType>( ( temp - outputOrigin[j] ) /
+                                                           outputSpacing[j] );
         }
       else
         {
@@ -136,7 +135,6 @@ int itkFlipImageFilterTest(int, char* [] )
     std::cout << "Test failed." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;

@@ -52,7 +52,7 @@ namespace Statistics
  * \ingroup ITKStatistics
  */
 template< typename TImage, typename TMaskImage = TImage >
-class ImageToListSampleFilter:
+class ImageToListSampleFilter :
   public ProcessObject
 {
 public:
@@ -74,7 +74,7 @@ public:
   typedef typename ImageType::ConstPointer ImageConstPointer;
   typedef typename ImageType::PixelType    PixelType;
   typedef typename MeasurementVectorPixelTraits<
-    PixelType >::MeasurementVectorType MeasurementVectorType;
+      PixelType >::MeasurementVectorType MeasurementVectorType;
 
   /** Mask Image typedefs */
   typedef TMaskImage                           MaskImageType;
@@ -113,7 +113,8 @@ public:
 
 protected:
   ImageToListSampleFilter();
-  virtual ~ImageToListSampleFilter() {}
+  virtual
+  ~ImageToListSampleFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Standard itk::ProcessObject subclass method. */

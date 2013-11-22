@@ -55,7 +55,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingImage >
-class GradientDifferenceImageToImageMetric:
+class GradientDifferenceImageToImageMetric :
   public ImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
@@ -94,10 +94,10 @@ public:
   /** Types for transforming the moving image */
   typedef itk::Image< FixedImagePixelType,
                       itkGetStaticConstMacro(FixedImageDimension) >
-  TransformedMovingImageType;
+    TransformedMovingImageType;
 
   typedef itk::ResampleImageFilter< MovingImageType, TransformedMovingImageType >
-  TransformMovingImageFilterType;
+    TransformMovingImageFilterType;
 
   /** Sobel filters to compute the gradients of the Fixed Image */
 
@@ -145,7 +145,8 @@ public:
 
 protected:
   GradientDifferenceImageToImageMetric();
-  virtual ~GradientDifferenceImageToImageMetric() {}
+  virtual
+  ~GradientDifferenceImageToImageMetric() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Compute the range of the moved image gradients. */
@@ -159,10 +160,10 @@ protected:
                              const double *subtractionFactor) const;
 
   typedef NeighborhoodOperatorImageFilter<
-    FixedGradientImageType, FixedGradientImageType > FixedSobelFilter;
+      FixedGradientImageType, FixedGradientImageType > FixedSobelFilter;
 
   typedef NeighborhoodOperatorImageFilter<
-    MovedGradientImageType, MovedGradientImageType > MovedSobelFilter;
+      MovedGradientImageType, MovedGradientImageType > MovedSobelFilter;
 
 private:
   GradientDifferenceImageToImageMetric(const Self &); //purposely not

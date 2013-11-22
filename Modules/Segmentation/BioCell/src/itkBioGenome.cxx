@@ -98,5 +98,6 @@ Genome
 {
   m_Map[geneId] = level;
 }
+
 }  // end namespace bio
 }  // end namespace itk

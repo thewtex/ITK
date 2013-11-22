@@ -174,6 +174,7 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   // Create a process accumulator for tracking the progress of this
   // minipipeline
   ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
+
   progress->SetMiniPipelineFilter(this);
 
   // Compute the contribution of each filter to the total progress.
@@ -217,7 +218,6 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   ImageRegionIteratorWithIndex<OutputImageType> initGradIt(
     outputImage, this->m_ImageAdaptor->GetRequestedRegion() );
 
-
   for ( unsigned int nc = 0; nc < nComponents; nc++ )
     {
     for ( unsigned int dim = 0; dim < ImageDimension; dim++ )
@@ -229,7 +229,7 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
         if ( i == dim )
           {
           j++;
-        }
+          }
         m_SmoothingFilters[i]->SetDirection(j);
         i++;
         j++;
@@ -277,7 +277,9 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
       ot.GoToBegin();
       while ( !it.IsAtEnd() )
         {
-        OutputComponentType outValue = static_cast<OutputComponentType>( DefaultConvertPixelTraits<InternalRealType>::GetNthComponent( nc, it.Get() / spacing ) );
+        OutputComponentType outValue =
+          static_cast<OutputComponentType>( DefaultConvertPixelTraits<InternalRealType>::GetNthComponent( nc, it.Get() /
+                                                                                                          spacing ) );
         ot.Set( outValue );
         ++it;
         ++ot;
@@ -302,7 +304,7 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   if ( this->m_UseImageDirection )
     {
 
-    OutputImageType *gradientImage = outputImage;
+    OutputImageType *                      gradientImage = outputImage;
     ImageRegionIterator< OutputImageType > itr( gradientImage,
                                                 gradientImage->GetRequestedRegion() );
 
@@ -324,14 +326,13 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   // this methods is overloaded so that if the output image is a
   // VectorImage then the correct number of components are set.
 
-
   Superclass::GenerateOutputInformation();
 
   OutputImageType* output = this->GetOutput();
+
   const typename TInputImage::ConstPointer inputImage( this->GetInput() );
 
   unsigned int nComponents = inputImage->GetNumberOfComponentsPerPixel() * ImageDimension;
-
 
   output->SetNumberOfComponentsPerPixel( nComponents );
 }
@@ -342,10 +343,12 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "NormalizeAcrossScale: " << m_NormalizeAcrossScale << std::endl;
   os << indent << "UseImageDirection :   "
      << ( this->m_UseImageDirection ? "On" : "Off" ) << std::endl;
 }
+
 } // end namespace itk
 
 #endif

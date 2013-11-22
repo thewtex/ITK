@@ -45,11 +45,11 @@ public:
 
   enum { SpaceDimension=3 };
 
-  typedef Superclass::ParametersType          ParametersType;
-  typedef Superclass::ParametersValueType     ParametersValueType;
-  typedef Superclass::NumberOfParametersType  NumberOfParametersType;
-  typedef Superclass::DerivativeType          DerivativeType;
-  typedef Superclass::MeasureType             MeasureType;
+  typedef Superclass::ParametersType         ParametersType;
+  typedef Superclass::ParametersValueType    ParametersValueType;
+  typedef Superclass::NumberOfParametersType NumberOfParametersType;
+  typedef Superclass::DerivativeType         DerivativeType;
+  typedef Superclass::MeasureType            MeasureType;
 
   GradientDescentOptimizerv4Test2Metric()
   {
@@ -57,16 +57,20 @@ public:
     m_Parameters.Fill( 0 );
   }
 
-  void Initialize(void) throw ( itk::ExceptionObject ) {}
+  void
+  Initialize(void) throw ( itk::ExceptionObject ) {}
 
-  void GetDerivative( DerivativeType & derivative ) const
+  void
+  GetDerivative( DerivativeType & derivative ) const
   {
     MeasureType value;
+
     GetValueAndDerivative( value, derivative );
   }
 
-  void GetValueAndDerivative( MeasureType & value,
-                              DerivativeType & derivative ) const
+  void
+  GetValueAndDerivative( MeasureType & value,
+                         DerivativeType & derivative ) const
   {
     if( derivative.Size() != this->GetNumberOfParameters() )
       derivative.SetSize( this->GetNumberOfParameters() );
@@ -81,39 +85,46 @@ public:
     std::cout << "derivative: " << derivative << std::endl;
   }
 
-  MeasureType  GetValue() const
+  MeasureType
+  GetValue() const
   {
     return 0.0;
   }
 
-  void UpdateTransformParameters( const DerivativeType & update, ParametersValueType )
+  void
+  UpdateTransformParameters( const DerivativeType & update, ParametersValueType )
   {
     m_Parameters += update;
   }
 
-  unsigned int GetNumberOfParameters(void) const
+  unsigned int
+  GetNumberOfParameters(void) const
   {
     return SpaceDimension * 3;
   }
 
-  virtual bool HasLocalSupport() const
-    {
+  virtual bool
+  HasLocalSupport() const
+  {
     return false;
-    }
+  }
 
-  unsigned int GetNumberOfLocalParameters() const
+  unsigned int
+  GetNumberOfLocalParameters() const
   {
     return SpaceDimension;
   }
 
   /* These Set/Get methods are only needed for this test derivation that
    * isn't using a transform */
-  void SetParameters( ParametersType & parameters )
+  void
+  SetParameters( ParametersType & parameters )
   {
     m_Parameters = parameters;
   }
 
-  const ParametersType & GetParameters() const
+  const ParametersType &
+  GetParameters() const
   {
     return m_Parameters;
   }
@@ -124,27 +135,28 @@ private:
 };
 
 ///////////////////////////////////////////////////////////
-int itkGradientDescentOptimizerv4Test2(int, char* [] )
+int
+itkGradientDescentOptimizerv4Test2(int, char* [] )
 {
   std::cout << "Gradient Descent Object Optimizer Test ";
   std::cout << std::endl << std::endl;
 
-  typedef  itk::GradientDescentOptimizerv4  OptimizerType;
+  typedef  itk::GradientDescentOptimizerv4 OptimizerType;
 
-  typedef OptimizerType::ScalesType             ScalesType;
+  typedef OptimizerType::ScalesType ScalesType;
 
   // Declaration of a itkOptimizer
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
 
   // Declaration of the Metric
   GradientDescentOptimizerv4Test2Metric::Pointer metric = GradientDescentOptimizerv4Test2Metric::New();
 
   itkOptimizer->SetMetric( metric );
 
-  typedef GradientDescentOptimizerv4Test2Metric::ParametersType    ParametersType;
-  typedef GradientDescentOptimizerv4Test2Metric::NumberOfParametersType    NumberOfParametersType;
+  typedef GradientDescentOptimizerv4Test2Metric::ParametersType         ParametersType;
+  typedef GradientDescentOptimizerv4Test2Metric::NumberOfParametersType NumberOfParametersType;
 
-  ParametersType  initialPosition( metric->GetNumberOfParameters() );
+  ParametersType initialPosition( metric->GetNumberOfParameters() );
   initialPosition.Fill(0);
   metric->SetParameters( initialPosition );
 
@@ -158,7 +170,7 @@ int itkGradientDescentOptimizerv4Test2(int, char* [] )
     }
   itkOptimizer->SetScales( scales );
 
-  ParametersType truth( metric->GetNumberOfParameters() );
+  ParametersType         truth( metric->GetNumberOfParameters() );
   NumberOfParametersType numLocal = metric->GetNumberOfLocalParameters();
   NumberOfParametersType numLoops = metric->GetNumberOfParameters() / numLocal;
   for( NumberOfParametersType i=0; i < numLoops; i++ )

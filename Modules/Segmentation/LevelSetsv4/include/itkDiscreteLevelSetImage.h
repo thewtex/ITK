@@ -37,7 +37,7 @@ class DiscreteLevelSetImage :
   public LevelSetImage< Index< VDimension >, VDimension, TOutput >
 {
 public:
-  typedef Index< VDimension >             IndexType;
+  typedef Index< VDimension > IndexType;
 
   typedef DiscreteLevelSetImage                           Self;
   typedef SmartPointer< Self >                            Pointer;
@@ -105,7 +105,8 @@ public:
 protected:
   DiscreteLevelSetImage();
 
-  virtual ~DiscreteLevelSetImage();
+  virtual
+  ~DiscreteLevelSetImage();
 
   /** Initial the level set pointer */
   virtual void Initialize();
@@ -119,8 +120,9 @@ protected:
 private:
 
   DiscreteLevelSetImage( const Self& ); // purposely not implemented
-  void operator = ( const Self& ); // purposely not implemented
-  };
+  void operator =( const Self& );       // purposely not implemented
+
+};
 }
 
 #ifndef ITK_MANUAL_INSTANTIATION

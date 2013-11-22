@@ -30,7 +30,7 @@ namespace itk
  *
  * \ingroup ITKIOMesh
  */
-class ITKIOMesh_HIDDEN MeshFileWriterException:public ExceptionObject
+class ITKIOMesh_HIDDEN MeshFileWriterException : public ExceptionObject
 {
 public:
   /** Run-time information. */
@@ -39,14 +39,14 @@ public:
   /** Constructor. */
   MeshFileWriterException(const char *file, unsigned int line,
                           const char *message = "Error in IO",
-                          const char *loc = "Unknown"):
+                          const char *loc = "Unknown") :
     ExceptionObject(file, line, message, loc)
   {}
 
   /** Constructor. */
   MeshFileWriterException(const std::string & file, unsigned int line,
                           const char *message = "Error in IO",
-                          const char *loc = "Unknown"):
+                          const char *loc = "Unknown") :
     ExceptionObject(file, line, message, loc)
   {}
 };
@@ -74,7 +74,7 @@ public:
  * \ingroup ITKIOMesh
  */
 template< typename TInputMesh >
-class ITKIOMesh_HIDDEN MeshFileWriter:public ProcessObject
+class ITKIOMesh_HIDDEN MeshFileWriter : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -118,7 +118,8 @@ public:
   * correct choice and will allow a file to be created regardless of
   * the file extension. If the factory has set the MeshIO, the
   * extension must be supported by the specified MeshIO. */
-  void SetMeshIO(MeshIOBase *io)
+  void
+  SetMeshIO(MeshIOBase *io)
   {
     if ( this->m_MeshIO != io )
       {
@@ -128,10 +129,18 @@ public:
     m_FactorySpecifiedMeshIO = false;
     m_UserSpecifiedMeshIO = true;
   }
+
   itkGetModifiableObjectMacro(MeshIO, MeshIOBase);
 
-  void SetFileTypeAsASCII(){m_FileTypeIsBINARY = false; }
-  void SetFileTypeAsBINARY(){m_FileTypeIsBINARY = true; }
+  void
+  SetFileTypeAsASCII(){
+    m_FileTypeIsBINARY = false;
+  }
+
+  void
+  SetFileTypeAsBINARY(){
+    m_FileTypeIsBINARY = true;
+  }
 
   /** A special version of the Update() method for writers.  It
   * invokes start and end events and handles releasing data. It
@@ -140,7 +149,8 @@ public:
 
   /** Aliased to the Write() method to be consistent with the rest of the
   * pipeline. */
-  virtual void Update()
+  virtual void
+  Update()
   {
     this->Write();
   }
@@ -183,10 +193,10 @@ private:
   MeshIOBase::Pointer m_MeshIO;
   bool                m_UserSpecifiedMeshIO;    // track whether the MeshIO is
                                                 // user specified
-  bool                m_FactorySpecifiedMeshIO; // track whether the factory
+  bool m_FactorySpecifiedMeshIO;                // track whether the factory
                                                 // mechanism set the MeshIO
-  bool                m_UseCompression;
-  bool                m_FileTypeIsBINARY;
+  bool m_UseCompression;
+  bool m_FileTypeIsBINARY;
 };
 } // end namespace itk
 

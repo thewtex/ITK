@@ -43,13 +43,15 @@ SimpleMutexLock::~SimpleMutexLock()
 }
 
 // Lock the MutexLock
-void SimpleMutexLock::Lock()
+void
+SimpleMutexLock::Lock()
 {
   WaitForSingleObject(m_MutexLock, INFINITE);
 }
 
 // Unlock the MutexLock
-void SimpleMutexLock::Unlock()
+void
+SimpleMutexLock::Unlock()
 {
   ReleaseMutex(m_MutexLock);
 }

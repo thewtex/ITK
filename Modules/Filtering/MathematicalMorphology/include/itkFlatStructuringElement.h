@@ -85,7 +85,7 @@ namespace itk
  */
 
 template< unsigned int VDimension >
-class FlatStructuringElement:public Neighborhood< bool, VDimension >
+class FlatStructuringElement : public Neighborhood< bool, VDimension >
 {
 public:
   /** Standard class typedefs. */
@@ -102,8 +102,8 @@ public:
   typedef typename Superclass::ConstIterator ConstIterator;
 
   /** Size and value typedef support. */
-  typedef typename Superclass::SizeType      SizeType;
-  typedef typename Superclass::OffsetType    OffsetType;
+  typedef typename Superclass::SizeType   SizeType;
+  typedef typename Superclass::OffsetType OffsetType;
 
   /** Radius typedef support. */
   typedef typename Superclass::RadiusType RadiusType;
@@ -118,7 +118,8 @@ public:
   typedef std::vector< LType >        DecompType;
 
   /** Default destructor. */
-  virtual ~FlatStructuringElement() {}
+  virtual
+  ~FlatStructuringElement() {}
 
   /** Default constructor. */
   FlatStructuringElement()
@@ -159,21 +160,27 @@ public:
    * structuring is decomposable, the set of lines associated with the
    * structuring may be used by an algorithm instead of the standard buffer.
    */
-  bool GetDecomposable() const
+  bool
+  GetDecomposable() const
   {
     return m_Decomposable;
   }
-  void SetDecomposable( bool v )
+
+  void
+  SetDecomposable( bool v )
   {
     m_Decomposable = v;
   }
 
   /** Return the lines associated with the structuring element */
-  const DecompType & GetLines() const
+  const DecompType &
+  GetLines() const
   {
     return ( m_Lines );
   }
-  void AddLine( LType l )
+
+  void
+  AddLine( LType l )
   {
     m_Lines.push_back(l);
   }
@@ -191,16 +198,19 @@ public:
    * corresponds to the radius that was specified.
    * This defaults to "off" for backward compatibility.
    */
-  bool GetRadiusIsParametric() const
+  bool
+  GetRadiusIsParametric() const
   {
     return m_RadiusIsParametric;
   }
-  void SetRadiusIsParametric( bool flag )
+
+  void
+  SetRadiusIsParametric( bool flag )
   {
     m_RadiusIsParametric = flag;
   }
-  itkBooleanMacro(RadiusIsParametric);
 
+  itkBooleanMacro(RadiusIsParametric);
 
 protected:
 
@@ -214,15 +224,17 @@ private:
   template< unsigned int VDimension3 >
   struct StructuringElementFacet {
     Vector< float, VDimension3 > P1, P2, P3;
-  };
+    };
   typedef StructuringElementFacet< VDimension > FacetType;
 
   template<typename TStructuringElement, typename TRadius>
   static void GeneratePolygon(TStructuringElement & res,            TRadius      radius, unsigned lines);
+
   static void GeneratePolygon(itk::FlatStructuringElement<2> & res, itk::Size<2> radius, unsigned lines);
+
   static void GeneratePolygon(itk::FlatStructuringElement<3> & res, itk::Size<3> radius, unsigned lines);
 
-  typedef Vector< float, 2 >           LType2;
+  typedef Vector< float, 2 > LType2;
 
   typedef Vector< float, 3 >           LType3;
   typedef StructuringElementFacet< 3 > FacetType3;

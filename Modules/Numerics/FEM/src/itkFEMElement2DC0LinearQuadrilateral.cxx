@@ -119,7 +119,7 @@ Element2DC0LinearQuadrilateral
 ::GetLocalFromGlobalCoordinates(const VectorType & globalPt, VectorType & localPt) const
 {
   Float x1, x2, x3, x4, y1, y2, y3, y4, xce, yce, xb, yb, xcn, ycn,
-        A, J1, J2, x0, y0, dx, dy, be, bn, ce, cn;
+    A, J1, J2, x0, y0, dx, dy, be, bn, ce, cn;
 
   localPt.set_size(2);
   localPt.fill(0.0);
@@ -138,9 +138,9 @@ Element2DC0LinearQuadrilateral
   xcn = x1 - x2 - x3 + x4;
   ycn = y1 - y2 - y3 + y4;
 
-  A  = 0.5 * (((x3 - x1) * (y4 - y2)) - ((x4 - x2) * (y3 - y1)));
-  J1 = ((x3 - x4) * (y1 - y2)) - ((x1 - x2) * (y3 - y4));
-  J2 = ((x2 - x3) * (y1 - y4)) - ((x1 - x4) * (y2 - y3));
+  A  = 0.5 * ( ( (x3 - x1) * (y4 - y2) ) - ( (x4 - x2) * (y3 - y1) ) );
+  J1 = ( (x3 - x4) * (y1 - y2) ) - ( (x1 - x2) * (y3 - y4) );
+  J2 = ( (x2 - x3) * (y1 - y4) ) - ( (x1 - x4) * (y2 - y3) );
 
   x0 = 0.25 * (x1 + x2 + x3 + x4);
   y0 = 0.25 * (y1 + y2 + y3 + y4);
@@ -153,8 +153,8 @@ Element2DC0LinearQuadrilateral
   ce = (dx * yce) - (dy * xce);
   cn = (dx * ycn) - (dy * xcn);
 
-  localPt[0] = (2 * ce) / (-vcl_sqrt((be * be) - (2 * J1 * ce)) - be);
-  localPt[1] = (2 * cn) / ( vcl_sqrt((bn * bn) + (2 * J2 * cn)) - bn);
+  localPt[0] = (2 * ce) / (-vcl_sqrt( (be * be) - (2 * J1 * ce) ) - be);
+  localPt[1] = (2 * cn) / ( vcl_sqrt( (bn * bn) + (2 * J2 * cn) ) - bn);
 
   bool isInside=true;
 
@@ -166,7 +166,8 @@ Element2DC0LinearQuadrilateral
   return isInside;
 }
 
-void Element2DC0LinearQuadrilateral::PopulateEdgeIds(void)
+void
+Element2DC0LinearQuadrilateral::PopulateEdgeIds(void)
 {
   this->m_EdgeIds.resize(0);
 
@@ -194,7 +195,8 @@ void Element2DC0LinearQuadrilateral::PopulateEdgeIds(void)
   this->m_EdgeIds.push_back(edgePtIds);
 }
 
-void Element2DC0LinearQuadrilateral::InterpolationFunctions(const VectorType & pcoords, VectorType & sf) const
+void
+Element2DC0LinearQuadrilateral::InterpolationFunctions(const VectorType & pcoords, VectorType & sf) const
 {
   double rm, sm;
 
@@ -207,7 +209,8 @@ void Element2DC0LinearQuadrilateral::InterpolationFunctions(const VectorType & p
   sf[3] = rm * pcoords[1];
 }
 
-void Element2DC0LinearQuadrilateral::InterpolationDerivs(const VectorType & pcoords, VectorType & derivs) const
+void
+Element2DC0LinearQuadrilateral::InterpolationDerivs(const VectorType & pcoords, VectorType & derivs) const
 {
   double rm, sm;
 
@@ -224,13 +227,15 @@ void Element2DC0LinearQuadrilateral::InterpolationDerivs(const VectorType & pcoo
   derivs[7] = rm;
 }
 
-itk::fem::Element::Float Element2DC0LinearQuadrilateral::Determinant2x2(const VectorType & c1,
-                                                                        const VectorType & c2) const
+itk::fem::Element::Float
+Element2DC0LinearQuadrilateral::Determinant2x2(const VectorType & c1,
+                                               const VectorType & c2) const
 {
   return c1[0] * c2[1] - c2[0] - c1[1];
 }
 
-void Element2DC0LinearQuadrilateral::PrintSelf(std::ostream& os, Indent indent) const
+void
+Element2DC0LinearQuadrilateral::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }

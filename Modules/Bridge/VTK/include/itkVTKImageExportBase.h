@@ -33,7 +33,7 @@ namespace itk
  * \sa VTKImageExport
  * \ingroup ITKVTK
  */
-class VTKImageExportBase:public ProcessObject
+class VTKImageExportBase : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -75,15 +75,15 @@ public:
     typedef double * ( *DoubleCallbackType )(void *);
     typedef float * ( * FloatCallbackType )(void *);
     operator DoubleCallbackType()
-    {
+      {
       return m_DoubleCallback;
-    }
+      }
 
     operator FloatCallbackType()
       {
       return m_FloatCallback;
       }
-    CallbackTypeProxy(DoubleCallbackType d, FloatCallbackType f):
+    CallbackTypeProxy(DoubleCallbackType d, FloatCallbackType f) :
       m_DoubleCallback(d), m_FloatCallback(f) {}
 
 private:

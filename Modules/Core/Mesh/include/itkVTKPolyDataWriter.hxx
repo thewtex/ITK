@@ -59,7 +59,8 @@ VTKPolyDataWriter< TInputMesh >
 // Write the input mesh to the output file
 //
 template< typename TInputMesh >
-void VTKPolyDataWriter< TInputMesh >
+void
+VTKPolyDataWriter< TInputMesh >
 ::Update()
 {
   this->GenerateData();
@@ -69,7 +70,8 @@ void VTKPolyDataWriter< TInputMesh >
 // Write the input mesh to the output file
 //
 template< typename TInputMesh >
-void VTKPolyDataWriter< TInputMesh >
+void
+VTKPolyDataWriter< TInputMesh >
 ::Write()
 {
   this->GenerateData();
@@ -177,7 +179,7 @@ VTKPolyDataWriter< TInputMesh >
 
     // VERTICES should go here
     if ( numberOfVertices )
-        {}
+          {}
 
     // LINES
     if ( numberOfEdges )
@@ -279,6 +281,7 @@ VTKPolyDataWriter< TInputMesh >
 
   os << indent << "FileName: " << this->m_FileName << std::endl;
 }
+
 } //end of namespace itk
 
 #endif

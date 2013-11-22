@@ -71,14 +71,14 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TInputImage, typename TOutputImage >
-class IsotropicFourthOrderLevelSetImageFilter:
+class IsotropicFourthOrderLevelSetImageFilter :
   public SparseFieldFourthOrderLevelSetImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs */
   typedef IsotropicFourthOrderLevelSetImageFilter Self;
   typedef SparseFieldFourthOrderLevelSetImageFilter< TInputImage, TOutputImage >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -114,7 +114,8 @@ protected:
   unsigned int m_MaxFilterIteration;
 
   /** This filter halts when the iteration count reaches the specified count. */
-  virtual bool Halt()
+  virtual bool
+  Halt()
   {
     if ( this->GetElapsedIterations() == m_MaxFilterIteration ) { return true; }
     else { return false; }
@@ -124,6 +125,7 @@ private:
   IsotropicFourthOrderLevelSetImageFilter(const Self &);
   //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

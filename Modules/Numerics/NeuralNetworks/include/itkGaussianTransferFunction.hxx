@@ -29,15 +29,13 @@ namespace Statistics
 template<typename ScalarType>
 GaussianTransferFunction<ScalarType>
 ::GaussianTransferFunction()
-{
-}
+{}
 
 /** Destructor */
 template<typename ScalarType>
 GaussianTransferFunction<ScalarType>
 ::~GaussianTransferFunction()
-{
-}
+{}
 
 /** Evaluate function */
 template<typename ScalarType>
@@ -45,7 +43,7 @@ ScalarType
 GaussianTransferFunction<ScalarType>
 ::Evaluate(const ScalarType& input)  const
 {
-  return static_cast<ScalarType>((vcl_exp(-1 * input * input)));
+  return static_cast<ScalarType>( (vcl_exp(-1 * input * input) ) );
 }
 
 /** Evaluate derivatives function */

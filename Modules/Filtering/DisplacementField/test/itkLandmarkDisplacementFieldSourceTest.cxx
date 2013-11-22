@@ -22,8 +22,8 @@
 
 #include <fstream>
 
-
-int itkLandmarkDisplacementFieldSourceTest( int argc, char * argv[] )
+int
+itkLandmarkDisplacementFieldSourceTest( int argc, char * argv[] )
 {
 
   if( argc < 3 )
@@ -34,16 +34,16 @@ int itkLandmarkDisplacementFieldSourceTest( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const     unsigned int   Dimension = 2;
-  typedef   float          VectorComponentType;
+  const     unsigned int Dimension = 2;
+  typedef   float VectorComponentType;
 
-  typedef   itk::Vector< VectorComponentType, Dimension >    VectorType;
+  typedef   itk::Vector< VectorComponentType, Dimension > VectorType;
 
-  typedef itk::Image< VectorType,  Dimension >   DisplacementFieldType;
+  typedef itk::Image< VectorType,  Dimension > DisplacementFieldType;
 
   typedef itk::LandmarkDisplacementFieldSource<
-                                DisplacementFieldType
-                                             >  FilterType;
+      DisplacementFieldType
+      >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
@@ -55,9 +55,9 @@ int itkLandmarkDisplacementFieldSourceTest( int argc, char * argv[] )
   DisplacementFieldType::PointType origin;
   origin.Fill( 0.0 );
 
-  DisplacementFieldType::RegionType     region;
-  DisplacementFieldType::SizeType       size;
-  DisplacementFieldType::IndexType      start;
+  DisplacementFieldType::RegionType region;
+  DisplacementFieldType::SizeType   size;
+  DisplacementFieldType::IndexType  start;
 
   size[0] = 128;
   size[1] = 128;
@@ -71,7 +71,6 @@ int itkLandmarkDisplacementFieldSourceTest( int argc, char * argv[] )
   DisplacementFieldType::DirectionType direction;
   direction.SetIdentity();
 
-
   filter->SetOutputSpacing( spacing );
   filter->SetOutputOrigin( origin );
   filter->SetOutputRegion( region );
@@ -79,9 +78,9 @@ int itkLandmarkDisplacementFieldSourceTest( int argc, char * argv[] )
 
   //  Create source and target landmarks.
   //
-  typedef FilterType::LandmarkContainerPointer   LandmarkContainerPointer;
-  typedef FilterType::LandmarkContainer          LandmarkContainerType;
-  typedef FilterType::LandmarkPointType          LandmarkPointType;
+  typedef FilterType::LandmarkContainerPointer LandmarkContainerPointer;
+  typedef FilterType::LandmarkContainer        LandmarkContainerType;
+  typedef FilterType::LandmarkPointType        LandmarkPointType;
 
   LandmarkContainerType::Pointer sourceLandmarks = LandmarkContainerType::New();
   LandmarkContainerType::Pointer targetLandmarks = LandmarkContainerType::New();
@@ -112,7 +111,6 @@ int itkLandmarkDisplacementFieldSourceTest( int argc, char * argv[] )
 
   pointsFile.close();
 
-
   filter->SetSourceLandmarks( sourceLandmarks.GetPointer() );
   filter->SetTargetLandmarks( targetLandmarks.GetPointer() );
 
@@ -131,7 +129,7 @@ int itkLandmarkDisplacementFieldSourceTest( int argc, char * argv[] )
 
   WriterType::Pointer writer = WriterType::New();
 
-  writer->SetInput (filter->GetOutput());
+  writer->SetInput (filter->GetOutput() );
   writer->SetFileName( argv[2] );
 
   try

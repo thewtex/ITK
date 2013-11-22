@@ -61,7 +61,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage >
-class GrayscaleGeodesicDilateImageFilter:
+class GrayscaleGeodesicDilateImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:

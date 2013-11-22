@@ -60,34 +60,38 @@ class ConstrainedValueDifference
 public:
   ConstrainedValueDifference() {}
   ~ConstrainedValueDifference() {}
-  bool operator!=(const ConstrainedValueDifference &) const
+  bool
+  operator!=(const ConstrainedValueDifference &) const
   {
     return false;
   }
 
-  bool operator==(const ConstrainedValueDifference & other) const
+  bool
+  operator==(const ConstrainedValueDifference & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A,
-                            const TInput2 & B) const
+  inline TOutput
+  operator()(const TInput1 & A,
+             const TInput2 & B) const
   {
     const double dA = static_cast< double >( A );
     const double dB = static_cast< double >( B );
     const double diff = dA - dB;
     const double cdiff1 = diff > NumericTraits< TOutput >::NonpositiveMin() ?
-                          diff : NumericTraits< TOutput >::NonpositiveMin();
+      diff : NumericTraits< TOutput >::NonpositiveMin();
     const double cdiff2 = cdiff1 < NumericTraits< TOutput >::max() ?
-                          cdiff1 : NumericTraits< TOutput >::max();
+      cdiff1 : NumericTraits< TOutput >::max();
 
     return static_cast< TOutput >( cdiff2 );
   }
+
 };
 }
 
 template< typename TInputImage1, typename TInputImage2, typename TOutputImage >
-class ConstrainedValueDifferenceImageFilter:
+class ConstrainedValueDifferenceImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::ConstrainedValueDifference<
@@ -103,7 +107,7 @@ public:
                                       typename TInputImage1::PixelType,
                                       typename TInputImage2::PixelType,
                                       typename TOutputImage::PixelType > >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -129,7 +133,8 @@ public:
 
 protected:
   ConstrainedValueDifferenceImageFilter() {}
-  virtual ~ConstrainedValueDifferenceImageFilter() {}
+  virtual
+  ~ConstrainedValueDifferenceImageFilter() {}
 
 private:
   ConstrainedValueDifferenceImageFilter(const Self &); //purposely not

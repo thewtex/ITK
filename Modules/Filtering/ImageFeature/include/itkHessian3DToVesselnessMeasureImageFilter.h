@@ -73,7 +73,7 @@ namespace itk
  */
 
 template< typename  TPixel >
-class Hessian3DToVesselnessMeasureImageFilter:public
+class Hessian3DToVesselnessMeasureImageFilter : public
   ImageToImageFilter< Image< SymmetricSecondRankTensor< double, 3 >, 3 >,
                       Image< TPixel, 3 > >
 {
@@ -81,8 +81,8 @@ public:
   /** Standard class typedefs. */
   typedef Hessian3DToVesselnessMeasureImageFilter Self;
   typedef ImageToImageFilter<
-    Image< SymmetricSecondRankTensor< double, 3 >, 3 >,
-    Image< TPixel, 3 > >                    Superclass;
+      Image< SymmetricSecondRankTensor< double, 3 >, 3 >,
+      Image< TPixel, 3 > >                    Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -94,16 +94,16 @@ public:
 
   /** Image dimension = 3. */
   itkStaticConstMacro(ImageDimension, unsigned int,
-                       InputImageType ::ImageDimension);
+                      InputImageType::ImageDimension);
   itkStaticConstMacro(InputPixelDimension, unsigned int,
                       InputPixelType::Dimension);
 
   typedef  FixedArray< double, itkGetStaticConstMacro(InputPixelDimension) >
-  EigenValueArrayType;
+    EigenValueArrayType;
   typedef  Image< EigenValueArrayType, itkGetStaticConstMacro(ImageDimension) >
-  EigenValueImageType;
+    EigenValueImageType;
   typedef   SymmetricEigenAnalysisImageFilter<
-    InputImageType, EigenValueImageType >     EigenAnalysisFilterType;
+      InputImageType, EigenValueImageType >     EigenAnalysisFilterType;
 
   /** Run-time type information (and related methods).   */
   itkTypeMacro(Hessian3DToVesselnessMeasureImageFilter, ImageToImageFilter);

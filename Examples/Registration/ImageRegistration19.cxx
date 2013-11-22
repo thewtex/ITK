@@ -23,7 +23,6 @@
 #include "itkAmoebaOptimizer.h"
 #include "itkCenteredTransformInitializer.h"
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
@@ -46,32 +45,36 @@ public:
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate19() {};
+  CommandIterationUpdate19() {}
 
 public:
-  typedef itk::AmoebaOptimizer         OptimizerType;
-  typedef   const OptimizerType   *    OptimizerPointer;
+  typedef itk::AmoebaOptimizer    OptimizerType;
+  typedef   const OptimizerType * OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     OptimizerPointer optimizer =
-                      dynamic_cast< OptimizerPointer >( object );
-    if( ! itk::IterationEvent().CheckEvent( &event ) )
+      dynamic_cast< OptimizerPointer >( object );
+
+    if( !itk::IterationEvent().CheckEvent( &event ) )
       {
       return;
       }
     std::cout << optimizer->GetCachedValue() << "   ";
     std::cout << optimizer->GetCachedCurrentPosition() << std::endl;
-    }
+  }
+
 };
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 3 )
     {
@@ -90,49 +93,47 @@ int main( int argc, char *argv[] )
   // be instantiated. First, we select the image dimension and the type for
   // representing image pixels.
   //
-  const    unsigned int    Dimension = 2;
-  typedef  float           PixelType;
-
+  const    unsigned int Dimension = 2;
+  typedef  float PixelType;
 
   //  The types of the input images are instantiated by the following lines.
   //
-  typedef itk::Image< PixelType, Dimension >  FixedImageType;
-  typedef itk::Image< PixelType, Dimension >  MovingImageType;
+  typedef itk::Image< PixelType, Dimension > FixedImageType;
+  typedef itk::Image< PixelType, Dimension > MovingImageType;
 
   typedef itk::AffineTransform< double, Dimension > TransformType;
 
-  typedef itk::AmoebaOptimizer       OptimizerType;
+  typedef itk::AmoebaOptimizer OptimizerType;
 
   typedef itk::MatchCardinalityImageToImageMetric<
-                                    FixedImageType,
-                                    MovingImageType >    MetricType;
+      FixedImageType,
+      MovingImageType >    MetricType;
 
   //  Finally, the type of the interpolator is declared. The
   //  interpolator will evaluate the moving image at non-grid
   //  positions.
-  typedef itk:: NearestNeighborInterpolateImageFunction<
-                                    MovingImageType,
-                                    double          >    InterpolatorType;
+  typedef itk::NearestNeighborInterpolateImageFunction<
+      MovingImageType,
+      double          >    InterpolatorType;
 
   //  The registration method type is instantiated using the types of the
   //  fixed and moving images. This class is responsible for interconnecting
   //  all the components we have described so far.
   typedef itk::ImageRegistrationMethod<
-                                    FixedImageType,
-                                    MovingImageType >    RegistrationType;
+      FixedImageType,
+      MovingImageType >    RegistrationType;
 
   //  Each one of the registration components is created using its
   //  \code{New()} method and is assigned to its respective
   //  \doxygen{SmartPointer}.
   //
-  MetricType::Pointer         metric        = MetricType::New();
-  TransformType::Pointer      transform     = TransformType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
+  MetricType::Pointer       metric        = MetricType::New();
+  TransformType::Pointer    transform     = TransformType::New();
+  OptimizerType::Pointer    optimizer     = OptimizerType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
   metric->MeasureMatchesOff();
-
 
   //  Each component is now connected to the instance of the registration method.
   //  \index{itk::RegistrationMethod!SetMetric()}
@@ -158,7 +159,6 @@ int main( int argc, char *argv[] )
   fixedImageReader->SetFileName(  argv[1] );
   movingImageReader->SetFileName( argv[2] );
 
-
   //  In this example, the fixed and moving images are read from files. This
   //  requires the \doxygen{ImageRegistrationMethod} to acquire its inputs to
   //  the output of the readers.
@@ -183,8 +183,7 @@ int main( int argc, char *argv[] )
   movingImageReader->Update();
 
   registration->SetFixedImageRegion(
-     fixedImageReader->GetOutput()->GetBufferedRegion() );
-
+    fixedImageReader->GetOutput()->GetBufferedRegion() );
 
   //
   // Here we initialize the transform to make sure that the center of
@@ -193,10 +192,10 @@ int main( int argc, char *argv[] )
   typedef itk::CenteredTransformInitializer< TransformType,
                                              FixedImageType,
                                              MovingImageType
-                                                 >  TransformInitializerType;
+                                             >  TransformInitializerType;
 
   TransformInitializerType::Pointer initializer =
-                                          TransformInitializerType::New();
+    TransformInitializerType::New();
 
   initializer->SetTransform(   transform );
   initializer->SetFixedImage(  fixedImageReader->GetOutput() );
@@ -204,7 +203,6 @@ int main( int argc, char *argv[] )
 
   initializer->MomentsOn();
   initializer->InitializeTransform();
-
 
   //  The parameters of the transform are initialized by passing them in an
   //  array. This can be used to setup an initial known correction of the
@@ -252,17 +250,15 @@ int main( int argc, char *argv[] )
   optimizer->AutomaticInitialSimplexOff();
   optimizer->SetInitialSimplexDelta( simplexDelta );
 
-
   optimizer->SetParametersConvergenceTolerance( 1e-4 ); // about 0.005 degrees
-  optimizer->SetFunctionConvergenceTolerance( 1e-6 );  // variation in metric value
+  optimizer->SetFunctionConvergenceTolerance( 1e-6 );   // variation in metric value
 
   optimizer->SetMaximumNumberOfIterations( 200 );
-
 
   // This parameter is tightly coupled to the stepInParametricSpace above.
   double translationScale = 1.0 / 1000.0;
 
-  typedef OptimizerType::ScalesType       OptimizerScalesType;
+  typedef OptimizerType::ScalesType OptimizerScalesType;
   OptimizerScalesType optimizerScales( numberOfParameters );
 
   optimizerScales[0] =  1.0;
@@ -274,13 +270,11 @@ int main( int argc, char *argv[] )
 
   optimizer->SetScales( optimizerScales );
 
-
   //
   // Create the Command observer and register it with the optimizer.
   //
   CommandIterationUpdate19::Pointer observer = CommandIterationUpdate19::New();
   optimizer->AddObserver( itk::IterationEvent(), observer );
-
 
   //  The registration process is triggered by an invocation of the
   //  \code{Update()} method. If something goes wrong during the
@@ -362,8 +356,8 @@ int main( int argc, char *argv[] )
   //  will be compared with the fixed image.
   //
   typedef itk::ResampleImageFilter<
-                            MovingImageType,
-                            FixedImageType >    ResampleFilterType;
+      MovingImageType,
+      FixedImageType >    ResampleFilterType;
 
   //  A transform of the same type used in the registration process should be
   //  created and initialized with the parameters resulting from the
@@ -409,19 +403,17 @@ int main( int argc, char *argv[] )
   typedef unsigned short                           OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::CastImageFilter<
-                        FixedImageType,
-                        OutputImageType >          CastFilterType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+      FixedImageType,
+      OutputImageType >          CastFilterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   //  The filters are created by invoking their \code{New()}
   //  method.
   //
-  WriterType::Pointer      writer =  WriterType::New();
-  CastFilterType::Pointer  caster =  CastFilterType::New();
-
+  WriterType::Pointer     writer =  WriterType::New();
+  CastFilterType::Pointer caster =  CastFilterType::New();
 
   writer->SetFileName( argv[3] );
-
 
   //  The \code{Update()} method of the writer is invoked in order to trigger
   //  the execution of the pipeline.
@@ -430,7 +422,6 @@ int main( int argc, char *argv[] )
   writer->SetInput( caster->GetOutput()   );
   writer->Update();
 
-
   //
   //  The fixed image and the transformed moving image can easily be compared
   //  using the \code{SquaredDifferenceImageFilter}. This pixel-wise
@@ -438,9 +429,9 @@ int main( int argc, char *argv[] )
   //  pixels of its input images.
   //
   typedef itk::SquaredDifferenceImageFilter<
-                                  FixedImageType,
-                                  FixedImageType,
-                                  OutputImageType > DifferenceFilterType;
+      FixedImageType,
+      FixedImageType,
+      OutputImageType > DifferenceFilterType;
 
   DifferenceFilterType::Pointer difference = DifferenceFilterType::New();
   difference->SetInput1( fixedImageReader->GetOutput() );
@@ -456,7 +447,6 @@ int main( int argc, char *argv[] )
     writer2->SetFileName( argv[4] );
     writer2->Update();
     }
-
 
   return EXIT_SUCCESS;
 }

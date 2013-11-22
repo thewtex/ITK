@@ -36,8 +36,8 @@ LandmarkDisplacementFieldSource< TOutputImage >
   m_OutputDirection.SetIdentity();
 
   typedef ThinPlateSplineKernelTransform<
-    double,
-    itkGetStaticConstMacro(ImageDimension) >  DefaultTransformType;
+      double,
+      itkGetStaticConstMacro(ImageDimension) >  DefaultTransformType;
 
   m_KernelTransform = DefaultTransformType::New();
 }
@@ -73,6 +73,7 @@ LandmarkDisplacementFieldSource< TOutputImage >
   const double *spacing)
 {
   SpacingType s;
+
   for(unsigned int i = 0; i < TOutputImage::ImageDimension; ++i)
     {
     s[i] = static_cast< typename SpacingType::ValueType >(spacing[i]);
@@ -148,7 +149,7 @@ LandmarkDisplacementFieldSource< TOutputImage >
 
   // Create an iterator that will walk the output region for this thread.
   typedef ImageRegionIteratorWithIndex<
-    TOutputImage > OutputIterator;
+      TOutputImage > OutputIterator;
 
   OutputImageRegionType region = outputPtr->GetRequestedRegion();
 
@@ -204,6 +205,7 @@ LandmarkDisplacementFieldSource< TOutputImage >
 
   // get pointers to the input and output
   OutputImagePointer outputPtr = this->GetOutput();
+
   if ( !outputPtr )
     {
     return;
@@ -253,6 +255,7 @@ LandmarkDisplacementFieldSource< TOutputImage >
     }
   return latestTime;
 }
+
 } // end namespace itk
 
 #endif

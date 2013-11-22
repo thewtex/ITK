@@ -34,7 +34,6 @@
 //
 //  Software Guide : EndLatex
 
-
 //  Software Guide : BeginLatex
 //
 //  The first step required to use this filter is to include its header file.
@@ -47,7 +46,6 @@
 #include "itkVectorCurvatureAnisotropicDiffusionImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 //  Software Guide : BeginLatex
 //
 //  Also the headers for \code{Image} and \code{RGBPixel} type are required.
@@ -59,7 +57,6 @@
 #include "itkImage.h"
 // Software Guide : EndCodeSnippet
 
-
 //  Software Guide : BeginLatex
 //
 //  It is desirable to perform the computation on the RGB image using
@@ -70,15 +67,14 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkVectorCastImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 5 )
     {
@@ -87,7 +83,6 @@ int main( int argc, char * argv[] )
     std::cerr << "numberOfIterations  timeStep  " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -99,7 +94,6 @@ int main( int argc, char * argv[] )
   typedef itk::RGBPixel< float >          InputPixelType;
   typedef itk::Image< InputPixelType, 2 > InputImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -114,10 +108,9 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::VectorCurvatureAnisotropicDiffusionImageFilter<
-                       InputImageType, InputImageType >  FilterType;
+      InputImageType, InputImageType >  FilterType;
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -127,16 +120,14 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   filter->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   const unsigned int numberOfIterations = atoi( argv[3] );
   const double       timeStep = atof( argv[4] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -173,10 +164,10 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::RGBPixel< unsigned char >   WritePixelType;
-  typedef itk::Image< WritePixelType, 2 >  WriteImageType;
+  typedef itk::RGBPixel< unsigned char >  WritePixelType;
+  typedef itk::Image< WritePixelType, 2 > WriteImageType;
   typedef itk::VectorCastImageFilter<
-                InputImageType, WriteImageType >  CasterType;
+      InputImageType, WriteImageType >  CasterType;
   CasterType::Pointer caster = CasterType::New();
   // Software Guide : EndCodeSnippet
 
@@ -188,14 +179,13 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
   caster->SetInput( filter->GetOutput() );
   writer->SetInput( caster->GetOutput() );
   writer->SetFileName( argv[2] );
   writer->Update();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

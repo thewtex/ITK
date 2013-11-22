@@ -36,8 +36,7 @@ ShiSparseLevelSetImage< VDimension >
 template< unsigned int VDimension >
 ShiSparseLevelSetImage< VDimension >
 ::~ShiSparseLevelSetImage()
-{
-}
+{}
 
 // ----------------------------------------------------------------------------
 template< unsigned int VDimension >
@@ -45,7 +44,7 @@ typename ShiSparseLevelSetImage< VDimension >::OutputType
 ShiSparseLevelSetImage< VDimension >
 ::Evaluate( const InputType& inputIndex ) const
 {
-  InputType mapIndex = inputIndex - this->m_DomainOffset;
+  InputType             mapIndex = inputIndex - this->m_DomainOffset;
   LayerMapConstIterator layerIt = this->m_Layers.begin();
 
   while( layerIt != this->m_Layers.end() )
@@ -175,7 +174,6 @@ ShiSparseLevelSetImage< VDimension >
   data.MeanCurvature.m_Computed = true;
 }
 
-
 // ----------------------------------------------------------------------------
 template< unsigned int VDimension >
 void
@@ -195,6 +193,7 @@ ShiSparseLevelSetImage< VDimension >::InitializeInternalLabelList()
   this->m_InternalLabelList.push_back( MinusThreeLayer() );
   this->m_InternalLabelList.push_back( MinusOneLayer() );
 }
+
 }
 
 #endif // __itkShiSparseLevelSetImage_h

@@ -32,7 +32,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 class ITKCommon_EXPORT ImageRegionSplitterDirection
-  :public ImageRegionSplitterBase
+  : public             ImageRegionSplitterBase
 {
 public:
   /** Standard class typedefs. */
@@ -54,11 +54,9 @@ public:
   itkGetConstMacro(Direction, unsigned int);
   itkSetMacro(Direction, unsigned int);
 
-
 protected:
 
   ImageRegionSplitterDirection();
-
 
   virtual unsigned int GetNumberOfSplitsInternal(unsigned int dim,
                                                  const IndexValueType regionIndex[],
@@ -75,7 +73,7 @@ protected:
 
 private:
   ImageRegionSplitterDirection(const ImageRegionSplitterDirection &); //purposely not implemented
-  void operator=(const ImageRegionSplitterDirection &);      //purposely not implemented
+  void operator=(const ImageRegionSplitterDirection &);               //purposely not implemented
 
   unsigned int m_Direction;
 };

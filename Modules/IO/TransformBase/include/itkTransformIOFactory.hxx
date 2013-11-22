@@ -28,19 +28,20 @@ TransformIOFactoryTemplate<ParametersValueType>
 ::CreateTransformIO(const char *path, TransformIOFactoryFileModeType mode)
 {
   typename std::list< typename TransformIOBaseTemplate<ParametersValueType>::Pointer > possibleTransformIO;
-  std::list< LightObject::Pointer >     allobjects =
+  std::list< LightObject::Pointer > allobjects =
     ObjectFactoryBase::CreateAllInstance("itkTransformIOBaseTemplate");
   for ( std::list< LightObject::Pointer >::iterator i = allobjects.begin();
         i != allobjects.end(); ++i )
     {
     TransformIOBaseTemplate<ParametersValueType> *io =
-                        dynamic_cast< TransformIOBaseTemplate<ParametersValueType> * >( i->GetPointer() );
+      dynamic_cast< TransformIOBaseTemplate<ParametersValueType> * >( i->GetPointer() );
     if ( io )
       {
       possibleTransformIO.push_back(io);
       }
     }
-  for ( typename std::list< typename TransformIOBaseTemplate<ParametersValueType>::Pointer >::iterator k = possibleTransformIO.begin();
+  for ( typename std::list< typename TransformIOBaseTemplate<ParametersValueType>::Pointer >::iterator k =
+          possibleTransformIO.begin();
         k != possibleTransformIO.end(); ++k )
     {
     if ( mode == ReadMode )
@@ -60,6 +61,7 @@ TransformIOFactoryTemplate<ParametersValueType>
     }
   return 0;
 }
+
 } // end namespace itk
 
 #endif

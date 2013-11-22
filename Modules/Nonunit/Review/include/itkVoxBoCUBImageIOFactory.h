@@ -34,7 +34,7 @@ namespace itk
  *
  * \ingroup ITKReview
  */
-class VoxBoCUBImageIOFactory:public ObjectFactoryBase
+class VoxBoCUBImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -55,7 +55,8 @@ public:
   itkTypeMacro(VoxBoCUBImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     VoxBoCUBImageIOFactory::Pointer VoxBoCUBFactory = VoxBoCUBImageIOFactory::New();
 
@@ -69,6 +70,7 @@ protected:
 private:
   VoxBoCUBImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
+
 };
 } // end namespace itk
 

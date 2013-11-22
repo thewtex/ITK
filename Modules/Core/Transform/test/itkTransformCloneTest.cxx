@@ -20,7 +20,8 @@
 const double epsilon = 1e-10;
 
 template <typename TMatrix>
-bool testMatrix( const TMatrix & m1, const TMatrix & m2 )
+bool
+testMatrix( const TMatrix & m1, const TMatrix & m2 )
 {
   bool pass = true;
 
@@ -38,7 +39,8 @@ bool testMatrix( const TMatrix & m1, const TMatrix & m2 )
 }
 
 template <typename TVector>
-bool testVector( const TVector & v1, const TVector & v2 )
+bool
+testVector( const TVector & v1, const TVector & v2 )
 {
   bool pass = true;
 
@@ -52,7 +54,8 @@ bool testVector( const TVector & v1, const TVector & v2 )
   return pass;
 }
 
-int itkTransformCloneTest(int, char *[])
+int
+itkTransformCloneTest(int, char *[])
 {
   typedef itk::AffineTransform<double, 3> AffineTransformType;
   typedef itk::Transform<double,3,3>      Transform3DType;
@@ -75,9 +78,9 @@ int itkTransformCloneTest(int, char *[])
   Transform3DType::Pointer clonePtr =
     affineXfrm->Clone().GetPointer();
   AffineTransformType::Pointer cloneAffineXfrm =
-    dynamic_cast<AffineTransformType *>(clonePtr.GetPointer());
+    dynamic_cast<AffineTransformType *>(clonePtr.GetPointer() );
 
-  if(cloneAffineXfrm.IsNull())
+  if(cloneAffineXfrm.IsNull() )
     {
     std::cerr << "Failed to downcast return value from Clone to "
               << "AffineTransform, reported type is "
@@ -89,13 +92,13 @@ int itkTransformCloneTest(int, char *[])
     cloneAffineXfrm->GetMatrix();
   const AffineTransformType::OffsetType &cloneOffset =
     cloneAffineXfrm->GetOffset();
-  if(!testMatrix(cloneMatrix,affineXfrm->GetMatrix()))
+  if(!testMatrix(cloneMatrix,affineXfrm->GetMatrix() ) )
     {
     std::cerr << "Matrix mismatch between original and clone"
               << std::endl;
     return EXIT_FAILURE;
     }
-  if(!testVector(cloneOffset,affineXfrm->GetOffset()))
+  if(!testVector(cloneOffset,affineXfrm->GetOffset() ) )
     {
     std::cerr << "Offset mismatch between original and clone"
               << std::endl;
@@ -104,14 +107,14 @@ int itkTransformCloneTest(int, char *[])
   typedef itk::CompositeTransform<double,3> CompositeTransformType;
   CompositeTransformType::Pointer compositeXfrm =
     CompositeTransformType::New();
-  compositeXfrm->AddTransform(clonePtr.GetPointer());
+  compositeXfrm->AddTransform(clonePtr.GetPointer() );
   compositeXfrm->SetOnlyMostRecentTransformToOptimizeOn();
 
   CompositeTransformType::Pointer cloneCompositeXfrm =
-    dynamic_cast<CompositeTransformType *>(compositeXfrm->Clone().GetPointer());
+    dynamic_cast<CompositeTransformType *>(compositeXfrm->Clone().GetPointer() );
 
-  if((compositeXfrm->GetNumberOfTransforms() !=
-      cloneCompositeXfrm->GetNumberOfTransforms()))
+  if( (compositeXfrm->GetNumberOfTransforms() !=
+       cloneCompositeXfrm->GetNumberOfTransforms() ) )
     {
     std::cerr << "Number of transforms doesn't match" << std::endl;
     return EXIT_FAILURE;
@@ -119,16 +122,16 @@ int itkTransformCloneTest(int, char *[])
   for(unsigned i = 0; i < compositeXfrm->GetNumberOfTransforms(); ++i)
     {
     AffineTransformType::ConstPointer originalXfrm =
-      dynamic_cast<const AffineTransformType *>(compositeXfrm->GetNthTransformConstPointer(i));
-    AffineTransformType::ConstPointer  cloneXfrm =
-      dynamic_cast<const AffineTransformType *>(cloneCompositeXfrm->GetNthTransformConstPointer(i));
+      dynamic_cast<const AffineTransformType *>(compositeXfrm->GetNthTransformConstPointer(i) );
+    AffineTransformType::ConstPointer cloneXfrm =
+      dynamic_cast<const AffineTransformType *>(cloneCompositeXfrm->GetNthTransformConstPointer(i) );
 
-    if(originalXfrm.IsNull() || cloneXfrm.IsNull())
+    if(originalXfrm.IsNull() || cloneXfrm.IsNull() )
       {
       std::cerr << "Failed downcast to Affine Transform" << std::endl;
       return EXIT_FAILURE;
       }
-    if(!testMatrix(originalXfrm->GetMatrix(),cloneXfrm->GetMatrix()))
+    if(!testMatrix(originalXfrm->GetMatrix(),cloneXfrm->GetMatrix() ) )
       {
       std::cerr << "ConstituentTransformMismatch  at "
                 << i << std::endl;
@@ -136,7 +139,7 @@ int itkTransformCloneTest(int, char *[])
       }
 
     if(compositeXfrm->GetNthTransformToOptimize(i) !=
-       cloneCompositeXfrm->GetNthTransformToOptimize(i))
+       cloneCompositeXfrm->GetNthTransformToOptimize(i) )
       {
       std::cerr << "Transform optimize flag mismatch at "
                 << i << std::endl;

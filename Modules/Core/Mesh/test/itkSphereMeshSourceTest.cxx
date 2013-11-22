@@ -19,14 +19,15 @@
 #include "itkSphereMeshSource.h"
 #include <iostream>
 
-int itkSphereMeshSourceTest(int, char* [] ){
+int
+itkSphereMeshSourceTest(int, char* [] ){
 
-  typedef itk::Point<float,3>                       fPointType;
-  typedef itk::SphereMeshSource<itk::Mesh<float> >  fSphereMeshSourceType;
-  fSphereMeshSourceType::Pointer  mySphereMeshSource = fSphereMeshSourceType::New();
-  fPointType center; center.Fill(0);
-  fPointType::ValueType scaleInit[3] = {1,1,1};
-  fPointType scale = scaleInit;
+  typedef itk::Point<float,3>                      fPointType;
+  typedef itk::SphereMeshSource<itk::Mesh<float> > fSphereMeshSourceType;
+  fSphereMeshSourceType::Pointer mySphereMeshSource = fSphereMeshSourceType::New();
+  fPointType                     center; center.Fill(0);
+  fPointType::ValueType          scaleInit[3] = {1,1,1};
+  fPointType                     scale = scaleInit;
 
   mySphereMeshSource->SetCenter(center);
   mySphereMeshSource->SetResolutionX(1);
@@ -38,12 +39,12 @@ int itkSphereMeshSourceTest(int, char* [] ){
 
   std::cout << "mySphereMeshSource: " << mySphereMeshSource;
 
-  typedef itk::Mesh<float>::PointType   IPT;
+  typedef itk::Mesh<float>::PointType IPT;
 //  itk::Mesh<float>::PointsContainerPointer      myoutput = mySphereMeshSource->GetOutput()->GetPoints();
 //  itk::Mesh<float>::PointsContainer::Iterator   m_output = myoutput->Begin();
 
-  IPT*  pt_ptr;
-  IPT   pt; pt.Fill(0.0);
+  IPT* pt_ptr;
+  IPT  pt; pt.Fill(0.0);
   pt_ptr = &pt;
 
   std::cout << "Testing itk::SphereMeshSource "<< std::endl;

@@ -21,19 +21,20 @@
 #include "itkNullImageToImageFilterDriver.hxx"
 #include "itkVector.h"
 
-static bool TestDeformationJacobianDeterminantValue(void)
+static bool
+TestDeformationJacobianDeterminantValue(void)
 {
   std::cout.precision(9);
-  bool testPassed = true;
+  bool               testPassed = true;
   const unsigned int ImageDimension = 2;
 
   typedef itk::Vector<float,ImageDimension>     VectorType;
   typedef itk::Image<VectorType,ImageDimension> FieldType;
 
   // In this case, the image to be warped is also a vector field.
-  typedef FieldType                   VectorImageType;
-  typedef VectorImageType::PixelType  PixelType;
-  typedef VectorImageType::IndexType  IndexType;
+  typedef FieldType                  VectorImageType;
+  typedef VectorImageType::PixelType PixelType;
+  typedef VectorImageType::IndexType IndexType;
 
   //=============================================================
 
@@ -104,6 +105,7 @@ int
 itkDeformationFieldJacobianDeterminantFilterTest(int , char * [] )
 {
   bool ValueTestPassed=TestDeformationJacobianDeterminantValue();
+
   try
     {
     typedef itk::Vector<float, 3>      VectorType;
@@ -112,8 +114,8 @@ itkDeformationFieldJacobianDeterminantFilterTest(int , char * [] )
 
     // Set up filter
     itk::DeformationFieldJacobianDeterminantFilter<VectorImageType,float>::Pointer
-    filter =
-        itk::DeformationFieldJacobianDeterminantFilter<VectorImageType,float>::New();
+      filter =
+      itk::DeformationFieldJacobianDeterminantFilter<VectorImageType,float>::New();
 
     // Run Test
     itk::Size<3> sz;
@@ -122,7 +124,7 @@ itkDeformationFieldJacobianDeterminantFilterTest(int , char * [] )
     sz[2] = 100;
     itk::NullImageToImageFilterDriver< VectorImageType, ScalarVectorImageType > test1;
     test1.SetImageSize(sz);
-    test1.SetFilter(filter.GetPointer());
+    test1.SetFilter(filter.GetPointer() );
     test1.Execute();
     }
   catch(itk::ExceptionObject &err)

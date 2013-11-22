@@ -42,7 +42,7 @@ class MutexLockHolder
 {
 public:
   typedef TMutex Mutex;
-  MutexLockHolder(Mutex & mutex):m_Mutex(mutex)
+  MutexLockHolder(Mutex & mutex) : m_Mutex(mutex)
   {
     m_Mutex.Lock();
   }

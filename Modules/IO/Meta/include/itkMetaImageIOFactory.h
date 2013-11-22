@@ -27,7 +27,7 @@ namespace itk
  * \brief Create instances of MetaImageIO objects using an object factory.
  * \ingroup ITKIOMeta
  */
-class MetaImageIOFactory:public ObjectFactoryBase
+class MetaImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -48,7 +48,8 @@ public:
   itkTypeMacro(MetaImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory()
+  static void
+  RegisterOneFactory()
   {
     MetaImageIOFactory::Pointer metaFactory = MetaImageIOFactory::New();
 
@@ -62,6 +63,7 @@ protected:
 private:
   MetaImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -109,6 +109,7 @@ ChainCodeToFourierSeriesPathFilter< TInputChainCodePath, TOutputFourierSeriesPat
 
   os << indent << "NumberOfHarmonics: " << m_NumberOfHarmonics << std::endl;
 }
+
 } // end namespace itk
 
 #endif

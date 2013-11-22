@@ -42,6 +42,7 @@ BinaryThresholdSpatialFunction< TFunction >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << " m_LowerThreshold: " << m_LowerThreshold << std::endl;
   os << indent << " m_UpperThreshold: " << m_UpperThreshold << std::endl;
   os << indent << " m_Function: " << m_Function.GetPointer() << std::endl;
@@ -61,6 +62,7 @@ BinaryThresholdSpatialFunction< TFunction >
     }
   return false;
 }
+
 } // end namespace itk
 
 #endif

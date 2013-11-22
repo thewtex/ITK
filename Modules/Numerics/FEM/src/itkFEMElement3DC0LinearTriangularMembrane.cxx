@@ -24,7 +24,8 @@ namespace fem
 {
 
 // Overload the CreateAnother() method
-::itk::LightObject::Pointer Element3DC0LinearTriangularMembrane::CreateAnother(void) const
+::itk::LightObject::Pointer
+Element3DC0LinearTriangularMembrane::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
   Pointer copyPtr = Self::New();
@@ -43,8 +44,7 @@ namespace fem
 
 Element3DC0LinearTriangularMembrane
 ::Element3DC0LinearTriangularMembrane() : Superclass()
-{
-}
+{}
 
 Element3DC0LinearTriangularMembrane
 ::Element3DC0LinearTriangularMembrane(NodeIDType n1_, NodeIDType n2_, NodeIDType n3_,

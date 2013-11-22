@@ -21,16 +21,17 @@
 #include "itkImageFileReader.h"
 #include "itkImageSeriesWriter.h"
 
-int itkImageToVectorImageFilterTest(int argc, char *argv[] )
+int
+itkImageToVectorImageFilterTest(int argc, char *argv[] )
 {
 
   typedef unsigned char PixelType;
 
-  typedef itk::Image<PixelType,2>        ScalarImageType;
-  typedef itk::VectorImage<PixelType,2>  VectorImageType;
+  typedef itk::Image<PixelType,2>       ScalarImageType;
+  typedef itk::VectorImage<PixelType,2> VectorImageType;
 
-  typedef itk::ImageFileReader<ScalarImageType>                ReaderType;
-  typedef itk::ImageFileWriter<VectorImageType>                WriterType;
+  typedef itk::ImageFileReader<ScalarImageType> ReaderType;
+  typedef itk::ImageFileWriter<VectorImageType> WriterType;
 
   typedef itk::ComposeImageFilter<ScalarImageType> FilterType;
 
@@ -42,13 +43,13 @@ int itkImageToVectorImageFilterTest(int argc, char *argv[] )
     }
 
   FilterType::Pointer filter = FilterType::New();
-  int f = 0;
+  int                 f = 0;
   for (int i=1; i < argc - 1; i++)
     {
     ReaderType::Pointer reader = ReaderType::New();
     reader->SetFileName (argv[i]);
     reader->Update();
-    filter->SetInput(f++,reader->GetOutput());
+    filter->SetInput(f++,reader->GetOutput() );
     }
 
   WriterType::Pointer writer = WriterType::New();
@@ -56,7 +57,7 @@ int itkImageToVectorImageFilterTest(int argc, char *argv[] )
 
   try
     {
-    writer->SetInput(filter->GetOutput());
+    writer->SetInput(filter->GetOutput() );
     writer->Update();
     }
   catch( itk::ExceptionObject & excp )

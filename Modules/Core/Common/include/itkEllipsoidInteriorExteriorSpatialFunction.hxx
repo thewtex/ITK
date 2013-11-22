@@ -85,7 +85,8 @@ EllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
 }
 
 template< unsigned int VDimension, typename TInput >
-void EllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
+void
+EllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
 ::SetOrientations(const OrientationType & orientations)
 {
   unsigned int i, j;
@@ -116,7 +117,8 @@ void EllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
 }
 
 template< unsigned int VDimension, typename TInput >
-void EllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
+void
+EllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   unsigned int i, j;
@@ -138,6 +140,7 @@ void EllipsoidInteriorExteriorSpatialFunction< VDimension, TInput >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

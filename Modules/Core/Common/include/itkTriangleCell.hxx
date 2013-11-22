@@ -415,7 +415,8 @@ TriangleCell< TCellInterface >::ComputeCenterOfGravity(
   PointsContainer *iPoints)
 {
   std::vector< CoordRepType > weights(3, 1. / 3.);
-  return ComputeBarycenter(& weights[0], iPoints);
+
+  return ComputeBarycenter(&weights[0], iPoints);
 }
 
 template< typename TCellInterface >
@@ -715,6 +716,7 @@ TriangleCell< TCellInterface >
     }
   return false; //Default case that should never be reached.
 }
+
 } // end namespace itk
 
 #endif

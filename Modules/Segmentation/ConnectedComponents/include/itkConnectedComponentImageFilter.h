@@ -54,7 +54,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TMaskImage = TInputImage >
-class ConnectedComponentImageFilter:
+class ConnectedComponentImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -131,7 +131,7 @@ public:
   itkBooleanMacro(FullyConnected);
 
   /** Type used as identifier of the different component labels. */
-  typedef IdentifierType   LabelType;
+  typedef IdentifierType LabelType;
 
   // only set after completion
   itkGetConstReferenceMacro(ObjectCount, LabelType);
@@ -142,12 +142,14 @@ public:
                                              itkGetStaticConstMacro(OutputImageDimension) > ) );
   itkConceptMacro( OutputImagePixelTypeIsInteger, ( Concept::IsInteger< OutputImagePixelType > ) );
 
-  void SetMaskImage(TMaskImage *mask)
+  void
+  SetMaskImage(TMaskImage *mask)
   {
     this->SetNthInput( 1, const_cast< TMaskImage * >( mask ) );
   }
 
-  const TMaskImage * GetMaskImage() const
+  const TMaskImage *
+  GetMaskImage() const
   {
     return ( static_cast< const TMaskImage * >( this->ProcessObject::GetInput(1) ) );
   }
@@ -168,7 +170,8 @@ protected:
     m_BackgroundValue = NumericTraits< OutputImagePixelType >::Zero;
   }
 
-  virtual ~ConnectedComponentImageFilter() {}
+  virtual
+  ~ConnectedComponentImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
@@ -195,7 +198,7 @@ protected:
 
 private:
   ConnectedComponentImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);                //purposely not implemented
 
   LabelType            m_ObjectCount;
   OutputImagePixelType m_BackgroundValue;
@@ -210,7 +213,7 @@ public:
     // run length information - may be a more type safe way of doing this
     typename TInputImage::OffsetValueType   length;
     typename TInputImage::IndexType         where;   // Index of the start of the run
-    LabelType                               label;   // the initial label of the run
+    LabelType label;                                 // the initial label of the run
   };
 
   typedef std::vector< runLength > lineEncoding;
@@ -226,7 +229,8 @@ public:
   UnionFindType m_Consecutive;
 
   // functions to support union-find operations
-  void InitUnion( SizeValueType size )
+  void
+  InitUnion( SizeValueType size )
   {
     m_UnionFind = UnionFindType(size + 1);
   }
@@ -250,7 +254,8 @@ public:
 
   void SetupLineOffsets(OffsetVec & LineOffsets);
 
-  void Wait()
+  void
+  Wait()
   {
     // use m_NumberOfLabels.size() to get the number of thread used
     if ( m_NumberOfLabels.size() > 1 )

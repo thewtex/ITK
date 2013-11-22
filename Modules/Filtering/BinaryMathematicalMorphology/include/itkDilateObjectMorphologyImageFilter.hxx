@@ -58,5 +58,6 @@ DilateObjectMorphologyImageFilter< TInputImage, TOutputImage, TKernel >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 #endif

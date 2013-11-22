@@ -25,7 +25,8 @@
 #include <sstream>
 #include <vector>
 
-int itkGDCMImagePositionPatientTest( int argc, char* argv[] )
+int
+itkGDCMImagePositionPatientTest( int argc, char* argv[] )
 {
 
   if( argc < 2 )
@@ -42,7 +43,7 @@ int itkGDCMImagePositionPatientTest( int argc, char* argv[] )
   typedef itk::ImageFileWriter< Image2DType > Writer2DType;
   typedef itk::GDCMImageIO                    ImageIOType;
 
-  typedef itk::MetaDataDictionary   DictionaryType;
+  typedef itk::MetaDataDictionary DictionaryType;
   DictionaryType dict;
 
   // Create a 2D image
@@ -78,7 +79,7 @@ int itkGDCMImagePositionPatientTest( int argc, char* argv[] )
   origin3D[2] = 3.0;
   value.str("");
   value << origin3D[0] << "\\" << origin3D[1] << "\\" << origin3D[2];
-  itk::EncapsulateMetaData<std::string>(dictionary,"0020|0032", value.str());
+  itk::EncapsulateMetaData<std::string>(dictionary,"0020|0032", value.str() );
 
   // GDCM will not write IPP unless the modality is one of CT, MR or RT.
   std::string modality("CT");
@@ -87,11 +88,11 @@ int itkGDCMImagePositionPatientTest( int argc, char* argv[] )
   src2D->GetOutput()->SetMetaDataDictionary(dictionary);
 
   Writer2DType::Pointer writer2D = Writer2DType::New();
-  std::ostringstream filename;
+  std::ostringstream    filename;
   filename.str("");
   filename << argv[1] << "/itkGDCMImagePositionPatientTest.dcm";
-  writer2D->SetInput(src2D->GetOutput());
-  writer2D->SetFileName(filename.str().c_str());
+  writer2D->SetInput(src2D->GetOutput() );
+  writer2D->SetFileName(filename.str().c_str() );
 
   try
     {
@@ -108,14 +109,14 @@ int itkGDCMImagePositionPatientTest( int argc, char* argv[] )
   // Now read the dicom back and check its origin
   ReaderType::Pointer reader =
     ReaderType::New();
-  reader->SetFileName(filename.str().c_str());
+  reader->SetFileName(filename.str().c_str() );
   reader->Update();
 
   Image3DType::PointType readerOrigin3D;
   readerOrigin3D = reader->GetOutput()->GetOrigin();
-  if ((readerOrigin3D[0] != origin3D[0]) ||
-      (readerOrigin3D[1] != origin3D[1]) ||
-      (readerOrigin3D[2] != origin3D[2]))
+  if ( (readerOrigin3D[0] != origin3D[0]) ||
+       (readerOrigin3D[1] != origin3D[1]) ||
+       (readerOrigin3D[2] != origin3D[2]) )
     {
     std::cout << "ERROR: read origin does not equal written origin: "
               << readerOrigin3D << " != ["

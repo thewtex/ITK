@@ -23,7 +23,8 @@
 
 #include "itkVectorIndexSelectionCastImageFilter.h"
 
-int itkVectorIndexSelectionCastImageFilterTest(int argc, char * argv [] )
+int
+itkVectorIndexSelectionCastImageFilterTest(int argc, char * argv [] )
 {
 
   if( argc < 4 )
@@ -52,8 +53,8 @@ int itkVectorIndexSelectionCastImageFilterTest(int argc, char * argv [] )
   writer->SetFileName( argv[2] );
 
   typedef itk::VectorIndexSelectionCastImageFilter<
-                                     InputImageType,
-                                     OutputImageType> FilterType;
+      InputImageType,
+      OutputImageType> FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
@@ -73,7 +74,6 @@ int itkVectorIndexSelectionCastImageFilterTest(int argc, char * argv [] )
     std::cerr << "Exception detected: "  << e;
     return -1;
     }
-
 
   std::cout << "Test the exception if the index is too large" << std::endl;
 
@@ -102,7 +102,6 @@ int itkVectorIndexSelectionCastImageFilterTest(int argc, char * argv [] )
               << "when index is too large !!" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Test PASSED ! " << std::endl;
   return EXIT_SUCCESS;

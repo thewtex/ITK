@@ -16,10 +16,10 @@
  *
  *=========================================================================*/
 
-
 #include "itkTransformFileWriter.h"
 
-int itkTransformFileWriterTemplateTest( int argc, char *argv[] )
+int
+itkTransformFileWriterTemplateTest( int argc, char *argv[] )
 {
   if( argc < 1 )
     {
@@ -28,15 +28,14 @@ int itkTransformFileWriterTemplateTest( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::TransformFileWriterTemplate<double>      TransformWriterType;
-
+  typedef itk::TransformFileWriterTemplate<double> TransformWriterType;
 
   TransformWriterType::Pointer transformWriter = TransformWriterType::New();
 
   std::cout << "Writer class = "
             << transformWriter->GetNameOfClass()
             << "Writer base = "
-            << dynamic_cast<TransformWriterType::Superclass *>(transformWriter.GetPointer())->GetNameOfClass()
+            << dynamic_cast<TransformWriterType::Superclass *>(transformWriter.GetPointer() )->GetNameOfClass()
             << std::endl;
 
   // trigger empty write exception

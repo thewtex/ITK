@@ -83,9 +83,9 @@ MeshSpatialObject< TMesh >
       // If this is a triangle cell we need to check the distance
       if ( it.Value()->GetNumberOfPoints() == 3 )
         {
-        double minDist = 0.0;
+        double     minDist = 0.0;
         const bool pointIsInside = it.Value()->EvaluatePosition(
-          position, m_Mesh->GetPoints(), NULL, NULL, &minDist, NULL);
+            position, m_Mesh->GetPoints(), NULL, NULL, &minDist, NULL);
 
         if ( pointIsInside  && minDist <= this->m_IsInsidePrecision )
           {
@@ -195,17 +195,17 @@ template< typename TMesh >
 typename MeshSpatialObject< TMesh >::MeshType *
 MeshSpatialObject< TMesh >
 ::GetMesh(void)
-{
+  {
   return m_Mesh.GetPointer();
-}
+  }
 
 template< typename TMesh >
 const typename MeshSpatialObject< TMesh >::MeshType *
 MeshSpatialObject< TMesh >
 ::GetMesh(void) const
-{
+  {
   return m_Mesh.GetPointer();
-}
+  }
 
 /** Print the object */
 template< typename TMesh >
@@ -214,6 +214,7 @@ MeshSpatialObject< TMesh >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "Mesh: " << std::endl;
   os << "m_IsInsidePrecision: " << m_IsInsidePrecision << std::endl;
   os << indent << m_Mesh << std::endl;
@@ -225,7 +226,7 @@ ModifiedTimeType
 MeshSpatialObject< TMesh >
 ::GetMTime(void) const
 {
-  ModifiedTimeType latestMTime = Superclass::GetMTime();
+  ModifiedTimeType       latestMTime = Superclass::GetMTime();
   const ModifiedTimeType MeshMTime = m_Mesh->GetMTime();
 
   if ( MeshMTime > latestMTime )
@@ -235,6 +236,7 @@ MeshSpatialObject< TMesh >
 
   return latestMTime;
 }
+
 } // end namespace itk
 
 #endif //__MeshSpatialObject_hxx

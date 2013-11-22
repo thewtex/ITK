@@ -38,22 +38,25 @@ public:
   LandweberMethod() {}
   ~LandweberMethod() {}
 
-  bool operator!=(const LandweberMethod &) const
+  bool
+  operator!=(const LandweberMethod &) const
   {
     return false;
   }
 
-  bool operator==(const LandweberMethod & other) const
+  bool
+  operator==(const LandweberMethod & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & estimateFT,
-                            const TInput2 & kernelFT,
-                            const TInput2 & inputFT) const
+  inline TOutput
+  operator()(const TInput1 & estimateFT,
+             const TInput2 & kernelFT,
+             const TInput2 & inputFT) const
   {
     return m_Alpha * std::conj( kernelFT ) * inputFT +
-      ( NumericTraits< typename TInput1::value_type >::OneValue() - m_Alpha * std::norm( kernelFT ) ) * estimateFT;
+           ( NumericTraits< typename TInput1::value_type >::OneValue() - m_Alpha * std::norm( kernelFT ) ) * estimateFT;
   }
 
   typename TInput1::value_type m_Alpha;
@@ -97,19 +100,20 @@ public:
  * \sa RichardsonLucyDeconvolutionImageFilter
  * \sa ProjectedLandweberDeconvolutionImageFilter
  */
-template< typename TInputImage, typename TKernelImage=TInputImage, typename TOutputImage=TInputImage, typename TInternalPrecision=double >
+template< typename TInputImage, typename TKernelImage=TInputImage, typename TOutputImage=TInputImage,
+          typename TInternalPrecision=double >
 class LandweberDeconvolutionImageFilter :
   public IterativeDeconvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPrecision >
 {
 public:
   /** Standard typedefs. */
-  typedef LandweberDeconvolutionImageFilter                       Self;
+  typedef LandweberDeconvolutionImageFilter Self;
   typedef IterativeDeconvolutionImageFilter< TInputImage,
                                              TKernelImage,
                                              TOutputImage,
                                              TInternalPrecision > Superclass;
-  typedef SmartPointer< Self >                                    Pointer;
-  typedef SmartPointer< const Self >                              ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Other useful typedefs. */
   typedef TInputImage  InputImageType;
@@ -136,7 +140,8 @@ public:
 
 protected:
   LandweberDeconvolutionImageFilter();
-  virtual ~LandweberDeconvolutionImageFilter();
+  virtual
+  ~LandweberDeconvolutionImageFilter();
 
   virtual void Initialize(ProgressAccumulator * progress,
                           float progressWeight,

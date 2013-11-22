@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TRealValueType = double >
-class KernelFunctionBase:public FunctionBase< TRealValueType, TRealValueType >
+class KernelFunctionBase : public FunctionBase< TRealValueType, TRealValueType >
 {
 public:
   /** Standard class typedefs. */
@@ -49,7 +49,7 @@ public:
   typedef SmartPointer< Self >                           Pointer;
   typedef SmartPointer< const Self >                     ConstPointer;
 
-  typedef TRealValueType                             RealType;
+  typedef TRealValueType RealType;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(KernelFunctionBase, FunctionBase);
@@ -58,17 +58,22 @@ public:
   virtual TRealValueType Evaluate(const TRealValueType & u) const = 0;
 
 #ifdef ITK_USE_STRICT_CONCEPT_CHECKING
-    // Begin concept checking
-    itkConceptMacro( TRealValueTypeIsFloatingPointCheck,
-                         ( Concept::IsFloatingPoint< TRealValueType > ) );
-      // End concept checking
+  // Begin concept checking
+  itkConceptMacro( TRealValueTypeIsFloatingPointCheck,
+                   ( Concept::IsFloatingPoint< TRealValueType > ) );
+  // End concept checking
 #endif
 
 protected:
-  KernelFunctionBase() {};
-  virtual ~KernelFunctionBase() {};
-  void PrintSelf(std::ostream & os, Indent indent) const
-  { Superclass::PrintSelf(os, indent); }
+  KernelFunctionBase() {}
+  virtual
+  ~KernelFunctionBase() {}
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+  }
+
 };
 } // end namespace itk
 

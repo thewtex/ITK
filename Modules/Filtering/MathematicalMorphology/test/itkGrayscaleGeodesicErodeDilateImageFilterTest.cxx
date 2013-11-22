@@ -26,14 +26,15 @@
 // This test should produce the same results as the
 // itkHMaximaMinimaImageFilterTest.
 
-int itkGrayscaleGeodesicErodeDilateImageFilterTest(int argc, char* argv [] )
+int
+itkGrayscaleGeodesicErodeDilateImageFilterTest(int argc, char* argv [] )
 {
   if ( argc < 4 )
-  {
+    {
     std::cerr << "Missing arguments" << std::endl;
     std::cerr << "Usage: " << argv[0] << " Inputimage OutputImage Height" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   const int Dimension = 2;
   typedef unsigned char                      PixelType;
   typedef itk::Image< PixelType, Dimension > InputImageType;
@@ -45,34 +46,34 @@ int itkGrayscaleGeodesicErodeDilateImageFilterTest(int argc, char* argv [] )
   typedef itk::ShiftScaleImageFilter <InputImageType,InputImageType>
     ShiftFilterType;
   typedef itk::GrayscaleGeodesicDilateImageFilter < InputImageType,
-                                                   OutputImageType >
+                                                    OutputImageType >
     DilateFilterType;
   typedef itk::GrayscaleGeodesicErodeImageFilter < InputImageType,
                                                    OutputImageType >
     ErodeFilterType;
 
-  ReaderType::Pointer           reader = ReaderType::New();
-  WriterType::Pointer           writer = WriterType::New();
-  ShiftFilterType::Pointer      shiftErode = ShiftFilterType::New();
-  ShiftFilterType::Pointer      shiftDilate = ShiftFilterType::New();
-  ErodeFilterType::Pointer      erode = ErodeFilterType::New();
-  DilateFilterType::Pointer     dilate = DilateFilterType::New();
+  ReaderType::Pointer       reader = ReaderType::New();
+  WriterType::Pointer       writer = WriterType::New();
+  ShiftFilterType::Pointer  shiftErode = ShiftFilterType::New();
+  ShiftFilterType::Pointer  shiftDilate = ShiftFilterType::New();
+  ErodeFilterType::Pointer  erode = ErodeFilterType::New();
+  DilateFilterType::Pointer dilate = DilateFilterType::New();
 
   // Create the reader and writer
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 
   // Create the marker image for erosion
-  shiftDilate->SetInput( reader->GetOutput());
+  shiftDilate->SetInput( reader->GetOutput() );
   shiftDilate->SetShift( -1 * atoi(argv[3]) );
 
   // Dilate
-  dilate->SetMarkerImage ( shiftDilate-> GetOutput() );
+  dilate->SetMarkerImage ( shiftDilate->GetOutput() );
   dilate->SetMaskImage ( reader->GetOutput() );
   dilate->FullyConnectedOn();
 
   // Create the marker image for erode
-  shiftErode->SetInput( dilate->GetOutput());
+  shiftErode->SetInput( dilate->GetOutput() );
   shiftErode->SetShift( atoi(argv[3]) );
 
   // Erode
@@ -87,14 +88,14 @@ int itkGrayscaleGeodesicErodeDilateImageFilterTest(int argc, char* argv [] )
 
   // Execute the filter
   try
-  {
+    {
     writer->Update();
-  }
+    }
   catch( itk::ExceptionObject & excp )
-  {
+    {
     std::cerr << "Exception caught:" << excp << std::endl;
-    return  EXIT_FAILURE;
-  }
+    return EXIT_FAILURE;
+    }
 
   return EXIT_SUCCESS;
 }

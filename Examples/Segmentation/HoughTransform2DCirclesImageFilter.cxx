@@ -26,7 +26,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkHoughTransform2DCirclesImageFilter.h"
 // Software Guide : EndCodeSnippet
@@ -42,7 +41,8 @@
 #include "itkCastImageFilter.h"
 #include "vnl/vnl_math.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 6 )
     {
@@ -69,10 +69,10 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   unsigned char   PixelType;
-  typedef   float           AccumulatorPixelType;
-  const     unsigned int    Dimension = 2;
-  typedef itk::Image< PixelType, Dimension >  ImageType;
+  typedef   unsigned char PixelType;
+  typedef   float         AccumulatorPixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< PixelType, Dimension > ImageType;
   ImageType::IndexType localIndex;
   typedef itk::Image< AccumulatorPixelType, Dimension > AccumulatorImageType;
   // Software Guide : EndCodeSnippet
@@ -98,7 +98,6 @@ int main( int argc, char *argv[] )
   ImageType::Pointer localImage = reader->GetOutput();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  We create the HoughTransform2DCirclesImageFilter based on the pixel
@@ -111,9 +110,9 @@ int main( int argc, char *argv[] )
   std::cout << "Computing Hough Map" << std::endl;
 
   typedef itk::HoughTransform2DCirclesImageFilter<PixelType,
-               AccumulatorPixelType> HoughTransformFilterType;
+                                                  AccumulatorPixelType> HoughTransformFilterType;
   HoughTransformFilterType::Pointer houghFilter
-                                            = HoughTransformFilterType::New();
+    = HoughTransformFilterType::New();
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -190,18 +189,17 @@ int main( int argc, char *argv[] )
   typedef  unsigned char                            OutputPixelType;
   typedef  itk::Image< OutputPixelType, Dimension > OutputImageType;
 
-  OutputImageType::Pointer  localOutputImage = OutputImageType::New();
+  OutputImageType::Pointer localOutputImage = OutputImageType::New();
 
   OutputImageType::RegionType region;
-  region.SetSize(localImage->GetLargestPossibleRegion().GetSize());
-  region.SetIndex(localImage->GetLargestPossibleRegion().GetIndex());
+  region.SetSize(localImage->GetLargestPossibleRegion().GetSize() );
+  region.SetIndex(localImage->GetLargestPossibleRegion().GetIndex() );
   localOutputImage->SetRegions( region );
-  localOutputImage->SetOrigin(localImage->GetOrigin());
-  localOutputImage->SetSpacing(localImage->GetSpacing());
+  localOutputImage->SetOrigin(localImage->GetOrigin() );
+  localOutputImage->SetSpacing(localImage->GetSpacing() );
   localOutputImage->Allocate();
   localOutputImage->FillBuffer(0);
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -227,16 +225,16 @@ int main( int argc, char *argv[] )
     //  Software Guide : EndLatex
 
     // Software Guide : BeginCodeSnippet
-    for(double angle = 0;angle <= 2*vnl_math::pi; angle += vnl_math::pi/60.0 )
+    for(double angle = 0; angle <= 2*vnl_math::pi; angle += vnl_math::pi/60.0 )
       {
       localIndex[0] =
-         (long int)((*itCircles)->GetObjectToParentTransform()->GetOffset()[0]
-                    + (*itCircles)->GetRadius()[0]*vcl_cos(angle));
+        (long int)( (*itCircles)->GetObjectToParentTransform()->GetOffset()[0]
+                    + (*itCircles)->GetRadius()[0]*vcl_cos(angle) );
       localIndex[1] =
-         (long int)((*itCircles)->GetObjectToParentTransform()->GetOffset()[1]
-                    + (*itCircles)->GetRadius()[0]*vcl_sin(angle));
+        (long int)( (*itCircles)->GetObjectToParentTransform()->GetOffset()[1]
+                    + (*itCircles)->GetRadius()[0]*vcl_sin(angle) );
       OutputImageType::RegionType outputRegion =
-                                  localOutputImage->GetLargestPossibleRegion();
+        localOutputImage->GetLargestPossibleRegion();
 
       if( outputRegion.IsInside( localIndex ) )
         {

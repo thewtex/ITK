@@ -76,7 +76,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class RelabelComponentImageFilter:
+class RelabelComponentImageFilter :
   public InPlaceImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -139,8 +139,8 @@ public:
    * valid after the filter has executed. */
   itkGetConstMacro(NumberOfObjects, LabelType);
 
-  typedef std::vector< ObjectSizeType >   ObjectSizeInPixelsContainerType;
-  typedef std::vector< float >            ObjectSizeInPhysicalUnitsContainerType;
+  typedef std::vector< ObjectSizeType > ObjectSizeInPixelsContainerType;
+  typedef std::vector< float >          ObjectSizeInPhysicalUnitsContainerType;
 
   /** Get the original number of objects in the image before small
    * objects were discarded. This information is only valid after
@@ -174,29 +174,32 @@ public:
    * not calculated.  Size of object #1 is
    * GetSizeOfObjectsInPixels()[0]. Size of object #2 is
    * GetSizeOfObjectsInPixels()[1]. Etc. */
-  const ObjectSizeInPixelsContainerType & GetSizeOfObjectsInPixels() const
-    {
+  const ObjectSizeInPixelsContainerType &
+  GetSizeOfObjectsInPixels() const
+  {
     // The GetConstReferenceMacro can't be used here becase this container
     // doesn't have an ostream<< operator overloaded.
     return this->m_SizeOfObjectsInPixels;
-    }
+  }
 
   /** Get the size of each object in physical space (in units of pixel
    * size). This information is only valid after the filter has
    * executed. Size of the background is not calculated.  Size of
    * object #1 is GetSizeOfObjectsInPhysicalUnits()[0]. Size of object
    * #2 is GetSizeOfObjectsInPhysicalUnits()[1]. Etc. */
-  const ObjectSizeInPhysicalUnitsContainerType & GetSizeOfObjectsInPhysicalUnits() const
-    {
+  const ObjectSizeInPhysicalUnitsContainerType &
+  GetSizeOfObjectsInPhysicalUnits() const
+  {
     // The GetConstReferenceMacro can't be used here becase this container
     // doesn't have an ostream<< operator overloaded.
     return this->m_SizeOfObjectsInPhysicalUnits;
-    }
+  }
 
   /** Get the size of a particular object in pixels. This information is only
    * valid after the filter has executed.  Size of the background
    * (object #0) is not calculated.  */
-  ObjectSizeType GetSizeOfObjectInPixels(LabelType obj) const
+  ObjectSizeType
+  GetSizeOfObjectInPixels(LabelType obj) const
   {
     if ( obj > 0 && obj <= m_NumberOfObjects )
       {
@@ -211,7 +214,8 @@ public:
   /** Get the size of a particular object in physical space (in units of pixel
    * size). This information is only valid after the filter has
    * executed. Size of the background (object #0) is not calculated.  */
-  float GetSizeOfObjectInPhysicalUnits(LabelType obj) const
+  float
+  GetSizeOfObjectInPhysicalUnits(LabelType obj) const
   {
     if ( obj > 0 && obj <= m_NumberOfObjects )
       {
@@ -240,11 +244,15 @@ public:
 
 protected:
 
-  RelabelComponentImageFilter():
+  RelabelComponentImageFilter() :
     m_NumberOfObjects(0), m_NumberOfObjectsToPrint(10),
     m_OriginalNumberOfObjects(0), m_MinimumObjectSize(0)
-  { this->InPlaceOff(); }
-  virtual ~RelabelComponentImageFilter() {}
+  {
+    this->InPlaceOff();
+  }
+
+  virtual
+  ~RelabelComponentImageFilter() {}
 
   /**
    * Standard pipeline method.
@@ -263,14 +271,15 @@ protected:
     LabelType m_ObjectNumber;
     ObjectSizeType m_SizeInPixels;
     float m_SizeInPhysicalUnits;
-  };
+    };
 
   // put the function objects here for sorting in descending order
   class RelabelComponentSizeInPixelsComparator
   {
 public:
-    bool operator()(const RelabelComponentObjectType & a,
-                    const RelabelComponentObjectType & b)
+    bool
+    operator()(const RelabelComponentObjectType & a,
+               const RelabelComponentObjectType & b)
     {
       if ( a.m_SizeInPixels > b.m_SizeInPixels )
         {
@@ -291,19 +300,20 @@ public:
         return false;
         }
     }
+
   };
 
 private:
   RelabelComponentImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);              //purposely not implemented
 
   LabelType      m_NumberOfObjects;
   LabelType      m_NumberOfObjectsToPrint;
   LabelType      m_OriginalNumberOfObjects;
   ObjectSizeType m_MinimumObjectSize;
 
-  ObjectSizeInPixelsContainerType         m_SizeOfObjectsInPixels;
-  ObjectSizeInPhysicalUnitsContainerType  m_SizeOfObjectsInPhysicalUnits;
+  ObjectSizeInPixelsContainerType        m_SizeOfObjectsInPixels;
+  ObjectSizeInPhysicalUnitsContainerType m_SizeOfObjectsInPhysicalUnits;
 };
 } // end namespace itk
 

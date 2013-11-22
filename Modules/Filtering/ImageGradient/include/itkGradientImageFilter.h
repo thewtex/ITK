@@ -25,9 +25,7 @@
 namespace itk
 {
 
-
 template <typename TPixelType, unsigned int VImageDimension > class VectorImage;
-
 
 /** \class GradientImageFilter
  * \brief Computes the gradient of an image using directional derivatives.
@@ -55,9 +53,9 @@ template< typename TInputImage,
           typename TOperatorValueType = float,
           typename TOutputValueType = float,
           typename TOutputImageType = Image< CovariantVector< TOutputValueType,
-                                                           TInputImage::ImageDimension >,
-                                          TInputImage::ImageDimension > >
-class GradientImageFilter:
+                                                              TInputImage::ImageDimension >,
+                                             TInputImage::ImageDimension > >
+class GradientImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImageType >
 {
 public:
@@ -93,8 +91,8 @@ public:
   typedef TOutputValueType                    OutputValueType;
   typedef typename OutputImageType::PixelType OutputPixelType;
   typedef CovariantVector<
-    OutputValueType, itkGetStaticConstMacro(OutputImageDimension) >
-  CovariantVectorType;
+      OutputValueType, itkGetStaticConstMacro(OutputImageDimension) >
+    CovariantVectorType;
   typedef typename OutputImageType::RegionType OutputImageRegionType;
 
   /** GradientImageFilter needs a larger input requested region than
@@ -108,13 +106,19 @@ public:
 
   /** Use the image spacing information in calculations. Use this option if you
    *  want derivatives in physical space. Default is UseImageSpacingOn. */
-  void SetUseImageSpacingOn()
-  { this->SetUseImageSpacing(true); }
+  void
+  SetUseImageSpacingOn()
+  {
+    this->SetUseImageSpacing(true);
+  }
 
   /** Ignore the image spacing. Use this option if you want derivatives in
       isotropic pixel space.  Default is UseImageSpacingOn. */
-  void SetUseImageSpacingOff()
-  { this->SetUseImageSpacing(false); }
+  void
+  SetUseImageSpacingOff()
+  {
+    this->SetUseImageSpacing(false);
+  }
 
   /** Set/Get whether or not the filter will use the spacing of the input
       image in its calculations */
@@ -146,7 +150,8 @@ public:
 
 protected:
   GradientImageFilter();
-  virtual ~GradientImageFilter();
+  virtual
+  ~GradientImageFilter();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** GradientImageFilter can be implemented as a multithreaded filter.
@@ -171,7 +176,9 @@ private:
   // An overloaded method which may transform the gradient to a
   // physical vector and converts to the correct output pixel type.
   template <typename TValueType>
-  void SetOutputPixel( ImageRegionIterator< VectorImage<TValueType,OutputImageDimension> > &it, CovariantVectorType &gradient )
+  void
+  SetOutputPixel( ImageRegionIterator< VectorImage<TValueType,
+                                                   OutputImageDimension> > &it, CovariantVectorType &gradient )
   {
     if ( this->m_UseImageDirection )
       {
@@ -186,7 +193,8 @@ private:
   }
 
   template <typename T >
-  void SetOutputPixel( ImageRegionIterator< T > &it, CovariantVectorType &gradient )
+  void
+  SetOutputPixel( ImageRegionIterator< T > &it, CovariantVectorType &gradient )
   {
     // This uses the more efficient set by reference method
     if ( this->m_UseImageDirection )
@@ -198,7 +206,6 @@ private:
       it.Value() = gradient;
       }
   }
-
 
   bool m_UseImageSpacing;
 

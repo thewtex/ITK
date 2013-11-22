@@ -109,7 +109,7 @@ template< typename TInputImage, typename TOutputImage >
 typename BinaryThresholdImageFilter< TInputImage, TOutputImage >::InputPixelObjectType *
 BinaryThresholdImageFilter< TInputImage, TOutputImage >
 ::GetLowerThresholdInput()
-{
+  {
   typename InputPixelObjectType::Pointer lower =
     static_cast< InputPixelObjectType * >( this->ProcessObject::GetInput(1) );
   if ( !lower )
@@ -122,14 +122,14 @@ BinaryThresholdImageFilter< TInputImage, TOutputImage >
     }
 
   return lower;
-}
+  }
 
 template< typename TInputImage, typename TOutputImage >
 const
 typename BinaryThresholdImageFilter< TInputImage, TOutputImage >::InputPixelObjectType *
 BinaryThresholdImageFilter< TInputImage, TOutputImage >
 ::GetLowerThresholdInput() const
-{
+  {
   typename InputPixelObjectType::Pointer lower =
     const_cast< InputPixelObjectType * >( static_cast< const InputPixelObjectType * >( this->ProcessObject::GetInput(1) ) );
 
@@ -143,7 +143,7 @@ BinaryThresholdImageFilter< TInputImage, TOutputImage >
     }
 
   return lower;
-}
+  }
 
 /**
  *
@@ -200,7 +200,7 @@ template< typename TInputImage, typename TOutputImage >
 typename BinaryThresholdImageFilter< TInputImage, TOutputImage >::InputPixelObjectType *
 BinaryThresholdImageFilter< TInputImage, TOutputImage >
 ::GetUpperThresholdInput()
-{
+  {
   typename InputPixelObjectType::Pointer upper =
     static_cast< InputPixelObjectType * >( this->ProcessObject::GetInput(2) );
   if ( !upper )
@@ -213,14 +213,14 @@ BinaryThresholdImageFilter< TInputImage, TOutputImage >
     }
 
   return upper;
-}
+  }
 
 template< typename TInputImage, typename TOutputImage >
 const
 typename BinaryThresholdImageFilter< TInputImage, TOutputImage >::InputPixelObjectType *
 BinaryThresholdImageFilter< TInputImage, TOutputImage >
 ::GetUpperThresholdInput() const
-{
+  {
   typename InputPixelObjectType::Pointer upper =
     const_cast< InputPixelObjectType * >( static_cast< const InputPixelObjectType * >( this->ProcessObject::GetInput(2) ) );
 
@@ -234,7 +234,7 @@ BinaryThresholdImageFilter< TInputImage, TOutputImage >
     }
 
   return upper;
-}
+  }
 
 /**
  *
@@ -280,6 +280,7 @@ BinaryThresholdImageFilter< TInputImage, TOutputImage >
   this->GetFunctor().SetInsideValue(m_InsideValue);
   this->GetFunctor().SetOutsideValue(m_OutsideValue);
 }
+
 } // end namespace itk
 
 #endif

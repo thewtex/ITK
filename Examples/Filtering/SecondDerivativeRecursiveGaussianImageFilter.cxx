@@ -27,7 +27,6 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkRecursiveGaussianImageFilter.h"
 #include "itkImageFileReader.h"
@@ -35,8 +34,8 @@
 #include "itkImageDuplicator.h"
 #include <string>
 
-
-int main(int argc, char * argv [] )
+int
+main(int argc, char * argv [] )
 {
 
   if( argc < 3 )
@@ -46,25 +45,25 @@ int main(int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-  typedef float            PixelType;
-  typedef float            OutputPixelType;
+  typedef float PixelType;
+  typedef float OutputPixelType;
 
-  const unsigned int  Dimension = 3;
+  const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType,       Dimension >  ImageType;
-  typedef itk::Image< OutputPixelType, Dimension >  OutputImageType;
+  typedef itk::Image< PixelType,       Dimension > ImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
-  typedef itk::ImageFileReader< ImageType       >   ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >   WriterType;
+  typedef itk::ImageFileReader< ImageType       > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
-  typedef itk::ImageDuplicator< OutputImageType >   DuplicatorType;
+  typedef itk::ImageDuplicator< OutputImageType > DuplicatorType;
 
   typedef itk::RecursiveGaussianImageFilter<
-                                      ImageType,
-                                      ImageType >  FilterType;
+      ImageType,
+      ImageType >  FilterType;
 
-  ReaderType::Pointer  reader  = ReaderType::New();
-  WriterType::Pointer  writer  = WriterType::New();
+  ReaderType::Pointer reader  = ReaderType::New();
+  WriterType::Pointer writer  = WriterType::New();
 
   DuplicatorType::Pointer duplicator  = DuplicatorType::New();
 
@@ -112,7 +111,6 @@ int main(int argc, char * argv [] )
 
   duplicator->SetInputImage( gc->GetOutput() );
 
-
   gc->Update();
   duplicator->Update();
 
@@ -136,7 +134,6 @@ int main(int argc, char * argv [] )
   writer->SetFileName( outputFileName.c_str() );
   writer->Update();
 
-
   gc->SetDirection( 0 );  // gc now works along X
   ga->SetDirection( 1 );  // ga now works along Y
 
@@ -149,7 +146,6 @@ int main(int argc, char * argv [] )
   outputFileName = outputPrefix + "-Ixx.mhd";
   writer->SetFileName( outputFileName.c_str() );
   writer->Update();
-
 
   ga->SetDirection( 0 );
   gb->SetDirection( 1 );
@@ -168,7 +164,6 @@ int main(int argc, char * argv [] )
   outputFileName = outputPrefix + "-Iyz.mhd";
   writer->SetFileName( outputFileName.c_str() );
   writer->Update();
-
 
   ga->SetDirection( 1 );
   gb->SetDirection( 0 );
@@ -208,5 +203,5 @@ int main(int argc, char * argv [] )
 
   // Software Guide : EndCodeSnippet
 
-return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }

@@ -33,34 +33,36 @@ namespace itk
   */
 template< typename TInput, typename TOutput >
 class FastMarchingThresholdStoppingCriterion :
-public FastMarchingStoppingCriterionBase< TInput, TOutput >
+  public FastMarchingStoppingCriterionBase< TInput, TOutput >
 {
 public:
-  typedef FastMarchingThresholdStoppingCriterion                Self;
-  typedef FastMarchingStoppingCriterionBase< TInput, TOutput >  Superclass;
-  typedef SmartPointer< Self >                                  Pointer;
-  typedef SmartPointer< const Self >                            ConstPointer;
+  typedef FastMarchingThresholdStoppingCriterion               Self;
+  typedef FastMarchingStoppingCriterionBase< TInput, TOutput > Superclass;
+  typedef SmartPointer< Self >                                 Pointer;
+  typedef SmartPointer< const Self >                           ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(FastMarchingThresholdStoppingCriterion,
-                FastMarchingStoppingCriterionBase );
+               FastMarchingStoppingCriterionBase );
 
-  typedef typename Superclass::OutputPixelType  OutputPixelType;
-  typedef typename Superclass::NodeType         NodeType;
+  typedef typename Superclass::OutputPixelType OutputPixelType;
+  typedef typename Superclass::NodeType        NodeType;
 
   /** Get/set the threshold used by the stopping criteria. */
   itkSetMacro( Threshold, OutputPixelType );
   itkGetMacro( Threshold, OutputPixelType );
 
-  bool IsSatisfied() const
+  bool
+  IsSatisfied() const
   {
     return ( this->m_CurrentValue >= this->m_Threshold );
   }
 
-  std::string GetDescription() const
+  std::string
+  GetDescription() const
   {
     return "Current Value >= Threshold";
   }
@@ -74,13 +76,16 @@ protected:
 
   OutputPixelType m_Threshold;
 
-  void SetCurrentNode( const NodeType& ) {}
+  void
+  SetCurrentNode( const NodeType& ) {}
 
-  void Reset() {}
+  void
+  Reset() {}
 
 private:
   FastMarchingThresholdStoppingCriterion( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
+
 };
 
 }

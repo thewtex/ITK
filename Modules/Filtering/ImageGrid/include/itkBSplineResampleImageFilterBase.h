@@ -79,7 +79,7 @@ namespace itk
  * \ingroup ITKImageGrid
  */
 template< typename TInputImage, typename TOutputImage >
-class BSplineResampleImageFilterBase:
+class BSplineResampleImageFilterBase :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -158,15 +158,16 @@ protected:
     );
 
   BSplineResampleImageFilterBase();
-  virtual ~BSplineResampleImageFilterBase() {}
+  virtual
+  ~BSplineResampleImageFilterBase() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   int m_SplineOrder;                      // User specified spline order
   int m_GSize;                            // downsampling filter size
   int m_HSize;                            // upsampling filter size
 
-  std::vector< double >       m_G;        // downsampling filter coefficients
-  std::vector< double >       m_H;        // upsampling filter coefficients
+  std::vector< double > m_G;              // downsampling filter coefficients
+  std::vector< double > m_H;              // upsampling filter coefficients
 
 private:
 
@@ -181,11 +182,12 @@ private:
 
   void CopyLineToScratch(ConstInputImageIterator & Iter);
 
-  std::vector< double >       m_Scratch;        // temp storage for processing
+  std::vector< double > m_Scratch;              // temp storage for processing
                                                 // of Coefficients
 
   BSplineResampleImageFilterBase(const Self &); //purposely not implemented
   void operator=(const Self &);                 //purposely not implemented
+
 };
 } // namespace itk
 

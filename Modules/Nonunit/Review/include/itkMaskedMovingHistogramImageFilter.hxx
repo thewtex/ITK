@@ -37,7 +37,6 @@
  *
  */
 
-
 namespace itk
 {
 template< typename TInputImage, typename TMaskImage, typename TOutputImage, typename TKernel, typename THistogram >
@@ -120,10 +119,10 @@ typename MaskedMovingHistogramImageFilter< TInputImage, TMaskImage, TOutputImage
                                            THistogram >::MaskImageType *
 MaskedMovingHistogramImageFilter< TInputImage, TMaskImage, TOutputImage, TKernel, THistogram >
 ::GetOutputMask(void)
-{
+  {
   typename MaskImageType::Pointer res = dynamic_cast< MaskImageType * >( this->ProcessObject::GetOutput(1) );
   return res;
-}
+  }
 
 // a modified version that uses line iterators and only moves the
 // histogram in one direction. Hopefully it will be a bit simpler and
@@ -136,6 +135,7 @@ MaskedMovingHistogramImageFilter< TInputImage, TMaskImage, TOutputImage, TKernel
 {
   // instantiate the histogram
   HistogramType histogram;
+
   this->ConfigureHistogram( histogram );
 
   OutputImageType *     outputImage = this->GetOutput();
@@ -217,7 +217,7 @@ MaskedMovingHistogramImageFilter< TInputImage, TMaskImage, TOutputImage, TKernel
   while ( !InLineIt.IsAtEnd() )
     {
     HistogramType & histRef = HistVec[BestDirection];
-    IndexType      PrevLineStart = InLineIt.GetIndex();
+    IndexType       PrevLineStart = InLineIt.GetIndex();
     for ( InLineIt.GoToBeginOfLine(); !InLineIt.IsAtEndOfLine(); ++InLineIt )
       {
       // Update the histogram
@@ -380,5 +380,6 @@ MaskedMovingHistogramImageFilter< TInputImage, TMaskImage, TOutputImage, TKernel
   os << indent << "BackgroundMaskValue: "
      << static_cast< typename NumericTraits< MaskPixelType >::PrintType >( m_BackgroundMaskValue ) << std::endl;
 }
+
 } // end namespace itk
 #endif

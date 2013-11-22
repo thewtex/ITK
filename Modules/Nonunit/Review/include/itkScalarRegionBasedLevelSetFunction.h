@@ -63,7 +63,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TInputImage, typename TFeatureImage, typename TSharedData >
-class ScalarRegionBasedLevelSetFunction:
+class ScalarRegionBasedLevelSetFunction :
   public RegionBasedLevelSetFunction< TInputImage, TFeatureImage, TSharedData >
 {
 public:
@@ -117,7 +117,7 @@ public:
   typedef typename ListPixelType::const_iterator ListPixelConstIterator;
   typedef typename ListPixelType::iterator       ListPixelIterator;
   typedef Image< ListPixelType, itkGetStaticConstMacro(ImageDimension) >
-  ListImageType;
+    ListImageType;
 
   /** \brief Performs the narrow-band update of the Heaviside function for each
   voxel. The characteristic function of each region is recomputed (note the
@@ -129,7 +129,7 @@ public:
                    bool & status);
 
 protected:
-  ScalarRegionBasedLevelSetFunction():Superclass(){}
+  ScalarRegionBasedLevelSetFunction() : Superclass(){}
   ~ScalarRegionBasedLevelSetFunction(){}
 
   ScalarValueType ComputeOverlapParameters(const FeatureIndexType & featIndex,
@@ -147,6 +147,7 @@ protected:
 private:
   ScalarRegionBasedLevelSetFunction(const Self &); //purposely not implemented
   void operator=(const Self &);                    //purposely not implemented
+
 };
 }
 

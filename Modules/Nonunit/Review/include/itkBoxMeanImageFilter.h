@@ -40,7 +40,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage = TInputImage >
-class BoxMeanImageFilter:
+class BoxMeanImageFilter :
   public BoxImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -93,6 +93,7 @@ protected:
 private:
   BoxMeanImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
 };                                  // end of class
 } // end namespace itk
 

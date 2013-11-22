@@ -38,7 +38,7 @@ namespace itk
  */
 template< typename TFixedImage,
           typename TMovingImage >
-class CenteredVersorTransformInitializer:
+class CenteredVersorTransformInitializer :
   public CenteredTransformInitializer<
     VersorRigid3DTransform< double >,
     TFixedImage, TMovingImage >
@@ -47,8 +47,8 @@ public:
   /** Standard class typedefs. */
   typedef CenteredVersorTransformInitializer Self;
   typedef CenteredTransformInitializer<
-    VersorRigid3DTransform< double >,
-    TFixedImage, TMovingImage >          Superclass;
+      VersorRigid3DTransform< double >,
+      TFixedImage, TMovingImage >          Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;

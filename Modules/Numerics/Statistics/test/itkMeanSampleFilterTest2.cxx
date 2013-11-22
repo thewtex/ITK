@@ -19,17 +19,18 @@
 #include "itkMeanSampleFilter.h"
 #include "itkListSample.h"
 
-int itkMeanSampleFilterTest2(int, char* [] )
+int
+itkMeanSampleFilterTest2(int, char* [] )
 {
   std::cout << "MeanSampleFilter test \n \n";
-  bool pass = true;
+  bool        pass = true;
   std::string failureMeassage= "";
 
-  const unsigned int                  MeasurementVectorSize = 2;
-  const unsigned int                  numberOfMeasurementVectors = 2;
-  unsigned int                        counter;
+  const unsigned int MeasurementVectorSize = 2;
+  const unsigned int numberOfMeasurementVectors = 2;
+  unsigned int       counter;
 
-  typedef itk::FixedArray< int, MeasurementVectorSize >  MeasurementVectorType;
+  typedef itk::FixedArray< int, MeasurementVectorSize > MeasurementVectorType;
 
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
 
@@ -37,7 +38,7 @@ int itkMeanSampleFilterTest2(int, char* [] )
 
   sample->SetMeasurementVectorSize( MeasurementVectorSize );
 
-  MeasurementVectorType               measure;
+  MeasurementVectorType measure;
 
   counter = 0;
 
@@ -69,7 +70,7 @@ int itkMeanSampleFilterTest2(int, char* [] )
     }
 
   const FilterType::MeasurementVectorDecoratedType * decorator = filter->GetOutput();
-  FilterType::MeasurementVectorRealType meanOutput  = decorator->Get();
+  FilterType::MeasurementVectorRealType              meanOutput  = decorator->Get();
 
   FilterType::MeasurementVectorRealType expectedMean;
 
@@ -80,10 +81,10 @@ int itkMeanSampleFilterTest2(int, char* [] )
             << meanOutput[1] << " " << expectedMean[1] << " " << std::endl;
 
   // FilterType::MeasurementVectorType::ValueType is an int in this case
-  FilterType::MeasurementVectorType::ValueType    epsilon = 0;
+  FilterType::MeasurementVectorType::ValueType epsilon = 0;
 
   if ( ( vcl_fabs( meanOutput[0] - expectedMean[0]) > epsilon )  ||
-       ( vcl_fabs( meanOutput[1] - expectedMean[1]) > epsilon ))
+       ( vcl_fabs( meanOutput[1] - expectedMean[1]) > epsilon ) )
     {
     pass = false;
     failureMeassage = "The result is not what is expected";

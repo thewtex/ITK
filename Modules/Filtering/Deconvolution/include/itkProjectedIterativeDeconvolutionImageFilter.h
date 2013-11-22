@@ -52,9 +52,9 @@ public:
   typedef SmartPointer< const Self >                 ConstPointer;
 
   /** Other useful typedefs. */
-  typedef typename Superclass::InputImageType        InputImageType;
-  typedef typename Superclass::KernelImageType       KernelImageType;
-  typedef typename Superclass::OutputImageType       OutputImageType;
+  typedef typename Superclass::InputImageType  InputImageType;
+  typedef typename Superclass::KernelImageType KernelImageType;
+  typedef typename Superclass::OutputImageType OutputImageType;
 
   /** Internal types used by the FFT filters. */
   typedef typename Superclass::InternalImageType               InternalImageType;
@@ -72,7 +72,8 @@ public:
 
 protected:
   ProjectedIterativeDeconvolutionImageFilter();
-  virtual ~ProjectedIterativeDeconvolutionImageFilter();
+  virtual
+  ~ProjectedIterativeDeconvolutionImageFilter();
 
   virtual void Initialize(ProgressAccumulator * progress,
                           float progressWeight,
@@ -83,7 +84,7 @@ protected:
 
 private:
   ProjectedIterativeDeconvolutionImageFilter(const Self &); // purposely not implemented
-  void operator=(const Self &); // purposely not implemented
+  void operator=(const Self &);                             // purposely not implemented
 
   typedef ThresholdImageFilter< InternalImageType > ProjectionFilterType;
 

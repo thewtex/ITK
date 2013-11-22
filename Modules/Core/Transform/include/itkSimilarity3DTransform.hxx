@@ -30,8 +30,7 @@ Similarity3DTransform<TScalar>
 ::Similarity3DTransform() :
   Superclass(ParametersDimension),
   m_Scale(1.0)
-{
-}
+{}
 
 // Constructor with arguments
 template <typename TScalar>
@@ -39,8 +38,7 @@ Similarity3DTransform<TScalar>
 ::Similarity3DTransform(unsigned int paramDim) :
   Superclass(paramDim),
   m_Scale(1.0)
-{
-}
+{}
 
 // Constructor with arguments
 template <typename TScalar>
@@ -48,8 +46,7 @@ Similarity3DTransform<TScalar>
 ::Similarity3DTransform(const MatrixType & matrix, const OutputVectorType & offset) :
   Superclass(matrix, offset),
   m_Scale(1.0)
-{
-}
+{}
 
 // / Set the parameters to the IdentityTransform
 template <typename TScalar>
@@ -211,7 +208,7 @@ const typename Similarity3DTransform<TScalar>::ParametersType
 template <typename TScalar>
 void
 Similarity3DTransform<TScalar>::ComputeJacobianWithRespectToParameters(const InputPointType & p,
-                                                                           JacobianType & jacobian) const
+                                                                       JacobianType & jacobian) const
 {
   typedef typename VersorType::ValueType ValueType;
 
@@ -317,6 +314,7 @@ Similarity3DTransform<TScalar>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Scale = " << m_Scale << std::endl;
 }
 

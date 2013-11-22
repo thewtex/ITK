@@ -22,7 +22,8 @@
 #include "itkImageFileWriter.h"
 #include "itkAtanRegularizedHeavisideStepFunction.h"
 
-int itkScalarChanAndVeseDenseLevelSetImageFilterTest4( int argc, char * argv [] )
+int
+itkScalarChanAndVeseDenseLevelSetImageFilterTest4( int argc, char * argv [] )
 {
 
   if( argc < 4 )
@@ -36,15 +37,15 @@ int itkScalarChanAndVeseDenseLevelSetImageFilterTest4( int argc, char * argv [] 
     }
 
   unsigned int nb_iteration = 500;
-  double rms = 0.;
-  double epsilon = 1.;
-  double curvature_weight = atof( argv[4] );
-  double area_weight = atof( argv[5] );
-  double reinitialization_weight = atof( argv[6] );
-  double volume_weight = atof( argv[7] );
-  double volume = atof( argv[8] );
-  double l1 = 1.;
-  double l2 = 1.;
+  double       rms = 0.;
+  double       epsilon = 1.;
+  double       curvature_weight = atof( argv[4] );
+  double       area_weight = atof( argv[5] );
+  double       reinitialization_weight = atof( argv[6] );
+  double       volume_weight = atof( argv[7] );
+  double       volume = atof( argv[8] );
+  double       l1 = 1.;
+  double       l2 = 1.;
 
   const unsigned int Dimension = 2;
   typedef float ScalarPixelType;
@@ -59,16 +60,17 @@ int itkScalarChanAndVeseDenseLevelSetImageFilterTest4( int argc, char * argv [] 
     SharedDataHelperType;
 
   typedef itk::ScalarChanAndVeseLevelSetFunction< LevelSetImageType,
-    FeatureImageType, SharedDataHelperType > LevelSetFunctionType;
+                                                  FeatureImageType, SharedDataHelperType > LevelSetFunctionType;
 
   typedef itk::ScalarChanAndVeseDenseLevelSetImageFilter< LevelSetImageType,
-    FeatureImageType, LevelSetImageType, LevelSetFunctionType, SharedDataHelperType > MultiLevelSetType;
+                                                          FeatureImageType, LevelSetImageType, LevelSetFunctionType,
+                                                          SharedDataHelperType > MultiLevelSetType;
 
-  typedef itk::ImageFileReader< LevelSetImageType >     LevelSetReaderType;
-  typedef itk::ImageFileReader< FeatureImageType >      FeatureReaderType;
-  typedef itk::ImageFileWriter< LevelSetImageType >     WriterType;
+  typedef itk::ImageFileReader< LevelSetImageType > LevelSetReaderType;
+  typedef itk::ImageFileReader< FeatureImageType >  FeatureReaderType;
+  typedef itk::ImageFileWriter< LevelSetImageType > WriterType;
 
-  typedef itk::AtanRegularizedHeavisideStepFunction< ScalarPixelType, ScalarPixelType >  DomainFunctionType;
+  typedef itk::AtanRegularizedHeavisideStepFunction< ScalarPixelType, ScalarPixelType > DomainFunctionType;
 
   DomainFunctionType::Pointer domainFunction = DomainFunctionType::New();
 
@@ -101,7 +103,6 @@ int itkScalarChanAndVeseDenseLevelSetImageFilterTest4( int argc, char * argv [] 
   levelSetFilter->GetDifferenceFunction(0)->SetVolume( volume );
   levelSetFilter->GetDifferenceFunction(0)->SetLambda1( l1 );
   levelSetFilter->GetDifferenceFunction(0)->SetLambda2( l2 );
-
 
   levelSetFilter->Update();
 

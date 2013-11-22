@@ -59,13 +59,14 @@
 
 #include "itkImage.h"
 
-int main(int, char *[])
+int
+main(int, char *[])
 {
   typedef itk::Image< unsigned short, 3 > ImageType;
   ImageType::Pointer image = ImageType::New();
 
   const ImageType::SizeType  size  = {{ 200, 200, 200}}; //Size along {X,Y,Z}
-  const ImageType::IndexType start = {{ 0, 0, 0 }}; // First index on {X,Y,Z}
+  const ImageType::IndexType start = {{ 0, 0, 0 }};      // First index on {X,Y,Z}
 
   ImageType::RegionType region;
   region.SetSize( size );

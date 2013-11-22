@@ -23,16 +23,13 @@ namespace itk
 {
 
 FancyString::FancyString() : std::string()
-{
-}
+{}
 
 FancyString::FancyString( const std::string& str ) : std::string( str )
-{
-}
+{}
 
 FancyString::FancyString( const char* s ) : std::string( s )
-{
-}
+{}
 
 FancyString&
 FancyString::operator=( const std::string& str )
@@ -49,7 +46,7 @@ FancyString::operator=( const char* s )
 }
 
 /** Function to cast this type to "const char *". */
-FancyString::operator const char * () const
+FancyString::operator const char *() const
 {
   return this->c_str();
 }
@@ -63,6 +60,7 @@ FancyString&
 FancyString::Trim( const std::string& dislike )
 {
   StringTools::Trim( *this, dislike );
+
   return *this;
 }
 
@@ -71,6 +69,7 @@ FancyString&
 FancyString::TrimLeft( const std::string& dislike )
 {
   StringTools::TrimLeft( *this, dislike );
+
   return *this;
 }
 
@@ -79,6 +78,7 @@ FancyString&
 FancyString::TrimRight( const std::string& dislike )
 {
   StringTools::TrimRight( *this, dislike );
+
   return *this;
 }
 
@@ -87,6 +87,7 @@ FancyString&
 FancyString::ToUpperCase()
 {
   StringTools::ToUpperCase( *this );
+
   return *this;
 }
 
@@ -95,6 +96,7 @@ FancyString&
 FancyString::ToLowerCase()
 {
   StringTools::ToLowerCase( *this );
+
   return *this;
 }
 

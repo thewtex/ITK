@@ -88,5 +88,6 @@ VnlInverseFFTImageFilter< TInputImage, TOutputImage >
     out[i] = signal[i].real() / vectorSize;
     }
 }
+
 }
 #endif

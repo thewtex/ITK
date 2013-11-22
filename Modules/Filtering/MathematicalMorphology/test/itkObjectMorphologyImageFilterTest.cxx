@@ -29,7 +29,8 @@
 #include "itkImageRegionIterator.h"
 #include "itkMacro.h"
 
-int itkObjectMorphologyImageFilterTest(int, char* [] )
+int
+itkObjectMorphologyImageFilterTest(int, char* [] )
 {
   // Define the dimension of the images
   const unsigned int myDimension = 3;
@@ -39,16 +40,16 @@ int itkObjectMorphologyImageFilterTest(int, char* [] )
   const unsigned short bgValue = 0;
 
   // Declare the types of the images
-  typedef itk::Image<unsigned short, myDimension>  myImageType;
+  typedef itk::Image<unsigned short, myDimension> myImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>         myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>          mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>        myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Create an image
   myImageType::Pointer inputImage  = myImageType::New();
@@ -73,7 +74,7 @@ int itkObjectMorphologyImageFilterTest(int, char* [] )
   inputImage->Allocate();
 
   // Declare Iterator types apropriated for each image
-  typedef itk::ImageRegionIterator<myImageType>  myIteratorType;
+  typedef itk::ImageRegionIterator<myImageType> myIteratorType;
 
   // Initialize the content of Image
   inputImage->FillBuffer(bgValue);
@@ -117,26 +118,25 @@ int itkObjectMorphologyImageFilterTest(int, char* [] )
                                                  myKernelType>
     myDilateFilterType;
   typedef itk::BinaryDilateImageFilter<myImageType, myImageType,
-                                                 myKernelType>
+                                       myKernelType>
     binDilateFilterType;
 
-
   typedef itk::ErodeObjectMorphologyImageFilter<myImageType, myImageType,
-                                                 myKernelType>
+                                                myKernelType>
     myErodeFilterType;
 
   typedef itk::BinaryErodeImageFilter<myImageType, myImageType,
-                                                 myKernelType>
+                                      myKernelType>
     binErodeFilterType;
 
   // Create the filter
-  myDilateFilterType::Pointer dilateFilter = myDilateFilterType::New();
-  myErodeFilterType::Pointer erodeFilter = myErodeFilterType::New();
+  myDilateFilterType::Pointer  dilateFilter = myDilateFilterType::New();
+  myErodeFilterType::Pointer   erodeFilter = myErodeFilterType::New();
   binDilateFilterType::Pointer binDilateFilter = binDilateFilterType::New();
-  binErodeFilterType::Pointer binErodeFilter = binErodeFilterType::New();
+  binErodeFilterType::Pointer  binErodeFilter = binErodeFilterType::New();
 
   // Create the structuring element
-  myKernelType ball;
+  myKernelType           ball;
   myKernelType::SizeType ballSize;
   ballSize[0] = 5;
   ballSize[1] = 4;
@@ -151,7 +151,7 @@ int itkObjectMorphologyImageFilterTest(int, char* [] )
   myImageType::Pointer outputImage = dilateFilter->GetOutput();
 
   clock_t start, end;
-  double elapsedTime;
+  double  elapsedTime;
 
   // Execute the filter
   try
@@ -198,8 +198,8 @@ int itkObjectMorphologyImageFilterTest(int, char* [] )
     }
 
   // Create an iterator for going through the image output
-  myIteratorType itObj(outputImage, outputImage->GetBufferedRegion());
-  myIteratorType itBin(outputBinImage, outputBinImage->GetBufferedRegion());
+  myIteratorType itObj(outputImage, outputImage->GetBufferedRegion() );
+  myIteratorType itBin(outputBinImage, outputBinImage->GetBufferedRegion() );
   std::cout << "Test for Dilate equality..." << std::endl;
   start = clock();
   itObj.GoToBegin();
@@ -207,11 +207,11 @@ int itkObjectMorphologyImageFilterTest(int, char* [] )
   int count = 0;
   while( !itObj.IsAtEnd() && !itBin.IsAtEnd() )
     {
-    if(itObj.Get() != itBin.Get())
+    if(itObj.Get() != itBin.Get() )
       {
       std::cerr << "Error: Dilated images differ!" << std::endl;
       std::cerr << "   Slice = " << count/(size[1]*size[0]) << std::endl;
-      unsigned int x, y;
+      unsigned int  x, y;
       itk::Index<3> i;
       i[2] = count/(size[1]*size[0]);
       for(y=0; y<size[1]; y++)
@@ -295,20 +295,20 @@ int itkObjectMorphologyImageFilterTest(int, char* [] )
     }
 
   // Create an iterator for going through the image output
-  myIteratorType it2Obj(output2Image, output2Image->GetBufferedRegion());
-  myIteratorType it2Bin(outputBin2Image, outputBin2Image->GetBufferedRegion());
+  myIteratorType it2Obj(output2Image, output2Image->GetBufferedRegion() );
+  myIteratorType it2Bin(outputBin2Image, outputBin2Image->GetBufferedRegion() );
   std::cout << "Test for Erode equality..." << std::endl;
   start = clock();
   count = 0;
   while( !it2Obj.IsAtEnd() )
     {
-    if(it2Obj.Get() != it2Bin.Get())
+    if(it2Obj.Get() != it2Bin.Get() )
       {
       std::cout << "As expected: Error: Eroded images differ!" << std::endl;
       std::cout << "  Please see documentation - ErodeObject and BinaryErode";
       std::cout << std::endl << "    produce different results" << std::endl;
       std::cout << "   Slice = " << count/(size[1]*size[0]) << std::endl;
-      unsigned int x, y;
+      unsigned int  x, y;
       itk::Index<3> i;
       i[2] = count/(size[1]*size[0]);
       for(y=0; y<size[1]; y++)

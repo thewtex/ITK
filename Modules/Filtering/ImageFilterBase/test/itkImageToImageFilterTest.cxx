@@ -27,25 +27,27 @@ template <typename TInputImage, typename TOutputImage>
 class ImageToImageFilterTestHelper : public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
-  typedef ImageToImageFilterTestHelper                  Self;
-  typedef ImageToImageFilter<TInputImage,TOutputImage>  Superclass;
-  typedef SmartPointer<Self>                            Pointer;
-  typedef SmartPointer<const Self>                      ConstPointer;
+  typedef ImageToImageFilterTestHelper                 Self;
+  typedef ImageToImageFilter<TInputImage,TOutputImage> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   itkNewMacro( Self );
 };
 
 }
 
-int itkImageToImageFilterTest(int, char* [] )
+int
+itkImageToImageFilterTest(int, char* [] )
 {
 
-  const unsigned int      ImageDimension = 3;
-  typedef unsigned char   InputPixelType;
-  typedef signed short    OutputPixelType;
+  const unsigned int ImageDimension = 3;
 
-  typedef itk::Image< InputPixelType,  ImageDimension >  InputImageType;
-  typedef itk::Image< OutputPixelType, ImageDimension >  OutputImageType;
+  typedef unsigned char InputPixelType;
+  typedef signed short  OutputPixelType;
+
+  typedef itk::Image< InputPixelType,  ImageDimension > InputImageType;
+  typedef itk::Image< OutputPixelType, ImageDimension > OutputImageType;
 
   typedef itk::ImageToImageFilterTestHelper< InputImageType, OutputImageType > FilterType;
 
@@ -56,7 +58,7 @@ int itkImageToImageFilterTest(int, char* [] )
 
   FilterType::Pointer filter = FilterType::New();
 
-  typedef FilterType::Superclass   Superclass;
+  typedef FilterType::Superclass Superclass;
 
   filter->Print( std::cout );
   std::cout << "Name of Class = " << filter->GetNameOfClass() << std::endl;
@@ -82,7 +84,6 @@ int itkImageToImageFilterTest(int, char* [] )
     std::cerr << "Error in Set/GetInput(n)" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   filter->PushBackInput( inputImage2 );
   filter->PushBackInput( inputImage3 );

@@ -59,7 +59,7 @@ class LBFGSBOptimizerHelper;
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class LBFGSBOptimizer:
+class LBFGSBOptimizer :
   public SingleValuedNonLinearVnlOptimizer
 {
 public:
@@ -110,10 +110,12 @@ public:
 
   /** Set the lower bound value for each variable. */
   virtual void SetLowerBound(const BoundValueType & value);
+
   itkGetConstReferenceMacro(LowerBound,BoundValueType);
 
   /** Set the upper bound value for each variable. */
   virtual void SetUpperBound(const BoundValueType & value);
+
   itkGetConstReferenceMacro(UpperBound,BoundValueType);
 
   /** Set the boundary condition for each variable, where
@@ -123,6 +125,7 @@ public:
    *           = 3 if x[1] has only an upper bound
    */
   virtual void SetBoundSelection(const BoundSelectionType & select);
+
   itkGetConstReferenceMacro(BoundSelection,BoundSelectionType);
 
   /** Set/Get the CostFunctionConvergenceFactor. Algorithm terminates
@@ -159,7 +162,8 @@ public:
   itkGetMacro(MaximumNumberOfCorrections, unsigned int);
 
   /** This optimizer does not support scaling of the derivatives. */
-  void SetScales(const ScalesType &)
+  void
+  SetScales(const ScalesType &)
   {
     itkExceptionMacro(<< "This optimizer does not support scales.");
   }
@@ -179,7 +183,8 @@ public:
 
 protected:
   LBFGSBOptimizer();
-  virtual ~LBFGSBOptimizer();
+  virtual
+  ~LBFGSBOptimizer();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef Superclass::CostFunctionAdaptorType CostFunctionAdaptorType;

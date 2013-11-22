@@ -109,27 +109,31 @@ public:
   typedef typename InverseTransformBaseType::Pointer    InverseTransformBasePointer;
 
   /**  Method to transform a point. */
-  virtual OutputPointType TransformPoint(const InputPointType  & point) const
+  virtual OutputPointType
+  TransformPoint(const InputPointType  & point) const
   {
     return point;
   }
 
   /**  Method to transform a vector. */
   using Superclass::TransformVector;
-  virtual OutputVectorType TransformVector(const InputVectorType & vector) const
+  virtual OutputVectorType
+  TransformVector(const InputVectorType & vector) const
   {
     return vector;
   }
 
   /**  Method to transform a vnl_vector. */
-  virtual OutputVnlVectorType TransformVector(const InputVnlVectorType & vector) const
+  virtual OutputVnlVectorType
+  TransformVector(const InputVnlVectorType & vector) const
   {
     return vector;
   }
 
   /**  Method to transform a CovariantVector. */
   using Superclass::TransformCovariantVector;
-  virtual OutputCovariantVectorType TransformCovariantVector(
+  virtual OutputCovariantVectorType
+  TransformCovariantVector(
     const InputCovariantVectorType & vector) const
   {
     return vector;
@@ -139,9 +143,9 @@ public:
    *
    * This is a NULL operation in the case of this particular transform.
      The method is provided only to comply with the interface of other transforms. */
-  void SetIdentity(void)
-  {
-  }
+  void
+  SetIdentity(void)
+  {}
 
   /** Compute the Jacobian of the transformation
    *
@@ -171,8 +175,9 @@ public:
    *
    * \f]
    */
-  virtual void ComputeJacobianWithRespectToParameters( const InputPointType &,
-                                                       JacobianType & jacobian) const
+  virtual void
+  ComputeJacobianWithRespectToParameters( const InputPointType &,
+                                          JacobianType & jacobian) const
   {
     jacobian = this->m_IdentityJacobian;
   }
@@ -181,8 +186,9 @@ public:
    *  jacobian because the transform is position-invariant.
    *  jac will be resized as needed, but it will be more efficient if
    *  it is already properly sized. */
-  virtual void ComputeJacobianWithRespectToPosition(const InputPointType &,
-                                                    JacobianType & jac) const
+  virtual void
+  ComputeJacobianWithRespectToPosition(const InputPointType &,
+                                       JacobianType & jac) const
   {
     jac.SetSize( NDimensions, NDimensions );
     jac.Fill(0.0);
@@ -194,7 +200,8 @@ public:
 
   /** Return an inverse of the identity transform - another identity transform.
     */
-  virtual InverseTransformBasePointer GetInverseTransform() const
+  virtual InverseTransformBasePointer
+  GetInverseTransform() const
   {
     return this->New().GetPointer();
   }
@@ -204,32 +211,35 @@ public:
    *
    * \f[ T( a*P + b*Q ) = a * T(P) + b * T(Q) \f]
    */
-  virtual TransformCategoryType GetTransformCategory() const
+  virtual TransformCategoryType
+  GetTransformCategory() const
   {
     return Self::Linear;
   }
 
   /** Get the Fixed Parameters. */
-  virtual const ParametersType & GetFixedParameters(void) const
+  virtual const ParametersType &
+  GetFixedParameters(void) const
   {
     return this->m_FixedParameters;
   }
 
   /** Set the fixed parameters and update internal transformation. */
-  virtual void SetFixedParameters(const ParametersType &)
-  {
-  }
+  virtual void
+  SetFixedParameters(const ParametersType &)
+  {}
 
   /** Get the Parameters. */
-  virtual const ParametersType & GetParameters(void) const
+  virtual const ParametersType &
+  GetParameters(void) const
   {
     return this->m_Parameters;
   }
 
   /** Set the fixed parameters and update internal transformation. */
-  virtual void SetParameters(const ParametersType &)
-  {
-  }
+  virtual void
+  SetParameters(const ParametersType &)
+  {}
 
 protected:
   IdentityTransform() : Transform<TScalar, NDimensions, NDimensions>(0),
@@ -240,9 +250,9 @@ protected:
     this->m_IdentityJacobian.Fill(0.0);
   }
 
-  virtual ~IdentityTransform()
-  {
-  }
+  virtual
+  ~IdentityTransform()
+  {}
 
 private:
   IdentityTransform(const Self &); // purposely not implemented

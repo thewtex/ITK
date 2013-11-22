@@ -22,10 +22,11 @@
 #include "itkTextOutput.h"
 #include "itkRescaleIntensityImageFilter.h"
 
-int itkVectorThresholdSegmentationLevelSetImageFilterTest(int ac, char* av[] )
+int
+itkVectorThresholdSegmentationLevelSetImageFilterTest(int ac, char* av[] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   if(ac < 6)
     {
@@ -46,8 +47,8 @@ int itkVectorThresholdSegmentationLevelSetImageFilterTest(int ac, char* av[] )
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::Image< WritePixelType,  Dimension > WriteImageType;
 
-  typedef itk::ImageFileReader< InputImageType >   InputReaderType;
-  typedef itk::ImageFileReader< RGBImageType >     RGBReaderType;
+  typedef itk::ImageFileReader< InputImageType > InputReaderType;
+  typedef itk::ImageFileReader< RGBImageType >   RGBReaderType;
 
   RGBReaderType::Pointer   rgbReader   = RGBReaderType::New();
   InputReaderType::Pointer inputReader = InputReaderType::New();
@@ -57,10 +58,10 @@ int itkVectorThresholdSegmentationLevelSetImageFilterTest(int ac, char* av[] )
 
   // Create a filter
   typedef itk::VectorThresholdSegmentationLevelSetImageFilter<
-                                              InputImageType,
-                                              RGBImageType,
-                                              OutputPixelType
-                                                > FilterType;
+      InputImageType,
+      RGBImageType,
+      OutputPixelType
+      > FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
@@ -69,8 +70,8 @@ int itkVectorThresholdSegmentationLevelSetImageFilterTest(int ac, char* av[] )
   filter->SetFeatureImage( rgbReader->GetOutput() );
 
   // Mean values hand coded for the VisibleWomanSlice.png color file
-  typedef FilterType::MeanVectorType  MeanVectorType;
-  MeanVectorType  mean = MeanVectorType(3);
+  typedef FilterType::MeanVectorType MeanVectorType;
+  MeanVectorType mean = MeanVectorType(3);
 
   mean[0] = 44.7504;
   mean[1] = 37.5443;
@@ -79,8 +80,8 @@ int itkVectorThresholdSegmentationLevelSetImageFilterTest(int ac, char* av[] )
   filter->SetMean( mean );
 
   // Covariance values hand coded for the VisibleWomanSlice.png color file
-  typedef FilterType::CovarianceMatrixType  CovarianceMatrixType;
-  CovarianceMatrixType  covariance = CovarianceMatrixType( 3, 3 );
+  typedef FilterType::CovarianceMatrixType CovarianceMatrixType;
+  CovarianceMatrixType covariance = CovarianceMatrixType( 3, 3 );
 
   covariance[0][0] = 79.2225;
   covariance[1][1] = 81.0314;
@@ -123,7 +124,6 @@ int itkVectorThresholdSegmentationLevelSetImageFilterTest(int ac, char* av[] )
     return EXIT_FAILURE;
     }
 
-
   typedef itk::RescaleIntensityImageFilter< OutputImageType, WriteImageType > RescalerType;
   RescalerType::Pointer rescaler = RescalerType::New();
 
@@ -133,7 +133,7 @@ int itkVectorThresholdSegmentationLevelSetImageFilterTest(int ac, char* av[] )
   rescaler->SetOutputMaximum( 255 );
 
   // Generate test image
-  typedef itk::ImageFileWriter< WriteImageType >   WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
 
   writer->SetInput( rescaler->GetOutput() );

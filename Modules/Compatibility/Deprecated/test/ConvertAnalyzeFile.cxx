@@ -64,7 +64,7 @@ ReadAnalyzeWriteNIfTI(const char *inputName, const char *outputName)
   reader->SetImageIO(analyzeIO);
   reader->SetFileName(inputName);
   writer->SetFileName(outputName);
-  writer->SetInput(reader->GetOutput());
+  writer->SetInput(reader->GetOutput() );
   try
     {
     writer->Update();
@@ -93,6 +93,7 @@ ReadAnalyzeWriteNIfTI(const char *inputName, const char *outputName)
     }
   return EXIT_SUCCESS;
 }
+
 // Software Guide : EndCodeSnippet
 
 int
@@ -107,16 +108,16 @@ main( int argc, char **argv )
     return EXIT_FAILURE;
     }
 
-   // Software Guide : BeginLatex
-   // Create an instance of AnalyzeImageIO, this will be used to read
-   // in the Analyze file.  Then choose between which template
-   // function to call based on a command line parameter. This kind of
-   // runtime template selection is rather brute force and ugly, but
-   // sometimes it's unavoidable.
-   // Software Guide : EndLatex
+  // Software Guide : BeginLatex
+  // Create an instance of AnalyzeImageIO, this will be used to read
+  // in the Analyze file.  Then choose between which template
+  // function to call based on a command line parameter. This kind of
+  // runtime template selection is rather brute force and ugly, but
+  // sometimes it's unavoidable.
+  // Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet
   itk::AnalyzeImageIO::Pointer analyzeIO = itk::AnalyzeImageIO::New();
-  if(!analyzeIO->CanReadFile(argv[1]))
+  if(!analyzeIO->CanReadFile(argv[1]) )
     {
     std::cerr << argv[0] << ": AnalyzeImageIO cannot read "
               << argv[1] << std::endl;
@@ -124,9 +125,9 @@ main( int argc, char **argv )
     }
   analyzeIO->ReadImageInformation();
 
-  unsigned int dim = analyzeIO->GetNumberOfDimensions();
+  unsigned int                      dim = analyzeIO->GetNumberOfDimensions();
   itk::ImageIOBase::IOComponentType componentType = analyzeIO->GetComponentType();
-  itk::ImageIOBase::IOPixelType pixelType = analyzeIO->GetPixelType();
+  itk::ImageIOBase::IOPixelType     pixelType = analyzeIO->GetPixelType();
 
   if(pixelType != itk::ImageIOBase::SCALAR && pixelType == itk::ImageIOBase::RGB)
     {

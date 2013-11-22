@@ -35,10 +35,10 @@ class LevelSetDomainPartitionBase : public Object
 {
 public:
 
-  typedef LevelSetDomainPartitionBase           Self;
-  typedef Object                                Superclass;
-  typedef SmartPointer< Self >                  Pointer;
-  typedef SmartPointer< const Self >            ConstPointer;
+  typedef LevelSetDomainPartitionBase Self;
+  typedef Object                      Superclass;
+  typedef SmartPointer< Self >        Pointer;
+  typedef SmartPointer< const Self >  ConstPointer;
 
   itkTypeMacro(LevelSetDomainPartitionBase, LightObject);
 
@@ -54,7 +54,8 @@ protected:
   LevelSetDomainPartitionBase();
 
   /** \brief Destructor */
-  virtual ~LevelSetDomainPartitionBase();
+  virtual
+  ~LevelSetDomainPartitionBase();
 
   virtual void AllocateListDomain() = 0;
 
@@ -66,7 +67,8 @@ protected:
 
 private:
   LevelSetDomainPartitionBase(const Self &); // purposely not implemented
-  void operator=(const Self &); // purposely not implemented
+  void operator=(const Self &);              // purposely not implemented
+
 };
 } //end namespace itk
 

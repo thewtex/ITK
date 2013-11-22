@@ -35,7 +35,8 @@
  * results.
  *
  */
-int itkBinaryThresholdSpatialFunctionTest( int, char *[])
+int
+itkBinaryThresholdSpatialFunctionTest( int, char *[])
 {
   typedef double CoordRep;
   const unsigned int Dimension = 2;
@@ -85,12 +86,12 @@ int itkBinaryThresholdSpatialFunctionTest( int, char *[])
 
     // check results
     CoordRep val = p * vcl_sqrt( 2.0 ) - parameters[0];
-    bool expected = ( lowerThreshold <= val && upperThreshold >= val );
+    bool     expected = ( lowerThreshold <= val && upperThreshold >= val );
     if( output != expected )
       {
       std::cout << "But expected value is: " << expected << std::endl;
       return EXIT_FAILURE;
-     }
+      }
     }
 
   /**
@@ -101,7 +102,7 @@ int itkBinaryThresholdSpatialFunctionTest( int, char *[])
    */
   // set up a dummy image
   typedef itk::Image<unsigned char,Dimension> ImageType;
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer  image = ImageType::New();
   ImageType::SizeType size;
   size.Fill( 10 );
   image->SetRegions( size );
@@ -110,8 +111,8 @@ int itkBinaryThresholdSpatialFunctionTest( int, char *[])
 
   // set up the conditional iterator
   typedef itk::FloodFilledSpatialFunctionConditionalConstIterator<
-                                          ImageType,
-                                          FunctionType> IteratorType;
+      ImageType,
+      FunctionType> IteratorType;
 
   IteratorType iterator( image, function );
   iterator.SetOriginInclusionStrategy();
@@ -123,7 +124,7 @@ int itkBinaryThresholdSpatialFunctionTest( int, char *[])
 
   //
   // get the seeds and display them.
-  const IteratorType::SeedsContainerType &seeds(iterator.GetSeeds());
+  const IteratorType::SeedsContainerType &seeds(iterator.GetSeeds() );
   std::cout << "Iterator seeds";
   for(IteratorType::SeedsContainerType::const_iterator it =
         seeds.begin(); it != seeds.end(); it++)
@@ -157,7 +158,6 @@ int itkBinaryThresholdSpatialFunctionTest( int, char *[])
 
     ++iterator;
     }
-
 
   function->Print(std::cout);
 

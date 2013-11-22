@@ -25,72 +25,93 @@
  */
 
 template< typename TFixedObject,  typename TMovingObject >
-class ObjectToObjectMetricTestMetric:
+class ObjectToObjectMetricTestMetric :
   public itk::ObjectToObjectMetricBase
 {
 public:
   /** Standard class typedefs. */
-  typedef ObjectToObjectMetricTestMetric                          Self;
-  typedef itk::ObjectToObjectMetricBase                           Superclass;
-  typedef itk::SmartPointer< Self >                               Pointer;
-  typedef itk::SmartPointer< const Self >                         ConstPointer;
+  typedef ObjectToObjectMetricTestMetric  Self;
+  typedef itk::ObjectToObjectMetricBase   Superclass;
+  typedef itk::SmartPointer< Self >       Pointer;
+  typedef itk::SmartPointer< const Self > ConstPointer;
 
-  typedef typename Superclass::MeasureType          MeasureType;
-  typedef typename Superclass::DerivativeType       DerivativeType;
-  typedef typename Superclass::ParametersType       ParametersType;
-  typedef typename Superclass::ParametersValueType  ParametersValueType;
+  typedef typename Superclass::MeasureType         MeasureType;
+  typedef typename Superclass::DerivativeType      DerivativeType;
+  typedef typename Superclass::ParametersType      ParametersType;
+  typedef typename Superclass::ParametersValueType ParametersValueType;
 
   itkTypeMacro(ObjectToObjectMetricTestMetric, ObjectToObjectMetricBase);
 
   itkNewMacro(Self);
 
   // Pure virtual functions that all Metrics must provide
-  unsigned int GetNumberOfParameters() const { return 5; }
+  unsigned int
+  GetNumberOfParameters() const {
+    return 5;
+  }
 
-  MeasureType GetValue() const
+  MeasureType
+  GetValue() const
   {
     this->m_Value = 1.0;
     return this->m_Value;
   }
 
-  virtual void GetDerivative( DerivativeType & derivative ) const
+  virtual void
+  GetDerivative( DerivativeType & derivative ) const
   {
     derivative.Fill(0.0);
   }
 
-  void GetValueAndDerivative( MeasureType & value, DerivativeType & derivative ) const
+  void
+  GetValueAndDerivative( MeasureType & value, DerivativeType & derivative ) const
   {
     value = 1.0; derivative.Fill(0.0);
   }
 
-  unsigned int GetNumberOfLocalParameters() const
-  { return 0; }
-
-  void UpdateTransformParameters( const DerivativeType &, ParametersValueType ) {}
-
-  const ParametersType & GetParameters() const
-  { return m_Parameters; }
-
-  virtual bool HasLocalSupport() const
-    { return false; }
-
-  void SetParameters( ParametersType & )
+  unsigned int
+  GetNumberOfLocalParameters() const
   {
+    return 0;
   }
 
-  void Initialize(void) throw ( itk::ExceptionObject ) {}
+  void
+  UpdateTransformParameters( const DerivativeType &, ParametersValueType ) {}
 
-  void PrintSelf(std::ostream& os, itk::Indent indent) const
-  { Superclass::PrintSelf( os, indent ); }
+  const ParametersType &
+  GetParameters() const
+  {
+    return m_Parameters;
+  }
 
-  ParametersType  m_Parameters;
+  virtual bool
+  HasLocalSupport() const
+  {
+    return false;
+  }
+
+  void
+  SetParameters( ParametersType & )
+  {}
+
+  void
+  Initialize(void) throw ( itk::ExceptionObject ) {}
+
+  void
+  PrintSelf(std::ostream& os, itk::Indent indent) const
+  {
+    Superclass::PrintSelf( os, indent );
+  }
+
+  ParametersType m_Parameters;
 
 private:
   ObjectToObjectMetricTestMetric() {}
   ~ObjectToObjectMetricTestMetric() {}
 };
 
-int itkObjectToObjectMetricBaseTest(int ,char * [])
+int
+itkObjectToObjectMetricBaseTest(int ,char * [])
 {
   typedef itk::Image< unsigned char, 3 >                       ImageType;
   typedef ObjectToObjectMetricTestMetric<ImageType, ImageType> ObjectMetricType;
@@ -108,9 +129,9 @@ int itkObjectToObjectMetricBaseTest(int ,char * [])
   ParametersType parameters(13);
   parameters.Fill( 19.5);
 
-  TEST_EXPECT_EQUAL( objectMetric->GetValue( ), 1.0 );
+  TEST_EXPECT_EQUAL( objectMetric->GetValue(), 1.0 );
 
-  TEST_EXPECT_EQUAL( objectMetric->GetCurrentValue( ), 1.0 );
+  TEST_EXPECT_EQUAL( objectMetric->GetCurrentValue(), 1.0 );
 
   return EXIT_SUCCESS;
 }

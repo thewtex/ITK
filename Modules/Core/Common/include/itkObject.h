@@ -54,7 +54,7 @@ class Command;
  * \wikiexample{Utilities/CreateAnother,Copy a filter}
  * \endwiki
  */
-class ITKCommon_EXPORT Object:public LightObject
+class ITKCommon_EXPORT Object : public LightObject
 {
 public:
   /** Smart pointer typedef support. */
@@ -113,10 +113,17 @@ public:
 
   static bool GetGlobalWarningDisplay();
 
-  static void GlobalWarningDisplayOn()
-  { SetGlobalWarningDisplay(true); }
-  static void GlobalWarningDisplayOff()
-  { SetGlobalWarningDisplay(false); }
+  static void
+  GlobalWarningDisplayOn()
+  {
+    SetGlobalWarningDisplay(true);
+  }
+
+  static void
+  GlobalWarningDisplayOff()
+  {
+    SetGlobalWarningDisplay(false);
+  }
 
   /** Allow people to add/remove/invoke observers (callbacks) to any ITK
    * object. This is an implementation of the subject/observer design
@@ -181,7 +188,8 @@ public:
 
 protected:
   Object();
-  virtual ~Object();
+  virtual
+  ~Object();
 
   /** Methods invoked by Print() to print information about the object
    * including superclasses. Typically not called by the user (use Print()

@@ -18,7 +18,6 @@
 #ifndef __itkSurfaceSpatialObject_hxx
 #define __itkSurfaceSpatialObject_hxx
 
-
 #include "itkSurfaceSpatialObject.h"
 
 namespace itk
@@ -48,18 +47,18 @@ template< unsigned int TDimension >
 typename SurfaceSpatialObject< TDimension >::PointListType &
 SurfaceSpatialObject< TDimension >
 ::GetPoints()
-{
+  {
   itkDebugMacro("Getting SurfacePoint list");
   return m_Points;
-}
+  }
 template< unsigned int TDimension >
 const typename SurfaceSpatialObject< TDimension >::PointListType &
 SurfaceSpatialObject< TDimension >
 ::GetPoints() const
-{
+  {
   itkDebugMacro("Getting SurfacePoint list");
   return m_Points;
-}
+  }
 
 /** Set the list of points composing the surface */
 template< unsigned int TDimension >
@@ -126,7 +125,7 @@ SurfaceSpatialObject< TDimension >
       while ( it != end )
         {
         pt = this->GetIndexToWorldTransform()->TransformPoint(
-          ( *it ).GetPosition() );
+            ( *it ).GetPosition() );
         const_cast< BoundingBoxType * >( this->GetBounds() )->ConsiderPoint(pt);
         it++;
         }
@@ -299,7 +298,7 @@ SurfaceSpatialObject< TDimension >
 
         PointType pos2 = ( *it2 ).GetPosition();
         float     distance = ( pos2[0] - pos[0] ) * ( pos2[0] - pos[0] ) + ( pos2[1] - pos[1] )
-                             * ( pos2[1] - pos[1] ) + ( pos2[2] - pos[2] ) * ( pos2[2] - pos[2] );
+          * ( pos2[1] - pos[1] ) + ( pos2[2] - pos[2] ) * ( pos2[2] - pos[2] );
 
         // Check that the point is not the same as some previously defined
         bool valid = true;
@@ -307,7 +306,7 @@ SurfaceSpatialObject< TDimension >
           {
           PointType p = m_Points[identifier[j]].GetPosition();
           float     d = ( pos2[0] - p[0] ) * ( pos2[0] - p[0] ) + ( pos2[1] - p[1] )
-                        * ( pos2[1] - p[1] ) + ( pos2[2] - p[2] ) * ( pos2[2] - p[2] );
+            * ( pos2[1] - p[1] ) + ( pos2[2] - p[2] ) * ( pos2[2] - p[2] );
           if ( d == 0 )
             {
             valid = false;
@@ -347,7 +346,7 @@ SurfaceSpatialObject< TDimension >
       if ( ( identifier[0] == identifier[1] )
            || ( identifier[1] == identifier[2] )
            || ( identifier[0] == identifier[2] )
-            )
+           )
         {
         std::cout << "Cannot find 3 distinct points!" << std::endl;
         std::cout << identifier[0] << " : " << identifier[1] << " : " << identifier[2] << std::endl;
@@ -399,6 +398,7 @@ SurfaceSpatialObject< TDimension >
 
   return true;
 }
+
 } // end namespace itk
 
 #endif

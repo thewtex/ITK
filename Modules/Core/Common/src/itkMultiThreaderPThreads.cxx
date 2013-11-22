@@ -42,39 +42,42 @@ extern "C"
 typedef void *( *c_void_cast )(void *);
 }
 
-ThreadIdType MultiThreader::GetGlobalDefaultNumberOfThreadsByPlatform()
+ThreadIdType
+MultiThreader::GetGlobalDefaultNumberOfThreadsByPlatform()
 {
-    ThreadIdType num;
-    // Default the number of threads to be the number of available
-    // processors if we are using pthreads()
+  ThreadIdType num;
+
+  // Default the number of threads to be the number of available
+  // processors if we are using pthreads()
 #ifdef _SC_NPROCESSORS_ONLN
-    num = static_cast<ThreadIdType>( sysconf(_SC_NPROCESSORS_ONLN));
+  num = static_cast<ThreadIdType>( sysconf(_SC_NPROCESSORS_ONLN) );
 #elif defined( _SC_NPROC_ONLN )
-    num = static_cast<ThreadIdType>( sysconf(_SC_NPROC_ONLN) );
+  num = static_cast<ThreadIdType>( sysconf(_SC_NPROC_ONLN) );
 #else
-    num = 1;
+  num = 1;
 #endif
 #if defined( __SVR4 ) && defined( sun ) && defined( PTHREAD_MUTEX_NORMAL )
-    pthread_setconcurrency(num);
+  pthread_setconcurrency(num);
 #endif
 
 #ifdef __APPLE__
-    // Determine the number of CPU cores. Prefer sysctlbyname()
-    // over MPProcessors() because it doesn't require CoreServices
-    // (which is only available in 32bit on Mac OS X 10.4).
-    // hw.logicalcpu takes into account cores/CPUs that are
-    // disabled because of power management.
-    size_t dataLen = sizeof( int ); // 'num' is an 'int'
-    int    result = sysctlbyname ("hw.logicalcpu", &num, &dataLen, NULL, 0);
-    if ( result == -1 )
-      {
-      num = 1;
-      }
+  // Determine the number of CPU cores. Prefer sysctlbyname()
+  // over MPProcessors() because it doesn't require CoreServices
+  // (which is only available in 32bit on Mac OS X 10.4).
+  // hw.logicalcpu takes into account cores/CPUs that are
+  // disabled because of power management.
+  size_t dataLen = sizeof( int );   // 'num' is an 'int'
+  int    result = sysctlbyname ("hw.logicalcpu", &num, &dataLen, NULL, 0);
+  if ( result == -1 )
+    {
+    num = 1;
+    }
 #endif
-    return num;
+  return num;
 }
 
-void MultiThreader::MultipleMethodExecute()
+void
+MultiThreader::MultipleMethodExecute()
 {
   ThreadIdType thread_loop;
 
@@ -120,8 +123,8 @@ void MultiThreader::MultipleMethodExecute()
       m_MultipleData[thread_loop];
     m_ThreadInfoArray[thread_loop].NumberOfThreads = m_NumberOfThreads;
     int threadError = pthread_create( &( process_id[thread_loop] ),
-                    &attr, reinterpret_cast< c_void_cast >( m_MultipleMethod[thread_loop] ),
-                    ( (void *)( &m_ThreadInfoArray[thread_loop] ) ) );
+                                      &attr, reinterpret_cast< c_void_cast >( m_MultipleMethod[thread_loop] ),
+                                      ( (void *)( &m_ThreadInfoArray[thread_loop] ) ) );
     if ( threadError != 0 )
       {
       itkExceptionMacro(<< "Unable to create a thread.  pthread_create() returned "
@@ -143,7 +146,8 @@ void MultiThreader::MultipleMethodExecute()
 
 }
 
-ThreadIdType MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
+ThreadIdType
+MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
 {
   ThreadIdType id = 0;
 
@@ -184,8 +188,8 @@ ThreadIdType MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
 #endif
 
   int threadError = pthread_create( &( m_SpawnedThreadProcessID[id] ),
-                  &attr, reinterpret_cast< c_void_cast >( f ),
-                  ( (void *)( &m_SpawnedThreadInfoArray[id] ) ) );
+                                    &attr, reinterpret_cast< c_void_cast >( f ),
+                                    ( (void *)( &m_SpawnedThreadInfoArray[id] ) ) );
   if ( threadError != 0 )
     {
     itkExceptionMacro(<< "Unable to create a thread.  pthread_create() returned "
@@ -195,7 +199,8 @@ ThreadIdType MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
   return id;
 }
 
-void MultiThreader::TerminateThread(ThreadIdType ThreadID)
+void
+MultiThreader::TerminateThread(ThreadIdType ThreadID)
 {
   if ( !m_SpawnedThreadActiveFlag[ThreadID] )
     {
@@ -247,4 +252,5 @@ MultiThreader
     }
   return threadHandle;
 }
+
 } // end namespace itk

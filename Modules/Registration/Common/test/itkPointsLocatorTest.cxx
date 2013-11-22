@@ -20,7 +20,8 @@
 #include "itkMapContainer.h"
 
 template< typename TPointsContainer >
-int testPointsLocatorTest()
+int
+testPointsLocatorTest()
 {
   /**
    * Create the point set through its object factory.
@@ -113,9 +114,11 @@ int testPointsLocatorTest()
   return EXIT_SUCCESS;
 }
 
-int itkPointsLocatorTest( int, char* [] )
+int
+itkPointsLocatorTest( int, char* [] )
 {
   const unsigned int PointDimension = 3;
+
   typedef itk::Point<float, PointDimension> PointType;
 
   typedef itk::VectorContainer<unsigned int, PointType> VectorContainerType;

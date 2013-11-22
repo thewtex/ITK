@@ -170,10 +170,12 @@ BinaryMedianImageFilter< TInputImage, TOutput >
   Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Radius: " << m_Radius << std::endl;
   os << indent << "Foreground value : " << m_ForegroundValue << std::endl;
   os << indent << "Background value : " << m_BackgroundValue << std::endl;
 }
+
 } // end namespace itk
 
 #endif

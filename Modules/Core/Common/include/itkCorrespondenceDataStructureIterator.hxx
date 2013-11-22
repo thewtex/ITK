@@ -64,7 +64,7 @@ CorrespondenceDataStructureIterator< TStructureType >
 
   if ( m_CorrespondingListIterator == m_CorrespondingListPointer->end() )
     {
-      this->GoToNextBaseGroup();
+    this->GoToNextBaseGroup();
     }
 }
 
@@ -116,6 +116,7 @@ CorrespondenceDataStructureIterator< TStructureType >
   m_CorrespondingListPointer = &( *m_SecondaryListIterator );
   m_CorrespondingListIterator = m_CorrespondingListPointer->begin();
 }
+
 } // end namespace itk
 
 #endif

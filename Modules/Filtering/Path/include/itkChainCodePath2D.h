@@ -47,7 +47,7 @@ namespace itk
  * \ingroup PathObjects
  * \ingroup ITKPath
  */
-class ChainCodePath2D:public
+class ChainCodePath2D : public
   ChainCodePath< 2 >
 {
 public:
@@ -99,36 +99,44 @@ public:
   itkNewMacro(Self);
 
   /** How many steps in the chaincode? */
-  inline ChainCodeSizeType NumberOfSteps() const { return m_Chain2D.size(); }
+  inline ChainCodeSizeType
+  NumberOfSteps() const {
+    return m_Chain2D.size();
+  }
 
   /** Insert a new step into the chaincode at a specified position */
-  inline void InsertStep(InputType position, int encodedStep)
+  inline void
+  InsertStep(InputType position, int encodedStep)
   {
     m_Chain2D.insert(m_Chain2D.begin() + position, encodedStep);
     this->Modified();
   }
 
-  inline void InsertStep(InputType position, OffsetType step)
+  inline void
+  InsertStep(InputType position, OffsetType step)
   {
     m_Chain2D.insert( m_Chain2D.begin() + position, EncodeOffset(step) );
     this->Modified();
   }
 
   /** Change the direction of a step in the chaincode */
-  inline void ChangeStep(InputType position, int encodedStep)
+  inline void
+  ChangeStep(InputType position, int encodedStep)
   {
     m_Chain2D[position] = encodedStep;
     this->Modified();
   }
 
-  inline void ChangeStep(InputType position, OffsetType step)
+  inline void
+  ChangeStep(InputType position, OffsetType step)
   {
     m_Chain2D[position] = EncodeOffset(step);
     this->Modified();
   }
 
   /** Remove all steps from the chain code */
-  virtual inline void Clear()
+  virtual inline void
+  Clear()
   {
     m_Chain2D.clear();
     this->Modified();
@@ -142,12 +150,14 @@ protected:
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Encode and Decode between an offset and a Freeman code */
-  inline int EncodeOffset(OffsetType step) const
+  inline int
+  EncodeOffset(OffsetType step) const
   {
     return m_FreemanCode[step[0] + 1][step[1] + 1];
   }
 
-  inline OffsetType DecodeOffset(int encodedStep) const
+  inline OffsetType
+  DecodeOffset(int encodedStep) const
   {
     return m_ReverseFreemanCode[encodedStep];
   }

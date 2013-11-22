@@ -43,7 +43,7 @@ namespace itk
  */
 template< typename TPixel, unsigned int TDimension = 2,
           typename TAllocator = NeighborhoodAllocator< TPixel > >
-class BackwardDifferenceOperator:
+class BackwardDifferenceOperator :
   public NeighborhoodOperator< TPixel, TDimension, TAllocator >
 {
 public:
@@ -65,12 +65,16 @@ protected:
   CoefficientVector GenerateCoefficients();
 
   /** Arranges coefficients spatially in the memory buffer. */
-  void Fill(const CoefficientVector & coeff)
-  { this->FillCenteredDirectional(coeff); }
+  void
+  Fill(const CoefficientVector & coeff)
+  {
+    this->FillCenteredDirectional(coeff);
+  }
 
 private:
   BackwardDifferenceOperator(const Self & other); //purposely not implemented
   Self & operator=(const Self & other);           //purposely not implemented
+
 };
 } // namespace itk
 

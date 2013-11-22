@@ -23,7 +23,8 @@ namespace itk
 namespace fem
 {
 // Overload the CreateAnother() method
-::itk::LightObject::Pointer Element3DC0LinearHexahedronStrain::CreateAnother(void) const
+::itk::LightObject::Pointer
+Element3DC0LinearHexahedronStrain::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
   Pointer copyPtr = Self::New();
@@ -46,8 +47,7 @@ namespace fem
 
 Element3DC0LinearHexahedronStrain
 ::Element3DC0LinearHexahedronStrain() : Superclass()
-{
-}
+{}
 
 Element3DC0LinearHexahedronStrain
 ::Element3DC0LinearHexahedronStrain(NodeIDType ns_[], Material::ConstPointer m_) : Superclass()

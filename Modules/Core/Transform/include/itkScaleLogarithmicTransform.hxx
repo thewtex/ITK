@@ -25,15 +25,13 @@ namespace itk
 // Constructor with default arguments
 template <typename ScalarType, unsigned int NDimensions>
 ScaleLogarithmicTransform<ScalarType, NDimensions>::ScaleLogarithmicTransform()
-{
-}
+{}
 
 // Destructor
 template <typename ScalarType, unsigned int NDimensions>
 ScaleLogarithmicTransform<ScalarType, NDimensions>::
 ~ScaleLogarithmicTransform()
-{
-}
+{}
 
 // Set the parameters
 template <typename ScalarType, unsigned int NDimensions>

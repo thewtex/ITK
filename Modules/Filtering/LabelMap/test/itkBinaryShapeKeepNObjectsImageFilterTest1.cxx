@@ -23,7 +23,8 @@
 
 #include "itkTestingMacros.h"
 
-int itkBinaryShapeKeepNObjectsImageFilterTest1(int argc, char * argv[])
+int
+itkBinaryShapeKeepNObjectsImageFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 9 )

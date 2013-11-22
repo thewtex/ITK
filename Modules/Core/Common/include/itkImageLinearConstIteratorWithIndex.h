@@ -98,7 +98,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TImage >
-class ImageLinearConstIteratorWithIndex:public ImageConstIteratorWithIndex< TImage >
+class ImageLinearConstIteratorWithIndex : public ImageConstIteratorWithIndex< TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -130,7 +130,7 @@ public:
   typedef typename PixelContainer::Pointer PixelContainerPointer;
 
   /** Default constructor. Needed since we provide a cast constructor. */
-  ImageLinearConstIteratorWithIndex():ImageConstIteratorWithIndex< TImage >(), m_Direction(0) {}
+  ImageLinearConstIteratorWithIndex() : ImageConstIteratorWithIndex< TImage >(), m_Direction(0) {}
 
   /** Constructor establishes an iterator to walk a particular image and a
    * particular region of that image. */
@@ -143,7 +143,10 @@ public:
    * returns ImageIterators and uses constructors to cast from an
    * ImageIterator to a ImageLinearConstIteratorWithIndex. */
   ImageLinearConstIteratorWithIndex(const ImageConstIteratorWithIndex< TImage > & it) : m_Direction(0)
-  { this->ImageConstIteratorWithIndex< TImage >::operator=(it); }
+  {
+    this->ImageConstIteratorWithIndex< TImage >::operator=(it);
+
+  }
 
   /** Go to the next line.
    * \sa operator++  \sa operator-- \sa IsAtEndOfLine \sa PreviousLine \sa End */
@@ -166,19 +169,22 @@ public:
   void GoToEndOfLine(void);
 
   /** Test if the index is at the end of line */
-  inline bool IsAtEndOfLine(void)
+  inline bool
+  IsAtEndOfLine(void)
   {
     return this->m_PositionIndex[m_Direction] >= this->m_EndIndex[m_Direction];
   }
 
   /** Test if the index is at the begin of line */
-  inline bool IsAtReverseEndOfLine(void)
+  inline bool
+  IsAtReverseEndOfLine(void)
   {
     return this->m_PositionIndex[m_Direction] < this->m_BeginIndex[m_Direction];
   }
 
   /** Set the direction of movement */
-  inline void SetDirection(unsigned int direction)
+  inline void
+  SetDirection(unsigned int direction)
   {
     if ( direction >= TImage::ImageDimension )
       {
@@ -190,14 +196,16 @@ public:
   }
 
   /** get the direction of movement */
-  unsigned int GetDirection()
+  unsigned int
+  GetDirection()
   {
     return m_Direction;
   }
 
   /** Increment (prefix) the selected dimension.
    * No bounds checking is performed. \sa GetIndex \sa operator-- */
-  inline Self & operator++()
+  inline Self &
+  operator++()
   {
     this->m_PositionIndex[m_Direction]++;
     this->m_Position += m_Jump;
@@ -206,7 +214,8 @@ public:
 
   /** Decrement (prefix) the selected dimension.
    * No bounds checking is performed.  \sa GetIndex \sa operator++ */
-  inline Self & operator--()
+  inline Self &
+  operator--()
   {
     this->m_PositionIndex[m_Direction]--;
     this->m_Position -= m_Jump;
@@ -228,32 +237,32 @@ ImageLinearConstIteratorWithIndex< TImage >
 ::NextLine(void)
 {
   this->m_Position -= this->m_OffsetTable[m_Direction]
-                      * ( this->m_PositionIndex[m_Direction] - this->m_BeginIndex[m_Direction] );
+    * ( this->m_PositionIndex[m_Direction] - this->m_BeginIndex[m_Direction] );
 
   this->m_PositionIndex[m_Direction] = this->m_BeginIndex[m_Direction];
 
   for ( unsigned int n = 0; n < TImage::ImageDimension; n++ )
-  {
+    {
     this->m_Remaining = false;
 
     if ( n == m_Direction )
-    {
+      {
       continue;
-    }
+      }
 
     this->m_PositionIndex[n]++;
     if ( this->m_PositionIndex[n] <  this->m_EndIndex[n] )
-    {
+      {
       this->m_Position += this->m_OffsetTable[n];
       this->m_Remaining = true;
       break;
-    }
+      }
     else
-    {
+      {
       this->m_Position -= this->m_OffsetTable[n] * ( this->m_Region.GetSize()[n] - 1 );
       this->m_PositionIndex[n] = this->m_BeginIndex[n];
+      }
     }
-  }
 }
 
 //----------------------------------------------------------------------
@@ -266,33 +275,34 @@ ImageLinearConstIteratorWithIndex< TImage >
 ::PreviousLine(void)
 {
   this->m_Position += this->m_OffsetTable[m_Direction]
-                      * ( this->m_EndIndex[m_Direction] - 1 - this->m_PositionIndex[m_Direction] );
+    * ( this->m_EndIndex[m_Direction] - 1 - this->m_PositionIndex[m_Direction] );
 
   this->m_PositionIndex[m_Direction] = this->m_EndIndex[m_Direction] - 1;
 
   for ( unsigned int n = 0; n < TImage::ImageDimension; n++ )
-  {
+    {
     this->m_Remaining = false;
 
     if ( n == m_Direction )
-    {
+      {
       continue;
-    }
+      }
 
     this->m_PositionIndex[n]--;
     if ( this->m_PositionIndex[n] >=  this->m_BeginIndex[n] )
-    {
+      {
       this->m_Position -= this->m_OffsetTable[n];
       this->m_Remaining = true;
       break;
-    }
+      }
     else
-    {
+      {
       this->m_Position += this->m_OffsetTable[n] * ( this->m_Region.GetSize()[n] - 1 );
       this->m_PositionIndex[n] = this->m_EndIndex[n] - 1;
+      }
     }
-  }
 }
+
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION

@@ -30,7 +30,7 @@ const
 {
   // Push on a list all the non internal edges:
   typedef typename MeshType::CellsContainerConstIterator
-  CellsContainerConstIterator;
+    CellsContainerConstIterator;
   std::set< QEPrimal* > boundaryList;
 
   CellsContainerConstIterator cellIterator = mesh.GetEdgeCells()->Begin();
@@ -103,6 +103,7 @@ const
 
   return ResultList;
 }
+
 }
 
 #endif

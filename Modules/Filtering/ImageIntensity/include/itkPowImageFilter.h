@@ -36,23 +36,27 @@ class Pow
 public:
   ;
   Pow() {}
-  bool operator!=(const Pow &) const
+  bool
+  operator!=(const Pow &) const
   {
     // we contain no data, so we are always the same
     return false;
   }
 
-  bool operator==(const Pow & other) const
+  bool
+  operator==(const Pow & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A, const TInput2 & B) const
+  inline TOutput
+  operator()(const TInput1 & A, const TInput2 & B) const
   {
 
     typedef typename NumericTraits< TInput1 >::RealType RealType;
-    return static_cast< TOutput >( vcl_pow(static_cast<RealType>(A),static_cast<RealType>(B)) );
+    return static_cast< TOutput >( vcl_pow(static_cast<RealType>(A),static_cast<RealType>(B) ) );
   }
+
 };
 }
 /** \class PowImageFilter
@@ -88,7 +92,7 @@ public:
  *
  */
 template< typename TInputImage1, typename TInputImage2 = TInputImage1, typename TOutputImage = TInputImage1 >
-class PowImageFilter:
+class PowImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::Pow<
@@ -128,6 +132,7 @@ protected:
 private:
   PowImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

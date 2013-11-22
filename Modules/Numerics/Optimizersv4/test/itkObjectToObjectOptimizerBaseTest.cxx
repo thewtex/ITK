@@ -21,64 +21,83 @@
 
 /* Create a simple metric to use for testing here. */
 template< typename TFixedObject,  typename TMovingObject >
-class ObjectToObjectOptimizerBaseTestMetric:
+class ObjectToObjectOptimizerBaseTestMetric :
   public itk::ObjectToObjectMetricBase
 {
 public:
   /** Standard class typedefs. */
-  typedef ObjectToObjectOptimizerBaseTestMetric     Self;
-  typedef itk::ObjectToObjectMetricBase             Superclass;
-  typedef itk::SmartPointer< Self >                 Pointer;
-  typedef itk::SmartPointer< const Self >           ConstPointer;
+  typedef ObjectToObjectOptimizerBaseTestMetric Self;
+  typedef itk::ObjectToObjectMetricBase         Superclass;
+  typedef itk::SmartPointer< Self >             Pointer;
+  typedef itk::SmartPointer< const Self >       ConstPointer;
 
-  typedef typename Superclass::MeasureType          MeasureType;
-  typedef typename Superclass::DerivativeType       DerivativeType;
-  typedef typename Superclass::ParametersType       ParametersType;
-  typedef typename Superclass::ParametersValueType  ParametersValueType;
+  typedef typename Superclass::MeasureType         MeasureType;
+  typedef typename Superclass::DerivativeType      DerivativeType;
+  typedef typename Superclass::ParametersType      ParametersType;
+  typedef typename Superclass::ParametersValueType ParametersValueType;
 
   itkTypeMacro(ObjectToObjectOptimizerBaseTestMetric, ObjectToObjectMetricBase);
 
   itkNewMacro(Self);
 
   // Pure virtual functions that all Metrics must provide
-  unsigned int GetNumberOfParameters() const { return 5; }
+  unsigned int
+  GetNumberOfParameters() const {
+    return 5;
+  }
 
-  MeasureType GetValue() const
-    {
+  MeasureType
+  GetValue() const
+  {
     return 1.0;
-    }
+  }
 
-  virtual void GetDerivative( DerivativeType & derivative ) const
-    {
+  virtual void
+  GetDerivative( DerivativeType & derivative ) const
+  {
     derivative.Fill(0.0);
-    }
+  }
 
-  virtual bool HasLocalSupport() const
-    {
+  virtual bool
+  HasLocalSupport() const
+  {
     return false;
-    }
+  }
 
-  virtual void GetValueAndDerivative( MeasureType & value, DerivativeType & derivative ) const
-    {
+  virtual void
+  GetValueAndDerivative( MeasureType & value, DerivativeType & derivative ) const
+  {
     value = 1.0; derivative.Fill(0.0);
-    }
+  }
 
-  unsigned int GetNumberOfLocalParameters() const
-  { return 3; }
+  unsigned int
+  GetNumberOfLocalParameters() const
+  {
+    return 3;
+  }
 
-  void UpdateTransformParameters( const DerivativeType &, ParametersValueType ) {}
+  void
+  UpdateTransformParameters( const DerivativeType &, ParametersValueType ) {}
 
-  const ParametersType & GetParameters() const
-  { return m_Parameters; }
+  const ParametersType &
+  GetParameters() const
+  {
+    return m_Parameters;
+  }
 
-  void SetParameters( ParametersType & ) {}
+  void
+  SetParameters( ParametersType & ) {}
 
-  void Initialize(void) throw ( itk::ExceptionObject ) {}
+  void
+  Initialize(void) throw ( itk::ExceptionObject ) {}
 
-  void PrintSelf(std::ostream& os, itk::Indent indent) const
-  { Superclass::PrintSelf( os, indent ); }
+  void
+  PrintSelf(std::ostream& os, itk::Indent indent) const
+  {
+    Superclass::PrintSelf( os, indent );
+  }
 
-  ParametersType  m_Parameters;
+  ParametersType m_Parameters;
 
 private:
   ObjectToObjectOptimizerBaseTestMetric() {}
@@ -104,24 +123,28 @@ public:
   itkTypeMacro(ObjectToObjectOptimizerBaseTestOptimizer, ObjectToObjectOptimizerBase);
 
   /* Provide initialization for this class */
-  void StartOptimization( bool doOnlyInitialization = false )
-    {
+  void
+  StartOptimization( bool doOnlyInitialization = false )
+  {
     Superclass::StartOptimization( doOnlyInitialization );
-    std::cout << "StartOptimization called from derived class. doOnlyInitialization: " << doOnlyInitialization << std::endl;
-    }
+    std::cout << "StartOptimization called from derived class. doOnlyInitialization: " << doOnlyInitialization <<
+    std::endl;
+  }
 
 };
 
 /**
  */
-int itkObjectToObjectOptimizerBaseTest(int , char* [])
+int
+itkObjectToObjectOptimizerBaseTest(int , char* [])
 {
   const int ImageDimension = 2;
-  typedef itk::Image<double, ImageDimension>                    ImageType;
+
+  typedef itk::Image<double, ImageDimension> ImageType;
 
   typedef ObjectToObjectOptimizerBaseTestMetric<ImageType,ImageType> MetricType;
 
-  MetricType::Pointer metric = MetricType::New();
+  MetricType::Pointer                               metric = MetricType::New();
   ObjectToObjectOptimizerBaseTestOptimizer::Pointer optimizer = ObjectToObjectOptimizerBaseTestOptimizer::New();
 
   /* exercise some methods */
@@ -163,7 +186,7 @@ int itkObjectToObjectOptimizerBaseTest(int , char* [])
   scales.Fill( 0.999 );
   optimizer->SetScales( scales );
   TRY_EXPECT_NO_EXCEPTION( optimizer->StartOptimization() );
-  if( ! optimizer->GetScalesAreIdentity() )
+  if( !optimizer->GetScalesAreIdentity() )
     {
     std::cerr << "Expected GetScalesAreIdentity to return true." << std::endl;
     return EXIT_FAILURE;
@@ -173,7 +196,7 @@ int itkObjectToObjectOptimizerBaseTest(int , char* [])
   ObjectToObjectOptimizerBaseTestOptimizer::NumberOfParametersType weightsSize = metric->GetNumberOfLocalParameters();
   TRY_EXPECT_NO_EXCEPTION( optimizer->StartOptimization() );
   ScalesType weightsReturn = optimizer->GetWeights();
-  if( weightsReturn.Size() != 0 || ! optimizer->GetWeightsAreIdentity() )
+  if( weightsReturn.Size() != 0 || !optimizer->GetWeightsAreIdentity() )
     {
     std::cerr << "Expected returned weights to be empty, and flag set to idenity. But got: " << weightsReturn
               << ", GetWeightsAreIdentity: " <<  optimizer->GetWeightsAreIdentity() << std::endl;
@@ -202,7 +225,7 @@ int itkObjectToObjectOptimizerBaseTest(int , char* [])
   weights.Fill( 0.99999 );
   optimizer->SetWeights( weights );
   TRY_EXPECT_NO_EXCEPTION( optimizer->StartOptimization() );
-  if( ! optimizer->GetWeightsAreIdentity() )
+  if( !optimizer->GetWeightsAreIdentity() )
     {
     std::cerr << "Expected GetWeightsAreIdentity to return true." << std::endl;
     return EXIT_FAILURE;

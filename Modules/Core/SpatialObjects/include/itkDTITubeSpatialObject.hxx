@@ -18,7 +18,6 @@
 #ifndef __itkDTITubeSpatialObject_hxx
 #define __itkDTITubeSpatialObject_hxx
 
-
 #include "itkDTITubeSpatialObject.h"
 
 namespace itk
@@ -48,6 +47,7 @@ DTITubeSpatialObject< TDimension >
   os << indent << "DTITubeSpatialObject(" << this << ")" << std::endl;
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif // end __itkDTITubeSpatialObject_hxx

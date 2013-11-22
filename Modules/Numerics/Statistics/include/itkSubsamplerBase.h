@@ -47,11 +47,11 @@ class SubsamplerBase : public Object
 {
 public:
   /** Standard class typedefs */
-  typedef SubsamplerBase                        Self;
-  typedef Object                                Superclass;
-  typedef Self                                  Baseclass;
-  typedef SmartPointer<Self>                    Pointer;
-  typedef SmartPointer<const Self>              ConstPointer;
+  typedef SubsamplerBase           Self;
+  typedef Object                   Superclass;
+  typedef Self                     Baseclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Run-time type information (and related methods) */
   itkTypeMacro(SubsamplerBase, Object);
@@ -60,10 +60,10 @@ public:
   itkCloneMacro(Self);
 
   /** typedef alias for the source data container */
-  typedef TSample                                          SampleType;
-  typedef typename SampleType::ConstPointer                SampleConstPointer;
-  typedef typename TSample::MeasurementVectorType          MeasurementVectorType;
-  typedef typename TSample::InstanceIdentifier             InstanceIdentifier;
+  typedef TSample                                 SampleType;
+  typedef typename SampleType::ConstPointer       SampleConstPointer;
+  typedef typename TSample::MeasurementVectorType MeasurementVectorType;
+  typedef typename TSample::InstanceIdentifier    InstanceIdentifier;
 
   typedef Subsample<TSample>                               SubsampleType;
   typedef typename SubsampleType::Pointer                  SubsamplePointer;
@@ -88,16 +88,16 @@ public:
   itkSetMacro(Seed, SeedType);
   itkGetConstReferenceMacro(Seed, SeedType);
 
-
   /** Specify whether the subsampler should return all possible
    * matches. */
-  virtual void RequestMaximumNumberOfResults()
+  virtual void
+  RequestMaximumNumberOfResults()
   {
     if (!this->m_RequestMaximumNumberOfResults)
-    {
+      {
       this->m_RequestMaximumNumberOfResults = true;
       this->Modified();
-    }
+      }
   }
 
   /** Main Search method that MUST be implemented by each subclass
@@ -117,7 +117,8 @@ protected:
   virtual typename LightObject::Pointer InternalClone() const;
 
   SubsamplerBase();
-  virtual ~SubsamplerBase() {};
+  virtual
+  ~SubsamplerBase() {}
 
   virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
@@ -130,7 +131,7 @@ private:
   SubsamplerBase(const Self&); // purposely not implemented
   void operator=(const Self&); // purposely not implemented
 
-}; // end of class SubsamplerBase
+};  // end of class SubsamplerBase
 
 } // end of namespace Statistics
 } // end of namespace itk

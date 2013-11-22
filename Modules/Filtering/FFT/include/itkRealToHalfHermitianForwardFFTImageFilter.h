@@ -49,20 +49,21 @@ namespace itk
  * \sa ForwardFFTImageFilter
  * \ingroup ITKFFT
  */
-template< typename TInputImage, typename TOutputImage=Image< std::complex<typename TInputImage::PixelType>, TInputImage::ImageDimension> >
-class RealToHalfHermitianForwardFFTImageFilter:
+template< typename TInputImage, typename TOutputImage=
+            Image< std::complex<typename TInputImage::PixelType>, TInputImage::ImageDimension> >
+class RealToHalfHermitianForwardFFTImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
-  typedef TInputImage                          InputImageType;
-  typedef typename InputImageType::PixelType   InputPixelType;
-  typedef typename InputImageType::IndexType   InputIndexType;
-  typedef typename InputImageType::SizeType    InputSizeType;
-  typedef TOutputImage                         OutputImageType;
-  typedef typename OutputImageType::PixelType  OutputPixelType;
-  typedef typename OutputImageType::IndexType  OutputIndexType;
-  typedef typename OutputIndexType::SizeType   OutputSizeType;
+  typedef TInputImage                         InputImageType;
+  typedef typename InputImageType::PixelType  InputPixelType;
+  typedef typename InputImageType::IndexType  InputIndexType;
+  typedef typename InputImageType::SizeType   InputSizeType;
+  typedef TOutputImage                        OutputImageType;
+  typedef typename OutputImageType::PixelType OutputPixelType;
+  typedef typename OutputImageType::IndexType OutputIndexType;
+  typedef typename OutputIndexType::SizeType  OutputSizeType;
 
   typedef RealToHalfHermitianForwardFFTImageFilter              Self;
   typedef ImageToImageFilter< InputImageType, OutputImageType > Superclass;
@@ -77,7 +78,8 @@ public:
 
 protected:
   RealToHalfHermitianForwardFFTImageFilter() {}
-  virtual ~RealToHalfHermitianForwardFFTImageFilter() {}
+  virtual
+  ~RealToHalfHermitianForwardFFTImageFilter() {}
 
   /** The output is a different size from the input because of
    * Hermitian symmetry. */
@@ -91,7 +93,8 @@ protected:
 
 private:
   RealToHalfHermitianForwardFFTImageFilter(const Self &); // purposely not implemented
-  void operator=(const Self &);        // purposely not implemented
+  void operator=(const Self &);                           // purposely not implemented
+
 };
 } // end namespace itk
 

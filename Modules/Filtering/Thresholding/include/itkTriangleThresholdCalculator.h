@@ -53,10 +53,10 @@ class TriangleThresholdCalculator : public HistogramThresholdCalculator<THistogr
 {
 public:
   /** Standard class typedefs. */
-  typedef TriangleThresholdCalculator     Self;
-  typedef Object                          Superclass;
-  typedef SmartPointer<Self>              Pointer;
-  typedef SmartPointer<const Self>        ConstPointer;
+  typedef TriangleThresholdCalculator Self;
+  typedef Object                      Superclass;
+  typedef SmartPointer<Self>          Pointer;
+  typedef SmartPointer<const Self>    ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -65,22 +65,22 @@ public:
   itkTypeMacro(TriangleThresholdCalculator, Object);
 
   /** Type definition for the input image. */
-  typedef THistogram  HistogramType;
-  typedef TOutput     OutputType;
+  typedef THistogram HistogramType;
+  typedef TOutput    OutputType;
 
 protected:
-  TriangleThresholdCalculator() {};
-  virtual ~TriangleThresholdCalculator() {};
+  TriangleThresholdCalculator() {}
+  virtual
+  ~TriangleThresholdCalculator() {}
   void GenerateData(void);
 
 private:
   TriangleThresholdCalculator(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);              //purposely not implemented
 
 };
 
 } // end namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkTriangleThresholdCalculator.hxx"

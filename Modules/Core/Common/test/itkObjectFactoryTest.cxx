@@ -21,13 +21,13 @@
 #include <list>
 
 #define CHECK_FOR_VALUE(a,b) \
-  { \
-  if( a != b ) \
     { \
-    std::cerr << "Error in "#a << " expected " << b << " but got " << a << std::endl; \
-    return EXIT_FAILURE; \
-    } \
-  }
+    if( a != b ) \
+      { \
+      std::cerr << "Error in "#a << " expected " << b << " but got " << a << std::endl; \
+      return EXIT_FAILURE; \
+      } \
+    }
 
 template<typename TPixel, unsigned int VImageDimension=2>
 class TestImage : public itk::Image< TPixel, VImageDimension >
@@ -46,16 +46,17 @@ public:
   itkTypeMacro(TestImage, Image);
 
   // Methods from itkObject
-  virtual ~TestImage()
-    {
-    }
+  virtual
+  ~TestImage()
+  {}
+
   TestImage()
-    {
-    }
+  {}
 
 private:
   TestImage(const TestImage&);
   void operator=(const TestImage&);
+
 };
 
 template<typename TPixel, unsigned int VImageDimension=3>
@@ -75,16 +76,17 @@ public:
   itkTypeMacro(TestImage2, Image);
 
   // Methods from itkObject
-  virtual ~TestImage2()
-    {
-    }
+  virtual
+  ~TestImage2()
+  {}
+
   TestImage2()
-    {
-    }
+  {}
 
 private:
   TestImage2(const TestImage2&);
   void operator=(const TestImage2&);
+
 };
 
 class TestFactory : public itk::ObjectFactoryBase
@@ -96,8 +98,15 @@ public:
   typedef itk::SmartPointer<const Self> ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
-  virtual const char* GetITKSourceVersion() const { return ITK_SOURCE_VERSION; }
-  const char* GetDescription() const { return "A Test Factory"; }
+  virtual const char*
+  GetITKSourceVersion() const {
+    return ITK_SOURCE_VERSION;
+  }
+
+  const char*
+  GetDescription() const {
+    return "A Test Factory";
+  }
 
   /** Method for class instantiation. */
   itkFactorylessNewMacro(Self);
@@ -106,7 +115,8 @@ public:
   itkTypeMacro(TestFactory, itk::ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     TestFactory::Pointer factory = TestFactory::New();
     itk::ObjectFactoryBase::RegisterFactory(factory);
@@ -117,25 +127,28 @@ private:
   void operator=(const Self&); //purposely not implemented
 
   TestFactory()
-    {
+  {
     this->RegisterOverride(typeid(itk::Image<short,2>).name(),
                            typeid(TestImage<short,2>).name(),
                            "Test image factory override",
                            true,
-                           itk::CreateObjectFunction<TestImage<short,2> >::New());
+                           itk::CreateObjectFunction<TestImage<short,2> >::New() );
     this->RegisterOverride(typeid(itk::Image<short,2>).name(),
                            typeid(TestImage2<short,2>).name(),
                            "Test image factory override 2",
                            false,
-                           itk::CreateObjectFunction<TestImage2<short,2> >::New());
-    }
+                           itk::CreateObjectFunction<TestImage2<short,2> >::New() );
+  }
+
 };
 
 typedef itk::Image<short,2>::Pointer myPointer;
-bool TestNewImage(myPointer v, const char* expectedClassName)
+bool
+TestNewImage(myPointer v, const char* expectedClassName)
 {
   std::cout << "v->GetNameOfClass(): " << v->GetNameOfClass();
   std::cout << ", expectedClassName: " << expectedClassName << std::endl;
+
   if(strcmp(v->GetNameOfClass(), expectedClassName) != 0)
     {
     std::cout << "Test Failed" << std::endl;
@@ -144,8 +157,8 @@ bool TestNewImage(myPointer v, const char* expectedClassName)
   return true;
 }
 
-
-int itkObjectFactoryTest(int, char *[])
+int
+itkObjectFactoryTest(int, char *[])
 {
   TestFactory::Pointer factory = TestFactory::New();
   itk::ObjectFactoryBase::RegisterFactory(factory);
@@ -155,8 +168,9 @@ int itkObjectFactoryTest(int, char *[])
     itk::ObjectFactoryBase::GetRegisteredFactories();
 
   std::cout << "----- Registered factories -----" << std::endl;
+
   for ( std::list<itk::ObjectFactoryBase*>::iterator
-          f = factories.begin();
+        f = factories.begin();
         f != factories.end(); ++f )
     {
     std::cout << "  Factory version: "
@@ -164,13 +178,13 @@ int itkObjectFactoryTest(int, char *[])
               << "  Factory description: "
               << (*f)->GetDescription() << std::endl;
 
-    std::list<std::string> overrides = (*f)->GetClassOverrideNames();
-    std::list<std::string> names = (*f)->GetClassOverrideWithNames();
-    std::list<std::string> descriptions = (*f)->GetClassOverrideDescriptions();
-    std::list<bool> enableflags = (*f)->GetEnableFlags();
+    std::list<std::string>                 overrides = (*f)->GetClassOverrideNames();
+    std::list<std::string>                 names = (*f)->GetClassOverrideWithNames();
+    std::list<std::string>                 descriptions = (*f)->GetClassOverrideDescriptions();
+    std::list<bool>                        enableflags = (*f)->GetEnableFlags();
     std::list<std::string>::const_iterator n = names.begin();
     std::list<std::string>::const_iterator d = descriptions.begin();
-    std::list<bool>::const_iterator e = enableflags.begin();
+    std::list<bool>::const_iterator        e = enableflags.begin();
     for ( std::list<std::string>::const_iterator o = overrides.begin();
           o != overrides.end(); ++o, ++n, ++d, e++ )
       {
@@ -186,46 +200,46 @@ int itkObjectFactoryTest(int, char *[])
   factory->Print(std::cout);
 
   int status = EXIT_SUCCESS;
-  if (!TestNewImage(v, "TestImage"))
+  if (!TestNewImage(v, "TestImage") )
     {
     status = EXIT_FAILURE;
     }
 
   // disable all itk::Image creation with the
-  factory->Disable(typeid(itk::Image<short,2>).name());
+  factory->Disable(typeid(itk::Image<short,2>).name() );
   v = itk::Image<short,2>::New();
-  if (!TestNewImage(v, "Image"))
+  if (!TestNewImage(v, "Image") )
     {
     status = EXIT_FAILURE;
     }
 
   factory->SetEnableFlag(true,
                          typeid(itk::Image<short,2>).name(),
-                         typeid(TestImage2<short,2>).name());
+                         typeid(TestImage2<short,2>).name() );
 
   std::cout << typeid(itk::Image<short,2>).name()
             << " overridden by "
             << typeid(TestImage2<short,2>).name() << std::endl
             << "   EnableFlag is "
             <<   factory->GetEnableFlag(
-              typeid(itk::Image<short,2>).name(),
-              typeid(TestImage2<short,2>).name()) << std::endl;
+    typeid(itk::Image<short,2>).name(),
+    typeid(TestImage2<short,2>).name() ) << std::endl;
 
   v = itk::Image<short,2>::New();
-  if (!TestNewImage(v, "TestImage2"))
+  if (!TestNewImage(v, "TestImage2") )
     {
     status = EXIT_FAILURE;
     }
 
   factory->SetEnableFlag(false,
                          typeid(itk::Image<short,2>).name(),
-                         typeid(TestImage2<short,2>).name());
+                         typeid(TestImage2<short,2>).name() );
   factory->SetEnableFlag(true,
                          typeid(itk::Image<short,2>).name(),
-                         typeid(TestImage<short,2>).name());
+                         typeid(TestImage<short,2>).name() );
 
   v = itk::Image<short,2>::New();
-  if (!TestNewImage(v, "TestImage"))
+  if (!TestNewImage(v, "TestImage") )
     {
     status = EXIT_FAILURE;
     }
@@ -233,14 +247,14 @@ int itkObjectFactoryTest(int, char *[])
   itk::ObjectFactoryBase::UnRegisterFactory(factory);
 
   v = itk::Image<short,2>::New();
-  if (!TestNewImage(v, "Image"))
+  if (!TestNewImage(v, "Image") )
     {
     status = EXIT_FAILURE;
     }
 
   TestFactory::RegisterOneFactory();
   v = itk::Image<short,2>::New();
-  if (!TestNewImage(v, "TestImage"))
+  if (!TestNewImage(v, "TestImage") )
     {
     status = EXIT_FAILURE;
     }

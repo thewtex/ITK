@@ -44,7 +44,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -62,8 +61,8 @@
 #include "itkRecursiveGaussianImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -72,7 +71,6 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   //  Software Guide : BeginLatex
   //
   //  Types should be selected on the desired input and output pixel types.
@@ -80,10 +78,9 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef    float    InputPixelType;
-  typedef    float    OutputPixelType;
+  typedef    float InputPixelType;
+  typedef    float OutputPixelType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -92,13 +89,11 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
-
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
   //  Software Guide : BeginLatex
   //
@@ -111,13 +106,11 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::RecursiveGaussianImageFilter<
-                        InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
   // Software Guide : EndCodeSnippet
-
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -153,7 +146,6 @@ int main( int argc, char * argv[] )
   filterY->SetDirection( 1 );   // 1 --> Y direction
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The \doxygen{RecursiveGaussianImageFilter} can approximate the
@@ -174,7 +166,6 @@ int main( int argc, char * argv[] )
   filterX->SetOrder( FilterType::ZeroOrder );
   filterY->SetOrder( FilterType::ZeroOrder );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -212,7 +203,6 @@ int main( int argc, char * argv[] )
   filterY->SetNormalizeAcrossScale( false );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The input image can be obtained from the output of another
@@ -231,7 +221,6 @@ int main( int argc, char * argv[] )
   filterX->SetInput( reader->GetOutput() );
   filterY->SetInput( filterX->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -253,7 +242,6 @@ int main( int argc, char * argv[] )
   filterY->SetSigma( sigma );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally the pipeline is executed by invoking the \code{Update()} method.
@@ -262,29 +250,26 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   filterY->Update();
   // Software Guide : EndCodeSnippet
 
-
-  typedef unsigned char                              WritePixelType;
-  typedef itk::Image< WritePixelType, 2 >            WriteImageType;
+  typedef unsigned char                   WritePixelType;
+  typedef itk::Image< WritePixelType, 2 > WriteImageType;
   typedef itk::RescaleIntensityImageFilter<
-                   OutputImageType, WriteImageType > RescaleFilterType;
+      OutputImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
-  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
 
   rescaler->SetInput( filterY->GetOutput() );
   writer->SetInput( rescaler->GetOutput() );
   writer->Update();
-
 
   //  Software Guide : BeginLatex
   //
@@ -312,7 +297,6 @@ int main( int argc, char * argv[] )
   //  of multi-component images.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

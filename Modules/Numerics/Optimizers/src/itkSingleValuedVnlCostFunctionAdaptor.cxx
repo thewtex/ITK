@@ -21,7 +21,7 @@ namespace itk
 {
 /**  Constructor.  */
 SingleValuedVnlCostFunctionAdaptor
-::SingleValuedVnlCostFunctionAdaptor(unsigned int spaceDimension):
+::SingleValuedVnlCostFunctionAdaptor(unsigned int spaceDimension) :
   vnl_cost_function(spaceDimension)
 {
   m_ScalesInitialized = false;
@@ -39,13 +39,14 @@ SingleValuedVnlCostFunctionAdaptor
   //Only the inverse is used computes the inverse at each iteration.
   //provides 1 commone place where the inverse can be computes
   //and validated.
-  m_InverseScales.SetSize(scales.GetSize());
+  m_InverseScales.SetSize(scales.GetSize() );
 
   for( unsigned int i = 0; i < scales.size(); ++i )
     {
     if ( scales[i] <= NumericTraits<double>::epsilon() )
       {
-      itkGenericExceptionMacro("ERROR: Scales must have value greater than epsilon! Scale[" << i << "] = " << scales[i] );
+      itkGenericExceptionMacro("ERROR: Scales must have value greater than epsilon! Scale[" << i << "] = " <<
+        scales[i] );
       }
     m_InverseScales[i] = NumericTraits<double>::One / scales[i];
     }
@@ -268,4 +269,5 @@ SingleValuedVnlCostFunctionAdaptor
 {
   return m_CachedCurrentParameters;
 }
+
 } // end namespace itk

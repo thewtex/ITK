@@ -20,22 +20,23 @@
 
 #include <iostream>
 
-int itkVTKPolyDataReaderTest(int argc, char* argv[] )
+int
+itkVTKPolyDataReaderTest(int argc, char* argv[] )
 {
   if( argc != 2 )
     {
     std::cerr << "Usage: itkVTKPolyDataReaderTest inputFilename"
-      << std::endl;
+              << std::endl;
     return EXIT_FAILURE;
     }
 
-  typedef itk::Mesh<float, 3>                 MeshType;
-  typedef itk::VTKPolyDataReader< MeshType >  ReaderType;
+  typedef itk::Mesh<float, 3>                MeshType;
+  typedef itk::VTKPolyDataReader< MeshType > ReaderType;
 
-  ReaderType::Pointer  polyDataReader = ReaderType::New();
+  ReaderType::Pointer polyDataReader = ReaderType::New();
 
-  typedef ReaderType::PointType   PointType;
-  typedef ReaderType::VectorType  VectorType;
+  typedef ReaderType::PointType  PointType;
+  typedef ReaderType::VectorType VectorType;
 
   polyDataReader->SetFileName(argv[1]);
 
@@ -55,7 +56,7 @@ int itkVTKPolyDataReaderTest(int argc, char* argv[] )
 
   MeshType::Pointer mesh = polyDataReader->GetOutput();
 
-  PointType  point;
+  PointType point;
 
   std::cout << "Testing itk::VTKPolyDataReader" << std::endl;
 

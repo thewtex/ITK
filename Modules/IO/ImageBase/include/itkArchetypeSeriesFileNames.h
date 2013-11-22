@@ -19,7 +19,6 @@
 #define __itkArchetypeSeriesFileNames_h
 #include "ITKIOImageBaseExport.h"
 
-
 #include "itkObject.h"
 #include "itkObjectFactory.h"
 #include <vector>
@@ -65,7 +64,7 @@ namespace itk
  * \ingroup ITKIOImageBase
  */
 
-class ITKIOImageBase_EXPORT ArchetypeSeriesFileNames:public Object
+class ITKIOImageBase_EXPORT ArchetypeSeriesFileNames : public Object
 {
 public:
   /** Standard class typedefs. */

@@ -70,13 +70,13 @@ public:
 
   itkTypeMacro(DOMReader, Object);
 
-  typedef TOutput                       OutputType;
+  typedef TOutput OutputType;
 
   typedef DOMNode                       DOMNodeType;
   typedef typename DOMNodeType::Pointer DOMNodePointer;
 
-  typedef Logger                        LoggerType;
-  typedef typename LoggerType::Pointer  LoggerPointer;
+  typedef Logger                       LoggerType;
+  typedef typename LoggerType::Pointer LoggerPointer;
 
   /** Set the input XML filename. */
   itkSetStringMacro(FileName);
@@ -127,7 +127,7 @@ protected:
   virtual void GenerateData( const DOMNodeType* inputdom, const void* userdata ) = 0;
 
 private:
-  DOMReader(const Self &); //purposely not implemented
+  DOMReader(const Self &);      //purposely not implemented
   void operator=(const Self &); //purposely not implemented
 
   /** Get/Set the intermediate DOM object. */

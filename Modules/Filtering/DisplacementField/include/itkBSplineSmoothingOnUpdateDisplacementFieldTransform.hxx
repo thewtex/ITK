@@ -47,8 +47,7 @@ BSplineSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
 template<typename TScalar, unsigned int NDimensions>
 BSplineSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>::
 ~BSplineSmoothingOnUpdateDisplacementFieldTransform()
-{
-}
+{}
 
 /**
  * set mesh size for update field
@@ -59,6 +58,7 @@ BSplineSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
 ::SetMeshSizeForTheUpdateField( const ArrayType &meshSize )
 {
   ArrayType numberOfControlPoints;
+
   for( unsigned int d = 0; d < Dimension; d++ )
     {
     numberOfControlPoints[d] = meshSize[d] + this->m_SplineOrder;
@@ -75,6 +75,7 @@ BSplineSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
 ::SetMeshSizeForTheTotalField( const ArrayType &meshSize )
 {
   ArrayType numberOfControlPoints;
+
   for( unsigned int d = 0; d < Dimension; d++ )
     {
     numberOfControlPoints[d] = meshSize[d] + this->m_SplineOrder;
@@ -112,7 +113,8 @@ BSplineSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
     {
     itkDebugMacro( "Smooothing the update field." );
 
-    DisplacementVectorType *updateFieldPointer = reinterpret_cast<DisplacementVectorType *>( const_cast<DerivativeType &>(update).data_block() );
+    DisplacementVectorType *updateFieldPointer =
+      reinterpret_cast<DisplacementVectorType *>( const_cast<DerivativeType &>(update).data_block() );
 
     typename ImporterType::Pointer importer = ImporterType::New();
     importer->SetImportPointer( updateFieldPointer, numberOfPixels, importFilterWillReleaseMemory );
@@ -125,9 +127,11 @@ BSplineSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
     updateField->Update();
     updateField->DisconnectPipeline();
 
-    DisplacementFieldPointer updateSmoothField = this->BSplineSmoothDisplacementField( updateField, this->m_NumberOfControlPointsForTheUpdateField );
+    DisplacementFieldPointer updateSmoothField = this->BSplineSmoothDisplacementField( updateField,
+                                                                                       this->m_NumberOfControlPointsForTheUpdateField );
 
-    DerivativeValueType *updatePointer = reinterpret_cast<DerivativeValueType *>( updateSmoothField->GetBufferPointer() );
+    DerivativeValueType *updatePointer =
+      reinterpret_cast<DerivativeValueType *>( updateSmoothField->GetBufferPointer() );
 
     // Add the update field to the current total field
     bool letArrayManageMemory = false;
@@ -169,9 +173,12 @@ BSplineSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
     totalField->Update();
     totalField->DisconnectPipeline();
 
-    DisplacementFieldPointer totalSmoothField = this->BSplineSmoothDisplacementField( totalField, this->m_NumberOfControlPointsForTheTotalField );
+    DisplacementFieldPointer totalSmoothField = this->BSplineSmoothDisplacementField( totalField,
+                                                                                      this->m_NumberOfControlPointsForTheTotalField );
 
-    ImageAlgorithm::Copy<DisplacementFieldType, DisplacementFieldType>( totalSmoothField, totalField, totalSmoothField->GetBufferedRegion(), totalField->GetBufferedRegion() );
+    ImageAlgorithm::Copy<DisplacementFieldType, DisplacementFieldType>( totalSmoothField, totalField,
+                                                                        totalSmoothField->GetBufferedRegion(),
+                                                                        totalField->GetBufferedRegion() );
     }
 }
 
@@ -205,8 +212,8 @@ BSplineSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
   LightObject::Pointer loPtr = Superclass::InternalClone();
 
   typename Self::Pointer rval =
-    dynamic_cast<Self *>(loPtr.GetPointer());
-  if(rval.IsNull())
+    dynamic_cast<Self *>(loPtr.GetPointer() );
+  if(rval.IsNull() )
     {
     itkExceptionMacro(<< "downcast to type "
                       << this->GetNameOfClass()
@@ -215,16 +222,16 @@ BSplineSmoothingOnUpdateDisplacementFieldTransform<TScalar, NDimensions>
 
   //
   // set fields not in the fixed parameters.
-  rval->SetSplineOrder(this->GetSplineOrder());
+  rval->SetSplineOrder(this->GetSplineOrder() );
 
   rval->SetNumberOfControlPointsForTheUpdateField
-    (this->GetNumberOfControlPointsForTheUpdateField());
+    (this->GetNumberOfControlPointsForTheUpdateField() );
 
   rval->SetNumberOfControlPointsForTheTotalField
-    (this->GetNumberOfControlPointsForTheTotalField());
+    (this->GetNumberOfControlPointsForTheTotalField() );
 
-  rval->SetFixedParameters(this->GetFixedParameters());
-  rval->SetParameters(this->GetParameters());
+  rval->SetFixedParameters(this->GetFixedParameters() );
+  rval->SetParameters(this->GetParameters() );
 
   return loPtr;
 }
@@ -248,10 +255,11 @@ PrintSelf( std::ostream& os, Indent indent ) const
   os << indent << "B-spline parameters: " << std::endl;
   os << indent << "  spline order = " << this->m_SplineOrder << std::endl;
   os << indent << "  number of control points for the update field = "
-    << this->m_NumberOfControlPointsForTheUpdateField << std::endl;
+     << this->m_NumberOfControlPointsForTheUpdateField << std::endl;
   os << indent << "  number of control points for the total field = "
-    << this->m_NumberOfControlPointsForTheTotalField << std::endl;
+     << this->m_NumberOfControlPointsForTheTotalField << std::endl;
 }
+
 } // namespace itk
 
 #endif

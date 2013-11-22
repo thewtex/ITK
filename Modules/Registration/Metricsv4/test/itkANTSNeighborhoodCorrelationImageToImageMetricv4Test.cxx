@@ -28,8 +28,9 @@
  */
 
 template<typename ImagePointerType, typename DerivativeType>
-void ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintDerivativeAsVectorImage(
-    ImagePointerType image, DerivativeType &derivative, itk::SizeValueType vecdim){
+void
+ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintDerivativeAsVectorImage(
+  ImagePointerType image, DerivativeType &derivative, itk::SizeValueType vecdim){
 
   typedef typename ImagePointerType::ObjectType ImageType;
   typename ImageType::RegionType imageRegion = image->GetBufferedRegion();
@@ -51,17 +52,17 @@ void ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintDerivativeAsVector
         {
         std::cout << derivative[cnt*vecdim + d] <<",";
         }
-        std::cout << derivative[cnt * vecdim + vecdim-1] << ']' << "\t";
-        ++it;
-        ++cnt;
+      std::cout << derivative[cnt * vecdim + vecdim-1] << ']' << "\t";
+      ++it;
+      ++cnt;
       }
-      std::cout << std::endl;
+    std::cout << std::endl;
     }
 }
 
-
 template<typename ImageType>
-void ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintImage(ImageType *imageP) {
+void
+ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintImage(ImageType *imageP) {
 
   typedef typename ImageType::ConstPointer ImageConstPointerType;
   ImageConstPointerType image = imageP;
@@ -83,12 +84,13 @@ void ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintImage(ImageType *i
       std::cout << it.Get() << "\t";
       ++it;
       }
-      std::cout << std::endl;
+    std::cout << std::endl;
     }
 }
 
 template<typename ImagePointerType>
-void ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintImage(const ImagePointerType &image) {
+void
+ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintImage(const ImagePointerType &image) {
 
   typedef typename ImagePointerType::ObjectType ImageType;
   typename ImageType::RegionType imageRegion = image->GetBufferedRegion();
@@ -108,50 +110,50 @@ void ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintImage(const ImageP
       std::cout << it.Get() << "\t";
       ++it;
       }
-      std::cout << std::endl;
+    std::cout << std::endl;
     }
 }
 
-int itkANTSNeighborhoodCorrelationImageToImageMetricv4Test( int, char ** const )
+int
+itkANTSNeighborhoodCorrelationImageToImageMetricv4Test( int, char ** const )
 {
   const itk::SizeValueType ImageDimension = 2;
 
-  typedef itk::Image<double, ImageDimension>  ImageType;
-  typedef ImageType::Pointer                  ImagePointerType;
-  typedef ImageType::RegionType               RegionType;
+  typedef itk::Image<double, ImageDimension> ImageType;
+  typedef ImageType::Pointer                 ImagePointerType;
+  typedef ImageType::RegionType              RegionType;
 
-  typedef itk::Vector<double, ImageDimension>     VectorType;
-  typedef itk::Image<VectorType, ImageDimension>  VectorImageType;
+  typedef itk::Vector<double, ImageDimension>    VectorType;
+  typedef itk::Image<VectorType, ImageDimension> VectorImageType;
 
-  typedef itk::Transform<double, ImageDimension>  TransformType;
+  typedef itk::Transform<double, ImageDimension> TransformType;
   typedef itk::IdentityTransform<double, ImageDimension>
-                                                  IdentityTransformType;
+    IdentityTransformType;
   typedef itk::CompositeTransform<double, ImageDimension>
-                                                  CompositeTransformType;
+    CompositeTransformType;
   typedef itk::TranslationTransform<double, ImageDimension>
-                                                  TranslationTransformType;
+    TranslationTransformType;
   typedef itk::DisplacementFieldTransform<double, ImageDimension>
-                                                  DisplacementTransformType;
+    DisplacementTransformType;
   typedef DisplacementTransformType::DisplacementFieldType FieldType;
 
   IdentityTransformType::Pointer transformFId = IdentityTransformType::New();
 
   IdentityTransformType::Pointer transformMId = IdentityTransformType::New();
-  if(transformMId.IsNull())
+  if(transformMId.IsNull() )
     {
     std::cerr << "transformMId == NULL" << std::endl;
     return EXIT_FAILURE;
     }
   DisplacementTransformType::Pointer transformMdisplacement = DisplacementTransformType::New();
-  TranslationTransformType::Pointer transformMtranslation =
-          TranslationTransformType::New();
+  TranslationTransformType::Pointer  transformMtranslation =
+    TranslationTransformType::New();
   TranslationTransformType::Pointer transformMtranslation2 =
-          TranslationTransformType::New();
+    TranslationTransformType::New();
   CompositeTransformType::Pointer transformMComp =
-          CompositeTransformType::New();
+    CompositeTransformType::New();
   CompositeTransformType::Pointer transformFComp =
-          CompositeTransformType::New();
-
+    CompositeTransformType::New();
 
   const itk::SizeValueType imageSize = 6;
 
@@ -188,7 +190,7 @@ int itkANTSNeighborhoodCorrelationImageToImageMetricv4Test( int, char ** const )
   itk::ImageRegionIterator<ImageType> itFixed(fixedImage, region);
   itFixed.GoToBegin();
   itk::SizeValueType count = 1;
-  while (!itFixed.IsAtEnd())
+  while (!itFixed.IsAtEnd() )
     {
     itFixed.Set(count * count);
     count++;
@@ -197,7 +199,7 @@ int itkANTSNeighborhoodCorrelationImageToImageMetricv4Test( int, char ** const )
   itk::ImageRegionIteratorWithIndex<ImageType> itMoving(movingImage, region);
   itMoving.GoToBegin();
   count = 1;
-  while (!itMoving.IsAtEnd())
+  while (!itMoving.IsAtEnd() )
     {
     itMoving.Set(count * count);
     count++;
@@ -205,30 +207,30 @@ int itkANTSNeighborhoodCorrelationImageToImageMetricv4Test( int, char ** const )
     }
 
   VectorType zero;
-  float def_value = -0.5;
+  float      def_value = -0.5;
 
   zero.Fill(def_value);
   FieldType::Pointer field = FieldType::New();
-  field->SetRegions(fixedImage->GetLargestPossibleRegion());
-  field->SetSpacing(fixedImage->GetSpacing());
-  field->SetOrigin(fixedImage->GetOrigin());
-  field->SetDirection(fixedImage->GetDirection());
+  field->SetRegions(fixedImage->GetLargestPossibleRegion() );
+  field->SetSpacing(fixedImage->GetSpacing() );
+  field->SetOrigin(fixedImage->GetOrigin() );
+  field->SetDirection(fixedImage->GetDirection() );
   field->Allocate();
   field->FillBuffer(zero);
 
   FieldType::Pointer fieldInv = FieldType::New();
 
-  zero.Fill(def_value * (-1.0));
-  fieldInv->SetRegions(fixedImage->GetLargestPossibleRegion());
-  fieldInv->SetSpacing(fixedImage->GetSpacing());
-  fieldInv->SetOrigin(fixedImage->GetOrigin());
-  fieldInv->SetDirection(fixedImage->GetDirection());
+  zero.Fill(def_value * (-1.0) );
+  fieldInv->SetRegions(fixedImage->GetLargestPossibleRegion() );
+  fieldInv->SetSpacing(fixedImage->GetSpacing() );
+  fieldInv->SetOrigin(fixedImage->GetOrigin() );
+  fieldInv->SetDirection(fixedImage->GetDirection() );
   fieldInv->Allocate();
   fieldInv->FillBuffer(zero);
 
-  zero.Fill(def_value * (1.0));
+  zero.Fill(def_value * (1.0) );
   transformMtranslation->Translate(zero);
-  zero.Fill(def_value * (1.0));
+  zero.Fill(def_value * (1.0) );
   transformMtranslation2->Translate(zero);
 
   transformMdisplacement->SetDisplacementField(field);
@@ -273,7 +275,7 @@ int itkANTSNeighborhoodCorrelationImageToImageMetricv4Test( int, char ** const )
     }
 
   // Evaluate
-  MetricType::MeasureType valueReturn1;
+  MetricType::MeasureType    valueReturn1;
   MetricType::DerivativeType derivativeReturn;
   try
     {
@@ -327,34 +329,36 @@ int itkANTSNeighborhoodCorrelationImageToImageMetricv4Test( int, char ** const )
   std::cout << "Test passed." << std::endl;
   std::cout << "transformMdisplacement parameters" << std::endl;
   std::cout << transformMdisplacement->GetParameters() << std::endl;
-  ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintImage(transformMdisplacement->GetDisplacementField());
+  ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintImage(transformMdisplacement->GetDisplacementField() );
 
   std::cout << "derivative of moving transform:" << std::endl;
   std::cout << derivativeReturn << std::endl;
   std::cout << std::endl << "derivative of moving transform as a field:" << std::endl;
-  ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintDerivativeAsVectorImage(fixedImage, derivativeReturn, ImageDimension);
+  ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintDerivativeAsVectorImage(fixedImage, derivativeReturn,
+                                                                                   ImageDimension);
 
   /* Compare the derivative computed from sparse threader to the dense threader */
   /* Create a sample point set by sampling all points */
-  typedef MetricType::FixedSampledPointSetType  PointSetType;
-  typedef PointSetType::PointType               PointType;
+  typedef MetricType::FixedSampledPointSetType PointSetType;
+  typedef PointSetType::PointType              PointType;
 
   std::cout << "Creating point set..." << std::endl;
 
-  PointSetType::Pointer               pset(PointSetType::New());
+  PointSetType::Pointer pset(PointSetType::New() );
 
-  unsigned int ind=0,ct=0;
+  unsigned int                                 ind=0,ct=0;
   itk::ImageRegionIteratorWithIndex<ImageType> It(fixedImage, fixedImage->GetLargestPossibleRegion() );
   for( It.GoToBegin(); !It.IsAtEnd(); ++It )
     {
     // take every point
-      PointType pt;
-      fixedImage->TransformIndexToPhysicalPoint( It.GetIndex(), pt);
-      pset->SetPoint(ind, pt);
-      ind++;
-      ct++;
+    PointType pt;
+    fixedImage->TransformIndexToPhysicalPoint( It.GetIndex(), pt);
+    pset->SetPoint(ind, pt);
+    ind++;
+    ct++;
     }
-  std::cout << "Setting point set with " << ind << " points of " << fixedImage->GetLargestPossibleRegion().GetNumberOfPixels() << " total " << std::endl;
+  std::cout << "Setting point set with " << ind << " points of " <<
+  fixedImage->GetLargestPossibleRegion().GetNumberOfPixels() << " total " << std::endl;
   std::cout << "Testing metric with point set..." << std::endl;
 
   /* run the metric with the sparse threader */
@@ -378,7 +382,7 @@ int itkANTSNeighborhoodCorrelationImageToImageMetricv4Test( int, char ** const )
     return EXIT_FAILURE;
     }
 
-  MetricType::MeasureType valueReturnSparse;
+  MetricType::MeasureType    valueReturnSparse;
   MetricType::DerivativeType derivativeReturnSparse;
 
   try
@@ -395,7 +399,7 @@ int itkANTSNeighborhoodCorrelationImageToImageMetricv4Test( int, char ** const )
 
   std::cout << "Check Value return values between dense and sparse threader..." << std::endl;
   std::cout << "dense: " << valueReturn1
-                << ", sparse: " << valueReturnSparse << std::endl;
+            << ", sparse: " << valueReturnSparse << std::endl;
   if( valueReturn1 != valueReturnSparse )
     {
     std::cerr << "Results for Value don't match using dense and sparse threaders: " << valueReturn1
@@ -407,13 +411,15 @@ int itkANTSNeighborhoodCorrelationImageToImageMetricv4Test( int, char ** const )
   std::cout << "derivative of moving transform (sparse threader):" << std::endl;
   std::cout << derivativeReturnSparse << std::endl;
   std::cout << std::endl << "derivative of moving transform as a field  (sparse threader):" << std::endl;
-  ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintDerivativeAsVectorImage(fixedImage, derivativeReturnSparse, ImageDimension);
+  ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintDerivativeAsVectorImage(fixedImage, derivativeReturnSparse,
+                                                                                   ImageDimension);
   double tolerance = 1e-7;
   if ( !derivativeReturn.is_equal(derivativeReturnSparse, tolerance) )
     {
     std::cerr << "Results for derivative don't match using dense and sparse threaders: "
               << "dense threader: " <<  std::endl;
-    ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintDerivativeAsVectorImage(fixedImage, derivativeReturn, ImageDimension);
+    ANTSNeighborhoodCorrelationImageToImageMetricv4Test_PrintDerivativeAsVectorImage(fixedImage, derivativeReturn,
+                                                                                     ImageDimension);
     }
 
   // Test that non-overlapping images will generate a warning

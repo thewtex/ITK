@@ -26,7 +26,8 @@ namespace itk
 namespace watershed
 {
 template< typename TPixelType, unsigned int TDimension >
-void BoundaryResolver< TPixelType, TDimension >
+void
+BoundaryResolver< TPixelType, TDimension >
 ::GenerateData()
 {
   //
@@ -93,7 +94,8 @@ void BoundaryResolver< TPixelType, TDimension >
 // --------------------PIPELINE METHODS------------------------
 // ------------------------------------------------------------
 template< typename TPixelType, unsigned int TDimension >
-void BoundaryResolver< TPixelType, TDimension >
+void
+BoundaryResolver< TPixelType, TDimension >
 ::GenerateOutputRequestedRegion(DataObject *)
 {}
 
@@ -114,6 +116,7 @@ BoundaryResolver< TPixelType, TDimension >
 
   os << indent << "Face = " << m_Face << std::endl;
 }
+
 } // end namespace watershed
 } // end namespace itk
 

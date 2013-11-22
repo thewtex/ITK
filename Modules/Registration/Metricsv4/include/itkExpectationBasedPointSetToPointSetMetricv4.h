@@ -41,16 +41,16 @@ namespace itk
  * \ingroup ITKMetricsv4
  */
 template<typename TFixedPointSet, typename TMovingPointSet = TFixedPointSet>
-class ExpectationBasedPointSetToPointSetMetricv4:
+class ExpectationBasedPointSetToPointSetMetricv4 :
   public PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>
 {
 public:
 
   /** Standard class typedefs. */
-  typedef ExpectationBasedPointSetToPointSetMetricv4                   Self;
-  typedef PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet>  Superclass;
-  typedef SmartPointer<Self>                                           Pointer;
-  typedef SmartPointer<const Self>                                     ConstPointer;
+  typedef ExpectationBasedPointSetToPointSetMetricv4                  Self;
+  typedef PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet> Superclass;
+  typedef SmartPointer<Self>                                          Pointer;
+  typedef SmartPointer<const Self>                                    ConstPointer;
 
   /** Method for creation through the object factory. */
   itkSimpleNewMacro( Self );
@@ -58,15 +58,15 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro( ExpectationBasedPointSetToPointSetMetricv4, PointSetToPointSetMetricv4 );
 
-   /** Types transferred from the base class */
-  typedef typename Superclass::MeasureType              MeasureType;
-  typedef typename Superclass::DerivativeType           DerivativeType;
-  typedef typename Superclass::LocalDerivativeType      LocalDerivativeType;
-  typedef typename Superclass::PointType                PointType;
-  typedef typename Superclass::PixelType                PixelType;
-  typedef typename Superclass::CoordRepType             CoordRepType;
-  typedef typename Superclass::PointIdentifier          PointIdentifier;
-  typedef typename Superclass::NeighborsIdentifierType  NeighborsIdentifierType;
+  /** Types transferred from the base class */
+  typedef typename Superclass::MeasureType             MeasureType;
+  typedef typename Superclass::DerivativeType          DerivativeType;
+  typedef typename Superclass::LocalDerivativeType     LocalDerivativeType;
+  typedef typename Superclass::PointType               PointType;
+  typedef typename Superclass::PixelType               PixelType;
+  typedef typename Superclass::CoordRepType            CoordRepType;
+  typedef typename Superclass::PointIdentifier         PointIdentifier;
+  typedef typename Superclass::NeighborsIdentifierType NeighborsIdentifierType;
 
   /**
    * Calculates the local metric value for a single point.
@@ -77,7 +77,8 @@ public:
    * Calculates the local value and derivative for a single point.
    */
   virtual void GetLocalNeighborhoodValueAndDerivative( const PointType &,
-    MeasureType &, LocalDerivativeType &, const PixelType & pixel = 0 ) const;
+                                                       MeasureType &, LocalDerivativeType &, const PixelType & pixel =
+                                                         0 ) const;
 
   /**
    * Each point is associated with a Gaussian characterized by m_PointSetSigma
@@ -105,26 +106,27 @@ public:
 
   /** Clone method will clone the existing instance of this type,
    *  including its internal member variables. */
-  virtual ::itk::LightObject::Pointer Clone( void ) const;
+  virtual::itk::LightObject::Pointer Clone( void ) const;
 
 protected:
   ExpectationBasedPointSetToPointSetMetricv4();
-  virtual ~ExpectationBasedPointSetToPointSetMetricv4();
+  virtual
+  ~ExpectationBasedPointSetToPointSetMetricv4();
 
   /** PrintSelf function */
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
   ExpectationBasedPointSetToPointSetMetricv4( const Self & ); //purposely not implemented
-  void operator=( const Self & );               //purposely not implemented
+  void operator=( const Self & );                             //purposely not implemented
 
-  typedef typename PointType::VectorType                    VectorType;
-  typedef typename NeighborsIdentifierType::const_iterator  NeighborsIterator;
+  typedef typename PointType::VectorType                   VectorType;
+  typedef typename NeighborsIdentifierType::const_iterator NeighborsIterator;
 
-  CoordRepType                               m_PointSetSigma;
-  MeasureType                                m_PreFactor;
-  MeasureType                                m_Denominator;
-  unsigned int                               m_EvaluationKNeighborhood;
+  CoordRepType m_PointSetSigma;
+  MeasureType  m_PreFactor;
+  MeasureType  m_Denominator;
+  unsigned int m_EvaluationKNeighborhood;
 
 };
 } // end namespace itk

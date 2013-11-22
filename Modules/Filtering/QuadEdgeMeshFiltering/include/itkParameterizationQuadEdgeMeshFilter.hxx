@@ -218,6 +218,7 @@ ParameterizationQuadEdgeMeshFilter< TInputMesh, TOutputMesh, TSolverTraits >
 
   os << indent << "BorderTransform: " << m_BorderTransform << std::endl;
 }
+
 } // end namespace itk
 
 #endif

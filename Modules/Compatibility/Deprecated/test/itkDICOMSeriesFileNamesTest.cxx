@@ -18,16 +18,17 @@
 
 #include "itkDICOMSeriesFileNames.h"
 
-int itkDICOMSeriesFileNamesTest(int ac, char* av[])
+int
+itkDICOMSeriesFileNamesTest(int ac, char* av[])
 {
 
   if(ac < 2)
-  {
+    {
     std::cerr << "Usage: " << av[0] << " DicomDirectory\n";
     return EXIT_FAILURE;
-  }
+    }
 
-  std::vector<std::string> names;
+  std::vector<std::string>           names;
   std::vector<std::string>::iterator nit;
 
   itk::DICOMSeriesFileNames::Pointer fit = itk::DICOMSeriesFileNames::New();
@@ -52,7 +53,6 @@ int itkDICOMSeriesFileNamesTest(int ac, char* av[])
       std::cout << "\t\tFile: " << (*nit).c_str() << std::endl;
       }
 
-
     std::cout << "\tFiles sorted by slice location(Ascending)" << std::endl;
     fit->SetFileNameSortingOrderToSortBySliceLocation();
     fit->AscendingOn();
@@ -74,7 +74,6 @@ int itkDICOMSeriesFileNamesTest(int ac, char* av[])
       {
       std::cout << "\t\tFile: " << (*nit).c_str() << std::endl;
       }
-
 
     std::cout << "\tFiles sorted by ImagePositionPatient(Ascending)" << std::endl;
     fit->SetFileNameSortingOrderToSortByImagePositionPatient();

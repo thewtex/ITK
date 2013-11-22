@@ -70,7 +70,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename MetaDataObjectType >
-class MetaDataObject:public MetaDataObjectBase
+class MetaDataObject : public MetaDataObjectBase
 {
 public:
   /** Smart pointer typedef support. */
@@ -94,7 +94,8 @@ public:
    * Default virtual Destructor
    * \author Hans J. Johnson
    */
-  virtual ~MetaDataObject(void);
+  virtual
+  ~MetaDataObject(void);
   /**
    * Initializer constructor that sets m_MetaDataObjectValue to InitializerValue
    * \author Hans J. Johnson
@@ -163,7 +164,8 @@ private:
  * insertion into a MetaDataDictionary.
  */
 template< typename T >
-inline void EncapsulateMetaData(MetaDataDictionary & Dictionary, const std::string & key, const T & invalue)
+inline void
+EncapsulateMetaData(MetaDataDictionary & Dictionary, const std::string & key, const T & invalue)
 {
   typename MetaDataObject< T >::Pointer temp = MetaDataObject< T >::New();
   temp->SetMetaDataObjectValue(invalue);
@@ -171,7 +173,8 @@ inline void EncapsulateMetaData(MetaDataDictionary & Dictionary, const std::stri
 }
 
 template< typename T >
-inline void EncapsulateMetaData(MetaDataDictionary & Dictionary, const char *key, const T & invalue)
+inline void
+EncapsulateMetaData(MetaDataDictionary & Dictionary, const char *key, const T & invalue)
 {
   EncapsulateMetaData(Dictionary, std::string(key), invalue);
 }
@@ -186,7 +189,8 @@ inline void EncapsulateMetaData(MetaDataDictionary & Dictionary, const char *key
  * \param outval -- where to store value found in table.
  */
 template< typename T >
-inline bool ExposeMetaData(const MetaDataDictionary & Dictionary, const std::string key, T & outval)
+inline bool
+ExposeMetaData(const MetaDataDictionary & Dictionary, const std::string key, T & outval)
 {
   if ( !Dictionary.HasKey(key) )
     {
@@ -195,12 +199,14 @@ inline bool ExposeMetaData(const MetaDataDictionary & Dictionary, const std::str
 
   const MetaDataObjectBase::ConstPointer baseObjectSmartPointer = Dictionary[key];
 
-  if ( baseObjectSmartPointer.IsNull() || strcmp( typeid( T ).name(), baseObjectSmartPointer->GetMetaDataObjectTypeName() ) != 0 )
+  if ( baseObjectSmartPointer.IsNull() ||
+       strcmp( typeid( T ).name(), baseObjectSmartPointer->GetMetaDataObjectTypeName() ) != 0 )
     {
     return false;
     }
     {
-    MetaDataObject< T > const * const TempMetaDataObject = dynamic_cast< MetaDataObject< T > const * >( baseObjectSmartPointer.GetPointer() );
+    MetaDataObject< T > const * const TempMetaDataObject =
+      dynamic_cast< MetaDataObject< T > const * >( baseObjectSmartPointer.GetPointer() );
     if ( TempMetaDataObject != NULL )
       {
       outval = TempMetaDataObject->GetMetaDataObjectValue();
@@ -212,6 +218,7 @@ inline bool ExposeMetaData(const MetaDataDictionary & Dictionary, const std::str
     }
   return true;
 }
+
 } // end namespace itk
 
 /**

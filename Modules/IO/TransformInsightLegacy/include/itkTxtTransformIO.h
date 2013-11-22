@@ -26,18 +26,18 @@ namespace itk
    * \ingroup ITKIOTransformInsightLegacy
    */
 template<typename ParametersValueType>
-class TxtTransformIOTemplate:public TransformIOBaseTemplate<ParametersValueType>
+class TxtTransformIOTemplate : public TransformIOBaseTemplate<ParametersValueType>
 {
 public:
-  typedef TxtTransformIOTemplate                        Self;
-  typedef TransformIOBaseTemplate<ParametersValueType>  Superclass;
-  typedef SmartPointer< Self >                          Pointer;
-  typedef typename Superclass::TransformType            TransformType;
-  typedef typename Superclass::TransformPointer         TransformPointer;
-  typedef typename Superclass::TransformListType        TransformListType;
+  typedef TxtTransformIOTemplate                       Self;
+  typedef TransformIOBaseTemplate<ParametersValueType> Superclass;
+  typedef SmartPointer< Self >                         Pointer;
+  typedef typename Superclass::TransformType           TransformType;
+  typedef typename Superclass::TransformPointer        TransformPointer;
+  typedef typename Superclass::TransformListType       TransformListType;
   typedef typename TransformIOBaseTemplate
-                      <ParametersValueType>::ConstTransformListType
-                                                        ConstTransformListType;
+    <ParametersValueType>::ConstTransformListType
+    ConstTransformListType;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(TxtTransformIOTemplate, Superclass);
@@ -64,11 +64,13 @@ public:
 
 protected:
   TxtTransformIOTemplate();
-  virtual ~TxtTransformIOTemplate();
+  virtual
+  ~TxtTransformIOTemplate();
 
 private:
   /** trim spaces and newlines from start and end of a string */
   std::string trim(std::string const & source, char const *delims = " \t\r\n");
+
 };
 
 /** This helps to meet backward compatibility */

@@ -33,7 +33,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -47,13 +46,12 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkDerivativeImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 6 )
     {
@@ -62,7 +60,6 @@ int main( int argc, char * argv[] )
     std::cerr << " derivativeOrder direction" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -74,18 +71,17 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   float  InputPixelType;
-  typedef   float  OutputPixelType;
+  typedef   float InputPixelType;
+  typedef   float OutputPixelType;
 
   const unsigned int Dimension = 2;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -106,11 +102,10 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::DerivativeImageFilter<
-               InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -128,7 +123,6 @@ int main( int argc, char * argv[] )
   filter->SetDirection( atoi( argv[5] ) );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The input to the filter can be taken from any other filter, for example
@@ -141,13 +135,11 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
   writer->Update();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -167,16 +159,15 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
-  typedef itk::Image< unsigned char, Dimension >  WriteImageType;
+  typedef itk::Image< unsigned char, Dimension > WriteImageType;
 
   typedef itk::RescaleIntensityImageFilter<
-                                  OutputImageType,
-                                  WriteImageType >    NormalizeFilterType;
+      OutputImageType,
+      WriteImageType >    NormalizeFilterType;
 
-  typedef itk::ImageFileWriter< WriteImageType >       NormalizedWriterType;
+  typedef itk::ImageFileWriter< WriteImageType > NormalizedWriterType;
 
-  NormalizeFilterType::Pointer normalizer = NormalizeFilterType::New();
+  NormalizeFilterType::Pointer  normalizer = NormalizeFilterType::New();
   NormalizedWriterType::Pointer normalizedWriter = NormalizedWriterType::New();
 
   normalizer->SetInput( filter->GetOutput() );

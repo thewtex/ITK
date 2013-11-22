@@ -107,9 +107,9 @@ StatisticsLabelMapFilter< TImage, TFeatureImage >
   mv.SetSize(1);
   // iterate over all the indexes
   typename LabelObjectType::ConstIndexIterator it( labelObject );
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
-    const IndexType & idx = it.GetIndex();
+    const IndexType &             idx = it.GetIndex();
     const FeatureImagePixelType & v = featureImage->GetPixel(idx);
     mv[0] = v;
     histogram->IncreaseFrequencyOfMeasurement(mv, 1);
@@ -155,8 +155,8 @@ StatisticsLabelMapFilter< TImage, TFeatureImage >
   const double variance = ( sum2 - ( vcl_pow(sum, 2) / totalFreq ) ) / ( totalFreq - 1 );
   const double sigma = vcl_sqrt(variance);
   const double mean2 = mean * mean;
-  double skewness;
-  if(vcl_abs(variance * sigma) > itk::NumericTraits<double>::min())
+  double       skewness;
+  if(vcl_abs(variance * sigma) > itk::NumericTraits<double>::min() )
     {
     skewness = ( ( sum3 - 3.0 * mean * sum2 ) / totalFreq + 2.0 * mean * mean2 ) / ( variance * sigma );
     }
@@ -165,7 +165,7 @@ StatisticsLabelMapFilter< TImage, TFeatureImage >
     skewness = 0.0;
     }
   double kurtosis;
-  if(vcl_abs(variance) > itk::NumericTraits<double>::min())
+  if(vcl_abs(variance) > itk::NumericTraits<double>::min() )
     {
     kurtosis = ( ( sum4 - 4.0 * mean * sum3 + 6.0 * mean2
                    * sum2 ) / totalFreq - 3.0 * mean2 * mean2 ) /
@@ -308,5 +308,6 @@ StatisticsLabelMapFilter< TImage, TFeatureImage >
   os << indent << "ComputeHistogram: " << m_ComputeHistogram << std::endl;
   os << indent << "NumberOfBins: " << m_NumberOfBins << std::endl;
 }
+
 } // end namespace itk
 #endif

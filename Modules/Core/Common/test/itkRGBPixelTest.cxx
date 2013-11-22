@@ -20,22 +20,25 @@
 
 #include "itkRGBPixel.h"
 
-int itkRGBPixelTest(int, char* [] )
+int
+itkRGBPixelTest(int, char* [] )
 {
   // Test it all
 
-  float val[3] = {1, 0, .5};
-  itk::RGBPixel<float> pixel(val);
-  unsigned char pixelInit0[3] = {255, 255, 255};
-  unsigned char pixelInit1[3] = {255, 255, 244};
+  float                        val[3] = {1, 0, .5};
+  itk::RGBPixel<float>         pixel(val);
+  unsigned char                pixelInit0[3] = {255, 255, 255};
+  unsigned char                pixelInit1[3] = {255, 255, 244};
   itk::RGBPixel<unsigned char> pixelArray[2];
+
   pixelArray[0] = pixelInit0;
   pixelArray[1] = pixelInit1;
 
   std::cout << "sizeof(pixel) = " << sizeof (pixel) << std::endl;
-  if (sizeof(pixel) != 3 * sizeof(itk::RGBPixel<float>::ComponentType))
+  if (sizeof(pixel) != 3 * sizeof(itk::RGBPixel<float>::ComponentType) )
     {
-    std::cerr << "ERROR: sizeof(pixel) == " << sizeof(pixel) << " but is shopuld be " << 3 * sizeof(itk::RGBPixel<float>::ComponentType) << std::endl;
+    std::cerr << "ERROR: sizeof(pixel) == " << sizeof(pixel) << " but is shopuld be " << 3 *
+    sizeof(itk::RGBPixel<float>::ComponentType) << std::endl;
     return EXIT_FAILURE;
     }
   std::cout << "pixel.GetNumberOfComponents = " << pixel.GetNumberOfComponents() << std::endl;
@@ -68,12 +71,15 @@ int itkRGBPixelTest(int, char* [] )
 
   for (unsigned int j = 0; j < 2; j++)
     {
-    std::cout << "pixelArray["<< j << "].GetNumberOfComponents = " << pixelArray[j].GetNumberOfComponents() << std::endl;
-    std::cout << "pixelArray[" << j << "].GetScalarValue() = " << static_cast<int>(pixelArray[j].GetScalarValue()) << std::endl;
+    std::cout << "pixelArray["<< j << "].GetNumberOfComponents = " << pixelArray[j].GetNumberOfComponents() <<
+    std::endl;
+    std::cout << "pixelArray[" << j << "].GetScalarValue() = " << static_cast<int>(pixelArray[j].GetScalarValue() ) <<
+    std::endl;
     std::cout << "pixelArray[" << j << "].GetNthComponent()" << std::endl;
     for (unsigned int i = 0; i < pixelArray[j].GetNumberOfComponents(); i++)
       {
-      std::cout << "\tpixelArray[" << j << "].GetNthComponent(" << i << ") = " << static_cast<int>(pixelArray[j].GetNthComponent(i)) << std::endl;
+      std::cout << "\tpixelArray[" << j << "].GetNthComponent(" << i << ") = " <<
+      static_cast<int>(pixelArray[j].GetNthComponent(i) ) << std::endl;
       }
     }
 
@@ -106,7 +112,6 @@ int itkRGBPixelTest(int, char* [] )
   pc = pa * 3.2;
   std::cout << "product by scalar = " << pc << std::endl;
 
-
   std::cout << "Test luminance conversion" << std::endl;
 
   itk::RGBPixel< float > rgbl;
@@ -116,8 +121,8 @@ int itkRGBPixelTest(int, char* [] )
 
   const float luminance = rgbl.GetLuminance();
   const float realLuminance = rgbl[0] * 0.30 +
-                              rgbl[1] * 0.59 +
-                              rgbl[2] * 0.11;
+    rgbl[1] * 0.59 +
+    rgbl[2] * 0.11;
   const float tolerance = 1e-4;
 
   if( vcl_fabs( luminance - realLuminance ) > tolerance )

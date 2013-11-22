@@ -60,7 +60,7 @@ namespace itk
  */
 
 template< typename TInputImageType, typename TSparseOutputImageType >
-class FiniteDifferenceSparseImageFilter:
+class FiniteDifferenceSparseImageFilter :
   public FiniteDifferenceImageFilter< TInputImageType,
                                       TSparseOutputImageType >
 {
@@ -68,7 +68,7 @@ public:
   /** Standard class typedef */
   typedef FiniteDifferenceSparseImageFilter Self;
   typedef FiniteDifferenceImageFilter<
-    TInputImageType, TSparseOutputImageType >      Superclass;
+      TInputImageType, TSparseOutputImageType >      Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -104,7 +104,7 @@ public:
 
   /** The sparse image finite difference function type used in this class. */
   typedef FiniteDifferenceSparseImageFunction< SparseOutputImageType >
-  SparseFunctionType;
+    SparseFunctionType;
 
   /** Sets the function object that will be called for computing updates. */
   void SetSparseFunction(SparseFunctionType *sf);
@@ -124,12 +124,16 @@ protected:
 
   /** This class does not use AllocateUpdateBuffer to allocate memory for its
    *  narrow band. All memory is handled through the SparseImage class. */
-  virtual void AllocateUpdateBuffer() {}
+  virtual void
+  AllocateUpdateBuffer() {}
 
   /** This function can be used to implements constraints on the range of data
    * values. Default is no constraint. */
-  virtual NodeDataType DataConstraint(const NodeDataType & data) const
-  { return data; }
+  virtual NodeDataType
+  DataConstraint(const NodeDataType & data) const
+  {
+    return data;
+  }
 
 private:
   /** The type of region used in multithreading. */
@@ -138,7 +142,7 @@ private:
     typename NodeListType::Iterator first;
     // this is one past the last element
     typename NodeListType::Iterator last;
-  };
+    };
 
 protected:
   /** This function returns a single region for use in multi-threading. */
@@ -183,7 +187,7 @@ protected:
     TimeStepType TimeStep;
     std::vector< TimeStepType > TimeStepList;
     std::vector< bool > ValidTimeStepList;
-  };
+    };
 
 private:
   /** Flag to let the class know whether or not to call PrecalculateChange. */
@@ -198,6 +202,7 @@ private:
 
   FiniteDifferenceSparseImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                    //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -42,14 +42,17 @@ SimpleFastMutexLock::~SimpleFastMutexLock()
 }
 
 // Lock the FastMutexLock
-void SimpleFastMutexLock::Lock() const
+void
+SimpleFastMutexLock::Lock() const
 {
   pthread_mutex_lock(&m_FastMutexLock);
 }
 
 // Unlock the FastMutexLock
-void SimpleFastMutexLock::Unlock() const
+void
+SimpleFastMutexLock::Unlock() const
 {
   pthread_mutex_unlock(&m_FastMutexLock);
 }
+
 } //end namespace itk

@@ -52,7 +52,7 @@ namespace itk
  */
 template< typename TInputImage, typename TLevelSet >
 class VTKVisualize2DSparseLevelSetLayersBase :
-    public VTKVisualizeImageLevelSet< TInputImage, ImageToRGBVTKImageFilter< TInputImage > >
+  public VTKVisualizeImageLevelSet< TInputImage, ImageToRGBVTKImageFilter< TInputImage > >
 {
 public:
   typedef ImageToRGBVTKImageFilter< TInputImage > ConverterType;
@@ -66,13 +66,14 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(VTKVisualize2DSparseLevelSetLayersBase, VTKVisualizeImageLevelSet );
 
-  typedef TInputImage                         InputImageType;
-  typedef typename InputImageType::PixelType  InputPixelType;
+  typedef TInputImage                        InputImageType;
+  typedef typename InputImageType::PixelType InputPixelType;
 
-  typedef TLevelSet                       LevelSetType;
-  typedef typename LevelSetType::Pointer  LevelSetPointer;
+  typedef TLevelSet                      LevelSetType;
+  typedef typename LevelSetType::Pointer LevelSetPointer;
 
   virtual void SetInputImage( const InputImageType* image );
+
   void SetLevelSet( LevelSetType * levelSet );
 
 #ifdef ITK_USE_CONCEPT_CHECKING
@@ -82,11 +83,12 @@ public:
 
 protected:
   VTKVisualize2DSparseLevelSetLayersBase();
-  virtual ~VTKVisualize2DSparseLevelSetLayersBase();
+  virtual
+  ~VTKVisualize2DSparseLevelSetLayersBase();
 
-  LevelSetPointer                   m_LevelSet;
-  vtkSmartPointer< vtkImageData >   m_VTKImage;
-  vtkSmartPointer< vtkImageActor >  m_VTKImageActor;
+  LevelSetPointer                  m_LevelSet;
+  vtkSmartPointer< vtkImageData >  m_VTKImage;
+  vtkSmartPointer< vtkImageActor > m_VTKImageActor;
 
   virtual void PrepareVTKPipeline();
 
@@ -96,7 +98,8 @@ protected:
 
 private:
   VTKVisualize2DSparseLevelSetLayersBase ( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
+
 };
 }
 

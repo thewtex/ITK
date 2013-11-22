@@ -20,14 +20,15 @@
 #include "itkReflectiveImageRegionIterator.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-
-int itkReflectiveImageRegionIteratorTest(int, char* [] )
+int
+itkReflectiveImageRegionIteratorTest(int, char* [] )
 {
   std::cout << "Creating an image" << std::endl;
   const unsigned int Dimension = 4;
-  typedef itk::Index<Dimension>             PixelType;
-  typedef itk::Image<PixelType,Dimension>   ImageType;
-  typedef itk::Image<int,Dimension>         ImageVisitsType;
+
+  typedef itk::Index<Dimension>           PixelType;
+  typedef itk::Image<PixelType,Dimension> ImageType;
+  typedef itk::Image<int,Dimension>       ImageVisitsType;
 
   typedef itk::ImageRegionIteratorWithIndex<ImageType>       IteratorType;
   typedef itk::ImageRegionIteratorWithIndex<ImageVisitsType> IteratorVisitsType;
@@ -55,8 +56,8 @@ int itkReflectiveImageRegionIteratorTest(int, char* [] )
   visitImage->SetBufferedRegion( region );
   visitImage->Allocate();
 
-  IteratorType        nit( myImage,    region );
-  IteratorVisitsType  vit( visitImage, region );
+  IteratorType       nit( myImage,    region );
+  IteratorVisitsType vit( visitImage, region );
 
   // Store information on the Image
   std::cout << "Storing data in the image ... " << std::endl;
@@ -72,13 +73,12 @@ int itkReflectiveImageRegionIteratorTest(int, char* [] )
     ++vit;
     }
 
-
   typedef itk::ReflectiveImageRegionConstIterator< ImageType >
-                                                  ReflectiveIteratorType;
+    ReflectiveIteratorType;
   ReflectiveIteratorType rit( myImage, region );
 
   typedef itk::ReflectiveImageRegionIterator< ImageVisitsType >
-                                                  ReflectiveVisitsIteratorType;
+    ReflectiveVisitsIteratorType;
 
   ReflectiveVisitsIteratorType rvt( visitImage, region );
 
@@ -89,7 +89,7 @@ int itkReflectiveImageRegionIteratorTest(int, char* [] )
   rvt.GoToBegin();
   while( !rit.IsAtEnd() )
     {
-    PixelType value = rit.Get();
+    PixelType            value = rit.Get();
     ImageType::IndexType index = rit.GetIndex();
     rvt.Set( rvt.Get() + 1 );
     if( value != index )
@@ -101,10 +101,9 @@ int itkReflectiveImageRegionIteratorTest(int, char* [] )
     ++rvt;
     }
 
-
   // Each element should be visited 2 ^ # of dimensions
   // each left shift = multiply by 2
-  int visits = ( 1 << (ImageType::ImageDimension));
+  int visits = ( 1 << (ImageType::ImageDimension) );
   int failed = 0;
 
   // Verify the number of visits
@@ -140,24 +139,23 @@ int itkReflectiveImageRegionIteratorTest(int, char* [] )
   rit.SetEndOffset(voffset);
 
   for( rit.GoToBegin(); !rit.IsAtEnd(); ++rit )
-  {
-    if( rit.Get() != myImage->GetPixel( rit.GetIndex() ) )
     {
+    if( rit.Get() != myImage->GetPixel( rit.GetIndex() ) )
+      {
       std::cerr << "Error: pixel value returned by iterator is "
-          << rit.Get()
-          << ", but pixel value defined by image at the same index is "
-          << myImage->GetPixel( rit.GetIndex() )
-          << std::endl;
+                << rit.Get()
+                << ", but pixel value defined by image at the same index is "
+                << myImage->GetPixel( rit.GetIndex() )
+                << std::endl;
       failed = 1;
+      }
     }
-  }
 
   if ( failed )
     {
     std::cout << "      FAILED !" << std::endl << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "      PASSED !" << std::endl << std::endl;
   return EXIT_SUCCESS;

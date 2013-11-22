@@ -58,7 +58,8 @@ public:
 protected:
 
   IterativeSupervisedTrainingFunction();
-  virtual ~IterativeSupervisedTrainingFunction(){};
+  virtual
+  ~IterativeSupervisedTrainingFunction(){}
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
@@ -71,7 +72,7 @@ protected:
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkIterativeSupervisedTrainingFunction.hxx"
+#include "itkIterativeSupervisedTrainingFunction.hxx"
 #endif
 
 #endif

@@ -23,8 +23,8 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
-
-int itkRegionalMinimaImageFilterTest(int argc, char * argv[])
+int
+itkRegionalMinimaImageFilterTest(int argc, char * argv[])
 {
   const int dim = 3;
 
@@ -96,7 +96,6 @@ int itkRegionalMinimaImageFilterTest(int argc, char * argv[])
     return EXIT_FAILURE;
     }
 
-
   filter->SetForegroundValue( 255 );
   if( filter->GetForegroundValue() != 255 )
     {
@@ -112,7 +111,7 @@ int itkRegionalMinimaImageFilterTest(int argc, char * argv[])
     }
 
   filter->SetForegroundValue( itk::NumericTraits< PixelType>::max() );
-  filter->SetBackgroundValue( itk::NumericTraits< PixelType>::NonpositiveMin());
+  filter->SetBackgroundValue( itk::NumericTraits< PixelType>::NonpositiveMin() );
 
   filter->SetFullyConnected( atoi(argv[1]) );
   filter->FlatIsMinimaOff();
@@ -123,7 +122,6 @@ int itkRegionalMinimaImageFilterTest(int argc, char * argv[])
   writer->SetInput( filter->GetOutput() );
   writer->SetFileName( argv[3] );
   writer->Update();
-
 
   // produce the same output with other filters
   typedef itk::HConcaveImageFilter< ImageType, ImageType > ConcaveType;

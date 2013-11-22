@@ -67,7 +67,7 @@ namespace itk
 template< typename TTransform,
           typename TFixedImage,
           typename TMovingImage >
-class LandmarkBasedTransformInitializer:
+class LandmarkBasedTransformInitializer :
   public Object
 {
 public:
@@ -98,7 +98,6 @@ public:
   typedef TFixedImage  FixedImageType;
   typedef TMovingImage MovingImageType;
 
-
   typedef   typename FixedImageType::ConstPointer  FixedImagePointer;
   typedef   typename MovingImageType::ConstPointer MovingImagePointer;
 
@@ -117,13 +116,15 @@ public:
   typedef LandmarkWeightType::const_iterator                      LandmarkWeightConstIterator;
 
   /** Set the Fixed landmark point containers */
-  void SetFixedLandmarks(const LandmarkPointContainer & fixedLandmarks)
+  void
+  SetFixedLandmarks(const LandmarkPointContainer & fixedLandmarks)
   {
     this->m_FixedLandmarks = fixedLandmarks;
   }
 
   /** Set the Moving landmark point containers */
-  void SetMovingLandmarks(const LandmarkPointContainer & movingLandmarks)
+  void
+  SetMovingLandmarks(const LandmarkPointContainer & movingLandmarks)
   {
     this->m_MovingLandmarks = movingLandmarks;
   }
@@ -131,7 +132,8 @@ public:
   /** Set the landmark weight point containers
    *  Weight includes diagonal elements of weight matrix
    */
-  void SetLandmarkWeight(LandmarkWeightType & landmarkWeight)
+  void
+  SetLandmarkWeight(LandmarkWeightType & landmarkWeight)
   {
     this->m_LandmarkWeight= landmarkWeight;
   }
@@ -160,14 +162,16 @@ private:
   LandmarkBasedTransformInitializer(const Self &); //purposely not implemented
   void operator=(const Self &);                    //purposely not implemented
 
-
   /** fallback Initializer just sets transform to identity */
   template <typename TTransform2>
-    void InternalInitializeTransform(TTransform *);
+  void InternalInitializeTransform(TTransform *);
+
   /** Initializer for VersorRigid3D */
   void InternalInitializeTransform(VersorRigid3DTransformType *);
+
   /** Initializer for Rigid2DTransform */
   void InternalInitializeTransform(Rigid2DTransformType *);
+
   /** Initializer for AffineTransform */
   void InternalInitializeTransform(AffineTransformType *);
 

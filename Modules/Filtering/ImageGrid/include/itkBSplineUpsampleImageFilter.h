@@ -81,7 +81,7 @@ namespace itk
 
 template< typename TInputImage, typename TOutputImage, typename ResamplerType =
             BSplineResampleImageFilterBase< TInputImage, TOutputImage > >
-class BSplineUpsampleImageFilter:
+class BSplineUpsampleImageFilter :
   public ResamplerType
 {
 public:
@@ -130,12 +130,14 @@ protected:
   void EnlargeOutputRequestedRegion(DataObject *output);
 
   BSplineUpsampleImageFilter();
-  virtual ~BSplineUpsampleImageFilter() {}
+  virtual
+  ~BSplineUpsampleImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   BSplineUpsampleImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
+
 };
 } // namespace itk
 

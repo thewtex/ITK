@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKTransform
  */
 template< typename TScalar >
-class TransformBaseTemplate:public Object
+class TransformBaseTemplate : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -58,7 +58,7 @@ public:
 
   /** The number of parameters can potentially be very large,
    *  therefore we use here a large capacity integer. */
-  typedef IdentifierType      NumberOfParametersType;
+  typedef IdentifierType NumberOfParametersType;
 
   /** Return the number of parameters that completely define the Transfom  */
   virtual NumberOfParametersType GetNumberOfParameters(void) const = 0;
@@ -100,18 +100,20 @@ public:
     Spline=3,
     DisplacementField=4,
     VelocityField=5
-  } TransformCategoryType;
+    } TransformCategoryType;
 
   /** Get transform category */
   virtual TransformCategoryType GetTransformCategory() const = 0;
 
 protected:
   TransformBaseTemplate(){}
-  virtual ~TransformBaseTemplate() {}
+  virtual
+  ~TransformBaseTemplate() {}
 
 private:
-  TransformBaseTemplate(const Self &);  //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  TransformBaseTemplate(const Self &); //purposely not implemented
+  void operator=(const Self &);        //purposely not implemented
+
 };
 
 /** This helps to meet backward compatibility */

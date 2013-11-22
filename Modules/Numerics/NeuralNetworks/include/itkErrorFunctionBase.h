@@ -58,13 +58,14 @@ public:
 
 protected:
 
-  ErrorFunctionBase(){};
-  ~ErrorFunctionBase(){};
+  ErrorFunctionBase(){}
+  ~ErrorFunctionBase(){}
 
 private:
 
   ErrorFunctionBase(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);    //purposely not implemented
+
 };
 
 } // end namespace itk

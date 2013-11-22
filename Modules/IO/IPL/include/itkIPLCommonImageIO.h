@@ -47,7 +47,7 @@ namespace itk
   * \ingroup IOFilters
   * \ingroup ITKIOIPL
   */
-class ITKIOIPL_EXPORT IPLCommonImageIO:public ImageIOBase
+class ITKIOIPL_EXPORT IPLCommonImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -86,7 +86,8 @@ public:
   virtual void ReadImageInformation();
 
   /** Optionally, modify spacing, origin and direction */
-  virtual void ModifyImageInformation() {}
+  virtual void
+  ModifyImageInformation() {}
 
   /** Reads the data from disk into the memory buffer provided. */
   virtual void Read(void *buffer);
@@ -144,9 +145,9 @@ protected:
 
   //
   // data members
-  GEImageHeader         *m_ImageHeader;
+  GEImageHeader *        m_ImageHeader;
   ImageIOBase::ByteOrder m_SystemByteOrder;
-  IPLFileNameList       *m_FilenameList;
+  IPLFileNameList *      m_FilenameList;
   //
   // return 0 on success, -1 on failure
   int GetStringAt(std::ifstream & f, std::streamoff Offset, char *buf,
@@ -175,12 +176,13 @@ protected:
 private:
   IPLCommonImageIO(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };
 } // end namespace itk
 #define RAISE_EXCEPTION()                                    \
-            { ExceptionObject exception(__FILE__, __LINE__); \
-            exception.SetDescription("File cannot be read"); \
-            throw exception; }
+                { ExceptionObject exception(__FILE__, __LINE__); \
+                exception.SetDescription("File cannot be read"); \
+                throw exception; }
 
 #define IOCHECK()      \
   if ( f.fail() )      \

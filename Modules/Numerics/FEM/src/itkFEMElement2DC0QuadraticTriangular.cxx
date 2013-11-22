@@ -164,7 +164,8 @@ Element2DC0QuadraticTriangular
   delete pJlocal;
 }
 
-bool Element2DC0QuadraticTriangular::GetLocalFromGlobalCoordinates(
+bool
+Element2DC0QuadraticTriangular::GetLocalFromGlobalCoordinates(
   const VectorType & GlobalPt, VectorType & LocalPt) const
 {
   // connectivity is based on how the nodes are stored
@@ -225,7 +226,8 @@ bool Element2DC0QuadraticTriangular::GetLocalFromGlobalCoordinates(
   return returnStatus;
 }
 
-void Element2DC0QuadraticTriangular::PopulateEdgeIds(void)
+void
+Element2DC0QuadraticTriangular::PopulateEdgeIds(void)
 {
   this->m_EdgeIds.resize(0);
 
@@ -248,7 +250,8 @@ void Element2DC0QuadraticTriangular::PopulateEdgeIds(void)
   this->m_EdgeIds.push_back(edgePtIds);
 }
 
-void Element2DC0QuadraticTriangular::PrintSelf(std::ostream& os, Indent indent) const
+void
+Element2DC0QuadraticTriangular::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }

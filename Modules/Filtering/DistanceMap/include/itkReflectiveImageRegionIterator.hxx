@@ -24,25 +24,25 @@ namespace itk
 {
 template< typename TImage >
 ReflectiveImageRegionIterator< TImage >
-::ReflectiveImageRegionIterator():
+::ReflectiveImageRegionIterator() :
   ReflectiveImageRegionConstIterator< TImage >()
 {}
 
 template< typename TImage >
 ReflectiveImageRegionIterator< TImage >
-::ReflectiveImageRegionIterator(ImageType *ptr, const RegionType & region):
+::ReflectiveImageRegionIterator(ImageType *ptr, const RegionType & region) :
   ReflectiveImageRegionConstIterator< TImage >(ptr, region)
 {}
 
 template< typename TImage >
 ReflectiveImageRegionIterator< TImage >
-::ReflectiveImageRegionIterator(const ImageIteratorWithIndex< TImage > & it):
+::ReflectiveImageRegionIterator(const ImageIteratorWithIndex< TImage > & it) :
   ReflectiveImageRegionConstIterator< TImage >(it)
 {}
 
 template< typename TImage >
 ReflectiveImageRegionIterator< TImage >
-::ReflectiveImageRegionIterator(const ReflectiveImageRegionConstIterator< TImage > & it):
+::ReflectiveImageRegionIterator(const ReflectiveImageRegionConstIterator< TImage > & it) :
   ReflectiveImageRegionConstIterator< TImage >(it)
 {}
 
@@ -54,6 +54,7 @@ ReflectiveImageRegionIterator< TImage >
   this->ReflectiveImageRegionConstIterator< TImage >::operator=(it);
   return *this;
 }
+
 } // end namespace itk
 
 #endif

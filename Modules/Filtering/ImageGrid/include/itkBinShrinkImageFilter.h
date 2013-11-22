@@ -98,6 +98,7 @@ public:
    * a minimum value of 1. Default is 1 for all dimensions. */
   itkSetMacro(ShrinkFactors, ShrinkFactorsType);
   void SetShrinkFactors(unsigned int factor);
+
   void SetShrinkFactor(unsigned int i, unsigned int factor);
 
   /** Get the shrink factors. */
@@ -112,13 +113,12 @@ public:
    * \sa ProcessObject::GenerateInputRequestedRegion() */
   virtual void GenerateInputRequestedRegion();
 
-
 #ifdef ITK_USE_CONCEPT_CHECKING
   /** Begin concept checking */
   itkConceptMacro(InputConvertibleToOutputCheck,
-    (Concept::Convertible<typename TInputImage::PixelType, typename TOutputImage::PixelType>));
+                  (Concept::Convertible<typename TInputImage::PixelType, typename TOutputImage::PixelType>) );
   itkConceptMacro(SameDimensionCheck,
-    (Concept::SameDimension<ImageDimension, OutputImageDimension>));
+                  (Concept::SameDimension<ImageDimension, OutputImageDimension>) );
   /** End concept checking */
 #endif
 

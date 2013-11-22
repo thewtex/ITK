@@ -19,10 +19,10 @@
 #include "itkMRCImageIOPrivate.h"
 #include "itkByteSwapper.h"
 
-
 namespace itk
 {
-void MRCHeaderObject::DeepCopy(ConstPointer h)
+void
+MRCHeaderObject::DeepCopy(ConstPointer h)
 {
   memcpy( &this->m_Header, &h->m_Header, sizeof( Header ) );
 
@@ -47,12 +47,14 @@ void MRCHeaderObject::DeepCopy(ConstPointer h)
     }
 }
 
-const MRCHeaderObject::Header & MRCHeaderObject::GetHeader() const
+const MRCHeaderObject::Header &
+MRCHeaderObject::GetHeader() const
 {
   return this->m_Header;
 }
 
-bool MRCHeaderObject::SetHeader(const Header *buffer)
+bool
+MRCHeaderObject::SetHeader(const Header *buffer)
 {
   if ( !buffer )
     {
@@ -151,12 +153,14 @@ bool MRCHeaderObject::SetHeader(const Header *buffer)
   return true;
 }
 
-SizeValueType MRCHeaderObject::GetExtendedHeaderSize(void) const
+SizeValueType
+MRCHeaderObject::GetExtendedHeaderSize(void) const
 {
   return this->m_ExtendedHeaderSize;
 }
 
-bool MRCHeaderObject::SetExtendedHeader(const void *buffer)
+bool
+MRCHeaderObject::SetExtendedHeader(const void *buffer)
 {
   if ( !this->m_ExtendedHeaderSize )
     {
@@ -187,15 +191,16 @@ bool MRCHeaderObject::SetExtendedHeader(const void *buffer)
   return true;
 }
 
-bool MRCHeaderObject::IsOriginalHeaderBigEndian(void) const
+bool
+MRCHeaderObject::IsOriginalHeaderBigEndian(void) const
 {
   return this->m_BigEndianHeader;
 }
 
 MRCHeaderObject::MRCHeaderObject(void)
   : m_ExtendedHeaderSize(0),
-    m_ExtendedHeader(0),
-    m_ExtendedFeiHeader(0)
+  m_ExtendedHeader(0),
+  m_ExtendedFeiHeader(0)
 {
   memset( &this->m_Header, 0, sizeof( Header ) );
   this->m_BigEndianHeader = ByteSwapper< void * >::SystemIsBE();
@@ -206,7 +211,8 @@ MRCHeaderObject::~MRCHeaderObject(void)
   delete[] static_cast< char * >( this->m_ExtendedHeader );
 }
 
-void MRCHeaderObject::swapHeader(bool bigEndian)
+void
+MRCHeaderObject::swapHeader(bool bigEndian)
 {
   typedef itk::ByteSwapper< float >   FloatSwapper;
   typedef itk::ByteSwapper< int32_t > Int32Swapper;
@@ -347,7 +353,8 @@ void MRCHeaderObject::swapHeader(bool bigEndian)
     }
 }
 
-void MRCHeaderObject::PrintSelf(std::ostream & os, Indent indent) const
+void
+MRCHeaderObject::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 

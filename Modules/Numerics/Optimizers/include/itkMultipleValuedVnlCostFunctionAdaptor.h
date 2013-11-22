@@ -33,7 +33,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class MultipleValuedVnlCostFunctionAdaptor:
+class MultipleValuedVnlCostFunctionAdaptor :
   public vnl_least_squares_function
 {
 public:
@@ -64,12 +64,18 @@ public:
                                        unsigned int numberOfValues);
 
   /** Set the CostFunction deriving from MultipleValuedCostFunction */
-  void SetCostFunction(MultipleValuedCostFunction *costFunction)
-  { m_CostFunction = costFunction; }
+  void
+  SetCostFunction(MultipleValuedCostFunction *costFunction)
+  {
+    m_CostFunction = costFunction;
+  }
 
   /** Get the CostFunction deriving from MultipleValuedCostFunction */
-  const MultipleValuedCostFunction * GetCostFunction(void) const
-  { return m_CostFunction; }
+  const MultipleValuedCostFunction *
+  GetCostFunction(void) const
+  {
+    return m_CostFunction;
+  }
 
   /**  Delegate computation of the value to the CostFunction. */
   virtual void f(const InternalParametersType & inparameters,
@@ -99,8 +105,16 @@ public:
        using a default approach  */
   void SetUseGradient(bool);
 
-  void UseGradientOn()  { this->SetUseGradient(true); }
-  void UseGradientOff() { this->SetUseGradient(false); }
+  void
+  UseGradientOn()  {
+    this->SetUseGradient(true);
+  }
+
+  void
+  UseGradientOff() {
+    this->SetUseGradient(false);
+  }
+
   bool GetUseGradient() const;
 
   /** Set current parameters scaling. */

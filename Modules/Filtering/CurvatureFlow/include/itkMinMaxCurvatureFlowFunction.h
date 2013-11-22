@@ -39,7 +39,7 @@ namespace itk
  * \ingroup ITKCurvatureFlow
  */
 template< typename TImage >
-class MinMaxCurvatureFlowFunction:
+class MinMaxCurvatureFlowFunction :
   public CurvatureFlowFunction< TImage >
 {
 public:
@@ -73,12 +73,18 @@ public:
   /** Set/Get the stencil radius. */
   void SetStencilRadius(const RadiusValueType radius);
 
-  const RadiusValueType & GetRadiusValueType() const
-  { return m_StencilRadius; }
+  const RadiusValueType &
+  GetRadiusValueType() const
+  {
+    return m_StencilRadius;
+  }
 
   /** Convenience function for symmetry with SetStencilRadius. */
-  const RadiusValueType & GetStencilRadius() const
-  { return GetRadiusValueType(); }
+  const RadiusValueType &
+  GetStencilRadius() const
+  {
+    return GetRadiusValueType();
+  }
 
   /** This method computes the solution update for each pixel that does not
    * lie on a the data set boundary. */
@@ -107,7 +113,7 @@ private:
   // To control overloaded versions of ComputeThreshold
   struct DispatchBase {};
   template< signed int VDimension >
-  struct Dispatch: public DispatchBase {};
+  struct Dispatch : public DispatchBase {};
 
   /** This method computes the threshold by averaging the intensity
    *  in direction perpendicular to the image gradient. */
@@ -119,6 +125,7 @@ private:
 
   virtual PixelType ComputeThreshold(const DispatchBase &,
                                      const NeighborhoodType & neighborhood) const;
+
 };
 } // end namespace itk
 

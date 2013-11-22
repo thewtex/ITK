@@ -71,8 +71,8 @@ LinearInterpolateImageFunction< TInputImage, TCoordRep >
    * Compute base index = closet index below point
    * Compute distance from point to base index
    */
-  IndexType baseIndex;
-  InternalComputationType    distance[ImageDimension];
+  IndexType               baseIndex;
+  InternalComputationType distance[ImageDimension];
 
   for ( dim = 0; dim < ImageDimension; dim++ )
     {
@@ -93,13 +93,13 @@ LinearInterpolateImageFunction< TInputImage, TCoordRep >
 
   typedef typename NumericTraits< InputPixelType >::ScalarRealType InputPixelScalarRealType;
   InputPixelScalarRealType totalOverlap = NumericTraits< InputPixelScalarRealType >::Zero;
-  bool firstOverlap = true;
+  bool                     firstOverlap = true;
 
   for ( unsigned int counter = 0; counter < m_Neighbors; ++counter )
     {
-    InternalComputationType       overlap = 1.0;    // fraction overlap
-    unsigned int upper = counter;  // each bit indicates upper/lower neighbour
-    IndexType    neighIndex;
+    InternalComputationType overlap = 1.0;   // fraction overlap
+    unsigned int            upper = counter; // each bit indicates upper/lower neighbour
+    IndexType               neighIndex;
 
     // get neighbor index and overlap fraction
     for ( dim = 0; dim < ImageDimension; dim++ )
@@ -159,6 +159,7 @@ LinearInterpolateImageFunction< TInputImage, TCoordRep >
 
   return ( static_cast< OutputType >( value ) );
 }
+
 } // end namespace itk
 
 #endif

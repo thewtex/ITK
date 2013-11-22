@@ -27,7 +27,8 @@
 #include "itkImage.h"
 #include <iostream>
 
-int main()
+int
+main()
 {
   typedef itk::Image< unsigned short, 3 > ImageType;
 
@@ -37,6 +38,7 @@ int main()
 
   return 0;
 }
+
 // Software Guide : EndCodeSnippet
 
 //  Software Guide : BeginLatex

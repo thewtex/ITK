@@ -28,21 +28,21 @@
 #include "itkFastMutexLock.h"
 
 #if defined( _WIN32 )
-  #include "itkWindows.h"
+#include "itkWindows.h"
 
 #elif defined( __APPLE__ )
 // OSAtomic.h optimizations only used in 10.5 and later
-  #include <AvailabilityMacros.h>
-  #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1050
-    #include <libkern/OSAtomic.h>
-  #endif
+#include <AvailabilityMacros.h>
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1050
+#include <libkern/OSAtomic.h>
+#endif
 
 #elif defined( __GLIBCPP__ ) || defined( __GLIBCXX__ )
-  #if ( __GNUC__ > 4 ) || ( ( __GNUC__ == 4 ) && ( __GNUC_MINOR__ >= 2 ) )
-  #include <ext/atomicity.h>
-  #else
-  #include <bits/atomicity.h>
-  #endif
+#if ( __GNUC__ > 4 ) || ( ( __GNUC__ == 4 ) && ( __GNUC_MINOR__ >= 2 ) )
+#include <ext/atomicity.h>
+#else
+#include <bits/atomicity.h>
+#endif
 
 #endif
 
@@ -88,17 +88,17 @@ TimeStamp
 
   // Mac optimization
 #elif defined( __APPLE__ ) && ( MAC_OS_X_VERSION_MIN_REQUIRED >= 1050 )
- #if __LP64__
+#if __LP64__
   // "m_ModifiedTime" is "unsigned long", a type that changess sizes
   // depending on architecture.  The atomic increment is safe, since it
   // operates on a variable of the exact type needed.  The cast does not
   // change the size, but does change signedness, which is not ideal.
   static volatile int64_t itkTimeStampTime = 0;
   m_ModifiedTime = (ModifiedTimeType)OSAtomicIncrement64Barrier(&itkTimeStampTime);
- #else
+#else
   static volatile int32_t itkTimeStampTime = 0;
   m_ModifiedTime = (ModifiedTimeType)OSAtomicIncrement32Barrier(&itkTimeStampTime);
- #endif
+#endif
 
 // gcc optimization
 #elif defined( __GLIBCPP__ ) || defined( __GLIBCXX__ )
@@ -123,4 +123,5 @@ TimeStamp
   TimeStampMutex.Unlock();
 #endif
 }
+
 } // end namespace itk

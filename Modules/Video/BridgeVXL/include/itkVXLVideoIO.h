@@ -42,7 +42,7 @@ namespace itk
  * \ingroup ITKVideoBridgeVXL
  *
  */
-class VXLVideoIO:public VideoIOBase
+class VXLVideoIO : public VideoIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -84,24 +84,29 @@ public:
   /** Reads the data from disk into the memory buffer provided. */
   virtual void Read(void *buffer);
 
-
   /** Set the next frame that should be read. Return true if you operation
    * successful */
   virtual bool SetNextFrameToRead( FrameOffsetType frameNumber);
 
   /** Accessor functions for video specific information */
   virtual TemporalOffsetType GetPositionInMSec() const;
+
   virtual TemporalRatioType GetRatio() const;
+
   virtual FrameOffsetType GetFrameTotal() const;
+
   virtual TemporalRatioType GetFramesPerSecond() const;
+
   virtual FrameOffsetType  GetCurrentFrame() const;
+
   virtual FrameOffsetType GetIFrameInterval() const;
+
   virtual FrameOffsetType  GetLastIFrame() const;
 
   /** Get/Set the camera index */
   virtual void SetCameraIndex(int idx);
-  virtual int GetCameraIndex();
 
+  virtual int GetCameraIndex();
 
   /*-------- This part of the interfaces deals with writing data. ----- */
 
@@ -139,7 +144,6 @@ protected:
   /** Open the writer iff the reader is not open */
   void OpenWriter();
 
-
   /** Translate a FourCC string into to a VXL encoder */
   vidl_ffmpeg_ostream_params::encoder_type FourCCtoEncoderType(const char* fourCC);
 
@@ -157,15 +161,14 @@ private:
   void operator=(const Self &); //purposely not implemented
 
   /** Member Variables */
-  vidl_pixel_format                         m_PixelFormat;
-  vidl_frame_sptr                           m_VIDLFrame;
-  vidl_ffmpeg_istream*                      m_Reader;
-  vidl_ffmpeg_ostream*                      m_Writer;
-  vidl_ffmpeg_ostream_params::encoder_type  m_Encoder;
-
+  vidl_pixel_format                        m_PixelFormat;
+  vidl_frame_sptr                          m_VIDLFrame;
+  vidl_ffmpeg_istream*                     m_Reader;
+  vidl_ffmpeg_ostream*                     m_Writer;
+  vidl_ffmpeg_ostream_params::encoder_type m_Encoder;
 
   /** device index for reading from a camera (may move to base class) */
-  int                 m_CameraIndex;
+  int m_CameraIndex;
 };
 } // end namespace itk
 

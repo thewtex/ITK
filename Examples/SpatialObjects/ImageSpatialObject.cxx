@@ -32,7 +32,8 @@
 #include "itkImageSpatialObject.h"
 // Software Guide : EndCodeSnippet
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 // Software Guide : BeginLatex
 //
@@ -42,8 +43,8 @@ int main( int , char *[] )
 
 // Software Guide : BeginCodeSnippet
   typedef itk::Image<short,2> Image;
-  Image::Pointer image = Image::New();
-  Image::SizeType size = {{ 10, 10 }};
+  Image::Pointer    image = Image::New();
+  Image::SizeType   size = {{ 10, 10 }};
   Image::RegionType region;
   region.SetSize(size);
   image->SetRegions(region);
@@ -59,7 +60,7 @@ int main( int , char *[] )
 // Software Guide : BeginCodeSnippet
   typedef itk::ImageRegionIterator<Image> Iterator;
   Iterator it(image,region);
-  short pixelValue =0;
+  short    pixelValue =0;
   it.GoToBegin();
   for(; !it.IsAtEnd(); ++it, ++pixelValue)
     {

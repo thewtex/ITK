@@ -54,7 +54,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TMesh, typename TQEType >
-class QuadEdgeMeshEulerOperatorJoinVertexFunction:
+class QuadEdgeMeshEulerOperatorJoinVertexFunction :
   public QuadEdgeMeshFunctionBase< TMesh, TQEType * >
 {
 public:

@@ -67,7 +67,7 @@ namespace itk
  * \ingroup ITKImageFeature
  */
 template< typename TInputImage, typename TOutputImage >
-class ZeroCrossingBasedEdgeDetectionImageFilter:
+class ZeroCrossingBasedEdgeDetectionImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -118,7 +118,8 @@ public:
   itkSetMacro(ForegroundValue, OutputImagePixelType);
 
   /** Set the variance parameter needed by the embedded gaussian filter  */
-  void SetVariance(const typename ArrayType::ValueType v)
+  void
+  SetVariance(const typename ArrayType::ValueType v)
   {
     m_Variance.Fill(v);
   }
@@ -129,7 +130,8 @@ public:
  * discrete Gaussian curve and the area under the continuous Gaussian.  Maximum
  * error affects the Gaussian operator size. The value must be between 0.0 and
  * 1.0. */
-  void SetMaximumError(const typename ArrayType::ValueType v)
+  void
+  SetMaximumError(const typename ArrayType::ValueType v)
   {
     m_MaximumError.Fill(v);
   }
@@ -171,7 +173,7 @@ protected:
 
 private:
   ZeroCrossingBasedEdgeDetectionImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);                            //purposely not implemented
 
   /** The variance of the Gaussian Filter used in this filter */
   ArrayType m_Variance;

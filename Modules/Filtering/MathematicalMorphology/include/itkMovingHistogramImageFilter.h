@@ -84,7 +84,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TKernel, typename THistogram >
-class MovingHistogramImageFilter:
+class MovingHistogramImageFilter :
   public MovingHistogramImageFilterBase< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -130,7 +130,8 @@ public:
   typedef typename std::map< OffsetType, OffsetListType, typename OffsetType::LexicographicCompare > OffsetMapType;
 
   /** ConfigurewHistogram can be used to configure the histogram. The default version just do nothing. */
-  virtual void ConfigureHistogram(THistogram &) {}
+  virtual void
+  ConfigureHistogram(THistogram &) {}
 
 protected:
   MovingHistogramImageFilter();
@@ -155,6 +156,7 @@ protected:
 private:
   MovingHistogramImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
+
 };                                          // end of class
 } // end namespace itk
 

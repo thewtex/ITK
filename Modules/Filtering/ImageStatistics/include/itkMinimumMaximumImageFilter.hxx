@@ -72,33 +72,33 @@ template< typename TInputImage >
 typename MinimumMaximumImageFilter< TInputImage >::PixelObjectType *
 MinimumMaximumImageFilter< TInputImage >
 ::GetMinimumOutput()
-{
+  {
   return static_cast< PixelObjectType * >( this->ProcessObject::GetOutput(1) );
-}
+  }
 
 template< typename TInputImage >
 const typename MinimumMaximumImageFilter< TInputImage >::PixelObjectType *
 MinimumMaximumImageFilter< TInputImage >
 ::GetMinimumOutput() const
-{
+  {
   return static_cast< const PixelObjectType * >( this->ProcessObject::GetOutput(1) );
-}
+  }
 
 template< typename TInputImage >
 typename MinimumMaximumImageFilter< TInputImage >::PixelObjectType *
 MinimumMaximumImageFilter< TInputImage >
 ::GetMaximumOutput()
-{
+  {
   return static_cast< PixelObjectType * >( this->ProcessObject::GetOutput(2) );
-}
+  }
 
 template< typename TInputImage >
 const typename MinimumMaximumImageFilter< TInputImage >::PixelObjectType *
 MinimumMaximumImageFilter< TInputImage >
 ::GetMaximumOutput() const
-{
+  {
   return static_cast< const PixelObjectType * >( this->ProcessObject::GetOutput(2) );
-}
+  }
 
 template< typename TInputImage >
 void
@@ -106,6 +106,7 @@ MinimumMaximumImageFilter< TInputImage >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   if ( this->GetInput() )
     {
     InputImagePointer image =
@@ -120,6 +121,7 @@ MinimumMaximumImageFilter< TInputImage >
 ::EnlargeOutputRequestedRegion(DataObject *data)
 {
   Superclass::EnlargeOutputRequestedRegion(data);
+
   data->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -245,5 +247,6 @@ MinimumMaximumImageFilter< TImage >
      << static_cast< typename NumericTraits< PixelType >::PrintType >( this->GetMaximum() )
      << std::endl;
 }
+
 } // end namespace itk
 #endif

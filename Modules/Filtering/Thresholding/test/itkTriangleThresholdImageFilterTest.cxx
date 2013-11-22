@@ -23,7 +23,8 @@
 #include "itkFilterWatcher.h"
 #include "itkTestingMacros.h"
 
-int itkTriangleThresholdImageFilterTest(int argc, char* argv[] )
+int
+itkTriangleThresholdImageFilterTest(int argc, char* argv[] )
 {
   if( argc < 3 )
     {
@@ -33,18 +34,18 @@ int itkTriangleThresholdImageFilterTest(int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef  short          InputPixelType;
-  typedef  unsigned char  OutputPixelType;
+  typedef  short         InputPixelType;
+  typedef  unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
 
   typedef itk::TriangleThresholdImageFilter<
-               InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
 
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   FilterType::Pointer filter = FilterType::New();
@@ -65,7 +66,7 @@ int itkTriangleThresholdImageFilterTest(int argc, char* argv[] )
 
   filter->Update();
   std::cout << "Computed Threshold is: "
-            << itk::NumericTraits<FilterType::InputPixelType>::PrintType(filter->GetThreshold())
+            << itk::NumericTraits<FilterType::InputPixelType>::PrintType(filter->GetThreshold() )
             << std::endl;
   writer->SetFileName( argv[2] );
   writer->Update();

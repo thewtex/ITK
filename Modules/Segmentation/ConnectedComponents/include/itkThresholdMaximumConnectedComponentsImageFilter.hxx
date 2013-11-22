@@ -102,7 +102,8 @@ ThresholdMaximumConnectedComponentsImageFilter< TInputImage, TOutputImage >
  * strategy works.
  */
 template< typename TInputImage, typename TOutputImage >
-void ThresholdMaximumConnectedComponentsImageFilter< TInputImage, TOutputImage >
+void
+ThresholdMaximumConnectedComponentsImageFilter< TInputImage, TOutputImage >
 ::GenerateData(void)
 {
   //
@@ -230,6 +231,7 @@ ThresholdMaximumConnectedComponentsImageFilter< TInputImage, TOutputImage >
   os << indent << "Minimum Object Size in Pixels: "
      <<  m_MinimumObjectSizeInPixels << std::endl;
 }
+
 } // end namespace itk
 
 #endif

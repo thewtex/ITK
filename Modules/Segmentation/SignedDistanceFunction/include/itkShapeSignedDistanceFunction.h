@@ -49,7 +49,7 @@ namespace itk
  * \ingroup ITKSignedDistanceFunction
  */
 template< typename TCoordRep, unsigned int VSpaceDimension >
-class ShapeSignedDistanceFunction:
+class ShapeSignedDistanceFunction :
   public SpatialFunction< double, VSpaceDimension, Point< TCoordRep, VSpaceDimension > >
 {
 public:
@@ -85,21 +85,29 @@ public:
   /** A shape is defined by a set of shape parameters. */
   virtual void SetParameters(const ParametersType &) = 0;
 
-  virtual ParametersType & GetParameters(void)
-  { return m_Parameters; }
+  virtual ParametersType &
+  GetParameters(void)
+  {
+    return m_Parameters;
+  }
+
   virtual unsigned int GetNumberOfShapeParameters(void) const = 0;
 
   virtual unsigned int GetNumberOfPoseParameters(void) const = 0;
 
-  virtual unsigned int GetNumberOfParameters(void) const
-  { return this->GetNumberOfShapeParameters() + this->GetNumberOfPoseParameters(); }
+  virtual unsigned int
+  GetNumberOfParameters(void) const
+  {
+    return this->GetNumberOfShapeParameters() + this->GetNumberOfPoseParameters();
+  }
 
   /** Evaluate the signed distance from a shape at a given position. */
   virtual OutputType Evaluate(const PointType & point) const = 0;
 
   /** Initialize must be called before the first call of SetParameters() or
    Evaluate() to allow the class to validate any inputs. */
-  virtual void Initialize()
+  virtual void
+  Initialize()
   throw ( ExceptionObject ) {}
 
 protected:
@@ -108,7 +116,8 @@ protected:
 
   ~ShapeSignedDistanceFunction(){}
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
 //FIX    os << indent << "Parameters: " << m_Parameters << std::endl;
@@ -119,6 +128,7 @@ protected:
 private:
   ShapeSignedDistanceFunction(const Self &); //purposely not implemented
   void operator=(const Self &);              //purposely not implemented
+
 };
 } // end namespace itk
 

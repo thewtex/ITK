@@ -19,14 +19,14 @@
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 
-
 #include "itkLabelImageToLabelMapFilter.h"
 #include "itkAttributeKeepNObjectsLabelMapFilter.h"
 #include "itkLabelMapToLabelImageFilter.h"
 
 #include "itkTestingMacros.h"
 
-int itkAttributeKeepNObjectsLabelMapFilterTest1(int argc, char * argv[])
+int
+itkAttributeKeepNObjectsLabelMapFilterTest1(int argc, char * argv[])
 {
   if( argc != 5 )
     {
@@ -43,8 +43,8 @@ int itkAttributeKeepNObjectsLabelMapFilterTest1(int argc, char * argv[])
 
   typedef itk::Image< PixelType, dim > ImageType;
 
-  typedef itk::AttributeLabelObject< PixelType, dim, int >      LabelObjectType;
-  typedef itk::LabelMap< LabelObjectType >                      LabelMapType;
+  typedef itk::AttributeLabelObject< PixelType, dim, int > LabelObjectType;
+  typedef itk::LabelMap< LabelObjectType >                 LabelMapType;
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
@@ -53,7 +53,6 @@ int itkAttributeKeepNObjectsLabelMapFilterTest1(int argc, char * argv[])
   typedef itk::LabelImageToLabelMapFilter< ImageType, LabelMapType> I2LType;
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
-
 
   // The next step is made outside the pipeline model, so we call Update() now.
   i2l->Update();
@@ -68,7 +67,6 @@ int itkAttributeKeepNObjectsLabelMapFilterTest1(int argc, char * argv[])
     LabelObjectType * labelObject = it.GetLabelObject();
     labelObject->SetAttribute( pos++ );
     }
-
 
   typedef itk::AttributeKeepNObjectsLabelMapFilter< LabelMapType > LabelKeepNObjectsType;
   LabelKeepNObjectsType::Pointer opening = LabelKeepNObjectsType::New();

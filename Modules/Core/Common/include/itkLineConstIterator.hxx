@@ -39,7 +39,7 @@ LineConstIterator< TImage >
     }
 
   IndexValueType maxDistance = 0;
-  unsigned int maxDistanceDimension = 0;
+  unsigned int   maxDistanceDimension = 0;
   for ( unsigned int i = 0; i < TImage::ImageDimension; ++i )
     {
     IndexValueType distance = vnl_math_abs(difference[i]);
@@ -152,6 +152,7 @@ LineConstIterator< TImage >
     itkWarningMacro(<< "Line left region; unable to finish tracing it");
     }
 }
+
 } // end namespace itk
 
 #endif

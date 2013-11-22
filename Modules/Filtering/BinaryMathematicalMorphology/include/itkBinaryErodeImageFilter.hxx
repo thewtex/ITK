@@ -320,7 +320,7 @@ BinaryErodeImageFilter< TInputImage, TOutputImage, TKernel >
                   NeighborIndexContainer & indexDifferenceSet = this->GetDifferenceSet(i);
                   const typename NeighborIndexContainer::const_iterator staticEndIndex=indexDifferenceSet.end();
                   for( typename NeighborIndexContainer::const_iterator itIndex = indexDifferenceSet.begin();
-                    itIndex != staticEndIndex; ++itIndex )
+                       itIndex != staticEndIndex; ++itIndex )
                     {
                     const IndexType idx ( neighbIndex + *itIndex );
                     if ( outputRegion.IsInside(idx) )
@@ -494,9 +494,11 @@ BinaryErodeImageFilter< TInputImage, TOutput, TKernel >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Dilate Value: "
      << static_cast< typename NumericTraits< InputPixelType >::PrintType >( this->GetForegroundValue() ) << std::endl;
 }
+
 } // end namespace itk
 
 #endif

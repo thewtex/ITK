@@ -22,8 +22,8 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
-
-int itkRegionalMaximaImageFilterTest2(int argc, char * argv[])
+int
+itkRegionalMaximaImageFilterTest2(int argc, char * argv[])
 {
   const int dim = 2;
 
@@ -56,7 +56,6 @@ int itkRegionalMaximaImageFilterTest2(int argc, char * argv[])
   writer->SetInput( filter->GetOutput() );
   writer->SetFileName( argv[4] );
   writer->Update();
-
 
   // produce the same output with other filters
   typedef itk::HConvexImageFilter< ImageType, ImageType > ConvexType;

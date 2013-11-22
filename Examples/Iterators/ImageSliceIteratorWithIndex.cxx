@@ -105,7 +105,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   //   Verify the number of parameters on the command line.
   if ( argc < 4 )
@@ -127,9 +128,9 @@ int main( int argc, char *argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned short              PixelType;
-  typedef itk::Image< PixelType, 2 >  ImageType2D;
-  typedef itk::Image< PixelType, 3 >  ImageType3D;
+  typedef unsigned short             PixelType;
+  typedef itk::Image< PixelType, 2 > ImageType2D;
+  typedef itk::Image< PixelType, 3 > ImageType3D;
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -141,14 +142,14 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   typedef itk::ImageLinearIteratorWithIndex< ImageType2D > LinearIteratorType;
   typedef itk::ImageSliceConstIteratorWithIndex< ImageType3D
-                                                          > SliceIteratorType;
+                                                 > SliceIteratorType;
   // Software Guide : EndCodeSnippet
 
   typedef itk::ImageFileReader< ImageType3D > ReaderType;
   typedef itk::ImageFileWriter< ImageType2D > WriterType;
 
   ImageType3D::ConstPointer inputImage;
-  ReaderType::Pointer reader = ReaderType::New();
+  ReaderType::Pointer       reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   try
     {
@@ -187,7 +188,6 @@ int main( int argc, char *argv[] )
     }
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The \code{direction} array is now used to define the projection image size
@@ -200,8 +200,8 @@ int main( int argc, char *argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  ImageType2D::RegionType region;
-  ImageType2D::RegionType::SizeType size;
+  ImageType2D::RegionType            region;
+  ImageType2D::RegionType::SizeType  size;
   ImageType2D::RegionType::IndexType index;
 
   ImageType3D::RegionType requestedRegion = inputImage->GetRequestedRegion();
@@ -233,7 +233,7 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   SliceIteratorType  inputIt(  inputImage, inputImage->GetRequestedRegion() );
   LinearIteratorType outputIt( outputImage,
-                                          outputImage->GetRequestedRegion() );
+                               outputImage->GetRequestedRegion() );
 
   inputIt.SetFirstDirection(  direction[1] );
   inputIt.SetSecondDirection( direction[0] );
@@ -255,9 +255,9 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   outputIt.GoToBegin();
-  while ( ! outputIt.IsAtEnd() )
+  while ( !outputIt.IsAtEnd() )
     {
-    while ( ! outputIt.IsAtEndOfLine() )
+    while ( !outputIt.IsAtEndOfLine() )
       {
       outputIt.Set( itk::NumericTraits<unsigned short>::NonpositiveMin() );
       ++outputIt;
@@ -274,7 +274,7 @@ int main( int argc, char *argv[] )
       {
       while ( !inputIt.IsAtEndOfLine() )
         {
-        outputIt.Set( vnl_math_max( outputIt.Get(), inputIt.Get() ));
+        outputIt.Set( vnl_math_max( outputIt.Get(), inputIt.Get() ) );
         ++inputIt;
         ++outputIt;
         }
@@ -285,7 +285,7 @@ int main( int argc, char *argv[] )
     outputIt.GoToBegin();
     inputIt.NextSlice();
     }
-    // Software Guide : EndCodeSnippet
+  // Software Guide : EndCodeSnippet
 
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );

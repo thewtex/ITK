@@ -30,14 +30,12 @@ GaussianExponentialDiffeomorphicTransformParametersAdaptor<TTransform>
   m_GaussianSmoothingVarianceForTheUpdateField( 1.75 ),
   m_GaussianSmoothingVarianceForTheConstantVelocityFieldSetTime( 0 ),
   m_GaussianSmoothingVarianceForTheUpdateFieldSetTime( 0 )
-{
-}
+{}
 
 template<typename TTransform>
 GaussianExponentialDiffeomorphicTransformParametersAdaptor<TTransform>
 ::~GaussianExponentialDiffeomorphicTransformParametersAdaptor()
-{
-}
+{}
 
 template<typename TTransform>
 void

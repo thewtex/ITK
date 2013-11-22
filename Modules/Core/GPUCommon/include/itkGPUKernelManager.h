@@ -80,7 +80,8 @@ public:
   //bool SetKernelArgWithImageAndBufferedRegion(int kernelIdx, cl_uint &argIdx,
   //  typename TGPUImageDataManager::Pointer manager);
   template< typename TGPUImageDataManager >
-  bool SetKernelArgWithImageAndBufferedRegion(
+  bool
+  SetKernelArgWithImageAndBufferedRegion(
     int kernelIdx, cl_uint &argIdx,
     TGPUImageDataManager *manager)
   {
@@ -89,7 +90,7 @@ public:
     cl_int errid;
 
     errid = clSetKernelArg(m_KernelContainer[kernelIdx], argIdx, sizeof(cl_mem),
-      manager->GetGPUBufferPointer() );
+                           manager->GetGPUBufferPointer() );
     OpenCLCheckError(errid, __FILE__, __LINE__, ITK_LOCATION);
 
     m_KernelArgumentReady[kernelIdx][argIdx].m_IsReady = true;
@@ -100,7 +101,7 @@ public:
 
     //the starting index for the buffered region
     errid = clSetKernelArg(m_KernelContainer[kernelIdx], argIdx, sizeof(cl_mem),
-      manager->GetGPUBufferedRegionIndex()->GetGPUBufferPointer() );
+                           manager->GetGPUBufferedRegionIndex()->GetGPUBufferPointer() );
     OpenCLCheckError(errid, __FILE__, __LINE__, ITK_LOCATION);
 
     m_KernelArgumentReady[kernelIdx][argIdx].m_IsReady = true;
@@ -109,7 +110,7 @@ public:
 
     //the size for the buffered region
     errid = clSetKernelArg(m_KernelContainer[kernelIdx], argIdx, sizeof(cl_mem),
-      manager->GetGPUBufferedRegionSize()->GetGPUBufferPointer() );
+                           manager->GetGPUBufferedRegionSize()->GetGPUBufferPointer() );
     OpenCLCheckError(errid, __FILE__, __LINE__, ITK_LOCATION);
 
     m_KernelArgumentReady[kernelIdx][argIdx].m_IsReady = true;
@@ -137,8 +138,8 @@ public:
 
 protected:
   GPUKernelManager();
-  virtual ~GPUKernelManager() {
-  }
+  virtual
+  ~GPUKernelManager() {}
 
   bool CheckArgumentReady(int kernelIdx);
 

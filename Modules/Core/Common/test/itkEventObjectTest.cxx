@@ -19,21 +19,20 @@
 #include "itkEventObject.h"
 #include <iostream>
 
-namespace itk{
-  itkEventMacro( TestEvent,        UserEvent );
-  itkEventMacro( TestDerivedEvent, TestEvent );
-  itkEventMacro( TestOtherEvent,   AnyEvent  );
-  }
+namespace itk {
+itkEventMacro( TestEvent,        UserEvent );
+itkEventMacro( TestDerivedEvent, TestEvent );
+itkEventMacro( TestOtherEvent,   AnyEvent  );
+}
 
-
-int itkEventObjectTest(int, char* [] )
+int
+itkEventObjectTest(int, char* [] )
 {
 
   // test constructor
   itk::TestEvent event;
 
   itk::TestDerivedEvent derivedEvent;
-
 
   // test if the event derives
   if( !event.CheckEvent( &derivedEvent ) )
@@ -50,15 +49,13 @@ int itkEventObjectTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   itk::TestOtherEvent otherEvent;
-   // test that it doesn't match and unrelated event
+  // test that it doesn't match and unrelated event
   if( event.CheckEvent( &otherEvent ) )
     {
     std::cerr << "Error: matched unrelated event" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // exercise the PrintSelf() method by calling Print()
   event.Print( std::cout );

@@ -49,9 +49,7 @@ GPUMeanImageFilter< TInputImage, TOutputImage >::GPUMeanImageFilter()
 
 template< typename TInputImage, typename TOutputImage >
 GPUMeanImageFilter< TInputImage, TOutputImage >::~GPUMeanImageFilter()
-{
-
-}
+{}
 
 template< typename TInputImage, typename TOutputImage >
 void
@@ -98,7 +96,6 @@ GPUMeanImageFilter< TInputImage, TOutputImage >::GPUGenerateData()
                                                                                              // of
                                                                                              // threads
     }
-
 
   // arguments set up
   int argidx = 0;

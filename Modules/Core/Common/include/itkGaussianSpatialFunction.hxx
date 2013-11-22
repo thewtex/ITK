@@ -67,7 +67,7 @@ GaussianSpatialFunction< TOutput, VImageDimension, TInput >
   for ( unsigned int i = 0; i < VImageDimension; i++ )
     {
     suffixExp += ( position[i] - m_Mean[i] ) * ( position[i] - m_Mean[i] )
-                 / ( 2 * m_Sigma[i] * m_Sigma[i] );
+      / ( 2 * m_Sigma[i] * m_Sigma[i] );
     }
 
   double value = m_Scale * ( 1 / prefixDenom ) * vcl_exp(-1 * suffixExp);
@@ -87,6 +87,7 @@ GaussianSpatialFunction< TOutput, VImageDimension, TInput >
   os << indent << "Scale: " << m_Scale << std::endl;
   os << indent << "Normalized?: " << m_Normalized << std::endl;
 }
+
 } // end namespace itk
 
 #endif

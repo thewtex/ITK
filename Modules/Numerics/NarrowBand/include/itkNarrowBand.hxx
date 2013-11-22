@@ -43,6 +43,7 @@ NarrowBand< NodeType >
   SizeType t_size = m_NodeContainer.size();
 
   std::vector< RegionType > regionList;
+
   if ( t_n > t_size )
     {
     t_n = t_size;
@@ -50,7 +51,7 @@ NarrowBand< NodeType >
 
   SizeType regionsize =
     static_cast< SizeType >(
-        vcl_floor( static_cast< float >( t_size ) / static_cast< float >( t_n ) ) );
+      vcl_floor( static_cast< float >( t_size ) / static_cast< float >( t_n ) ) );
 
   if ( regionsize == 0 )
     {

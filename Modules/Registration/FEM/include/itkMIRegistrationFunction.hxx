@@ -69,7 +69,7 @@ MIRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
     DefaultInterpolatorType::New();
 
   m_MovingImageInterpolator = static_cast< InterpolatorType * >(
-    interp.GetPointer() );
+      interp.GetPointer() );
 }
 
 /*
@@ -471,11 +471,11 @@ MIRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
     for ( asamples = 0; asamples < (unsigned int)numsamplesA; asamples++ )
       {
       double valueFixed = ( fixedSamplesB[bsamples] - fixedSamplesA[asamples] )
-                          / m_FixedImageStandardDeviation;
+        / m_FixedImageStandardDeviation;
       valueFixed = vcl_exp(-0.5 * valueFixed * valueFixed);
 
       double valueMoving = ( movingSamplesB[bsamples] - movingSamplesA[asamples] )
-                           / m_MovingImageStandardDeviation;
+        / m_MovingImageStandardDeviation;
       valueMoving = vcl_exp(-0.5 * valueMoving * valueMoving);
 
       dDenominatorMoving += valueMoving;
@@ -495,11 +495,11 @@ MIRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
     for ( asamples = 0; asamples < (unsigned int)numsamplesA; asamples++ )
       {
       double valueFixed = ( fixedSamplesB[bsamples] - fixedSamplesA[asamples] )
-                          / m_FixedImageStandardDeviation;
+        / m_FixedImageStandardDeviation;
       valueFixed = vcl_exp(-0.5 * valueFixed * valueFixed);
 
       double valueMoving = ( movingSamplesB[bsamples] - movingSamplesA[asamples] )
-                           / m_MovingImageStandardDeviation;
+        / m_MovingImageStandardDeviation;
       valueMoving = vcl_exp(-0.5 * valueMoving * valueMoving);
       const double weightFixed = valueFixed / dDenominatorFixed;
 // dDenominatorJoint and weightJoint are what need to be computed each time
@@ -552,6 +552,7 @@ MIRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
 
   return derivative * this->GetGradientStep();
 }
+
 } // end namespace itk
 
 #endif

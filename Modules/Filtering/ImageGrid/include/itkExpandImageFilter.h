@@ -64,7 +64,7 @@ namespace itk
  * \ingroup ITKImageGrid
  */
 template< typename TInputImage, typename TOutputImage >
-class ExpandImageFilter:
+class ExpandImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -99,7 +99,7 @@ public:
   typedef InterpolateImageFunction< InputImageType, CoordRepType > InterpolatorType;
   typedef typename InterpolatorType::Pointer                       InterpolatorPointer;
   typedef LinearInterpolateImageFunction< InputImageType, CoordRepType >
-  DefaultInterpolatorType;
+    DefaultInterpolatorType;
 
   /** Get/Set the interpolator function. */
   itkSetObjectMacro(Interpolator, InterpolatorType);

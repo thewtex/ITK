@@ -48,7 +48,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class NoiseImageFilter:
+class NoiseImageFilter :
   public BoxImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -93,7 +93,8 @@ public:
 
 protected:
   NoiseImageFilter();
-  virtual ~NoiseImageFilter() {}
+  virtual
+  ~NoiseImageFilter() {}
 
   /** NoiseImageFilter can be implemented as a multithreaded filter.
    * Therefore, this implementation provides a ThreadedGenerateData()
@@ -111,6 +112,7 @@ protected:
 private:
   NoiseImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };
 } // end namespace itk
 

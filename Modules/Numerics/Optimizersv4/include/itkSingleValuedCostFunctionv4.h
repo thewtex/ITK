@@ -46,7 +46,7 @@ namespace itk
  * \ingroup ITKOptimizersv4
  */
 template< typename TInternalComputationValueType >
-class SingleValuedCostFunctionv4Template:
+class SingleValuedCostFunctionv4Template :
   public CostFunctionTemplate< TInternalComputationValueType >
 {
 public:
@@ -61,11 +61,11 @@ public:
 
   /**  MeasureType typedef.
    *  It defines a type used to return the cost function value. */
-  typedef TInternalComputationValueType                  MeasureType;
+  typedef TInternalComputationValueType MeasureType;
 
   /**  ParametersType typedef.
    *  It defines a position in the optimization search space. */
-  typedef typename Superclass::ParametersType      ParametersType;
+  typedef typename Superclass::ParametersType ParametersType;
 
   /** DerivativeType typedef.
    *  It defines a type used to return the cost function derivative.  */
@@ -83,11 +83,13 @@ public:
 
 protected:
   SingleValuedCostFunctionv4Template() {}
-  virtual ~SingleValuedCostFunctionv4Template() {}
+  virtual
+  ~SingleValuedCostFunctionv4Template() {}
 
 private:
   SingleValuedCostFunctionv4Template(const Self &); //purposely not implemented
-  void operator=(const Self &);           //purposely not implemented
+  void operator=(const Self &);                     //purposely not implemented
+
 };
 
 /** This helps to meet backward compatibility */

@@ -49,7 +49,7 @@ template< typename TInputImage, typename TKernelImage, typename TOutputImage, ty
 void
 IterativeDeconvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPrecision >
 ::Initialize(ProgressAccumulator * progress, float progressWeight,
-             float itkNotUsed(iterationProgressWeight))
+             float itkNotUsed(iterationProgressWeight) )
 {
   // Generate an estimate if there is none or if the input has changed.
   if ( !this->m_CurrentEstimate ||
@@ -116,6 +116,7 @@ IterativeDeconvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInt
 {
   // Create a process accumulator for tracking the progress of this minipipeline
   ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
+
   progress->SetMiniPipelineFilter( this );
 
   typename Superclass::InputImageConstPointer inputPtr = this->GetInput();

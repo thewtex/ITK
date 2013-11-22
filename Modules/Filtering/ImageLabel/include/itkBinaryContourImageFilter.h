@@ -51,7 +51,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class BinaryContourImageFilter:
+class BinaryContourImageFilter :
   public InPlaceImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -76,14 +76,14 @@ public:
   /**
    * Image typedef support
    */
-  typedef TInputImage                                 InputImageType;
-  typedef typename InputImageType::Pointer            InputImagePointer;
-  typedef typename InputImageType::ConstPointer       InputImageConstPointer;
-  typedef typename InputImageType::IndexType          IndexType;
-  typedef typename InputImageType::SizeType           SizeType;
-  typedef typename InputImageType::OffsetType         OffsetType;
-  typedef typename InputImageType::PixelType          InputImagePixelType;
-  typedef typename InputImageType::InternalPixelType  InputInternalPixelType;
+  typedef TInputImage                                InputImageType;
+  typedef typename InputImageType::Pointer           InputImagePointer;
+  typedef typename InputImageType::ConstPointer      InputImageConstPointer;
+  typedef typename InputImageType::IndexType         IndexType;
+  typedef typename InputImageType::SizeType          SizeType;
+  typedef typename InputImageType::OffsetType        OffsetType;
+  typedef typename InputImageType::PixelType         InputImagePixelType;
+  typedef typename InputImageType::InternalPixelType InputInternalPixelType;
 
   typedef TOutputImage                                OutputImageType;
   typedef typename OutputImageType::Pointer           OutputImagePointer;
@@ -134,7 +134,8 @@ public:
 protected:
 
   BinaryContourImageFilter();
-  virtual ~BinaryContourImageFilter() {}
+  virtual
+  ~BinaryContourImageFilter() {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -161,11 +162,11 @@ protected:
 
 private:
   BinaryContourImageFilter(const Self &); //Purposefully not implemented
-  void operator = ( const Self &);        //Purposefully not implemented
+  void operator =( const Self &);         //Purposefully not implemented
 
   // types to support the run length encoding of lines
   struct runLength
-  {
+    {
     runLength( const OffsetValueType& iLength, const IndexType& iWhere ) :
       m_Length( iLength ), m_Where( iWhere ) {}
 
@@ -173,8 +174,8 @@ private:
     OffsetValueType m_Length;
 
     // Index of the start of the run
-    IndexType       m_Where;
-  };
+    IndexType m_Where;
+    };
 
   typedef std::vector< runLength >                  LineEncodingType;
   typedef typename LineEncodingType::iterator       LineEncodingIterator;
@@ -197,9 +198,9 @@ private:
 
   Barrier::Pointer m_Barrier;
 
-  LineMapType   m_ForegroundLineMap;
-  LineMapType   m_BackgroundLineMap;
-  ThreadIdType  m_NumberOfThreads;
+  LineMapType  m_ForegroundLineMap;
+  LineMapType  m_BackgroundLineMap;
+  ThreadIdType m_NumberOfThreads;
 
   InputImagePixelType  m_ForegroundValue;
   OutputImagePixelType m_BackgroundValue;

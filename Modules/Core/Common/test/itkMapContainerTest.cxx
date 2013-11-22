@@ -24,20 +24,21 @@
 /**
  * Some typedefs to make things easier.
  */
-typedef   itk::Point<float,3>     PointType;
-typedef   itk::Vector<float,3>    VectorType;
+typedef   itk::Point<float,3>  PointType;
+typedef   itk::Vector<float,3> VectorType;
 
 typedef itk::MapContainer< unsigned long,
                            PointType >     ContainerType;
-typedef ContainerType::Pointer             ContainerPointer;
+typedef ContainerType::Pointer ContainerPointer;
 
-int itkMapContainerTest(int, char* [] )
+int
+itkMapContainerTest(int, char* [] )
 {
 
   /**
    * Create the Container
    */
-  ContainerPointer  container = ContainerType::New();
+  ContainerPointer container = ContainerType::New();
 
   PointType pointA;
   PointType pointB;
@@ -63,10 +64,10 @@ int itkMapContainerTest(int, char* [] )
   ContainerType::Iterator p = container->Begin();
 
   while( p != container->End() )
-   {
-   std::cout << p.Value() << std::endl;
-   p++;
-   }
+    {
+    std::cout << p.Value() << std::endl;
+    p++;
+    }
 
   container->Initialize();
   if( container->Size() != 0 )

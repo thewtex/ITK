@@ -71,7 +71,8 @@ public:
    * \param order the order of the matrix
    * \note the order must be set before any values are entered
    */
-  void SetOrder(integer order)
+  void
+  SetOrder(integer order)
   {
     m_N = order;
   }
@@ -81,7 +82,8 @@ public:
    * \param maxNonZeroValues maximum number of non-zero values that may appear in matrix
    * \note the maxNonZeroValues must be set before any values are entered
    */
-  void SetMaxNonZeroValues(integer maxNonZeroValues)
+  void
+  SetMaxNonZeroValues(integer maxNonZeroValues)
   {
     m_NZ = maxNonZeroValues;
   }
@@ -111,7 +113,8 @@ public:
   /**
    * Get the order of the matrix (via "itpack-like" naming scheme)
    */
-  integer *    GetN()
+  integer *
+  GetN()
   {
     return &m_N;
   }
@@ -142,7 +145,8 @@ public:
   /**
    * Get the values of the matrix
    */
-  doublereal * GetValueArray()
+  doublereal *
+  GetValueArray()
   {
     return GetA();
   }
@@ -150,7 +154,8 @@ public:
   /**
    * Get the column indices
    */
-  integer *    GetColumnArray()
+  integer *
+  GetColumnArray()
   {
     return GetJA();
   }
@@ -158,7 +163,8 @@ public:
   /**
    * Get the row indices
    */
-  integer *    GetRowArray()
+  integer *
+  GetRowArray()
   {
     return GetIA();
   }
@@ -166,7 +172,8 @@ public:
   /**
    * Get the order of the matrix
    */
-  integer     GetOrder()       const
+  integer
+  GetOrder()       const
   {
     return m_N;
   }
@@ -174,7 +181,8 @@ public:
   /**
    * Get the maximum number of non-zero values allowed in the matrix
    */
-  integer     GetMaxNonZeroValues() const
+  integer
+  GetMaxNonZeroValues() const
   {
     return m_NZ;
   }
@@ -289,10 +297,10 @@ public:
                                       integer errorCode);
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMExceptionItpackSparseMatrixSbagn()
+  virtual
+  ~FEMExceptionItpackSparseMatrixSbagn()
   throw ( )
-  {
-  }
+  {}
 
   /** Type related information. */
   itkTypeMacro(FEMExceptionItpackSparseMatrixSbagn, FEMException);
@@ -321,10 +329,10 @@ public:
                                       integer errorCode);
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMExceptionItpackSparseMatrixSbsij()
+  virtual
+  ~FEMExceptionItpackSparseMatrixSbsij()
   throw ( )
-  {
-  }
+  {}
 
   /** Type related information. */
   itkTypeMacro(FEMExceptionItpackSparseMatrixSbsij, FEMException);

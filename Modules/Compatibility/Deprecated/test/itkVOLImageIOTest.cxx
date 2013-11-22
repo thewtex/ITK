@@ -21,10 +21,10 @@
 #include "itkVOLImageIO.h"
 #include "itkImage.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkVOLImageIOTest(int ac, char* av[])
+int
+itkVOLImageIOTest(int ac, char* av[])
 {
 
   if(ac < 2)
@@ -39,7 +39,6 @@ int itkVOLImageIOTest(int ac, char* av[])
 
   typedef unsigned char            PixelType;
   typedef itk::Image<PixelType, 4> myImage;
-
 
   itk::VOLImageIO::Pointer io;
   io = itk::VOLImageIO::New();

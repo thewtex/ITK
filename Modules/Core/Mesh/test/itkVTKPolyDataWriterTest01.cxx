@@ -18,7 +18,8 @@
 
 #include "itkVTKPolyDataWriter.h"
 
-int itkVTKPolyDataWriterTest01(int argc, char* argv[])
+int
+itkVTKPolyDataWriterTest01(int argc, char* argv[])
 {
   if( argc != 2 )
     {
@@ -28,17 +29,17 @@ int itkVTKPolyDataWriterTest01(int argc, char* argv[])
 
   const unsigned int PointDimension = 3;
 
-  typedef unsigned short    PixelType;
-  typedef float             PointType;
+  typedef unsigned short PixelType;
+  typedef float          PointType;
 
-  typedef itk::Mesh< PointType, PointDimension >  MeshType;
+  typedef itk::Mesh< PointType, PointDimension > MeshType;
 
   typedef MeshType::CellTraits                        CellTraits;
   typedef itk::CellInterface< PointType, CellTraits > CellInterfaceType;
   typedef itk::TriangleCell< CellInterfaceType >      TriangleCellType;
   typedef itk::LineCell< CellInterfaceType >          LineCellType;
 
-  typedef itk::VTKPolyDataWriter<MeshType>   WriterType;
+  typedef itk::VTKPolyDataWriter<MeshType> WriterType;
 
   MeshType::Pointer mesh = MeshType::New();
 
@@ -49,7 +50,8 @@ int itkVTKPolyDataWriterTest01(int argc, char* argv[])
     0.0, 0.0, 0.0,
     1.0, 1.0, 0.0,
     0.0, 1.0, 1.0,
-    1.0, 0.0, 1.0 };
+    1.0, 0.0, 1.0
+    };
 
   unsigned long rawCells[24] = {
     0, 2, 1,
@@ -61,7 +63,8 @@ int itkVTKPolyDataWriterTest01(int argc, char* argv[])
     0, 3,
     1, 2,
     1, 3,
-    2, 3 };
+    2, 3
+    };
 
   mesh->GetPoints()->Reserve( numberOfPoints );
   mesh->GetCells()->Reserve( numberOfCells );
@@ -79,8 +82,8 @@ int itkVTKPolyDataWriterTest01(int argc, char* argv[])
   MeshType::PointIdentifier pointIds[3];
 
   MeshType::CellAutoPointer cell;
-  TriangleCellType * triangle;
-  LineCellType *     line;
+  TriangleCellType *        triangle;
+  LineCellType *            line;
 
   for(unsigned int i=0; i<4; i++)
     {

@@ -20,19 +20,20 @@
 #include "itkDisplacementFieldJacobianDeterminantFilter.h"
 #include "itkNullImageToImageFilterDriver.hxx"
 
-static bool TestDisplacementJacobianDeterminantValue(void)
+static bool
+TestDisplacementJacobianDeterminantValue(void)
 {
   std::cout.precision(9);
-  bool testPassed = true;
+  bool               testPassed = true;
   const unsigned int ImageDimension = 2;
 
   typedef itk::Vector<float,ImageDimension>     VectorType;
   typedef itk::Image<VectorType,ImageDimension> FieldType;
 
   // In this case, the image to be warped is also a vector field.
-  typedef FieldType                   VectorImageType;
-  typedef VectorImageType::PixelType  PixelType;
-  typedef VectorImageType::IndexType  IndexType;
+  typedef FieldType                  VectorImageType;
+  typedef VectorImageType::PixelType PixelType;
+  typedef VectorImageType::IndexType IndexType;
 
   //=============================================================
 
@@ -73,7 +74,7 @@ static bool TestDisplacementJacobianDeterminantValue(void)
   //
   //J(1,1) = [ (.625-.125)/2 (.5-.25)/2; (.375-.125)/2 (.75-0.0)/2] =[ .25  .125; .125 .375]
   //det((J+I)(1,1))=((.25+1.0)*(.375+1.0))-(.125*.125) = 1.703125;
-  const float KNOWN_ANSWER=(((.25+1.0)*(.375+1.0))-(.125*.125));
+  const float KNOWN_ANSWER=( ( (.25+1.0)*(.375+1.0) )-(.125*.125) );
   itk::DisplacementFieldJacobianDeterminantFilter<VectorImageType,float>::Pointer
     filter =
     itk::DisplacementFieldJacobianDeterminantFilter<VectorImageType,float>::New();
@@ -102,6 +103,7 @@ int
 itkDisplacementFieldJacobianDeterminantFilterTest(int , char * [] )
 {
   bool ValueTestPassed=TestDisplacementJacobianDeterminantValue();
+
   try
     {
     typedef itk::Vector<float, 3>      VectorType;
@@ -121,7 +123,7 @@ itkDisplacementFieldJacobianDeterminantFilterTest(int , char * [] )
     sz[2] = 100;
     itk::NullImageToImageFilterDriver< VectorImageType, ScalarVectorImageType > test1;
     test1.SetImageSize(sz);
-    test1.SetFilter(filter.GetPointer());
+    test1.SetFilter(filter.GetPointer() );
     test1.Execute();
     filter->Print(std::cout);
 

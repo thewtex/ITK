@@ -25,7 +25,8 @@
 /** This test verifies that the direction cosines
  *  computed in itkDCMTKImageIO are orthogonal
  */
-int itkDCMTKImageIOOrthoDirTest(int ac, char* av[])
+int
+itkDCMTKImageIOOrthoDirTest(int ac, char* av[])
 {
 
   if(ac < 2)
@@ -61,7 +62,7 @@ int itkDCMTKImageIOOrthoDirTest(int ac, char* av[])
 
   std::cout << "Dir Cosines " << directionCosines;
 
-  itk::Versor<InputImageType::SpacePrecisionType> rotation;
+  itk::Versor<itk::SpacePrecisionType> rotation;
 
   try
     {

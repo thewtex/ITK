@@ -44,7 +44,7 @@ QuaternionRigidTransform<TScalar>::QuaternionRigidTransform(unsigned int paramet
 // Constructor with explicit arguments
 template <typename TScalar>
 QuaternionRigidTransform<TScalar>::QuaternionRigidTransform(const MatrixType & matrix,
-                                                                const OutputVectorType & offset) :
+                                                            const OutputVectorType & offset) :
   Superclass(matrix, offset)
 {
   this->ComputeMatrixParameters();
@@ -56,6 +56,7 @@ void
 QuaternionRigidTransform<TScalar>::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Rotation:    " << m_Rotation    << std::endl;
 }
 

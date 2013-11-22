@@ -26,11 +26,10 @@
 
 extern "C"
 {
-  #include "openjpeg.h"
-  #include "j2k.h"
-  #include "jp2.h"
+#include "openjpeg.h"
+#include "j2k.h"
+#include "jp2.h"
 }
-
 
 namespace itk
 {
@@ -67,13 +66,12 @@ public:
   opj_dparameters_t m_DecompressionParameters;  /* decompression parameters */
 };
 
-
 JPEG2000ImageIO::JPEG2000ImageIO()
 {
   this->m_Internal.TakeOwnership( new JPEG2000ImageIOInternal );
 
   //   opj_dparameters_t m_DecompressionParameters;
-  opj_set_default_decoder_parameters(& this->m_Internal->m_DecompressionParameters);
+  opj_set_default_decoder_parameters(&this->m_Internal->m_DecompressionParameters);
 
   this->SetNumberOfDimensions(2); // JPEG2000 is 2D. (by now...)
   this->SetNumberOfComponents(1);
@@ -99,15 +97,16 @@ JPEG2000ImageIO::JPEG2000ImageIO()
 }
 
 JPEG2000ImageIO::~JPEG2000ImageIO()
-{
-}
+{}
 
-void JPEG2000ImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+JPEG2000ImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
 
-bool JPEG2000ImageIO::CanReadFile(const char *filename)
+bool
+JPEG2000ImageIO::CanReadFile(const char *filename)
 {
   itkDebugMacro(<< "JPEG2000ImageIO::CanReadFile()");
 
@@ -133,15 +132,16 @@ bool JPEG2000ImageIO::CanReadFile(const char *filename)
   return false;
 }
 
-void JPEG2000ImageIO::SetTileSize(int x, int y)
+void
+JPEG2000ImageIO::SetTileSize(int x, int y)
 {
   this->m_Internal->m_TileWidth = x;
   this->m_Internal->m_TileHeight = y;
   this->Modified();
 }
 
-
-void JPEG2000ImageIO::ReadImageInformation()
+void
+JPEG2000ImageIO::ReadImageInformation()
 {
   itkDebugMacro(<< "ReadImageInformation()");
 
@@ -160,7 +160,7 @@ void JPEG2000ImageIO::ReadImageInformation()
     }
 
   /* set decoding parameters to default values */
-  opj_set_default_decoder_parameters(& (this->m_Internal->m_DecompressionParameters) );
+  opj_set_default_decoder_parameters(&(this->m_Internal->m_DecompressionParameters) );
 
   opj_stream_t *cio = opj_stream_create_default_file_stream(l_file, true);
 
@@ -175,15 +175,15 @@ void JPEG2000ImageIO::ReadImageInformation()
 
   if ( extension == ".j2k" )
     {
-     this->m_Internal->m_DecompressionParameters.decod_format = JPEG2000ImageIOInternal::J2K_CFMT;
+    this->m_Internal->m_DecompressionParameters.decod_format = JPEG2000ImageIOInternal::J2K_CFMT;
     }
   else if ( extension == ".jp2" )
     {
-     this->m_Internal->m_DecompressionParameters.decod_format = JPEG2000ImageIOInternal::JP2_CFMT;
+    this->m_Internal->m_DecompressionParameters.decod_format = JPEG2000ImageIOInternal::JP2_CFMT;
     }
   else if ( extension == ".jpt" )
     {
-     this->m_Internal->m_DecompressionParameters.decod_format = JPEG2000ImageIOInternal::JPT_CFMT;
+    this->m_Internal->m_DecompressionParameters.decod_format = JPEG2000ImageIOInternal::JPT_CFMT;
     }
 
   switch (  this->m_Internal->m_DecompressionParameters.decod_format )
@@ -254,7 +254,7 @@ void JPEG2000ImageIO::ReadImageInformation()
   /* catch events using our callbacks and give a local context */
   /* setup the decoder decoding parameters using user parameters */
   /* No reading of image information done */
-  bool bResult = opj_setup_decoder(this->m_Internal->m_Dinfo, & (this->m_Internal->m_DecompressionParameters) );
+  bool bResult = opj_setup_decoder(this->m_Internal->m_Dinfo, &(this->m_Internal->m_DecompressionParameters) );
   if ( !bResult )
     {
     opj_stream_destroy(cio);
@@ -278,15 +278,15 @@ void JPEG2000ImageIO::ReadImageInformation()
   itkDebugMacro(<< "Trying to read header now...");
 
   bResult = opj_read_header(
-    this->m_Internal->m_Dinfo,
-    &l_image,
-    &l_tile_x0,
-    &l_tile_y0,
-    &l_tile_width,
-    &l_tile_height,
-    &l_nb_tiles_x,
-    &l_nb_tiles_y,
-    cio);
+      this->m_Internal->m_Dinfo,
+      &l_image,
+      &l_tile_x0,
+      &l_tile_y0,
+      &l_tile_width,
+      &l_tile_height,
+      &l_nb_tiles_x,
+      &l_nb_tiles_y,
+      cio);
 
   if ( !bResult )
     {
@@ -317,7 +317,6 @@ void JPEG2000ImageIO::ReadImageInformation()
   this->m_Internal->m_NumberOfTilesInX = l_nb_tiles_x;
   this->m_Internal->m_NumberOfTilesInY = l_nb_tiles_y;
 
-
   itkDebugMacro(<< "Number of Components = " << l_image->numcomps);
   this->SetNumberOfComponents(  l_image->numcomps );
 
@@ -341,7 +340,7 @@ void JPEG2000ImageIO::ReadImageInformation()
       << l_image->comps[0].prec );
     }
 
-  switch (this->GetNumberOfComponents())
+  switch (this->GetNumberOfComponents() )
     {
     case 1:
       this->SetPixelType( SCALAR );
@@ -391,7 +390,8 @@ void JPEG2000ImageIO::ReadImageInformation()
     }
 }
 
-void JPEG2000ImageIO::Read(void *buffer)
+void
+JPEG2000ImageIO::Read(void *buffer)
 {
   itkDebugMacro(<< "JPEG2000ImageIO::Read() Begin");
 
@@ -480,11 +480,11 @@ void JPEG2000ImageIO::Read(void *buffer)
         << "Unknown decode format: "
         << this->m_Internal->m_DecompressionParameters.decod_format );
       return;
-}
+    }
   /* catch events using our callbacks and give a local context */
 
   /* setup the decoder decoding parameters using user parameters */
-  if (!opj_setup_decoder(this->m_Internal->m_Dinfo, &( this->m_Internal->m_DecompressionParameters ) ))
+  if (!opj_setup_decoder(this->m_Internal->m_Dinfo, &( this->m_Internal->m_DecompressionParameters ) ) )
     {
     itkExceptionMacro(
       "JPEG2000ImageIO failed to read file: "
@@ -501,15 +501,15 @@ void JPEG2000ImageIO::Read(void *buffer)
   OPJ_UINT32 l_nb_tiles_y;
 
   bool bResult = opj_read_header(
-    this->m_Internal->m_Dinfo,
-    &l_image,
-    &l_tile_x0,
-    &l_tile_y0,
-    &l_tile_width,
-    &l_tile_height,
-    &l_nb_tiles_x,
-    &l_nb_tiles_y,
-    l_stream);
+      this->m_Internal->m_Dinfo,
+      &l_image,
+      &l_tile_x0,
+      &l_tile_y0,
+      &l_tile_width,
+      &l_tile_height,
+      &l_nb_tiles_x,
+      &l_nb_tiles_y,
+      l_stream);
 
   if ( !bResult )
     {
@@ -524,7 +524,7 @@ void JPEG2000ImageIO::Read(void *buffer)
       << "Reason: opj_read_header returns false");
     }
 
- ImageIORegion regionToRead = this->GetIORegion();
+  ImageIORegion regionToRead = this->GetIORegion();
 
   ImageIORegion::SizeType  size  = regionToRead.GetSize();
   ImageIORegion::IndexType start = regionToRead.GetIndex();
@@ -549,12 +549,12 @@ void JPEG2000ImageIO::Read(void *buffer)
   itkDebugMacro(<< "p_end_y = " << p_end_y);
 
   bResult = opj_set_decode_area(
-    this->m_Internal->m_Dinfo,
-    p_start_x,
-    p_start_y,
-    p_end_x,
-    p_end_y
-    );
+      this->m_Internal->m_Dinfo,
+      p_start_x,
+      p_start_y,
+      p_end_x,
+      p_end_y
+      );
 
   itkDebugMacro(<< "opj_set_decode_area() after");
 
@@ -590,16 +590,16 @@ void JPEG2000ImageIO::Read(void *buffer)
   while ( l_go_on )
     {
     bool tileHeaderRead = opj_read_tile_header(
-      this->m_Internal->m_Dinfo,
-      &l_tile_index,
-      &l_data_size,
-      &l_current_tile_x0,
-      &l_current_tile_y0,
-      &l_current_tile_x1,
-      &l_current_tile_y1,
-      &l_nb_comps,
-      &l_go_on,
-      l_stream);
+        this->m_Internal->m_Dinfo,
+        &l_tile_index,
+        &l_data_size,
+        &l_current_tile_x0,
+        &l_current_tile_y0,
+        &l_current_tile_x1,
+        &l_current_tile_y1,
+        &l_nb_comps,
+        &l_go_on,
+        l_stream);
 
     if ( !tileHeaderRead )
       {
@@ -649,11 +649,11 @@ void JPEG2000ImageIO::Read(void *buffer)
         }
 
       bool decodeTileData = opj_decode_tile_data(
-        this->m_Internal->m_Dinfo,
-        l_tile_index,
-        l_data,
-        l_data_size,
-        l_stream);
+          this->m_Internal->m_Dinfo,
+          l_tile_index,
+          l_data,
+          l_data_size,
+          l_stream);
 
       if ( !decodeTileData )
         {
@@ -694,7 +694,6 @@ void JPEG2000ImageIO::Read(void *buffer)
       itkDebugMacro(<< "initialStrideInBytes:    " << initialStrideInBytes);
       itkDebugMacro(<< "priorStrideInBytes:      " << priorStrideInBytes);
       itkDebugMacro(<< "postStrideInBytes:       " << postStrideInBytes);
-
 
       //TODO: Read the void buffer within the tile ROI. How do we specify the
       // tile ROI iteration
@@ -772,7 +771,8 @@ void JPEG2000ImageIO::Read(void *buffer)
   itkDebugMacro(<< "JPEG2000ImageIO::Read() End");
 }
 
-bool JPEG2000ImageIO::CanWriteFile(const char *filename)
+bool
+JPEG2000ImageIO::CanWriteFile(const char *filename)
 {
   std::string extension = itksys::SystemTools::GetFilenameLastExtension(filename);
 
@@ -870,7 +870,7 @@ JPEG2000ImageIO
       << "Error: Tile offset dimension is unnappropriate -->"
       << "  TX0(" << parameters.cp_tx0 << ") <= IMG_X0( " << parameters.image_offset_x0
       << ") TYO(" << parameters.cp_ty0 << ") <= IMG_Y0( " << parameters.image_offset_y0 << ") " );
-      return;
+    return;
     }
 
   for ( int i = 0; i < parameters.numpocs; i++ )
@@ -887,9 +887,9 @@ JPEG2000ImageIO
   /* Create comment for codestream */
   if ( parameters.cp_comment == NULL )
     {
-    const char   comment[] = "Created by OpenJPEG version ";
+    const char          comment[] = "Created by OpenJPEG version ";
     const SizeValueType clen = strlen(comment);
-    const char * version = opj_version();
+    const char *        version = opj_version();
 
     /* UniPG>> */
 #ifdef USE_JPWL
@@ -914,7 +914,6 @@ JPEG2000ImageIO
   int w, h;
   w = this->m_Dimensions[0];
   h = this->m_Dimensions[1];
-
 
   // Compute the proper number of resolutions to use.
   // This is mostly done for images smaller than 64 pixels
@@ -1095,7 +1094,7 @@ JPEG2000ImageIO
     parameters.tcp_mct = 0;
     }
 
-  if (!opj_setup_encoder(cinfo, &parameters, l_image))
+  if (!opj_setup_encoder(cinfo, &parameters, l_image) )
     {
     itkExceptionMacro(
       "JPEG2000ImageIO failed to write file: "
@@ -1239,7 +1238,7 @@ JPEG2000ImageIO
 
   IndexValueType endQuantizedInTileSize = startQuantizedInTileSize + sizeQuantizedInTileSize - 1;
 
-  if ( endQuantizedInTileSize > static_cast<int>(this->GetDimensions(dimension)) )
+  if ( endQuantizedInTileSize > static_cast<int>(this->GetDimensions(dimension) ) )
     {
     sizeQuantizedInTileSize = this->GetDimensions(dimension) - startQuantizedInTileSize;
     }
@@ -1255,6 +1254,5 @@ JPEG2000ImageIO
   // we currently can't stream write for now...
   return false;
 }
-
 
 } // end namespace itk

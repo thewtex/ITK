@@ -22,8 +22,8 @@
 #include <iostream>
 #include <fstream>
 
-
-int itkKdTreeTest2( int argc, char * argv [] )
+int
+itkKdTreeTest2( int argc, char * argv [] )
 {
 
   if( argc < 4 )
@@ -89,7 +89,6 @@ int itkKdTreeTest2( int argc, char * argv [] )
   //
   tree->PrintTree( std::cout );
 
-
   for( unsigned int k = 0; k < sample->Size(); k++ )
     {
 
@@ -106,7 +105,7 @@ int itkKdTreeTest2( int argc, char * argv [] )
 
     distanceMetric->SetOrigin( origin );
 
-    unsigned int numberOfNeighbors = 1;
+    unsigned int                           numberOfNeighbors = 1;
     TreeType::InstanceIdentifierVectorType neighbors;
 
     tree->Search( queryPoint, numberOfNeighbors, neighbors );
@@ -119,7 +118,7 @@ int itkKdTreeTest2( int argc, char * argv [] )
     for ( unsigned int i = 0; i < numberOfNeighbors; ++i )
       {
       const double distance =
-        distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i] ));
+        distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i] ) );
 
       std::cout << "[" << tree->GetMeasurementVector( neighbors[i] )
                 << "] : "
@@ -132,7 +131,6 @@ int itkKdTreeTest2( int argc, char * argv [] )
       }
     }
 
-
   //
   // Plot out the tree structure to the console in the format used by Graphviz dot
   //
@@ -140,7 +138,6 @@ int itkKdTreeTest2( int argc, char * argv [] )
   plotFile.open( argv[3] );
   tree->PlotTree( plotFile );
   plotFile.close();
-
 
   if( testFailed )
     {

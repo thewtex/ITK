@@ -35,7 +35,7 @@ namespace itk
  */
 
 template< unsigned int TPointDimension = 3 >
-class SurfaceSpatialObjectPoint:
+class SurfaceSpatialObjectPoint :
   public SpatialObjectPoint< TPointDimension >
 {
 public:
@@ -49,7 +49,8 @@ public:
   SurfaceSpatialObjectPoint(void);
 
   /** Destructor */
-  virtual ~SurfaceSpatialObjectPoint(void);
+  virtual
+  ~SurfaceSpatialObjectPoint(void);
 
   /** Get Normal */
   const VectorType & GetNormal(void) const;
@@ -71,6 +72,7 @@ protected:
 
   /** Method to print the object. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end of namespace itk
 

@@ -150,6 +150,7 @@ public:
    * set KernelBandwidthEstimation to false in the base class.
    */
   void SetKernelBandwidthSigma(const RealArrayType& kernelSigma);
+
   itkGetConstMacro(KernelBandwidthSigma, RealArrayType);
 
   /** Set/Get the fraction of the image to use for kernel bandwidth sigma estimation.
@@ -278,7 +279,8 @@ protected:
   /** Compute the Minimum and Maximum pixel in the image for each independent
     component */
 
-  void ComputeMinMax(const Image< DiffusionTensor3D<PixelValueType> , ImageDimension>* img)
+  void
+  ComputeMinMax(const Image< DiffusionTensor3D<PixelValueType> , ImageDimension>* img)
   {
     if (this->m_ComponentSpace == Superclass::RIEMANNIAN)
       {
@@ -316,14 +318,15 @@ protected:
    * ComputeLogMap since the eigen analysis will already have been computed
    * for that pixel.
    */
-  void ComputeDifferenceAndWeightedSquaredNorm(const DiffusionTensor3D<PixelValueType>& a,
-                                               const DiffusionTensor3D<PixelValueType>& b,
-                                               const RealArrayType& weight,
-                                               bool useCachedComputations,
-                                               SizeValueType cacheIndex,
-                                               EigenValuesCacheType& eigenValsCache,
-                                               EigenVectorsCacheType& eigenVecsCache,
-                                               RealType& diff, RealArrayType& norm)
+  void
+  ComputeDifferenceAndWeightedSquaredNorm(const DiffusionTensor3D<PixelValueType>& a,
+                                          const DiffusionTensor3D<PixelValueType>& b,
+                                          const RealArrayType& weight,
+                                          bool useCachedComputations,
+                                          SizeValueType cacheIndex,
+                                          EigenValuesCacheType& eigenValsCache,
+                                          EigenVectorsCacheType& eigenVecsCache,
+                                          RealType& diff, RealArrayType& norm)
   {
     if (this->m_ComponentSpace == Superclass::RIEMANNIAN)
       {
@@ -342,14 +345,15 @@ protected:
   }
 
   template <typename PixelT>
-  void ComputeDifferenceAndWeightedSquaredNorm(const PixelT& a,
-                                               const PixelT& b,
-                                               const RealArrayType& weight,
-                                               bool useCachedComputations,
-                                               SizeValueType cacheIndex,
-                                               EigenValuesCacheType& eigenValsCache,
-                                               EigenVectorsCacheType& eigenVecsCache,
-                                               RealType& diff, RealArrayType& norm)
+  void
+  ComputeDifferenceAndWeightedSquaredNorm(const PixelT& a,
+                                          const PixelT& b,
+                                          const RealArrayType& weight,
+                                          bool useCachedComputations,
+                                          SizeValueType cacheIndex,
+                                          EigenValuesCacheType& eigenValsCache,
+                                          EigenVectorsCacheType& eigenVecsCache,
+                                          RealType& diff, RealArrayType& norm)
   {
     ComputeSignedEuclideanDifferenceAndWeightedSquaredNorm(a, b, weight,
                                                            useCachedComputations, cacheIndex,
@@ -360,8 +364,9 @@ protected:
   /**
    * Update a by adding b.  In Riemannian space, b is in the tangent space of a.
    */
-  RealType AddUpdate(const DiffusionTensor3D<RealValueType>& a,
-                     const RealType& b)
+  RealType
+  AddUpdate(const DiffusionTensor3D<RealValueType>& a,
+            const RealType& b)
   {
     if (this->m_ComponentSpace == Superclass::RIEMANNIAN)
       {
@@ -374,8 +379,9 @@ protected:
   }
 
   template <typename RealT>
-  RealType AddUpdate(const RealT& a,
-                     const RealType& b)
+  RealType
+  AddUpdate(const RealT& a,
+            const RealType& b)
   {
     return this->AddEuclideanUpdate(a, b);
   }
@@ -456,7 +462,7 @@ protected:
   RealType m_NoiseSigmaSquared;
   bool     m_NoiseSigmaIsSet;
   //
-  BaseSamplerPointer                m_Sampler;
+  BaseSamplerPointer m_Sampler;
   typename ListAdaptorType::Pointer m_SearchSpaceList;
 
 private:

@@ -86,7 +86,7 @@ namespace itk
  */
 class KLMSegmentationBorder;
 
-class KLMSegmentationRegion:public SegmentationRegion
+class KLMSegmentationRegion : public SegmentationRegion
 {
 public:
   /** Standard class typedefs. */

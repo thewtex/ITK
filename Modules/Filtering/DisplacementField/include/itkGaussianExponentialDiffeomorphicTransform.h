@@ -53,16 +53,16 @@ namespace itk
  * \ingroup ITKDisplacementField
  */
 template
-  <class TScalar, unsigned int NDimensions>
+<class TScalar, unsigned int NDimensions>
 class GaussianExponentialDiffeomorphicTransform :
   public ConstantVelocityFieldTransform<TScalar, NDimensions>
 {
 public:
   /** Standard class typedefs. */
-  typedef GaussianExponentialDiffeomorphicTransform                 Self;
-  typedef ConstantVelocityFieldTransform<TScalar, NDimensions>      Superclass;
-  typedef SmartPointer<Self>                                        Pointer;
-  typedef SmartPointer<const Self>                                  ConstPointer;
+  typedef GaussianExponentialDiffeomorphicTransform            Self;
+  typedef ConstantVelocityFieldTransform<TScalar, NDimensions> Superclass;
+  typedef SmartPointer<Self>                                   Pointer;
+  typedef SmartPointer<const Self>                             ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( GaussianExponentialDiffeomorphicTransform, ConstantVelocityFieldTransform );
@@ -77,16 +77,16 @@ public:
   itkStaticConstMacro( Dimension, unsigned int, NDimensions );
 
   /** Types from superclass */
-  typedef typename Superclass::ScalarType               ScalarType;
-  typedef typename Superclass::DerivativeType           DerivativeType;
-  typedef typename DerivativeType::ValueType            DerivativeValueType;
+  typedef typename Superclass::ScalarType     ScalarType;
+  typedef typename Superclass::DerivativeType DerivativeType;
+  typedef typename DerivativeType::ValueType  DerivativeValueType;
 
   typedef typename Superclass::DisplacementFieldType        DisplacementFieldType;
   typedef typename Superclass::DisplacementFieldPointer     DisplacementFieldPointer;
   typedef typename Superclass::ConstantVelocityFieldType    ConstantVelocityFieldType;
   typedef typename Superclass::ConstantVelocityFieldPointer ConstantVelocityFieldPointer;
 
-  typedef typename DisplacementFieldType::PixelType     DisplacementVectorType;
+  typedef typename DisplacementFieldType::PixelType DisplacementVectorType;
 
   /**
    * Update the transform's parameters by the values in \c update. We overwrite the
@@ -114,7 +114,8 @@ public:
 
 protected:
   GaussianExponentialDiffeomorphicTransform();
-  virtual ~GaussianExponentialDiffeomorphicTransform();
+  virtual
+  ~GaussianExponentialDiffeomorphicTransform();
 
   /** Type of Gaussian Operator used during smoothing. Define here
    * so we can use a member var during the operation. */
@@ -122,18 +123,18 @@ protected:
 
   typedef VectorNeighborhoodOperatorImageFilter
     <ConstantVelocityFieldType, ConstantVelocityFieldType>
-                                                  GaussianSmoothingSmootherType;
+    GaussianSmoothingSmootherType;
 
-  GaussianSmoothingOperatorType                   m_GaussianSmoothingOperator;
+  GaussianSmoothingOperatorType m_GaussianSmoothingOperator;
 
   void PrintSelf( std::ostream &, Indent ) const;
 
 private:
   GaussianExponentialDiffeomorphicTransform( const Self& ); //purposely not implemented
-  void operator=( const Self& ); //purposely not implemented
+  void operator=( const Self& );                            //purposely not implemented
 
-  ScalarType                              m_GaussianSmoothingVarianceForTheUpdateField;
-  ScalarType                              m_GaussianSmoothingVarianceForTheConstantVelocityField;
+  ScalarType m_GaussianSmoothingVarianceForTheUpdateField;
+  ScalarType m_GaussianSmoothingVarianceForTheConstantVelocityField;
 };
 
 } // end namespace itk

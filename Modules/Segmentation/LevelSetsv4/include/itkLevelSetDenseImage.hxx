@@ -58,6 +58,7 @@ typename LevelSetDenseImage< TImage >::OutputType
 LevelSetDenseImage< TImage >::Evaluate( const InputType& inputIndex ) const
 {
   InputType mapIndex = inputIndex - this->m_DomainOffset;
+
   return this->m_Image->GetPixel( mapIndex );
 }
 
@@ -129,7 +130,7 @@ LevelSetDenseImage< TImage >
     // image could not be cast back down
     itkExceptionMacro( << "itk::LevelSetDenseImage::CopyInformation() cannot cast "
                        << typeid( data ).name() << " to "
-                         << typeid( Self * ).name() );
+                       << typeid( Self * ).name() );
     }
 
   if ( !LevelSet )
@@ -151,7 +152,8 @@ LevelSetDenseImage< TImage >
 ::IsInsideDomain(const InputType &inputIndex) const
 {
   const RegionType largestRegion = this->m_Image->GetLargestPossibleRegion();
-  InputType mapIndex = inputIndex - this->m_DomainOffset;
+  InputType        mapIndex = inputIndex - this->m_DomainOffset;
+
   return largestRegion.IsInside( mapIndex );
 }
 

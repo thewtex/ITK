@@ -19,7 +19,6 @@
 #define __itkPNGImageIOFactory_h
 #include "ITKIOPNGExport.h"
 
-
 #include "itkObjectFactoryBase.h"
 #include "itkImageIOBase.h"
 
@@ -29,7 +28,7 @@ namespace itk
  * \brief Create instances of PNGImageIO objects using an object factory.
  * \ingroup ITKIOPNG
  */
-class ITKIOPNG_EXPORT PNGImageIOFactory:public ObjectFactoryBase
+class ITKIOPNG_EXPORT PNGImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -45,12 +44,17 @@ public:
 
   /** Method for class instantiation. */
   itkFactorylessNewMacro(Self);
-  static PNGImageIOFactory * FactoryNew() { return new PNGImageIOFactory; }
+  static PNGImageIOFactory *
+  FactoryNew() {
+    return new PNGImageIOFactory;
+  }
+
   /** Run-time type information (and related methods). */
   itkTypeMacro(PNGImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     PNGImageIOFactory::Pointer pngFactory = PNGImageIOFactory::New();
 
@@ -64,6 +68,7 @@ protected:
 private:
   PNGImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
 } // end namespace itk
 

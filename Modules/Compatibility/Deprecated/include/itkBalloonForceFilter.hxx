@@ -383,7 +383,7 @@ BalloonForceFilter< TInputMesh, TOutputMesh >
   int j = 0;
   while ( celldata != myCellData->End() )
     {
-    const int  x = (int)celldata.Value();
+    const int x = (int)celldata.Value();
     switch ( x )
       {
       case 1:
@@ -412,7 +412,7 @@ void
 BalloonForceFilter< TInputMesh, TOutputMesh >
 ::ComputeForce()
 {
-  IndexType    coord; coord.Fill(0);
+  IndexType coord; coord.Fill(0);
 
   IndexType   extend; extend.Fill(0);
   float       extends[2], fo, t, xs, ys;
@@ -778,7 +778,7 @@ BalloonForceFilter< TInputMesh, TOutputMesh >
     tp = cells.Value()->GetPointIds();
 
     if ( tp[0] > (typename TInputMesh::PointIdentifier)m_NewNodes[j][3] )
-            {}
+              {}
     else
       {
       outcells.Value() = cells.Value();
@@ -832,7 +832,7 @@ BalloonForceFilter< TInputMesh, TOutputMesh >
     m_NumberOfCells = p;
 
     m_K = ( vnl_matrix_fixed< double, 4, 4 > ** )
-          malloc(sizeof( vnl_matrix_fixed< double, 4, 4 > * ) * m_NumberOfCells);
+      malloc(sizeof( vnl_matrix_fixed< double, 4, 4 > * ) * m_NumberOfCells);
 
     celldata = m_Locations->GetCellData()->Begin();
 
@@ -931,7 +931,7 @@ BalloonForceFilter< TInputMesh, TOutputMesh >
   typename TriCell::CellAutoPointer insertCell;
   typename InputMeshType::PointIdentifier    tripoints[3];
   const typename InputMeshType::PointIdentifier *tp;
-  double               x;
+  double x;
 
   m_Output = this->GetOutput();
 
@@ -1190,7 +1190,7 @@ BalloonForceFilter< TInputMesh, TOutputMesh >
 ::ComputeNormals()
 {
   const typename InputMeshType::PointIdentifier *tp;
-  IPixelType           v1, v2, v3, v4;
+  IPixelType v1, v2, v3, v4;
 
   v1.Fill(0.);
   v2.Fill(0.);
@@ -1764,6 +1764,7 @@ BalloonForceFilter< TInputMesh, TOutputMesh >
     }
   free(m_ACD);
 }
+
 } // end namespace itk
 
 #endif //#if !defined( ITK_LEGACY_REMOVE )

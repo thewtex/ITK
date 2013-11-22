@@ -33,17 +33,18 @@
  */
 
 template< unsigned int VImageDimension >
-int runGPUNeighborhoodOperatorImageFilterTest(const std::string& inFile, const std::string& outFile)
+int
+runGPUNeighborhoodOperatorImageFilterTest(const std::string& inFile, const std::string& outFile)
 {
 
   typedef float InputPixelType;
   typedef float OutputPixelType;
 
-  typedef itk::GPUImage< InputPixelType,  VImageDimension >   InputImageType;
-  typedef itk::GPUImage< OutputPixelType, VImageDimension >   OutputImageType;
+  typedef itk::GPUImage< InputPixelType,  VImageDimension > InputImageType;
+  typedef itk::GPUImage< OutputPixelType, VImageDimension > OutputImageType;
 
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   typename ReaderType::Pointer reader = ReaderType::New();
   typename WriterType::Pointer writer = WriterType::New();
@@ -51,14 +52,16 @@ int runGPUNeighborhoodOperatorImageFilterTest(const std::string& inFile, const s
   reader->SetFileName( inFile );
   writer->SetFileName( outFile );
 
-  typedef OutputPixelType    RealOutputPixelType;
+  typedef OutputPixelType RealOutputPixelType;
   typedef itk::Image< OutputPixelType, VImageDimension >
-                             RealOutputImageType;
+    RealOutputImageType;
   typedef itk::NumericTraits<RealOutputPixelType>::ValueType
-                             RealOutputPixelValueType;
+    RealOutputPixelValueType;
 
-  typedef itk::NeighborhoodOperatorImageFilter< InputImageType, OutputImageType, RealOutputPixelValueType > NeighborhoodFilterType;
-  typedef itk::GPUNeighborhoodOperatorImageFilter< InputImageType, OutputImageType, RealOutputPixelValueType > GPUNeighborhoodFilterType;
+  typedef itk::NeighborhoodOperatorImageFilter< InputImageType, OutputImageType,
+                                                RealOutputPixelValueType >    NeighborhoodFilterType;
+  typedef itk::GPUNeighborhoodOperatorImageFilter< InputImageType, OutputImageType,
+                                                   RealOutputPixelValueType > GPUNeighborhoodFilterType;
 
   // Create 1D Gaussian operator
   typedef itk::GaussianOperator< RealOutputPixelValueType, VImageDimension > OperatorType;
@@ -70,7 +73,7 @@ int runGPUNeighborhoodOperatorImageFilterTest(const std::string& inFile, const s
 
   // test 1~8 threads for CPU
   for(int nThreads = 1; nThreads <= 8; nThreads++)
-  {
+    {
     typename NeighborhoodFilterType::Pointer CPUFilter = NeighborhoodFilterType::New();
 
     itk::TimeProbe cputimer;
@@ -90,7 +93,7 @@ int runGPUNeighborhoodOperatorImageFilterTest(const std::string& inFile, const s
     // -------
 
     if( nThreads == 8 )
-    {
+      {
       typename GPUNeighborhoodFilterType::Pointer GPUFilter = GPUNeighborhoodFilterType::New();
 
       itk::TimeProbe gputimer;
@@ -109,24 +112,27 @@ int runGPUNeighborhoodOperatorImageFilterTest(const std::string& inFile, const s
       // RMS Error check
       // ---------------
 
-      double diff = 0;
-      unsigned int nPix = 0;
-      itk::ImageRegionIterator<OutputImageType> cit(CPUFilter->GetOutput(), CPUFilter->GetOutput()->GetLargestPossibleRegion());
-      itk::ImageRegionIterator<OutputImageType> git(GPUFilter->GetOutput(), GPUFilter->GetOutput()->GetLargestPossibleRegion());
+      double                                    diff = 0;
+      unsigned int                              nPix = 0;
+      itk::ImageRegionIterator<OutputImageType> cit(CPUFilter->GetOutput(),
+                                                    CPUFilter->GetOutput()->GetLargestPossibleRegion() );
+      itk::ImageRegionIterator<OutputImageType> git(GPUFilter->GetOutput(),
+                                                    GPUFilter->GetOutput()->GetLargestPossibleRegion() );
 
       for(cit.GoToBegin(), git.GoToBegin(); !cit.IsAtEnd(); ++cit, ++git)
-      {
-        double err = (double)(cit.Get()) - (double)(git.Get());
-//         if(err > 0.1 || (double)(cit.Get()) < 0.1)   std::cout << "CPU : " << (double)(cit.Get()) << ", GPU : " << (double)(git.Get()) << std::endl;
+        {
+        double err = (double)(cit.Get() ) - (double)(git.Get() );
+//         if(err > 0.1 || (double)(cit.Get()) < 0.1)   std::cout << "CPU : " << (double)(cit.Get()) << ", GPU : " <<
+// (double)(git.Get()) << std::endl;
         diff += err*err;
         nPix++;
-      }
+        }
 
       writer->SetInput( GPUFilter->GetOutput() );
       writer->Update();
 
       if (nPix > 0)
-      {
+        {
         double RMSError = sqrt( diff / (double)nPix );
         std::cout << "RMS Error : " << RMSError << std::endl;
         // the CPU filter operator has type double
@@ -139,64 +145,65 @@ int runGPUNeighborhoodOperatorImageFilterTest(const std::string& inFile, const s
         //   a threshold of 1.1e-5 worked on linux and Mac, but not Windows
         //   why?
         double RMSThreshold = 1.2e-5;
-        if (vnl_math_isnan(RMSError))
-        {
+        if (vnl_math_isnan(RMSError) )
+          {
           std::cout << "RMS Error is NaN! nPix: " << nPix << std::endl;
           return EXIT_FAILURE;
-        }
+          }
         if (RMSError > RMSThreshold)
-        {
+          {
           std::cout << "RMS Error exceeds threshold (" << RMSThreshold << ")" << std::endl;
           return EXIT_FAILURE;
+          }
         }
-      }
       else
-      {
+        {
         std::cout << "No pixels in output!" << std::endl;
         return EXIT_FAILURE;
+        }
       }
-    }
 
-  }
+    }
 
   return EXIT_SUCCESS;
 }
 
-int itkGPUNeighborhoodOperatorImageFilterTest(int argc, char *argv[])
+int
+itkGPUNeighborhoodOperatorImageFilterTest(int argc, char *argv[])
 {
-  if(!itk::IsGPUAvailable())
-  {
+  if(!itk::IsGPUAvailable() )
+    {
     std::cerr << "OpenCL-enabled GPU is not present." << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   if( argc <  3 )
-  {
+    {
     std::cerr << "Error: missing arguments" << std::endl;
     std::cerr << "inputfile outputfile [num_dimensions]" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   std::string inFile( argv[1] );
   std::string outFile( argv[2] );
 
   unsigned int dim = 3;
   if( argc >= 4 )
-  {
+    {
     dim = atoi( argv[3] );
-  }
+    }
 
   if( dim == 2 )
-  {
+    {
     return runGPUNeighborhoodOperatorImageFilterTest<2>(inFile, outFile);
-  }
+    }
   else if( dim == 3 )
-  {
+    {
     return runGPUNeighborhoodOperatorImageFilterTest<3>(inFile, outFile);
-  }
+    }
   else
-  {
+    {
     std::cerr << "Error: only 2 or 3 dimensions allowed, " << dim << " selected." << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 }

@@ -37,8 +37,8 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TKernel /*=Neighborhood<bool,
-                                                                 TInputImage::ImageDimension>*/                     >
-class KernelImageFilter:
+                                                                 TInputImage::ImageDimension>*/>
+class KernelImageFilter :
   public BoxImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -74,7 +74,7 @@ public:
                       TInputImage::ImageDimension);
   /** Kernel type used to create box kernel, in SetRadius() method */
   typedef FlatStructuringElement< itkGetStaticConstMacro(ImageDimension) >
-  FlatKernelType;
+    FlatKernelType;
   /** n-dimensional Kernel radius. */
   typedef typename TInputImage::SizeType RadiusType;
 
@@ -86,7 +86,8 @@ public:
   /** Set the kernel to a box kernel of given radius. */
   virtual void SetRadius(const RadiusType & radius);
 
-  virtual void SetRadius(const SizeValueType & radius)
+  virtual void
+  SetRadius(const SizeValueType & radius)
   {
     // needed because of the overloading of the method
     Superclass::SetRadius(radius);
@@ -105,7 +106,8 @@ private:
   KernelImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
 
-  template<typename T> void MakeKernel( const RadiusType & radius, T & kernel )
+  template<typename T> void
+  MakeKernel( const RadiusType & radius, T & kernel )
   {
     kernel.SetRadius( radius );
     for( typename T::Iterator kit=kernel.Begin(); kit != kernel.End(); kit++ )
@@ -114,13 +116,15 @@ private:
       }
   }
 
-  void MakeKernel( const RadiusType & radius, FlatKernelType & kernel )
+  void
+  MakeKernel( const RadiusType & radius, FlatKernelType & kernel )
   {
     // set up a decomposable box structuring element which is
     // much efficient with van Herk / Gil Werman filters
     kernel = FlatKernelType::Box( radius );
     assert( kernel.GetDecomposable() );
   }
+
 };
 }
 

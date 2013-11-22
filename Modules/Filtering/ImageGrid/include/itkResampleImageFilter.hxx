@@ -77,7 +77,7 @@ ResampleImageFilter< TInputImage, TOutputImage, TInterpolatorPrecisionType, TTra
 
   os << indent << "DefaultPixelValue: "
      << static_cast< typename NumericTraits< PixelType >::PrintType >
-  ( m_DefaultPixelValue )
+    ( m_DefaultPixelValue )
      << std::endl;
   os << indent << "Size: " << m_Size << std::endl;
   os << indent << "OutputStartIndex: " << m_OutputStartIndex << std::endl;
@@ -103,6 +103,7 @@ ResampleImageFilter< TInputImage, TOutputImage, TInterpolatorPrecisionType, TTra
 ::SetOutputSpacing(const double *spacing)
 {
   SpacingType s;
+
   for(unsigned int i = 0; i < TOutputImage::ImageDimension; ++i)
     {
     s[i] = static_cast< typename SpacingType::ValueType >(spacing[i]);
@@ -228,9 +229,9 @@ ResampleImageFilter< TInputImage, TOutputImage, TInterpolatorPrecisionType, TTra
   // SpecialCoordinatesImage.  If either are, then we cannot use the
   // fast path since index mapping will definitely not be linear.
   typedef SpecialCoordinatesImage< PixelType, ImageDimension >
-  OutputSpecialCoordinatesImageType;
+    OutputSpecialCoordinatesImageType;
   typedef SpecialCoordinatesImage< InputPixelType, InputImageDimension >
-  InputSpecialCoordinatesImageType;
+    InputSpecialCoordinatesImageType;
 
   if ( dynamic_cast< const InputSpecialCoordinatesImageType * >( this->GetInput() )
        || dynamic_cast< const OutputSpecialCoordinatesImageType * >
@@ -562,13 +563,13 @@ const typename ResampleImageFilter< TInputImage,
 ::ReferenceImageBaseType *
 ResampleImageFilter< TInputImage, TOutputImage, TInterpolatorPrecisionType, TTransformPrecisionType >
 ::GetReferenceImage() const
-{
-  Self *                 surrogate = const_cast< Self * >( this );
+  {
+  Self *                        surrogate = const_cast< Self * >( this );
   const ReferenceImageBaseType *referenceImage =
     static_cast< const ReferenceImageBaseType * >( surrogate->ProcessObject::GetInput(1) );
 
   return referenceImage;
-}
+  }
 
 /**
  * Set the reference image that will provide the grid parameters for the output image.
@@ -605,6 +606,7 @@ ResampleImageFilter< TInputImage, TOutputImage, TInterpolatorPrecisionType, TTra
 
   // get pointers to the input and output
   OutputImagePointer outputPtr = this->GetOutput();
+
   if ( !outputPtr )
     {
     return;

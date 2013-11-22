@@ -28,14 +28,14 @@
 
 typedef itk::GPUImage<float, 2> ItkImage1f;
 
-
-int itkGPUImageTest(int argc, char *argv[])
+int
+itkGPUImageTest(int argc, char *argv[])
 {
   if (argc > 1)
-  {
+    {
     std::cout << "received " << argc << " arguments, but didn't expect any."
               << "first ignored argument: " << argv[1] << std::endl;
-  }
+    }
   unsigned int width, height;
 
   width  = 256;
@@ -79,7 +79,6 @@ int itkGPUImageTest(int argc, char *argv[])
   idx[0] = 0;
   idx[1] = 0;
 
-
   unsigned int nElem = width*height;
 
   //
@@ -112,9 +111,9 @@ int itkGPUImageTest(int argc, char *argv[])
   std::cout << "SrcB : " << srcB->GetPixel( idx ) << std::endl;
   std::cout << "Dest : " << dest->GetPixel( idx ) << std::endl;
 
-  kernelManager->SetKernelArgWithImage(kernel_add, 0, srcA->GetGPUDataManager());
-  kernelManager->SetKernelArgWithImage(kernel_add, 1, srcB->GetGPUDataManager());
-  kernelManager->SetKernelArgWithImage(kernel_add, 2, dest->GetGPUDataManager());
+  kernelManager->SetKernelArgWithImage(kernel_add, 0, srcA->GetGPUDataManager() );
+  kernelManager->SetKernelArgWithImage(kernel_add, 1, srcB->GetGPUDataManager() );
+  kernelManager->SetKernelArgWithImage(kernel_add, 2, dest->GetGPUDataManager() );
   kernelManager->SetKernelArg(kernel_add, 3, sizeof(unsigned int), &nElem);
   kernelManager->LaunchKernel2D(kernel_add, width, height, 16, 16);
 
@@ -138,9 +137,9 @@ int itkGPUImageTest(int argc, char *argv[])
   std::cout << "SrcB : " << srcB->GetPixel( idx ) << std::endl;
   std::cout << "Dest : " << dest->GetPixel( idx ) << std::endl;
 
-  kernelManager->SetKernelArgWithImage(kernel_mult, 0, srcA->GetGPUDataManager());
-  kernelManager->SetKernelArgWithImage(kernel_mult, 1, srcB->GetGPUDataManager());
-  kernelManager->SetKernelArgWithImage(kernel_mult, 2, dest->GetGPUDataManager());
+  kernelManager->SetKernelArgWithImage(kernel_mult, 0, srcA->GetGPUDataManager() );
+  kernelManager->SetKernelArgWithImage(kernel_mult, 1, srcB->GetGPUDataManager() );
+  kernelManager->SetKernelArgWithImage(kernel_mult, 2, dest->GetGPUDataManager() );
   kernelManager->SetKernelArg(kernel_mult, 3, sizeof(unsigned int), &nElem);
   kernelManager->LaunchKernel2D(kernel_mult, width, height, 16, 16);
 
@@ -155,19 +154,19 @@ int itkGPUImageTest(int argc, char *argv[])
   // Change Command Queue if more than one GPU device exists
   // otherwise, use same command queue
   //
-  unsigned int queueID = 0;
+  unsigned int            queueID = 0;
   itk::GPUContextManager *contextManager = itk::GPUContextManager::GetInstance();
   if(contextManager->GetNumberOfCommandQueues() >= 2)
-  {
+    {
     queueID = 1;
     std::cout << "More than one GPU device available, switching command queues."
               << std::endl;
-  }
+    }
   else
-  {
+    {
     std::cout << "Only one GPU device available, using same command queue."
               << std::endl;
-  }
+    }
 
   std::cout << "Current Command Queue ID : " << queueID << std::endl;
 
@@ -194,9 +193,9 @@ int itkGPUImageTest(int argc, char *argv[])
   std::cout << "SrcB : " << srcB->GetPixel( idx ) << std::endl;
   std::cout << "Dest : " << dest->GetPixel( idx ) << std::endl;
 
-  kernelManager->SetKernelArgWithImage(kernel_sub, 0, srcA->GetGPUDataManager());
-  kernelManager->SetKernelArgWithImage(kernel_sub, 1, srcB->GetGPUDataManager());
-  kernelManager->SetKernelArgWithImage(kernel_sub, 2, dest->GetGPUDataManager());
+  kernelManager->SetKernelArgWithImage(kernel_sub, 0, srcA->GetGPUDataManager() );
+  kernelManager->SetKernelArgWithImage(kernel_sub, 1, srcB->GetGPUDataManager() );
+  kernelManager->SetKernelArgWithImage(kernel_sub, 2, dest->GetGPUDataManager() );
   kernelManager->SetKernelArg(kernel_sub, 3, sizeof(unsigned int), &nElem);
   kernelManager->LaunchKernel2D(kernel_sub, width, height, 16, 16);
 

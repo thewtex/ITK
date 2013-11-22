@@ -47,7 +47,7 @@ namespace itk
   * \ingroup ITKImageFeature
 */
 template< typename TInputImage, typename TOutputImage >
-class SimpleContourExtractorImageFilter:
+class SimpleContourExtractorImageFilter :
   public BoxImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -126,7 +126,8 @@ public:
 
 protected:
   SimpleContourExtractorImageFilter();
-  virtual ~SimpleContourExtractorImageFilter() {}
+  virtual
+  ~SimpleContourExtractorImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** SimpleContourExtractorImageFilter can be implemented as a

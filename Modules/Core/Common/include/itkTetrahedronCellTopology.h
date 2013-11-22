@@ -37,7 +37,8 @@ class ITKCommon_EXPORT TetrahedronCellTopology
 {
 public:
   TetrahedronCellTopology();
-  virtual ~TetrahedronCellTopology();
+  virtual
+  ~TetrahedronCellTopology();
 
 protected:
   /** Tetrahedron topology data. */

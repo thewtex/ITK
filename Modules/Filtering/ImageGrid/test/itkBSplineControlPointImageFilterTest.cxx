@@ -21,7 +21,8 @@
 #include "itkImageFileWriter.h"
 
 template<unsigned int ImageDimension>
-int BSpline( int argc, char *argv[] )
+int
+BSpline( int argc, char *argv[] )
 {
   typedef float                    RealType;
   typedef itk::Vector<RealType, 1> ScalarPixelType;
@@ -53,7 +54,7 @@ int BSpline( int argc, char *argv[] )
   spacing.Fill( 1.0 );
 
   typedef itk::BSplineControlPointImageFilter
-  <ScalarFieldType, ScalarFieldType> BSplinerType;
+    <ScalarFieldType, ScalarFieldType> BSplinerType;
   typename BSplinerType::Pointer bspliner = BSplinerType::New();
   bspliner->SetInput( reader->GetOutput() );
   bspliner->SetSplineOrder( 3 );
@@ -118,7 +119,8 @@ int BSpline( int argc, char *argv[] )
   return EXIT_SUCCESS;
 }
 
-int itkBSplineControlPointImageFilterTest( int argc, char *argv[] )
+int
+itkBSplineControlPointImageFilterTest( int argc, char *argv[] )
 {
   if ( argc < 5 )
     {

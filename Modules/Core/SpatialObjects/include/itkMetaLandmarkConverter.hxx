@@ -32,9 +32,9 @@ template< unsigned int NDimensions >
 typename MetaLandmarkConverter< NDimensions >::MetaObjectType *
 MetaLandmarkConverter< NDimensions>
 ::CreateMetaObject()
-{
+  {
   return dynamic_cast<MetaObjectType *>(new LandmarkMetaObjectType);
-}
+  }
 
 /** Convert a metaLandmark into an Landmark SpatialObject  */
 template< unsigned int NDimensions >
@@ -44,6 +44,7 @@ MetaLandmarkConverter< NDimensions >
 {
   const LandmarkMetaObjectType *landmarkMO =
     dynamic_cast<const LandmarkMetaObjectType *>(mo);
+
   if(landmarkMO == 0)
     {
     itkExceptionMacro(<< "Can't convert MetaObject to MetaLandmark");
@@ -106,11 +107,11 @@ template< unsigned int NDimensions >
 typename MetaLandmarkConverter< NDimensions >::MetaObjectType *
 MetaLandmarkConverter< NDimensions >
 ::SpatialObjectToMetaObject(const SpatialObjectType *so)
-{
+  {
   const LandmarkSpatialObjectConstPointer landmarkSO =
     dynamic_cast<const LandmarkSpatialObjectType *>(so);
 
-  if(landmarkSO.IsNull())
+  if(landmarkSO.IsNull() )
     {
     itkExceptionMacro(<< "Can't downcast SpatialObject to LandmarkSpatialObject");
     }
@@ -160,7 +161,7 @@ MetaLandmarkConverter< NDimensions >
   landmarkMO->BinaryData(true);
 
   return landmarkMO;
-}
+  }
 
 } // end namespace itk
 

@@ -36,11 +36,11 @@ class OptimizerParametersHelper
 public:
 
   /** The element type stored at each location in the Array. */
-  typedef TValueType                          ValueType;
-  typedef OptimizerParametersHelper           Self;
+  typedef TValueType                ValueType;
+  typedef OptimizerParametersHelper Self;
 
   /** Type of common data object used by OptimizerParameters. */
-  typedef Array< TValueType >                 CommonContainerType;
+  typedef Array< TValueType > CommonContainerType;
 
   /** Default constructor. Nothing to do. */
   OptimizerParametersHelper(){}
@@ -55,12 +55,13 @@ public:
    * Generally this will be called from the OptimizerParameters object to
    * which this helper is assigned.
    */
-  virtual void MoveDataPointer(CommonContainerType* container,
-                               TValueType * pointer )
-    {
+  virtual void
+  MoveDataPointer(CommonContainerType* container,
+                  TValueType * pointer )
+  {
     container->SetData(
       pointer, container->GetSize(), false /*LetArrayManageMemory*/);
-    }
+  }
 
   /** Set an object that holds the parameters. Used by
    * derived classes that use an object other than itkArray to hold parameter
@@ -70,17 +71,19 @@ public:
    * \c container is the OptimizerParameters object to which this helper
    * is assigned.
    */
-  virtual void SetParametersObject(CommonContainerType *,
-                                   LightObject *)
-    {
+  virtual void
+  SetParametersObject(CommonContainerType *,
+                      LightObject *)
+  {
     itkGenericExceptionMacro("OptimizerParametersHelper::SetParametersObject: "
-      "Not implemented for base class.");
-    }
+                             "Not implemented for base class.");
+  }
 
-  virtual ~OptimizerParametersHelper(){}
+  virtual
+  ~OptimizerParametersHelper(){}
 
 };
 
-}//namespace itk
+} //namespace itk
 
 #endif

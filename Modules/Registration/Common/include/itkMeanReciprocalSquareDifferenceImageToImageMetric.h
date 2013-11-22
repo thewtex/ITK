@@ -43,7 +43,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingImage >
-class MeanReciprocalSquareDifferenceImageToImageMetric:
+class MeanReciprocalSquareDifferenceImageToImageMetric :
   public ImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
@@ -98,7 +98,8 @@ public:
 
 protected:
   MeanReciprocalSquareDifferenceImageToImageMetric();
-  virtual ~MeanReciprocalSquareDifferenceImageToImageMetric() {}
+  virtual
+  ~MeanReciprocalSquareDifferenceImageToImageMetric() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
@@ -106,8 +107,9 @@ private:
                                                                   // not
                                                                   // implemented
   void operator=(const Self &);                                   //purposely
-                                                                  // not
-                                                                  // implemented
+
+  // not
+  // implemented
 
   double m_Lambda;
   double m_Delta;

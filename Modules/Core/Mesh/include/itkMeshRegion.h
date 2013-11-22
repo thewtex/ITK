@@ -48,7 +48,7 @@ namespace itk
  * \ingroup MeshObjects
  * \ingroup ITKMesh
  */
-class MeshRegion:public Region
+class MeshRegion : public Region
 {
 public:
   /** Standard class typedefs. */
@@ -64,31 +64,45 @@ public:
 
   /** Destructor.  MeshRegion is a lightweight object and is not reference
    * counted. */
-  virtual ~MeshRegion();
+  virtual
+  ~MeshRegion();
 
   /** Return the region type. Meshes are described with unstructured regions. */
-  virtual RegionType GetRegionType() const
-  { return Superclass::ITK_UNSTRUCTURED_REGION; }
+  virtual RegionType
+  GetRegionType() const
+  {
+    return Superclass::ITK_UNSTRUCTURED_REGION;
+  }
 
   /** Get the number of regions. */
-  SizeValueType GetNumberOfRegions() const
-  { return m_NumberOfRegions; }
+  SizeValueType
+  GetNumberOfRegions() const
+  {
+    return m_NumberOfRegions;
+  }
 
   /** Set the number of regions. */
-  void SetNumberOfRegions(SizeValueType num)
+  void
+  SetNumberOfRegions(SizeValueType num)
   {
     if ( ( num >= 1 ) && ( num <= NumericTraits< SizeValueType >::max() ) )
-              { m_NumberOfRegions = num; } }
+                  { m_NumberOfRegions = num; }
+  }
 
   /** Get the current region. */
-  SizeValueType GetRegion() const
-  { return m_Region; }
+  SizeValueType
+  GetRegion() const
+  {
+    return m_Region;
+  }
 
   /** Set the number of regions. */
-  void SetRegion(SizeValueType region)
+  void
+  SetRegion(SizeValueType region)
   {
     if ( ( region >= 1 ) && ( region <= NumericTraits< SizeValueType >::max() ) )
-              { m_Region = region; } }
+                  { m_Region = region; }
+  }
 
 private:
   // The maximum number of regions possible.

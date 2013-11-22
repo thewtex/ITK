@@ -25,8 +25,8 @@
 
 #include "itkDoubleThresholdImageFilter.h"
 
-
-int itkDoubleThresholdImageFilterTest( int argc, char * argv[] )
+int
+itkDoubleThresholdImageFilterTest( int argc, char * argv[] )
 {
   if( argc < 7 )
     {
@@ -36,42 +36,39 @@ int itkDoubleThresholdImageFilterTest( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   //
   //  The following code defines the input and output pixel types and their
   //  associated image types.
   //
   const unsigned int Dimension = 2;
 
-  typedef unsigned char    InputPixelType;
-  typedef unsigned char    OutputPixelType;
-  typedef unsigned char    WritePixelType;
+  typedef unsigned char InputPixelType;
+  typedef unsigned char OutputPixelType;
+  typedef unsigned char WritePixelType;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
-  typedef itk::Image< WritePixelType, Dimension >    WriteImageType;
-
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
+  typedef itk::Image< WritePixelType, Dimension >  WriteImageType;
 
   // readers/writers
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< WriteImageType >   WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
   typedef itk::RescaleIntensityImageFilter<OutputImageType, WriteImageType>
-                                                   RescaleType;
+    RescaleType;
 
   // define the fillhole filter
   typedef itk::DoubleThresholdImageFilter<
-                            InputImageType,
-                            OutputImageType >  DoubleThresholdFilterType;
-
+      InputImageType,
+      OutputImageType >  DoubleThresholdFilterType;
 
   // Creation of Reader and Writer filters
-  ReaderType::Pointer reader = ReaderType::New();
-  WriterType::Pointer writer  = WriterType::New();
+  ReaderType::Pointer  reader = ReaderType::New();
+  WriterType::Pointer  writer  = WriterType::New();
   RescaleType::Pointer rescaler = RescaleType::New();
 
   // Create the filter
-  DoubleThresholdFilterType::Pointer  threshold = DoubleThresholdFilterType::New();
-  FilterWatcher watcher(threshold, "threshold");
+  DoubleThresholdFilterType::Pointer threshold = DoubleThresholdFilterType::New();
+  FilterWatcher                      watcher(threshold, "threshold");
 
   // Setup the input and output files
   reader->SetFileName( argv[1] );

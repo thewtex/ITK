@@ -60,9 +60,10 @@ VTKImageIOFactory::GetDescription(void) const
 
 static bool VTKImageIOFactoryHasBeenRegistered;
 
-void ITKIOVTK_EXPORT VTKImageIOFactoryRegister__Private(void)
+void ITKIOVTK_EXPORT
+VTKImageIOFactoryRegister__Private(void)
 {
-  if( ! VTKImageIOFactoryHasBeenRegistered )
+  if( !VTKImageIOFactoryHasBeenRegistered )
     {
     VTKImageIOFactoryHasBeenRegistered = true;
     VTKImageIOFactory::RegisterOneFactory();

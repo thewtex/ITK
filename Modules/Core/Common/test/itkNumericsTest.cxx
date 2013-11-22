@@ -20,9 +20,11 @@
 #include "vnl/algo/vnl_svd.h"
 
 template <typename T>
-void print_vnl_matrix(T& mat)
+void
+print_vnl_matrix(T& mat)
 {
   std::cout << mat;
+
   for(unsigned int r = 0; r < mat.rows(); r++)
     {
     for(unsigned int c = 0; c < mat.columns(); c++)
@@ -32,8 +34,8 @@ void print_vnl_matrix(T& mat)
 }
 
 template <typename V>  // V is often double or float
-vnl_matrix<V> solve_with_warning(vnl_matrix<V>const& M,
-         vnl_matrix<V>const& B)
+vnl_matrix<V> solve_with_warning(vnl_matrix<V> const& M,
+                                 vnl_matrix<V> const& B)
 {
   // Take svd of vnl_matrix<V> M, setting singular values
   // smaller than 1e-8 to 0, and hold the result.
@@ -44,9 +46,10 @@ vnl_matrix<V> solve_with_warning(vnl_matrix<V>const& M,
   return svd.solve(B);
 }
 
-
-int test_svd() {
+int
+test_svd() {
   double data[] = { 1, 1, 1,  1, 2, 3,  1, 3, 6};
+
   vnl_matrix<double> M (data, 3, 3);
   vnl_matrix<double> B (3, 1, 7.0); // column vector [7 7 7]^T
   vnl_matrix<double> result = solve_with_warning(M,B);
@@ -58,10 +61,11 @@ int test_svd() {
   return 0;
 }
 
-int itkNumericsTest(int, char* [] )
+int
+itkNumericsTest(int, char* [] )
 {
   test_svd();
-  double data[] = { 1, 1, 1,  1, 2, 3,  1, 3, 6};
+  double             data[] = { 1, 1, 1,  1, 2, 3,  1, 3, 6};
   vnl_matrix<double> mat(data, 3, 3);
   std::cout << std::endl << "A matrix" << std::endl;
   for(unsigned int r = 0; r < mat.rows(); r++)

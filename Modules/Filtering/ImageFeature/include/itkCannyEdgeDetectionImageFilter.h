@@ -81,7 +81,7 @@ public:
  * \ingroup ITKImageFeature
  */
 template< typename TInputImage, typename TOutputImage >
-class CannyEdgeDetectionImageFilter:
+class CannyEdgeDetectionImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -106,7 +106,7 @@ public:
   /** The default boundary condition is used unless overridden
    *in the Evaluate() method. */
   typedef ZeroFluxNeumannBoundaryCondition< OutputImageType >
-  DefaultBoundaryConditionType;
+    DefaultBoundaryConditionType;
 
   /** The type of data structure that is passed to this function object
    * to evaluate at a pixel that does not lie on a data set boundary.
@@ -146,7 +146,8 @@ public:
 
   /** Set/Get the Variance parameter used by the Gaussian smoothing
       filter in this algorithm */
-  void SetVariance(const typename ArrayType::ValueType v)
+  void
+  SetVariance(const typename ArrayType::ValueType v)
   {
     for ( unsigned int i = 0; i < TInputImage::ImageDimension; i++ )
       {
@@ -161,7 +162,8 @@ public:
 
   /** Set/Get the MaximumError parameter used by the Gaussian smoothing filter
       in this algorithm */
-  void SetMaximumError(const typename ArrayType::ValueType v)
+  void
+  SetMaximumError(const typename ArrayType::ValueType v)
   {
     for ( unsigned int i = 0; i < TInputImage::ImageDimension; i++ )
       {
@@ -190,7 +192,8 @@ public:
   itkSetMacro(LowerThreshold, OutputImagePixelType);
   itkGetConstMacro(LowerThreshold, OutputImagePixelType);
 
-  OutputImageType * GetNonMaximumSuppressionImage()
+  OutputImageType *
+  GetNonMaximumSuppressionImage()
   {
     return this->m_MultiplyImageFilter->GetOutput();
   }
@@ -227,21 +230,22 @@ protected:
   void GenerateData();
 
   typedef DiscreteGaussianImageFilter< InputImageType, OutputImageType >
-  GaussianImageFilterType;
+    GaussianImageFilterType;
   typedef MultiplyImageFilter< OutputImageType,
                                OutputImageType, OutputImageType >       MultiplyImageFilterType;
 
 private:
   CannyEdgeDetectionImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);                //purposely not implemented
 
-  virtual ~CannyEdgeDetectionImageFilter(){}
+  virtual
+  ~CannyEdgeDetectionImageFilter(){}
 
   /** Thread-Data Structure   */
   struct CannyThreadStruct
-  {
+    {
     CannyEdgeDetectionImageFilter *Filter;
-  };
+    };
 
   /** This allocate storage for m_UpdateBuffer, m_UpdateBuffer1 */
   void AllocateUpdateBuffer();
@@ -344,10 +348,10 @@ private:
   SizeValueType m_Center;
 
   typename ListNodeStorageType::Pointer m_NodeStore;
-  ListPointerType                       m_NodeList;
+  ListPointerType m_NodeList;
 
   const InputImageType *m_InputImage;
-  OutputImageType      *m_OutputImage;
+  OutputImageType *     m_OutputImage;
 };
 } //end of namespace itk
 

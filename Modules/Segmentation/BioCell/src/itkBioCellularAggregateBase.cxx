@@ -60,5 +60,6 @@ CellularAggregateBase
 
   os << "Cellular Aggregate Base " << std::endl;
 }
+
 } // end namespace bio
 } // end namespace itk

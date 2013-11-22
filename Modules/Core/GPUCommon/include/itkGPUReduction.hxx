@@ -37,6 +37,7 @@ GPUReduction< TElement >
   m_GPUDataManager = NULL;
 
 }
+
 template< typename TElement >
 GPUReduction< TElement >
 ::~GPUReduction()
@@ -61,13 +62,13 @@ template< typename TElement >
 unsigned int
 GPUReduction< TElement >
 ::NextPow2( unsigned int x ) {
-    --x;
-    x |= x >> 1;
-    x |= x >> 2;
-    x |= x >> 4;
-    x |= x >> 8;
-    x |= x >> 16;
-    return ++x;
+  --x;
+  x |= x >> 1;
+  x |= x >> 2;
+  x |= x >> 4;
+  x |= x >> 8;
+  x |= x >> 16;
+  return ++x;
 }
 
 template< typename TElement >
@@ -75,7 +76,7 @@ bool
 GPUReduction< TElement >
 ::isPow2(unsigned int x)
 {
-    return ((x&(x-1)) == 0);
+  return ( (x&(x-1) ) == 0);
 }
 
 template< typename TElement >
@@ -83,23 +84,22 @@ void
 GPUReduction< TElement >
 ::GetNumBlocksAndThreads(int whichKernel, int n, int maxBlocks, int maxThreads, int &blocks, int &threads)
 {
-    if (whichKernel < 3)
+  if (whichKernel < 3)
     {
-        threads = (n < maxThreads) ? this->NextPow2(n) : maxThreads;
-        blocks = (n + threads - 1) / threads;
+    threads = (n < maxThreads) ? this->NextPow2(n) : maxThreads;
+    blocks = (n + threads - 1) / threads;
     }
-    else
+  else
     {
-        threads = (n < maxThreads*2) ? this->NextPow2((n + 1)/ 2) : maxThreads;
-        blocks = (n + (threads * 2 - 1)) / (threads * 2);
+    threads = (n < maxThreads*2) ? this->NextPow2( (n + 1)/ 2) : maxThreads;
+    blocks = (n + (threads * 2 - 1) ) / (threads * 2);
     }
 
-
-    if (whichKernel == 6)
+  if (whichKernel == 6)
     {
-      if (maxBlocks < blocks)
+    if (maxBlocks < blocks)
       {
-        blocks = maxBlocks;
+      blocks = maxBlocks;
       }
     }
 }
@@ -132,7 +132,7 @@ GPUReduction< TElement >
 
   std::ostringstream kernelName;
   kernelName << "reduce" << whichKernel;
-  unsigned int handle = this->m_GPUKernelManager->CreateKernel(kernelName.str().c_str());
+  unsigned int handle = this->m_GPUKernelManager->CreateKernel(kernelName.str().c_str() );
 
   size_t wgSize;
   cl_int ciErrNum = this->m_GPUKernelManager->GetKernelWorkGroupInfo(handle, CL_KERNEL_WORK_GROUP_SIZE, &wgSize);
@@ -190,10 +190,10 @@ GPUReduction< TElement >
   TElement*    h_idata = (TElement*)malloc(bytes);
 
   for(int i=0; i<size; i++)
-  {
-      // Keep the numbers small so we don't get truncation error in the sum
-      h_idata[i] = (TElement)(rand() & 0xFF);
-  }
+    {
+    // Keep the numbers small so we don't get truncation error in the sum
+    h_idata[i] = (TElement)(rand() & 0xFF);
+    }
 
   this->AllocateGPUInputBuffer(h_idata);
 
@@ -219,7 +219,7 @@ GPUReduction< TElement >
 
   // Create a testing kernel to decide block size
 //   m_TestGPUKernelHandle = this->GetReductionKernel(6, 64, 1);
-  //m_GPUKernelManager->ReleaseKernel(kernelHandle);
+//m_GPUKernelManager->ReleaseKernel(kernelHandle);
 
   // number of threads per block
   int maxThreads = m_SmallBlock ? 64 : 128;
@@ -246,8 +246,8 @@ GPUReduction< TElement >
   // number of threads per block
   int maxThreads = m_SmallBlock ? 64 : 128;
 
-  int whichKernel = 6;
-  int maxBlocks = 64;
+  int  whichKernel = 6;
+  int  maxBlocks = 64;
   bool cpuFinalReduction = true;
   int  cpuFinalThreshold = 1;
 
@@ -259,7 +259,7 @@ GPUReduction< TElement >
   if (numBlocks == 1) cpuFinalThreshold = 1;
 
   // allocate output data for the result
-  TElement* h_odata = (TElement*)malloc(numBlocks * sizeof(TElement));
+  TElement* h_odata = (TElement*)malloc(numBlocks * sizeof(TElement) );
 
   GPUDataPointer odata = GPUDataManager::New();
   odata->SetBufferSize( numBlocks * sizeof(TElement) );
@@ -271,9 +271,9 @@ GPUReduction< TElement >
 
   m_GPUResult = 0;
   m_GPUResult = this->GPUReduce(size, numThreads, numBlocks, maxThreads, maxBlocks,
-                                  whichKernel, cpuFinalReduction,
-                                  cpuFinalThreshold, &dTotalTime,
-                                  m_GPUDataManager, odata);
+                                whichKernel, cpuFinalReduction,
+                                cpuFinalThreshold, &dTotalTime,
+                                m_GPUDataManager, odata);
 
   // cleanup
   free(h_odata);
@@ -326,21 +326,21 @@ GPUReduction< TElement >
   idata->SetCPUDirtyFlag(true);
   TElement* h_idata = (TElement*)idata->GetCPUBufferPointer(); //debug
   if (!h_idata)
-  {
+    {
     h_idata = (TElement*)malloc(sizeof(TElement) * n);
     idata->SetCPUBufferPointer(h_idata);
     idata->SetCPUDirtyFlag(true);
     h_idata = (TElement*)idata->GetCPUBufferPointer(); //debug
-  }
+    }
 
   TElement CPUSum = this->CPUGenerateData(h_idata, n);
   std::cout << "CPU_VERIFY sum = " << CPUSum << std::endl;
 #endif
 
   for(int i=0; i<numBlocks; i++)
-  {
-      gpu_result += h_odata[i];
-  }
+    {
+    gpu_result += h_odata[i];
+    }
 
   // Release the kernels
   // clReleaseKernel(reductionKernel);
@@ -353,16 +353,17 @@ TElement
 GPUReduction< TElement >
 ::CPUGenerateData(TElement *data, int size)
 {
-    TElement sum = data[0];
+  TElement sum = data[0];
+
 //     TElement c = (TElement)0.0;
-    for (int i = 1; i < size; i++)
+  for (int i = 1; i < size; i++)
     {
     // TODO consider using compensated sum algorithm
 
     sum = sum + data[i];
     }
-    m_CPUResult = sum;
-    return sum;
+  m_CPUResult = sum;
+  return sum;
 }
 
 } // end namespace itk

@@ -165,16 +165,28 @@ public:
   ValueType GetScalar(void) const;
 
   /** Returns the X component. */
-  ValueType GetX(void) const { return m_X; }
+  ValueType
+  GetX(void) const {
+    return m_X;
+  }
 
   /** Returns the Y component. */
-  ValueType GetY(void) const { return m_Y; }
+  ValueType
+  GetY(void) const {
+    return m_Y;
+  }
 
   /** Returns the Z component. */
-  ValueType GetZ(void) const { return m_Z; }
+  ValueType
+  GetZ(void) const {
+    return m_Z;
+  }
 
   /** Returns the W component. */
-  ValueType GetW(void) const { return m_W; }
+  ValueType
+  GetW(void) const {
+    return m_W;
+  }
 
   /** Returns the rotation angle in radians.  */
   ValueType GetAngle(void) const;
@@ -261,18 +273,23 @@ public:
 
 private:
   /** use different epsilon for float and double */
-  static inline ValueType Epsilon(double *)
-    {
-      return 1e-10;
-    }
-  static inline ValueType Epsilon(float *)
-    {
-      return 1e-7;
-    }
-  static inline ValueType Epsilon()
-    {
-      return Epsilon((ValueType *)0);
-    }
+  static inline ValueType
+  Epsilon(double *)
+  {
+    return 1e-10;
+  }
+
+  static inline ValueType
+  Epsilon(float *)
+  {
+    return 1e-7;
+  }
+
+  static inline ValueType
+  Epsilon()
+  {
+    return Epsilon( (ValueType *)0);
+  }
 
   /** Component parallel to x axis.  */
   ValueType m_X;
@@ -288,8 +305,9 @@ private:
 };
 
 template< typename T >
-std::ostream & operator<<(std::ostream & os,
-                                     const Versor< T > & v)
+std::ostream &
+operator<<(std::ostream & os,
+           const Versor< T > & v)
 {
   os << "[ ";
   os << v.GetX() << ", " << v.GetY() << ", ";
@@ -299,7 +317,8 @@ std::ostream & operator<<(std::ostream & os,
 
 template< typename T >
 std::istream & operator>>(std::istream & is,
-                                     Versor< T > & v);
+                          Versor< T > & v);
+
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION

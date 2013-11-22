@@ -18,7 +18,8 @@
 
 #include "itkImageFileWriter.h"
 
-int itkImageFileWriterTest(int ac, char* av[])
+int
+itkImageFileWriterTest(int ac, char* av[])
 {
 
   if (ac < 2)
@@ -30,11 +31,10 @@ int itkImageFileWriterTest(int ac, char* av[])
   typedef itk::Image<short,2>               ImageNDType;
   typedef itk::ImageFileWriter<ImageNDType> WriterType;
 
-  ImageNDType::Pointer image = ImageNDType::New();
+  ImageNDType::Pointer    image = ImageNDType::New();
   ImageNDType::RegionType region;
-  ImageNDType::IndexType index;
-  ImageNDType::SizeType size;
-
+  ImageNDType::IndexType  index;
+  ImageNDType::SizeType   size;
 
   size.Fill(5);
   index.Fill(0);
@@ -145,7 +145,6 @@ int itkImageFileWriterTest(int ac, char* av[])
     std::cout << "Failed to catch expected exception." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 

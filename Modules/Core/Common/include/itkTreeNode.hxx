@@ -26,7 +26,7 @@ namespace itk
 /** Constructor */
 template< typename TValueType >
 TreeNode< TValueType >
-::TreeNode():m_Parent(NULL)
+::TreeNode() : m_Parent(NULL)
 {}
 
 /** Destructor */
@@ -234,7 +234,7 @@ TreeNode< TValueType >
 ::AddChild(ChildIdentifier number, Self *node)
 {
   const ChildIdentifier numberOfChildren = static_cast< ChildIdentifier >( m_Children.size() );
-  ChildIdentifier childId = static_cast<ChildIdentifier>( number );
+  ChildIdentifier       childId = static_cast<ChildIdentifier>( number );
 
   if ( childId > numberOfChildren )
     {
@@ -289,7 +289,7 @@ template< typename TValueType >
 typename TreeNode< TValueType >::ChildrenListType *
 TreeNode< TValueType >
 ::GetChildren(unsigned int depth, char *name) const
-{
+  {
   ChildrenListType *children = new ChildrenListType;
 
   typename ChildrenListType::const_iterator childrenListIt =
@@ -320,7 +320,7 @@ TreeNode< TValueType >
     }
 
   return children;
-}
+  }
 
 #endif
 } // namespace itk

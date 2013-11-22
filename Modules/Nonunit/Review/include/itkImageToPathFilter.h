@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TInputImage, typename TOutputPath >
-class ImageToPathFilter:public PathSource< TOutputPath >
+class ImageToPathFilter : public PathSource< TOutputPath >
 {
 public:
   /** Standard class typedefs. */
@@ -82,6 +82,7 @@ protected:
 private:
   ImageToPathFilter(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -38,7 +38,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TOutputMesh >
-class SphereMeshSource:public MeshSource< TOutputMesh >
+class SphereMeshSource : public MeshSource< TOutputMesh >
 {
 public:
   /** Standard "Self" typedef. */
@@ -107,6 +107,7 @@ protected:
 private:
   SphereMeshSource(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };
 } // end namespace itk
 #ifndef ITK_MANUAL_INSTANTIATION

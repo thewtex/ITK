@@ -34,7 +34,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TCellInterface >
-class QuadraticEdgeCell:public TCellInterface
+class QuadraticEdgeCell : public TCellInterface
 {
 public:
   /** Standard class typedefs. */
@@ -54,8 +54,12 @@ public:
   itkStaticConstMacro(CellDimension, unsigned int, 1);
 
   /** Implement the standard CellInterface. */
-  virtual CellGeometry GetType(void) const
-  { return Superclass::QUADRATIC_EDGE_CELL; }
+  virtual CellGeometry
+  GetType(void) const
+  {
+    return Superclass::QUADRATIC_EDGE_CELL;
+  }
+
   virtual void MakeCopy(CellAutoPointer &) const;
 
   virtual unsigned int GetDimension(void) const;
@@ -110,6 +114,7 @@ protected:
 private:
   QuadraticEdgeCell(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
 } // end namespace itk
 

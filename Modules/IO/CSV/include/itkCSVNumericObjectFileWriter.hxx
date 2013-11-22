@@ -24,7 +24,6 @@
 #include <fstream>
 #include <iomanip>
 
-
 namespace itk
 {
 template <typename TValueType, unsigned int NRows, unsigned int NColumns>
@@ -61,7 +60,7 @@ CSVNumericObjectFileWriter<TValueType,NRows,NColumns>
 ::SetInput(const itkMatrixType* obj)
 {
   this->m_InputObject = const_cast<TValueType * >(
-    obj->GetVnlMatrix().data_block() );
+      obj->GetVnlMatrix().data_block() );
   this->m_Rows = obj->RowDimensions;
   this->m_Columns = obj->ColumnDimensions;
 }
@@ -121,7 +120,7 @@ CSVNumericObjectFileWriter<TValueType,NRows,NColumns>
        && (this->m_RowHeaders.size() != this->m_Rows) )
     {
     itkWarningMacro(<< "Warning: The number of row headers and the number of rows in"
-              << " the input object is not consistent.");
+                    << " the input object is not consistent.");
     }
 
   // output a warning if the number of column headers and number of columns in
@@ -150,14 +149,14 @@ CSVNumericObjectFileWriter<TValueType,NRows,NColumns>
 {
   this->PrepareForWriting();
 
-  std::ofstream outputStream(this->m_FileName.c_str());
+  std::ofstream outputStream(this->m_FileName.c_str() );
   if ( outputStream.fail() )
     {
-      itkExceptionMacro(
-        "The file " << this->m_FileName <<" cannot be opened for writing!"
-        << std::endl
-        << "Reason: "
-        << itksys::SystemTools::GetLastSystemError() );
+    itkExceptionMacro(
+      "The file " << this->m_FileName <<" cannot be opened for writing!"
+                  << std::endl
+                  << "Reason: "
+                  << itksys::SystemTools::GetLastSystemError() );
     }
 
   try
@@ -229,11 +228,11 @@ CSVNumericObjectFileWriter<TValueType,NRows,NColumns>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
+
   os << indent << "File name: " << this->m_FileName << std::endl;
   os << indent << "Field Delimiter Character: "
      << this->m_FieldDelimiterCharacter << std::endl;
 }
-
 
 } //end namespace itk
 

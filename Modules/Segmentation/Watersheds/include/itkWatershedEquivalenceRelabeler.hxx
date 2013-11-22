@@ -24,7 +24,8 @@ namespace itk
 namespace watershed
 {
 template< typename TScalar, unsigned int TImageDimension >
-void EquivalenceRelabeler< TScalar, TImageDimension >
+void
+EquivalenceRelabeler< TScalar, TImageDimension >
 ::GenerateData()
 {
   typename ImageType::ConstPointer input  = this->GetInputImage();
@@ -55,7 +56,8 @@ void EquivalenceRelabeler< TScalar, TImageDimension >
 }
 
 template< typename TScalar, unsigned int VImageDimension >
-void EquivalenceRelabeler< TScalar, VImageDimension >
+void
+EquivalenceRelabeler< TScalar, VImageDimension >
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
@@ -78,7 +80,8 @@ void EquivalenceRelabeler< TScalar, VImageDimension >
 }
 
 template< typename TScalar, unsigned int TImageDimension >
-void EquivalenceRelabeler< TScalar, TImageDimension >
+void
+EquivalenceRelabeler< TScalar, TImageDimension >
 ::GenerateOutputRequestedRegion(DataObject *output)
 {
   // Only the Image output need to be propagated through.
@@ -104,7 +107,8 @@ void EquivalenceRelabeler< TScalar, TImageDimension >
 }
 
 template< typename TScalar, unsigned int TImageDimension >
-void EquivalenceRelabeler< TScalar, TImageDimension >
+void
+EquivalenceRelabeler< TScalar, TImageDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
@@ -117,6 +121,7 @@ EquivalenceRelabeler< TScalar, TImageDimension >
 {
   return ImageType::New().GetPointer();
 }
+
 } // end namespace watershed
 } // end namespace itk
 

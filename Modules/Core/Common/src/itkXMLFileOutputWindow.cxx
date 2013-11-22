@@ -172,4 +172,5 @@ XMLFileOutputWindow
 {
   this->DisplayXML("Debug", text);
 }
+
 } // end namespace itk

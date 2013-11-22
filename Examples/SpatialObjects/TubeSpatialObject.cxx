@@ -31,7 +31,8 @@
 #include "itkTubeSpatialObject.h"
 // Software Guide : EndCodeSnippet
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 // Software Guide : BeginLatex
 //
@@ -45,10 +46,10 @@ int main( int , char *[] )
   unsigned int i;
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::TubeSpatialObject<3>            TubeType;
-  typedef TubeType::Pointer                    TubePointer;
-  typedef itk::TubeSpatialObjectPoint<3>       TubePointType;
-  typedef TubePointType::CovariantVectorType   VectorType;
+  typedef itk::TubeSpatialObject<3>          TubeType;
+  typedef TubeType::Pointer                  TubePointer;
+  typedef itk::TubeSpatialObjectPoint<3>     TubePointType;
+  typedef TubePointType::CovariantVectorType VectorType;
 
   TubePointer tube = TubeType::New();
 // Software Guide : EndCodeSnippet
@@ -76,7 +77,7 @@ int main( int , char *[] )
     p.SetRadius(1);
     VectorType normal1;
     VectorType normal2;
-    for(unsigned int j=0;j<3;j++)
+    for(unsigned int j=0; j<3; j++)
       {
       normal1[j]=j;
       normal2[j]=j*2;
@@ -141,7 +142,7 @@ int main( int , char *[] )
 // Software Guide : BeginCodeSnippet
   TubeType::PointListType::const_iterator it = tube->GetPoints().begin();
   i=0;
-  while(it != tube->GetPoints().end())
+  while(it != tube->GetPoints().end() )
     {
     std::cout << std::endl;
     std::cout << "Point #" << i << std::endl;

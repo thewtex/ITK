@@ -110,7 +110,7 @@ public:
   /** PointList typedef. This type is used for maintaining lists of points,
    * specifically, the source and target landmark lists. */
   typedef DefaultStaticMeshTraits<TScalar, NDimensions, NDimensions, TScalar, TScalar> PointSetTraitsType;
-  typedef PointSet<InputPointType, NDimensions, PointSetTraitsType>                                PointSetType;
+  typedef PointSet<InputPointType, NDimensions, PointSetTraitsType>                    PointSetType;
 
   typedef typename PointSetType::Pointer                      PointSetPointer;
   typedef typename PointSetType::PointsContainer              PointsContainer;
@@ -142,13 +142,15 @@ public:
 
   /** These vector transforms are not implemented for this transform */
   using Superclass::TransformVector;
-  virtual OutputVectorType TransformVector(const InputVectorType &) const                       \
+  virtual OutputVectorType
+  TransformVector(const InputVectorType &) const                       \
   {                                                                                             \
     itkExceptionMacro(                                                                          \
       << "TransformVector(const InputVectorType &) is not implemented for KernelTransform");    \
   }
 
-  virtual OutputVnlVectorType TransformVector(const InputVnlVectorType &) const                 \
+  virtual OutputVnlVectorType
+  TransformVector(const InputVnlVectorType &) const                 \
   {                                                                                             \
     itkExceptionMacro(                                                                          \
       << "TransformVector(const InputVnlVectorType &) is not implemented for KernelTransform"); \
@@ -156,7 +158,8 @@ public:
 
   /**  Method to transform a CovariantVector. */
   using Superclass::TransformCovariantVector;
-  virtual OutputCovariantVectorType TransformCovariantVector(const InputCovariantVectorType &) const           \
+  virtual OutputCovariantVectorType
+  TransformCovariantVector(const InputCovariantVectorType &) const           \
   {                                                                                                            \
     itkExceptionMacro(                                                                                         \
       << "TransformCovariantVector(const InputCovariantVectorType &) is not implemented for KernelTransform"); \
@@ -168,8 +171,9 @@ public:
   /** Compute the Jacobian Matrix of the transformation at one point */
   virtual void ComputeJacobianWithRespectToParameters( const InputPointType  & p, JacobianType & jacobian) const;
 
-  virtual void ComputeJacobianWithRespectToPosition(const InputPointType &,
-                                                    JacobianType &) const           \
+  virtual void
+  ComputeJacobianWithRespectToPosition(const InputPointType &,
+                                       JacobianType &) const           \
   {                                                                                 \
     itkExceptionMacro( "ComputeJacobianWithRespectToPosition not yet implemented "  \
                        "for " << this->GetNameOfClass() );                          \
@@ -200,7 +204,8 @@ public:
   /** This transform is not linear, because the transformation of a linear
    * combination of points is not equal to the linear combination of the
    * transformations of individual points */
-  virtual TransformCategoryType GetTransformCategory() const
+  virtual TransformCategoryType
+  GetTransformCategory() const
   {
     return Self::Spline;
   }
@@ -220,7 +225,8 @@ public:
 
 protected:
   KernelTransform();
-  virtual ~KernelTransform();
+  virtual
+  ~KernelTransform();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 public:

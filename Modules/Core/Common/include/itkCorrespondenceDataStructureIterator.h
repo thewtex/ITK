@@ -34,7 +34,8 @@ public:
   typedef CorrespondenceDataStructureIterator Self;
 
   /** Get the dimension (size) of the index. */
-  static unsigned int GetIteratorDimension()
+  static unsigned int
+  GetIteratorDimension()
   {
     return TStructureType::dim;
   }
@@ -43,10 +44,16 @@ public:
   bool IsAtEnd();
 
   /** Walk forward one index. (prefix) */
-  void operator++(){ GoToNext(); }
+  void
+  operator++(){
+    GoToNext();
+  }
 
   /** Walk forward one index. (postfix) */
-  void operator++(int){ GoToNext(); }
+  void
+  operator++(int){
+    GoToNext();
+  }
 
   /** Goes to the next corresponding node clique in the structure,
    *  moving on to the next base node clique if necessary. */
@@ -62,7 +69,8 @@ public:
   CorrespondenceDataStructureIterator(TStructureType *StructurePtr);
 
   /** Destructor */
-  virtual ~CorrespondenceDataStructureIterator();
+  virtual
+  ~CorrespondenceDataStructureIterator();
 
   typedef typename TStructureType::CorrespondingListType CorrespondingListType;
   typedef typename TStructureType::ItemType              ItemType;
@@ -74,7 +82,8 @@ public:
   typedef typename NodeListType::iterator          NodeListIterator;
 
   /** Get m_CorrespondingListPointer.  */
-  CorrespondingListType * GetCorrespondingListPointer()
+  CorrespondingListType *
+  GetCorrespondingListPointer()
   {
     return m_CorrespondingListPointer;
   }

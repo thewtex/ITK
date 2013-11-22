@@ -161,7 +161,8 @@
 #include "itkImageFileWriter.h"
 //  Software Guide : EndCodeSnippet
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
 
   if( argc < 4 )
@@ -182,7 +183,7 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  const     unsigned int    Dimension = 3;
+  const     unsigned int Dimension = 3;
   typedef   double                         PixelType;
   typedef itk::Image<PixelType, Dimension> ImageType;
   // Software Guide : EndCodeSnippet
@@ -197,7 +198,7 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< unsigned char, Dimension >   BinaryImageType;
+  typedef itk::Image< unsigned char, Dimension > BinaryImageType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -210,7 +211,7 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef  itk::Mesh<double>     MeshType;
+  typedef  itk::Mesh<double> MeshType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -248,7 +249,7 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   //  Software Guide : BeginCodeSnippet
-  typedef itk::BinaryMask3DMeshSource< BinaryImageType, MeshType >  MeshSourceType;
+  typedef itk::BinaryMask3DMeshSource< BinaryImageType, MeshType > MeshSourceType;
   //  Software Guide : EndCodeSnippet
   // typedef itk::BinaryMaskToNarrowBandPointSetFilter<
   //                        BinaryImageType, MeshType >  MeshSourceType;
@@ -264,7 +265,7 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::DeformableMesh3DFilter<MeshType,MeshType>  DeformableFilterType;
+  typedef itk::DeformableMesh3DFilter<MeshType,MeshType> DeformableFilterType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -277,8 +278,8 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< ImageType       >  ReaderType;
-  typedef itk::ImageFileReader< BinaryImageType >  BinaryReaderType;
+  typedef itk::ImageFileReader< ImageType       > ReaderType;
+  typedef itk::ImageFileReader< BinaryImageType > BinaryReaderType;
   ReaderType::Pointer       imageReader   =  ReaderType::New();
   BinaryReaderType::Pointer maskReader    =  BinaryReaderType::New();
   // Software Guide : EndCodeSnippet
@@ -305,8 +306,8 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  GradientMagnitudeFilterType::Pointer  gradientMagnitudeFilter
-                                          = GradientMagnitudeFilterType::New();
+  GradientMagnitudeFilterType::Pointer gradientMagnitudeFilter
+    = GradientMagnitudeFilterType::New();
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -350,7 +351,7 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  gradientMapFilter->SetInput( gradientMagnitudeFilter->GetOutput());
+  gradientMapFilter->SetInput( gradientMagnitudeFilter->GetOutput() );
   gradientMapFilter->SetSigma( 1.0 );
   // Software Guide : EndCodeSnippet
 
@@ -402,7 +403,7 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   DeformableFilterType::Pointer deformableModelFilter =
-                                     DeformableFilterType::New();
+    DeformableFilterType::New();
   deformableModelFilter->SetGradient( gradientMapFilter->GetOutput() );
   // Software Guide : EndCodeSnippet
 
@@ -456,8 +457,8 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::CovariantVector<double, 2>           double2DVector;
-  typedef itk::CovariantVector<double, 3>           double3DVector;
+  typedef itk::CovariantVector<double, 2> double2DVector;
+  typedef itk::CovariantVector<double, 3> double3DVector;
 
   double2DVector stiffness;
   stiffness[0] = 0.0001;
@@ -534,10 +535,10 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   typedef itk::PointSetToImageFilter<MeshType,ImageType> MeshFilterType;
   MeshFilterType::Pointer meshFilter = MeshFilterType::New();
-  meshFilter->SetOrigin(mask->GetOrigin());
-  meshFilter->SetSize(mask->GetLargestPossibleRegion().GetSize());
-  meshFilter->SetSpacing(mask->GetSpacing());
-  meshFilter->SetInput(meshSource->GetOutput());
+  meshFilter->SetOrigin(mask->GetOrigin() );
+  meshFilter->SetSize(mask->GetLargestPossibleRegion().GetSize() );
+  meshFilter->SetSpacing(mask->GetSpacing() );
+  meshFilter->SetInput(meshSource->GetOutput() );
   try
     {
     meshFilter->Update();
@@ -559,7 +560,7 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   typedef itk::ImageFileWriter<ImageType> WriterType;
   WriterType::Pointer writer = WriterType::New();
-  writer->SetInput(meshFilter->GetOutput());
+  writer->SetInput(meshFilter->GetOutput() );
   writer->SetFileName(argv[3]);
   writer->Update();
   // Software Guide : EndCodeSnippet

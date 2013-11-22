@@ -52,7 +52,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class FastChamferDistanceImageFilter:
+class FastChamferDistanceImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -147,7 +147,8 @@ public:
 
 protected:
   FastChamferDistanceImageFilter();
-  virtual ~FastChamferDistanceImageFilter() {}
+  virtual
+  ~FastChamferDistanceImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Compute a Signed Chamfer Distance Map up to the specified maximal

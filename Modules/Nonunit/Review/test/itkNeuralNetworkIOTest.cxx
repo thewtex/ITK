@@ -23,7 +23,8 @@
 
 #include <iostream>
 
-int itkNeuralNetworkIOTest(int argc,char* argv[])
+int
+itkNeuralNetworkIOTest(int argc,char* argv[])
 {
   if( argc < 3 )
     {
@@ -37,18 +38,18 @@ int itkNeuralNetworkIOTest(int argc,char* argv[])
 
   const unsigned int num_input_nodes=2;
   const unsigned int num_output_nodes=1;
-  typedef itk::Vector<double, num_input_nodes>   MeasurementVectorType;
-  typedef itk::Vector<double, num_output_nodes>  TargetVectorType;
+  typedef itk::Vector<double, num_input_nodes>  MeasurementVectorType;
+  typedef itk::Vector<double, num_output_nodes> TargetVectorType;
 
 #if 1
   typedef itk::Statistics::MultilayerNeuralNetworkBase<
-    MeasurementVectorType, TargetVectorType> NetworkType;
+      MeasurementVectorType, TargetVectorType> NetworkType;
 
-  typedef itk::Statistics::ListSample<MeasurementVectorType>    SampleType;
-  typedef itk::Statistics::ListSample<TargetVectorType>         TargetType;
+  typedef itk::Statistics::ListSample<MeasurementVectorType> SampleType;
+  typedef itk::Statistics::ListSample<TargetVectorType>      TargetType;
 
   typedef itk::Statistics::IterativeSupervisedTrainingFunction<
-    SampleType, TargetType, double> TrainingFcnType;
+      SampleType, TargetType, double> TrainingFcnType;
 
   typedef itk::NeuralNetworkFileReader<NetworkType> ReaderType;
 
@@ -59,7 +60,6 @@ int itkNeuralNetworkIOTest(int argc,char* argv[])
   //exercise Set/GetFilename method for code coverage
   std::string testName = tempDataDirectory+std::string("/Input.txt");
   reader->SetFileName( testName );
-
 
   if ( reader->GetFileName() != testName )
     {
@@ -91,9 +91,9 @@ int itkNeuralNetworkIOTest(int argc,char* argv[])
 
   // Read in training data
   MeasurementVectorType mv;
-  TargetVectorType tv;
-  SampleType::Pointer sample = SampleType::New();
-  TargetType::Pointer targets = TargetType::New();
+  TargetVectorType      tv;
+  SampleType::Pointer   sample = SampleType::New();
+  TargetType::Pointer   targets = TargetType::New();
   sample->SetMeasurementVectorSize( num_input_nodes);
   targets->SetMeasurementVectorSize( num_output_nodes);
   std::ifstream infile1;
@@ -101,7 +101,7 @@ int itkNeuralNetworkIOTest(int argc,char* argv[])
 
   infile1 >> mv[0] >> mv[1] >> tv[0];
 
-  while (!infile1.eof())
+  while (!infile1.eof() )
     {
     std::cout << "Input =" << mv << std::endl;
     std::cout << "target =" << tv << std::endl;
@@ -114,7 +114,6 @@ int itkNeuralNetworkIOTest(int argc,char* argv[])
 
   std::cout << sample->Size() << std::endl;
 
-
   //Network Simulation
   std::cout << sample->Size() << std::endl;
   std::cout << "Network Simulation" << std::endl;
@@ -122,17 +121,17 @@ int itkNeuralNetworkIOTest(int argc,char* argv[])
   ov.Fill(0.0);
   SampleType::ConstIterator iter1 = sample->Begin();
   TargetType::ConstIterator iter2 = targets->Begin();
-  unsigned int error1 = 0;
-  unsigned int error2 = 0;
-  int flag = 0;
+  unsigned int              error1 = 0;
+  unsigned int              error2 = 0;
+  int                       flag = 0;
 
   while( iter1 != sample->End() )
     {
     mv = iter1.GetMeasurementVector();
     tv = iter2.GetMeasurementVector();
-    ov.SetVnlVector(network->GenerateOutput(mv));
+    ov.SetVnlVector(network->GenerateOutput(mv) );
     flag = 0;
-    if( vnl_math_abs(tv[0]-ov[0])>0.5 && !((tv[0]*ov[0])>0) )
+    if( vnl_math_abs(tv[0]-ov[0])>0.5 && !( (tv[0]*ov[0])>0) )
       {
       flag = 1;
       }
@@ -153,10 +152,9 @@ int itkNeuralNetworkIOTest(int argc,char* argv[])
     }
 
   std::cout << "Among 4 measurement vectors, " << error1 + error2
-    << " vectors are misclassified." << std::endl;
+            << " vectors are misclassified." << std::endl;
   std::cout << "Network Weights and Biases after Training= " << std::endl;
   std::cout << network << std::endl;
-
 
   //Write out network as it was read in
   WriterType::Pointer writer=WriterType::New();
@@ -181,7 +179,7 @@ int itkNeuralNetworkIOTest(int argc,char* argv[])
     }
 
   writer->SetWriteWeightValuesType(WriterType::ASCII);
-  writer->SetFileName(tempDataDirectory+std::string("/xornetASCII.txt"));
+  writer->SetFileName(tempDataDirectory+std::string("/xornetASCII.txt") );
   writer->SetInput(network);
 
   if( writer->GetInput() != network )
@@ -211,7 +209,7 @@ int itkNeuralNetworkIOTest(int argc,char* argv[])
     {
     WriterType::Pointer writer2=WriterType::New();
     writer2->SetWriteWeightValuesType(WriterType::BINARY);
-    writer2->SetFileName(tempDataDirectory+std::string("/xornetBinary.txt"));
+    writer2->SetFileName(tempDataDirectory+std::string("/xornetBinary.txt") );
     writer2->SetInput(network);
     writer2->Update();
 
@@ -225,12 +223,14 @@ int itkNeuralNetworkIOTest(int argc,char* argv[])
   //Now test reading and writing of OneHiddenLayerBackPropagationNeuralNetwork
     {
     const std::string TestOneHiddenLayerNetFileName=tempDataDirectory+std::string("/OneHiddenLayerNet.txt");
-    typedef itk::Statistics::OneHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType, TargetVectorType> OneHiddenLayerBackPropagationNeuralNetworkType;
-    OneHiddenLayerBackPropagationNeuralNetworkType::Pointer OneHiddenLayerNet = OneHiddenLayerBackPropagationNeuralNetworkType::New();
+    typedef itk::Statistics::OneHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType,
+                                                                        TargetVectorType>
+      OneHiddenLayerBackPropagationNeuralNetworkType;
+    OneHiddenLayerBackPropagationNeuralNetworkType::Pointer OneHiddenLayerNet =
+      OneHiddenLayerBackPropagationNeuralNetworkType::New();
     OneHiddenLayerNet->SetNumOfInputNodes(2);
     OneHiddenLayerNet->SetNumOfFirstHiddenNodes(2);
     OneHiddenLayerNet->SetNumOfOutputNodes(1);
-
 
     OneHiddenLayerNet->InitializeWeights();
     OneHiddenLayerNet->SetLearningRate(0.001);
@@ -253,14 +253,18 @@ int itkNeuralNetworkIOTest(int argc,char* argv[])
       readerOneHiddenLayerBackPropagation->SetReadWeightValuesType( OHLReaderType::ASCII );
       readerOneHiddenLayerBackPropagation->Update();
       //The following line gives a compiler error
-      OneHiddenLayerBackPropagationNeuralNetworkType::Pointer OneHiddenLayerNet_ReadIn = readerOneHiddenLayerBackPropagation->GetOutput();
+      OneHiddenLayerBackPropagationNeuralNetworkType::Pointer OneHiddenLayerNet_ReadIn =
+        readerOneHiddenLayerBackPropagation->GetOutput();
       }
     }
   //Now test reading and writing of TwoHiddenLayerBackPropagationNeuralNetwork
     {
     const std::string TestTwoHiddenLayerNetFileName=tempDataDirectory+std::string("/TwoHiddenLayerNet.txt");
-    typedef itk::Statistics::TwoHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType, TargetVectorType> TwoHiddenLayerBackPropagationNeuralNetworkType;
-    TwoHiddenLayerBackPropagationNeuralNetworkType::Pointer TwoHiddenLayerNet = TwoHiddenLayerBackPropagationNeuralNetworkType::New();
+    typedef itk::Statistics::TwoHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType,
+                                                                        TargetVectorType>
+      TwoHiddenLayerBackPropagationNeuralNetworkType;
+    TwoHiddenLayerBackPropagationNeuralNetworkType::Pointer TwoHiddenLayerNet =
+      TwoHiddenLayerBackPropagationNeuralNetworkType::New();
     TwoHiddenLayerNet->SetNumOfInputNodes(7);
     TwoHiddenLayerNet->SetNumOfFirstHiddenNodes(5);
     TwoHiddenLayerNet->SetNumOfSecondHiddenNodes(3);
@@ -288,7 +292,8 @@ int itkNeuralNetworkIOTest(int argc,char* argv[])
       readerTwoHiddenLayerBackPropagation->SetReadWeightValuesType( OHLReaderType::ASCII );
       readerTwoHiddenLayerBackPropagation->Update();
       //The following line gives a compiler error
-      TwoHiddenLayerBackPropagationNeuralNetworkType::Pointer TwoHiddenLayerNet_ReadIn = readerTwoHiddenLayerBackPropagation->GetOutput();
+      TwoHiddenLayerBackPropagationNeuralNetworkType::Pointer TwoHiddenLayerNet_ReadIn =
+        readerTwoHiddenLayerBackPropagation->GetOutput();
       }
     }
   std::cout << "Test passed." << std::endl;

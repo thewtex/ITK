@@ -22,12 +22,14 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkImageFileWriter.h"
 
-int itkCollidingFrontsImageFilterTest(int argc, char* argv[] )
+int
+itkCollidingFrontsImageFilterTest(int argc, char* argv[] )
 {
 
-  const   unsigned int    ImageDimension = 2;
-  typedef unsigned char   PixelType;
-  typedef float           InternalPixelType;
+  const   unsigned int ImageDimension = 2;
+
+  typedef unsigned char PixelType;
+  typedef float         InternalPixelType;
 
   typedef itk::Image<PixelType,ImageDimension>         ImageType;
   typedef itk::Image<InternalPixelType,ImageDimension> InternalImageType;
@@ -87,7 +89,7 @@ int itkCollidingFrontsImageFilterTest(int argc, char* argv[] )
   seeds2->InsertElement( 0, node2 );
 
   InternalImageType::OffsetType offset = {{60,60}};
-  double radius = seedPosition2[0] - offset[0];
+  double                        radius = seedPosition2[0] - offset[0];
 
   collidingFronts->SetInput( caster->GetOutput() );
   collidingFronts->SetSeedPoints1( seeds1 );
@@ -105,7 +107,7 @@ int itkCollidingFrontsImageFilterTest(int argc, char* argv[] )
   InternalImageType::Pointer output = collidingFronts->GetOutput();
 
   itk::ImageRegionIterator<InternalImageType>
-      iterator ( output, output->GetBufferedRegion() );
+  iterator ( output, output->GetBufferedRegion() );
 
   bool passed = true;
 
@@ -136,7 +138,7 @@ int itkCollidingFrontsImageFilterTest(int argc, char* argv[] )
       }
     else
       {
-       if (distance < radius)
+      if (distance < radius)
         {
         std::cout<<outputPixel<<" "<<distance<<std::endl;
         passed = false;
@@ -151,7 +153,7 @@ int itkCollidingFrontsImageFilterTest(int argc, char* argv[] )
     WriterType::Pointer writer = WriterType::New();
 
     typedef itk::RescaleIntensityImageFilter< InternalImageType,
-      ImageType > RescaleFilterType;
+                                              ImageType > RescaleFilterType;
     RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
     writer->SetFileName( argv[1] );

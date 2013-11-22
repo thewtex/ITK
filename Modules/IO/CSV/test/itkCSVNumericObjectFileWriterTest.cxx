@@ -18,7 +18,8 @@
 
 #include "itkCSVNumericObjectFileWriter.h"
 
-int itkCSVNumericObjectFileWriterTest (int argc, char *argv[])
+int
+itkCSVNumericObjectFileWriterTest(int argc, char *argv[])
 {
   if ( argc < 2 )
     {
@@ -26,7 +27,7 @@ int itkCSVNumericObjectFileWriterTest (int argc, char *argv[])
     return EXIT_FAILURE;
     }
 
-  double nan = vcl_numeric_limits<double>::quiet_NaN();
+  double             nan = vcl_numeric_limits<double>::quiet_NaN();
   const unsigned int ARows = 3;
   const unsigned int ACols = 6;
 
@@ -52,7 +53,7 @@ int itkCSVNumericObjectFileWriterTest (int argc, char *argv[])
   array[2][5] = 3e+10;
 
   typedef itk::CSVNumericObjectFileWriter
-                          <double, ARows, ACols > Array2DWriterType;
+    <double, ARows, ACols > Array2DWriterType;
   Array2DWriterType::Pointer array_writer = Array2DWriterType::New();
 
   // should throw an exception as there is no input file nor any object
@@ -134,7 +135,7 @@ int itkCSVNumericObjectFileWriterTest (int argc, char *argv[])
   vnlmatrix[2][3] = 5.6;
 
   typedef itk::CSVNumericObjectFileWriter
-                          <double, VMRows, VMCols> vnlMatrixWriterType;
+    <double, VMRows, VMCols> vnlMatrixWriterType;
   vnlMatrixWriterType::Pointer vnl_matrix_writer = vnlMatrixWriterType::New();
 
   vnl_matrix_writer->SetFileName( filename );
@@ -185,7 +186,7 @@ int itkCSVNumericObjectFileWriterTest (int argc, char *argv[])
   RowHeaders.push_back( "Row3" );
 
   typedef itk::CSVNumericObjectFileWriter
-          <double, NRows,NCols> fixedMatrixWriterType;
+    <double, NRows,NCols> fixedMatrixWriterType;
   fixedMatrixWriterType::Pointer fixed_matrix_writer = fixedMatrixWriterType::New();
 
   fixed_matrix_writer->SetFileName( filename );

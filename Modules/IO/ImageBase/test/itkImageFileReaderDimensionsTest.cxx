@@ -22,7 +22,8 @@
 // This test is designed to test reading and writing of miss matched
 // dimensions
 
-int itkImageFileReaderDimensionsTest(int argc, char* argv[])
+int
+itkImageFileReaderDimensionsTest(int argc, char* argv[])
 {
 
   if (argc < 4)
@@ -44,12 +45,16 @@ int itkImageFileReaderDimensionsTest(int argc, char* argv[])
   typedef itk::ImageFileWriter<Image3DType> Writer3DType;
   typedef itk::ImageFileWriter<Image4DType> Writer4DType;
 
-
-  std::string tempFile1 = std::string( argv[2] ) + std::string( "/itkImageFileReaderDimensionsTest_1." ) + std::string( argv[3] );
-  std::string tempFile2 = std::string( argv[2] ) + std::string( "/itkImageFileReaderDimensionsTest_2." ) + std::string( argv[3] );
-  std::string tempFile3 = std::string( argv[2] ) + std::string( "/itkImageFileReaderDimensionsTest_3." ) + std::string( argv[3] );
-  std::string tempFile4 = std::string( argv[2] ) + std::string( "/itkImageFileReaderDimensionsTest_4." ) + std::string( argv[3] );
-  std::string tempFile5 = std::string( argv[2] ) + std::string( "/itkImageFileReaderDimensionsTest_5." ) + std::string( argv[3] );
+  std::string tempFile1 = std::string( argv[2] ) + std::string( "/itkImageFileReaderDimensionsTest_1." ) + std::string(
+      argv[3] );
+  std::string tempFile2 = std::string( argv[2] ) + std::string( "/itkImageFileReaderDimensionsTest_2." ) + std::string(
+      argv[3] );
+  std::string tempFile3 = std::string( argv[2] ) + std::string( "/itkImageFileReaderDimensionsTest_3." ) + std::string(
+      argv[3] );
+  std::string tempFile4 = std::string( argv[2] ) + std::string( "/itkImageFileReaderDimensionsTest_4." ) + std::string(
+      argv[3] );
+  std::string tempFile5 = std::string( argv[2] ) + std::string( "/itkImageFileReaderDimensionsTest_5." ) + std::string(
+      argv[3] );
 
   // we expect the filename to be 2 or 3 dimensions
   // and reading it into a 4D
@@ -60,7 +65,7 @@ int itkImageFileReaderDimensionsTest(int argc, char* argv[])
     reader->SetFileName(argv[1]);
 
     Writer4DType::Pointer writer = Writer4DType::New();
-    writer->SetInput(reader->GetOutput());
+    writer->SetInput(reader->GetOutput() );
     writer->SetFileName(tempFile1);
     writer->Update();
     }
@@ -78,9 +83,8 @@ int itkImageFileReaderDimensionsTest(int argc, char* argv[])
     // we expect the filename to be 4 dimensions
     reader->SetFileName(tempFile1);
 
-
     Writer3DType::Pointer writer = Writer3DType::New();
-    writer->SetInput(reader->GetOutput());
+    writer->SetInput(reader->GetOutput() );
     writer->SetFileName(tempFile2);
     writer->Update();
     }
@@ -90,7 +94,6 @@ int itkImageFileReaderDimensionsTest(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-
   // stream read new 3D file into 4D
   std::cout << "testing requested stream reading from 3D image into 4D" << std::endl;
   try
@@ -99,7 +102,7 @@ int itkImageFileReaderDimensionsTest(int argc, char* argv[])
     reader->SetFileName(tempFile2);
 
     Writer4DType::Pointer writer = Writer4DType::New();
-    writer->SetInput(reader->GetOutput());
+    writer->SetInput(reader->GetOutput() );
     writer->SetFileName(tempFile3);
     writer->SetNumberOfStreamDivisions(4);
     writer->Update();
@@ -110,7 +113,6 @@ int itkImageFileReaderDimensionsTest(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-
   // stream read new 4D file into 3D
   std::cout << "testing requested stream reading from 4D image into 3D" << std::endl;
   try
@@ -120,7 +122,7 @@ int itkImageFileReaderDimensionsTest(int argc, char* argv[])
     reader->Update();
 
     Writer3DType::Pointer writer = Writer3DType::New();
-    writer->SetInput(reader->GetOutput());
+    writer->SetInput(reader->GetOutput() );
     writer->SetFileName(tempFile4);
     writer->SetNumberOfStreamDivisions(4);
     writer->Update();
@@ -164,12 +166,11 @@ int itkImageFileReaderDimensionsTest(int argc, char* argv[])
     for (unsigned int i = 0; i < 3; ++i)
       {
       ioregion.SetIndex(i, 0);
-      ioregion.SetSize(i, region.GetSize(i));
+      ioregion.SetSize(i, region.GetSize(i) );
       }
 
-
     Writer4DType::Pointer writer = Writer4DType::New();
-    writer->SetInput(reader->GetOutput());
+    writer->SetInput(reader->GetOutput() );
     writer->SetFileName(tempFile5); // this file name should not
                                     // matter since it should never be written
     writer->SetIORegion(ioregion);

@@ -86,7 +86,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginLatex
 //
 // Let's now move into the code.... and, yes, bring with you that
@@ -119,7 +118,6 @@
 #include "itkRecursiveGaussianImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // The resampling filter will need a Transform in order to map point
@@ -136,11 +134,9 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkIdentityTransform.h"
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -158,8 +154,8 @@
 #include "itkIntensityWindowingImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 5 )
     {
@@ -176,19 +172,17 @@ int main( int argc, char * argv[] )
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
-  const     unsigned int    Dimension = 3;
+  const     unsigned int Dimension = 3;
 
-  typedef   unsigned short  InputPixelType;
-  typedef   float           InternalPixelType;
+  typedef   unsigned short InputPixelType;
+  typedef   float          InternalPixelType;
 
-  typedef itk::Image< InputPixelType,    Dimension >   InputImageType;
-  typedef itk::Image< InternalPixelType, Dimension >   InternalImageType;
+  typedef itk::Image< InputPixelType,    Dimension > InputImageType;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
 // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
@@ -205,8 +199,8 @@ int main( int argc, char * argv[] )
     }
 
   typedef itk::IntensityWindowingImageFilter<
-                                  InputImageType,
-                                  InternalImageType >  IntensityFilterType;
+      InputImageType,
+      InternalImageType >  IntensityFilterType;
 
   IntensityFilterType::Pointer intensityWindowing = IntensityFilterType::New();
 
@@ -218,7 +212,6 @@ int main( int argc, char * argv[] )
 
   intensityWindowing->SetInput( reader->GetOutput() );
 
-
 // Software Guide : BeginLatex
 //
 // We instantiate the smoothing filter that will be used on the preprocessing
@@ -228,10 +221,9 @@ int main( int argc, char * argv[] )
 
 // Software Guide : BeginCodeSnippet
   typedef itk::RecursiveGaussianImageFilter<
-                                InternalImageType,
-                                InternalImageType > GaussianFilterType;
+      InternalImageType,
+      InternalImageType > GaussianFilterType;
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -250,7 +242,6 @@ int main( int argc, char * argv[] )
   smootherX->SetInput( intensityWindowing->GetOutput() );
   smootherY->SetInput( smootherX->GetOutput() );
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -277,7 +268,6 @@ int main( int argc, char * argv[] )
   const InputImageType::SpacingType& inputSpacing = inputImage->GetSpacing();
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // and apply our ad-hoc conjecture that the correct anisotropic resolution
@@ -294,7 +284,6 @@ int main( int argc, char * argv[] )
   smootherY->SetSigma( isoSpacing );
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // We instruct the smoothing filters to act along the $X$ and $Y$ direction
@@ -302,12 +291,10 @@ int main( int argc, char * argv[] )
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
   smootherX->SetDirection( 0 );
   smootherY->SetDirection( 1 );
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -319,18 +306,16 @@ int main( int argc, char * argv[] )
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
-  typedef   unsigned char   OutputPixelType;
+  typedef   unsigned char OutputPixelType;
 
-  typedef itk::Image< OutputPixelType,   Dimension >   OutputImageType;
+  typedef itk::Image< OutputPixelType,   Dimension > OutputImageType;
 
   typedef itk::ResampleImageFilter<
-                InternalImageType, OutputImageType >  ResampleFilterType;
+      InternalImageType, OutputImageType >  ResampleFilterType;
 
   ResampleFilterType::Pointer resampler = ResampleFilterType::New();
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -340,14 +325,13 @@ int main( int argc, char * argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::IdentityTransform< double, Dimension >  TransformType;
+  typedef itk::IdentityTransform< double, Dimension > TransformType;
 
   TransformType::Pointer transform = TransformType::New();
   transform->SetIdentity();
 
   resampler->SetTransform( transform );
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -358,16 +342,14 @@ int main( int argc, char * argv[] )
 
 // Software Guide : BeginCodeSnippet
   typedef itk::LinearInterpolateImageFunction<
-                          InternalImageType, double >  InterpolatorType;
+      InternalImageType, double >  InterpolatorType;
 
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
 
   resampler->SetInterpolator( interpolator );
 // Software Guide : EndCodeSnippet
 
-
   resampler->SetDefaultPixelValue( 255 ); // highlight regions without source
-
 
 // Software Guide : BeginLatex
 //
@@ -386,7 +368,6 @@ int main( int argc, char * argv[] )
   resampler->SetOutputSpacing( spacing );
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // The origin and orientation of the output image is maintained, since we
@@ -400,7 +381,6 @@ int main( int argc, char * argv[] )
   resampler->SetOutputDirection( inputImage->GetDirection() );
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // The number of pixels to use along each dimension in the grid of the
@@ -413,8 +393,8 @@ int main( int argc, char * argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  InputImageType::SizeType   inputSize =
-                    inputImage->GetLargestPossibleRegion().GetSize();
+  InputImageType::SizeType inputSize =
+    inputImage->GetLargestPossibleRegion().GetSize();
 
   typedef InputImageType::SizeType::SizeValueType SizeValueType;
 
@@ -423,7 +403,6 @@ int main( int argc, char * argv[] )
 
   const double dz = (inputSize[2] - 1 ) * inputSpacing[2] / isoSpacing;
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -435,7 +414,7 @@ int main( int argc, char * argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  InputImageType::SizeType   size;
+  InputImageType::SizeType size;
 
   size[0] = static_cast<SizeValueType>( dx );
   size[1] = static_cast<SizeValueType>( dy );
@@ -443,7 +422,6 @@ int main( int argc, char * argv[] )
 
   resampler->SetSize( size );
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -454,13 +432,11 @@ int main( int argc, char * argv[] )
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
   resampler->SetInput( smootherY->GetOutput() );
 
   resampler->Update();
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -470,8 +446,7 @@ int main( int argc, char * argv[] )
 //
 // Software Guide : EndLatex
 
-
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
 
@@ -487,7 +462,6 @@ int main( int argc, char * argv[] )
     std::cerr << "Exception caught !" << std::endl;
     std::cerr << excep << std::endl;
     }
-
 
   return EXIT_SUCCESS;
 }

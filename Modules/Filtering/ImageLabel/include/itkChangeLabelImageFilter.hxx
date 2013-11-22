@@ -94,6 +94,7 @@ ChangeLabelImageFilter< TInputImage, TOutputImage >
   Superclass::PrintSelf(os, indent);
   //Maybe should iterate the change map and print it here
 }
+
 } // end namespace itk
 
 #endif

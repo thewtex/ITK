@@ -28,8 +28,7 @@ namespace fem
 template <typename TBaseClass>
 Element2DStrain<TBaseClass>
 ::Element2DStrain() : Superclass(), m_mat(0)
-{
-}
+{}
 
 // ////////////////////////////////////////////////////////////////////////
 /**
@@ -105,6 +104,7 @@ Element2DStrain<TBaseClass>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Materials: " << this->m_mat << std::endl;
 }
 

@@ -80,7 +80,8 @@
 #include <vector>
 #include "itksys/SystemTools.hxx"
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
   if( argc < 3 )
     {
@@ -98,11 +99,11 @@ int main( int argc, char* argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef signed short    PixelType;
-  const unsigned int      Dimension = 3;
+  typedef signed short PixelType;
+  const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType, Dimension >      ImageType;
-  typedef itk::ImageSeriesReader< ImageType >     ReaderType;
+  typedef itk::Image< PixelType, Dimension >  ImageType;
+  typedef itk::ImageSeriesReader< ImageType > ReaderType;
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -116,10 +117,10 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::GDCMImageIO                        ImageIOType;
-  typedef itk::GDCMSeriesFileNames                NamesGeneratorType;
+  typedef itk::GDCMImageIO         ImageIOType;
+  typedef itk::GDCMSeriesFileNames NamesGeneratorType;
 
-  ImageIOType::Pointer gdcmIO = ImageIOType::New();
+  ImageIOType::Pointer        gdcmIO = ImageIOType::New();
   NamesGeneratorType::Pointer namesGenerator = NamesGeneratorType::New();
   // Software Guide : EndCodeSnippet
 
@@ -139,7 +140,7 @@ int main( int argc, char* argv[] )
   namesGenerator->SetInputDirectory( argv[1] );
 
   const ReaderType::FileNamesContainer & filenames =
-                            namesGenerator->GetInputFileNames();
+    namesGenerator->GetInputFileNames();
   // Software Guide : EndCodeSnippet
 
   unsigned int numberOfFilenames =  filenames.size();
@@ -230,13 +231,13 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef signed short    OutputPixelType;
-  const unsigned int      OutputDimension = 2;
+  typedef signed short OutputPixelType;
+  const unsigned int OutputDimension = 2;
 
-  typedef itk::Image< OutputPixelType, OutputDimension >    Image2DType;
+  typedef itk::Image< OutputPixelType, OutputDimension > Image2DType;
 
   typedef itk::ImageSeriesWriter<
-                             ImageType, Image2DType >  SeriesWriterType;
+      ImageType, Image2DType >  SeriesWriterType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -272,7 +273,6 @@ int main( int argc, char* argv[] )
   seriesWriter->SetFileNames( namesGenerator->GetOutputFileNames() );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The following line of code is extremely important for this process to work
@@ -288,7 +288,7 @@ int main( int argc, char* argv[] )
 
   // Software Guide : BeginCodeSnippet
   seriesWriter->SetMetaDataDictionaryArray(
-                        reader->GetMetaDataDictionaryArray() );
+    reader->GetMetaDataDictionaryArray() );
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex

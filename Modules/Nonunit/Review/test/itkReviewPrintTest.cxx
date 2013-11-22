@@ -40,7 +40,8 @@
 #include "itkHessianToObjectnessMeasureImageFilter.h"
 #include "itkMultiScaleHessianBasedMeasureImageFilter.h"
 
-int main(int , char* [])
+int
+main(int , char* [])
 {
   typedef itk::Image<float,2>           Input2DImageType;
   typedef itk::Image<float,2>           OutputType;
@@ -56,14 +57,14 @@ int main(int , char* [])
   typedef itk::Vector<double, 2> MeasurementVectorType;
   typedef itk::Vector<double, 1> TargetVectorType;
 
-  typedef unsigned short         PixelType;
-  typedef itk::Mesh< float, 3 >  MeshType;
+  typedef unsigned short        PixelType;
+  typedef itk::Mesh< float, 3 > MeshType;
 
-  typedef itk::NumericTraits< PixelType >::RealType                 RealPixelType;
-  typedef itk::SymmetricSecondRankTensor< RealPixelType, 3 >        HessianPixelType;
-  typedef itk::Image< HessianPixelType, 3         >                 HessianImageType;
-  typedef itk::Image< PixelType, 3 >                                Input3DImageType;
-  typedef itk::Image< PixelType, 3 >                                OutputImageType;
+  typedef itk::NumericTraits< PixelType >::RealType          RealPixelType;
+  typedef itk::SymmetricSecondRankTensor< RealPixelType, 3 > HessianPixelType;
+  typedef itk::Image< HessianPixelType, 3         >          HessianImageType;
+  typedef itk::Image< PixelType, 3 >                         Input3DImageType;
+  typedef itk::Image< PixelType, 3 >                         OutputImageType;
 
   // Dummy variable just to force the full instantiation of the class
   CharType::Pointer dummyImage = CharType::New();
@@ -71,60 +72,64 @@ int main(int , char* [])
   itk::ContourExtractor2DImageFilter<Input2DImageType>::Pointer
     ContourExtractor2DImageFilterObj =
     itk::ContourExtractor2DImageFilter<Input2DImageType>::New();
-  std:: cout << "-------------ContourExtractor2DImageFilter "
-             << ContourExtractor2DImageFilterObj;
+  std::cout << "-------------ContourExtractor2DImageFilter "
+            << ContourExtractor2DImageFilterObj;
 
   itk::LabelToRGBImageFilter<CharType,RGBImageType>::Pointer
     LabelToRGBImageFilterObj =
     itk::LabelToRGBImageFilter<CharType,RGBImageType>::New();
-  std:: cout << "-------------LabelToRGBImageFilter "
-             << LabelToRGBImageFilterObj;
+  std::cout << "-------------LabelToRGBImageFilter "
+            << LabelToRGBImageFilterObj;
 
   itk::LabelOverlayImageFilter<Input2DImageType,CharType,RGBImageType>::Pointer
     LabelOverlayImageFilterObj =
     itk::LabelOverlayImageFilter<Input2DImageType,CharType,RGBImageType>::New();
-  std:: cout << "-------------LabelOverlayImageFilter "
-             << LabelOverlayImageFilterObj;
+  std::cout << "-------------LabelOverlayImageFilter "
+            << LabelOverlayImageFilterObj;
 
   QuadEdgeMeshType::Pointer QuadEdgeMeshObj = QuadEdgeMeshType::New();
-  std:: cout << "-------------QuadEdgeMesh "
-             << QuadEdgeMeshObj;
+  std::cout << "-------------QuadEdgeMesh "
+            << QuadEdgeMeshObj;
 
   itk::ValuedRegionalMaximaImageFilter<Input2DImageType,Input2DImageType>::Pointer
     ValuedRegionalMaximaImageFilterObj =
     itk::ValuedRegionalMaximaImageFilter<Input2DImageType,Input2DImageType>::New();
-  std:: cout << "-------------ValuedRegionalMaximaImageFilterObj "
-             << ValuedRegionalMaximaImageFilterObj;
+  std::cout << "-------------ValuedRegionalMaximaImageFilterObj "
+            << ValuedRegionalMaximaImageFilterObj;
 
   itk::ValuedRegionalMinimaImageFilter<Input2DImageType,Input2DImageType>::Pointer
     ValuedRegionalMinimaImageFilterObj =
     itk::ValuedRegionalMinimaImageFilter<Input2DImageType,Input2DImageType>::New();
-  std:: cout << "-------------ValuedRegionalMinimaImageFilterObj "
-             << ValuedRegionalMinimaImageFilterObj;
+  std::cout << "-------------ValuedRegionalMinimaImageFilterObj "
+            << ValuedRegionalMinimaImageFilterObj;
 
   itk::RegionalMaximaImageFilter<Input2DImageType,Input2DImageType>::Pointer
     RegionalMaximaImageFilterObj =
     itk::RegionalMaximaImageFilter<Input2DImageType,Input2DImageType>::New();
-  std:: cout << "-------------RegionalMaximaImageFilterObj "
-             << RegionalMaximaImageFilterObj;
+  std::cout << "-------------RegionalMaximaImageFilterObj "
+            << RegionalMaximaImageFilterObj;
 
   itk::RegionalMinimaImageFilter<Input2DImageType,Input2DImageType>::Pointer
     RegionalMinimaImageFilterObj =
     itk::RegionalMinimaImageFilter<Input2DImageType,Input2DImageType>::New();
-  std:: cout << "-------------RegionalMinimaImageFilterObj "
-             << RegionalMinimaImageFilterObj;
+  std::cout << "-------------RegionalMinimaImageFilterObj "
+            << RegionalMinimaImageFilterObj;
 
-  itk::NeuralNetworkFileReader<itk::Statistics::OneHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType, TargetVectorType> >::Pointer
+  itk::NeuralNetworkFileReader<itk::Statistics::OneHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType,
+                                                                                           TargetVectorType> >::Pointer
     NeuralNetworkFileReaderObj =
-              itk::NeuralNetworkFileReader<itk::Statistics::OneHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType, TargetVectorType> >::New();
-  std:: cout << "-------------NeuralNetworkFileReaderObj "
-             << NeuralNetworkFileReaderObj;
+    itk::NeuralNetworkFileReader<itk::Statistics::OneHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType,
+                                                                                             TargetVectorType> >::New();
+  std::cout << "-------------NeuralNetworkFileReaderObj "
+            << NeuralNetworkFileReaderObj;
 
-  itk::NeuralNetworkFileWriter<itk::Statistics::OneHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType, TargetVectorType> >::Pointer
+  itk::NeuralNetworkFileWriter<itk::Statistics::OneHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType,
+                                                                                           TargetVectorType> >::Pointer
     NeuralNetworkFileWriterObj =
-              itk::NeuralNetworkFileWriter<itk::Statistics::OneHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType, TargetVectorType> >::New();
-  std:: cout << "-------------NeuralNetworkFileWriterObj "
-             << NeuralNetworkFileWriterObj;
+    itk::NeuralNetworkFileWriter<itk::Statistics::OneHiddenLayerBackPropagationNeuralNetwork<MeasurementVectorType,
+                                                                                             TargetVectorType> >::New();
+  std::cout << "-------------NeuralNetworkFileWriterObj "
+            << NeuralNetworkFileWriterObj;
 
   itk::ConformalFlatteningMeshFilter<MeshType, MeshType>::Pointer
     ConformalFlatteningMeshFilterObj =
@@ -135,7 +140,7 @@ int main(int , char* [])
   itk::VTKPolyDataReader<MeshType>::Pointer VTKPolyDataReaderObj =
     itk::VTKPolyDataReader<MeshType>::New();
   std::cout << "--------------VTKPolyDataReaderObj "
-           << VTKPolyDataReaderObj;
+            << VTKPolyDataReaderObj;
 
   itk::VTKPolyDataWriter<MeshType>::Pointer VTKPolyDataWriterObj =
     itk::VTKPolyDataWriter<MeshType>::New();
@@ -147,15 +152,15 @@ int main(int , char* [])
   kernelOperator.Print(std::cout);
 
   itk::HessianToObjectnessMeasureImageFilter< HessianImageType,OutputImageType >::Pointer
-              ObjectnessFilterObject =
-        itk::HessianToObjectnessMeasureImageFilter< HessianImageType,OutputImageType >::New();
+    ObjectnessFilterObject =
+    itk::HessianToObjectnessMeasureImageFilter< HessianImageType,OutputImageType >::New();
 
   std::cout << "---------------------------------ObjectnessFilterObject "
-                   << ObjectnessFilterObject;
+            << ObjectnessFilterObject;
 
   itk::MultiScaleHessianBasedMeasureImageFilter< Input3DImageType ,HessianImageType, OutputImageType >::Pointer
-               MultiScaleHessianFilter =
-        itk::MultiScaleHessianBasedMeasureImageFilter< Input3DImageType ,HessianImageType, OutputImageType >::New();
+    MultiScaleHessianFilter =
+    itk::MultiScaleHessianBasedMeasureImageFilter< Input3DImageType ,HessianImageType, OutputImageType >::New();
 
   return EXIT_SUCCESS;
 }

@@ -21,7 +21,8 @@
 
 namespace itk
 {
-void GE4ImageIOFactory::PrintSelf(std::ostream &, Indent) const
+void
+GE4ImageIOFactory::PrintSelf(std::ostream &, Indent) const
 {}
 
 GE4ImageIOFactory::GE4ImageIOFactory()
@@ -53,9 +54,10 @@ GE4ImageIOFactory::GetDescription() const
 
 static bool GE4ImageIOFactoryHasBeenRegistered;
 
-void ITKIOGE_EXPORT GE4ImageIOFactoryRegister__Private(void)
+void ITKIOGE_EXPORT
+GE4ImageIOFactoryRegister__Private(void)
 {
-  if( ! GE4ImageIOFactoryHasBeenRegistered )
+  if( !GE4ImageIOFactoryHasBeenRegistered )
     {
     GE4ImageIOFactoryHasBeenRegistered = true;
     GE4ImageIOFactory::RegisterOneFactory();

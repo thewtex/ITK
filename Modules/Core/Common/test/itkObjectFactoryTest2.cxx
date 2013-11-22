@@ -21,11 +21,13 @@
 #include "itkTextOutput.h" // Needed to see warnings
 
 typedef itk::ImportImageContainer<unsigned long,short>::Pointer myPointer;
-bool TestNew2(myPointer v, const char* expectedClassName)
+bool
+TestNew2(myPointer v, const char* expectedClassName)
 {
 
   std::cout << "v->GetNameOfClass(): " << v->GetNameOfClass();
   std::cout << ", expectedClassName: " << expectedClassName << std::endl;
+
   if(strcmp(v->GetNameOfClass(), expectedClassName) != 0)
     {
     std::cout << "Test Failed" << std::endl;
@@ -34,9 +36,9 @@ bool TestNew2(myPointer v, const char* expectedClassName)
   return true;
 }
 
-
 template<typename T>
-void MakeImage(const int count, T pixel)
+void
+MakeImage(const int count, T pixel)
 {
   typedef itk::Image<T, 3>               ImageType;
   typedef typename ImageType::IndexType  IndexType;
@@ -63,7 +65,8 @@ void MakeImage(const int count, T pixel)
   testImage->FillBuffer(pixel);
 }
 
-void ReallocateImage()
+void
+ReallocateImage()
 {
   typedef itk::Image<double, 2> ImageType;
   typedef ImageType::SizeType   SizeType;
@@ -82,9 +85,11 @@ void ReallocateImage()
   testImage->FillBuffer( 0 );
 }
 
-int itkObjectFactoryTest2(int argc, char *argv[])
+int
+itkObjectFactoryTest2(int argc, char *argv[])
 {
   itk::ObjectFactoryBase::UnRegisterAllFactories();
+
   if (argc < 2)
     {
     std::cout << "Usage: " << argv[0] << " FactoryPath [FactoryPath [FactoryPath ..." << std::endl;
@@ -92,7 +97,7 @@ int itkObjectFactoryTest2(int argc, char *argv[])
     }
 
   // This is needed on WIndows to see warnings in the test output
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   // Build up a path from the argumentes
 #ifdef _WIN32
@@ -111,12 +116,12 @@ int itkObjectFactoryTest2(int argc, char *argv[])
     }
   path += argv[argc - 1];
 #ifdef CMAKE_INTDIR
-    path += std::string("/") + std::string(CMAKE_INTDIR);
+  path += std::string("/") + std::string(CMAKE_INTDIR);
 #endif
 
   std::string myenv = std::string("ITK_AUTOLOAD_PATH=") + path;
   std::cout << myenv << std::endl;
-  putenv (const_cast<char *>(myenv.c_str()));
+  putenv (const_cast<char *>(myenv.c_str() ) );
   itk::ObjectFactoryBase::ReHash();
 
   // List all registered factories
@@ -124,10 +129,10 @@ int itkObjectFactoryTest2(int argc, char *argv[])
     itk::ObjectFactoryBase::GetRegisteredFactories();
 
   std::cout << "----- Registered factories -----" << std::endl;
-  if (!factories.empty())
+  if (!factories.empty() )
     {
     for ( std::list<itk::ObjectFactoryBase*>::iterator
-            f = factories.begin();
+          f = factories.begin();
           f != factories.end(); ++f )
       {
       std::cout << "  Factory version: "
@@ -135,13 +140,13 @@ int itkObjectFactoryTest2(int argc, char *argv[])
                 << "  Factory description: "
                 << (*f)->GetDescription() << std::endl;
 
-      std::list<std::string> overrides = (*f)->GetClassOverrideNames();
-      std::list<std::string> names = (*f)->GetClassOverrideWithNames();
-      std::list<std::string> descriptions = (*f)->GetClassOverrideDescriptions();
-      std::list<bool> enableflags = (*f)->GetEnableFlags();
+      std::list<std::string>                 overrides = (*f)->GetClassOverrideNames();
+      std::list<std::string>                 names = (*f)->GetClassOverrideWithNames();
+      std::list<std::string>                 descriptions = (*f)->GetClassOverrideDescriptions();
+      std::list<bool>                        enableflags = (*f)->GetEnableFlags();
       std::list<std::string>::const_iterator n = names.begin();
       std::list<std::string>::const_iterator d = descriptions.begin();
-      std::list<bool>::const_iterator e = enableflags.begin();
+      std::list<bool>::const_iterator        e = enableflags.begin();
       for ( std::list<std::string>::const_iterator o = overrides.begin();
             o != overrides.end(); ++o, ++n, ++d, e++ )
         {
@@ -160,19 +165,19 @@ int itkObjectFactoryTest2(int argc, char *argv[])
     }
 
   itk::ImportImageContainer<unsigned long,short>::Pointer v = itk::ImportImageContainer<unsigned long,short>::New();
-  if (!TestNew2(v, "TestImportImageContainer"))
+  if (!TestNew2(v, "TestImportImageContainer") )
     {
     return EXIT_FAILURE;
     }
 
-  MakeImage(10, static_cast<short>(0));
-  MakeImage(10, static_cast<unsigned char>(0));
-  MakeImage(10, static_cast<int>(0));
-  {
-  MakeImage(10, static_cast<float>(0));
-  MakeImage(10, static_cast<double>(0));
-  }
-  itk::RGBPixel<unsigned char> rgbUC; rgbUC.Fill(0);
+  MakeImage(10, static_cast<short>(0) );
+  MakeImage(10, static_cast<unsigned char>(0) );
+  MakeImage(10, static_cast<int>(0) );
+    {
+    MakeImage(10, static_cast<float>(0) );
+    MakeImage(10, static_cast<double>(0) );
+    }
+  itk::RGBPixel<unsigned char>  rgbUC; rgbUC.Fill(0);
   itk::RGBPixel<unsigned short> rgbUS; rgbUS.Fill(0);
   MakeImage(10, rgbUC);
   MakeImage(10, rgbUS);

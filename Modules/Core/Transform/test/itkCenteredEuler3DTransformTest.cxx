@@ -20,7 +20,8 @@
 
 #include "itkCenteredEuler3DTransform.h"
 
-int itkCenteredEuler3DTransformTest(int, char *[] )
+int
+itkCenteredEuler3DTransformTest(int, char *[] )
 {
 
   std::cout << "==================================" << std::endl;

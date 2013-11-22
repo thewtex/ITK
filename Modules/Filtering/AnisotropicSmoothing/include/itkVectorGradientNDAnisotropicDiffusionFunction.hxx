@@ -28,7 +28,7 @@ double VectorGradientNDAnisotropicDiffusionFunction< TImage >
 
 template< typename TImage >
 VectorGradientNDAnisotropicDiffusionFunction< TImage >
-::VectorGradientNDAnisotropicDiffusionFunction():
+::VectorGradientNDAnisotropicDiffusionFunction() :
   m_K( 0.0 )
 {
   unsigned int i, j;
@@ -103,10 +103,10 @@ VectorGradientNDAnisotropicDiffusionFunction< TImage >
     {
     // ``Half'' derivatives
     dx_forward[i] = it.GetPixel(m_Center + m_Stride[i])
-                    - it.GetPixel(m_Center);
+      - it.GetPixel(m_Center);
     dx_forward[i] = dx_forward[i]  * this->m_ScaleCoefficients[i];
     dx_backward[i] =  it.GetPixel(m_Center)
-                     - it.GetPixel(m_Center - m_Stride[i]);
+      - it.GetPixel(m_Center - m_Stride[i]);
     dx_backward[i] = dx_backward[i] * this->m_ScaleCoefficients[i];
 
     // Centralized differences
@@ -167,6 +167,7 @@ VectorGradientNDAnisotropicDiffusionFunction< TImage >
 
   return delta;
 }
+
 } // end namespace itk
 
 #endif

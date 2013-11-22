@@ -124,7 +124,7 @@ template< typename TReferenceImagePixelType,
           typename TGradientImagePixelType = TReferenceImagePixelType,
           typename TTensorPixelType = double,
           typename TMaskImageType = Image<unsigned char, 3> >
-class DiffusionTensor3DReconstructionImageFilter:
+class DiffusionTensor3DReconstructionImageFilter :
   public ImageToImageFilter< Image< TReferenceImagePixelType, 3 >,
                              Image< DiffusionTensor3D< TTensorPixelType >, 3 > >
 {
@@ -135,7 +135,7 @@ public:
   typedef SmartPointer< const Self >                 ConstPointer;
   typedef ImageToImageFilter< Image< TReferenceImagePixelType, 3 >,
                               Image< DiffusionTensor3D< TTensorPixelType >, 3 > >
-  Superclass;
+    Superclass;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -159,7 +159,7 @@ public:
   typedef TensorImageType OutputImageType;
 
   typedef typename Superclass::OutputImageRegionType
-  OutputImageRegionType;
+    OutputImageRegionType;
 
   /** Typedef defining one (of the many) gradient images.  */
   typedef Image< GradientPixelType, 3 > GradientImageType;
@@ -190,7 +190,8 @@ public:
 
   /** Set method to add a gradient direction and its corresponding image. */
   void AddGradientImage(const GradientDirectionType &, const GradientImageType *image);
-  const GradientImageType *GetGradientImage(unsigned index) const;
+
+  const GradientImageType * GetGradientImage(unsigned index) const;
 
   /** Another set method to add a gradient directions and its corresponding
    * image. The image here is a VectorImage. The user is expected to pass the
@@ -202,7 +203,8 @@ public:
                         const GradientImagesType *image);
 
   /** Set method to set the reference image. */
-  void SetReferenceImage(ReferenceImageType *referenceImage)
+  void
+  SetReferenceImage(ReferenceImageType *referenceImage)
   {
     if ( m_GradientImageTypeEnumeration == GradientIsInASingleImage )
       {
@@ -216,11 +218,15 @@ public:
   }
 
   /** Get reference image */
-  virtual ReferenceImageType * GetReferenceImage()
-  { return ( static_cast< ReferenceImageType * >( this->ProcessObject::GetInput(0) ) ); }
+  virtual ReferenceImageType *
+  GetReferenceImage()
+  {
+    return ( static_cast< ReferenceImageType * >( this->ProcessObject::GetInput(0) ) );
+  }
 
   /** Return the gradient direction. idx is 0 based */
-  virtual GradientDirectionType GetGradientDirection(unsigned int idx) const
+  virtual GradientDirectionType
+  GetGradientDirection(unsigned int idx) const
   {
     if ( idx >= m_NumberOfGradientDirections )
       {
@@ -231,9 +237,9 @@ public:
 
   /** set an image mask */
   void SetMaskImage(MaskImageType *maskImage);
+
   /** set a spatial object mask */
   void SetMaskSpatialObject(MaskSpatialObjectType *maskSpatialObject);
-
 
   /** Threshold on the reference image data. The output tensor will be a null
    * tensor for pixels in the reference image that have a value less than this
@@ -287,7 +293,7 @@ protected:
   void BeforeThreadedGenerateData();
 
   void ThreadedGenerateData(const
-                            OutputImageRegionType & outputRegionForThread, ThreadIdType);
+                            OutputImageRegionType &outputRegionForThread, ThreadIdType);
 
   /** enum to indicate if the gradient image is specified as a single multi-
    * component image or as several separate images */

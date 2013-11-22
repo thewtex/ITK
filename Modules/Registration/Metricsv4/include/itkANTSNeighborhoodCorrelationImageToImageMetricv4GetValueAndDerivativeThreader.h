@@ -34,9 +34,9 @@ namespace itk
  */
 template<typename T>
 struct IdentityHelper
-{
+  {
   typedef T MyType;
-};
+  };
 
 /** \class ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader
  * \brief Threading implementation for ANTS CC metric \c ANTSNeighborhoodCorrelationImageToImageMetricv4 .
@@ -61,11 +61,12 @@ public:
   /** Standard class typedefs. */
   typedef ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader Self;
   typedef ImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric >
-                                                                                                Superclass;
-  typedef SmartPointer< Self >                                                                  Pointer;
-  typedef SmartPointer< const Self >                                                            ConstPointer;
+    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
-  itkTypeMacro( ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader, ImageToImageMetricv4GetValueAndDerivativeThreader );
+  itkTypeMacro( ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader,
+                ImageToImageMetricv4GetValueAndDerivativeThreader );
 
   itkNewMacro( Self );
 
@@ -85,21 +86,21 @@ public:
   typedef typename Superclass::DerivativeType          DerivativeType;
   typedef typename Superclass::DerivativeValueType     DerivativeValueType;
 
-  typedef TNeighborhoodCorrelationMetric                                 NeighborhoodCorrelationMetricType;
+  typedef TNeighborhoodCorrelationMetric NeighborhoodCorrelationMetricType;
 
-  typedef typename NeighborhoodCorrelationMetricType::ImageRegionType               ImageRegionType;
-  typedef typename NeighborhoodCorrelationMetricType::InternalComputationValueType  InternalComputationValueType;
-  typedef typename NeighborhoodCorrelationMetricType::ImageDimensionType            ImageDimensionType;
-  typedef typename NeighborhoodCorrelationMetricType::JacobianType                  JacobianType;
-  typedef typename NeighborhoodCorrelationMetricType::NumberOfParametersType        NumberOfParametersType;
-  typedef typename NeighborhoodCorrelationMetricType::FixedImageType                FixedImageType;
-  typedef typename NeighborhoodCorrelationMetricType::MovingImageType               MovingImageType;
-  typedef typename NeighborhoodCorrelationMetricType::RadiusType                    RadiusType;
+  typedef typename NeighborhoodCorrelationMetricType::ImageRegionType              ImageRegionType;
+  typedef typename NeighborhoodCorrelationMetricType::InternalComputationValueType InternalComputationValueType;
+  typedef typename NeighborhoodCorrelationMetricType::ImageDimensionType           ImageDimensionType;
+  typedef typename NeighborhoodCorrelationMetricType::JacobianType                 JacobianType;
+  typedef typename NeighborhoodCorrelationMetricType::NumberOfParametersType       NumberOfParametersType;
+  typedef typename NeighborhoodCorrelationMetricType::FixedImageType               FixedImageType;
+  typedef typename NeighborhoodCorrelationMetricType::MovingImageType              MovingImageType;
+  typedef typename NeighborhoodCorrelationMetricType::RadiusType                   RadiusType;
 
   // interested values here updated during scanning
-  typedef InternalComputationValueType                 QueueRealType;
-  typedef std::deque<QueueRealType>                    SumQueueType;
-  typedef ConstNeighborhoodIterator<VirtualImageType>  ScanIteratorType;
+  typedef InternalComputationValueType                QueueRealType;
+  typedef std::deque<QueueRealType>                   SumQueueType;
+  typedef ConstNeighborhoodIterator<VirtualImageType> ScanIteratorType;
 
   // one ScanMemType for each thread
   typedef struct ScanMemType {
@@ -119,28 +120,28 @@ public:
     QueueRealType sFixedFixed;
     QueueRealType sMovingMoving;
 
-    FixedImageGradientType  fixedImageGradient;
+    FixedImageGradientType fixedImageGradient;
     MovingImageGradientType movingImageGradient;
 
-    FixedImagePointType     mappedFixedPoint;
-    MovingImagePointType    mappedMovingPoint;
-    VirtualPointType        virtualPoint;
-  } ScanMemType;
+    FixedImagePointType mappedFixedPoint;
+    MovingImagePointType mappedMovingPoint;
+    VirtualPointType virtualPoint;
+    } ScanMemType;
 
   // For dense scan over one image region
   typedef struct ScanParametersType {
     // const values during scanning
     ImageRegionType scanRegion;
-    SizeValueType   numberOfFillZero; // for each queue
-    SizeValueType   windowLength; // number of voxels in the scanning window
-    IndexValueType  scanRegionBeginIndexDim0;
+    SizeValueType numberOfFillZero; // for each queue
+    SizeValueType windowLength;     // number of voxels in the scanning window
+    IndexValueType scanRegionBeginIndexDim0;
 
     typename FixedImageType::ConstPointer   fixedImage;
     typename MovingImageType::ConstPointer  movingImage;
     typename VirtualImageType::ConstPointer virtualImage;
     RadiusType radius;
 
-  } ScanParametersType;
+    } ScanParametersType;
 
 protected:
   ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader() {}
@@ -178,79 +179,82 @@ protected:
    * TransformAndEvaluateMovingPoint, and \c ProcessPoint.
    * And adds entries to m_MeasurePerThread and m_LocalDerivativesPerThread,
    * m_NumberOfValidPointsPerThread. */
-  virtual bool ProcessVirtualPoint( const VirtualIndexType & virtualIndex,
-                                    const VirtualPointType & virtualPoint,
-                                    const ThreadIdType threadId ) {
+  virtual bool
+  ProcessVirtualPoint( const VirtualIndexType & virtualIndex,
+                       const VirtualPointType & virtualPoint,
+                       const ThreadIdType threadId ) {
     return ProcessVirtualPoint_impl(IdentityHelper<TDomainPartitioner>(), virtualIndex, virtualPoint, threadId );
   }
 
   /* specific overloading for sparse CC metric */
   bool ProcessVirtualPoint_impl(
-                             IdentityHelper<ThreadedIndexedContainerPartitioner> itkNotUsed(self),
-                             const VirtualIndexType & virtualIndex,
-                             const VirtualPointType & virtualPoint,
-                             const ThreadIdType threadId );
+    IdentityHelper<ThreadedIndexedContainerPartitioner> itkNotUsed(self),
+    const VirtualIndexType & virtualIndex,
+    const VirtualPointType & virtualPoint,
+    const ThreadIdType threadId );
 
   /* for other default case */
   template<typename T>
-  bool ProcessVirtualPoint_impl(
-                             IdentityHelper<T> itkNotUsed(self),
-                             const VirtualIndexType & virtualIndex,
-                             const VirtualPointType & virtualPoint,
-                             const ThreadIdType threadId ) {
+  bool
+  ProcessVirtualPoint_impl(
+    IdentityHelper<T> itkNotUsed(self),
+    const VirtualIndexType & virtualIndex,
+    const VirtualPointType & virtualPoint,
+    const ThreadIdType threadId ) {
     return Superclass::ProcessVirtualPoint(virtualIndex, virtualPoint, threadId);
   }
-
 
   /** \c ProcessPoint() must be overloaded since it is a pure virtual function.
    * It is not used for either sparse or dense threader.
    * */
-  virtual bool ProcessPoint(
-         const VirtualIndexType &          itkNotUsed(virtualIndex),
-         const VirtualPointType &          itkNotUsed(virtualPoint),
-         const FixedImagePointType &       itkNotUsed(mappedFixedPoint),
-         const FixedImagePixelType &       itkNotUsed(mappedFixedPixelValue),
-         const FixedImageGradientType &    itkNotUsed(mappedFixedImageGradient),
-         const MovingImagePointType &      itkNotUsed(mappedMovingPoint),
-         const MovingImagePixelType &      itkNotUsed(mappedMovingPixelValue),
-         const MovingImageGradientType &   itkNotUsed(mappedMovingImageGradient),
-         MeasureType &                     itkNotUsed(metricValueReturn),
-         DerivativeType &                  itkNotUsed(localDerivativeReturn),
-         const ThreadIdType                itkNotUsed(threadID) ) const
-     {
-        itkExceptionMacro("ProcessPoint should never be reached in ANTS CC metric threader class.");
-     }
+  virtual bool
+  ProcessPoint(
+    const VirtualIndexType &          itkNotUsed(virtualIndex),
+    const VirtualPointType &          itkNotUsed(virtualPoint),
+    const FixedImagePointType &       itkNotUsed(mappedFixedPoint),
+    const FixedImagePixelType &       itkNotUsed(mappedFixedPixelValue),
+    const FixedImageGradientType &    itkNotUsed(mappedFixedImageGradient),
+    const MovingImagePointType &      itkNotUsed(mappedMovingPoint),
+    const MovingImagePixelType &      itkNotUsed(mappedMovingPixelValue),
+    const MovingImageGradientType &   itkNotUsed(mappedMovingImageGradient),
+    MeasureType &                     itkNotUsed(metricValueReturn),
+    DerivativeType &                  itkNotUsed(localDerivativeReturn),
+    const ThreadIdType                itkNotUsed(threadID) ) const
+  {
+    itkExceptionMacro("ProcessPoint should never be reached in ANTS CC metric threader class.");
+  }
 
-  virtual void ThreadedExecution( const DomainType& domain,
-                                    const ThreadIdType threadId ){
+  virtual void
+  ThreadedExecution( const DomainType& domain,
+                     const ThreadIdType threadId ){
     ThreadedExecution_impl(IdentityHelper<TDomainPartitioner>(), domain, threadId );
   }
 
   /* specific overloading for dense threader only based CC metric */
   void ThreadedExecution_impl(
-                             IdentityHelper<ThreadedImageRegionPartitioner<TImageToImageMetric::VirtualImageDimension> > itkNotUsed(self),
-                             const DomainType& domain,
-                             const ThreadIdType threadId );
+    IdentityHelper<ThreadedImageRegionPartitioner<TImageToImageMetric::VirtualImageDimension> > itkNotUsed(self),
+    const DomainType& domain,
+    const ThreadIdType threadId );
 
   /* for other default case */
   template<typename T>
   void ThreadedExecution_impl(
-                             IdentityHelper<T> itkNotUsed(self),
-                             const DomainType& domain,
-                             const ThreadIdType threadId );
+    IdentityHelper<T> itkNotUsed(self),
+    const DomainType& domain,
+    const ThreadIdType threadId );
 
   /** Common functions for computing correlation over scanning windows **/
 
   /** Create an iterator over the virtual sub region */
   void InitializeScanning(const ImageRegionType &scanRegion,
-    ScanIteratorType &scanIt, ScanMemType &scanMem,
-    ScanParametersType &scanParameters ) const;
+                          ScanIteratorType &scanIt, ScanMemType &scanMem,
+                          ScanParametersType &scanParameters ) const;
 
   /** Update the queues for the next point.  Calls either \c
    * UpdateQueuesAtBeginningOfLine or \c UpdateQueuesToNextScanWindow. */
   void UpdateQueues(const ScanIteratorType &scanIt,
-    ScanMemType &scanMem, const ScanParametersType &scanParameters,
-    const ThreadIdType threadID) const;
+                    ScanMemType &scanMem, const ScanParametersType &scanParameters,
+                    const ThreadIdType threadID) const;
 
   void UpdateQueuesAtBeginningOfLine(
     const ScanIteratorType &scanIt, ScanMemType &scanMem,
@@ -279,13 +283,12 @@ protected:
 
 private:
   ANTSNeighborhoodCorrelationImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  void operator=( const Self & );                                                               // purposely not implemented
 
   /** Internal pointer to the metric object in use by this threader.
    *  This will avoid costly dynamic casting in tight loops. */
   TNeighborhoodCorrelationMetric * m_ANTSAssociate;
 };
-
 
 } // end namespace itk
 

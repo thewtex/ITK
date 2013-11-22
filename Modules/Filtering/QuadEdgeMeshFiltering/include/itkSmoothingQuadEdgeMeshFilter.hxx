@@ -40,7 +40,8 @@ SmoothingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::~SmoothingQuadEdgeMeshFi
 {}
 
 template< typename TInputMesh, typename TOutputMesh >
-void SmoothingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::GenerateData()
+void
+SmoothingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::GenerateData()
 {
   OutputMeshPointer mesh = OutputMeshType::New();
 
@@ -86,7 +87,7 @@ void SmoothingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::GenerateData()
       }
     else
       {
-      CopyMeshToMesh(this->GetInput(), mesh.GetPointer());
+      CopyMeshToMesh(this->GetInput(), mesh.GetPointer() );
       }
     }
 
@@ -157,7 +158,8 @@ void SmoothingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::GenerateData()
 }
 
 template< typename TInputMesh, typename TOutputMesh >
-void SmoothingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
+void
+SmoothingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
@@ -169,6 +171,7 @@ void SmoothingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
   os << indent << "RelaxationFactor: "
      << m_RelaxationFactor << std::endl;
 }
+
 }
 
 #endif

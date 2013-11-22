@@ -52,8 +52,7 @@ public:
 
   /** Default constructor */
   LoadBC() : m_DegreeOfFreedom(0), m_Value()
-  {
-  }
+  {}
 
   /** Set the number of degrees of freedom*/
   void SetDegreeOfFreedom(int dof);

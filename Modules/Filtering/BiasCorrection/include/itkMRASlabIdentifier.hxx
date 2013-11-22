@@ -199,6 +199,7 @@ MRASlabIdentifier< TInputImage >
      << m_BackgroundMinimumThreshold << std::endl;
   os << indent << "Tolerance: " << m_Tolerance << std::endl;
 }
+
 } // end namespace itk
 
 #endif /* __itkMRASlabIdentifier_hxx */

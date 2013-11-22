@@ -64,14 +64,14 @@ namespace itk
  */
 template <typename TInputImage, typename TCoordRep = double>
 class BSplineControlPointImageFunction
-: public ImageFunction<TInputImage, typename TInputImage::PixelType, TCoordRep>
+  : public ImageFunction<TInputImage, typename TInputImage::PixelType, TCoordRep>
 {
 public:
-  typedef BSplineControlPointImageFunction              Self;
+  typedef BSplineControlPointImageFunction Self;
   typedef ImageFunction<TInputImage,
-    typename TInputImage::PixelType, TCoordRep>         Superclass;
-  typedef SmartPointer<Self>                            Pointer;
-  typedef SmartPointer<const Self>                      ConstPointer;
+                        typename TInputImage::PixelType, TCoordRep>         Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -89,20 +89,20 @@ public:
   typedef typename InputImageType::PointType  PointType;
   typedef typename InputImageType::RegionType InputImageRegionType;
 
-  typedef typename InputImageType::SpacingType   SpacingType;
-  typedef typename InputImageType::PointType     OriginType;
-  typedef typename InputImageType::SizeType      SizeType;
+  typedef typename InputImageType::SpacingType SpacingType;
+  typedef typename InputImageType::PointType   OriginType;
+  typedef typename InputImageType::SizeType    SizeType;
 
   /** Output typedef support */
-  typedef PixelType                           OutputType;
-  typedef VariableSizeMatrix<CoordRepType>    GradientType;
-  typedef VariableSizeMatrix<CoordRepType>    HessianComponentType;
+  typedef PixelType                        OutputType;
+  typedef VariableSizeMatrix<CoordRepType> GradientType;
+  typedef VariableSizeMatrix<CoordRepType> HessianComponentType;
 
   /** Other typedef */
-  typedef FixedArray<unsigned, ImageDimension>       ArrayType;
-  typedef Image<CoordRepType, ImageDimension>        RealImageType;
-  typedef typename RealImageType::Pointer            RealImagePointer;
-  typedef typename Superclass::ContinuousIndexType   ContinuousIndexType;
+  typedef FixedArray<unsigned, ImageDimension>     ArrayType;
+  typedef Image<CoordRepType, ImageDimension>      RealImageType;
+  typedef typename RealImageType::Pointer          RealImagePointer;
+  typedef typename Superclass::ContinuousIndexType ContinuousIndexType;
 
   /** Interpolation kernel type (default spline order = 3) */
   typedef CoxDeBoorBSplineKernelFunction<3> KernelType;
@@ -273,23 +273,24 @@ public:
 
 protected:
   BSplineControlPointImageFunction();
-  virtual ~BSplineControlPointImageFunction();
+  virtual
+  ~BSplineControlPointImageFunction();
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
 private:
   BSplineControlPointImageFunction( const Self& ); //purposely not implemented
-  void operator=( const Self& );                 //purposely not implemented
+  void operator=( const Self& );                   //purposely not implemented
 
   /** Parameters for the B-spline object domain */
-  SizeType                                     m_Size;
-  SpacingType                                  m_Spacing;
-  OriginType                                   m_Origin;
+  SizeType    m_Size;
+  SpacingType m_Spacing;
+  OriginType  m_Origin;
 
-  ArrayType                                    m_NumberOfControlPoints;
-  ArrayType                                    m_CloseDimension;
-  ArrayType                                    m_SplineOrder;
+  ArrayType m_NumberOfControlPoints;
+  ArrayType m_CloseDimension;
+  ArrayType m_SplineOrder;
 
-  RealImagePointer                             m_NeighborhoodWeightImage;
+  RealImagePointer m_NeighborhoodWeightImage;
 
   typename KernelType::Pointer                 m_Kernel[ImageDimension];
   typename KernelOrder0Type::Pointer           m_KernelOrder0;
@@ -297,7 +298,7 @@ private:
   typename KernelOrder2Type::Pointer           m_KernelOrder2;
   typename KernelOrder3Type::Pointer           m_KernelOrder3;
 
-  CoordRepType                                 m_BSplineEpsilon;
+  CoordRepType m_BSplineEpsilon;
 
 };
 

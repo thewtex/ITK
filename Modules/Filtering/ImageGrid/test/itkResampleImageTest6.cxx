@@ -23,30 +23,31 @@
 #include "itkResampleImageFilter.h"
 #include "itkTimeProbe.h"
 
-int itkResampleImageTest6(int argc, char * argv [] )
+int
+itkResampleImageTest6(int argc, char * argv [] )
 {
 
   // Resample a Vector image
   const unsigned int NDimensions = 2;
 
-  typedef unsigned char                ValueType;
+  typedef unsigned char ValueType;
 
-  typedef itk::VectorImage<ValueType, 2 >    ImageType;
-  typedef ImageType::PixelType               PixelType;
+  typedef itk::VectorImage<ValueType, 2 > ImageType;
+  typedef ImageType::PixelType            PixelType;
 
-  typedef ImageType::IndexType         ImageIndexType;
-  typedef ImageType::Pointer           ImagePointerType;
-  typedef ImageType::RegionType        ImageRegionType;
-  typedef ImageType::SizeType          ImageSizeType;
+  typedef ImageType::IndexType  ImageIndexType;
+  typedef ImageType::Pointer    ImagePointerType;
+  typedef ImageType::RegionType ImageRegionType;
+  typedef ImageType::SizeType   ImageSizeType;
 
-  typedef double                       CoordRepType;
+  typedef double CoordRepType;
 
   typedef itk::AffineTransform<CoordRepType,NDimensions>
-                                       AffineTransformType;
+    AffineTransformType;
   typedef itk::LinearInterpolateImageFunction<ImageType,CoordRepType>
-                                       InterpolatorType;
+    InterpolatorType;
   typedef itk::ImageFileWriter<ImageType>
-                                       WriterType;
+    WriterType;
 
   if (argc < 2)
     {
@@ -59,9 +60,9 @@ int itkResampleImageTest6(int argc, char * argv [] )
 
   // Create and configure an image
   ImagePointerType image = ImageType::New();
-  ImageIndexType  index = {{0,  0}};
-  ImageSizeType   size  = {{64,64}};
-  ImageRegionType region;
+  ImageIndexType   index = {{0,  0}};
+  ImageSizeType    size  = {{64,64}};
+  ImageRegionType  region;
   region.SetSize ( size );
   region.SetIndex( index );
   image->SetLargestPossibleRegion( region );
@@ -69,7 +70,7 @@ int itkResampleImageTest6(int argc, char * argv [] )
   image->SetVectorLength( 3 );
   image->Allocate();
 
-  unsigned int newDims = static_cast<unsigned int>( 64*scaling );
+  unsigned int  newDims = static_cast<unsigned int>( 64*scaling );
   ImageSizeType osize = {{newDims, newDims}};
 
   ImageType::SpacingType spacing;
@@ -79,7 +80,7 @@ int itkResampleImageTest6(int argc, char * argv [] )
   // Fill image with a ramp
   std::cout << "init image..." << std::flush;
   itk::ImageRegionIteratorWithIndex<ImageType> iter(image, region);
-  PixelType value;
+  PixelType                                    value;
   value.SetSize( 3 );
 
   for (iter.GoToBegin(); !iter.IsAtEnd(); ++iter)
@@ -129,7 +130,7 @@ int itkResampleImageTest6(int argc, char * argv [] )
             << " took " << clock.GetMean() << " s" << std::endl;
 
   WriterType::Pointer writer = WriterType::New();
-  writer->SetInput(resample->GetOutput());
+  writer->SetInput(resample->GetOutput() );
   writer->SetFileName(argv[2]);
   writer->Update();
 

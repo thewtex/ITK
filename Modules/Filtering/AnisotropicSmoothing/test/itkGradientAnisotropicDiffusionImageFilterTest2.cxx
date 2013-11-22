@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include "itkCastImageFilter.h"
 #include "itkGradientAnisotropicDiffusionImageFilter.h"
 #include "itkImageFileReader.h"
@@ -33,10 +32,11 @@ typedef ImageType::Pointer       ImagePointer;
 namespace {
 
 // compare two images with an intensity tolerance
-bool SameImage(ImagePointer testImage, ImagePointer baselineImage)
+bool
+SameImage(ImagePointer testImage, ImagePointer baselineImage)
 {
-  PixelType intensityTolerance = .001;
-  int radiusTolerance = 0;
+  PixelType     intensityTolerance = .001;
+  int           radiusTolerance = 0;
   unsigned long numberOfPixelTolerance = 0;
 
   typedef itk::Testing::ComparisonImageFilter<ImageType,ImageType> DiffType;
@@ -49,7 +49,6 @@ bool SameImage(ImagePointer testImage, ImagePointer baselineImage)
 
   unsigned long status = diff->GetNumberOfPixelsWithDifferences();
 
-
   if (status > numberOfPixelTolerance)
     {
     std::cout << "Number of Different Pixels: " << status << std::endl;
@@ -58,10 +57,11 @@ bool SameImage(ImagePointer testImage, ImagePointer baselineImage)
 
   return true;
 }
+
 }
 
-
-int itkGradientAnisotropicDiffusionImageFilterTest2(int ac, char* av[] )
+int
+itkGradientAnisotropicDiffusionImageFilterTest2(int ac, char* av[] )
 {
   if(ac < 3)
     {
@@ -69,26 +69,25 @@ int itkGradientAnisotropicDiffusionImageFilterTest2(int ac, char* av[] )
     return -1;
     }
 
-
   itk::ImageFileReader<myFloatImage>::Pointer input
     = itk::ImageFileReader<myFloatImage>::New();
   input->SetFileName(av[1]);
 
   // Create a filter
   itk::GradientAnisotropicDiffusionImageFilter<myFloatImage, myFloatImage>
-    ::Pointer filter
+  ::Pointer filter
     = itk::GradientAnisotropicDiffusionImageFilter<myFloatImage, myFloatImage>
-    ::New();
+      ::New();
   filter->SetNumberOfIterations(10);
   filter->SetConductanceParameter(1.0f);
   filter->SetTimeStep(0.125f);
 
-  filter->SetInput(input->GetOutput());
+  filter->SetInput(input->GetOutput() );
 
   typedef itk::Image<unsigned char, 2> myUCharImage;
   itk::CastImageFilter<myFloatImage, myUCharImage>::Pointer caster
     = itk::CastImageFilter<myFloatImage, myUCharImage>::New();
-  caster->SetInput(filter->GetOutput());
+  caster->SetInput(filter->GetOutput() );
 
   try
     {
@@ -121,7 +120,6 @@ int itkGradientAnisotropicDiffusionImageFilterTest2(int ac, char* av[] )
   spacing[1] = input->GetOutput()->GetSpacing()[1]*100.0;
   changeInfo->SetOutputSpacing( spacing );
   changeInfo->ChangeSpacingOn();
-
 
   filter->SetInput( changeInfo->GetOutput() );
   filter->UseImageSpacingOn();

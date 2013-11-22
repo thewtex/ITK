@@ -20,7 +20,8 @@
 
 #include "itkSymmetricEigenSystem.h"
 
-int itkSymmetricEigenSystemTest(int , char* [] )
+int
+itkSymmetricEigenSystemTest(int , char* [] )
 {
   typedef itk::SymmetricEigenSystem< double, 2 > EigenSystemType;
 
@@ -52,36 +53,36 @@ int itkSymmetricEigenSystemTest(int , char* [] )
 
   for ( unsigned int i = 0; i < 2; i++ )
     {
-      temp = (*(eigen->GetEigenValues()))[i];
-      std::cout << "eigen value = " << temp << std::endl;
-      if ( vnl_math_abs(1 - vnl_math_abs(temp / eigenValues[i])) > precision )
-        {
-          std::cout << "wrong eigen value "
-                    << vnl_math_abs(1 - (temp / eigenValues[i]))
-                    << std::endl;
-          return EXIT_FAILURE;
-        }
+    temp = (*(eigen->GetEigenValues() ) )[i];
+    std::cout << "eigen value = " << temp << std::endl;
+    if ( vnl_math_abs(1 - vnl_math_abs(temp / eigenValues[i]) ) > precision )
+      {
+      std::cout << "wrong eigen value "
+                << vnl_math_abs(1 - (temp / eigenValues[i]) )
+                << std::endl;
+      return EXIT_FAILURE;
+      }
     }
 
   for ( unsigned int i = 0; i < 2; i++ )
     {
-      std::cout << "eigen vector = ";
-      double dotProduct = 0.0;
-      for ( unsigned int j = 0; j < 2; j++ )
-        {
-          temp = (*(eigen->GetEigenVectors()))[i][j];
-          std::cout << temp << " ";
+    std::cout << "eigen vector = ";
+    double dotProduct = 0.0;
+    for ( unsigned int j = 0; j < 2; j++ )
+      {
+      temp = (*(eigen->GetEigenVectors() ) )[i][j];
+      std::cout << temp << " ";
 
-          dotProduct += temp * eigenVectors[i][j];
-        }
+      dotProduct += temp * eigenVectors[i][j];
+      }
 
-      if ( vnl_math_abs(vnl_math_abs(dotProduct) - 1 ) > precision )
-        {
-          std::cout << "wrong eigen vector " << dotProduct << std::endl;
-          return EXIT_FAILURE;
-        }
+    if ( vnl_math_abs(vnl_math_abs(dotProduct) - 1 ) > precision )
+      {
+      std::cout << "wrong eigen vector " << dotProduct << std::endl;
+      return EXIT_FAILURE;
+      }
 
-      std::cout << std::endl;
+    std::cout << std::endl;
     }
 
   std::cout << "Test succeeded." << std::endl;

@@ -87,14 +87,14 @@ namespace itk
  */
 template<typename TFixedImage, typename TMovingImage, typename TOutputTransform, typename TVirtualImage = TFixedImage>
 class ImageRegistrationMethodv4
-:public ProcessObject
+  : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
-  typedef ImageRegistrationMethodv4                 Self;
-  typedef ProcessObject                             Superclass;
-  typedef SmartPointer<Self>                        Pointer;
-  typedef SmartPointer<const Self>                  ConstPointer;
+  typedef ImageRegistrationMethodv4 Self;
+  typedef ProcessObject             Superclass;
+  typedef SmartPointer<Self>        Pointer;
+  typedef SmartPointer<const Self>  ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self );
@@ -106,88 +106,96 @@ public:
   itkTypeMacro( ImageRegistrationMethodv4, ProcessObject );
 
   /** Input typedefs for the images and transforms. */
-  typedef TFixedImage                                                 FixedImageType;
-  typedef typename FixedImageType::Pointer                            FixedImagePointer;
-  typedef std::vector<FixedImagePointer>                              FixedImagesContainerType;
-  typedef TMovingImage                                                MovingImageType;
-  typedef typename MovingImageType::Pointer                           MovingImagePointer;
-  typedef std::vector<MovingImagePointer>                             MovingImagesContainerType;
+  typedef TFixedImage                       FixedImageType;
+  typedef typename FixedImageType::Pointer  FixedImagePointer;
+  typedef std::vector<FixedImagePointer>    FixedImagesContainerType;
+  typedef TMovingImage                      MovingImageType;
+  typedef typename MovingImageType::Pointer MovingImagePointer;
+  typedef std::vector<MovingImagePointer>   MovingImagesContainerType;
 
   /** Metric and transform typedefs */
-  typedef TOutputTransform                                            OutputTransformType;
-  typedef typename OutputTransformType::Pointer                       OutputTransformPointer;
-  typedef typename OutputTransformType::ScalarType                    RealType;
-  typedef typename OutputTransformType::DerivativeType                DerivativeType;
-  typedef typename DerivativeType::ValueType                          DerivativeValueType;
+  typedef TOutputTransform                             OutputTransformType;
+  typedef typename OutputTransformType::Pointer        OutputTransformPointer;
+  typedef typename OutputTransformType::ScalarType     RealType;
+  typedef typename OutputTransformType::DerivativeType DerivativeType;
+  typedef typename DerivativeType::ValueType           DerivativeValueType;
 
-  typedef Transform<RealType, ImageDimension, ImageDimension>         InitialTransformType;
-  typedef typename InitialTransformType::Pointer                      InitialTransformPointer;
+  typedef Transform<RealType, ImageDimension, ImageDimension> InitialTransformType;
+  typedef typename InitialTransformType::Pointer              InitialTransformPointer;
 
-  typedef CompositeTransform<RealType, ImageDimension>                CompositeTransformType;
-  typedef typename CompositeTransformType::Pointer                    CompositeTransformPointer;
+  typedef CompositeTransform<RealType, ImageDimension> CompositeTransformType;
+  typedef typename CompositeTransformType::Pointer     CompositeTransformPointer;
 
-  typedef ObjectToObjectMetricBaseTemplate<RealType>                  MetricType;
-  typedef typename MetricType::Pointer                                MetricPointer;
+  typedef ObjectToObjectMetricBaseTemplate<RealType> MetricType;
+  typedef typename MetricType::Pointer               MetricPointer;
 
-  typedef TVirtualImage                                               VirtualImageType;
+  typedef TVirtualImage VirtualImageType;
 
-  typedef ObjectToObjectMultiMetricv4<ImageDimension, ImageDimension, VirtualImageType, RealType>  MultiMetricType;
-  typedef ImageToImageMetricv4<FixedImageType, MovingImageType, VirtualImageType, RealType>        ImageMetricType;
+  typedef ObjectToObjectMultiMetricv4<ImageDimension, ImageDimension, VirtualImageType, RealType> MultiMetricType;
+  typedef ImageToImageMetricv4<FixedImageType, MovingImageType, VirtualImageType, RealType>       ImageMetricType;
 
   /**
    * Type for the output: Using Decorator pattern for enabling the transform to be
    * passed in the data pipeline
    */
-  typedef DataObjectDecorator<OutputTransformType>                    DecoratedOutputTransformType;
-  typedef typename DecoratedOutputTransformType::Pointer              DecoratedOutputTransformPointer;
+  typedef DataObjectDecorator<OutputTransformType>       DecoratedOutputTransformType;
+  typedef typename DecoratedOutputTransformType::Pointer DecoratedOutputTransformPointer;
 
-  typedef ShrinkImageFilter<FixedImageType, VirtualImageType>         ShrinkFilterType;
-  typedef typename ShrinkFilterType::ShrinkFactorsType                ShrinkFactorsPerDimensionContainerType;
+  typedef ShrinkImageFilter<FixedImageType, VirtualImageType> ShrinkFilterType;
+  typedef typename ShrinkFilterType::ShrinkFactorsType        ShrinkFactorsPerDimensionContainerType;
 
-  typedef Array<SizeValueType>                                        ShrinkFactorsArrayType;
+  typedef Array<SizeValueType> ShrinkFactorsArrayType;
 
-  typedef Array<RealType>                                             SmoothingSigmasArrayType;
-  typedef Array<RealType>                                             MetricSamplingPercentageArrayType;
+  typedef Array<RealType> SmoothingSigmasArrayType;
+  typedef Array<RealType> MetricSamplingPercentageArrayType;
 
   /** Transform adaptor typedefs */
-  typedef TransformParametersAdaptor<OutputTransformType>             TransformParametersAdaptorType;
-  typedef typename TransformParametersAdaptorType::Pointer            TransformParametersAdaptorPointer;
-  typedef std::vector<TransformParametersAdaptorPointer>              TransformParametersAdaptorsContainerType;
+  typedef TransformParametersAdaptor<OutputTransformType>  TransformParametersAdaptorType;
+  typedef typename TransformParametersAdaptorType::Pointer TransformParametersAdaptorPointer;
+  typedef std::vector<TransformParametersAdaptorPointer>   TransformParametersAdaptorsContainerType;
 
   /**  Type of the optimizer. */
-  typedef ObjectToObjectOptimizerBaseTemplate<RealType>               OptimizerType;
-  typedef typename OptimizerType::Pointer                             OptimizerPointer;
+  typedef ObjectToObjectOptimizerBaseTemplate<RealType> OptimizerType;
+  typedef typename OptimizerType::Pointer               OptimizerPointer;
 
   /** Weights type for the optimizer. */
-  typedef typename OptimizerType::ScalesType                          OptimizerWeightsType;
+  typedef typename OptimizerType::ScalesType OptimizerWeightsType;
 
   /** enum type for metric sampling strategy */
   enum MetricSamplingStrategyType { NONE, REGULAR, RANDOM };
 
-  typedef typename ImageMetricType::FixedSampledPointSetType          MetricSamplePointSetType;
+  typedef typename ImageMetricType::FixedSampledPointSetType MetricSamplePointSetType;
 
   /** Set/get the fixed images. */
-  virtual void SetFixedImage( const FixedImageType *image )
-    {
+  virtual void
+  SetFixedImage( const FixedImageType *image )
+  {
     this->SetFixedImage( 0, image );
-    }
-  virtual const FixedImageType * GetFixedImage() const
-    {
+  }
+
+  virtual const FixedImageType *
+  GetFixedImage() const
+  {
     return this->GetFixedImage( 0 );
-    }
-  virtual void SetFixedImage( SizeValueType, const FixedImageType * );
+  }
+
+  virtual void                   SetFixedImage( SizeValueType, const FixedImageType * );
   virtual const FixedImageType * GetFixedImage( SizeValueType ) const;
 
   /** Set the moving images. */
-  virtual void SetMovingImage( const MovingImageType *image )
-    {
+  virtual void
+  SetMovingImage( const MovingImageType *image )
+  {
     this->SetMovingImage( 0, image );
-    }
-  virtual const MovingImageType * GetMovingImage() const
-    {
+  }
+
+  virtual const MovingImageType *
+  GetMovingImage() const
+  {
     return this->GetMovingImage( 0 );
-    }
-  virtual void SetMovingImage( SizeValueType, const MovingImageType * );
+  }
+
+  virtual void                    SetMovingImage( SizeValueType, const MovingImageType * );
   virtual const MovingImageType * GetMovingImage( SizeValueType ) const;
 
   /** Set/Get the optimizer. */
@@ -203,6 +211,7 @@ public:
    * parameters.
    */
   void SetOptimizerWeights( OptimizerWeightsType & );
+
   itkGetConstMacro( OptimizerWeights, OptimizerWeightsType );
 
   /** Set/Get the metric. */
@@ -230,6 +239,7 @@ public:
 
   /** Set/Get the transform adaptors. */
   void SetTransformParametersAdaptorsPerLevel( TransformParametersAdaptorsContainerType & );
+
   const TransformParametersAdaptorsContainerType & GetTransformParametersAdaptorsPerLevel() const;
 
   /**
@@ -240,6 +250,7 @@ public:
    *   \li transform adaptor with specific parameters for the specified level
    */
   void SetNumberOfLevels( const SizeValueType );
+
   itkGetConstMacro( NumberOfLevels, SizeValueType );
 
   /**
@@ -249,40 +260,43 @@ public:
    * the first level, then by 2 at the second level, then the original resolution
    * for the final level (uses the \c itkShrinkImageFilter).
    */
-  void SetShrinkFactorsPerLevel( ShrinkFactorsArrayType factors )
-    {
+  void
+  SetShrinkFactorsPerLevel( ShrinkFactorsArrayType factors )
+  {
     for( unsigned int level = 0; level < factors.Size(); ++level )
       {
       ShrinkFactorsPerDimensionContainerType shrinkFactors;
       shrinkFactors.Fill( factors[level] );
       this->SetShrinkFactorsPerDimension( level, shrinkFactors );
       }
-    }
+  }
 
   /**
    * Get the shrink factors for a specific level.
    */
-  ShrinkFactorsPerDimensionContainerType GetShrinkFactorsPerDimension( const unsigned int level ) const
-    {
+  ShrinkFactorsPerDimensionContainerType
+  GetShrinkFactorsPerDimension( const unsigned int level ) const
+  {
     if( level >= this->m_ShrinkFactorsPerLevel.size() )
       {
       itkExceptionMacro( "Requesting level greater than the number of levels." );
       }
     return this->m_ShrinkFactorsPerLevel[level];
-    }
+  }
 
   /**
    * Set the shrink factors for a specific level for each dimension.
    */
-  void SetShrinkFactorsPerDimension( unsigned int level, ShrinkFactorsPerDimensionContainerType factors )
-    {
+  void
+  SetShrinkFactorsPerDimension( unsigned int level, ShrinkFactorsPerDimensionContainerType factors )
+  {
     if( level >= this->m_ShrinkFactorsPerLevel.size() )
       {
       this->m_ShrinkFactorsPerLevel.resize( level + 1 );
       }
     this->m_ShrinkFactorsPerLevel[level] = factors;
     this->Modified();
-    }
+  }
 
   /**
    * Set/Get the smoothing sigmas for each level.  At each resolution level, a gaussian smoothing
@@ -311,17 +325,17 @@ public:
   /** Get the current level.  This is a helper function for reporting observations. */
   itkGetConstMacro( CurrentLevel, SizeValueType );
 
-   /** Get the current iteration.  This is a helper function for reporting observations. */
-   itkGetConstReferenceMacro( CurrentIteration, SizeValueType );
+  /** Get the current iteration.  This is a helper function for reporting observations. */
+  itkGetConstReferenceMacro( CurrentIteration, SizeValueType );
 
-   /* Get the current metric value.  This is a helper function for reporting observations. */
-   itkGetConstReferenceMacro( CurrentMetricValue, RealType );
+  /* Get the current metric value.  This is a helper function for reporting observations. */
+  itkGetConstReferenceMacro( CurrentMetricValue, RealType );
 
-   /** Get the current convergence value.  This is a helper function for reporting observations. */
-   itkGetConstReferenceMacro( CurrentConvergenceValue, RealType );
+  /** Get the current convergence value.  This is a helper function for reporting observations. */
+  itkGetConstReferenceMacro( CurrentConvergenceValue, RealType );
 
-   /** Get the current convergence state per level.  This is a helper function for reporting observations. */
-   itkGetConstReferenceMacro( IsConverged, bool );
+  /** Get the current convergence state per level.  This is a helper function for reporting observations. */
+  itkGetConstReferenceMacro( IsConverged, bool );
 
 #ifdef ITKV3_COMPATIBILITY
   /** Method that initiates the registration. This will Initialize and ensure
@@ -339,12 +353,17 @@ public:
    * compatibility reasons, we check whether StartRegistration was
    * called directly or whether Update() (which in turn called
    * StartRegistration()). */
-  void StartRegistration(void) { this->Update(); }
+  void
+  StartRegistration(void) {
+    this->Update();
+  }
+
 #endif
 
 protected:
   ImageRegistrationMethodv4();
-  virtual ~ImageRegistrationMethodv4();
+  virtual
+  ~ImageRegistrationMethodv4();
   virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
   /** Perform the registration. */
@@ -356,42 +375,43 @@ protected:
   /** Get metric samples. */
   virtual void SetMetricSamplePoints();
 
-  SizeValueType                                                   m_CurrentLevel;
-  SizeValueType                                                   m_NumberOfLevels;
-  SizeValueType                                                   m_CurrentIteration;
-  RealType                                                        m_CurrentMetricValue;
-  RealType                                                        m_CurrentConvergenceValue;
-  bool                                                            m_IsConverged;
+  SizeValueType m_CurrentLevel;
+  SizeValueType m_NumberOfLevels;
+  SizeValueType m_CurrentIteration;
+  RealType      m_CurrentMetricValue;
+  RealType      m_CurrentConvergenceValue;
+  bool          m_IsConverged;
 
-  FixedImagesContainerType                                        m_FixedSmoothImages;
-  MovingImagesContainerType                                       m_MovingSmoothImages;
-  SizeValueType                                                   m_NumberOfFixedImages;
-  SizeValueType                                                   m_NumberOfMovingImages;
+  FixedImagesContainerType  m_FixedSmoothImages;
+  MovingImagesContainerType m_MovingSmoothImages;
+  SizeValueType             m_NumberOfFixedImages;
+  SizeValueType             m_NumberOfMovingImages;
 
-  OptimizerPointer                                                m_Optimizer;
-  OptimizerWeightsType                                            m_OptimizerWeights;
-  bool                                                            m_OptimizerWeightsAreIdentity;
+  OptimizerPointer     m_Optimizer;
+  OptimizerWeightsType m_OptimizerWeights;
+  bool                 m_OptimizerWeightsAreIdentity;
 
-  MetricPointer                                                   m_Metric;
-  MetricSamplingStrategyType                                      m_MetricSamplingStrategy;
-  MetricSamplingPercentageArrayType                               m_MetricSamplingPercentagePerLevel;
+  MetricPointer                     m_Metric;
+  MetricSamplingStrategyType        m_MetricSamplingStrategy;
+  MetricSamplingPercentageArrayType m_MetricSamplingPercentagePerLevel;
 
-  std::vector<ShrinkFactorsPerDimensionContainerType>             m_ShrinkFactorsPerLevel;
-  SmoothingSigmasArrayType                                        m_SmoothingSigmasPerLevel;
-  bool                                                            m_SmoothingSigmasAreSpecifiedInPhysicalUnits;
+  std::vector<ShrinkFactorsPerDimensionContainerType> m_ShrinkFactorsPerLevel;
+  SmoothingSigmasArrayType                            m_SmoothingSigmasPerLevel;
+  bool                                                m_SmoothingSigmasAreSpecifiedInPhysicalUnits;
 
-  InitialTransformPointer                                         m_MovingInitialTransform;
-  InitialTransformPointer                                         m_FixedInitialTransform;
+  InitialTransformPointer m_MovingInitialTransform;
+  InitialTransformPointer m_FixedInitialTransform;
 
-  TransformParametersAdaptorsContainerType                        m_TransformParametersAdaptorsPerLevel;
+  TransformParametersAdaptorsContainerType m_TransformParametersAdaptorsPerLevel;
 
-  CompositeTransformPointer                                       m_CompositeTransform;
+  CompositeTransformPointer m_CompositeTransform;
 
-  OutputTransformPointer                                          m_OutputTransform;
+  OutputTransformPointer m_OutputTransform;
 
 private:
   ImageRegistrationMethodv4( const Self & );   //purposely not implemented
-  void operator=( const Self & );                  //purposely not implemented
+  void operator=( const Self & );              //purposely not implemented
+
 };
 } // end namespace itk
 

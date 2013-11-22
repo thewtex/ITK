@@ -71,14 +71,11 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkConfidenceConnectedImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkCastImageFilter.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -96,12 +93,11 @@
 #include "itkCurvatureFlowImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 5 )
     {
@@ -110,7 +106,6 @@ int main( int argc, char *argv[] )
     std::cerr << " inputImage  outputImage seedX seedY " << std::endl;
     return 1;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -121,9 +116,9 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   float           InternalPixelType;
-  const     unsigned int    Dimension = 2;
-  typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
+  typedef   float InternalPixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
   // Software Guide : EndCodeSnippet
 
   typedef unsigned char                            OutputPixelType;
@@ -132,7 +127,6 @@ int main( int argc, char *argv[] )
   typedef itk::CastImageFilter< InternalImageType, OutputImageType >
     CastingFilterType;
   CastingFilterType::Pointer caster = CastingFilterType::New();
-
 
   // We instantiate reader and writer types
   //
@@ -144,7 +138,6 @@ int main( int argc, char *argv[] )
 
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -158,7 +151,6 @@ int main( int argc, char *argv[] )
     CurvatureFlowImageFilterType;
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Next the filter is created by invoking the \code{New()} method and
@@ -168,9 +160,8 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   CurvatureFlowImageFilterType::Pointer smoothing =
-                         CurvatureFlowImageFilterType::New();
+    CurvatureFlowImageFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -181,7 +172,7 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::ConfidenceConnectedImageFilter<
-            InternalImageType, InternalImageType> ConnectedFilterType;
+      InternalImageType, InternalImageType> ConnectedFilterType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -193,9 +184,8 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   ConnectedFilterType::Pointer confidenceConnected
-                                                 = ConnectedFilterType::New();
+    = ConnectedFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -214,7 +204,6 @@ int main( int argc, char *argv[] )
   writer->SetInput( caster->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The CurvatureFlowImageFilter requires defining two parameters.  The
@@ -228,7 +217,6 @@ int main( int argc, char *argv[] )
   smoothing->SetNumberOfIterations( 5 );
   smoothing->SetTimeStep( 0.125 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -249,7 +237,6 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   confidenceConnected->SetMultiplier( 2.5 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -272,7 +259,6 @@ int main( int argc, char *argv[] )
   confidenceConnected->SetNumberOfIterations( 5 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The output of this filter is a binary image with zero-value pixels
@@ -287,7 +273,6 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   confidenceConnected->SetReplaceValue( 255 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -304,16 +289,14 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-  InternalImageType::IndexType  index;
+  InternalImageType::IndexType index;
 
   index[0] = atoi( argv[3] );
   index[1] = atoi( argv[4] );
 
-
   // Software Guide : BeginCodeSnippet
   confidenceConnected->SetSeed( index );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -327,7 +310,6 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   confidenceConnected->SetInitialNeighborhoodRadius( 2 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -348,7 +330,6 @@ int main( int argc, char *argv[] )
     std::cerr << excep << std::endl;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -385,7 +366,6 @@ int main( int argc, char *argv[] )
   //  accepted region will extend.
   //
   //  Software Guide : EndLatex
-
 
   return 0;
 }

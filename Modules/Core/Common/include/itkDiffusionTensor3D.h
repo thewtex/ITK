@@ -76,7 +76,7 @@ namespace itk
  */
 
 template< typename TComponent >
-class DiffusionTensor3D:public SymmetricSecondRankTensor< TComponent, 3 >
+class DiffusionTensor3D : public SymmetricSecondRankTensor< TComponent, 3 >
 {
 public:
   /** Standard class typedefs. */
@@ -107,7 +107,7 @@ public:
 
   /** Constructor to enable casting...  */
   template< typename TCoordRepB >
-  DiffusionTensor3D(const DiffusionTensor3D< TCoordRepB > & pa):
+  DiffusionTensor3D(const DiffusionTensor3D< TCoordRepB > & pa) :
     SymmetricSecondRankTensor< TComponent, 3 >(pa) {}
 
   /** Pass-through assignment operator for the Array base class. */
@@ -119,7 +119,8 @@ public:
 
   /** Templated Pass-through assignment for the Array base class. */
   template< typename TCoordRepB >
-  Self & operator=(const DiffusionTensor3D< TCoordRepB > & pa)
+  Self &
+  operator=(const DiffusionTensor3D< TCoordRepB > & pa)
   {
     //NOTE (this != &pa ) because they are different pointer types
     //if this templated function is called
@@ -140,6 +141,7 @@ public:
 
   /** Get the Inner Scalar Product from the Tensor. */
   RealValueType GetInnerScalarProduct() const;
+
 };
 } // end namespace itk
 #include "itkNumericTraitsDiffusionTensor3DPixel.h"

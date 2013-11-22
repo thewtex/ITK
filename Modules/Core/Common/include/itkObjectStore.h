@@ -60,7 +60,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TObjectType >
-class ObjectStore:public Object
+class ObjectStore : public Object
 {
 public:
   /** Standard typedefs. */
@@ -117,12 +117,18 @@ public:
   itkGetConstMacro(GrowthStrategy, GrowthStrategyType);
 
   /** Set growth strategy to exponential */
-  void SetGrowthStrategyToExponential()
-  { this->SetGrowthStrategy(EXPONENTIAL_GROWTH); }
+  void
+  SetGrowthStrategyToExponential()
+  {
+    this->SetGrowthStrategy(EXPONENTIAL_GROWTH);
+  }
 
   /** Set growth strategy to linear */
-  void SetGrowthStrategyToLinear()
-  { this->SetGrowthStrategy(LINEAR_GROWTH); }
+  void
+  SetGrowthStrategyToLinear()
+  {
+    this->SetGrowthStrategy(LINEAR_GROWTH);
+  }
 
 protected:
   ObjectStore();
@@ -133,21 +139,24 @@ protected:
   SizeValueType GetGrowthSize();
 
   struct MemoryBlock {
-    MemoryBlock():Size(0), Begin(0) {}
+    MemoryBlock() : Size(0), Begin(0) {}
 
-    MemoryBlock(SizeValueType n):Size(n)
-    { Begin = new ObjectType[n];  }
+    MemoryBlock(SizeValueType n) : Size(n)
+    {
+      Begin = new ObjectType[n];
+    }
 
     ~MemoryBlock()  {}   // Purposely does *not* free memory
 
-    void Delete()
+    void
+    Delete()
     {
       delete[] Begin;
     }
 
     ObjectType *Begin;
     SizeValueType Size;
-  };
+    };
 
 private:
   ObjectStore(const Self &);    //purposely not implemented

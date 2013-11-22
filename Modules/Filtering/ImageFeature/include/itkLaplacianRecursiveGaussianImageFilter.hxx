@@ -113,7 +113,6 @@ LaplacianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   this->Modified();
 }
 
-
 //
 //
 //
@@ -143,9 +142,9 @@ LaplacianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   // Set the number of threads on all the filters
   for ( unsigned int i = 0; i < ImageDimension - 1; i++ )
     {
-      m_SmoothingFilters[i]->SetNumberOfThreads(this->GetNumberOfThreads());
+    m_SmoothingFilters[i]->SetNumberOfThreads(this->GetNumberOfThreads() );
     }
-  m_DerivativeFilter->SetNumberOfThreads(this->GetNumberOfThreads());
+  m_DerivativeFilter->SetNumberOfThreads(this->GetNumberOfThreads() );
 
   // Create a process accumulator for tracking the progress of minipipeline
   ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
@@ -174,13 +173,13 @@ LaplacianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 
   //  Auxiliary image for accumulating the second-order derivatives
   typedef Image< InternalRealType, itkGetStaticConstMacro(ImageDimension) > CumulativeImageType;
-  typedef typename CumulativeImageType::Pointer CumulativeImagePointer;
+  typedef typename CumulativeImageType::Pointer                             CumulativeImagePointer;
 
   // The CastImageFilter is used because it is multithreaded and
   // it may perform no operation if the two images types are the same
   typedef itk::CastImageFilter< CumulativeImageType, OutputImageType > CastFilterType;
   typename CastFilterType::Pointer caster = CastFilterType::New();
-    caster->SetNumberOfThreads(this->GetNumberOfThreads());
+  caster->SetNumberOfThreads(this->GetNumberOfThreads() );
 
   // If the last filter is running in-place then this bulk data is not
   // needed, release it to save memory
@@ -188,7 +187,6 @@ LaplacianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
     {
     outputImage->ReleaseData();
     }
-
 
   CumulativeImagePointer cumulativeImage = CumulativeImageType::New();
   cumulativeImage->SetRegions( outputImage->GetRequestedRegion() );
@@ -200,13 +198,13 @@ LaplacianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 
   // allocate the add and scale image filter just for the scope of
   // this function!
-  typedef itk::BinaryFunctorImageFilter< CumulativeImageType, RealImageType, CumulativeImageType, AddMultConstFunctor > AddFilterType;
+  typedef itk::BinaryFunctorImageFilter< CumulativeImageType, RealImageType, CumulativeImageType,
+                                         AddMultConstFunctor > AddFilterType;
   typename AddFilterType::Pointer addFilter = AddFilterType::New();
-  addFilter->SetNumberOfThreads(this->GetNumberOfThreads());
+  addFilter->SetNumberOfThreads(this->GetNumberOfThreads() );
 
   // register with progress accumulator
   progress->RegisterInternalFilter( addFilter,   1.0 / numberOfFilters );
-
 
   for ( unsigned int dim = 0; dim < ImageDimension; dim++ )
     {
@@ -271,8 +269,10 @@ LaplacianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "NormalizeAcrossScale: " << m_NormalizeAcrossScale << std::endl;
 }
+
 } // end namespace itk
 
 #endif

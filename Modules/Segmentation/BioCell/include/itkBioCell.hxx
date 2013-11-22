@@ -140,9 +140,9 @@ template< unsigned int NSpaceDimension >
 const typename Cell< NSpaceDimension >::VectorType &
 Cell< NSpaceDimension >
 ::GetForce(void) const
-{
+  {
   return m_Force;
-}
+  }
 
 /**
  *    Return a pointer to the Cellular Aggregate
@@ -327,6 +327,7 @@ Cell< NSpaceDimension >
 
   m_ChemoAttractantLevel = substrate0;
 }
+
 }  // end namespace bio
 }  // end namespace itk
 

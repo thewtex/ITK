@@ -505,7 +505,9 @@ PolygonSpatialObject< TDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << m_Thickness << std::endl;
 }
+
 }
 #endif

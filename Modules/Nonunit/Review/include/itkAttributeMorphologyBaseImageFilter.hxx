@@ -93,7 +93,7 @@ AttributeMorphologyBaseImageFilter< TInputImage, TOutputImage, TAttribute, TFunc
   SizeType kernelRadius;
   kernelRadius.Fill(1);
   typedef itk::NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< TInputImage >
-  FaceCalculatorType;
+    FaceCalculatorType;
   FaceCalculatorType faceCalculator;
   typename FaceCalculatorType::FaceListType faceList;
   faceList = faceCalculator(input, output->GetRequestedRegion(), kernelRadius);
@@ -147,9 +147,9 @@ AttributeMorphologyBaseImageFilter< TInputImage, TOutputImage, TAttribute, TFunc
   //m_Processed[0] = true;
   for ( SizeValueType k = 1; k < buffsize; k++ )
     {
-    OffsetValueType   ThisPos = m_SortPixels[k].Pos;
-    IndexType         ThisWhere = input->ComputeIndex(ThisPos);
-    InputPixelType    ThisPix = m_SortPixels[k].Val;
+    OffsetValueType ThisPos = m_SortPixels[k].Pos;
+    IndexType       ThisWhere = input->ComputeIndex(ThisPos);
+    InputPixelType  ThisPix = m_SortPixels[k].Val;
     MakeSet(ThisPos);
     // Some optimization of bounds check
     if ( fit->IsInside(ThisWhere) )
@@ -157,8 +157,8 @@ AttributeMorphologyBaseImageFilter< TInputImage, TOutputImage, TAttribute, TFunc
       // no need for bounds check on neighbours
       for ( unsigned i = 0; i < TheseDirectOffsets.size(); i++ )
         {
-        OffsetValueType           NeighInd = ThisPos + TheseDirectOffsets[i];
-        InputPixelType NeighPix = m_Raw[NeighInd];
+        OffsetValueType NeighInd = ThisPos + TheseDirectOffsets[i];
+        InputPixelType  NeighPix = m_Raw[NeighInd];
         if ( compare(NeighPix, ThisPix) || ( ( ThisPix == NeighPix ) && ( NeighInd < ThisPos ) ) )
           {
           Union(NeighInd, ThisPos);
@@ -172,8 +172,8 @@ AttributeMorphologyBaseImageFilter< TInputImage, TOutputImage, TAttribute, TFunc
         {
         if ( output->GetRequestedRegion().IsInside(ThisWhere + TheseOffsets[i]) )
           {
-          OffsetValueType           NeighInd = ThisPos + TheseDirectOffsets[i];
-          InputPixelType NeighPix = m_Raw[NeighInd];
+          OffsetValueType NeighInd = ThisPos + TheseDirectOffsets[i];
+          InputPixelType  NeighPix = m_Raw[NeighInd];
           if ( compare(NeighPix, ThisPix) || ( ( ThisPix == NeighPix ) && ( NeighInd < ThisPos ) ) )
             {
             Union(NeighInd, ThisPos);
@@ -190,9 +190,9 @@ AttributeMorphologyBaseImageFilter< TInputImage, TOutputImage, TAttribute, TFunc
     {
     OffsetValueType ThisPos = m_SortPixels[k].Pos;
     OffsetValueType PrevPos = m_SortPixels[k - 1].Pos;
-    InputPixelType ThisPix = m_Raw[ThisPos];
-    InputPixelType PrevPix = m_Raw[PrevPos];
-    IndexType ThisWhere = input->ComputeIndex(ThisPos);
+    InputPixelType  ThisPix = m_Raw[ThisPos];
+    InputPixelType  PrevPix = m_Raw[PrevPos];
+    IndexType       ThisWhere = input->ComputeIndex(ThisPos);
     if ( ThisPix != PrevPix )
       {
       for ( OffsetValueType QPos = k - 1; QPos >= 0; --QPos )
@@ -317,7 +317,7 @@ AttributeMorphologyBaseImageFilter< TInputImage, TOutputImage, TAttribute, TFunc
   typename NeighType::IndexListType::const_iterator LIt;
 
   OffsetList = It.GetActiveIndexList();
-  IndexType idx = this->GetOutput()->GetRequestedRegion().GetIndex();
+  IndexType       idx = this->GetOutput()->GetRequestedRegion().GetIndex();
   OffsetValueType offset = this->GetOutput()->ComputeOffset(idx);
 
   for ( LIt = OffsetList.begin(); LIt != OffsetList.end(); LIt++ )
@@ -339,6 +339,7 @@ AttributeMorphologyBaseImageFilter< TInputImage, TOutputImage, TAttribute, TFunc
   os << indent << "Lambda: "  << static_cast< typename NumericTraits< AttributeType >::PrintType >( m_Lambda )
      << std::endl;
 }
+
 } // end namespace itk
 
 #endif

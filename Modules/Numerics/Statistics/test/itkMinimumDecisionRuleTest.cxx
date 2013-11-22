@@ -20,14 +20,14 @@
 
 #include "itkMinimumDecisionRule.h"
 
-
-int itkMinimumDecisionRuleTest(int,char *[] )
+int
+itkMinimumDecisionRuleTest(int,char *[] )
 {
 
   std::cout << "==================================" << std::endl;
   std::cout << "Testing MinimumDecionRule " << std::endl << std::endl;
 
-  typedef itk::Statistics::MinimumDecisionRule  DecisionRuleType;
+  typedef itk::Statistics::MinimumDecisionRule DecisionRuleType;
   DecisionRuleType::Pointer decisionRule = DecisionRuleType::New();
 
   DecisionRuleType::MembershipVectorType discriminantScores;
@@ -55,7 +55,6 @@ int itkMinimumDecisionRuleTest(int,char *[] )
     std::cout << "[FAILED]" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   DecisionRuleType::MembershipVectorType discriminantScores3;
   discriminantScores3.resize( 3 );

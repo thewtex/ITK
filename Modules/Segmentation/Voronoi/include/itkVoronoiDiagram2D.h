@@ -18,7 +18,6 @@
 #ifndef __itkVoronoiDiagram2D_h
 #define __itkVoronoiDiagram2D_h
 
-
 #include "itkMesh.h"
 #include "itkDefaultDynamicMeshTraits.h"
 #include "itkPolygonCell.h"
@@ -48,7 +47,7 @@ namespace itk
  * \ingroup ITKVoronoi
  */
 template< typename TCoordType >
-class VoronoiDiagram2D:
+class VoronoiDiagram2D :
   public Mesh< TCoordType, 2,
                DefaultDynamicMeshTraits< TCoordType, 2, 2, TCoordType > >
 {
@@ -76,81 +75,81 @@ public:
 
   /** Typedefs from itkMesh */
   typedef typename MeshTraits::PixelType
-                                          PixelType;
+    PixelType;
   typedef typename MeshTraits::CoordRepType
-                                          CoordRepType;
+    CoordRepType;
   typedef typename MeshTraits::InterpolationWeightType
-                                          InterpolationWeightType;
+    InterpolationWeightType;
   typedef typename MeshTraits::PointIdentifier
-                                          PointIdentifier;
+    PointIdentifier;
   typedef typename MeshTraits::CellIdentifier
-                                          CellIdentifier;
+    CellIdentifier;
   typedef typename MeshTraits::CellFeatureIdentifier
-                                          CellFeatureIdentifier;
+    CellFeatureIdentifier;
   typedef typename MeshTraits::PointType
-                                          PointType;
+    PointType;
   typedef typename MeshTraits::PointsContainer
-                                          PointsContainer;
+    PointsContainer;
   typedef typename MeshTraits::CellTraits
-                                          CellTraits;
+    CellTraits;
   typedef typename MeshTraits::CellsContainer
-                                          CellsContainer;
+    CellsContainer;
   typedef typename MeshTraits::PointCellLinksContainer
-                                          PointCellLinksContainer;
+    PointCellLinksContainer;
   typedef typename MeshTraits::CellLinksContainer
-                                          CellLinksContainer;
+    CellLinksContainer;
   typedef typename MeshTraits::PointDataContainer
-                                          PointDataContainer;
+    PointDataContainer;
   typedef typename MeshTraits::CellDataContainer
-                                          CellDataContainer;
+    CellDataContainer;
   typedef typename MeshTraits::CellAutoPointer
-                                          genericCellPointer;
+    genericCellPointer;
   typedef BoundingBox< PointIdentifier, itkGetStaticConstMacro(PointDimension), CoordRepType,
                        PointsContainer >  BoundingBoxType;
   typedef typename PointsContainer::Pointer
-                                          PointsContainerPointer;
+    PointsContainerPointer;
   typedef typename CellsContainer::Pointer
-                                          CellsContainerPointer;
+    CellsContainerPointer;
   typedef typename CellLinksContainer::Pointer
-                                          CellLinksContainerPointer;
+    CellLinksContainerPointer;
   typedef typename PointDataContainer::Pointer
-                                          PointDataContainerPointer;
+    PointDataContainerPointer;
   typedef typename CellDataContainer::Pointer
-                                          CellDataContainerPointer;
+    CellDataContainerPointer;
   typedef typename BoundingBoxType::Pointer
-                                          BoundingBoxPointer;
+    BoundingBoxPointer;
   typedef typename PointsContainer::ConstIterator
-                                          PointsContainerConstIterator;
+    PointsContainerConstIterator;
   typedef typename PointsContainer::Iterator
-                                          PointsContainerIterator;
+    PointsContainerIterator;
   typedef typename CellsContainer::ConstIterator
-                                          CellsContainerConstIterator;
+    CellsContainerConstIterator;
   typedef typename CellsContainer::Iterator
-                                          CellsContainerIterator;
+    CellsContainerIterator;
   typedef typename CellLinksContainer::ConstIterator
-                                          CellLinksContainerIterator;
+    CellLinksContainerIterator;
   typedef typename PointDataContainer::ConstIterator
-                                          PointDataContainerIterator;
+    PointDataContainerIterator;
   typedef typename CellDataContainer::ConstIterator
-                                          CellDataContainerIterator;
+    CellDataContainerIterator;
   typedef typename PointCellLinksContainer::const_iterator
-                                          PointCellLinksContainerIterator;
+    PointCellLinksContainerIterator;
 
-  typedef CellFeatureIdentifier                       CellFeatureCount;
-  typedef typename Superclass::CellType               CellType;
-  typedef typename Superclass::CellAutoPointer        CellAutoPointer;
-  typedef PolygonCell< CellType >                     PolygonCellType;
-  typedef Point< int, 2 >                             EdgeInfo;
-  typedef std::deque< EdgeInfo >                      EdgeInfoDQ;
-  typedef typename CellType::MultiVisitor             CellMultiVisitorType;
-  typedef std::vector< PointType >                    SeedsType;
-  typedef typename SeedsType::iterator                SeedsIterator;
-  typedef LineCell< CellType >                        Edge;
-  typedef typename Edge::SelfAutoPointer              EdgeAutoPointer;
-  typedef std::list< PointType >                      PointList;
-  typedef std::vector< int >                          INTvector;
-  typedef typename INTvector::iterator                NeighborIdIterator;
-  typedef PointsContainerIterator                     VertexIterator;
+  typedef CellFeatureIdentifier                CellFeatureCount;
+  typedef typename Superclass::CellType        CellType;
+  typedef typename Superclass::CellAutoPointer CellAutoPointer;
+  typedef PolygonCell< CellType >              PolygonCellType;
+  typedef Point< int, 2 >                      EdgeInfo;
+  typedef std::deque< EdgeInfo >               EdgeInfoDQ;
+  typedef typename CellType::MultiVisitor      CellMultiVisitorType;
+  typedef std::vector< PointType >             SeedsType;
+  typedef typename SeedsType::iterator         SeedsIterator;
+  typedef LineCell< CellType >                 Edge;
+  typedef typename Edge::SelfAutoPointer       EdgeAutoPointer;
+  typedef std::list< PointType >               PointList;
+  typedef std::vector< int >                   INTvector;
+  typedef typename INTvector::iterator         NeighborIdIterator;
+  typedef PointsContainerIterator              VertexIterator;
   /** Get the number of Voronoi seeds. */
   itkGetConstMacro(NumberOfSeeds, unsigned int);
 
@@ -211,22 +210,43 @@ public:
 
   void InsertCells();
 
-  void AddCellNeighbor(EdgeInfo x)
+  void
+  AddCellNeighbor(EdgeInfo x)
   {
     m_CellNeighborsID[x[0]].push_back(x[1]);
     m_CellNeighborsID[x[1]].push_back(x[0]);
   }
 
-  void ClearRegion(int i)
-  { m_VoronoiRegions[i]->ClearPoints(); }
-  void VoronoiRegionAddPointId(int id, int x)
-  { m_VoronoiRegions[id]->AddPointId(x); }
-  void BuildEdge(int id)
-  { m_VoronoiRegions[id]->BuildEdges(); }
+  void
+  ClearRegion(int i)
+  {
+    m_VoronoiRegions[i]->ClearPoints();
+  }
 
-  void LineListClear(){ m_LineList.clear(); }
-  void EdgeListClear(){ m_EdgeList.clear(); }
-  void VertexListClear()
+  void
+  VoronoiRegionAddPointId(int id, int x)
+  {
+    m_VoronoiRegions[id]->AddPointId(x);
+  }
+
+  void
+  BuildEdge(int id)
+  {
+    m_VoronoiRegions[id]->BuildEdges();
+  }
+
+  void
+  LineListClear(){
+    m_LineList.clear();
+  }
+
+  void
+  EdgeListClear(){
+    m_EdgeList.clear();
+  }
+
+  void
+  VertexListClear()
   {
     if ( this->m_PointsContainer.IsNull() )
       {
@@ -236,16 +256,53 @@ public:
     this->m_PointsContainer->Initialize();
   }
 
-  int LineListSize(){ return static_cast< int >( m_LineList.size() ); }
-  int EdgeListSize(){ return static_cast< int >( m_EdgeList.size() ); }
-  int VertexListSize(){ return static_cast< int >(this->m_PointsContainer->Size()); }
-  void AddLine(EdgeInfo x){ m_LineList.push_back(x); }
-  void AddEdge(VoronoiEdge x){ m_EdgeList.push_back(x); }
-  void AddVert(PointType x){ this->m_PointsContainer->InsertElement(this->m_PointsContainer->Size(), x);}
-  EdgeInfo GetLine(int id){ return m_LineList[id]; }
-  VoronoiEdge GetEdge(int id){ return m_EdgeList[id]; }
-  PointType GetVertex(int id){ return this-> m_PointsContainer->ElementAt(id); }
-  EdgeInfo GetEdgeEnd(int id)
+  int
+  LineListSize(){
+    return static_cast< int >( m_LineList.size() );
+  }
+
+  int
+  EdgeListSize(){
+    return static_cast< int >( m_EdgeList.size() );
+  }
+
+  int
+  VertexListSize(){
+    return static_cast< int >(this->m_PointsContainer->Size() );
+  }
+
+  void
+  AddLine(EdgeInfo x){
+    m_LineList.push_back(x);
+  }
+
+  void
+  AddEdge(VoronoiEdge x){
+    m_EdgeList.push_back(x);
+  }
+
+  void
+  AddVert(PointType x){
+    this->m_PointsContainer->InsertElement(this->m_PointsContainer->Size(), x);
+  }
+
+  EdgeInfo
+  GetLine(int id){
+    return m_LineList[id];
+  }
+
+  VoronoiEdge
+  GetEdge(int id){
+    return m_EdgeList[id];
+  }
+
+  PointType
+  GetVertex(int id){
+    return this->m_PointsContainer->ElementAt(id);
+  }
+
+  EdgeInfo
+  GetEdgeEnd(int id)
   {
     EdgeInfo x;
 
@@ -254,7 +311,10 @@ public:
     return x;
   }
 
-  int GetEdgeLineID(int id){ return m_EdgeList[id].m_LineID; }
+  int
+  GetEdgeLineID(int id){
+    return m_EdgeList[id].m_LineID;
+  }
 
 protected:
   VoronoiDiagram2D();

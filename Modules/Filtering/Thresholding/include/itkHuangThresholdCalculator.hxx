@@ -38,6 +38,7 @@ HuangThresholdCalculator<THistogram, TOutput>
   const HistogramType * histogram = this->GetInput();
 
   TotalAbsoluteFrequencyType total = histogram->GetTotalFrequency();
+
   if( total == NumericTraits< TotalAbsoluteFrequencyType >::Zero )
     {
     itkExceptionMacro(<< "Histogram is empty");
@@ -46,7 +47,7 @@ HuangThresholdCalculator<THistogram, TOutput>
   ProgressReporter progress( this, 0, m_Size );
   if( m_Size == 1 )
     {
-    this->GetOutput()->Set( static_cast<OutputType>(histogram->GetMeasurement( 0, 0 )) );
+    this->GetOutput()->Set( static_cast<OutputType>(histogram->GetMeasurement( 0, 0 ) ) );
     return;
     }
 
@@ -81,12 +82,12 @@ HuangThresholdCalculator<THistogram, TOutput>
     }
 
   // precalculate the summands of the entropy given the absolute difference x - mu (integral)
-  double C = static_cast< double >( m_LastBin - m_FirstBin );
+  double              C = static_cast< double >( m_LastBin - m_FirstBin );
   std::vector<double> Smu(m_LastBin + 1 - m_FirstBin, 0);
 
   for( size_t i = 1; i < Smu.size(); i++)
     {
-    double mu = 1. / ( 1. + static_cast< double >( i ) / C );
+    double         mu = 1. / ( 1. + static_cast< double >( i ) / C );
     Smu[i] = -mu * vcl_log( mu ) - (1. - mu) * vcl_log( 1. - mu );
     }
 
@@ -103,12 +104,12 @@ HuangThresholdCalculator<THistogram, TOutput>
   // perhaps it is hidden by whatever java does when rounding a NaN to integer.
 
   InstanceIdentifier bestThreshold = 0;
-  double bestEntropy = itk::NumericTraits<double>::max();
+  double             bestEntropy = itk::NumericTraits<double>::max();
 
   for( InstanceIdentifier threshold = m_FirstBin;
        threshold < m_LastBin; threshold++ )
     {
-    double entropy = 0.;
+    double          entropy = 0.;
     MeasurementType mu = Math::Round< MeasurementType >(W[threshold] / S[threshold]);
 
     typename HistogramType::MeasurementVectorType v(1);
@@ -117,17 +118,19 @@ HuangThresholdCalculator<THistogram, TOutput>
     typename HistogramType::IndexType       muFullIdx;
     typename HistogramType::IndexValueType  muIdx;
 
-    if (histogram->GetIndex(v, muFullIdx))
+    if (histogram->GetIndex(v, muFullIdx) )
       {
       muIdx = muFullIdx[0];
       for( InstanceIdentifier i = m_FirstBin; i <= threshold; i++ )
         {
-        InstanceIdentifier diff = static_cast< InstanceIdentifier >( vcl_abs(static_cast< typename HistogramType::IndexValueType >( i ) - muIdx) );
+        InstanceIdentifier diff =
+          static_cast< InstanceIdentifier >( vcl_abs(static_cast< typename HistogramType::IndexValueType >( i ) -
+                                                     muIdx) );
         itkAssertInDebugAndIgnoreInReleaseMacro( diff < Smu.size() );
 
         entropy += Smu[ diff ] * histogram->GetFrequency(i, 0);
         }
-      mu = Math::Round< MeasurementType >((W[m_LastBin] - W[threshold]) / (S[m_LastBin] - S[threshold]));
+      mu = Math::Round< MeasurementType >( (W[m_LastBin] - W[threshold]) / (S[m_LastBin] - S[threshold]) );
       v[0]=mu;
 
       bool status = histogram->GetIndex(v, muFullIdx);
@@ -138,7 +141,9 @@ HuangThresholdCalculator<THistogram, TOutput>
       muIdx = muFullIdx[0];
       for( InstanceIdentifier i = threshold + 1; i <= m_LastBin; i++ )
         {
-        InstanceIdentifier diff = static_cast< InstanceIdentifier >( vcl_abs(static_cast< typename HistogramType::IndexValueType >( i ) - muIdx) );
+        InstanceIdentifier diff =
+          static_cast< InstanceIdentifier >( vcl_abs(static_cast< typename HistogramType::IndexValueType >( i ) -
+                                                     muIdx) );
         entropy += Smu[ diff ] * histogram->GetFrequency(i, 0);
         }
       if (bestEntropy > entropy)

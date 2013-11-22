@@ -21,20 +21,22 @@
 #include "itkVarianceImageFunction.h"
 #include "itkImage.h"
 
-int itkVarianceImageFunctionTest(int, char* [] )
+int
+itkVarianceImageFunctionTest(int, char* [] )
 {
 
   const unsigned int Dimension = 3;
-  typedef unsigned char   PixelType;
+
+  typedef unsigned char PixelType;
 
   typedef itk::Image< PixelType, Dimension >      ImageType;
   typedef itk::VarianceImageFunction< ImageType > FunctionType;
 
   // Create and allocate the image
-  ImageType::Pointer      image = ImageType::New();
-  ImageType::SizeType     size;
-  ImageType::IndexType    start;
-  ImageType::RegionType   region;
+  ImageType::Pointer    image = ImageType::New();
+  ImageType::SizeType   size;
+  ImageType::IndexType  start;
+  ImageType::RegionType region;
 
   size[0] = 50;
   size[1] = 50;
@@ -56,17 +58,17 @@ int itkVarianceImageFunctionTest(int, char* [] )
 
   function->SetNeighborhoodRadius( 5 );
 
-  ImageType::IndexType    index;
+  ImageType::IndexType index;
 
   index[0] = 25;
   index[1] = 25;
   index[2] = 25;
 
-  FunctionType::OutputType  variance;
+  FunctionType::OutputType variance;
 
   variance = function->EvaluateAtIndex( index );
 
- // Test Evaluate
+  // Test Evaluate
   FunctionType::PointType point;
   point[0] = 25;
   point[1] = 25;
@@ -91,7 +93,6 @@ int itkVarianceImageFunctionTest(int, char* [] )
   // Test GetConstReferenceMacro
   const unsigned int & neighborhoodRadius = function->GetNeighborhoodRadius();
   std::cout << "function->GetNeighborhoodRadius(): " << neighborhoodRadius << std::endl;
-
 
   // since the input image is constant
   // the variance should be zero

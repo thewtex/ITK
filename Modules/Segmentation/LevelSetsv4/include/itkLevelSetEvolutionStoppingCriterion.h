@@ -25,70 +25,72 @@
 
 namespace itk
 {
- /** \class LevelSetEvolutionStoppingCriterion
-  \ingroup ITKLevelSetsv4
-  */
- template< typename TLevelSetContainer >
- class LevelSetEvolutionStoppingCriterion : public StoppingCriterionBase
- {
- public:
-   typedef LevelSetEvolutionStoppingCriterion  Self;
-   typedef StoppingCriterionBase               Superclass;
-   typedef SmartPointer< Self >                Pointer;
-   typedef SmartPointer< const Self >          ConstPointer;
+/** \class LevelSetEvolutionStoppingCriterion
+ \ingroup ITKLevelSetsv4
+ */
+template< typename TLevelSetContainer >
+class LevelSetEvolutionStoppingCriterion : public StoppingCriterionBase
+{
+public:
+  typedef LevelSetEvolutionStoppingCriterion Self;
+  typedef StoppingCriterionBase              Superclass;
+  typedef SmartPointer< Self >               Pointer;
+  typedef SmartPointer< const Self >         ConstPointer;
 
-   /** Run-time type information (and related methods). */
-   itkTypeMacro(LevelSetEvolutionStoppingCriterion, StoppingCriterionBase);
+  /** Run-time type information (and related methods). */
+  itkTypeMacro(LevelSetEvolutionStoppingCriterion, StoppingCriterionBase);
 
-   typedef TLevelSetContainer                               LevelSetContainerType;
-   typedef typename LevelSetContainerType::Pointer          LevelSetContainerPointer;
+  typedef TLevelSetContainer                      LevelSetContainerType;
+  typedef typename LevelSetContainerType::Pointer LevelSetContainerPointer;
 
-   typedef typename LevelSetContainerType::LevelSetIdentifierType
-                                                            LevelSetIdentifierType;
+  typedef typename LevelSetContainerType::LevelSetIdentifierType
+    LevelSetIdentifierType;
 
-   typedef typename LevelSetContainerType::LevelSetType     LevelSetType;
-   typedef typename LevelSetContainerType::LevelSetPointer  LevelSetPointer;
+  typedef typename LevelSetContainerType::LevelSetType    LevelSetType;
+  typedef typename LevelSetContainerType::LevelSetPointer LevelSetPointer;
 
-   typedef typename LevelSetContainerType::InputIndexType   InputIndexType;
-   typedef typename LevelSetContainerType::OutputType       OutputType;
-   typedef typename LevelSetContainerType::OutputRealType   OutputRealType;
-   typedef typename LevelSetContainerType::GradientType     GradientType;
-   typedef typename LevelSetContainerType::HessianType      HessianType;
+  typedef typename LevelSetContainerType::InputIndexType InputIndexType;
+  typedef typename LevelSetContainerType::OutputType     OutputType;
+  typedef typename LevelSetContainerType::OutputRealType OutputRealType;
+  typedef typename LevelSetContainerType::GradientType   GradientType;
+  typedef typename LevelSetContainerType::HessianType    HessianType;
 
-   typedef typename LevelSetContainerType::HeavisideType    HeavisideType;
-   typedef typename LevelSetContainerType::HeavisideType    HeavisidePointer;
+  typedef typename LevelSetContainerType::HeavisideType HeavisideType;
+  typedef typename LevelSetContainerType::HeavisideType HeavisidePointer;
 
-   typedef IdentifierType IterationIdType;
+  typedef IdentifierType IterationIdType;
 
-   itkSetObjectMacro( LevelSetContainer, LevelSetContainerType );
-   itkGetModifiableObjectMacro(LevelSetContainer, LevelSetContainerType );
+  itkSetObjectMacro( LevelSetContainer, LevelSetContainerType );
+  itkGetModifiableObjectMacro(LevelSetContainer, LevelSetContainerType );
 
-   itkSetMacro( NumberOfIterations, IterationIdType );
-   itkGetMacro( NumberOfIterations, IterationIdType );
+  itkSetMacro( NumberOfIterations, IterationIdType );
+  itkGetMacro( NumberOfIterations, IterationIdType );
 
-   itkSetMacro( CurrentIteration, IterationIdType );
-   itkGetMacro( CurrentIteration, IterationIdType );
+  itkSetMacro( CurrentIteration, IterationIdType );
+  itkGetMacro( CurrentIteration, IterationIdType );
 
-   itkSetMacro( RMSChangeAccumulator, OutputRealType );
-   itkGetMacro( RMSChangeAccumulator, OutputRealType );
+  itkSetMacro( RMSChangeAccumulator, OutputRealType );
+  itkGetMacro( RMSChangeAccumulator, OutputRealType );
 
- protected:
-   /** Constructor */
-   LevelSetEvolutionStoppingCriterion();
+protected:
+  /** Constructor */
+  LevelSetEvolutionStoppingCriterion();
 
-   /** Destructor */
-   virtual ~LevelSetEvolutionStoppingCriterion();
+  /** Destructor */
+  virtual
+  ~LevelSetEvolutionStoppingCriterion();
 
-   LevelSetContainerPointer m_LevelSetContainer;
-   OutputRealType           m_RMSChangeAccumulator;
-   IterationIdType          m_NumberOfIterations;
-   IterationIdType          m_CurrentIteration;
+  LevelSetContainerPointer m_LevelSetContainer;
+  OutputRealType           m_RMSChangeAccumulator;
+  IterationIdType          m_NumberOfIterations;
+  IterationIdType          m_CurrentIteration;
 
- private:
-   LevelSetEvolutionStoppingCriterion( const Self& ); // purposely not implemented
-    void operator = ( const Self& ); // purposely not implemented
- };
- }
+private:
+  LevelSetEvolutionStoppingCriterion( const Self& ); // purposely not implemented
+  void operator =( const Self& );                    // purposely not implemented
+
+};
+}
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkLevelSetEvolutionStoppingCriterion.hxx"
 #endif

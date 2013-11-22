@@ -19,7 +19,8 @@
 #include <iostream>
 #include "itkLabelObjectLine.h"
 
-int itkLabelObjectLineTest(int, char* [] )
+int
+itkLabelObjectLineTest(int, char* [] )
 {
 
   typedef itk::LabelObjectLine<2>            LabelObjectLineType;
@@ -39,7 +40,7 @@ int itkLabelObjectLineTest(int, char* [] )
   IndexType indexBack;
   indexBack = labelLine->GetIndex();
 
-  if ((indexBack[0] != 3) || (indexBack[1] != 7))
+  if ( (indexBack[0] != 3) || (indexBack[1] != 7) )
     {
     std::cerr << "Set/Get Index failed on null constructor. " << indexBack << std::endl;
     delete labelLine;
@@ -59,7 +60,7 @@ int itkLabelObjectLineTest(int, char* [] )
   labelLine = new LabelObjectLineType(currentIndex, 11);
   indexBack = labelLine->GetIndex();
 
-  if ((indexBack[0] != 3) || (indexBack[1] != 7))
+  if ( (indexBack[0] != 3) || (indexBack[1] != 7) )
     {
     std::cerr << "Set/Get Index failed on arg constructor. " << indexBack << std::endl;
     delete labelLine;
@@ -73,28 +74,28 @@ int itkLabelObjectLineTest(int, char* [] )
     return (EXIT_FAILURE);
     }
 
-  if (!labelLine->HasIndex(currentIndex))
+  if (!labelLine->HasIndex(currentIndex) )
     {
     std::cerr << "Has Index failed." << std::endl;
     delete labelLine;
     return (EXIT_FAILURE);
     }
 
-  if (labelLine->HasIndex(nextIndex))
+  if (labelLine->HasIndex(nextIndex) )
     {
     std::cerr << "Has Index failed." << std::endl;
     delete labelLine;
     return (EXIT_FAILURE);
     }
 
-  if (labelLine->IsNextIndex(currentIndex))
+  if (labelLine->IsNextIndex(currentIndex) )
     {
     std::cerr << "Is Next Index failed." << std::endl;
     delete labelLine;
     return (EXIT_FAILURE);
     }
 
-  if (!labelLine->IsNextIndex(nextIndex))
+  if (!labelLine->IsNextIndex(nextIndex) )
     {
     std::cerr << "Is Next Index failed." << std::endl;
     delete labelLine;

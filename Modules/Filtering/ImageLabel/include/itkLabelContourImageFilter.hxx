@@ -112,17 +112,17 @@ LabelContourImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const OutputRegionType & outputRegionForThread,
                        ThreadIdType threadId)
 {
-  OutputImageType   *output = this->GetOutput();
+  OutputImageType *     output = this->GetOutput();
   const InputImageType *input = this->GetInput();
 
   // create a line iterator
   typedef itk::ImageLinearConstIteratorWithIndex< InputImageType >
-  InputLineIteratorType;
+    InputLineIteratorType;
   InputLineIteratorType inLineIt(input, outputRegionForThread);
   inLineIt.SetDirection(0);
 
   typedef itk::ImageLinearIteratorWithIndex< OutputImageType >
-  OutputLineIteratorType;
+    OutputLineIteratorType;
   OutputLineIteratorType outLineIt(output, outputRegionForThread);
   outLineIt.SetDirection(0);
 
@@ -135,7 +135,7 @@ LabelContourImageFilter< TInputImage, TOutputImage >
   // find the split axis
   OutputIndexType outputRegionIdx = output->GetRequestedRegion().GetIndex();
   OutputIndexType outputRegionForThreadIdx = outputRegionForThread.GetIndex();
-  int       splitAxis = 0;
+  int             splitAxis = 0;
   for ( unsigned int i = 0; i < ImageDimension; i++ )
     {
     if ( outputRegionIdx[i] != outputRegionForThreadIdx[i] )
@@ -181,7 +181,7 @@ LabelContourImageFilter< TInputImage, TOutputImage >
         ++outLineIt;
         }
       // create the run length object to go in the vector
-      RunLength     thisRun = { length, thisIndex, PVal };
+      RunLength thisRun = { length, thisIndex, PVal };
 
       Line.push_back(thisRun);
       }
@@ -204,8 +204,8 @@ LabelContourImageFilter< TInputImage, TOutputImage >
   if ( threadId != m_NumberOfThreads - 1 )
     {
     lastLineIdForThread = firstLineIdForThread
-                          + OutputRegionType( outputRegionIdx,
-                                              outputRegionForThread.GetSize() ).GetNumberOfPixels() / xsizeForThread;
+      + OutputRegionType( outputRegionIdx,
+                          outputRegionForThread.GetSize() ).GetNumberOfPixels() / xsizeForThread;
     }
 
   for ( SizeValueType ThisIdx = firstLineIdForThread; ThisIdx < lastLineIdForThread; ++ThisIdx )
@@ -266,11 +266,11 @@ LabelContourImageFilter< TInputImage, TOutputImage >
 
   const unsigned int PretendDimension = ImageDimension - 1;
 
-  typedef Image< OffsetValueType, PretendDimension >      PretendImageType;
-  typedef typename PretendImageType::Pointer              PretendImagePointer;
-  typedef typename PretendImageType::RegionType           PretendRegionType;
-  typedef typename PretendRegionType::SizeType            PretendSizeType;
-  typedef typename PretendRegionType::IndexType           PretendIndexType;
+  typedef Image< OffsetValueType, PretendDimension > PretendImageType;
+  typedef typename PretendImageType::Pointer         PretendImagePointer;
+  typedef typename PretendImageType::RegionType      PretendRegionType;
+  typedef typename PretendRegionType::SizeType       PretendSizeType;
+  typedef typename PretendRegionType::IndexType      PretendIndexType;
 
   PretendImagePointer fakeImage = PretendImageType::New();
 
@@ -297,7 +297,7 @@ LabelContourImageFilter< TInputImage, TOutputImage >
 
   setConnectivity(&lnit, m_FullyConnected);
 
-  typedef typename LineNeighborhoodType::IndexListType  LineNeighborhoodIndexListType;
+  typedef typename LineNeighborhoodType::IndexListType LineNeighborhoodIndexListType;
   LineNeighborhoodIndexListType ActiveIndexes = lnit.GetActiveIndexList();
 
   PretendIndexType idx = LineRegion.GetIndex();
@@ -305,7 +305,7 @@ LabelContourImageFilter< TInputImage, TOutputImage >
 
   const typename LineNeighborhoodIndexListType::const_iterator LEnd = ActiveIndexes.end();
   for (typename LineNeighborhoodIndexListType::const_iterator LI = ActiveIndexes.begin();
-    LI != LEnd; ++LI )
+       LI != LEnd; ++LI )
     {
     LineOffsets.push_back(fakeImage->ComputeOffset( idx + lnit.GetOffset(*LI) ) - offset);
     }
@@ -373,10 +373,10 @@ LabelContourImageFilter< TInputImage, TOutputImage >
       OffsetValueType cStart = cIt->where[0];  // the start x position
       OffsetValueType cLast = cStart + cIt->length - 1;
 
-      bool lineCompleted = false;
+      bool                            lineCompleted = false;
       const LineEncodingConstIterator mEnd = Neighbour.end();
       for(LineEncodingConstIterator mIt = Neighbour.begin();
-        mIt != mEnd && !lineCompleted; ++mIt )
+          mIt != mEnd && !lineCompleted; ++mIt )
         {
         if ( mIt->label != cIt->label )
           {
@@ -482,6 +482,7 @@ LabelContourImageFilter< TInputImage, TOutputImage >
     m_Barrier->Wait();
     }
 }
+
 } // end namespace itk
 
 #endif

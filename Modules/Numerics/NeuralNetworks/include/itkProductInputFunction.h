@@ -55,17 +55,19 @@ public:
 protected:
 
   ProductInputFunction();
-  virtual ~ProductInputFunction();
+  virtual
+  ~ProductInputFunction();
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
+
 };
 
 } // end namespace Statistics
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkProductInputFunction.hxx"
+#include "itkProductInputFunction.hxx"
 #endif
 
 #endif

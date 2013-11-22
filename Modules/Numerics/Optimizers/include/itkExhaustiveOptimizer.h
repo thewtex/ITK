@@ -79,7 +79,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class ExhaustiveOptimizer:
+class ExhaustiveOptimizer :
   public SingleValuedNonLinearOptimizer
 {
 public:
@@ -121,7 +121,8 @@ public:
 
 protected:
   ExhaustiveOptimizer();
-  virtual ~ExhaustiveOptimizer() {}
+  virtual
+  ~ExhaustiveOptimizer() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Advance to the next grid position. */

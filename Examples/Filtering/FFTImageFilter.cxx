@@ -50,7 +50,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkImage.h"
 #include "itkVnlForwardFFTImageFilter.h"
@@ -62,14 +61,14 @@
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
 
-
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
   if( argc < 5 )
     {
-    std::cerr << "Usage: " << argv[0] << " inputScalarImage  outputRealPartOfComplexImage outputRealImaginaryPartOfComplexImage outputComplex" << std::endl;
+    std::cerr << "Usage: " << argv[0] <<
+    " inputScalarImage  outputRealPartOfComplexImage outputRealImaginaryPartOfComplexImage outputComplex" << std::endl;
     }
-
 
 // Software Guide : BeginLatex
 //
@@ -79,7 +78,7 @@ int main( int argc, char * argv [] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef float  PixelType;
+  typedef float PixelType;
   const unsigned int Dimension = 2;
 
   typedef itk::Image< PixelType, Dimension > ImageType;
@@ -94,9 +93,8 @@ int main( int argc, char * argv [] )
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
-  typedef itk::VnlForwardFFTImageFilter< ImageType >  FFTFilterType;
+  typedef itk::VnlForwardFFTImageFilter< ImageType > FFTFilterType;
 
   FFTFilterType::Pointer fftFilter = FFTFilterType::New();
 // Software Guide : EndCodeSnippet
@@ -108,7 +106,7 @@ int main( int argc, char * argv [] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
 
@@ -147,7 +145,7 @@ int main( int argc, char * argv [] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef FFTFilterType::OutputImageType    ComplexImageType;
+  typedef FFTFilterType::OutputImageType ComplexImageType;
 
   typedef itk::ImageFileWriter< ComplexImageType > ComplexWriterType;
 
@@ -197,17 +195,15 @@ int main( int argc, char * argv [] )
 
 // Software Guide : BeginCodeSnippet
   typedef itk::ComplexToRealImageFilter<
-                 ComplexImageType, ImageType > RealFilterType;
+      ComplexImageType, ImageType > RealFilterType;
 
   RealFilterType::Pointer realFilter = RealFilterType::New();
 
   realFilter->SetInput( fftFilter->GetOutput() );
 // Software Guide : EndCodeSnippet
 
-
   typedef unsigned char                           WritePixelType;
   typedef itk::Image< WritePixelType, Dimension > WriteImageType;
-
 
 // Software Guide : BeginLatex
 //
@@ -223,8 +219,8 @@ int main( int argc, char * argv [] )
 
 // Software Guide : BeginCodeSnippet
   typedef itk::RescaleIntensityImageFilter<
-                                ImageType,
-                                WriteImageType > RescaleFilterType;
+      ImageType,
+      WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer intensityRescaler = RescaleFilterType::New();
 
@@ -265,16 +261,15 @@ int main( int argc, char * argv [] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef FFTFilterType::OutputImageType    ComplexImageType;
+  typedef FFTFilterType::OutputImageType ComplexImageType;
 
   typedef itk::ComplexToImaginaryImageFilter<
-                       ComplexImageType, ImageType > ImaginaryFilterType;
+      ComplexImageType, ImageType > ImaginaryFilterType;
 
   ImaginaryFilterType::Pointer imaginaryFilter = ImaginaryFilterType::New();
 
   imaginaryFilter->SetInput( fftFilter->GetOutput() );
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -297,7 +292,6 @@ int main( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-
 // Software Guide : BeginLatex
 //
 // For the sake of illustrating the use of a \doxygen{ImageFileReader} on
@@ -308,7 +302,6 @@ int main( int argc, char * argv [] )
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
   typedef itk::ImageFileReader< ComplexImageType > ComplexReaderType;
 
@@ -318,13 +311,11 @@ int main( int argc, char * argv [] )
   complexReader->Update();
   // Software Guide : EndCodeSnippet
 
-
   // A way of testing the pixel type of an image in file is to
   // invoke the ImageIO object from the reader and then call
   // \code{GetPixelTypeAsString()}
   complexReader->GetImageIO()->GetPixelTypeAsString(
-                    complexReader->GetImageIO()->GetPixelType() );
-
+    complexReader->GetImageIO()->GetPixelType() );
 
   return EXIT_SUCCESS;
 }

@@ -21,8 +21,8 @@
 #include "itkSimpleFilterWatcher.h"
 #include "itkLabelToRGBImageFilter.h"
 
-
-int itkLabelToRGBImageFilterTest(int argc, char * argv[])
+int
+itkLabelToRGBImageFilterTest(int argc, char * argv[])
 {
   const int Dimension = 2;
 
@@ -34,11 +34,11 @@ int itkLabelToRGBImageFilterTest(int argc, char * argv[])
     return 1;
     }
 
-  typedef unsigned char                               PixelType;
-  typedef itk::Image< PixelType, Dimension >          ImageType;
-  typedef itk::RGBPixel<unsigned char>                ColorPixelType;
-  typedef itk::Image< ColorPixelType, Dimension >     ColorImageType;
-  typedef itk::ImageFileReader< ImageType >           ReaderType;
+  typedef unsigned char                           PixelType;
+  typedef itk::Image< PixelType, Dimension >      ImageType;
+  typedef itk::RGBPixel<unsigned char>            ColorPixelType;
+  typedef itk::Image< ColorPixelType, Dimension > ColorImageType;
+  typedef itk::ImageFileReader< ImageType >       ReaderType;
 
   //Read in the input image
   ReaderType::Pointer reader = ReaderType::New();
@@ -46,7 +46,7 @@ int itkLabelToRGBImageFilterTest(int argc, char * argv[])
 
   //Instantiate the filter
   typedef itk::LabelToRGBImageFilter<
-    ImageType, ColorImageType> FilterType;
+      ImageType, ColorImageType> FilterType;
   FilterType::Pointer filter = FilterType::New();
 
   // Exercising Background Value methods
@@ -56,7 +56,6 @@ int itkLabelToRGBImageFilterTest(int argc, char * argv[])
     std::cerr << "Background value Set/Get Problem" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //Set the filter input and label images
   filter->SetInput( reader->GetOutput() );

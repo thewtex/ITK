@@ -32,7 +32,8 @@
  *
  */
 
-int itkMutualInformationMetricTest(int, char* [] )
+int
+itkMutualInformationMetricTest(int, char* [] )
 {
 
 //------------------------------------------------------------
@@ -40,12 +41,12 @@ int itkMutualInformationMetricTest(int, char* [] )
 //------------------------------------------------------------
 
   //Allocate Images
-  typedef itk::Image<unsigned char,2>           MovingImageType;
-  typedef itk::Image<unsigned char,2>           FixedImageType;
+  typedef itk::Image<unsigned char,2> MovingImageType;
+  typedef itk::Image<unsigned char,2> FixedImageType;
   enum { ImageDimension = MovingImageType::ImageDimension };
 
-  MovingImageType::SizeType size = {{100,100}};
-  MovingImageType::IndexType index = {{0,0}};
+  MovingImageType::SizeType   size = {{100,100}};
+  MovingImageType::IndexType  index = {{0,0}};
   MovingImageType::RegionType region;
   region.SetSize( size );
   region.SetIndex( index );
@@ -83,9 +84,9 @@ int itkMutualInformationMetricTest(int, char* [] )
   displacement[1] = 0;
 
   ReferenceIteratorType ri(imgMoving,region);
-  TargetIteratorType ti(imgFixed,region);
+  TargetIteratorType    ti(imgFixed,region);
   ri.GoToBegin();
-  while(!ri.IsAtEnd())
+  while(!ri.IsAtEnd() )
     {
     p[0] = ri.GetIndex()[0];
     p[1] = ri.GetIndex()[1];
@@ -93,20 +94,19 @@ int itkMutualInformationMetricTest(int, char* [] )
     d += displacement;
     const double x = d[0];
     const double y = d[1];
-    ri.Set( (unsigned char) ( 200.0 * vcl_exp( - ( x*x + y*y )/(s*s) ) ) );
+    ri.Set( (unsigned char) ( 200.0 * vcl_exp( -( x*x + y*y )/(s*s) ) ) );
     ++ri;
     }
 
-
   ti.GoToBegin();
-  while(!ti.IsAtEnd())
+  while(!ti.IsAtEnd() )
     {
     p[0] = ti.GetIndex()[0];
     p[1] = ti.GetIndex()[1];
     d = p-center;
     const double x = d[0];
     const double y = d[1];
-    ti.Set( (unsigned char) ( 200.0 * vcl_exp( - ( x*x + y*y )/(s*s) ) ) );
+    ti.Set( (unsigned char) ( 200.0 * vcl_exp( -( x*x + y*y )/(s*s) ) ) );
     ++ti;
     }
 
@@ -130,7 +130,7 @@ int itkMutualInformationMetricTest(int, char* [] )
 // Set up the metric
 //------------------------------------------------------------
   typedef itk::MutualInformationImageToImageMetric<
-    FixedImageType, MovingImageType > MetricType;
+      FixedImageType, MovingImageType > MetricType;
 
   MetricType::Pointer metric = MetricType::New();
 
@@ -160,13 +160,13 @@ int itkMutualInformationMetricTest(int, char* [] )
 //------------------------------------------------------------
 // Set up a affine transform parameters
 //------------------------------------------------------------
-  unsigned int numberOfParameters = transformer->GetNumberOfParameters();
+  unsigned int   numberOfParameters = transformer->GetNumberOfParameters();
   ParametersType parameters( numberOfParameters );
 
   // set the parameters to the identity
   unsigned long count = 0;
 
-     // initialize the linear/matrix part
+  // initialize the linear/matrix part
   for( unsigned int row = 0; row < ImageDimension; row++ )
     {
     for( unsigned int col = 0; col < ImageDimension; col++ )
@@ -180,23 +180,22 @@ int itkMutualInformationMetricTest(int, char* [] )
       }
     }
 
-     // initialize the offset/vector part
+  // initialize the offset/vector part
   for( unsigned int k = 0; k < ImageDimension; k++ )
     {
     parameters[count] = 0;
     ++count;
     }
 
-
 //---------------------------------------------------------
 // Print out mutual information values
 // for parameters[4] = {-10,10}
 //---------------------------------------------------------
 
-  MetricType::MeasureType measure;
+  MetricType::MeasureType    measure;
   MetricType::DerivativeType derivative( numberOfParameters );
 
-  itk::TimeProbesCollectorBase   collector;
+  itk::TimeProbesCollectorBase collector;
   collector.Start("Loop");
 
   std::cout << "param[4]\tMI\tdMI/dparam[4]" << std::endl;
@@ -266,7 +265,6 @@ int itkMutualInformationMetricTest(int, char* [] )
     std::cout << "Caught the exception." << std::endl;
     std::cout << err << std::endl;
     }
-
 
   return EXIT_SUCCESS;
 

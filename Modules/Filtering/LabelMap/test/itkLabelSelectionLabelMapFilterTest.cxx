@@ -23,8 +23,8 @@
 #include "itkLabelSelectionLabelMapFilter.h"
 #include "itkLabelMapToLabelImageFilter.h"
 
-
-int itkLabelSelectionLabelMapFilterTest(int argc, char * argv[])
+int
+itkLabelSelectionLabelMapFilterTest(int argc, char * argv[])
 {
 
   if( argc != 5 )

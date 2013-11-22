@@ -24,7 +24,6 @@
 #include "itkMinimumMaximumImageCalculator.h"
 #include "itkCastImageFilter.h"
 
-
 namespace itk
 {
 /**\class ThresholdMaximumConnectedComponentsImageFilter
@@ -71,7 +70,7 @@ namespace itk
  * \ingroup ITKConnectedComponents
  */
 template< typename TInputImage, typename TOutputImage = TInputImage >
-class ThresholdMaximumConnectedComponentsImageFilter:
+class ThresholdMaximumConnectedComponentsImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -170,7 +169,7 @@ private:
                       TInputImage::ImageDimension);
 
   typedef itk::Image< FilterPixelType, itkGetStaticConstMacro(ImageDimension) >
-  FilterImageType;
+    FilterImageType;
 
   typedef typename FilterImageType::Pointer FilterImagePointer;
 
@@ -182,19 +181,19 @@ private:
   // Binary Threshold Filter
   //
   typedef BinaryThresholdImageFilter< InputImageType, OutputImageType >
-  ThresholdFilterType;
+    ThresholdFilterType;
 
   //
   // Connected Components Filter
   //
   typedef ConnectedComponentImageFilter< OutputImageType, FilterImageType >
-  ConnectedFilterType;
+    ConnectedFilterType;
 
   //
   // Relabeled Components Filter
   //
   typedef RelabelComponentImageFilter< FilterImageType, FilterImageType >
-  RelabelFilterType;
+    RelabelFilterType;
 
   //
   // Minimum maximum calculator

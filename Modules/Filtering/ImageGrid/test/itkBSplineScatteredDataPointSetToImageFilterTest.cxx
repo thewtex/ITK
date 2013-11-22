@@ -26,7 +26,8 @@
  * image.  We write the output to an image for
  * comparison.
  */
-int itkBSplineScatteredDataPointSetToImageFilterTest( int argc, char * argv [] )
+int
+itkBSplineScatteredDataPointSetToImageFilterTest( int argc, char * argv [] )
 {
   if ( argc != 3 )
     {
@@ -37,11 +38,11 @@ int itkBSplineScatteredDataPointSetToImageFilterTest( int argc, char * argv [] )
   const unsigned int ParametricDimension = 2;
   const unsigned int DataDimension = 1;
 
-  typedef int                                           PixelType;
-  typedef itk::Image<PixelType, ParametricDimension>    InputImageType;
-  typedef float                                         RealType;
-  typedef itk::Vector<RealType, DataDimension>          VectorType;
-  typedef itk::Image<VectorType, ParametricDimension>   VectorImageType;
+  typedef int                                         PixelType;
+  typedef itk::Image<PixelType, ParametricDimension>  InputImageType;
+  typedef float                                       RealType;
+  typedef itk::Vector<RealType, DataDimension>        VectorType;
+  typedef itk::Image<VectorType, ParametricDimension> VectorImageType;
   typedef itk::PointSet
     <VectorImageType::PixelType, ParametricDimension>   PointSetType;
 
@@ -53,7 +54,7 @@ int itkBSplineScatteredDataPointSetToImageFilterTest( int argc, char * argv [] )
   reader->Update();
 
   itk::ImageRegionIteratorWithIndex<InputImageType>
-    It( reader->GetOutput(), reader->GetOutput()->GetLargestPossibleRegion() );
+  It( reader->GetOutput(), reader->GetOutput()->GetLargestPossibleRegion() );
 
   // Iterate through the input image which consists of multivalued
   // foreground pixels (=nonzero) and background values (=zero).
@@ -132,7 +133,7 @@ int itkBSplineScatteredDataPointSetToImageFilterTest( int argc, char * argv [] )
   image->SetRegions( reader->GetOutput()->GetLargestPossibleRegion() );
   image->Allocate();
   itk::ImageRegionIteratorWithIndex<RealImageType>
-    Itt( image, image->GetLargestPossibleRegion() );
+  Itt( image, image->GetLargestPossibleRegion() );
 
   for ( Itt.GoToBegin(); !Itt.IsAtEnd(); ++Itt )
     {

@@ -23,7 +23,8 @@
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkPNGImageIOTest(int argc, char * argv[])
+int
+itkPNGImageIOTest(int argc, char * argv[])
 {
   // This test is usually run with the data file
   // Insight/Testing/Data/Input/cthead1.png
@@ -49,11 +50,10 @@ int itkPNGImageIOTest(int argc, char * argv[])
 
   itk::ImageFileWriter<RGBImageType>::Pointer writer;
   writer = itk::ImageFileWriter<RGBImageType>::New();
-  writer->SetInput(reader->GetOutput());
+  writer->SetInput(reader->GetOutput() );
   writer->SetFileName(argv[2]);
   writer->SetImageIO(io);
   writer->Write();
-
 
   // Try writing out several kinds of images using png.
   // The images to test are as follows:
@@ -71,7 +71,7 @@ int itkPNGImageIOTest(int argc, char * argv[])
 
   //----------------------------------------------------------------//
   // 3D non-degenerate volume.
-  ImageType3D::Pointer volume = ImageType3D::New();
+  ImageType3D::Pointer  volume = ImageType3D::New();
   ImageType3D::SizeType size3D;
   size3D.Fill( 10 );
   ImageType3D::IndexType start3D;
@@ -121,10 +121,9 @@ int itkPNGImageIOTest(int argc, char * argv[])
     return EXIT_FAILURE;
     }
 
-
   //----------------------------------------------------------------//
   // 2D non-degenerate volume.
-  ImageType2D::Pointer image = ImageType2D::New();
+  ImageType2D::Pointer  image = ImageType2D::New();
   ImageType2D::SizeType size2D;
   size2D.Fill( 10 );
   ImageType2D::IndexType start2D;
@@ -176,7 +175,7 @@ int itkPNGImageIOTest(int argc, char * argv[])
 
   //----------------------------------------------------------------//
   // 1D image.
-  ImageType1D::Pointer line = ImageType1D::New();
+  ImageType1D::Pointer  line = ImageType1D::New();
   ImageType1D::SizeType size1D;
   size1D.Fill( 10 );
   ImageType1D::IndexType start1D;

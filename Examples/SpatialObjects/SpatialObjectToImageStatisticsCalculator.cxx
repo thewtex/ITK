@@ -33,7 +33,8 @@
 #include "itkEllipseSpatialObject.h"
 #include "itkRandomImageSource.h"
 
-int main(int, char * [] )
+int
+main(int, char * [] )
 {
 // Software Guide : BeginLatex
 // We first create a test image using the \doxygen{RandomImageSource}
@@ -43,7 +44,7 @@ int main(int, char * [] )
   typedef itk::Image< unsigned char, 2 >      ImageType;
   typedef itk::RandomImageSource< ImageType > RandomImageSourceType;
   RandomImageSourceType::Pointer randomImageSource
-                                               = RandomImageSourceType::New();
+    = RandomImageSourceType::New();
   ImageType::SizeValueType size[2];
   size[0] = 10;
   size[1] = 10;
@@ -72,7 +73,7 @@ int main(int, char * [] )
 // Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet
   typedef itk::SpatialObjectToImageStatisticsCalculator<
-    ImageType, EllipseType > CalculatorType;
+      ImageType, EllipseType > CalculatorType;
   CalculatorType::Pointer calculator = CalculatorType::New();
 // Software Guide : EndCodeSnippet
 

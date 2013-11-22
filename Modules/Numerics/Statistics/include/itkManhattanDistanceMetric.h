@@ -34,7 +34,7 @@ namespace Statistics
  * \ingroup ITKStatistics
  */
 template< typename TVector >
-class ManhattanDistanceMetric:
+class ManhattanDistanceMetric :
   public DistanceMetric< TVector >
 {
 public:
@@ -62,7 +62,8 @@ public:
 
 protected:
   ManhattanDistanceMetric() {}
-  virtual ~ManhattanDistanceMetric() {}
+  virtual
+  ~ManhattanDistanceMetric() {}
 };  // end of class
 } // end of namespace Statistics
 } // end of namespace itk

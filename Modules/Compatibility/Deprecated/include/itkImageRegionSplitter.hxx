@@ -35,6 +35,7 @@ ImageRegionSplitter< VImageDimension >
 
   // split on the outermost dimension available
   int splitAxis = VImageDimension - 1;
+
   while ( regionSize[splitAxis] == 1 )
     {
     --splitAxis;
@@ -47,8 +48,8 @@ ImageRegionSplitter< VImageDimension >
 
   // determine the actual number of pieces that will be generated
   const SizeValueType range = regionSize[splitAxis];
-  const unsigned int valuesPerPiece = Math::Ceil< unsigned int >(range / (double)requestedNumber);
-  const unsigned int maxPieceUsed = Math::Ceil< unsigned int >(range / (double)valuesPerPiece) - 1;
+  const unsigned int  valuesPerPiece = Math::Ceil< unsigned int >(range / (double)requestedNumber);
+  const unsigned int  maxPieceUsed = Math::Ceil< unsigned int >(range / (double)valuesPerPiece) - 1;
 
   return maxPieceUsed + 1;
 }
@@ -123,6 +124,7 @@ ImageRegionSplitter< VImageDimension >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

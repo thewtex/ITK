@@ -185,7 +185,7 @@ ChangeInformationImageFilter< TInputImage >
 ::GenerateData()
 {
   // Get pointers to the input and output
-  OutputImageType * output = this->GetOutput();
+  OutputImageType *      output = this->GetOutput();
   const InputImageType * input = this->GetInput();
 
   InputImageType * nonConstInput = const_cast< InputImageType * >( input );
@@ -253,6 +253,7 @@ ChangeInformationImageFilter< TInputImage >
   os << indent << "OutputOffset: [";
   os << m_OutputOffset << std::endl;
 }
+
 } // end namespace itk
 
 #endif

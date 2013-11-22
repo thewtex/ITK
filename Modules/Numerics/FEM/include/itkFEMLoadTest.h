@@ -52,10 +52,12 @@ public:
 
   /** CreateAnother method will clone the existing instance of this type,
    * including its internal member variables. */
-  virtual::itk::LightObject::Pointer CreateAnother(void) const
+  virtual::itk::LightObject::Pointer
+  CreateAnother(void) const
   {
     ::itk::LightObject::Pointer smartPtr;
     Pointer copyPtr = Self::New();
+
     for( unsigned int i = 0; i < this->m_Element.size(); i++ )
       {
       copyPtr->AddNextElement( this->m_Element[i] );
@@ -71,8 +73,7 @@ public:
    * Default constructor
    */
   LoadTest()
-  {
-  }
+  {}
 
   /**
    * Some data that this load defines.

@@ -19,8 +19,8 @@
 #include "itkKappaSigmaThresholdImageCalculator.h"
 #include "itkImageFileReader.h"
 
-
-int itkKappaSigmaThresholdImageCalculatorTest( int argc, char * argv [] )
+int
+itkKappaSigmaThresholdImageCalculatorTest( int argc, char * argv [] )
 {
   if( argc < 5 )
     {
@@ -31,8 +31,8 @@ int itkKappaSigmaThresholdImageCalculatorTest( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-  typedef signed short                          PixelType;
-  const unsigned int                            Dimension = 2;
+  typedef signed short PixelType;
+  const unsigned int Dimension = 2;
 
   typedef itk::Image< PixelType, Dimension >     ImageType;
   typedef itk::Image< unsigned char, Dimension > MaskType;
@@ -42,7 +42,7 @@ int itkKappaSigmaThresholdImageCalculatorTest( int argc, char * argv [] )
 
   reader->SetFileName( argv[1] );
 
-  typedef itk::KappaSigmaThresholdImageCalculator< ImageType, MaskType >  CalculatorType;
+  typedef itk::KappaSigmaThresholdImageCalculator< ImageType, MaskType > CalculatorType;
 
   std::cout << "Testing Kappa Sigma Image Calulator:\n";
 
@@ -67,7 +67,6 @@ int itkKappaSigmaThresholdImageCalculatorTest( int argc, char * argv [] )
   std::cout << "Number of iterations = " << calculator->GetNumberOfIterations() << std::endl;
   std::cout << "Sigma factor         = " << calculator->GetSigmaFactor() << std::endl;
   std::cout << "Mask value           = " << calculator->GetMaskValue() << std::endl;
-
 
   calculator->Compute();
 

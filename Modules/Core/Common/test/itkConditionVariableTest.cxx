@@ -34,14 +34,15 @@ public:
     m_Counter = 0;
     m_CountLimit = 12;
   }
+
   ~ConditionVariableTestUserData() {}
 };
 
-
-ITK_THREAD_RETURN_TYPE ConditionVariableTestIncCount( void *ptr )
+ITK_THREAD_RETURN_TYPE
+ConditionVariableTestIncCount( void *ptr )
 {
   ConditionVariableTestUserData *data = static_cast<ConditionVariableTestUserData *>(
-                       ( (itk::MultiThreader::ThreadInfoStruct *)(ptr) )->UserData );
+      ( (itk::MultiThreader::ThreadInfoStruct *)(ptr) )->UserData );
 
   double v = 400.0;
 
@@ -71,10 +72,11 @@ ITK_THREAD_RETURN_TYPE ConditionVariableTestIncCount( void *ptr )
   return ITK_THREAD_RETURN_VALUE;
 }
 
-ITK_THREAD_RETURN_TYPE ConditionVariableTestWatchCount( void *ptr )
+ITK_THREAD_RETURN_TYPE
+ConditionVariableTestWatchCount( void *ptr )
 {
   ConditionVariableTestUserData *data = static_cast<ConditionVariableTestUserData *>(
-                           ( (itk::MultiThreader::ThreadInfoStruct *)(ptr) )->UserData );
+      ( (itk::MultiThreader::ThreadInfoStruct *)(ptr) )->UserData );
 
   // Lock the mutex and wait for the signal.
   data->m_Mutex.Lock();
@@ -87,7 +89,8 @@ ITK_THREAD_RETURN_TYPE ConditionVariableTestWatchCount( void *ptr )
   return ITK_THREAD_RETURN_VALUE;
 }
 
-ITK_THREAD_RETURN_TYPE ConditionVariableTestCallback( void *ptr )
+ITK_THREAD_RETURN_TYPE
+ConditionVariableTestCallback( void *ptr )
 {
   itk::ThreadIdType threadID = ( (itk::MultiThreader::ThreadInfoStruct *)(ptr) )->ThreadID;
 
@@ -102,7 +105,8 @@ ITK_THREAD_RETURN_TYPE ConditionVariableTestCallback( void *ptr )
   return ITK_THREAD_RETURN_VALUE;
 }
 
-int itkConditionVariableTest(int , char*[])
+int
+itkConditionVariableTest(int , char*[])
 {
   ConditionVariableTestUserData cond;
 

@@ -23,7 +23,8 @@
 
 #include "itkTestingMacros.h"
 
-int itkLabelShapeOpeningImageFilterTest1(int argc, char * argv[])
+int
+itkLabelShapeOpeningImageFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 7 )

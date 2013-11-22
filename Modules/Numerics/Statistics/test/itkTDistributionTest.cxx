@@ -19,7 +19,8 @@
 #include "itkTDistribution.h"
 #include "itkTestingMacros.h"
 
-int itkTDistributionTest(int, char* [] )
+int
+itkTDistributionTest(int, char* [] )
 {
   std::cout << "itkTDistribution Test \n \n";
 
@@ -33,7 +34,7 @@ int itkTDistributionTest(int, char* [] )
 
   distributionFunction->Print( std::cout );
 
-  int i;
+  int    i;
   double x;
   double value;
   double diff;
@@ -56,7 +57,6 @@ int itkTDistributionTest(int, char* [] )
                         8.975836176504333e-001,
                         9.220208696226308e-001,
                         9.371670418109989e-001};
-
 
   std::cout << "Testing distribution with 1 degree of freedom" << std::endl;
 
@@ -112,7 +112,7 @@ int itkTDistributionTest(int, char* [] )
 
     value = distributionFunction->EvaluateInverseCDF( expected1[i+5] );
 
-    diff = vcl_fabs(value - double(i));
+    diff = vcl_fabs(value - double(i) );
 
     std::cout << "Student-t cdf at ";
     std::cout.width(20);
@@ -139,7 +139,6 @@ int itkTDistributionTest(int, char* [] )
       }
     }
   std::cout << std::endl;
-
 
   // expected values for Student-t cdf with 11 degrees of freedom at
   // values of -5:1:5
@@ -211,7 +210,7 @@ int itkTDistributionTest(int, char* [] )
 
     value = distributionFunction->EvaluateInverseCDF( expected11[i+5] );
 
-    diff = vcl_fabs(value - double(i));
+    diff = vcl_fabs(value - double(i) );
 
     std::cout << "Student-t cdf at ";
     std::cout.width(20);
@@ -237,7 +236,6 @@ int itkTDistributionTest(int, char* [] )
       status = EXIT_FAILURE;
       }
     }
-
 
   // Same test but with the parameter vector API
   std::cout << "-----------------------------------------------"
@@ -301,7 +299,7 @@ int itkTDistributionTest(int, char* [] )
 
     value = distributionFunction->EvaluateInverseCDF( expected11[i+5],params );
 
-    diff = vcl_fabs(value - double(i));
+    diff = vcl_fabs(value - double(i) );
 
     std::cout << "Student-t cdf at ";
     std::cout.width(20);
@@ -328,7 +326,6 @@ int itkTDistributionTest(int, char* [] )
       }
     }
 
-
   // Same test but with the separate parameter API
   std::cout << "-----------------------------------------------"
             << std::endl << std::endl;
@@ -347,7 +344,7 @@ int itkTDistributionTest(int, char* [] )
     x = static_cast<double>(i);
 
     value = distributionFunction->EvaluateCDF(
-      x, static_cast< itk::SizeValueType >(params[0]) );
+        x, static_cast< itk::SizeValueType >(params[0]) );
 
     diff = vcl_fabs(value - expected11[i+5]);
 
@@ -387,8 +384,8 @@ int itkTDistributionTest(int, char* [] )
     {
 
     value = distributionFunction->EvaluateInverseCDF(
-      expected11[i+5], static_cast< itk::SizeValueType > (params[0]) );
-    diff = vcl_fabs(value - double(i));
+        expected11[i+5], static_cast< itk::SizeValueType > (params[0]) );
+    diff = vcl_fabs(value - double(i) );
 
     std::cout << "Student-t cdf at ";
     std::cout.width(20);
@@ -415,7 +412,6 @@ int itkTDistributionTest(int, char* [] )
       }
     }
 
-
   DistributionType::ParametersType parameters( distributionFunction->GetNumberOfParameters() );
   parameters[0] = 5.0;
   distributionFunction->SetParameters(parameters);
@@ -435,8 +431,7 @@ int itkTDistributionTest(int, char* [] )
   std::cout << "InverseCDF(x,p) = " <<  distributionFunction->InverseCDF( x, parameters ) << std::endl;
   std::cout << "InverseCDF(x,dof) = " <<  distributionFunction->InverseCDF( x, dof ) << std::endl;
 
-
-  const unsigned int wrongNumberOfParameters =  distributionFunction->GetNumberOfParameters() * 42;
+  const unsigned int               wrongNumberOfParameters =  distributionFunction->GetNumberOfParameters() * 42;
   DistributionType::ParametersType wrongParameters( wrongNumberOfParameters );
   wrongParameters.Fill(1.0);
   std::cout << "new number of parameters = " << wrongParameters.Size() << std::endl;
@@ -488,7 +483,6 @@ int itkTDistributionTest(int, char* [] )
   unsigned long newdof = 17;
   distributionFunction->SetDegreesOfFreedom( newdof );
   TEST_SET_GET_VALUE( newdof, distributionFunction->GetDegreesOfFreedom() );
-
 
   DistributionType::ParametersType parameters2( 2 );
   parameters2[0] = 3.0;

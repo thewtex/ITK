@@ -29,7 +29,8 @@ namespace itk
  *  \brief Fast index/physical index computation
  * \ingroup ITKCommon
  */
-template< unsigned int NImageDimension, unsigned int R, unsigned int C, typename TPointValue = double, typename TMatrixValue=double >
+template< unsigned int NImageDimension, unsigned int R, unsigned int C, typename TPointValue = double,
+          typename TMatrixValue=double >
 class ImageTransformHelper
 {
 public:
@@ -50,7 +51,8 @@ public:
   // IndexToPhysicalPoint with full matrix
   //
   //
-  inline static void TransformIndexToPhysicalPoint(
+  inline static void
+  TransformIndexToPhysicalPoint(
     const MatrixType & matrix, const OriginType  & origin,
     const IndexType & index, DoublePoint & point)
   {
@@ -61,7 +63,8 @@ public:
       Concept::Detail::UniqueType_bool< ( R + 1 == 0 ) >() );
   }
 
-  inline static void TransformIndexToPhysicalPointRow(
+  inline static void
+  TransformIndexToPhysicalPointRow(
     const MatrixType & matrix, const OriginType  & origin,
     const IndexType & index, DoublePoint & point,
     const UniqueTypeBoolFalse &)
@@ -82,7 +85,8 @@ public:
       Concept::Detail::UniqueType_bool< ( R == 0 ) >() );
   }
 
-  inline static void TransformIndexToPhysicalPointRow(
+  inline static void
+  TransformIndexToPhysicalPointRow(
     const MatrixType &, const OriginType  &,
     const IndexType &, DoublePoint &,
     const UniqueTypeBoolTrue &)
@@ -90,7 +94,8 @@ public:
     // Do last row
   }
 
-  inline static void TransformIndexToPhysicalPointCol(
+  inline static void
+  TransformIndexToPhysicalPointCol(
     const MatrixType & matrix,
     const IndexType & index, DoublePoint & point,
     const UniqueTypeBoolFalse &)
@@ -105,7 +110,8 @@ public:
       Concept::Detail::UniqueType_bool< ( C == 0 ) >() );
   }
 
-  inline static void TransformIndexToPhysicalPointCol(
+  inline static void
+  TransformIndexToPhysicalPointCol(
     const MatrixType &,
     const IndexType &, DoublePoint &,
     const UniqueTypeBoolTrue &)
@@ -114,7 +120,8 @@ public:
   // PhysicalPointToIndex with full matrix
   //
   //
-  inline static void TransformPhysicalPointToIndex(
+  inline static void
+  TransformPhysicalPointToIndex(
     const MatrixType & matrix, const OriginType  & origin,
     const DoublePoint & point, IndexType  & index)
   {
@@ -127,7 +134,8 @@ public:
       Concept::Detail::UniqueType_bool< ( R + 1 == 0 ) >() );
   }
 
-  inline static void TransformPhysicalPointToIndexRow(
+  inline static void
+  TransformPhysicalPointToIndexRow(
     const MatrixType & matrix, const OriginType  & origin,
     const DoublePoint & point, DoublePoint & rindex, IndexType & index,
     const UniqueTypeBoolFalse &)
@@ -147,7 +155,8 @@ public:
       Concept::Detail::UniqueType_bool< ( R == 0 ) >() );
   }
 
-  inline static void TransformPhysicalPointToIndexRow(
+  inline static void
+  TransformPhysicalPointToIndexRow(
     const MatrixType &, const OriginType &,
     const DoublePoint &, DoublePoint &, IndexType &,
     const UniqueTypeBoolTrue &)
@@ -155,7 +164,8 @@ public:
     // Do last row
   }
 
-  inline static void TransformPhysicalPointToIndexCol(
+  inline static void
+  TransformPhysicalPointToIndexCol(
     const MatrixType & matrix, const OriginType  & origin,
     const DoublePoint & point, DoublePoint & rindex, IndexType & index,
     const UniqueTypeBoolFalse &)
@@ -170,7 +180,8 @@ public:
       Concept::Detail::UniqueType_bool< ( C == 0 ) >() );
   }
 
-  inline static void TransformPhysicalPointToIndexCol(
+  inline static void
+  TransformPhysicalPointToIndexCol(
     const MatrixType &, const OriginType  &,
     const DoublePoint &, DoublePoint & rindex, IndexType & index,
     const UniqueTypeBoolTrue &)
@@ -185,7 +196,8 @@ public:
   // IndexToPhysicalPoint with full matrix
   //
   //
-  inline static void TransformIndexToPhysicalPoint(
+  inline static void
+  TransformIndexToPhysicalPoint(
     const MatrixType & matrix, const OriginType  & origin,
     const IndexType & index, FloatPoint & point)
   {
@@ -196,7 +208,8 @@ public:
       Concept::Detail::UniqueType_bool< ( R + 1 == 0 ) >() );
   }
 
-  inline static void TransformIndexToPhysicalPointRow(
+  inline static void
+  TransformIndexToPhysicalPointRow(
     const MatrixType & matrix, const OriginType  & origin,
     const IndexType & index, FloatPoint & point,
     const UniqueTypeBoolFalse &)
@@ -217,7 +230,8 @@ public:
       Concept::Detail::UniqueType_bool< ( R == 0 ) >() );
   }
 
-  inline static void TransformIndexToPhysicalPointRow(
+  inline static void
+  TransformIndexToPhysicalPointRow(
     const MatrixType &, const OriginType  &,
     const IndexType &, FloatPoint &,
     const UniqueTypeBoolTrue &)
@@ -225,7 +239,8 @@ public:
     // Do last row
   }
 
-  inline static void TransformIndexToPhysicalPointCol(
+  inline static void
+  TransformIndexToPhysicalPointCol(
     const MatrixType & matrix,
     const IndexType & index, FloatPoint & point,
     const UniqueTypeBoolFalse &)
@@ -240,7 +255,8 @@ public:
       Concept::Detail::UniqueType_bool< ( C == 0 ) >() );
   }
 
-  inline static void TransformIndexToPhysicalPointCol(
+  inline static void
+  TransformIndexToPhysicalPointCol(
     const MatrixType &,
     const IndexType &, FloatPoint &,
     const UniqueTypeBoolTrue &)
@@ -249,7 +265,8 @@ public:
   // PhysicalPointToIndex with full matrix
   //
   //
-  inline static void TransformPhysicalPointToIndex(
+  inline static void
+  TransformPhysicalPointToIndex(
     const MatrixType & matrix, const OriginType  & origin,
     const FloatPoint & point, IndexType  & index)
   {
@@ -262,7 +279,8 @@ public:
       Concept::Detail::UniqueType_bool< ( R + 1 == 0 ) >() );
   }
 
-  inline static void TransformPhysicalPointToIndexRow(
+  inline static void
+  TransformPhysicalPointToIndexRow(
     const MatrixType & matrix, const OriginType  & origin,
     const FloatPoint & point, FloatPoint & rindex, IndexType & index,
     const UniqueTypeBoolFalse &)
@@ -282,7 +300,8 @@ public:
       Concept::Detail::UniqueType_bool< ( R == 0 ) >() );
   }
 
-  inline static void TransformPhysicalPointToIndexRow(
+  inline static void
+  TransformPhysicalPointToIndexRow(
     const MatrixType &, const OriginType &,
     const FloatPoint &, FloatPoint &, IndexType &,
     const UniqueTypeBoolTrue &)
@@ -290,7 +309,8 @@ public:
     // Do last row
   }
 
-  inline static void TransformPhysicalPointToIndexCol(
+  inline static void
+  TransformPhysicalPointToIndexCol(
     const MatrixType & matrix, const OriginType  & origin,
     const FloatPoint & point, FloatPoint & rindex, IndexType & index,
     const UniqueTypeBoolFalse &)
@@ -305,13 +325,15 @@ public:
       Concept::Detail::UniqueType_bool< ( C == 0 ) >() );
   }
 
-  inline static void TransformPhysicalPointToIndexCol(
+  inline static void
+  TransformPhysicalPointToIndexCol(
     const MatrixType &, const OriginType  &,
     const FloatPoint &, FloatPoint & rindex, IndexType & index,
     const UniqueTypeBoolTrue &)
   {
     index[R] = Math::RoundHalfIntegerUp< IndexValueType >(rindex[R]);
   }
+
 };
 } // end namespace itk
 

@@ -23,7 +23,6 @@
 
 #include "vnl/vnl_cross.h"
 
-
 //From uiig library "The University of Iowa Imaging Group-UIIG"
 
 namespace itk
@@ -38,7 +37,8 @@ GE5ImageIO::~GE5ImageIO()
   //Purposefully left blank
 }
 
-int GE5ImageIO
+int
+GE5ImageIO
 ::CheckGE5xImages(char const *const imageFileTemplate, std::string & reason)
 {
   //
@@ -64,8 +64,8 @@ int GE5ImageIO
     }
   Ge5xPixelHeader imageHdr;                /* Header Structure for GE 5x images
                                              */
-  char            hdr[GENESIS_SU_HDR_LEN]; /* Header to hold GE Suite header */
-  char            prod[16];                /* Product name from Suite Header */
+  char hdr[GENESIS_SU_HDR_LEN];            /* Header to hold GE Suite header */
+  char prod[16];                           /* Product name from Suite Header */
 
   // First pass see if image is a raw MR extracted via ximg
   if ( !this->ReadBufferAsBinary( f, (void *)&imageHdr, sizeof( imageHdr ) ) )
@@ -104,7 +104,8 @@ int GE5ImageIO
   return -1;
 }
 
-bool GE5ImageIO::CanReadFile(const char *FileNameToRead)
+bool
+GE5ImageIO::CanReadFile(const char *FileNameToRead)
 {
   std::string reason;
 
@@ -164,7 +165,7 @@ GE5ImageIO::ReadHeader(const char  *FileNameToRead)
 #define RGEDEBUG(x) x
 #else
 #define RGEDEBUG(x)
-  #endif
+#endif
 
   Ge5xPixelHeader imageHdr; // GE 5x Header
   GEImageHeader * curImage;
@@ -245,14 +246,14 @@ GE5ImageIO::ReadHeader(const char  *FileNameToRead)
   // that are defined in version 3 and not version 2.
   if(pixelHdrFlag && imageHdr.GENESIS_IH_img_version == 2)
     {
-    imageHdr.GENESIS_IH_img_p_suite = 124; // Version 3 is 2304
-    imageHdr.GENESIS_IH_img_l_suite = 116;  // Version 3 is 114
-    imageHdr.GENESIS_IH_img_p_exam = 240;  // Version 3 is 2418
-    imageHdr.GENESIS_IH_img_l_exam = 1040; // Version 3 is 1024
+    imageHdr.GENESIS_IH_img_p_suite = 124;   // Version 3 is 2304
+    imageHdr.GENESIS_IH_img_l_suite = 116;   // Version 3 is 114
+    imageHdr.GENESIS_IH_img_p_exam = 240;    // Version 3 is 2418
+    imageHdr.GENESIS_IH_img_l_exam = 1040;   // Version 3 is 1024
     imageHdr.GENESIS_IH_img_p_series = 1280; // Version 3 is 3442
-    imageHdr.GENESIS_IH_img_l_series = 1028;  // Version 3 is 1020
+    imageHdr.GENESIS_IH_img_l_series = 1028; // Version 3 is 1020
     imageHdr.GENESIS_IH_img_p_image = 2308;  // Version 3 is 4462
-    imageHdr.GENESIS_IH_img_l_image = 1044; // Don't know for sure?
+    imageHdr.GENESIS_IH_img_l_image = 1044;  // Don't know for sure?
     }
 
   // if we have a version2 file, most of the fields are offset from
@@ -283,7 +284,7 @@ GE5ImageIO::ReadHeader(const char  *FileNameToRead)
     f.seekg(GENESIS_EX_HDR_START,std::ios::beg);
     f.read(buffer,GENESIS_EX_HDR_LEN);
     }
-  if(f.fail())
+  if(f.fail() )
     {
     f.close();
     delete[] buffer;
@@ -302,9 +303,9 @@ GE5ImageIO::ReadHeader(const char  *FileNameToRead)
   tmpId[12] = '\0';
 
   char *ptr;
-  if((ptr = strtok(tmpId,"-")) == 0)
+  if( (ptr = strtok(tmpId,"-") ) == 0)
     {
-    strncpy(curImage->patientId,tmpId,sizeof(curImage->patientId));
+    strncpy(curImage->patientId,tmpId,sizeof(curImage->patientId) );
     }
   else
     {
@@ -358,7 +359,7 @@ GE5ImageIO::ReadHeader(const char  *FileNameToRead)
     f.seekg(GENESIS_SE_HDR_START);
     f.read(buffer,GENESIS_SE_HDR_LEN);
     }
-  if(f.fail())
+  if(f.fail() )
     {
     f.close();
     itkExceptionMacro("GE5ImageIO:Could not read exam header!");
@@ -368,7 +369,7 @@ GE5ImageIO::ReadHeader(const char  *FileNameToRead)
   curImage->seriesNumber = hdr2Short(buffer+10);
 
   int timeStamp = hdr2Int(buffer+12);
-  statTimeToAscii(&timeStamp,curImage->date,sizeof(curImage->date));
+  statTimeToAscii(&timeStamp,curImage->date,sizeof(curImage->date) );
 
   // Done with series, delete buffer and allocate for MR header.
   delete[] buffer;
@@ -396,7 +397,7 @@ GE5ImageIO::ReadHeader(const char  *FileNameToRead)
     f.seekg(GENESIS_IM_HDR_START, std::ios::beg);
     f.read(buffer,GENESIS_MR_HDR_LEN);
     }
-  if(f.fail())
+  if(f.fail() )
     {
     itkExceptionMacro("GE5ImageIOCould not read exam header!");
     }
@@ -407,10 +408,10 @@ GE5ImageIO::ReadHeader(const char  *FileNameToRead)
   // This is the largest header!
   curImage->imageNumber = hdr2Short(buffer+12);
 
-  curImage->sliceThickness = hdr2Float(buffer+VOff(26,28));
+  curImage->sliceThickness = hdr2Float(buffer+VOff(26,28) );
 
-  curImage->imageXsize = hdr2Short(buffer+VOff(30,32));
-  curImage->imageYsize = hdr2Short(buffer+VOff(32,34));
+  curImage->imageXsize = hdr2Short(buffer+VOff(30,32) );
+  curImage->imageYsize = hdr2Short(buffer+VOff(32,34) );
   //
   // if this a headerless flag, we don't know until now
   // where to begin reading image data
@@ -421,16 +422,16 @@ GE5ImageIO::ReadHeader(const char  *FileNameToRead)
       - ( curImage->imageXsize * curImage->imageYsize * 2 );
     }
 
-  curImage->xFOV = hdr2Float(buffer+VOff(34,36));
-  curImage->yFOV = hdr2Float(buffer+VOff(38,40));
+  curImage->xFOV = hdr2Float(buffer+VOff(34,36) );
+  curImage->yFOV = hdr2Float(buffer+VOff(38,40) );
 
-  curImage->acqXsize = hdr2Short(buffer+VOff(42,44));
-  curImage->acqYsize = hdr2Short(buffer+VOff(46,48));
+  curImage->acqXsize = hdr2Short(buffer+VOff(42,44) );
+  curImage->acqYsize = hdr2Short(buffer+VOff(46,48) );
 
-  curImage->imageXres = hdr2Float(buffer+VOff(50,52));
-  curImage->imageYres = hdr2Float(buffer+VOff(54,56));
+  curImage->imageXres = hdr2Float(buffer+VOff(50,52) );
+  curImage->imageYres = hdr2Float(buffer+VOff(54,56) );
 
-  short int GE_Plane(hdr2Short(buffer+VOff(114,116)));
+  short int GE_Plane(hdr2Short(buffer+VOff(114,116) ) );
   switch ( GE_Plane )
     {
     case GE_CORONAL:
@@ -451,50 +452,49 @@ GE5ImageIO::ReadHeader(const char  *FileNameToRead)
       break;
     }
 
+  curImage->sliceLocation = hdr2Float(buffer+VOff(126,132) );
 
-  curImage->sliceLocation = hdr2Float(buffer+VOff(126,132));
-
-  curImage->centerR = hdr2Float(buffer+VOff(130,136));
-  curImage->centerA = hdr2Float(buffer+VOff(134,140));
-  curImage->centerS = hdr2Float(buffer+VOff(138,144));
-  curImage->normR = hdr2Float(buffer+VOff(142,146));
-  curImage->normA = hdr2Float(buffer+VOff(146,152));
-  curImage->normS = hdr2Float(buffer+VOff(150,156));
-  curImage->tlhcR = hdr2Float(buffer+VOff(154,160));
-  curImage->tlhcA = hdr2Float(buffer+VOff(158,164));
-  curImage->tlhcS = hdr2Float(buffer+VOff(162,168));
-  curImage->trhcR = hdr2Float(buffer+VOff(166,172));
-  curImage->trhcA = hdr2Float(buffer+VOff(170,176));
-  curImage->trhcS = hdr2Float(buffer+VOff(174,180));
-  curImage->brhcR = hdr2Float(buffer+VOff(178,184));
-  curImage->brhcA = hdr2Float(buffer+VOff(182,188));
-  curImage->brhcS = hdr2Float(buffer+VOff(186,192));
+  curImage->centerR = hdr2Float(buffer+VOff(130,136) );
+  curImage->centerA = hdr2Float(buffer+VOff(134,140) );
+  curImage->centerS = hdr2Float(buffer+VOff(138,144) );
+  curImage->normR = hdr2Float(buffer+VOff(142,146) );
+  curImage->normA = hdr2Float(buffer+VOff(146,152) );
+  curImage->normS = hdr2Float(buffer+VOff(150,156) );
+  curImage->tlhcR = hdr2Float(buffer+VOff(154,160) );
+  curImage->tlhcA = hdr2Float(buffer+VOff(158,164) );
+  curImage->tlhcS = hdr2Float(buffer+VOff(162,168) );
+  curImage->trhcR = hdr2Float(buffer+VOff(166,172) );
+  curImage->trhcA = hdr2Float(buffer+VOff(170,176) );
+  curImage->trhcS = hdr2Float(buffer+VOff(174,180) );
+  curImage->brhcR = hdr2Float(buffer+VOff(178,184) );
+  curImage->brhcA = hdr2Float(buffer+VOff(182,188) );
+  curImage->brhcS = hdr2Float(buffer+VOff(186,192) );
 
   // These values are all MR specific
   if(!isCT)
     {
-    curImage->TR = hdr2Int(buffer+VOff(194,200));
-    curImage->TI = hdr2Int(buffer+VOff(198,204));
-    curImage->TE = hdr2Int(buffer+VOff(202,208));
-    curImage->TE2 = hdr2Int(buffer+VOff(206,212));
+    curImage->TR = hdr2Int(buffer+VOff(194,200) );
+    curImage->TI = hdr2Int(buffer+VOff(198,204) );
+    curImage->TE = hdr2Int(buffer+VOff(202,208) );
+    curImage->TE2 = hdr2Int(buffer+VOff(206,212) );
 
-    if((curImage->numberOfEchoes = hdr2Short(buffer+VOff(210,216))) == 0)
+    if( (curImage->numberOfEchoes = hdr2Short(buffer+VOff(210,216) ) ) == 0)
       {
       curImage->numberOfEchoes = 1;
       }
 
-    curImage->echoNumber = hdr2Short(buffer+VOff(212,218));
+    curImage->echoNumber = hdr2Short(buffer+VOff(212,218) );
 
-    curImage->NEX = hdr2Int(buffer+VOff(218,224));
+    curImage->NEX = hdr2Int(buffer+VOff(218,224) );
 
-    curImage->flipAngle = hdr2Short(buffer+VOff(254,260));
+    curImage->flipAngle = hdr2Short(buffer+VOff(254,260) );
 
     strncpy(curImage->pulseSequence,
-      buffer+VOff(308,320),
-      34);
+            buffer+VOff(308,320),
+            34);
     curImage->pulseSequence[33] = '\0';
 
-    curImage->numberOfSlices = hdr2Short(buffer+VOff(398,416));
+    curImage->numberOfSlices = hdr2Short(buffer+VOff(398,416) );
     }
   else
     {
@@ -593,9 +593,9 @@ GE5ImageIO::ModifyImageInformation()
     origin2[2] = hdr2->tlhcS;
 
     float distanceBetweenTwoSlices = vcl_sqrt(
-      ( origin1[0] - origin2[0] ) * ( origin1[0] - origin2[0] )
-      + ( origin1[1] - origin2[1] ) * ( origin1[1] - origin2[1] )
-      + ( origin1[2] - origin2[2] ) * ( origin1[2] - origin2[2] ) );
+        ( origin1[0] - origin2[0] ) * ( origin1[0] - origin2[0] )
+        + ( origin1[1] - origin2[1] ) * ( origin1[1] - origin2[1] )
+        + ( origin1[2] - origin2[2] ) * ( origin1[2] - origin2[2] ) );
 
     this->SetSpacing(2, distanceBetweenTwoSlices);
 
@@ -604,11 +604,12 @@ GE5ImageIO::ModifyImageInformation()
     delete hdr2;
     }
   else
-    // If there is only one slice, the use it's origin
+  // If there is only one slice, the use it's origin
     {
     this->SetOrigin(0, -m_ImageHeader->tlhcR);
     this->SetOrigin(1, -m_ImageHeader->tlhcA);
     this->SetOrigin(2,  m_ImageHeader->tlhcS);
     }
 }
+
 } // end namespace itk

@@ -18,7 +18,6 @@
 #ifndef __itkFEMObjectSpatialObject_hxx
 #define __itkFEMObjectSpatialObject_hxx
 
-
 #include "itkFEMObjectSpatialObject.h"
 
 namespace itk
@@ -37,8 +36,7 @@ FEMObjectSpatialObject< TDimension>
 template< unsigned int TDimension>
 FEMObjectSpatialObject< TDimension>
 ::~FEMObjectSpatialObject()
-{
-}
+{}
 
 /** Set the femobject in the spatial object */
 template< unsigned int TDimension>
@@ -61,6 +59,7 @@ FEMObjectSpatialObject< TDimension>
 ::PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf(os,indent);
+
   os << "FEMObject: " << std::endl;
   os << indent << m_FEMObject << std::endl;
 }
@@ -71,7 +70,7 @@ ModifiedTimeType
 FEMObjectSpatialObject< TDimension>
 ::GetMTime( void ) const
 {
-  ModifiedTimeType latestMTime = Superclass::GetMTime();
+  ModifiedTimeType       latestMTime = Superclass::GetMTime();
   const ModifiedTimeType femobjectMTime = m_FEMObject->GetMTime();
 
   if( femobjectMTime > latestMTime )

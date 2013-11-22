@@ -39,7 +39,7 @@ namespace itk
 {
 template< typename TInputImage, typename TOutputImage >
 GrayscaleGrindPeakImageFilter< TInputImage, TOutputImage >
-::GrayscaleGrindPeakImageFilter():
+::GrayscaleGrindPeakImageFilter() :
   m_NumberOfIterationsUsed(1)
 {
   m_FullyConnected = false;
@@ -55,6 +55,7 @@ GrayscaleGrindPeakImageFilter< TInputImage, TOutputImage >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
@@ -165,5 +166,6 @@ GrayscaleGrindPeakImageFilter< TInputImage, TOutputImage >
      << m_NumberOfIterationsUsed << std::endl;
   os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
 }
+
 } // end namespace itk
 #endif

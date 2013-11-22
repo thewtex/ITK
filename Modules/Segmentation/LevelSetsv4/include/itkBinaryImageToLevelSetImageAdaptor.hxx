@@ -28,7 +28,8 @@ template< typename TInputImage, typename TLevelSetImage >
 BinaryImageToLevelSetImageAdaptor< TInputImage, LevelSetDenseImage< TLevelSetImage > >
 ::BinaryImageToLevelSetImageAdaptor()
 {
-  this->m_SignedDistanceTransformFilter = SignedMaurerDistanceMapImageFilter< InputImageType, LevelSetImageType >::New();
+  this->m_SignedDistanceTransformFilter =
+    SignedMaurerDistanceMapImageFilter< InputImageType, LevelSetImageType >::New();
 }
 
 template< typename TInputImage, typename TLevelSetImage >
@@ -60,7 +61,6 @@ BinaryImageToLevelSetImageAdaptor< TInputImage, LevelSetDenseImage< TLevelSetIma
   this->m_LevelSet->SetImage( tempImage );
 }
 
-
 template< typename TInput, typename TOutput >
 BinaryImageToLevelSetImageAdaptor<
   TInput,
@@ -73,8 +73,7 @@ BinaryImageToLevelSetImageAdaptor<
   TInput,
   WhitakerSparseLevelSetImage< TOutput, TInput::ImageDimension > >
 ::~BinaryImageToLevelSetImageAdaptor()
-{
-}
+{}
 
 template< typename TInput, typename TOutput >
 void
@@ -106,7 +105,7 @@ BinaryImageToLevelSetImageAdaptor<
   inputIt.GoToBegin();
 
   InternalIteratorType internalIt( this->m_InternalImage,
-                                this->m_InternalImage->GetLargestPossibleRegion() );
+                                   this->m_InternalImage->GetLargestPossibleRegion() );
   internalIt.GoToBegin();
 
   while( !inputIt.IsAtEnd() )
@@ -151,7 +150,7 @@ BinaryImageToLevelSetImageAdaptor<
 {
   const LevelSetLayerType layerPlus1 = this->m_LevelSet->GetLayer( layerToBeScanned );
 
-  LevelSetLayerType & layerPlus2 = this->m_LevelSet->GetLayer( outputLayer );
+  LevelSetLayerType &      layerPlus2 = this->m_LevelSet->GetLayer( outputLayer );
   const LevelSetOutputType plus2 = static_cast< LevelSetOutputType >( outputLayer );
 
   typename NeighborhoodIteratorType::RadiusType radius;
@@ -176,7 +175,6 @@ BinaryImageToLevelSetImageAdaptor<
     neighIt.ActivateOffset( neighOffset );
     neighOffset[dim] = 0;
     }
-
 
   // iterate on the layer to be scanned
   LevelSetLayerConstIterator nodeIt = layerPlus1.begin();
@@ -219,8 +217,8 @@ BinaryImageToLevelSetImageAdaptor<
     ++nodeIt;
     }
 
-    ObjectPlus2->Optimize();
-    this->m_LabelMap->AddLabelObject( ObjectPlus2 );
+  ObjectPlus2->Optimize();
+  this->m_LabelMap->AddLabelObject( ObjectPlus2 );
 }
 
 template< typename TInput, typename TOutput >
@@ -242,7 +240,7 @@ BinaryImageToLevelSetImageAdaptor<
   ZeroFluxNeumannBoundaryCondition< InternalImageType > im_nbc;
 
   NeighborhoodIteratorType neighIt( radius,
-    this->m_InternalImage, this->m_InternalImage->GetLargestPossibleRegion() );
+                                    this->m_InternalImage, this->m_InternalImage->GetLargestPossibleRegion() );
 
   neighIt.OverrideBoundaryCondition( &im_nbc );
 
@@ -309,12 +307,12 @@ BinaryImageToLevelSetImageAdaptor<
   WhitakerSparseLevelSetImage< TOutput, TInput::ImageDimension > >
 ::FindPlusOneMinusOneLayer()
 {
-  const LevelSetOutputType minus1 = - NumericTraits< LevelSetOutputType >::One;
+  const LevelSetOutputType minus1 = -NumericTraits< LevelSetOutputType >::One;
   const LevelSetOutputType plus1 = NumericTraits< LevelSetOutputType >::One;
 
   const LevelSetLayerType layer0 = this->m_LevelSet->GetLayer( LevelSetType::ZeroLayer() );
-  LevelSetLayerType & layerMinus1 = this->m_LevelSet->GetLayer( LevelSetType::MinusOneLayer() );
-  LevelSetLayerType & layerPlus1 = this->m_LevelSet->GetLayer( LevelSetType::PlusOneLayer() );
+  LevelSetLayerType &     layerMinus1 = this->m_LevelSet->GetLayer( LevelSetType::MinusOneLayer() );
+  LevelSetLayerType &     layerPlus1 = this->m_LevelSet->GetLayer( LevelSetType::PlusOneLayer() );
 
   typename NeighborhoodIteratorType::RadiusType radius;
   radius.Fill( 1 );
@@ -413,11 +411,11 @@ BinaryImageToLevelSetImageAdaptor< TInput, ShiSparseLevelSetImage< TInput::Image
 template< typename TInput >
 BinaryImageToLevelSetImageAdaptor< TInput, ShiSparseLevelSetImage< TInput::ImageDimension > >
 ::~BinaryImageToLevelSetImageAdaptor()
-{
-}
+{}
 
 template< typename TInput >
-void BinaryImageToLevelSetImageAdaptor< TInput, ShiSparseLevelSetImage< TInput::ImageDimension > >
+void
+BinaryImageToLevelSetImageAdaptor< TInput, ShiSparseLevelSetImage< TInput::ImageDimension > >
 ::Initialize()
 {
   if( this->m_InputImage.IsNull() )
@@ -466,9 +464,9 @@ void BinaryImageToLevelSetImageAdaptor< TInput, ShiSparseLevelSetImage< TInput::
   this->m_InternalImage = NULL;
 }
 
-
 template< typename TInput >
-void BinaryImageToLevelSetImageAdaptor< TInput, ShiSparseLevelSetImage< TInput::ImageDimension > >
+void
+BinaryImageToLevelSetImageAdaptor< TInput, ShiSparseLevelSetImage< TInput::ImageDimension > >
 ::FindActiveLayer()
 {
   LevelSetLabelObjectPointer labelObject = this->m_LabelMap->GetLabelObject( LevelSetType::MinusThreeLayer() );
@@ -570,11 +568,11 @@ BinaryImageToLevelSetImageAdaptor< TInput,MalcolmSparseLevelSetImage< TInput::Im
 template< typename TInput >
 BinaryImageToLevelSetImageAdaptor< TInput,MalcolmSparseLevelSetImage< TInput::ImageDimension > >
 ::~BinaryImageToLevelSetImageAdaptor()
-{
-}
+{}
 
 template< typename TInput >
-void BinaryImageToLevelSetImageAdaptor< TInput,MalcolmSparseLevelSetImage< TInput::ImageDimension > >
+void
+BinaryImageToLevelSetImageAdaptor< TInput,MalcolmSparseLevelSetImage< TInput::ImageDimension > >
 ::Initialize()
 {
   if( this->m_InputImage.IsNull() )
@@ -600,7 +598,7 @@ void BinaryImageToLevelSetImageAdaptor< TInput,MalcolmSparseLevelSetImage< TInpu
   inputIt.GoToBegin();
 
   InternalIteratorType internalIt( this->m_InternalImage,
-                                this->m_InternalImage->GetLargestPossibleRegion() );
+                                   this->m_InternalImage->GetLargestPossibleRegion() );
   internalIt.GoToBegin();
 
   while( !inputIt.IsAtEnd() )
@@ -626,7 +624,8 @@ void BinaryImageToLevelSetImageAdaptor< TInput,MalcolmSparseLevelSetImage< TInpu
 }
 
 template< typename TInput >
-void BinaryImageToLevelSetImageAdaptor< TInput,MalcolmSparseLevelSetImage< TInput::ImageDimension > >
+void
+BinaryImageToLevelSetImageAdaptor< TInput,MalcolmSparseLevelSetImage< TInput::ImageDimension > >
 ::FindActiveLayer()
 {
   LevelSetLabelObjectPointer labelObject = this->m_LabelMap->GetLabelObject( LevelSetType::MinusOneLayer() );
@@ -639,7 +638,7 @@ void BinaryImageToLevelSetImageAdaptor< TInput,MalcolmSparseLevelSetImage< TInpu
   ZeroFluxNeumannBoundaryCondition< InternalImageType > im_nbc;
 
   NeighborhoodIteratorType neighIt( radius,
-    this->m_InternalImage, this->m_InternalImage->GetLargestPossibleRegion() );
+                                    this->m_InternalImage, this->m_InternalImage->GetLargestPossibleRegion() );
 
   neighIt.OverrideBoundaryCondition( &im_nbc );
 
@@ -703,7 +702,8 @@ void BinaryImageToLevelSetImageAdaptor< TInput,MalcolmSparseLevelSetImage< TInpu
 }
 
 template< typename TInput >
-void BinaryImageToLevelSetImageAdaptor< TInput,MalcolmSparseLevelSetImage< TInput::ImageDimension > >
+void
+BinaryImageToLevelSetImageAdaptor< TInput,MalcolmSparseLevelSetImage< TInput::ImageDimension > >
 ::CreateMinimalInterface()
 {
   LevelSetLayerType & list_0 = this->m_LevelSet->GetLayer( LevelSetType::ZeroLayer() );
@@ -744,7 +744,7 @@ void BinaryImageToLevelSetImageAdaptor< TInput,MalcolmSparseLevelSetImage< TInpu
     bool hasNegativeLayerNeighbor = false;
 
     for( typename NeighborhoodIteratorType::Iterator
-        i = neighIt.Begin(); !i.IsAtEnd(); ++i )
+         i = neighIt.Begin(); !i.IsAtEnd(); ++i )
       {
       LayerIdType tempValue = i.Get();
 
@@ -794,7 +794,8 @@ void BinaryImageToLevelSetImageAdaptor< TInput,MalcolmSparseLevelSetImage< TInpu
         }
       }
     }
-  }
+}
+
 }
 
 #endif // __itkBinaryImageToLevelSetImageAdaptor_hxx

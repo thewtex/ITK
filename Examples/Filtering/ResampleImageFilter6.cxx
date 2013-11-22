@@ -24,7 +24,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -33,8 +32,8 @@
 #include "itkVectorLinearInterpolateImageFunction.h"
 #include "itkRGBPixel.h"
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 3 )
     {
@@ -43,15 +42,14 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const unsigned int                          Dimension = 2;
+  const unsigned int Dimension = 2;
   typedef unsigned char                       PixelComponentType;
   typedef itk::RGBPixel< PixelComponentType > PixelType;
 
-  typedef itk::Image< PixelType,  Dimension >   ImageType;
+  typedef itk::Image< PixelType,  Dimension > ImageType;
 
-
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -59,25 +57,22 @@ int main( int argc, char * argv[] )
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 
-
   typedef itk::VectorResampleImageFilter<
-                            ImageType, ImageType >  FilterType;
+      ImageType, ImageType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
   typedef itk::VectorLinearInterpolateImageFunction<
-                       ImageType, double >  InterpolatorType;
+      ImageType, double >  InterpolatorType;
 
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
 
   filter->SetInterpolator( interpolator );
 
-
-  typedef itk::IdentityTransform< double, Dimension >  TransformType;
+  typedef itk::IdentityTransform< double, Dimension > TransformType;
   TransformType::Pointer transform = TransformType::New();
 
   filter->SetTransform( transform );
-
 
   // Software Guide : BeginCodeSnippet
   PixelType defaultValue;
@@ -85,7 +80,6 @@ int main( int argc, char * argv[] )
 
   filter->SetDefaultPixelValue( defaultValue );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginCodeSnippet
   ImageType::SpacingType spacing;
@@ -95,7 +89,6 @@ int main( int argc, char * argv[] )
   filter->SetOutputSpacing( spacing );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginCodeSnippet
   ImageType::PointType origin;
   origin[0] = 30.0;  // X space coordinate of origin
@@ -103,15 +96,13 @@ int main( int argc, char * argv[] )
   filter->SetOutputOrigin( origin );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginCodeSnippet
   ImageType::DirectionType direction;
   direction.SetIdentity();
   filter->SetOutputDirection( direction );
   // Software Guide : EndCodeSnippet
 
-
-  ImageType::SizeType   size;
+  ImageType::SizeType size;
 
   size[0] = 300;  // number of pixels along X
   size[1] = 300;  // number of pixels along Y
@@ -120,7 +111,6 @@ int main( int argc, char * argv[] )
 
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
-
 
   try
     {

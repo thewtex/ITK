@@ -35,7 +35,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -58,8 +57,8 @@
 #include "itkMaskImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
   if( argc < 4 )
     {
@@ -75,12 +74,11 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef float  InputPixelType;
+  typedef float InputPixelType;
   const unsigned int Dimension = 2;
 
   typedef itk::Image< InputPixelType, Dimension > InputImageType;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -90,7 +88,7 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char  MaskPixelType;
+  typedef unsigned char MaskPixelType;
 
   typedef itk::Image< MaskPixelType, Dimension > MaskImageType;
   // Software Guide : EndCodeSnippet
@@ -103,8 +101,8 @@ int main( int argc, char * argv [] )
   //
   // Software Guide : EndLatex
 
-  typedef itk::ImageFileReader< InputImageType >    InputReaderType;
-  typedef itk::ImageFileReader< MaskImageType  >    MaskReaderType;
+  typedef itk::ImageFileReader< InputImageType > InputReaderType;
+  typedef itk::ImageFileReader< MaskImageType  > MaskReaderType;
 
   InputReaderType::Pointer inputReader = InputReaderType::New();
   MaskReaderType::Pointer  maskReader  = MaskReaderType::New();
@@ -122,13 +120,12 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::VnlForwardFFTImageFilter< InputImageType >  FFTFilterType;
+  typedef itk::VnlForwardFFTImageFilter< InputImageType > FFTFilterType;
 
   FFTFilterType::Pointer fftFilter = FFTFilterType::New();
 
   fftFilter->SetInput( inputReader->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -140,15 +137,14 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef FFTFilterType::OutputImageType    SpectralImageType;
+  typedef FFTFilterType::OutputImageType SpectralImageType;
 
   typedef itk::MaskImageFilter< SpectralImageType,
-                                    MaskImageType,
-                                    SpectralImageType >  MaskFilterType;
+                                MaskImageType,
+                                SpectralImageType >  MaskFilterType;
 
   MaskFilterType::Pointer maskFilter = MaskFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -156,7 +152,6 @@ int main( int argc, char * argv [] )
   // first FFT filter and from the reader of the Mask image.
   //
   // Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   maskFilter->SetInput1( fftFilter->GetOutput() );
@@ -187,10 +182,9 @@ int main( int argc, char * argv [] )
   //
   // Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   typedef itk::VnlInverseFFTImageFilter<
-    SpectralImageType >  IFFTFilterType;
+      SpectralImageType >  IFFTFilterType;
 
   IFFTFilterType::Pointer fftInverseFilter = IFFTFilterType::New();
 
@@ -219,7 +213,6 @@ int main( int argc, char * argv [] )
     }
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The result of the filtering can now be saved into an image file, or be
@@ -234,7 +227,6 @@ int main( int argc, char * argv [] )
   writer->SetFileName( argv[3] );
   writer->SetInput( fftInverseFilter->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   try
     {

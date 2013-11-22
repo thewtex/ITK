@@ -44,7 +44,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TInputImage >
-class LabelShapeOpeningImageFilter:
+class LabelShapeOpeningImageFilter :
   public ImageToImageFilter< TInputImage, TInputImage >
 {
 public:
@@ -78,7 +78,7 @@ public:
   typedef LabelMap< LabelObjectType >                                                     LabelMapType;
   typedef LabelImageToLabelMapFilter< InputImageType, LabelMapType >                      LabelizerType;
   typedef Image< typename OutputImageType::PixelType, itkGetStaticConstMacro(OutputImageDimension) >
-  ShapeLabelFilterOutput;
+    ShapeLabelFilterOutput;
   typedef ShapeLabelMapFilter< LabelMapType, ShapeLabelFilterOutput > LabelObjectValuatorType;
   typedef typename LabelObjectType::AttributeType                     AttributeType;
   typedef ShapeOpeningLabelMapFilter< LabelMapType >                  OpeningType;
@@ -131,7 +131,8 @@ public:
    */
   itkGetConstMacro(Attribute, AttributeType);
   itkSetMacro(Attribute, AttributeType);
-  void SetAttribute(const std::string & s)
+  void
+  SetAttribute(const std::string & s)
   {
     this->SetAttribute( LabelObjectType::GetAttributeFromName(s) );
   }

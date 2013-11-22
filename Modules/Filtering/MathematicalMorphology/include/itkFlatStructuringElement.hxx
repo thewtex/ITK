@@ -48,6 +48,7 @@ FlatStructuringElement< NDimension >
 ::Polygon(RadiusType radius, unsigned lines)
 {
   Self res = Self();
+
   GeneratePolygon(res, radius, lines);
   return res;
 }
@@ -878,7 +879,7 @@ FlatStructuringElement< NDimension >
 
   // Define the iterators for each ellipsoid
   typedef FloodFilledSpatialFunctionConditionalIterator< ImageType, EllipsoidType >
-  FloodIteratorType;
+    FloodIteratorType;
   FloodIteratorType itEllipsoidOuter =
     FloodIteratorType(kernelImage, ellipsoidOuter, seed);
   FloodIteratorType itEllipsoidInner =
@@ -932,10 +933,12 @@ FlatStructuringElement< VDimension >::CheckParallel(LType NewVec) const
 }
 
 template< unsigned int VDimension >
-void FlatStructuringElement< VDimension >
+void
+FlatStructuringElement< VDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   if ( m_Decomposable )
     {
     os << indent << "SE decomposition:" << std::endl;
@@ -1016,6 +1019,7 @@ FlatStructuringElement< VDimension >::ComputeBufferFromLines()
     *kernel_it = oit.Get();
     }
 }
+
 }
 
 #endif

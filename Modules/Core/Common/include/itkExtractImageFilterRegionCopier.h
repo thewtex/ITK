@@ -38,11 +38,12 @@ namespace ImageToImageFilterDetail
  *  Call the base class version: ImageToImageFilterDefaultCopyRegion
  */
 template< unsigned int T1, unsigned int T2 >
-void ExtractImageFilterCopyRegion(const typename
-                                  BinaryUnsignedIntDispatch< T1, T2 >::FirstEqualsSecondType & firstEqualsSecond,
-                                  ImageRegion< T1 > & destRegion,
-                                  const ImageRegion< T2 > & srcRegion,
-                                  const ImageRegion< T1 > &)
+void
+ExtractImageFilterCopyRegion(const typename
+                             BinaryUnsignedIntDispatch< T1, T2 >::FirstEqualsSecondType & firstEqualsSecond,
+                             ImageRegion< T1 > & destRegion,
+                             const ImageRegion< T2 > & srcRegion,
+                             const ImageRegion< T1 > &)
 {
   ImageToImageFilterDefaultCopyRegion< T1, T2 >(firstEqualsSecond, destRegion, srcRegion);
 }
@@ -51,11 +52,12 @@ void ExtractImageFilterCopyRegion(const typename
  *  Call the base class version: ImageToImageFilterDefaultCopyRegion
  */
 template< unsigned int T1, unsigned int T2 >
-void ExtractImageFilterCopyRegion(const typename
-                                  BinaryUnsignedIntDispatch< T1, T2 >::FirstLessThanSecondType & firstLessThanSecond,
-                                  ImageRegion< T1 > & destRegion,
-                                  const ImageRegion< T2 > & srcRegion,
-                                  const ImageRegion< T1 > & totalInputExtractionRegion)
+void
+ExtractImageFilterCopyRegion(const typename
+                             BinaryUnsignedIntDispatch< T1, T2 >::FirstLessThanSecondType & firstLessThanSecond,
+                             ImageRegion< T1 > & destRegion,
+                             const ImageRegion< T2 > & srcRegion,
+                             const ImageRegion< T1 > & totalInputExtractionRegion)
 {
   (void) totalInputExtractionRegion;
   ImageToImageFilterDefaultCopyRegion< T1, T2 >(firstLessThanSecond, destRegion, srcRegion);
@@ -78,11 +80,12 @@ void ExtractImageFilterCopyRegion(const typename
  * input of the filter is the destination.
  */
 template< unsigned int T1, unsigned int T2 >
-void ExtractImageFilterCopyRegion(const typename
-                                  BinaryUnsignedIntDispatch< T1, T2 >::FirstGreaterThanSecondType &,
-                                  ImageRegion< T1 > & destRegion,
-                                  const ImageRegion< T2 > & srcRegion,
-                                  const ImageRegion< T1 > & totalInputExtractionRegion)
+void
+ExtractImageFilterCopyRegion(const typename
+                             BinaryUnsignedIntDispatch< T1, T2 >::FirstGreaterThanSecondType &,
+                             ImageRegion< T1 > & destRegion,
+                             const ImageRegion< T2 > & srcRegion,
+                             const ImageRegion< T1 > & totalInputExtractionRegion)
 {
   // Source dimension is less than the destination dimension, so look
   // at the m_TotalExtractionRegion and see what values in size are 0.
@@ -136,13 +139,14 @@ void ExtractImageFilterCopyRegion(const typename
   * \ingroup ITKCommon
   */
 template< unsigned int T1, unsigned int T2 >
-class ExtractImageFilterRegionCopier:
+class ExtractImageFilterRegionCopier :
   public ImageRegionCopier< T1, T2 >
 {
 public:
-  virtual void operator()(ImageRegion< T1 > & destRegion,
-                          const ImageRegion< T2 > & srcRegion,
-                          const ImageRegion< T1 > & totalInputExtractionRegion) const
+  virtual void
+  operator()(ImageRegion< T1 > & destRegion,
+             const ImageRegion< T2 > & srcRegion,
+             const ImageRegion< T1 > & totalInputExtractionRegion) const
   {
     typedef typename BinaryUnsignedIntDispatch< T1, T2 >::ComparisonType ComparisonType;
     ExtractImageFilterCopyRegion< T1, T2 >(ComparisonType(),
@@ -150,11 +154,13 @@ public:
   }
 
   /** Duplicate the superclass method to avoid warnings. */
-  virtual void operator()(ImageRegion< T1 > & destRegion,
-                          const ImageRegion< T2 > & srcRegion) const
+  virtual void
+  operator()(ImageRegion< T1 > & destRegion,
+             const ImageRegion< T2 > & srcRegion) const
   {
     ImageRegionCopier< T1, T2 >::operator()(destRegion, srcRegion);
   }
+
 };
 } //end namespace ImageToImageFilterDetail
 } //end namespace itk

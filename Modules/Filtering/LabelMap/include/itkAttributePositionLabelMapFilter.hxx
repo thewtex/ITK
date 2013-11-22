@@ -32,14 +32,12 @@
  *
  */
 
-
 namespace itk {
 
 template <typename TImage, typename TAttributeAccessor, bool VPhysicalPosition>
 AttributePositionLabelMapFilter<TImage, TAttributeAccessor, VPhysicalPosition>
 ::AttributePositionLabelMapFilter()
-{
-}
+{}
 
 template <typename TImage, typename TAttributeAccessor, bool VPhysicalPosition>
 void
@@ -50,6 +48,7 @@ AttributePositionLabelMapFilter<TImage, TAttributeAccessor, VPhysicalPosition>
   AttributeValueType position = accessor( labelObject );
   // change it to an index position if it is physical
   IndexType idx;
+
   if( VPhysicalPosition )
     {
     Point< double, ImageDimension > point;
@@ -82,5 +81,5 @@ AttributePositionLabelMapFilter<TImage, TAttributeAccessor, VPhysicalPosition>
   Superclass::PrintSelf(os, indent);
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

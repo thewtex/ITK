@@ -43,7 +43,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TInputImage, typename TFeatureImage >
-class BinaryStatisticsOpeningImageFilter:
+class BinaryStatisticsOpeningImageFilter :
   public ImageToImageFilter< TInputImage, TInputImage >
 {
 public:
@@ -77,13 +77,13 @@ public:
 
   typedef SizeValueType LabelType;
 
-  typedef StatisticsLabelObject< LabelType, itkGetStaticConstMacro(ImageDimension) >     LabelObjectType;
-  typedef LabelMap< LabelObjectType >                                                    LabelMapType;
-  typedef BinaryImageToLabelMapFilter< InputImageType, LabelMapType >                    LabelizerType;
-  typedef StatisticsLabelMapFilter< LabelMapType, FeatureImageType >                     LabelObjectValuatorType;
-  typedef typename LabelObjectType::AttributeType                                        AttributeType;
-  typedef StatisticsOpeningLabelMapFilter< LabelMapType >                                OpeningType;
-  typedef LabelMapToBinaryImageFilter< LabelMapType, OutputImageType >                   BinarizerType;
+  typedef StatisticsLabelObject< LabelType, itkGetStaticConstMacro(ImageDimension) > LabelObjectType;
+  typedef LabelMap< LabelObjectType >                                                LabelMapType;
+  typedef BinaryImageToLabelMapFilter< InputImageType, LabelMapType >                LabelizerType;
+  typedef StatisticsLabelMapFilter< LabelMapType, FeatureImageType >                 LabelObjectValuatorType;
+  typedef typename LabelObjectType::AttributeType                                    AttributeType;
+  typedef StatisticsOpeningLabelMapFilter< LabelMapType >                            OpeningType;
+  typedef LabelMapToBinaryImageFilter< LabelMapType, OutputImageType >               BinarizerType;
 
   /** Standard New method. */
   itkNewMacro(Self);
@@ -148,32 +148,37 @@ public:
    */
   itkGetConstMacro(Attribute, AttributeType);
   itkSetMacro(Attribute, AttributeType);
-  void SetAttribute(const std::string & s)
+  void
+  SetAttribute(const std::string & s)
   {
     this->SetAttribute( LabelObjectType::GetAttributeFromName(s) );
   }
 
   /** Set the feature image */
-  void SetFeatureImage(const TFeatureImage *input)
+  void
+  SetFeatureImage(const TFeatureImage *input)
   {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast< TFeatureImage * >( input ) );
   }
 
   /** Get the feature image */
-  const FeatureImageType * GetFeatureImage()
+  const FeatureImageType *
+  GetFeatureImage()
   {
     return static_cast< const FeatureImageType * >( this->ProcessObject::GetInput(1) );
   }
 
   /** Set the input image */
-  void SetInput1(const InputImageType *input)
+  void
+  SetInput1(const InputImageType *input)
   {
     this->SetInput(input);
   }
 
   /** Set the feature image */
-  void SetInput2(const FeatureImageType *input)
+  void
+  SetInput2(const FeatureImageType *input)
   {
     this->SetFeatureImage(input);
   }

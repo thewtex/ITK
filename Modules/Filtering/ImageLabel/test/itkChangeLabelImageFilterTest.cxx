@@ -19,8 +19,8 @@
 #include "itkRandomImageSource.h"
 #include "itkChangeLabelImageFilter.h"
 
-
-int itkChangeLabelImageFilterTest(int, char* [] )
+int
+itkChangeLabelImageFilterTest(int, char* [] )
 {
 
   // Define the dimension of the images
@@ -34,10 +34,10 @@ int itkChangeLabelImageFilterTest(int, char* [] )
 
   // Declare iterator type
   typedef itk::ImageRegionIteratorWithIndex<
-                                  InputImageType>  InputIteratorType;
+      InputImageType>  InputIteratorType;
 
   typedef itk::ImageRegionIteratorWithIndex<
-                                  OutputImageType>  OutputIteratorType;
+      OutputImageType>  OutputIteratorType;
 
   // Use a random image source as input
   typedef itk::RandomImageSource<InputImageType> SourceType;
@@ -53,8 +53,7 @@ int itkChangeLabelImageFilterTest(int, char* [] )
 
   // Declare the type for the binary threshold filter
   typedef itk::ChangeLabelImageFilter< InputImageType,
-                               OutputImageType  >  FilterType;
-
+                                       OutputImageType  >  FilterType;
 
   // Create a filter
   FilterType::Pointer filter = FilterType::New();
@@ -64,12 +63,11 @@ int itkChangeLabelImageFilterTest(int, char* [] )
   InputPixelType maxRemainingLabel = 2;
   for (InputPixelType i = maxRemainingLabel; i <= upper; i++) {
     filter->SetChange( i, background );
-  }
+    }
 
   filter->Print( std::cout );
 
   // exercise Get methods
-
 
   // Connect the input images
   filter->SetInput( source->GetOutput() );
@@ -81,7 +79,7 @@ int itkChangeLabelImageFilterTest(int, char* [] )
   try
     {
     filter->Update();
-    filter->SetFunctor(filter->GetFunctor());
+    filter->SetFunctor(filter->GetFunctor() );
     }
   catch(...)
     {
@@ -92,7 +90,7 @@ int itkChangeLabelImageFilterTest(int, char* [] )
 
   // Create an iterator for going through the image output
   InputIteratorType  it( source->GetOutput(), source->GetOutput()->GetRequestedRegion() );
-  OutputIteratorType ot(outputImage, outputImage->GetRequestedRegion());
+  OutputIteratorType ot(outputImage, outputImage->GetRequestedRegion() );
 
   bool pass = true;
 
@@ -101,7 +99,7 @@ int itkChangeLabelImageFilterTest(int, char* [] )
   ot.GoToBegin();
   it.GoToBegin();
   while( !ot.IsAtEnd() )
-  {
+    {
 
     const InputPixelType  input  = it.Get();
     const OutputPixelType output = ot.Get();
@@ -109,7 +107,7 @@ int itkChangeLabelImageFilterTest(int, char* [] )
 
     if( output > maxRemainingLabel )
       {
-        pass = false;
+      pass = false;
       }
     if ( !pass )
       {
@@ -122,8 +120,7 @@ int itkChangeLabelImageFilterTest(int, char* [] )
 
     ++ot;
     ++it;
-  }
-
+    }
 
   // Test to see if clearing the changemap works
   filter->ClearChangeMap();
@@ -142,8 +139,7 @@ int itkChangeLabelImageFilterTest(int, char* [] )
 
   // Create an iterator for going through the image output
   InputIteratorType  ita( source->GetOutput(), source->GetOutput()->GetRequestedRegion() );
-  OutputIteratorType ota(outputImage, outputImage->GetRequestedRegion());
-
+  OutputIteratorType ota(outputImage, outputImage->GetRequestedRegion() );
 
   //  Check the content of the result image
   //  Since the change map is clear, input is expected to be the same as output
@@ -151,7 +147,7 @@ int itkChangeLabelImageFilterTest(int, char* [] )
   ota.GoToBegin();
   ita.GoToBegin();
   while( !ota.IsAtEnd() )
-  {
+    {
 
     const InputPixelType  input  = ita.Get();
     const OutputPixelType output = ota.Get();
@@ -159,7 +155,7 @@ int itkChangeLabelImageFilterTest(int, char* [] )
 
     if( input != output )
       {
-        pass = false;
+      pass = false;
       }
     if ( !pass )
       {
@@ -172,7 +168,7 @@ int itkChangeLabelImageFilterTest(int, char* [] )
 
     ++ota;
     ++ita;
-  }
+    }
 
   if ( pass )
     {

@@ -21,7 +21,8 @@
 
 #include <iostream>
 
-int itkFEMExceptionTest(int, char *[])
+int
+itkFEMExceptionTest(int, char *[])
 {
   //Need to register default FEM object types,
   //and setup SpatialReader to recognize FEM types

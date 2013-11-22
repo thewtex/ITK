@@ -70,7 +70,7 @@ public:
   virtual bool CanReadFile(const char *);
 
   /** Return whether or not the VideoIO can read from a camera */
-  virtual bool CanReadCamera( CameraIDType cameraID )const;
+  virtual bool CanReadCamera( CameraIDType cameraID ) const;
 
   /** Set the spacing and dimension information for the set filename. */
   virtual void ReadImageInformation();
@@ -93,6 +93,7 @@ public:
 
   /** Override SetFileName to do parsing */
   virtual void SetFileName(const std::string& fileList);
+
   virtual void SetFileName(const char* fileList);
 
   /** Override Accessors to pass through to internal image reader */

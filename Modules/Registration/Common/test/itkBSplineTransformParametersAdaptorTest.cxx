@@ -19,11 +19,13 @@
 #include "itkBSplineTransform.h"
 #include "itkBSplineTransformParametersAdaptor.h"
 
-int itkBSplineTransformParametersAdaptorTest(int, char * [] )
+int
+itkBSplineTransformParametersAdaptorTest(int, char * [] )
 {
   const unsigned int SpaceDimension = 3;
   const unsigned int SplineOrder = 3;
-  typedef double CoordinateRepType;
+
+  typedef double                                                                CoordinateRepType;
   typedef itk::BSplineTransform<CoordinateRepType, SpaceDimension, SplineOrder> TransformType;
 
   /**
@@ -77,7 +79,6 @@ int itkBSplineTransformParametersAdaptorTest(int, char * [] )
   point.Fill( 50.0 );
 
   TransformType::OutputPointType outputPointBeforeAdapt = transform->TransformPoint( point );
-
 
   /**
    * Instantiate the adaptor

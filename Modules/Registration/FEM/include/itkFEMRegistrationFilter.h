@@ -180,9 +180,9 @@ public:
 
   /** Instantiate the load class with the correct image type. */
   typedef FiniteDifferenceFunctionLoad<MovingImageType, FixedImageType>
-  ImageMetricLoadType;
+    ImageMetricLoadType;
   typedef PDEDeformableRegistrationFunction<FixedImageType, MovingImageType, FieldType>
-  MetricBaseType;
+    MetricBaseType;
 
   typedef typename MetricBaseType::Pointer     MetricBaseTypePointer;
   typedef FixedArray< double, ImageDimension > StandardDeviationsType;
@@ -197,13 +197,15 @@ public:
    * current resolution in a multi-resolution
    * registration
    */
-  MovingImageType * GetMovingImage()
+  MovingImageType *
+  GetMovingImage()
   {
     return m_MovingImage;
   }
 
   /** Get the original full resolution moving image. */
-  MovingImageType * GetOriginalMovingImage()
+  MovingImageType *
+  GetOriginalMovingImage()
   {
     return m_OriginalMovingImage;
   }
@@ -211,7 +213,8 @@ public:
   /** Get/Set the target (fixed) image. */
   void SetFixedImage(FixedImageType* T);
 
-  FixedImageType * GetFixedImage()
+  FixedImageType *
+  GetFixedImage()
   {
     return m_FixedImage;
   }
@@ -239,28 +242,32 @@ public:
 
   /** Get the reference image warped to the target image.
       Must first apply the warp using WarpImage() */
-  FixedImageType * GetWarpedImage()
+  FixedImageType *
+  GetWarpedImage()
   {
     return m_WarpedImage;
   }
 
   /** Compute the jacobian of the current deformation field. */
-  void ComputeJacobian( );
+  void ComputeJacobian();
 
   /** Get the image that gives the jacobian of the deformation field. */
-  FloatImageType * GetJacobianImage()
+  FloatImageType *
+  GetJacobianImage()
   {
     return m_FloatImage;
   }
 
   /** Outputs the FE deformation field interpolated over the entire image domain. */
-  FieldType * GetDisplacementField()
+  FieldType *
+  GetDisplacementField()
   {
     return m_Field;
   }
 
   /** Sets the FE deformation field. */
-  void SetDisplacementField(FieldType* F)
+  void
+  SetDisplacementField(FieldType* F)
   {
     m_FieldSize = F->GetLargestPossibleRegion().GetSize();
     m_Field = F;
@@ -292,7 +299,8 @@ public:
       designated by "which".
       E.g. to generate 10 pixels per element in each dimension in the 1st resolution, use SetMeshResolution(10,0);.
     */
-  void SetMeshPixelsPerElementAtEachResolution(unsigned int i, unsigned int which = 0)
+  void
+  SetMeshPixelsPerElementAtEachResolution(unsigned int i, unsigned int which = 0)
   {
     m_MeshPixelsPerElementAtEachResolution[which] = i;
   }
@@ -300,7 +308,8 @@ public:
   /** This determines the number of integration points to use at each resolution.
       These integration points are used to generate the force.  The actual number
       used will be i^d, where d is the number of parameters in the elements local domain. */
-  void SetNumberOfIntegrationPoints(unsigned int i, unsigned int which = 0)
+  void
+  SetNumberOfIntegrationPoints(unsigned int i, unsigned int which = 0)
   {
     m_NumberOfIntegrationPoints[which] = i;
   }
@@ -310,12 +319,14 @@ public:
     * \param i number of elements
     * \param which determines the region at a given resolution of the solution process.
     */
-  void SetWidthOfMetricRegion(unsigned int i, unsigned int which = 0)
+  void
+  SetWidthOfMetricRegion(unsigned int i, unsigned int which = 0)
   {
     m_MetricWidth[which] = i;
   }
 
-  unsigned int GetWidthOfMetricRegion(unsigned int which = 0)
+  unsigned int
+  GetWidthOfMetricRegion(unsigned int which = 0)
   {
     return m_MetricWidth[which];
   }
@@ -324,7 +335,8 @@ public:
     * \param i number of elements
     * \param which determines the resolution of the solution process the call is applied to.
     */
-  void SetMaximumIterations(unsigned int i, unsigned int which)
+  void
+  SetMaximumIterations(unsigned int i, unsigned int which)
   {
     m_Maxiters[which] = i;
   }
@@ -349,12 +361,14 @@ public:
   */
   itkSetMacro(UseLandmarks, bool);
   itkGetMacro(UseLandmarks, bool);
-  void SetUseLandmarksOff()
+  void
+  SetUseLandmarksOff()
   {
     SetUseLandmarks(false);
   }
 
-  void SetUseLandmarksOn()
+  void
+  SetUseLandmarksOn()
   {
     SetUseLandmarks(true);
   }
@@ -372,37 +386,43 @@ public:
   itkGetMacro(EnergyReductionFactor, Float);
 
   /** Sets the stiffness Matrix weight. */
-  void SetElasticity(Float i, unsigned int which = 0)
+  void
+  SetElasticity(Float i, unsigned int which = 0)
   {
     m_E[which] = i;
   }
 
   /** Gets the stiffness Matrix weight. */
-  Float GetElasticity(unsigned int which = 0)
+  Float
+  GetElasticity(unsigned int which = 0)
   {
     return m_E[which];
   }
 
   /** Mass matrix weight */
-  void  SetRho(Float r, unsigned int which = 0)
+  void
+  SetRho(Float r, unsigned int which = 0)
   {
     m_Rho[which] = r;
   }
 
   /** Image similarity energy weight */
-  void SetGamma(Float r, unsigned int which = 0)
+  void
+  SetGamma(Float r, unsigned int which = 0)
   {
     m_Gamma[which] = r;
   }
 
   /** Image Metric minimizes energy */
-  void  SetDescentDirectionMinimize()
+  void
+  SetDescentDirectionMinimize()
   {
     m_DescentDirection = positive;
   }
 
   /** Image Metric maximizes energy */
-  void SetDescentDirectionMaximize()
+  void
+  SetDescentDirectionMaximize()
   {
     m_DescentDirection = negative;
   }
@@ -414,19 +434,20 @@ public:
   itkSetMacro(DoLineSearchOnImageEnergy, unsigned int);
   itkGetMacro(DoLineSearchOnImageEnergy, unsigned int);
 
-
   /**
    * Get/Set the use of normalized gradient values in the image
    * metric during registration
    */
   itkSetMacro(UseNormalizedGradient, bool);
   itkGetMacro(UseNormalizedGradient, bool);
-  void SetUseNormalizedGradientOff()
+  void
+  SetUseNormalizedGradientOff()
   {
     SetUseNormalizedGradient(false);
   }
 
-  void SetUseNormalizedGradientOn()
+  void
+  SetUseNormalizedGradientOn()
   {
     SetUseNormalizedGradient(true);
   }
@@ -447,7 +468,8 @@ public:
   /**
    * Return the size of the full size image.
    */
-  ImageSizeType GetImageSize()
+  ImageSizeType
+  GetImageSize()
   {
     return m_FullImageSize;
   }
@@ -472,19 +494,22 @@ public:
   /**
    * Return the type of image metric used for the registration
    */
-  unsigned int GetMetricType()
+  unsigned int
+  GetMetricType()
   {
     return m_WhichMetric;
   }
 
   /** This function allows one to set the element and its material externally. */
-  void SetElement(Element::Pointer e)
+  void
+  SetElement(Element::Pointer e)
   {
     m_Element = e;
   }
 
   /** This sets the pointer to the material. */
-  void SetMaterial(MaterialType::Pointer m)
+  void
+  SetMaterial(MaterialType::Pointer m)
   {
     m_Material = m;
   }
@@ -496,6 +521,7 @@ public:
    * Get/Set the maximum number of levels for multi resolution
    */
   void SetMaxLevel(unsigned int level);
+
   itkGetMacro(MaxLevel, unsigned int);
 
   /**
@@ -503,14 +529,18 @@ public:
    * provided by the user.
    */
   itkSetMacro(CreateMeshFromImage, bool);
-  void SetCreateMeshFromImageOn()
+  void
+  SetCreateMeshFromImageOn()
   {
     SetCreateMeshFromImage(true);
   }
-  void SetCreateMeshFromImageOff()
+
+  void
+  SetCreateMeshFromImageOff()
   {
     SetCreateMeshFromImage(false);
   }
+
   itkGetMacro(CreateMeshFromImage, bool);
 
   /** Set the interpolator function. */
@@ -538,7 +568,6 @@ public:
    * \sa GaussianOperator. */
   itkSetMacro(MaximumError, double);
   itkGetConstMacro(MaximumError, double);
-
 
 // HELPER FUNCTIONS
 
@@ -655,8 +684,8 @@ private:
   ImageSizeType m_ImageOrigin;                // image origin
 
   /** Gives the ratio of original image size to current image size - for dealing with multi-res.*/
-  ImageSizeType                  m_ImageScaling;
-  ImageSizeType                  m_CurrentImageScaling;
+  ImageSizeType m_ImageScaling;
+  ImageSizeType m_CurrentImageScaling;
   typename FieldType::RegionType m_FieldRegion;
   typename FieldType::SizeType   m_FieldSize;
   typename FieldType::Pointer    m_Field;
@@ -682,7 +711,7 @@ private:
   // element and metric pointers
   typename Element::Pointer             m_Element;
   typename MaterialType::Pointer        m_Material;
-  MetricBaseTypePointer                 m_Metric;
+  MetricBaseTypePointer m_Metric;
   typename FEMObjectType::Pointer       m_FEMObject;
 
   LandmarkArrayType   m_LandmarkArray;

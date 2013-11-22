@@ -50,9 +50,9 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TInputImage, typename TMaskImage = Image< unsigned char,
-                                                       TInputImage::ImageDimension >,
+                                                             TInputImage::ImageDimension >,
           class TOutputImage = TInputImage >
-class StochasticFractalDimensionImageFilter:
+class StochasticFractalDimensionImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:

@@ -36,21 +36,24 @@ MetaArrayReader
 {}
 
 /** Update the Reader */
-void MetaArrayReader
+void
+MetaArrayReader
 ::SetBuffer(void *_buffer)
 {
   m_Buffer = _buffer;
 }
 
 /** Return a pointer to the metaArray variable */
-MetaArray * MetaArrayReader
+MetaArray *
+MetaArrayReader
 ::GetMetaArrayPointer(void)
 {
   return &m_MetaArray;
 }
 
 /** Update the Reader */
-void MetaArrayReader
+void
+MetaArrayReader
 ::Update()
 {
   m_MetaArray.Read(m_FileName.c_str(), true, m_Buffer);

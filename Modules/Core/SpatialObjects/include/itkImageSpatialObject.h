@@ -37,7 +37,7 @@ namespace itk
 template< unsigned int TDimension = 3,
           typename TPixelType = unsigned char
           >
-class ImageSpatialObject:
+class ImageSpatialObject :
   public SpatialObject< TDimension >
 {
 public:
@@ -59,7 +59,7 @@ public:
   typedef InterpolateImageFunction< ImageType > InterpolatorType;
 
   typedef NearestNeighborInterpolateImageFunction< ImageType >
-  NNInterpolatorType;
+    NNInterpolatorType;
 
   typedef VectorContainer< IdentifierType, PointType > PointContainerType;
   typedef typename PointContainerType::Pointer         PointContainerPointer;
@@ -106,16 +106,21 @@ public:
   void SetSlicePosition(unsigned int dimension, int position);
 
   /** Get the slice position */
-  int GetSlicePosition(unsigned int dimension)
-  { return m_SlicePosition[dimension]; }
+  int
+  GetSlicePosition(unsigned int dimension)
+  {
+    return m_SlicePosition[dimension];
+  }
 
-  const char * GetPixelType()
+  const char *
+  GetPixelType()
   {
     return m_PixelType.c_str();
   }
 
   /** Set/Get the interpolator */
   void SetInterpolator(InterpolatorType *interpolator);
+
   itkGetModifiableObjectMacro(Interpolator, InterpolatorType);
 
 protected:
@@ -125,7 +130,8 @@ protected:
   ImagePointer m_Image;
 
   ImageSpatialObject();
-  virtual ~ImageSpatialObject();
+  virtual
+  ~ImageSpatialObject();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -134,30 +140,42 @@ protected:
 
   typename InterpolatorType::Pointer m_Interpolator;
   template <typename T>
-    void InternalSetPixelType(const T *)
+  void
+  InternalSetPixelType(const T *)
   {
     itkWarningMacro("itk::ImageSpatialObject() : PixelType not recognized");
   }
-  void InternalSetPixelType(const short *)
+
+  void
+  InternalSetPixelType(const short *)
   {
     m_PixelType = "short";
   }
-  void InternalSetPixelType(const unsigned char *)
+
+  void
+  InternalSetPixelType(const unsigned char *)
   {
     m_PixelType = "unsigned char";
   }
-  void InternalSetPixelType(const unsigned short *)
+
+  void
+  InternalSetPixelType(const unsigned short *)
   {
     m_PixelType = "unsigned short";
   }
-  void InternalSetPixelType(const float *)
+
+  void
+  InternalSetPixelType(const float *)
   {
     m_PixelType = "float";
   }
-  void InternalSetPixelType(const double *)
+
+  void
+  InternalSetPixelType(const double *)
   {
     m_PixelType = "double";
   }
+
 };
 } // end of namespace itk
 

@@ -39,25 +39,25 @@ RegionConstrainedSubsampler<TSample, TRegion>
   typename LightObject::Pointer loPtr = Superclass::InternalClone();
 
   typename Self::Pointer rval =
-    dynamic_cast<Self *>(loPtr.GetPointer());
-  if(rval.IsNull())
+    dynamic_cast<Self *>(loPtr.GetPointer() );
+  if(rval.IsNull() )
     {
     itkExceptionMacro(<< "downcast to type "
                       << this->GetNameOfClass()
                       << " failed.");
     }
 
-  if (this->GetRegionConstraintInitialized())
+  if (this->GetRegionConstraintInitialized() )
     {
-    rval->SetRegionConstraint(this->GetRegionConstraint());
+    rval->SetRegionConstraint(this->GetRegionConstraint() );
     }
   else
     {
     rval->m_RegionConstraintInitialized = false;
     }
-  if (this->GetSampleRegionInitialized())
+  if (this->GetSampleRegionInitialized() )
     {
-    rval->SetSampleRegion(this->GetSampleRegion());
+    rval->SetSampleRegion(this->GetSampleRegion() );
     }
   else
     {
@@ -73,7 +73,7 @@ RegionConstrainedSubsampler<TSample, TRegion>
 {
   itkDebugMacro("setting sample region to " << region);
   if (this->m_SampleRegion != region ||
-      !(this->m_SampleRegionInitialized))
+      !(this->m_SampleRegionInitialized) )
     {
     this->m_SampleRegion = region;
     this->m_SampleRegionInitialized = true;
@@ -88,7 +88,7 @@ RegionConstrainedSubsampler<TSample, TRegion>
 {
   itkDebugMacro("setting region constraint to " << region);
   if (this->m_RegionConstraint != region ||
-      !(this->m_RegionConstraintInitialized))
+      !(this->m_RegionConstraintInitialized) )
     {
     this->m_RegionConstraint = region;
     this->m_RegionConstraintInitialized = true;
@@ -125,7 +125,7 @@ RegionConstrainedSubsampler<TSample, TRegion>
   os << std::endl;
 }
 
-}// end namespace Statistics
-}// end namespace itk
+} // end namespace Statistics
+} // end namespace itk
 
 #endif

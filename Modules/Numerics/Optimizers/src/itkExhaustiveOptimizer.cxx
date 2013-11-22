@@ -42,7 +42,8 @@ ExhaustiveOptimizer
  * Start walking
  */
 
-void ExhaustiveOptimizer::StartOptimization(void)
+void
+ExhaustiveOptimizer::StartOptimization(void)
 {
   this->StartWalking();
 }
@@ -210,8 +211,8 @@ ExhaustiveOptimizer
   for ( unsigned int i = 0; i < spaceDimension; i++ )
     {
     newPosition[i] = ( m_CurrentIndex[i] - m_NumberOfSteps[i] )
-                     * m_StepLength * scales[i]
-                     + this->GetInitialPosition()[i];
+      * m_StepLength * scales[i]
+      + this->GetInitialPosition()[i];
     }
 }
 
@@ -241,4 +242,5 @@ ExhaustiveOptimizer
   os << indent << "MinimumMetricValuePosition = " << m_MinimumMetricValuePosition << std::endl;
   os << indent << "MaximumMetricValuePosition = " << m_MaximumMetricValuePosition << std::endl;
 }
+
 } // end namespace itk

@@ -36,9 +36,9 @@ template< typename TInputHistogram >
 const typename OtsuMultipleThresholdsCalculator< TInputHistogram >::OutputType &
 OtsuMultipleThresholdsCalculator< TInputHistogram >
 ::GetOutput()
-{
+  {
   return m_Output;
-}
+  }
 
 /**
  * Increment the thresholds of one position along the histogram
@@ -83,7 +83,7 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
         classMean[j] = ( meanOld * static_cast< MeanType >( freqOld )
                          + static_cast< MeanType >( histogram->GetMeasurementVector(thresholdIndexes[j])[0] )
                          * static_cast< MeanType >( histogram->GetFrequency(thresholdIndexes[j]) ) )
-                       / static_cast< MeanType >( classFrequency[j] );
+          / static_cast< MeanType >( classFrequency[j] );
         }
       else
         {
@@ -169,7 +169,7 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
   while ( iter != end )
     {
     globalMean += static_cast< MeanType >( iter.GetMeasurementVector()[0] )
-                  * static_cast< MeanType >( iter.GetFrequency() );
+      * static_cast< MeanType >( iter.GetFrequency() );
     ++iter;
     }
   globalMean /= static_cast< MeanType >( globalFrequency );
@@ -198,11 +198,11 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
   classFrequency[numberOfClasses - 1] = globalFrequency - freqSum;
 
   // Convert the frequencies to probabilities (i.e. normalize the histogram).
-  SizeValueType histSize = histogram->GetSize()[0];
+  SizeValueType    histSize = histogram->GetSize()[0];
   WeightVectorType imgPDF(histSize);
   for ( j = 0; j < histSize; j++ )
     {
-      imgPDF[j] = (WeightType)histogram->GetFrequency(j) / (WeightType)globalFrequency;
+    imgPDF[j] = (WeightType)histogram->GetFrequency(j) / (WeightType)globalFrequency;
     }
 
   MeanType       meanSum = NumericTraits< MeanType >::Zero;
@@ -225,7 +225,7 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
     classMean[numberOfClasses
               - 1] =
       ( globalMean * static_cast< MeanType >( globalFrequency )
-       - meanSum ) / static_cast< MeanType >( classFrequency[numberOfClasses - 1] );
+        - meanSum ) / static_cast< MeanType >( classFrequency[numberOfClasses - 1] );
     }
   else
     {
@@ -235,7 +235,8 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
   VarianceType maxVarBetween = NumericTraits< VarianceType >::Zero;
   for ( j = 0; j < numberOfClasses; j++ )
     {
-    maxVarBetween += (static_cast< VarianceType >( classFrequency[j] ) / static_cast< VarianceType >( globalFrequency ))
+    maxVarBetween +=
+      (static_cast< VarianceType >( classFrequency[j] ) / static_cast< VarianceType >( globalFrequency ) )
       * static_cast< VarianceType >( ( classMean[j] ) * ( classMean[j] ) );
     }
 
@@ -270,21 +271,21 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
       // Since we are looking for the argmax, the second term can be ignored because it is a constant, leading to the simpler
       // (\sum_{k=1}^{M} \omega_k \mu_k^2), which is what is implemented here.
       // Although this is no longer truly a "between class variance", we keep that name since it is only different by a constant.
-      varBetween += (static_cast< VarianceType >( classFrequency[j] ) / static_cast< VarianceType >( globalFrequency ))
-              * static_cast< VarianceType >( ( classMean[j] ) * ( classMean[j] ) );
+      varBetween += (static_cast< VarianceType >( classFrequency[j] ) / static_cast< VarianceType >( globalFrequency ) )
+        * static_cast< VarianceType >( ( classMean[j] ) * ( classMean[j] ) );
       }
 
     if (m_ValleyEmphasis)
-    {
+      {
       // Sum relevant weights to get valley emphasis factor
       valleyEmphasisFactor = NumericTraits< WeightType >::Zero;
       for ( j = 0; j < numberOfClasses - 1; j++ )
-      {
+        {
         valleyEmphasisFactor += imgPDF[thresholdIndexes[j]];
-      }
+        }
       valleyEmphasisFactor = 1.0 - valleyEmphasisFactor;
       varBetween = varBetween * valleyEmphasisFactor;
-    }
+      }
 
     if ( varBetween > maxVarBetween )
       {
@@ -318,6 +319,7 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
     }
   os << std::endl;
 }
+
 } // end namespace itk
 
 #endif

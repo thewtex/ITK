@@ -85,6 +85,7 @@ VersorTransformOptimizer
 
   this->SetCurrentPosition(newParameters);
 }
+
 } // end namespace itk
 
 #endif

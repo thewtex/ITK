@@ -27,7 +27,8 @@
 #include "itkQuaternionRigidTransformGradientDescentOptimizer.h"
 #include "itkVersorTransformOptimizer.h"
 
-int itkNumericsPrintTest(int , char* [])
+int
+itkNumericsPrintTest(int , char* [])
 {
   itk::AmoebaOptimizer::Pointer AmoebaOptimizerObj =
     itk::AmoebaOptimizer::New();
@@ -36,6 +37,7 @@ int itkNumericsPrintTest(int , char* [])
   itk::CacheableScalarFunction * CacheableScalarFunctionObj =
     new itk::CacheableScalarFunction;
   std::cout << "----------CacheableScalarFunction " << CacheableScalarFunctionObj;
+
   delete CacheableScalarFunctionObj;
 
   itk::ConjugateGradientOptimizer::Pointer ConjugateGradientOptimizerObj =
@@ -63,9 +65,9 @@ int itkNumericsPrintTest(int , char* [])
   std::cout << "----------LevenbergMarquardtOptimizer " << LevenbergMarquardtOptimizerObj;
 
   typedef itk::MultivariateLegendrePolynomial PolynomialType;
-  const unsigned int dimension = 3;
-  const unsigned int degree    = 3;
-  PolynomialType::DomainSizeType domainSize(dimension);
+  const unsigned int                    dimension = 3;
+  const unsigned int                    degree    = 3;
+  PolynomialType::DomainSizeType        domainSize(dimension);
   itk::MultivariateLegendrePolynomial * MultivariateLegendrePolynomialObj =
     new itk::MultivariateLegendrePolynomial(dimension,degree,domainSize);
   std::cout << "----------MultivariateLegendrePolynomial " << *MultivariateLegendrePolynomialObj;
@@ -81,7 +83,8 @@ int itkNumericsPrintTest(int , char* [])
 
   itk::QuaternionRigidTransformGradientDescentOptimizer::Pointer QuaternionRigidTransformGradientDescentOptimizerObj =
     itk::QuaternionRigidTransformGradientDescentOptimizer::New();
-  std::cout << "----------QuaternionRigidTransformGradientDescentOptimizer " << QuaternionRigidTransformGradientDescentOptimizerObj;
+  std::cout << "----------QuaternionRigidTransformGradientDescentOptimizer " <<
+  QuaternionRigidTransformGradientDescentOptimizerObj;
 
   itk::RegularStepGradientDescentBaseOptimizer::Pointer RegularStepGradientDescentBaseOptimizerObj =
     itk::RegularStepGradientDescentBaseOptimizer::New();

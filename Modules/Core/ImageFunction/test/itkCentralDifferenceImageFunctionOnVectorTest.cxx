@@ -21,7 +21,8 @@
 #include "itkTestingMacros.h"
 
 template< typename T >
-bool IsEqual( T & m1, T & m2 )
+bool
+IsEqual( T & m1, T & m2 )
 {
   for( unsigned int r=0; r < T::RowDimensions; r++ )
     {
@@ -37,16 +38,18 @@ bool IsEqual( T & m1, T & m2 )
 }
 
 template< unsigned int VectorLength >
-int itkCentralDifferenceImageFunctionOnVectorTestRun( )
+int
+itkCentralDifferenceImageFunctionOnVectorTestRun()
 {
   std::cout << "\n**************************" << std::endl
             << "VectorLength: " << VectorLength << std::endl << std::endl;
 
   int result = EXIT_SUCCESS;
 
-  const unsigned int                            ImageDimension = 2;
-  typedef itk::Vector<float,VectorLength>       PixelType;
-  typedef itk::Image<PixelType,ImageDimension>  ImageType;
+  const unsigned int ImageDimension = 2;
+
+  typedef itk::Vector<float,VectorLength>      PixelType;
+  typedef itk::Image<PixelType,ImageDimension> ImageType;
 
   typename ImageType::Pointer image = ImageType::New();
   typename ImageType::SizeType size;
@@ -79,9 +82,9 @@ int itkCentralDifferenceImageFunctionOnVectorTestRun( )
   typedef float                                           CoordRepType;
   typedef itk::Matrix<double,VectorLength,ImageDimension> DerivativeType;
 
-  typedef itk::CentralDifferenceImageFunction<ImageType,CoordRepType,DerivativeType>  FunctionType;
-  typedef typename FunctionType::OutputType                                           OutputType;
-  typedef typename FunctionType::OutputValueType                                      OutputValueType;
+  typedef itk::CentralDifferenceImageFunction<ImageType,CoordRepType,DerivativeType> FunctionType;
+  typedef typename FunctionType::OutputType                                          OutputType;
+  typedef typename FunctionType::OutputValueType                                     OutputValueType;
 
   typename FunctionType::Pointer function = FunctionType::New();
 
@@ -112,7 +115,7 @@ int itkCentralDifferenceImageFunctionOnVectorTestRun( )
       }
     }
 
-  if( ! IsEqual<OutputType>( indexOutput, truthOutput) )
+  if( !IsEqual<OutputType>( indexOutput, truthOutput) )
     {
     std::cout << "ERROR: indexOutput " << indexOutput << " does not match truth: " << truthOutput << std::endl;
     result = EXIT_FAILURE;
@@ -135,7 +138,7 @@ int itkCentralDifferenceImageFunctionOnVectorTestRun( )
   std::cout << "ContinuousIndex: " << cindex << " Derivative: ";
   std::cout << continuousIndexOutput << std::endl;
 
-  if( ! IsEqual<OutputType>( indexOutput, continuousIndexOutput ) )
+  if( !IsEqual<OutputType>( indexOutput, continuousIndexOutput ) )
     {
     std::cout << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex do not match." << std::endl;
     result = EXIT_FAILURE;
@@ -149,7 +152,7 @@ int itkCentralDifferenceImageFunctionOnVectorTestRun( )
 
   // this should be the same as output from EvaluateAtIndex as long as
   // image is setup with default spatial information.
-  if( ! IsEqual<OutputType>( indexOutput, pointOutput ) )
+  if( !IsEqual<OutputType>( indexOutput, pointOutput ) )
     {
     std::cout << "ERROR: Output of EvaluateAtIndex and Evaluate do not match." << std::endl;
     std::cout << "difference: " << indexOutput - pointOutput << std::endl;
@@ -183,7 +186,7 @@ int itkCentralDifferenceImageFunctionOnVectorTestRun( )
   std::cout << "ContinuousIndex: " << cindex << " Derivative: ";
   std::cout << continuousIndexOutput << std::endl;
 
-  if( ! IsEqual<OutputType>( indexOutput, continuousIndexOutput ) )
+  if( !IsEqual<OutputType>( indexOutput, continuousIndexOutput ) )
     {
     std::cout << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex "
               << "do not match at boundary." << std::endl;
@@ -196,7 +199,7 @@ int itkCentralDifferenceImageFunctionOnVectorTestRun( )
   std::cout << "Point: " << point << " Derivative: ";
   std::cout << pointOutput << std::endl;
 
-  if( ! IsEqual<OutputType>( indexOutput, pointOutput ) )
+  if( !IsEqual<OutputType>( indexOutput, pointOutput ) )
     {
     std::cout << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex "
               << "do not match at boundary." << std::endl;
@@ -229,7 +232,7 @@ int itkCentralDifferenceImageFunctionOnVectorTestRun( )
   std::cout << "ContinuousIndex: " << cindex << " Derivative: ";
   std::cout << continuousIndexOutput << std::endl;
 
-  if( ! IsEqual<OutputType>( indexOutput, continuousIndexOutput ) )
+  if( !IsEqual<OutputType>( indexOutput, continuousIndexOutput ) )
     {
     std::cout << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex "
               << "do not match at boundary." << std::endl;
@@ -245,7 +248,7 @@ int itkCentralDifferenceImageFunctionOnVectorTestRun( )
   std::cout << "Point: " << point << " Derivative: ";
   std::cout << pointOutput << std::endl;
 
-  if( ! IsEqual<OutputType>( indexOutput, pointOutput ) )
+  if( !IsEqual<OutputType>( indexOutput, pointOutput ) )
     {
     std::cout << "ERROR: Output of EvaluateAtIndex and EvaluateAtContinuousIndex "
               << "do not match at boundary." << std::endl;
@@ -281,7 +284,9 @@ int itkCentralDifferenceImageFunctionOnVectorTestRun( )
 
   if( fabs( ( right[0][0] + left[0][0] ) / 2.0 - center[0][0] ) > 1e-06 )
     {
-    std::cout << "ERROR: Failed for EvaluateAtContinuousIndex at non-integer incecies. Center index result is not average of left and right." << std::endl;
+    std::cout <<
+    "ERROR: Failed for EvaluateAtContinuousIndex at non-integer incecies. Center index result is not average of left and right."
+              << std::endl;
     result = EXIT_FAILURE;
     }
 
@@ -299,13 +304,16 @@ int itkCentralDifferenceImageFunctionOnVectorTestRun( )
 
   if( center == left || center == right )
     {
-    std::cout << "ERROR: Failed for Evaluate at non-interger indecies. Results are unexpectedly identical." << std::endl;
+    std::cout << "ERROR: Failed for Evaluate at non-interger indecies. Results are unexpectedly identical." <<
+    std::endl;
     result = EXIT_FAILURE;
     }
 
   if( fabs( ( right[0][0] + left[0][0] ) / 2.0 - center[0][0] ) > 1e-06 )
     {
-    std::cout << "ERROR: Failed for Evaluate at non-integer incecies. Center index result is not average of left and right." << std::endl;
+    std::cout <<
+    "ERROR: Failed for Evaluate at non-integer incecies. Center index result is not average of left and right." <<
+    std::endl;
     result = EXIT_FAILURE;
     }
 
@@ -338,7 +346,7 @@ int itkCentralDifferenceImageFunctionOnVectorTestRun( )
   OutputType directionOffDerivative = function->Evaluate( point );
   std::cout << "Point: " << point << " directionOffDerivative: " << directionOffDerivative << std::endl;
 
-  if( ! IsEqual<OutputType>( directionOffDerivative, origDerivative ) )
+  if( !IsEqual<OutputType>( directionOffDerivative, origDerivative ) )
     {
     std::cout << "Expected origDerivative == directionOffDerivative." << std::endl;
     result = EXIT_FAILURE;
@@ -347,8 +355,8 @@ int itkCentralDifferenceImageFunctionOnVectorTestRun( )
   // Test with incorrectly-sized output type
   typedef itk::Matrix<double,10,ImageDimension> BadDerivativeType;
 
-  typedef itk::CentralDifferenceImageFunction<ImageType,CoordRepType,BadDerivativeType>  BadFunctionType;
-  typedef typename BadFunctionType::OutputType                                           BadOutputType;
+  typedef itk::CentralDifferenceImageFunction<ImageType,CoordRepType,BadDerivativeType> BadFunctionType;
+  typedef typename BadFunctionType::OutputType                                          BadOutputType;
 
   typename BadFunctionType::Pointer badFunction = BadFunctionType::New();
   TRY_EXPECT_EXCEPTION( badFunction->SetInputImage( image ) );
@@ -358,7 +366,8 @@ int itkCentralDifferenceImageFunctionOnVectorTestRun( )
 
 /////////////////////////////////////////////////////////////////
 
-int itkCentralDifferenceImageFunctionOnVectorTest(int, char* [] )
+int
+itkCentralDifferenceImageFunctionOnVectorTest(int, char* [] )
 {
 
   if( itkCentralDifferenceImageFunctionOnVectorTestRun<1>() == EXIT_FAILURE )

@@ -19,17 +19,18 @@
 #include <iostream>
 #include "itkChainCodePath.h"
 
-int itkChainCodePathTest(int, char*[])
+int
+itkChainCodePathTest(int, char*[])
 {
-  typedef  itk::ChainCodePath<2>      PathType;
-  typedef  PathType::IndexType        IndexType;
-  typedef  PathType::OffsetType       OffsetType;
-  typedef  PathType::ChainCodeType    ChainCodeType;
+  typedef  itk::ChainCodePath<2>   PathType;
+  typedef  PathType::IndexType     IndexType;
+  typedef  PathType::OffsetType    OffsetType;
+  typedef  PathType::ChainCodeType ChainCodeType;
 
   bool passed = true;
 
-  IndexType   index;
-  OffsetType  offset;
+  IndexType  index;
+  OffsetType offset;
 
   PathType::Pointer path = PathType::New();
 
@@ -79,7 +80,7 @@ int itkChainCodePathTest(int, char*[])
     else
       break;
     }
-    if( index != path->GetStart() )
+  if( index != path->GetStart() )
     {
     passed = false;
     }

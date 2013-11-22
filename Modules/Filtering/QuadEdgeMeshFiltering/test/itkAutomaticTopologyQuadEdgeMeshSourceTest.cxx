@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include <iostream>
 
 #include "itkQuadEdgeMesh.h"
@@ -27,13 +26,13 @@ itkAutomaticTopologyQuadEdgeMeshSourceTest(int, char* [] )
 {
 
   // Declare the type of the Mesh
-  typedef itk::QuadEdgeMesh< double, 3 >            MeshType;
-  typedef MeshType::PointType                       PointType;
-  typedef MeshType::CellType                        CellType;
+  typedef itk::QuadEdgeMesh< double, 3 > MeshType;
+  typedef MeshType::PointType            PointType;
+  typedef MeshType::CellType             CellType;
 
-  typedef itk::AutomaticTopologyMeshSource< MeshType >   MeshSourceType;
-  typedef MeshSourceType::IdentifierType                 IdentifierType;
-  typedef MeshSourceType::IdentifierArrayType            IdentifierArrayType;
+  typedef itk::AutomaticTopologyMeshSource< MeshType > MeshSourceType;
+  typedef MeshSourceType::IdentifierType               IdentifierType;
+  typedef MeshSourceType::IdentifierArrayType          IdentifierArrayType;
 
   MeshSourceType::Pointer meshSource;
 
@@ -128,27 +127,27 @@ itkAutomaticTopologyQuadEdgeMeshSourceTest(int, char* [] )
   meshSource->AddLine(
     meshSource->AddPoint( 2, 1, 1 ),
     meshSource->AddPoint( 3, 1, 1 )
-  );
+    );
 
   meshSource->AddTriangle(
     meshSource->AddPoint( 3, 0, 1 ),
     meshSource->AddPoint( 2, 1, 1 ),
     meshSource->AddPoint( 3, 1, 1 )
-  );
+    );
 
   meshSource->AddQuadrilateral(
     meshSource->AddPoint( 2, 0, 1 ),
     meshSource->AddPoint( 3, 0, 1 ),
     meshSource->AddPoint( 2, 1, 1 ),
     meshSource->AddPoint( 3, 1, 1 )
-  );
+    );
 
   meshSource->AddTetrahedron(
     meshSource->AddPoint( 2, 0, 1 ),
     meshSource->AddPoint( 3, 0, 1 ),
     meshSource->AddPoint( 2, 1, 1 ),
     meshSource->AddPoint( 3, 1, 1 )
-  );
+    );
 
   meshSource->AddHexahedron(
     meshSource->AddPoint( 2, 0, 0 ),
@@ -159,19 +158,19 @@ itkAutomaticTopologyQuadEdgeMeshSourceTest(int, char* [] )
     meshSource->AddPoint( 3, 0, 1 ),
     meshSource->AddPoint( 2, 1, 1 ),
     meshSource->AddPoint( 3, 1, 1 )
-  );
+    );
 
   // Add cells using C arrays of point coordinates.
   MeshSourceType::CoordinateType points[8][3] =
     {
-      {3, 0, 0},
-      {4, 0, 0},
-      {3, 1, 0},
-      {4, 1, 0},
-      {3, 0, 1},
-      {4, 0, 1},
-      {3, 1, 1},
-      {4, 1, 1}
+        {3, 0, 0},
+        {4, 0, 0},
+        {3, 1, 0},
+        {4, 1, 0},
+        {3, 0, 1},
+        {4, 0, 1},
+        {3, 1, 1},
+        {4, 1, 1}
     };
 
   meshSource->AddVertex( points[7] );
@@ -183,7 +182,7 @@ itkAutomaticTopologyQuadEdgeMeshSourceTest(int, char* [] )
                              points[4], points[5], points[6], points[7] );
 
   // Print out the resulting mesh data.
-  std::cout << MeshType::Pointer(meshSource->GetOutput()) << std::endl;
+  std::cout << MeshType::Pointer(meshSource->GetOutput() ) << std::endl;
 
   // Now do a sanity check.  Create a mesh consisting of a pair of
   // tetrahedra sharing a face and a pair of cubes sharing a face, and
@@ -250,7 +249,7 @@ itkAutomaticTopologyQuadEdgeMeshSourceTest(int, char* [] )
   for( i = 0; i < mesh->GetNumberOfPoints(); i++ )
     {
     PointType point;
-    bool dummy = mesh->GetPoint( i, &point );
+    bool      dummy = mesh->GetPoint( i, &point );
     if( dummy )
       {
       std::cout << i << ": " << point << std::endl;
@@ -288,7 +287,7 @@ itkAutomaticTopologyQuadEdgeMeshSourceTest(int, char* [] )
         {
         std::cout << "Cell " << i << ":\n";
 
-        typedef std::set<IdentifierType>       NeighborSet;
+        typedef std::set<IdentifierType> NeighborSet;
         NeighborSet cellSet;
 
         mesh->GetCellBoundaryFeatureNeighbors( 0, i, 0, &cellSet );
@@ -355,7 +354,6 @@ itkAutomaticTopologyQuadEdgeMeshSourceTest(int, char* [] )
     std::cerr << "Mesh is being changed when invoking Update()" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 

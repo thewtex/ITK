@@ -19,38 +19,39 @@
 #include "itkTimeProbesCollectorBase.h"
 #include "itkMath.h"
 
-int itkMathRoundTestHelperFunction( double x )
+int
+itkMathRoundTestHelperFunction( double x )
 {
   x += 0.5;
-  return static_cast<int>(x>=0.?x:(x==static_cast<int>(x)?x:x-1.));
+  return static_cast<int>(x>=0. ? x : (x==static_cast<int>(x) ? x : x-1.) );
 }
 
 #define itkRoundMacro( x, y )                 \
-    if( x >= 0.5 )                            \
-      {                                       \
-      y = static_cast< int >( x + 0.5 );      \
-      }                                       \
-    else                                      \
-      {                                       \
-      if( (x+0.5) == static_cast<int>(x+0.5) )  \
-        {                                     \
-        y = static_cast< int >( x + 0.5 );    \
-        }                                     \
-      else                                    \
-        {                                     \
-        y = static_cast< int >( x - 0.5 );    \
-        }                                     \
-      }
+  if( x >= 0.5 )                            \
+    {                                       \
+    y = static_cast< int >( x + 0.5 );      \
+    }                                       \
+  else                                      \
+    {                                       \
+    if( (x+0.5) == static_cast<int>(x+0.5) )  \
+      {                                     \
+      y = static_cast< int >( x + 0.5 );    \
+      }                                     \
+    else                                    \
+      {                                     \
+      y = static_cast< int >( x - 0.5 );    \
+      }                                     \
+    }
 
-
-int itkMathRoundProfileTest1( int, char *[] )
+int
+itkMathRoundProfileTest1( int, char *[] )
 {
-  itk::TimeProbesCollectorBase  chronometer;
+  itk::TimeProbesCollectorBase chronometer;
 
-  typedef std::vector< double >   ArrayType;
-  typedef std::vector< int >      IntArrayType;
+  typedef std::vector< double > ArrayType;
+  typedef std::vector< int >    IntArrayType;
 
-  ArrayType input;
+  ArrayType    input;
   IntArrayType output1;
   IntArrayType output2;
   IntArrayType output3;
@@ -71,7 +72,6 @@ int itkMathRoundProfileTest1( int, char *[] )
     input.push_back( inputValue );
     }
 
-
   //
   // Make sure that entries in the .5 locations are included
   //
@@ -80,7 +80,6 @@ int itkMathRoundProfileTest1( int, char *[] )
     const double value = k + 0.5;
     input.push_back( value );
     }
-
 
   output1.resize( input.size() );
   output2.resize( input.size() );
@@ -93,10 +92,10 @@ int itkMathRoundProfileTest1( int, char *[] )
     // Count the time of simply assigning values in an std::vector
     //
     //
-    IntArrayType::const_iterator  outItr1src = output1.begin();
-    IntArrayType::iterator        outItr2dst = output2.begin();
+    IntArrayType::const_iterator outItr1src = output1.begin();
+    IntArrayType::iterator       outItr2dst = output2.begin();
 
-    IntArrayType::const_iterator  outEnd1 = output1.end();
+    IntArrayType::const_iterator outEnd1 = output1.end();
 
     chronometer.Start("std::vector");
 
@@ -107,10 +106,10 @@ int itkMathRoundProfileTest1( int, char *[] )
 
     chronometer.Stop("std::vector");
 
-    ArrayType::const_iterator  inpItr   = input.begin();
-    ArrayType::const_iterator  inputEnd = input.end();
+    ArrayType::const_iterator inpItr   = input.begin();
+    ArrayType::const_iterator inputEnd = input.end();
 
-    IntArrayType::iterator        outItr1nc = output1.begin();
+    IntArrayType::iterator outItr1nc = output1.begin();
 
     //
     //  Count the time of rounding plus storing in container
@@ -124,11 +123,10 @@ int itkMathRoundProfileTest1( int, char *[] )
 
     chronometer.Stop("if-round");
 
-
     inpItr   = input.begin();
     inputEnd = input.end();
 
-    IntArrayType::iterator        outItr3nc = output3.begin();
+    IntArrayType::iterator outItr3nc = output3.begin();
 
     //
     //  Count the time of rounding plus storing in container
@@ -138,7 +136,7 @@ int itkMathRoundProfileTest1( int, char *[] )
     while( inpItr != inputEnd )
       {
       const double x = (*inpItr++) + 0.5;
-      *outItr3nc++ = static_cast<int>(x>=0.?x:(x==static_cast<int>(x)?x:x-1.));
+      *outItr3nc++ = static_cast<int>(x>=0. ? x : (x==static_cast<int>(x) ? x : x-1.) );
       }
 
     chronometer.Stop("Functor");
@@ -146,7 +144,7 @@ int itkMathRoundProfileTest1( int, char *[] )
     inpItr   = input.begin();
     inputEnd = input.end();
 
-    IntArrayType::iterator        outItr4nc = output4.begin();
+    IntArrayType::iterator outItr4nc = output4.begin();
 
     //
     //  Count the time of rounding plus storing in container
@@ -162,11 +160,10 @@ int itkMathRoundProfileTest1( int, char *[] )
 
     chronometer.Stop("Macro");
 
-
     inpItr   = input.begin();
     inputEnd = input.end();
 
-    IntArrayType::iterator        outItr = output2.begin();
+    IntArrayType::iterator outItr = output2.begin();
 
     //
     //  Count the time of rounding plus storing in container
@@ -200,9 +197,10 @@ int itkMathRoundProfileTest1( int, char *[] )
 
   while( inpItr != inputEnd )
     {
-      if( (*outItr1) != (*outItr2) )
+    if( (*outItr1) != (*outItr2) )
       {
-      std::cout << "Warning*** For input: " << *inpItr << " if-round: " << *outItr1 << " differs from itk::Math::Round: " << *outItr2 << std::endl;
+      std::cout << "Warning*** For input: " << *inpItr << " if-round: " << *outItr1 <<
+      " differs from itk::Math::Round: " << *outItr2 << std::endl;
 
       roundMismatch = true;
       }
@@ -217,7 +215,8 @@ int itkMathRoundProfileTest1( int, char *[] )
 
   if (roundMismatch)
     {
-    std::cout << "******* On this platform, itk::Math::Round() does not round half integers upward ********" << std::endl;
+    std::cout << "******* On this platform, itk::Math::Round() does not round half integers upward ********" <<
+    std::endl;
     return EXIT_FAILURE;
     }
 

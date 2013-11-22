@@ -19,7 +19,6 @@
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 
-
 #include "itkLabelImageToLabelMapFilter.h"
 #include "itkBinaryReconstructionLabelMapFilter.h"
 #include "itkAttributeSelectionLabelMapFilter.h"
@@ -27,7 +26,8 @@
 
 #include "itkTestingMacros.h"
 
-int itkBinaryReconstructionLabelMapFilterTest(int argc, char * argv[])
+int
+itkBinaryReconstructionLabelMapFilterTest(int argc, char * argv[])
 {
   if( argc != 5 )
     {
@@ -44,8 +44,8 @@ int itkBinaryReconstructionLabelMapFilterTest(int argc, char * argv[])
 
   typedef itk::Image< PixelType, dim > ImageType;
 
-  typedef itk::AttributeLabelObject< PixelType, dim, bool >     AttributeLabelObjectType;
-  typedef itk::LabelMap< AttributeLabelObjectType >             LabelMapType;
+  typedef itk::AttributeLabelObject< PixelType, dim, bool > AttributeLabelObjectType;
+  typedef itk::LabelMap< AttributeLabelObjectType >         LabelMapType;
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();

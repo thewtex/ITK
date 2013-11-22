@@ -21,10 +21,11 @@
 #include "itkRandomImageSource.h"
 #include "itkComposeImageFilter.h"
 
-int itkSubsampleTest(int, char* [] )
+int
+itkSubsampleTest(int, char* [] )
 {
   std::cout << "Subsample Test \n \n";
-  bool pass = true;
+  bool        pass = true;
   std::string whereFail = "";
 
   typedef itk::Image< float, 3 > FloatImage;
@@ -44,7 +45,6 @@ int itkSubsampleTest(int, char* [] )
   source->SetMax( static_cast< FloatImage::PixelType >( maxValue ) );
   source->Update();
 
-
   // creat a new image with array pixel type from the source
   typedef itk::FixedArray< FloatImage::PixelType, 1 > ArrayPixelType;
 
@@ -54,14 +54,14 @@ int itkSubsampleTest(int, char* [] )
   typedef itk::ComposeImageFilter< FloatImage, ArrayPixelImageType >
     ImageCastFilterType;
   ImageCastFilterType::Pointer castFilter = ImageCastFilterType::New();
-  castFilter->SetInput(source->GetOutput());
+  castFilter->SetInput(source->GetOutput() );
   castFilter->Update();
 
   typedef  itk::Statistics::ImageToListSampleFilter< ArrayPixelImageType, MaskPixelImageType >
     ImageToListSampleFilterType;
 
   ImageToListSampleFilterType::Pointer filter = ImageToListSampleFilterType::New();
-  filter->SetInput(castFilter->GetOutput());
+  filter->SetInput(castFilter->GetOutput() );
 
   try
     {
@@ -73,14 +73,13 @@ int itkSubsampleTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-  typedef ImageToListSampleFilterType::ListSampleType  ListSampleType;
+  typedef ImageToListSampleFilterType::ListSampleType ListSampleType;
 
-  typedef itk::Statistics::Subsample< ListSampleType >  SubsampleType;
+  typedef itk::Statistics::Subsample< ListSampleType > SubsampleType;
 
   SubsampleType::Pointer subsample = SubsampleType::New();
 
   std::cout << subsample->GetNameOfClass() << std::endl;
-
 
   const ImageToListSampleFilterType::ListSampleType * listSample = filter->GetOutput();
 
@@ -89,7 +88,6 @@ int itkSubsampleTest(int, char* [] )
   subsample->SetSample( listSample );
 
   subsample->Print( std::cout );
-
 
   //Initialize the subsample with sample
   subsample->InitializeWithAllInstances();
@@ -100,7 +98,7 @@ int itkSubsampleTest(int, char* [] )
   // add only the first half of instances of the sample
   for (ListSampleType::InstanceIdentifier id = 0;
        id < static_cast< ListSampleType::InstanceIdentifier >
-         (listSample->Size() / 2);
+       (listSample->Size() / 2);
        id++)
     {
     subsample->AddInstance(id);
@@ -113,8 +111,10 @@ int itkSubsampleTest(int, char* [] )
   try
     {
     subsample->AddInstance( idOutisdeRange );
-    std::cerr << "Exception should have been thrown since \
-      an instance outside the range of the sample container is added" << std::endl;
+    std::cerr <<
+    "Exception should have been thrown since \
+      an instance outside the range of the sample container is added"                                               <<
+    std::endl;
     return EXIT_FAILURE;
     }
   catch( itk::ExceptionObject & excp )
@@ -123,12 +123,14 @@ int itkSubsampleTest(int, char* [] )
     }
 
   typedef SubsampleType::MeasurementVectorType
-                                                    MeasurementVectorType;
+    MeasurementVectorType;
   try
     {
     MeasurementVectorType vec = subsample->GetMeasurementVector( idOutisdeRange );
-    std::cerr << "Exception should have been thrown since \
-      the id specified is outside the range of the sample container" << std::endl;
+    std::cerr <<
+    "Exception should have been thrown since \
+      the id specified is outside the range of the sample container"                                               <<
+    std::endl;
     std::cerr << "The invalid subsample->GetMeasurementVector() is: " << vec << std::endl;
     return EXIT_FAILURE;
     }
@@ -137,14 +139,16 @@ int itkSubsampleTest(int, char* [] )
     std::cerr << "Expected Exception caught: " << excp << std::endl;
     }
 
-  typedef SubsampleType::AbsoluteFrequencyType            AbsoluteFrequencyType;
+  typedef SubsampleType::AbsoluteFrequencyType AbsoluteFrequencyType;
 
   try
     {
     // Purposely calling GetFrequency() method prematurely in order to trigger an exception.
     subsample->GetFrequency( idOutisdeRange );
-    std::cerr << "Exception should have been thrown since \
-      the id specified is outside the range of the sample container" << std::endl;
+    std::cerr <<
+    "Exception should have been thrown since \
+      the id specified is outside the range of the sample container"                                               <<
+    std::endl;
     return EXIT_FAILURE;
     }
   catch( itk::ExceptionObject & excp )
@@ -156,9 +160,11 @@ int itkSubsampleTest(int, char* [] )
   try
     {
     subsample->Swap( 2000000,50 );
-    std::cerr << "Exception should have been thrown since \
+    std::cerr <<
+    "Exception should have been thrown since \
       the indices specified to be swapped are outside the range\
-      of the sample container" << std::endl;
+      of the sample container"
+              << std::endl;
     return EXIT_FAILURE;
     }
   catch( itk::ExceptionObject & excp )
@@ -169,13 +175,15 @@ int itkSubsampleTest(int, char* [] )
   // try accessing a measurement vector by index that is out of range
   try
     {
-    unsigned int index = listSample->Size() + 2;
+    unsigned int          index = listSample->Size() + 2;
     MeasurementVectorType measurementVector =
-            subsample->GetMeasurementVectorByIndex( index );
-    std::cerr << "Exception should have been thrown since \
-      the index specified is outside the range of the sample container" << std::endl;
+      subsample->GetMeasurementVectorByIndex( index );
+    std::cerr <<
+    "Exception should have been thrown since \
+      the index specified is outside the range of the sample container"                                               <<
+    std::endl;
     std::cerr << "The size of the invalid subsample->GetMeasurementVectorByIndex( index ) is: "
-      << subsample << std::endl;
+              << subsample << std::endl;
     std::cerr << "The invalid subsample->GetMeasurementVectorByIndex() is: " << measurementVector << std::endl;
     return EXIT_FAILURE;
     }
@@ -187,13 +195,15 @@ int itkSubsampleTest(int, char* [] )
   // try accessing a measurement vector frequency by index that is out of range
   try
     {
-    unsigned int index = listSample->Size() + 2;
+    unsigned int                         index = listSample->Size() + 2;
     SubsampleType::AbsoluteFrequencyType frequency =
-            subsample->GetFrequencyByIndex( index );
+      subsample->GetFrequencyByIndex( index );
     std::cout << "Frequency: " << frequency << std::endl;
-    std::cerr << "Exception should have been thrown since \
+    std::cerr <<
+    "Exception should have been thrown since \
       the index specified is outside the range\
-      of the sample container" << std::endl;
+      of the sample container"
+              << std::endl;
     return EXIT_FAILURE;
     }
   catch( itk::ExceptionObject & excp )
@@ -205,10 +215,12 @@ int itkSubsampleTest(int, char* [] )
   // using an index that is out of range
   try
     {
-    unsigned int index = listSample->Size() + 2;
+    unsigned int                       index = listSample->Size() + 2;
     ListSampleType::InstanceIdentifier id = subsample->GetInstanceIdentifier( index );
-    std::cerr << "Exception should have been thrown since \
-      the index specified is outside the range of the sample container" << std::endl;
+    std::cerr <<
+    "Exception should have been thrown since \
+      the index specified is outside the range of the sample container"                                               <<
+    std::endl;
     std::cout << "Instance identifier: " << id << std::endl;
     return EXIT_FAILURE;
     }
@@ -217,7 +229,7 @@ int itkSubsampleTest(int, char* [] )
     std::cerr << "Expected Exception caught: " << excp << std::endl;
     }
 
-  if ((totalSize / 2) != subsample->Size())
+  if ( (totalSize / 2) != subsample->Size() )
     {
     pass = false;
     whereFail = "Size()";
@@ -226,11 +238,11 @@ int itkSubsampleTest(int, char* [] )
   std::cout << subsample->GetTotalFrequency() << std::endl;
 
   ArrayPixelImageType::IndexType index;
-  index.Fill(2);// index {2, 2, 2} = instance identifier (offset from image)
-  ArrayPixelImageType::PixelType pixel = filter->GetInput()->GetPixel(index);
+  index.Fill(2); // index {2, 2, 2} = instance identifier (offset from image)
+  ArrayPixelImageType::PixelType     pixel = filter->GetInput()->GetPixel(index);
   ListSampleType::InstanceIdentifier ind =
     static_cast< FloatImage::OffsetValueType >(filter->GetInput()
-                                               ->ComputeOffset(index));
+                                               ->ComputeOffset(index) );
 
   if (pixel[0] != subsample->GetMeasurementVector(ind)[0])
     {
@@ -241,11 +253,11 @@ int itkSubsampleTest(int, char* [] )
   // iterator test
   typedef itk::ImageRegionConstIterator< ArrayPixelImageType > ImageIterator;
   ImageIterator i_iter(filter->GetInput(),
-                       filter->GetInput()->GetLargestPossibleRegion());
+                       filter->GetInput()->GetLargestPossibleRegion() );
 
   SubsampleType::Iterator s_iter = subsample->Begin();
-  unsigned int count = 0;
-  while (count < subsample->Size())
+  unsigned int            count = 0;
+  while (count < subsample->Size() )
     {
     if (i_iter.Get()[0] != s_iter.GetMeasurementVector()[0])
       {
@@ -257,7 +269,7 @@ int itkSubsampleTest(int, char* [] )
     ++s_iter;
     }
 
-  if (s_iter != subsample->End())
+  if (s_iter != subsample->End() )
     {
     pass = false;
     whereFail = "Iterator: End()";

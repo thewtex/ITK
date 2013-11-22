@@ -55,7 +55,7 @@ namespace itk
  *
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT ConditionVariable:public LightObject
+class ITKCommon_EXPORT ConditionVariable : public LightObject
 {
 public:
   /** Standard class typedefs. */

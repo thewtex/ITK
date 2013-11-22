@@ -37,8 +37,7 @@ namespace itk
 template< typename TInputImage, typename TKernelImage, typename TOutputImage, typename TInternalPrecision >
 FFTConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPrecision >
 ::FFTConvolutionImageFilter()
-{
-}
+{}
 
 template< typename TInputImage, typename TKernelImage, typename TOutputImage, typename TInternalPrecision >
 void
@@ -70,6 +69,7 @@ FFTConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPre
 {
   // Create a process accumulator for tracking the progress of this minipipeline
   ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
+
   progress->SetMiniPipelineFilter( this );
 
   typename InputImageType::Pointer localInput = InputImageType::New();
@@ -119,6 +119,7 @@ FFTConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPre
                float progressWeight)
 {
   InternalImagePointerType paddedInput;
+
   this->PadInput( input, paddedInput, progress, 0.3f * progressWeight );
   this->TransformPaddedInput( paddedInput, preparedInput, progress,
                               0.7f * progressWeight );
@@ -132,9 +133,9 @@ FFTConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPre
            ProgressAccumulator * progress, float progressWeight)
 {
   // Pad the image
-  InputSizeType padSize = this->GetPadSize();
+  InputSizeType   padSize = this->GetPadSize();
   InputRegionType inputRegion = input->GetLargestPossibleRegion();
-  InputSizeType inputSize = inputRegion.GetSize();
+  InputSizeType   inputSize = inputRegion.GetSize();
 
   typedef PadImageFilter< InputImageType, InputImageType > InputPadFilterType;
   typename InputPadFilterType::Pointer inputPadder = InputPadFilterType::New();
@@ -205,9 +206,10 @@ FFTConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPre
                 ProgressAccumulator * progress, float progressWeight)
 {
   KernelRegionType kernelRegion = kernel->GetLargestPossibleRegion();
-  KernelSizeType kernelSize = kernelRegion.GetSize();
+  KernelSizeType   kernelSize = kernelRegion.GetSize();
 
   InputSizeType padSize = this->GetPadSize();
+
   typename KernelImageType::SizeType kernelUpperBound;
   for (unsigned int i = 0; i < ImageDimension; ++i)
     {
@@ -283,9 +285,9 @@ FFTConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPre
   kernelInfoFilter->ChangeRegionOn();
 
   typedef typename InfoFilterType::OutputImageOffsetValueType InfoOffsetValueType;
-  InputSizeType inputLowerBound = this->GetPadLowerBound();
-  InputIndexType inputIndex = this->GetInput()->GetLargestPossibleRegion().GetIndex();
-  KernelIndexType kernelIndex = kernel->GetLargestPossibleRegion().GetIndex();
+  InputSizeType       inputLowerBound = this->GetPadLowerBound();
+  InputIndexType      inputIndex = this->GetInput()->GetLargestPossibleRegion().GetIndex();
+  KernelIndexType     kernelIndex = kernel->GetLargestPossibleRegion().GetIndex();
   InfoOffsetValueType kernelOffset[ImageDimension];
   for (int i = 0; i < ImageDimension; ++i)
     {
@@ -407,7 +409,9 @@ FFTConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPre
 ::GetXDimensionIsOdd() const
 {
   InputSizeType padSize = this->GetPadSize();
+
   return (padSize[0] % 2 != 0);
 }
+
 }
 #endif

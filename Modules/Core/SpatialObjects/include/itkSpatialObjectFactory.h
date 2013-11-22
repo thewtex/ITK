@@ -38,11 +38,12 @@ namespace itk
  */
 
 template< typename T >
-class SpatialObjectFactory:public SpatialObjectFactoryBase
+class SpatialObjectFactory : public SpatialObjectFactoryBase
 {
 public:
 
-  static void RegisterSpatialObject()
+  static void
+  RegisterSpatialObject()
   {
     typename T::Pointer t = T::New();
     SpatialObjectFactoryBase::Pointer f =
@@ -53,6 +54,7 @@ public:
                                1,
                                CreateObjectFunction< T >::New() );
   }
+
 };
 } // end namespace itk
 

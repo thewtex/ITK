@@ -38,15 +38,15 @@ class FrameAverageVideoFilter :
 public:
 
   /** Standard class typedefs */
-  typedef TInputVideoStream                                InputVideoStreamType;
-  typedef TOutputVideoStream                               OutputVideoStreamType;
+  typedef TInputVideoStream  InputVideoStreamType;
+  typedef TOutputVideoStream OutputVideoStreamType;
   typedef FrameAverageVideoFilter< InputVideoStreamType,
                                    OutputVideoStreamType > Self;
   typedef VideoToVideoFilter< InputVideoStreamType,
                               OutputVideoStreamType >      Superclass;
-  typedef SmartPointer< Self >                             Pointer;
-  typedef SmartPointer< const Self >                       ConstPointer;
-  typedef WeakPointer< const Self >                        ConstWeakPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
+  typedef WeakPointer< const Self >  ConstWeakPointer;
 
   typedef typename TInputVideoStream::FrameType  InputFrameType;
   typedef typename InputFrameType::PixelType     InputPixelType;
@@ -61,13 +61,15 @@ public:
 
   /** Get/Set the number of frames to average over */
   void SetNumberOfFrames(SizeValueType numFrames);
+
   SizeValueType GetNumberOfFrames();
 
 protected:
 
   /** Constructor and Destructor */
   FrameAverageVideoFilter();
-  virtual ~FrameAverageVideoFilter() {}
+  virtual
+  ~FrameAverageVideoFilter() {}
 
   /** PrintSelf */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
@@ -75,13 +77,12 @@ protected:
   /** FrameAverageVideoFilter is implemented as a temporal streaming and
    * spatially multithreaded filter, so we override ThreadedGenerateData */
   virtual void ThreadedGenerateData(
-                const OutputFrameSpatialRegionType& outputRegionForThread,
-                int threadId);
+    const OutputFrameSpatialRegionType& outputRegionForThread,
+    int threadId);
 
 private:
   FrameAverageVideoFilter(const Self &);  // purposely not implemented
   void operator=(const Self &);           // purposely not implemented
-
 
 };  // end class FrameAverageVideoFilter
 

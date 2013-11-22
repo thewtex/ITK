@@ -31,7 +31,7 @@ namespace Statistics
  * \ingroup ITKStatistics
  */
 template< typename TVector >
-class EuclideanDistanceMetric:
+class EuclideanDistanceMetric :
   public DistanceMetric< TVector >
 {
 public:
@@ -67,7 +67,8 @@ public:
 
 protected:
   EuclideanDistanceMetric() {}
-  virtual ~EuclideanDistanceMetric() {}
+  virtual
+  ~EuclideanDistanceMetric() {}
 };  // end of class
 } // end of namespace Statistics
 } // end of namespace itk

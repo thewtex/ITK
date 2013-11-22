@@ -76,7 +76,7 @@ namespace itk
  * \endwiki
  */
 template< typename TLabelImage, typename TIntensityImage = TLabelImage >
-class LabelGeometryImageFilter:
+class LabelGeometryImageFilter :
   public ImageToImageFilter< TLabelImage, TIntensityImage >
 {
 public:
@@ -254,7 +254,8 @@ public:
   // Macros for enabling the calculation of additional features.
   itkGetMacro(CalculatePixelIndices, bool);
   itkBooleanMacro(CalculatePixelIndices);
-  void SetCalculatePixelIndices(const bool value)
+  void
+  SetCalculatePixelIndices(const bool value)
   {
     // CalculateOrientedBoundingBox, CalculateOrientedLabelImage, and
     // CalculateOrientedIntensityImage all need CalculatePixelIndices to be
@@ -281,7 +282,8 @@ public:
 
   itkGetMacro(CalculateOrientedBoundingBox, bool);
   itkBooleanMacro(CalculateOrientedBoundingBox);
-  void SetCalculateOrientedBoundingBox(const bool value)
+  void
+  SetCalculateOrientedBoundingBox(const bool value)
   {
     if ( this->m_CalculateOrientedBoundingBox != value )
       {
@@ -299,7 +301,8 @@ public:
 
   itkGetMacro(CalculateOrientedLabelRegions, bool);
   itkBooleanMacro(CalculateOrientedLabelRegions);
-  void SetCalculateOrientedLabelRegions(const bool value)
+  void
+  SetCalculateOrientedLabelRegions(const bool value)
   {
     if ( this->m_CalculateOrientedLabelRegions != value )
       {
@@ -317,7 +320,8 @@ public:
 
   itkGetMacro(CalculateOrientedIntensityRegions, bool);
   itkBooleanMacro(CalculateOrientedIntensityRegions);
-  void SetCalculateOrientedIntensityRegions(const bool value)
+  void
+  SetCalculateOrientedIntensityRegions(const bool value)
   {
     if ( this->m_CalculateOrientedIntensityRegions != value )
       {
@@ -334,32 +338,37 @@ public:
   }
 
   /** Set the intensity image */
-  void SetIntensityInput(const TIntensityImage *input)
+  void
+  SetIntensityInput(const TIntensityImage *input)
   {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast< TIntensityImage * >( input ) );
   }
 
   /** Get the label image */
-  const TIntensityImage * GetIntensityInput() const
+  const TIntensityImage *
+  GetIntensityInput() const
   {
     return static_cast< TIntensityImage * >( const_cast< DataObject * >( this->ProcessObject::GetInput(1) ) );
   }
 
   /** Does the specified label exist? Can only be called after
    * a call to Update(). */
-  bool HasLabel(LabelPixelType label) const
+  bool
+  HasLabel(LabelPixelType label) const
   {
     return m_LabelGeometryMapper.find(label) != m_LabelGeometryMapper.end();
   }
 
   /** Get the number of labels used */
-  SizeValueType GetNumberOfObjects() const
+  SizeValueType
+  GetNumberOfObjects() const
   {
     return m_LabelGeometryMapper.size();
   }
 
-  SizeValueType GetNumberOfLabels() const
+  SizeValueType
+  GetNumberOfLabels() const
   {
     return this->GetNumberOfObjects();
   }

@@ -70,7 +70,8 @@
 
 #include <fstream>
 
-int main(int argc, char * argv[] )
+int
+main(int argc, char * argv[] )
 {
 
   if( argc < 2 )
@@ -100,9 +101,9 @@ int main(int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Point< double, 2 >  PointType;
+  typedef itk::Point< double, 2 > PointType;
 
-  typedef itk::VectorContainer< unsigned int, PointType >  PointsContainer;
+  typedef itk::VectorContainer< unsigned int, PointType > PointsContainer;
 
   PointsContainer::Pointer points = PointsContainer::New();
   // Software Guide : EndCodeSnippet
@@ -162,8 +163,8 @@ int main(int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   const unsigned int powerOfTwo   =
-    (unsigned int)vcl_ceil( vcl_log( (double)(numberOfPoints)) /
-                            vcl_log( (double)(2.0)) );
+    (unsigned int)vcl_ceil( vcl_log( (double)(numberOfPoints) ) /
+                            vcl_log( (double)(2.0) ) );
 
   const unsigned int spectrumSize = 1 << powerOfTwo;
 
@@ -176,7 +177,7 @@ int main(int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  FFTCalculator  fftCalculator( spectrumSize );
+  FFTCalculator fftCalculator( spectrumSize );
   // Software Guide : EndCodeSnippet
 
   FFTSpectrumType signal( spectrumSize );

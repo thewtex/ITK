@@ -41,7 +41,7 @@ namespace itk
  * \ingroup ITKImageStatistics
  */
 template< typename TInputImage >
-class MinimumMaximumImageFilter:
+class MinimumMaximumImageFilter :
   public ImageToImageFilter< TInputImage, TInputImage >
 {
 public:
@@ -81,15 +81,23 @@ public:
   typedef SimpleDataObjectDecorator< PixelType > PixelObjectType;
 
   /** Return the computed Minimum. */
-  PixelType GetMinimum() const
-  { return this->GetMinimumOutput()->Get(); }
+  PixelType
+  GetMinimum() const
+  {
+    return this->GetMinimumOutput()->Get();
+  }
+
   PixelObjectType * GetMinimumOutput();
 
   const PixelObjectType * GetMinimumOutput() const;
 
   /** Return the computed Maximum. */
-  PixelType GetMaximum() const
-  { return this->GetMaximumOutput()->Get(); }
+  PixelType
+  GetMaximum() const
+  {
+    return this->GetMaximumOutput()->Get();
+  }
+
   PixelObjectType * GetMaximumOutput();
 
   const PixelObjectType * GetMaximumOutput() const;
@@ -113,7 +121,8 @@ public:
 
 protected:
   MinimumMaximumImageFilter();
-  virtual ~MinimumMaximumImageFilter() {}
+  virtual
+  ~MinimumMaximumImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Pass the input through unmodified. Do this by Grafting in the

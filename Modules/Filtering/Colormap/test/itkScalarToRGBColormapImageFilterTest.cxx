@@ -26,8 +26,8 @@
 
 #include "itkScalarToRGBColormapImageFilter.h"
 
-
-int itkScalarToRGBColormapImageFilterTest( int argc, char *argv[] )
+int
+itkScalarToRGBColormapImageFilterTest( int argc, char *argv[] )
 {
   if ( argc < 4 )
     {
@@ -42,14 +42,14 @@ int itkScalarToRGBColormapImageFilterTest( int argc, char *argv[] )
 
   const unsigned int ImageDimension = 2;
 
-  typedef unsigned int                    PixelType;
-  typedef itk::RGBPixel<unsigned char>    RGBPixelType;
+  typedef unsigned int                 PixelType;
+  typedef itk::RGBPixel<unsigned char> RGBPixelType;
 
-  typedef itk::Image<PixelType, ImageDimension>     ImageType;
-  typedef itk::Image<float, ImageDimension>         RealImageType;
-  typedef itk::Image<RGBPixelType, ImageDimension>  RGBImageType;
+  typedef itk::Image<PixelType, ImageDimension>    ImageType;
+  typedef itk::Image<float, ImageDimension>        RealImageType;
+  typedef itk::Image<RGBPixelType, ImageDimension> RGBImageType;
 
-  typedef itk::ImageFileReader<ImageType>           ReaderType;
+  typedef itk::ImageFileReader<ImageType> ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
@@ -57,7 +57,7 @@ int itkScalarToRGBColormapImageFilterTest( int argc, char *argv[] )
 
   std::string colormapString( argv[3] );
 
-  typedef itk::VectorImage< unsigned char, ImageDimension> VectorImageType;
+  typedef itk::VectorImage< unsigned char, ImageDimension>                VectorImageType;
   typedef itk::ScalarToRGBColormapImageFilter<ImageType, VectorImageType> VectorFilterType;
   VectorFilterType::Pointer vfilter = VectorFilterType::New();
 
@@ -127,14 +127,14 @@ int itkScalarToRGBColormapImageFilterTest( int argc, char *argv[] )
   else if ( colormapString == "jet"  )
     {
     typedef itk::Function::JetColormapFunction<
-      ImageType::PixelType, RGBImageType::PixelType> ColormapType;
+        ImageType::PixelType, RGBImageType::PixelType> ColormapType;
 
     ColormapType::Pointer colormap = ColormapType::New();
 
     rgbfilter->SetColormap( colormap );
 
     typedef itk::Function::JetColormapFunction<
-      ImageType::PixelType, VectorImageType::PixelType> VectorColormapType;
+        ImageType::PixelType, VectorImageType::PixelType> VectorColormapType;
 
     VectorColormapType::Pointer vcolormap = VectorColormapType::New();
 
@@ -143,13 +143,13 @@ int itkScalarToRGBColormapImageFilterTest( int argc, char *argv[] )
   else if ( colormapString == "hsv"  )
     {
     typedef itk::Function::HSVColormapFunction<
-      ImageType::PixelType, RGBImageType::PixelType> ColormapType;
+        ImageType::PixelType, RGBImageType::PixelType> ColormapType;
 
     ColormapType::Pointer colormap = ColormapType::New();
     rgbfilter->SetColormap( colormap );
 
     typedef itk::Function::HSVColormapFunction<
-      ImageType::PixelType, VectorImageType::PixelType> VectorColormapType;
+        ImageType::PixelType, VectorImageType::PixelType> VectorColormapType;
 
     VectorColormapType::Pointer vcolormap = VectorColormapType::New();
     vfilter->SetColormap( vcolormap );
@@ -162,20 +162,20 @@ int itkScalarToRGBColormapImageFilterTest( int argc, char *argv[] )
   else if ( colormapString == "custom"  )
     {
     typedef itk::Function::CustomColormapFunction<
-      ImageType::PixelType, RGBImageType::PixelType> ColormapType;
+        ImageType::PixelType, RGBImageType::PixelType> ColormapType;
 
     ColormapType::Pointer colormap = ColormapType::New();
 
     typedef itk::Function::CustomColormapFunction<
-      ImageType::PixelType, VectorImageType::PixelType> VectorColormapType;
+        ImageType::PixelType, VectorImageType::PixelType> VectorColormapType;
 
     VectorColormapType::Pointer vcolormap = VectorColormapType::New();
 
     std::ifstream str( argv[4] );
-    std::string line;
+    std::string   line;
 
-    float value;
-    ColormapType::ChannelType       channel;
+    float                     value;
+    ColormapType::ChannelType channel;
 
     // Get red values
     std::getline( str, line );
@@ -196,7 +196,6 @@ int itkScalarToRGBColormapImageFilterTest( int argc, char *argv[] )
       }
     colormap->SetGreenChannel( channel );
     vcolormap->SetGreenChannel( channel );
-
 
     // Get blue values
     std::getline( str, line );
@@ -235,7 +234,6 @@ int itkScalarToRGBColormapImageFilterTest( int argc, char *argv[] )
     {
     return EXIT_FAILURE;
     }
-
 
   typedef itk::ImageFileWriter<RGBImageType> WriterType;
   WriterType::Pointer writer = WriterType::New();

@@ -25,19 +25,19 @@ Barrier::Barrier() :
   m_NumberExpected(0),
   m_ConditionVariable( ConditionVariable::New() ),
   m_Mutex()
-{
-}
+{}
 
 Barrier::~Barrier()
-{
-}
+{}
 
-void Barrier::Initialize(unsigned int n)
+void
+Barrier::Initialize(unsigned int n)
 {
   m_NumberExpected = n;
 }
 
-void Barrier::Wait()
+void
+Barrier::Wait()
 {
   m_Mutex.Lock();
   m_NumberArrived++;
@@ -54,4 +54,5 @@ void Barrier::Wait()
     }
   m_Mutex.Unlock();
 }
+
 } // end namespace itk

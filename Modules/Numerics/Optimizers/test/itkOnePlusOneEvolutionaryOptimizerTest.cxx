@@ -45,24 +45,23 @@ class OnePlusOneCostFunction : public itk::SingleValuedCostFunction
 {
 public:
 
-  typedef OnePlusOneCostFunction          Self;
-  typedef itk::SingleValuedCostFunction   Superclass;
-  typedef itk::SmartPointer<Self>         Pointer;
-  typedef itk::SmartPointer<const Self>   ConstPointer;
+  typedef OnePlusOneCostFunction        Self;
+  typedef itk::SingleValuedCostFunction Superclass;
+  typedef itk::SmartPointer<Self>       Pointer;
+  typedef itk::SmartPointer<const Self> ConstPointer;
   itkNewMacro( Self );
   itkTypeMacro( OnePlusOneCostFunction, SingleValuedCostFunction );
 
   enum { SpaceDimension=2 };
 
-  typedef Superclass::ParametersType      ParametersType;
-  typedef Superclass::MeasureType         MeasureType;
+  typedef Superclass::ParametersType ParametersType;
+  typedef Superclass::MeasureType    MeasureType;
 
   OnePlusOneCostFunction()
-  {
-  }
+  {}
 
-
-  MeasureType  GetValue( const ParametersType & parameters ) const
+  MeasureType
+  GetValue( const ParametersType & parameters ) const
   {
     double x = parameters[0];
     double y = parameters[1];
@@ -78,16 +77,18 @@ public:
     return measure;
   }
 
-  void GetDerivative(const ParametersType & itkNotUsed( parameters ),
-                           DerivativeType & itkNotUsed( derivative ) ) const
+  void
+  GetDerivative(const ParametersType & itkNotUsed( parameters ),
+                DerivativeType & itkNotUsed( derivative ) ) const
   {
     itkGenericExceptionMacro("OnePlusOneEvolutionaryOptimizer is not supposed to call GetDerivative()");
   }
 
-  unsigned int GetNumberOfParameters(void) const
-    {
+  unsigned int
+  GetNumberOfParameters(void) const
+  {
     return SpaceDimension;
-    }
+  }
 
 private:
 };
@@ -95,41 +96,46 @@ private:
 class OnePlusOneCommandIterationUpdate : public itk::Command
 {
 public:
-  typedef  OnePlusOneCommandIterationUpdate   Self;
-  typedef  itk::Command                       Superclass;
-  typedef itk::SmartPointer<Self>             Pointer;
+  typedef  OnePlusOneCommandIterationUpdate Self;
+  typedef  itk::Command                     Superclass;
+  typedef itk::SmartPointer<Self>           Pointer;
   itkNewMacro( Self );
 
 protected:
-  OnePlusOneCommandIterationUpdate() { m_LastMetricValue = 0.0; };
+  OnePlusOneCommandIterationUpdate() {
+    m_LastMetricValue = 0.0;
+  }
 
 public:
-  typedef itk::OnePlusOneEvolutionaryOptimizer     OptimizerType;
-  typedef   const OptimizerType *                  OptimizerPointer;
+  typedef itk::OnePlusOneEvolutionaryOptimizer OptimizerType;
+  typedef   const OptimizerType *              OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
-      OptimizerPointer optimizer =
-        dynamic_cast< OptimizerPointer >( object );
-      if( ! itk::IterationEvent().CheckEvent( &event ) )
-        {
-        return;
-        }
-      double currentValue = optimizer->GetValue();
-      // Only print out when the Metric value changes
-      if( vcl_fabs( m_LastMetricValue - currentValue ) > 1e-7 )
-        {
-        std::cout << optimizer->GetCurrentIteration() << "   ";
-        std::cout << currentValue << "   ";
-        std::cout << optimizer->GetCurrentPosition() << std::endl;
-        m_LastMetricValue = currentValue;
-        }
-    }
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
+    OptimizerPointer optimizer =
+      dynamic_cast< OptimizerPointer >( object );
+
+    if( !itk::IterationEvent().CheckEvent( &event ) )
+      {
+      return;
+      }
+    double currentValue = optimizer->GetValue();
+    // Only print out when the Metric value changes
+    if( vcl_fabs( m_LastMetricValue - currentValue ) > 1e-7 )
+      {
+      std::cout << optimizer->GetCurrentIteration() << "   ";
+      std::cout << currentValue << "   ";
+      std::cout << optimizer->GetCurrentPosition() << std::endl;
+      m_LastMetricValue = currentValue;
+      }
+  }
 
 private:
   double m_LastMetricValue;
@@ -137,18 +143,18 @@ private:
 
 }
 
-
-int itkOnePlusOneEvolutionaryOptimizerTest(int, char* [] )
+int
+itkOnePlusOneEvolutionaryOptimizerTest(int, char* [] )
 {
   std::cout << "Gradient Descent Optimizer Test ";
   std::cout << std::endl << std::endl;
 
-  typedef  itk::OnePlusOneEvolutionaryOptimizer  OptimizerType;
+  typedef  itk::OnePlusOneEvolutionaryOptimizer OptimizerType;
 
-  typedef OptimizerType::ScalesType        ScalesType;
+  typedef OptimizerType::ScalesType ScalesType;
 
   // Declaration of a itkOptimizer
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
 
   itk::OnePlusOneCommandIterationUpdate::Pointer observer = itk::OnePlusOneCommandIterationUpdate::New();
   itkOptimizer->AddObserver( itk::IterationEvent(), observer );
@@ -156,16 +162,14 @@ int itkOnePlusOneEvolutionaryOptimizerTest(int, char* [] )
   // Declaration of the CostFunction
   itk::OnePlusOneCostFunction::Pointer costFunction = itk::OnePlusOneCostFunction::New();
 
-
   itkOptimizer->SetCostFunction( costFunction.GetPointer() );
 
-
-  typedef itk::OnePlusOneCostFunction::ParametersType    ParametersType;
+  typedef itk::OnePlusOneCostFunction::ParametersType ParametersType;
 
   const unsigned int spaceDimension = costFunction->GetNumberOfParameters();
 
   // We start not so far from  | 2 -2 |
-  ParametersType  initialPosition( spaceDimension );
+  ParametersType initialPosition( spaceDimension );
 
   initialPosition[0] =  100;
   initialPosition[1] = -100;
@@ -175,8 +179,7 @@ int itkOnePlusOneEvolutionaryOptimizerTest(int, char* [] )
   itkOptimizer->SetEpsilon( 0.1 );
   itkOptimizer->SetMaximumIteration( 8000 );
 
-
-  typedef itk::Statistics::NormalVariateGenerator  GeneratorType;
+  typedef itk::Statistics::NormalVariateGenerator GeneratorType;
   GeneratorType::Pointer generator = GeneratorType::New();
   itkOptimizer->SetNormalVariateGenerator( generator );
 
@@ -203,7 +206,7 @@ int itkOnePlusOneEvolutionaryOptimizerTest(int, char* [] )
   //
   // check results to see if it is within range
   //
-  bool pass = true;
+  bool   pass = true;
   double trueParameters[2] = { 2, -2 };
   for( unsigned int j = 0; j < 2; j++ )
     {

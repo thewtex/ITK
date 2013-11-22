@@ -34,7 +34,6 @@
 //   ARGUMENTS:    3 3
 // Software Guide : EndCommandLineArgs
 
-
 //  Software Guide : BeginLatex
 //
 //  The \doxygen{VotingBinaryHoleFillingImageFilter} applies a voting operation
@@ -45,11 +44,9 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -59,13 +56,12 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkVotingBinaryHoleFillingImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -74,7 +70,6 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   //  Software Guide : BeginLatex
   //
   //  Then the pixel and image types of the input and output must be defined.
@@ -82,16 +77,15 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   unsigned char  InputPixelType;
-  typedef   unsigned char  OutputPixelType;
+  typedef   unsigned char InputPixelType;
+  typedef   unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -112,11 +106,10 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::VotingBinaryHoleFillingImageFilter<
-               InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -143,7 +136,6 @@ int main( int argc, char * argv[] )
   filter->SetRadius( indexRadius );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Since the filter is expecting a binary image as input, we must specify
@@ -160,7 +152,6 @@ int main( int argc, char * argv[] )
   filter->SetBackgroundValue(   0 );
   filter->SetForegroundValue( 255 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -183,7 +174,6 @@ int main( int argc, char * argv[] )
   filter->SetMajorityThreshold( 2 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The input to the filter can be taken from any other filter, for example
@@ -196,13 +186,11 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
   writer->Update();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -228,7 +216,6 @@ int main( int argc, char * argv[] )
   //  foreground of the image, as well as smoothing the contours of the regions.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

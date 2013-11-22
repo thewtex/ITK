@@ -30,6 +30,7 @@ PolyLineParametricPath< VDimension >
 {
   // Handle the endpoint carefully, since there is no following vertex
   const InputType endPoint = static_cast< InputType >( m_VertexList->Size() - 1 );
+
   if ( input > endPoint || itk::Math::FloatAlmostEqual( input, endPoint ) )
     {
     return static_cast<const VertexListType*>(this->m_VertexList)->ElementAt(m_VertexList->Size() - 1); // the last vertex
@@ -59,7 +60,7 @@ PolyLineParametricPath<VDimension>
 ::EvaluateDerivative(const InputType & input) const
 {
   //Get next integral time-point
-  const InputType nextTimepoint = std::min(std::floor(input + 1.0), this->EndOfInput());
+  const InputType nextTimepoint = std::min(std::floor(input + 1.0), this->EndOfInput() );
 
   //Get previous integral time-point
   const InputType previousTimepoint = nextTimepoint - 1.0;
@@ -70,6 +71,7 @@ PolyLineParametricPath<VDimension>
 
   //For some reason, there's no way to convert ContinuousIndexType to VectorType
   VectorType partialDerivatives;
+
   for (unsigned int i = 0; i < VDimension; ++i)
     {
     partialDerivatives[i] = nextIndex[i] - prevIndex[i];
@@ -87,13 +89,14 @@ PolyLineParametricPath<VDimension>
   const OutputType originalIndex = this->EvaluateToIndex(input);
 
   InputType potentialTimestep = itk::NumericTraits< InputType >::ZeroValue();
-  bool timeStepSmallEnough = false;
+  bool      timeStepSmallEnough = false;
+
   while (!timeStepSmallEnough)
     {
-    if (input == this->EndOfInput())
+    if (input == this->EndOfInput() )
       {
-      const OutputType finalIndex = this->EvaluateToIndex(this->EndOfInput());
-      OffsetType finalOffset;
+      const OutputType finalIndex = this->EvaluateToIndex(this->EndOfInput() );
+      OffsetType       finalOffset;
       for (unsigned int i = 0; i < VDimension; ++i)
         {
         finalOffset[i] = finalIndex[i] - originalIndex[i];
@@ -110,7 +113,7 @@ PolyLineParametricPath<VDimension>
       offset[i] = potentialIndex[i] - originalIndex[i];
       }
 
-    if (offset != this->GetZeroOffset())
+    if (offset != this->GetZeroOffset() )
       {
       return offset;
       }
@@ -121,7 +124,7 @@ PolyLineParametricPath<VDimension>
     unsigned int maxPartialDerivativeIndex = 0;
     for (unsigned int i = 1; i < VDimension; ++i)
       {
-      if (std::abs(partialDerivatives[i]) > std::abs(partialDerivatives[maxPartialDerivativeIndex]))
+      if (std::abs(partialDerivatives[i]) > std::abs(partialDerivatives[maxPartialDerivativeIndex]) )
         {
         maxPartialDerivativeIndex = i;
         }
@@ -132,7 +135,7 @@ PolyLineParametricPath<VDimension>
 
     //Check to make sure the timestep doesn't put the input past the next integral timestep
     //(since the derivatives can change)
-    if (input + potentialTimestep > std::floor(input + 1.0))
+    if (input + potentialTimestep > std::floor(input + 1.0) )
       {
       input = std::floor(input + 1.0); //Set the input to the next integral time-step
       }
@@ -176,8 +179,10 @@ PolyLineParametricPath< VDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Verticies:  " << m_VertexList << std::endl;
 }
+
 } // end namespace itk
 
 #endif

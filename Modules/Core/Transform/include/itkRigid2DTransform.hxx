@@ -50,8 +50,7 @@ Rigid2DTransform<TScalar>::Rigid2DTransform(unsigned int , unsigned int paramete
 template <typename TScalar>
 Rigid2DTransform<TScalar>::
 ~Rigid2DTransform()
-{
-}
+{}
 
 // Print self
 template <typename TScalar>
@@ -59,6 +58,7 @@ void
 Rigid2DTransform<TScalar>::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Angle       = " << m_Angle        << std::endl;
 }
 
@@ -282,7 +282,7 @@ const typename Rigid2DTransform<TScalar>::ParametersType
 template <typename TScalar>
 void
 Rigid2DTransform<TScalar>::ComputeJacobianWithRespectToParameters(const InputPointType & p,
-                                                                      JacobianType & j ) const
+                                                                  JacobianType & j ) const
 {
   j.SetSize( OutputSpaceDimension, this->GetNumberOfLocalParameters() );
   j.Fill(0.0);
@@ -317,9 +317,9 @@ Rigid2DTransform<TScalar>::SetRotationMatrix(const MatrixType & matrix)
 template <typename TScalar>
 const typename Rigid2DTransform<TScalar>::MatrixType &
 Rigid2DTransform<TScalar>::GetRotationMatrix() const
-{
+  {
   return this->GetMatrix();
-}
+  }
 #endif
 #endif
 } // namespace

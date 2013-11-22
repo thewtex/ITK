@@ -71,7 +71,7 @@ namespace itk
 template< typename TInputImage,
           typename TFeatureImage,
           typename TOutputPixelType = float >
-class ShapePriorSegmentationLevelSetImageFilter:
+class ShapePriorSegmentationLevelSetImageFilter :
   public SegmentationLevelSetImageFilter< TInputImage, TFeatureImage,
                                           TOutputPixelType >
 {
@@ -84,7 +84,7 @@ public:
   /** Standard class typedefs */
   typedef ShapePriorSegmentationLevelSetImageFilter Self;
   typedef SegmentationLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPixelType >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -124,6 +124,7 @@ public:
 
   /** Set/Get the shape signed distance function. */
   virtual void SetShapeFunction(ShapeFunctionType *s);
+
   itkGetModifiableObjectMacro(ShapeFunction, ShapeFunctionType);
 
   /** Set/Get the shape prior MAP cost function. */
@@ -142,7 +143,8 @@ public:
   itkGetConstMacro(InitialParameters, ParametersType);
 
   /** Set/Get the scaling of the shape prior term. */
-  void SetShapePriorScaling(ValueType v)
+  void
+  SetShapePriorScaling(ValueType v)
   {
     if ( v != m_ShapePriorSegmentationFunction->GetShapePriorWeight() )
       {
@@ -151,7 +153,8 @@ public:
       }
   }
 
-  ValueType GetShapePriorScaling() const
+  ValueType
+  GetShapePriorScaling() const
   {
     return m_ShapePriorSegmentationFunction->GetShapePriorWeight();
   }
@@ -160,14 +163,18 @@ public:
    * by a subclass of this object. It is made public to allow itk::Command objects access. */
   virtual void SetShapePriorSegmentationFunction(ShapePriorSegmentationFunctionType *s);
 
-  virtual ShapePriorSegmentationFunctionType * GetShapePriorSegmentationFunction()
-  { return m_ShapePriorSegmentationFunction; }
+  virtual ShapePriorSegmentationFunctionType *
+  GetShapePriorSegmentationFunction()
+  {
+    return m_ShapePriorSegmentationFunction;
+  }
 
   /** Get the current parameters. */
   itkGetConstReferenceMacro(CurrentParameters, ParametersType);
 
 protected:
-  virtual ~ShapePriorSegmentationLevelSetImageFilter() {}
+  virtual
+  ~ShapePriorSegmentationLevelSetImageFilter() {}
   ShapePriorSegmentationLevelSetImageFilter();
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;

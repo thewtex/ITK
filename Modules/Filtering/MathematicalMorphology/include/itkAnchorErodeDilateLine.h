@@ -43,7 +43,8 @@ public:
   void DoLine(std::vector<TInputPix> & buffer, std::vector<TInputPix> & inbuffer,
               unsigned bufflength);
 
-  void SetSize(unsigned int size)
+  void
+  SetSize(unsigned int size)
   {
     m_Size = size;
   }
@@ -52,13 +53,12 @@ public:
 
   AnchorErodeDilateLine();
   ~AnchorErodeDilateLine()
-  {
-  }
+  {}
 
 private:
   unsigned int m_Size;
 
-  typedef Function::MorphologyHistogram< InputImagePixelType, TCompare >              HistogramType;
+  typedef Function::MorphologyHistogram< InputImagePixelType, TCompare > HistogramType;
 
   bool StartLine(std::vector<TInputPix> & buffer,
                  std::vector<TInputPix> & inbuffer,
@@ -78,7 +78,8 @@ private:
                   int & inRightP,
                   int middle);
 
-  bool UseVectorBasedHistogram()
+  bool
+  UseVectorBasedHistogram()
   {
     // bool, short and char are acceptable for vector based algorithm: they do
     // not require
@@ -90,17 +91,21 @@ private:
            || typeid( InputImagePixelType ) == typeid( bool );
   }
 
-  inline bool StrictCompare( const InputImagePixelType & a, const InputImagePixelType & b )
-    {
+  inline bool
+  StrictCompare( const InputImagePixelType & a, const InputImagePixelType & b )
+  {
     TCompare compare;
-    return compare( a, b );
-    }
 
-  inline bool Compare( const InputImagePixelType & a, const InputImagePixelType & b )
-    {
+    return compare( a, b );
+  }
+
+  inline bool
+  Compare( const InputImagePixelType & a, const InputImagePixelType & b )
+  {
     TCompare compare;
+
     return compare( a, b ) || a == b;
-    }
+  }
 
 }; // end of class
 } // end namespace itk

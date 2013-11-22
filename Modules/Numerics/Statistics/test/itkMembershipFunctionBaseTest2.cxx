@@ -28,7 +28,7 @@ class MyMembershipFunctionBase : public MembershipFunctionBase< TMeasurementVect
 {
 public:
   /** Standard class typedef. */
-  typedef MyMembershipFunctionBase  Self;
+  typedef MyMembershipFunctionBase Self;
 
   typedef MembershipFunctionBase< TMeasurementVector > Superclass;
 
@@ -43,12 +43,14 @@ public:
   itkNewMacro(Self);
 
   /** Evaluate membership score */
-  double Evaluate(const TMeasurementVector & ) const
-    {
+  double
+  Evaluate(const TMeasurementVector & ) const
+  {
     double score;
+
     score = 1;
     return score;
-    }
+  }
 
 };
 
@@ -57,15 +59,16 @@ public:
 }
 
 /* Test MembershipFunctionBase using a resizable vector type */
-int itkMembershipFunctionBaseTest2(int, char* [] )
+int
+itkMembershipFunctionBaseTest2(int, char* [] )
 {
 
   const unsigned int MeasurementVectorSize = 3;
 
-  typedef itk::Array< float>  MeasurementVectorType;
+  typedef itk::Array< float> MeasurementVectorType;
 
   typedef itk::Statistics::MembershipFunctionBaseTest::MyMembershipFunctionBase<
-    MeasurementVectorType >   MembershipFunctionBaseType;
+      MeasurementVectorType >   MembershipFunctionBaseType;
 
   MembershipFunctionBaseType::Pointer function = MembershipFunctionBaseType::New();
 

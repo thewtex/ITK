@@ -22,7 +22,8 @@
 #include "itkImageFileWriter.h"
 #include "itkImage.h"
 
-int main(int argc, char *argv[] )
+int
+main(int argc, char *argv[] )
 {
   if( argc < 3 )
     {
@@ -32,12 +33,12 @@ int main(int argc, char *argv[] )
     }
 
   const unsigned int Dimension = 2;
-  typedef  unsigned char  PixelType;
+  typedef  unsigned char PixelType;
 
-  typedef itk::Image< PixelType, Dimension>  ImageType;
+  typedef itk::Image< PixelType, Dimension> ImageType;
 
-  typedef itk::ImageFileReader< ImageType >  ReaderType;
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -45,16 +46,15 @@ int main(int argc, char *argv[] )
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 
-
   typedef itk::BinaryBallStructuringElement<
-    PixelType, Dimension> KernelType;
+      PixelType, Dimension> KernelType;
 
   typedef itk::GrayscaleFunctionDilateImageFilter<
-    ImageType, ImageType, KernelType> FilterType;
+      ImageType, ImageType, KernelType> FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
-  KernelType ball;
+  KernelType           ball;
   KernelType::SizeType ballSize;
   ballSize[0] = 1;
   ballSize[1] = 4;

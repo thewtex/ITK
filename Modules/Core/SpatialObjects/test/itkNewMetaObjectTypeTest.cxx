@@ -24,45 +24,59 @@ class MetaDummy : public MetaObject
 {
 public:
   MetaDummy(unsigned int dims = 3) : m_Value(0.0)
-    {
-      strcpy(m_ObjectTypeName,"Dummy");
-      m_NDims = dims;
-    }
-  float GetValue() const { return m_Value; }
-  void SetValue(float val) { m_Value = val; }
+  {
+    strcpy(m_ObjectTypeName,"Dummy");
+    m_NDims = dims;
+  }
+
+  float
+  GetValue() const {
+    return m_Value;
+  }
+
+  void
+  SetValue(float val) {
+    m_Value = val;
+  }
 
 protected:
-  virtual void M_SetupReadFields(void)
-    {
-      MetaObject::M_SetupReadFields();
-      MET_FieldRecordType *mf = new MET_FieldRecordType;
-      MET_InitReadField(mf,"Value", MET_FLOAT, true);
-      mf->terminateRead = false;
-      m_Fields.push_back(mf);
-    }
-  virtual void M_SetupWriteFields(void)
-    {
-      strcpy(m_ObjectTypeName,"Dummy");
-      MetaObject::M_SetupWriteFields();
+  virtual void
+  M_SetupReadFields(void)
+  {
+    MetaObject::M_SetupReadFields();
+    MET_FieldRecordType *mf = new MET_FieldRecordType;
 
-      MET_FieldRecordType *mf = new MET_FieldRecordType;
-      MET_InitWriteField(mf, "Value", MET_FLOAT, m_Value);
-      m_Fields.push_back(mf);
-    }
-  virtual bool M_Read(void)
-    {
-      if(!MetaObject::M_Read())
-        {
-        return false;
-        }
-      MET_FieldRecordType *mf_Value =
-        MET_GetFieldRecord("Value",&m_Fields);
-      if(mf_Value->defined)
-        {
-        m_Value = (float)mf_Value->value[0];
-        }
-      return true;
-    }
+    MET_InitReadField(mf,"Value", MET_FLOAT, true);
+    mf->terminateRead = false;
+    m_Fields.push_back(mf);
+  }
+
+  virtual void
+  M_SetupWriteFields(void)
+  {
+    strcpy(m_ObjectTypeName,"Dummy");
+    MetaObject::M_SetupWriteFields();
+
+    MET_FieldRecordType *mf = new MET_FieldRecordType;
+    MET_InitWriteField(mf, "Value", MET_FLOAT, m_Value);
+    m_Fields.push_back(mf);
+  }
+
+  virtual bool
+  M_Read(void)
+  {
+    if(!MetaObject::M_Read() )
+      {
+      return false;
+      }
+    MET_FieldRecordType *mf_Value =
+      MET_GetFieldRecord("Value",&m_Fields);
+    if(mf_Value->defined)
+      {
+      m_Value = (float)mf_Value->value[0];
+      }
+    return true;
+  }
 
 private:
   float m_Value;
@@ -86,30 +100,35 @@ public:
   itkNewMacro(Self);
 
   itkTypeMacro(DummySpatialObject, SpatialObject);
-  void SetValue(float val)
-    {
-      this->m_Value = val;
-    }
-  float GetValue() const
-    {
-      return this->m_Value;
-    }
+  void
+  SetValue(float val)
+  {
+    this->m_Value = val;
+  }
+
+  float
+  GetValue() const
+  {
+    return this->m_Value;
+  }
 
 protected:
   DummySpatialObject() : m_Value(0.0)
-    {
-      this->SetDimension(TDimension);
-      this->SetTypeName ("DummySpatialObject");
-      this->GetProperty()->SetRed(1);
-      this->GetProperty()->SetGreen(0);
-      this->GetProperty()->SetBlue(0);
-      this->GetProperty()->SetAlpha(1);
-    }
+  {
+    this->SetDimension(TDimension);
+    this->SetTypeName ("DummySpatialObject");
+    this->GetProperty()->SetRed(1);
+    this->GetProperty()->SetGreen(0);
+    this->GetProperty()->SetBlue(0);
+    this->GetProperty()->SetAlpha(1);
+  }
+
   ~DummySpatialObject() {}
 
 private:
   DummySpatialObject(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
   float m_Value;
 };
 
@@ -118,7 +137,7 @@ private:
  */
 template< unsigned int NDimensions = 3 >
 class MetaDummyConverter :
-    public MetaConverterBase< NDimensions >
+  public MetaConverterBase< NDimensions >
 {
 public:
   /** Standard class typedefs */
@@ -144,15 +163,17 @@ public:
   typedef MetaDummy                                     DummyMetaObjectType;
 
   /** Convert the MetaObject to Spatial Object */
-  virtual SpatialObjectPointer MetaObjectToSpatialObject(const MetaObjectType *mo)
+  virtual SpatialObjectPointer
+  MetaObjectToSpatialObject(const MetaObjectType *mo)
   {
     const DummyMetaObjectType *dummyMO = dynamic_cast<const MetaDummy *>(mo);
+
     if(dummyMO == 0)
       {
       itkExceptionMacro(<< "Can't convert MetaObject to MetaDummy");
       }
     DummySpatialObjectPointer dummySO = DummySpatialObjectType::New();
-    dummySO->SetValue(dummyMO->GetValue());
+    dummySO->SetValue(dummyMO->GetValue() );
 
     dummySO->GetProperty()->SetName( dummyMO->Name() );
     dummySO->SetId( dummyMO->ID() );
@@ -166,16 +187,18 @@ public:
   }
 
   /** Convert the SpatialObject to MetaObject */
-  virtual MetaObjectType *SpatialObjectToMetaObject(const SpatialObjectType *spatialObject)
+  virtual MetaObjectType *
+  SpatialObjectToMetaObject(const SpatialObjectType *spatialObject)
   {
     DummySpatialObjectConstPointer dummySO =
       dynamic_cast<const DummySpatialObjectType *>(spatialObject);
-    if(dummySO.IsNull())
+
+    if(dummySO.IsNull() )
       {
       itkExceptionMacro(<< "Can't downcast SpatialObject to DummySpatialObject");
       }
     DummyMetaObjectType *dummyMO = new MetaDummy;
-    dummyMO->SetValue(dummySO->GetValue());
+    dummyMO->SetValue(dummySO->GetValue() );
 
     dummyMO->ID( dummySO->GetId() );
     dummyMO->Color( dummySO->GetProperty()->GetRed(),
@@ -188,7 +211,8 @@ public:
 
 protected:
   /** Create the specific MetaObject for this class */
-  virtual MetaObjectType *CreateMetaObject()
+  virtual MetaObjectType *
+  CreateMetaObject()
   {
     return dynamic_cast<MetaObjectType *>(new DummyMetaObjectType);
   }
@@ -204,31 +228,32 @@ private:
 
 }
 
-int itkNewMetaObjectTypeTest(int, char* [])
+int
+itkNewMetaObjectTypeTest(int, char* [])
 {
   const float Pi(3.1415926);
 
-  typedef itk::SceneSpatialObject<3>                 SceneType;
-  typedef itk::DummySpatialObject<3>                 DummyType;
-  typedef itk::MetaSceneConverter<3,unsigned short>  MetaSceneConverterType;
+  typedef itk::SceneSpatialObject<3>                SceneType;
+  typedef itk::DummySpatialObject<3>                DummyType;
+  typedef itk::MetaSceneConverter<3,unsigned short> MetaSceneConverterType;
 
-  typedef itk::MetaDummyConverter<3>                 DummyConverterType;
+  typedef itk::MetaDummyConverter<3> DummyConverterType;
 
-  SceneType::Pointer scene(SceneType::New());
+  SceneType::Pointer scene(SceneType::New() );
 
-  DummyType::Pointer dummy(DummyType::New());
+  DummyType::Pointer dummy(DummyType::New() );
   dummy->GetProperty()->SetName("Dummy");
   dummy->SetId(1);
   dummy->SetValue(Pi);
 
   scene->AddSpatialObject(dummy);
 
-  DummyConverterType::Pointer dummyConverter(DummyConverterType::New());
+  DummyConverterType::Pointer dummyConverter(DummyConverterType::New() );
 
   MetaSceneConverterType converter;
   converter.RegisterMetaConverter("Dummy","DummySpatialObject",dummyConverter);
 
-  MetaScene *metaScene = converter.CreateMetaScene(scene);
+  MetaScene *        metaScene = converter.CreateMetaScene(scene);
   SceneType::Pointer myScene = converter.CreateSpatialObjectScene(metaScene);
 
   if(!myScene)
@@ -250,7 +275,7 @@ int itkNewMetaObjectTypeTest(int, char* [])
 
   for(obj = mySceneChildren->begin(); obj != mySceneChildren->end(); ++obj)
     {
-    std::string childType((*obj)->GetTypeName());
+    std::string childType( (*obj)->GetTypeName() );
     if(childType != "DummySpatialObject")
       {
       std::cout << "Expected child type Dummy but found "
@@ -259,8 +284,8 @@ int itkNewMetaObjectTypeTest(int, char* [])
       delete mySceneChildren;
       return EXIT_FAILURE;
       }
-    DummyType::Pointer p = dynamic_cast<DummyType *>((*obj).GetPointer());
-    if(p.IsNull())
+    DummyType::Pointer p = dynamic_cast<DummyType *>( (*obj).GetPointer() );
+    if(p.IsNull() )
       {
       std::cout << "Unable to downcast child SpatialObject to DummySpatialObject"
                 << "[FAILED]" << std::endl;

@@ -33,7 +33,8 @@
 #include "itkVesselTubeSpatialObject.h"
 // Software Guide : EndCodeSnippet
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 
 // Software Guide : BeginLatex
@@ -48,8 +49,8 @@ int main( int , char *[] )
   unsigned int i;
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::VesselTubeSpatialObject<3>            VesselTubeType;
-  typedef itk::VesselTubeSpatialObjectPoint<3>       VesselTubePointType;
+  typedef itk::VesselTubeSpatialObject<3>      VesselTubeType;
+  typedef itk::VesselTubeSpatialObjectPoint<3> VesselTubePointType;
 
   VesselTubeType::Pointer VesselTube = VesselTubeType::New();
 // Software Guide : EndCodeSnippet
@@ -128,9 +129,9 @@ int main( int , char *[] )
 
 // Software Guide : BeginCodeSnippet
   VesselTubeType::PointListType::const_iterator
-            it = VesselTube->GetPoints().begin();
+    it = VesselTube->GetPoints().begin();
   i=0;
-  while(it != VesselTube->GetPoints().end())
+  while(it != VesselTube->GetPoints().end() )
     {
     std::cout << std::endl;
     std::cout << "Point #" << i << std::endl;

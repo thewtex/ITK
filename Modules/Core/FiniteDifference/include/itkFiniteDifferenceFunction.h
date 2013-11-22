@@ -63,7 +63,7 @@ namespace itk
  * \ingroup ITKFiniteDifference
  */
 template< typename TImageType >
-class FiniteDifferenceFunction:public LightObject
+class FiniteDifferenceFunction : public LightObject
 {
 public:
   /** Standard class typedefs. */
@@ -89,7 +89,7 @@ public:
   /** The default boundary condition for finite difference
    * functions that is used unless overridden in the Evaluate() method. */
   typedef ZeroFluxNeumannBoundaryCondition< ImageType >
-  DefaultBoundaryConditionType;
+    DefaultBoundaryConditionType;
 
   /** Neighborhood radius type */
   typedef typename ConstNeighborhoodIterator< TImageType >::RadiusType RadiusType;
@@ -115,7 +115,8 @@ public:
    * gradient magnitude across the entire image region. This value is set in
    * the function object and used by the ComputeUpdate() methods that are called
    * at each pixel as a constant. */
-  virtual void InitializeIteration() {}
+  virtual void
+  InitializeIteration() {}
 
   /** This method is called by a finite difference solver image filter at
    * each pixel that does not lie on a data set boundary.  The width of the
@@ -188,12 +189,13 @@ protected:
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  RadiusType m_Radius;
+  RadiusType    m_Radius;
   PixelRealType m_ScaleCoefficients[ImageDimension];
 
 private:
   FiniteDifferenceFunction(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 } // end namespace itk
 

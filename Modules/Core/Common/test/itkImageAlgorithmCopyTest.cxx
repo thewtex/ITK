@@ -18,9 +18,9 @@
 #include "itkTimeProbe.h"
 #include "itkImageAlgorithm.h"
 
-
 template <typename TImage >
-static void AverageTestCopy( typename TImage::SizeType &size )
+static void
+AverageTestCopy( typename TImage::SizeType &size )
 {
 
   std::cout << "--- For image size: " << size << " ---" << std::endl;
@@ -28,7 +28,6 @@ static void AverageTestCopy( typename TImage::SizeType &size )
   typedef typename TImage::PixelType PixelType;
   typedef TImage                     ImageType;
   typename ImageType::RegionType     region;
-
 
   typename ImageType::IndexType index;
   index.Fill(0);
@@ -44,7 +43,6 @@ static void AverageTestCopy( typename TImage::SizeType &size )
   outImage->SetRegions( region );
   outImage->Allocate();
   outImage->FillBuffer(12);
-
 
   itk::TimeProbe t;
 
@@ -71,7 +69,6 @@ static void AverageTestCopy( typename TImage::SizeType &size )
 
   std::cout << "\tIterator Copy Average Time: " << t.GetMean() << t.GetUnit() << std::endl;
 
-
   itk::TimeProbe t2;
 
   for ( unsigned int i = 0; i < 10; ++i )
@@ -82,7 +79,6 @@ static void AverageTestCopy( typename TImage::SizeType &size )
     }
 
   std::cout << "\tmemcpy Copy Average Time: " << t2.GetMean() << t2.GetUnit() << std::endl;
-
 
   itk::TimeProbe t3;
 
@@ -99,13 +95,13 @@ static void AverageTestCopy( typename TImage::SizeType &size )
   const double memCopyTime = t2.GetMean();
   const double imageCopyTime = t3.GetMean();
 
-
   std::cout << "== SUMMARY SPEEDUP RESULTS == " << std::endl;
   std::cout << "memcpy is " << referenceTime/memCopyTime << " times faster" << std::endl;
   std::cout << "ImageCopy is " << referenceTime/imageCopyTime << " times faster" << std::endl;
 }
 
-int itkImageAlgorithmCopyTest( int, char *[] )
+int
+itkImageAlgorithmCopyTest( int, char *[] )
 {
   typedef itk::Image<char, 3 > ImageType3D;
   ImageType3D::SizeType size3d;
@@ -133,7 +129,6 @@ int itkImageAlgorithmCopyTest( int, char *[] )
 
   size2d.Fill( 64 );
   AverageTestCopy<ImageType2D>( size2d );
-
 
   return EXIT_SUCCESS;
 }

@@ -49,6 +49,7 @@ MinMaxCurvatureFlowImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "StencilRadius: " << m_StencilRadius << std::endl;
 }
 
@@ -73,6 +74,7 @@ MinMaxCurvatureFlowImageFilter< TInputImage, TOutputImage >
   f->SetStencilRadius(m_StencilRadius);
   this->Superclass::InitializeIteration();
 }
+
 } // end namespace itk
 
 #endif

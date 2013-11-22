@@ -31,7 +31,7 @@ namespace itk
  *
  * \ingroup ITKOptimizers
  */
-class SingleValuedNonLinearOptimizer:
+class SingleValuedNonLinearOptimizer :
   public NonLinearOptimizer
 {
 public:
@@ -75,7 +75,8 @@ public:
 
 protected:
   SingleValuedNonLinearOptimizer();
-  virtual ~SingleValuedNonLinearOptimizer() {}
+  virtual
+  ~SingleValuedNonLinearOptimizer() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   CostFunctionPointer m_CostFunction;
@@ -83,6 +84,7 @@ protected:
 private:
   SingleValuedNonLinearOptimizer(const Self &); //purposely not implemented
   void operator=(const Self &);                 //purposely not implemented
+
 };
 } // end namespace itk
 

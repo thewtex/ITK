@@ -57,7 +57,7 @@ FFTComplexToComplexImageFilter< TImage >
     if ( typeid( typename ImageType::PixelType::value_type ) == typeid( double ) )
       {
       smartPtr = dynamic_cast< Self * >(
-        FFTWComplexToComplexImageFilter< TImage >::New().GetPointer() );
+          FFTWComplexToComplexImageFilter< TImage >::New().GetPointer() );
       }
     }
 #endif
@@ -67,7 +67,7 @@ FFTComplexToComplexImageFilter< TImage >
     if ( typeid( typename ImageType::PixelType::value_type ) == typeid( float ) )
       {
       smartPtr = dynamic_cast< Self * >(
-        FFTWComplexToComplexImageFilter< TImage >::New().GetPointer() );
+          FFTWComplexToComplexImageFilter< TImage >::New().GetPointer() );
       }
     }
 #endif
@@ -81,6 +81,7 @@ FFTComplexToComplexImageFilter< TImage >::GenerateOutputInformation()
 {
   // call the superclass' implementation of this method
   Superclass::GenerateOutputInformation();
+
   //
   // If this implementation returns a full result
   // instead of a 'half-complex' matrix, then none of this
@@ -138,10 +139,12 @@ void
 FFTComplexToComplexImageFilter< TImage >::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   // get pointers to the input and output
   typename InputImageType::Pointer inputPtr  =
     const_cast< InputImageType * >( this->GetInput() );
   inputPtr->SetRequestedRegionToLargestPossibleRegion();
 }
+
 }
 #endif

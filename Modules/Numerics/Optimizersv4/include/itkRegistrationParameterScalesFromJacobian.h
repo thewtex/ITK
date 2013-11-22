@@ -55,18 +55,18 @@ public:
   itkTypeMacro( RegistrationParameterScalesFromJacobian, RegistrationParameterScalesEstimator );
 
   /** Type of scales */
-  typedef typename Superclass::ScalesType                ScalesType;
+  typedef typename Superclass::ScalesType ScalesType;
   /** Type of parameters of the optimizer */
-  typedef typename Superclass::ParametersType            ParametersType;
+  typedef typename Superclass::ParametersType ParametersType;
   /** Type of float */
-  typedef typename Superclass::FloatType                 FloatType;
+  typedef typename Superclass::FloatType FloatType;
 
-  typedef typename Superclass::VirtualPointType          VirtualPointType;
-  typedef typename Superclass::VirtualIndexType          VirtualIndexType;
-  typedef typename Superclass::MovingTransformType       MovingTransformType;
-  typedef typename Superclass::FixedTransformType        FixedTransformType;
-  typedef typename Superclass::JacobianType              JacobianType;
-  typedef typename Superclass::VirtualImageConstPointer  VirtualImageConstPointer;
+  typedef typename Superclass::VirtualPointType         VirtualPointType;
+  typedef typename Superclass::VirtualIndexType         VirtualIndexType;
+  typedef typename Superclass::MovingTransformType      MovingTransformType;
+  typedef typename Superclass::FixedTransformType       FixedTransformType;
+  typedef typename Superclass::JacobianType             JacobianType;
+  typedef typename Superclass::VirtualImageConstPointer VirtualImageConstPointer;
 
   /** Estimate parameter scales. */
   virtual void EstimateScales(ScalesType &scales);
@@ -92,11 +92,11 @@ public:
 
   /** Estimate the scales of local steps. */
   virtual void EstimateLocalStepScales(const ParametersType &step,
-    ScalesType &localStepScales);
+                                       ScalesType &localStepScales);
 
 protected:
   RegistrationParameterScalesFromJacobian();
-  ~RegistrationParameterScalesFromJacobian(){};
+  ~RegistrationParameterScalesFromJacobian(){}
 
   virtual void PrintSelf(std::ostream &os, Indent indent) const;
 
@@ -108,13 +108,11 @@ protected:
 
 private:
   RegistrationParameterScalesFromJacobian(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                          //purposely not implemented
 
 }; //class RegistrationParameterScalesFromJacobian
 
-
 }  // namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRegistrationParameterScalesFromJacobian.hxx"

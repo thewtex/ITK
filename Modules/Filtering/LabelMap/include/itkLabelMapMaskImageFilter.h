@@ -45,7 +45,7 @@ namespace itk {
  */
 template<typename TInputImage, typename TOutputImage>
 class LabelMapMaskImageFilter :
-    public LabelMapFilter<TInputImage, TOutputImage>
+  public LabelMapFilter<TInputImage, TOutputImage>
 {
 public:
   /** Standard class typedefs. */
@@ -65,14 +65,13 @@ public:
   typedef typename LabelObjectType::LabelType      LabelType;
   typedef typename LabelObjectType::LengthType     LengthType;
 
-  typedef typename OutputImageType::Pointer        OutputImagePointer;
-  typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
-  typedef typename OutputImageType::RegionType     OutputImageRegionType;
-  typedef typename OutputImageType::PixelType      OutputImagePixelType;
-  typedef typename OutputImageType::IndexType      IndexType;
-  typedef typename OutputImageType::SizeType       SizeType;
-  typedef typename OutputImageType::RegionType     RegionType;
-
+  typedef typename OutputImageType::Pointer      OutputImagePointer;
+  typedef typename OutputImageType::ConstPointer OutputImageConstPointer;
+  typedef typename OutputImageType::RegionType   OutputImageRegionType;
+  typedef typename OutputImageType::PixelType    OutputImagePixelType;
+  typedef typename OutputImageType::IndexType    IndexType;
+  typedef typename OutputImageType::SizeType     SizeType;
+  typedef typename OutputImageType::RegionType   RegionType;
 
   /** ImageDimension constants */
   itkStaticConstMacro(InputImageDimension, unsigned int,
@@ -89,30 +88,34 @@ public:
   itkTypeMacro(LabelMapMaskImageFilter,
                ImageToImageFilter);
 
-   /** Set the feature image */
-  void SetFeatureImage(const TOutputImage *input)
-    {
+  /** Set the feature image */
+  void
+  SetFeatureImage(const TOutputImage *input)
+  {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast<TOutputImage *>(input) );
-    }
+  }
 
   /** Get the feature image */
-  const OutputImageType * GetFeatureImage()
-    {
-    return static_cast<OutputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));
-    }
+  const OutputImageType *
+  GetFeatureImage()
+  {
+    return static_cast<OutputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1) ) );
+  }
 
   /** Set the input image */
-  void SetInput1(const TInputImage *input)
-    {
+  void
+  SetInput1(const TInputImage *input)
+  {
     this->SetInput( input );
-    }
+  }
 
   /** Set the feature image */
-  void SetInput2(const TOutputImage *input)
-    {
+  void
+  SetInput2(const TOutputImage *input)
+  {
     this->SetFeatureImage( input );
-    }
+  }
 
   /**
    * Set/Get the value used as "background" in the output image.
@@ -150,7 +153,7 @@ public:
 
 protected:
   LabelMapMaskImageFilter();
-  ~LabelMapMaskImageFilter() {};
+  ~LabelMapMaskImageFilter() {}
 
   /** LabelMapMaskImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
@@ -158,7 +161,7 @@ protected:
   void GenerateInputRequestedRegion();
 
   /** LabelMapMaskImageFilter will produce the entire output. */
-  void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
+  void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output) );
 
   virtual void GenerateOutputInformation();
 
@@ -172,15 +175,15 @@ protected:
 
 private:
   LabelMapMaskImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);          //purposely not implemented
 
-  InputImagePixelType       m_Label;
-  OutputImagePixelType      m_BackgroundValue;
-  bool                      m_Negated;
-  bool                      m_Crop;
-  SizeType                  m_CropBorder;
+  InputImagePixelType  m_Label;
+  OutputImagePixelType m_BackgroundValue;
+  bool                 m_Negated;
+  bool                 m_Crop;
+  SizeType             m_CropBorder;
 
-  TimeStamp                 m_CropTimeStamp;
+  TimeStamp m_CropTimeStamp;
 
   typename Barrier::Pointer m_Barrier;
 

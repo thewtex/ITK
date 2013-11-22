@@ -29,8 +29,7 @@ namespace itk
 template<typename TInternalComputationValueType>
 ConjugateGradientLineSearchOptimizerv4Template<TInternalComputationValueType>
 ::ConjugateGradientLineSearchOptimizerv4Template()
-{
-}
+{}
 
 /**
  * Destructor
@@ -39,7 +38,6 @@ template<typename TInternalComputationValueType>
 ConjugateGradientLineSearchOptimizerv4Template<TInternalComputationValueType>
 ::~ConjugateGradientLineSearchOptimizerv4Template()
 {}
-
 
 /**
  *PrintSelf
@@ -99,7 +97,7 @@ ConjugateGradientLineSearchOptimizerv4Template<TInternalComputationValueType>
   /* Estimate a learning rate for this step */
   this->m_LineSearchIterations = 0;
   this->m_LearningRate = this->GoldenSectionSearch( this->m_LearningRate * this->m_LowerLimit ,
-                                                   this->m_LearningRate , this->m_LearningRate * this->m_UpperLimit  );
+                                                    this->m_LearningRate , this->m_LearningRate * this->m_UpperLimit  );
 
   /* Begin threaded gradient modification of m_Gradient variable. */
   this->ModifyGradientByLearningRate();
@@ -114,13 +112,13 @@ ConjugateGradientLineSearchOptimizerv4Template<TInternalComputationValueType>
     this->m_StopCondition = Superclass::UPDATE_PARAMETERS_ERROR;
     this->m_StopConditionDescription << "UpdateTransformParameters error";
     this->StopOptimization();
-      // Pass exception to caller
+    // Pass exception to caller
     throw err;
     }
 
   this->InvokeEvent( IterationEvent() );
 }
 
-}//namespace itk
+} //namespace itk
 
 #endif

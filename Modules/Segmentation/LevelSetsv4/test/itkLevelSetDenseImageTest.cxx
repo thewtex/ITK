@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include "itkLevelSetDenseImage.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
@@ -30,11 +29,12 @@ template< typename RealType >
 class ToleranceChecker
 {
 public:
-  ToleranceChecker(): m_Tolerance( 1e-8 )
+  ToleranceChecker() : m_Tolerance( 1e-8 )
   {}
 
-  bool IsOutsideTolerance( const RealType & value, const RealType & theoreticalValue ) const
-    {
+  bool
+  IsOutsideTolerance( const RealType & value, const RealType & theoreticalValue ) const
+  {
     // ignore if they are both effectively zero
     if( vnl_math_max( vnl_math_abs( value ), vnl_math_abs( theoreticalValue ) ) <  50 * vnl_math::eps )
       {
@@ -45,27 +45,31 @@ public:
       return true;
       }
     return false;
-    }
+  }
 
-  RealType GetFractionalError( const RealType & value, const RealType & theoreticalValue ) const
-    {
+  RealType
+  GetFractionalError( const RealType & value, const RealType & theoreticalValue ) const
+  {
     RealType fractionalError = vnl_math_abs( theoreticalValue - value ) /
       ( vnl_math_abs( theoreticalValue ) + 20* vnl_math::eps );
+
     return fractionalError;
-    }
+  }
 
   /** Set fractional tolerance. */
-  void SetTolerance( const RealType & tolerance )
-    {
+  void
+  SetTolerance( const RealType & tolerance )
+  {
     m_Tolerance = tolerance;
-    }
+  }
 
 private:
   RealType m_Tolerance;
 
 };
 
-int itkLevelSetDenseImageTest( int , char* [] )
+int
+itkLevelSetDenseImageTest( int , char* [] )
 {
   const unsigned int Dimension = 2;
 
@@ -104,7 +108,7 @@ int itkLevelSetDenseImageTest( int , char* [] )
   input->FillBuffer( zeroValue );
 
   itk::ImageRegionIteratorWithIndex< ImageType > it( input,
-                                              input->GetLargestPossibleRegion() );
+                                                     input->GetLargestPossibleRegion() );
 
   it.GoToBegin();
 
@@ -121,7 +125,6 @@ int itkLevelSetDenseImageTest( int , char* [] )
 
     PixelType tempValue = testFunction->Evaluate( pt );
     it.Set( tempValue );
-
 
     ++it;
     }
@@ -180,9 +183,9 @@ int itkLevelSetDenseImageTest( int , char* [] )
         toleranceChecker.IsOutsideTolerance( gradient[1], theoreticalGradient[1] ) )
       {
       std::cout << "Index:" << idx << " Point: " << pt
-        << " Error: [" << toleranceChecker.GetFractionalError( gradient[0], theoreticalGradient[0] )
-        << ',' << toleranceChecker.GetFractionalError( gradient[1], theoreticalGradient[1] ) << "] "
-        <<" *EvaluateGradientTestFail* " << gradient << " != " << theoreticalGradient << std::endl;
+                << " Error: [" << toleranceChecker.GetFractionalError( gradient[0], theoreticalGradient[0] )
+                << ',' << toleranceChecker.GetFractionalError( gradient[1], theoreticalGradient[1] ) << "] "
+                <<" *EvaluateGradientTestFail* " << gradient << " != " << theoreticalGradient << std::endl;
       return EXIT_FAILURE;
       }
 

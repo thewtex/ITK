@@ -34,7 +34,8 @@ GE4ImageIO::~GE4ImageIO()
   //Purposefully left blank
 }
 
-bool GE4ImageIO::CanReadFile(const char *FileNameToRead)
+bool
+GE4ImageIO::CanReadFile(const char *FileNameToRead)
 {
   char tmpStr[64];
   //this->SetFileName(FileNameToRead);
@@ -69,7 +70,8 @@ bool GE4ImageIO::CanReadFile(const char *FileNameToRead)
   return true;
 }
 
-GEImageHeader * GE4ImageIO::ReadHeader(const char *FileNameToRead)
+GEImageHeader *
+GE4ImageIO::ReadHeader(const char *FileNameToRead)
 {
   // #define VERBOSE_DEBUGGING
 #if defined( VERBOSE_DEBUGGING )
@@ -103,7 +105,7 @@ GEImageHeader * GE4ImageIO::ReadHeader(const char *FileNameToRead)
 
   //
   // save off the name of the current file...
-  strncpy(hdr->filename, FileNameToRead, sizeof(hdr->filename));
+  strncpy(hdr->filename, FileNameToRead, sizeof(hdr->filename) );
 
   //
   // Next, can you open it?
@@ -118,25 +120,25 @@ GEImageHeader * GE4ImageIO::ReadHeader(const char *FileNameToRead)
     }
   this->GetStringAt(f, SIGNA_STHDR_START * 2 + SIGNA_STHDR_DATE_ASCII * 2, tmpStr, 10);
   tmpStr[10] = '\0';
-  strncpy(hdr->date, tmpStr, sizeof(hdr->date));
+  strncpy(hdr->date, tmpStr, sizeof(hdr->date) );
 
   RGEDEBUG(std::sprintf (debugbuf, "Date = %s\n", tmpStr); cerr << debugbuf; )
   // Get Patient-Name from the STUDY Header
   this->GetStringAt(f, SIGNA_STHDR_START * 2 + SIGNA_STHDR_PATIENT_NAME * 2, tmpStr, 32);
   tmpStr[32] = '\0';
-  strncpy(hdr->hospital, tmpStr, sizeof(hdr->hospital));
+  strncpy(hdr->hospital, tmpStr, sizeof(hdr->hospital) );
 
   /* Get Patient-Number from the STUDY Header */
   this->GetStringAt(f, SIGNA_STHDR_START * 2 + SIGNA_STHDR_PATIENT_ID * 2, tmpStr, 12);
   tmpStr[12] = '\0';
   RGEDEBUG(std::sprintf (debugbuf, "Patient-Number = %s\n", tmpStr); cerr << debugbuf; )
-    strncpy(hdr->patientId, tmpStr, sizeof(hdr->patientId));
+  strncpy(hdr->patientId, tmpStr, sizeof(hdr->patientId) );
 
   /* Get the Exam-Number from the STUDY Header */
   this->GetStringAt(f, SIGNA_STHDR_START * 2 + SIGNA_STHDR_STUDY_NUM * 2, tmpStr, 6);
   tmpStr[6] = '\0';
   RGEDEBUG(std::sprintf (debugbuf, "Exam-Number = %s\n", tmpStr); cerr << debugbuf; )
-    strncpy(hdr->scanId, tmpStr, sizeof(hdr->scanId));
+  strncpy(hdr->scanId, tmpStr, sizeof(hdr->scanId) );
 
   /* Get the FOV from the SERIES Header */
   f.seekg (SIGNA_SEHDR_START * 2 + SIGNA_SEHDR_FOV * 2, std::ios::beg);
@@ -334,11 +336,12 @@ GEImageHeader * GE4ImageIO::ReadHeader(const char *FileNameToRead)
   SizeValueType file_length = itksys::SystemTools::FileLength(FileNameToRead);
 
   hdr->offset = file_length
-                - ( hdr->imageXsize * hdr->imageYsize * 2 );
+    - ( hdr->imageXsize * hdr->imageYsize * 2 );
   return hdr;
 }
 
-float GE4ImageIO
+float
+GE4ImageIO
 ::MvtSunf(int numb)
 {
   float x;
@@ -352,6 +355,7 @@ float GE4ImageIO
 #define smantissa 037777777
 #define sexponent 0377
 #define smantlen 23
+
   ByteSwapper< int >::SwapFromSystemToBigEndian(&numb);
   dg_exp = ( numb >> 24 ) & dexponent;
   dg_sign = numb & signbit;
@@ -377,4 +381,5 @@ float GE4ImageIO
   memcpy ( (void *)&x, (void *)&sun_num, sizeof( x ) );
   return ( x );
 }
+
 } // end namespace itk

@@ -20,7 +20,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int itkImageFileWriterPastingTest1(int argc, char* argv[])
+int
+itkImageFileWriterPastingTest1(int argc, char* argv[])
 {
   if( argc < 3 )
     {
@@ -31,20 +32,20 @@ int itkImageFileWriterPastingTest1(int argc, char* argv[])
   // We remove the output file
   itksys::SystemTools::RemoveFile(argv[2]);
 
-  typedef unsigned char            PixelType;
-  typedef itk::Image<PixelType,3>  ImageType;
+  typedef unsigned char           PixelType;
+  typedef itk::Image<PixelType,3> ImageType;
 
-  typedef itk::ImageFileReader<ImageType>    ReaderType;
-  typedef itk::ImageFileWriter< ImageType >  WriterType;
+  typedef itk::ImageFileReader<ImageType>   ReaderType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   reader->SetUseStreaming( true );
 
   ImageType::RegionType region;
-  ImageType::SizeType size;
-  ImageType::SizeType fullsize;
-  ImageType::IndexType index;
+  ImageType::SizeType   size;
+  ImageType::SizeType   fullsize;
+  ImageType::IndexType  index;
 
   unsigned int m_NumberOfPieces = 10;
 
@@ -64,7 +65,7 @@ int itkImageFileWriterPastingTest1(int argc, char* argv[])
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName(argv[2]);
 
-  for(unsigned int i=0;i<m_NumberOfPieces;i++)
+  for(unsigned int i=0; i<m_NumberOfPieces; i++)
     {
     std::cout << "Reading piece " << i+1 << " of " << m_NumberOfPieces << std::endl;
 
@@ -85,12 +86,12 @@ int itkImageFileWriterPastingTest1(int argc, char* argv[])
     region.SetSize(size);
 
     // Write the image
-    itk::ImageIORegion  ioregion(3);
+    itk::ImageIORegion ioregion(3);
     itk::ImageIORegionAdaptor<ImageType::ImageDimension>::
-      Convert( region, ioregion, reader->GetOutput()->GetLargestPossibleRegion().GetIndex());
+    Convert( region, ioregion, reader->GetOutput()->GetLargestPossibleRegion().GetIndex() );
 
     writer->SetIORegion(ioregion);
-    writer->SetInput(reader->GetOutput());
+    writer->SetInput(reader->GetOutput() );
 
     try
       {
@@ -103,7 +104,6 @@ int itkImageFileWriterPastingTest1(int argc, char* argv[])
       return EXIT_FAILURE;
       }
     } // end for pieces
-
 
   return EXIT_SUCCESS;
 }

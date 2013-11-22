@@ -46,7 +46,7 @@ namespace itk
  */
 
 template< unsigned int VDimension = 3, typename TInput = Point< double, VDimension > >
-class InteriorExteriorSpatialFunction:public
+class InteriorExteriorSpatialFunction : public
   SpatialFunction< bool, VDimension, TInput >
 {
 public:
@@ -73,12 +73,14 @@ public:
 
 protected:
   InteriorExteriorSpatialFunction();
-  virtual ~InteriorExteriorSpatialFunction();
+  virtual
+  ~InteriorExteriorSpatialFunction();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   InteriorExteriorSpatialFunction(const Self &); //purposely not implemented
   void operator=(const Self &);                  //purposely not implemented
+
 };
 } // end namespace itk
 

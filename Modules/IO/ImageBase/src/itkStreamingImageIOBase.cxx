@@ -21,16 +21,18 @@
 
 namespace itk
 {
-StreamingImageIOBase::StreamingImageIOBase():
+StreamingImageIOBase::StreamingImageIOBase() :
   ImageIOBase()
 {}
 
-void StreamingImageIOBase::PrintSelf(std::ostream & os, Indent indent) const
+void
+StreamingImageIOBase::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
 
-bool StreamingImageIOBase
+bool
+StreamingImageIOBase
 ::StreamReadBufferAsBinary(std::istream & file, void *_buffer)
 {
   itkDebugMacro(<< "StreamingReadBufferAsBinary called");
@@ -40,9 +42,9 @@ bool StreamingImageIOBase
   std::streampos dataPos = this->GetDataPosition();
 
   itkDebugStatement(
-  const std::streamsize sizeOfRegion = static_cast< std::streamsize >( m_IORegion.GetNumberOfPixels() )
-                                 * this->GetPixelSize();
-  );
+    const std::streamsize sizeOfRegion = static_cast< std::streamsize >( m_IORegion.GetNumberOfPixels() )
+      * this->GetPixelSize();
+    );
 
   // compute the number of continuous bytes to be read
   std::streamsize sizeOfChunk = 1;
@@ -77,7 +79,7 @@ bool StreamingImageIOBase
 
     file.seekg(dataPos + seekPos, std::ios::beg);
 
-    if ( ! this->ReadBufferAsBinary(file, buffer, sizeOfChunk) )
+    if ( !this->ReadBufferAsBinary(file, buffer, sizeOfChunk) )
       {
       itkExceptionMacro( "Error reading in ReadBufferAsBinary!" );
       }
@@ -113,7 +115,8 @@ bool StreamingImageIOBase
   return true;
 }
 
-bool StreamingImageIOBase::ReadBufferAsBinary(std::istream & is, void *buffer, StreamingImageIOBase::SizeType num)
+bool
+StreamingImageIOBase::ReadBufferAsBinary(std::istream & is, void *buffer, StreamingImageIOBase::SizeType num)
 {
   // some systems have a limit of 2GB to be read at once
   const SizeType maxChunk = 1024 * 1024 * 1024;
@@ -139,9 +142,10 @@ bool StreamingImageIOBase::ReadBufferAsBinary(std::istream & is, void *buffer, S
   return true;
 }
 
-bool StreamingImageIOBase::WriteBufferAsBinary(std::ostream & os,
-                                               const void *buffer,
-                                               StreamingImageIOBase::SizeType num)
+bool
+StreamingImageIOBase::WriteBufferAsBinary(std::ostream & os,
+                                          const void *buffer,
+                                          StreamingImageIOBase::SizeType num)
 {
   // some systems have a limit of 2GB to be written at once
   const SizeType maxChunk = 1024 * 1024 * 1024;
@@ -167,7 +171,8 @@ bool StreamingImageIOBase::WriteBufferAsBinary(std::ostream & os,
   return true;
 }
 
-bool StreamingImageIOBase::StreamWriteBufferAsBinary(std::ostream & file, const void *_buffer)
+bool
+StreamingImageIOBase::StreamWriteBufferAsBinary(std::ostream & file, const void *_buffer)
 {
   itkDebugMacro(<< "StreamingWriteBufferAsBinary called");
 
@@ -242,7 +247,8 @@ bool StreamingImageIOBase::StreamWriteBufferAsBinary(std::ostream & file, const 
   return true;
 }
 
-void StreamingImageIOBase::OpenFileForReading(std::ifstream & os, const char *filename)
+void
+StreamingImageIOBase::OpenFileForReading(std::ifstream & os, const char *filename)
 {
   // Make sure that we have a file to
   if ( *filename == 0 )
@@ -266,7 +272,8 @@ void StreamingImageIOBase::OpenFileForReading(std::ifstream & os, const char *fi
     }
 }
 
-void StreamingImageIOBase::OpenFileForWriting(std::ofstream & os, const char *filename, bool truncate)
+void
+StreamingImageIOBase::OpenFileForWriting(std::ofstream & os, const char *filename, bool truncate)
 {
   // Make sure that we have a file to
   if ( *filename == 0 )
@@ -299,12 +306,14 @@ void StreamingImageIOBase::OpenFileForWriting(std::ofstream & os, const char *fi
     }
 }
 
-bool StreamingImageIOBase::CanStreamRead(void)
+bool
+StreamingImageIOBase::CanStreamRead(void)
 {
   return true;
 }
 
-bool StreamingImageIOBase::CanStreamWrite(void)
+bool
+StreamingImageIOBase::CanStreamWrite(void)
 {
   return true;
 }
@@ -420,7 +429,8 @@ StreamingImageIOBase::GetActualNumberOfSplitsForWriting(unsigned int numberOfReq
   return GetActualNumberOfSplitsForWritingCanStreamWrite(numberOfRequestedSplits, pasteRegion);
 }
 
-ImageIORegion StreamingImageIOBase::GenerateStreamableReadRegionFromRequestedRegion(
+ImageIORegion
+StreamingImageIOBase::GenerateStreamableReadRegionFromRequestedRegion(
   const ImageIORegion & requestedRegion) const
 {
   // This implementation returns the requestedRegion if
@@ -440,7 +450,8 @@ ImageIORegion StreamingImageIOBase::GenerateStreamableReadRegionFromRequestedReg
   return streamableRegion;
 }
 
-bool StreamingImageIOBase::RequestedToStream(void) const
+bool
+StreamingImageIOBase::RequestedToStream(void) const
 {
   // we choose the max dimension and then pad the smaller with ones
   //
@@ -479,4 +490,5 @@ bool StreamingImageIOBase::RequestedToStream(void) const
 
   return ( largestRegion != ioregion );
 }
+
 } // namespace itk

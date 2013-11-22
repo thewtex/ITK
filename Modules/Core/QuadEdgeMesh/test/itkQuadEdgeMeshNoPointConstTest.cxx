@@ -19,13 +19,14 @@
 #include "itkQuadEdgeMesh.h"
 #include <iostream>
 
-int itkQuadEdgeMeshNoPointConstTest( int , char* [] )
+int
+itkQuadEdgeMeshNoPointConstTest( int , char* [] )
 {
-  typedef itk::QuadEdgeMesh< double, 3 >     MeshType;
-  typedef MeshType::QEType                   QEType;
-  typedef QEType::OriginRefType              OriginRefType;
+  typedef itk::QuadEdgeMesh< double, 3 > MeshType;
+  typedef MeshType::QEType               QEType;
+  typedef QEType::OriginRefType          OriginRefType;
 
-  OriginRefType VCL_LIMIT = vcl_numeric_limits< OriginRefType >::max( );
+  OriginRefType VCL_LIMIT = vcl_numeric_limits< OriginRefType >::max();
   OriginRefType GQE_LIMIT = QEType::m_NoPoint;
   OriginRefType QEM_LIMIT = MeshType::m_NoPoint;
 

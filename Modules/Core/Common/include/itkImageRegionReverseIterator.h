@@ -66,7 +66,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TImage >
-class ImageRegionReverseIterator:public ImageRegionReverseConstIterator< TImage >
+class ImageRegionReverseIterator : public ImageRegionReverseConstIterator< TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -101,14 +101,20 @@ public:
   ImageRegionReverseIterator(const ImageConstIterator< TImage > & it);
 
   /** Set the pixel value */
-  void Set(const PixelType & value) const
-  { this->m_PixelAccessor.Set(*const_cast< InternalPixelType  * >( ( this->m_Buffer + this->m_Offset ) ), value); }
+  void
+  Set(const PixelType & value) const
+  {
+    this->m_PixelAccessor.Set(*const_cast< InternalPixelType  * >( ( this->m_Buffer + this->m_Offset ) ), value);
+  }
 
   /** Return a reference to the pixel
    * This method will provide the fastest access to pixel
    * data, but it will NOT support ImageAdaptors. */
-  PixelType & Value(void)
-  { return *const_cast< InternalPixelType  * >( ( this->m_Buffer + this->m_Offset ) ); }
+  PixelType &
+  Value(void)
+  {
+    return *const_cast< InternalPixelType  * >( ( this->m_Buffer + this->m_Offset ) );
+  }
 
   /** Return an iterator for the beginning of the region. "Begin"
    * is defined as the first pixel in the region.
@@ -125,6 +131,7 @@ protected:
       in order to enforce const correctness. */
   ImageRegionReverseIterator(const ImageRegionReverseConstIterator< TImage > & it);
   Self & operator=(const ImageRegionReverseConstIterator< TImage > & it);
+
 };
 } // end namespace itk
 

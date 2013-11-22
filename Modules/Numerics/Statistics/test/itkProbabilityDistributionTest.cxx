@@ -24,38 +24,84 @@ namespace Statistics {
 class ProbabilityDistributionTestingHelper : public ProbabilityDistribution
 {
 public:
-  typedef ProbabilityDistributionTestingHelper     Self;
-  typedef ProbabilityDistribution                  Superclass;
-  typedef SmartPointer<Self>                       Pointer;
-  typedef SmartPointer<const Self>                 ConstPointer;
+  typedef ProbabilityDistributionTestingHelper Self;
+  typedef ProbabilityDistribution              Superclass;
+  typedef SmartPointer<Self>                   Pointer;
+  typedef SmartPointer<const Self>             ConstPointer;
 
   itkTypeMacro(ProbabilityDistributionTestingHelper, ProbabilityDistribution);
 
   itkNewMacro(Self);
 
-  virtual SizeValueType GetNumberOfParameters() const { return 42; }
-  virtual double EvaluatePDF(double ) const { return 42.0; }
-  virtual double EvaluatePDF(double , const ParametersType&) const { return 42.0; }
-  virtual double EvaluateCDF(double ) const { return 42.0; }
-  virtual double EvaluateCDF(double , const ParametersType&) const { return 42.0; }
-  virtual double EvaluateInverseCDF(double ) const  { return 42.0; }
-  virtual double EvaluateInverseCDF(double , const ParametersType&) const  { return 42.0; }
-  virtual bool HasMean() const { return true; }
-  virtual bool HasVariance() const { return true; }
-  virtual double GetMean() const { return 42.0; }
-  virtual double GetVariance() const { return 42.0; }
+  virtual SizeValueType
+  GetNumberOfParameters() const {
+    return 42;
+  }
 
-  void RunTests()
-    {
+  virtual double
+  EvaluatePDF(double ) const {
+    return 42.0;
+  }
+
+  virtual double
+  EvaluatePDF(double , const ParametersType&) const {
+    return 42.0;
+  }
+
+  virtual double
+  EvaluateCDF(double ) const {
+    return 42.0;
+  }
+
+  virtual double
+  EvaluateCDF(double , const ParametersType&) const {
+    return 42.0;
+  }
+
+  virtual double
+  EvaluateInverseCDF(double ) const  {
+    return 42.0;
+  }
+
+  virtual double
+  EvaluateInverseCDF(double , const ParametersType&) const  {
+    return 42.0;
+  }
+
+  virtual bool
+  HasMean() const {
+    return true;
+  }
+
+  virtual bool
+  HasVariance() const {
+    return true;
+  }
+
+  virtual double
+  GetMean() const {
+    return 42.0;
+  }
+
+  virtual double
+  GetVariance() const {
+    return 42.0;
+  }
+
+  void
+  RunTests()
+  {
     std::cout << "Superclass name = " << this->Superclass::GetNameOfClass() << std::endl;
     std::cout << "Parameters = " << this->Superclass::GetParameters() << std::endl;
-    }
+  }
+
 };
 
 }
 }
 
-int itkProbabilityDistributionTest(int, char* [] )
+int
+itkProbabilityDistributionTest(int, char* [] )
 {
   std::cout << "itkProbabilityDistributionTest Test \n \n";
 

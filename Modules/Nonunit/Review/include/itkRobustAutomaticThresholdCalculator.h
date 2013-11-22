@@ -38,7 +38,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TInputImage, typename TGradientImage >
-class RobustAutomaticThresholdCalculator:public Object
+class RobustAutomaticThresholdCalculator : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -70,7 +70,8 @@ public:
   typedef typename GradientImageType::PixelType    GradientPixelType;
 
   /** Set the input image. */
-  virtual void SetInput(const InputImageType *image)
+  virtual void
+  SetInput(const InputImageType *image)
   {
     if ( m_Input != image )
       {
@@ -80,7 +81,8 @@ public:
       }
   }
 
-  virtual void SetGradient(const GradientImageType *image)
+  virtual void
+  SetGradient(const GradientImageType *image)
   {
     if ( m_Gradient != image )
       {
@@ -104,14 +106,15 @@ public:
 
 protected:
   RobustAutomaticThresholdCalculator();
-  virtual ~RobustAutomaticThresholdCalculator() {}
+  virtual
+  ~RobustAutomaticThresholdCalculator() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   RobustAutomaticThresholdCalculator(const Self &); //purposely not implemented
   void operator=(const Self &);                     //purposely not implemented
 
-  bool           m_Valid;                      // Have moments been computed
+  bool m_Valid;                                // Have moments been computed
                                                // yet?
   double         m_Pow;
   InputPixelType m_Output;

@@ -48,9 +48,9 @@ template< typename TPixel, unsigned int VDimension, typename TAllocator >
 const typename ImageKernelOperator< TPixel, VDimension, TAllocator >::ImageType *
 ImageKernelOperator< TPixel, VDimension, TAllocator >
 ::GetImageKernel() const
-{
+  {
   return m_ImageKernel;
-}
+  }
 
 template< typename TPixel, unsigned int VDimension, typename TAllocator >
 typename ImageKernelOperator< TPixel, VDimension, TAllocator >::CoefficientVector
@@ -119,6 +119,7 @@ ImageKernelOperator< TPixel, VDimension, TAllocator >
     *data = static_cast< TPixel >( *it );
     }
 }
+
 } // end namespace itk
 
 #endif

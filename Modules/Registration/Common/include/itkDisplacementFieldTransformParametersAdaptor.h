@@ -62,15 +62,15 @@ namespace itk
  */
 template<typename TTransform>
 class DisplacementFieldTransformParametersAdaptor
-: public TransformParametersAdaptor<TTransform>
+  : public TransformParametersAdaptor<TTransform>
 {
 public:
 
   /** Standard class typedefs. */
-  typedef DisplacementFieldTransformParametersAdaptor          Self;
-  typedef TransformParametersAdaptor<TTransform>               Superclass;
-  typedef SmartPointer<Self>                                   Pointer;
-  typedef SmartPointer<const Self>                             ConstPointer;
+  typedef DisplacementFieldTransformParametersAdaptor Self;
+  typedef TransformParametersAdaptor<TTransform>      Superclass;
+  typedef SmartPointer<Self>                          Pointer;
+  typedef SmartPointer<const Self>                    ConstPointer;
 
   /** New macro for creation of through a Smart Pointer. */
   itkNewMacro( Self );
@@ -79,16 +79,16 @@ public:
   itkTypeMacro( DisplacementFieldTransformParametersAdaptor, TransformParametersAdaptor );
 
   /** Typedefs associated with the transform */
-  typedef TTransform                                     TransformType;
-  typedef typename TransformType::Pointer                TransformPointer;
-  typedef typename TransformType::ParametersType         ParametersType;
-  typedef typename TransformType::ParametersValueType    ParametersValueType;
+  typedef TTransform                                  TransformType;
+  typedef typename TransformType::Pointer             TransformPointer;
+  typedef typename TransformType::ParametersType      ParametersType;
+  typedef typename TransformType::ParametersValueType ParametersValueType;
 
-  typedef typename TransformType::DisplacementFieldType  DisplacementFieldType;
-  typedef typename DisplacementFieldType::PointType      PointType;
-  typedef typename DisplacementFieldType::SizeType       SizeType;
-  typedef typename DisplacementFieldType::DirectionType  DirectionType;
-  typedef typename DisplacementFieldType::SpacingType    SpacingType;
+  typedef typename TransformType::DisplacementFieldType DisplacementFieldType;
+  typedef typename DisplacementFieldType::PointType     PointType;
+  typedef typename DisplacementFieldType::SizeType      SizeType;
+  typedef typename DisplacementFieldType::DirectionType DirectionType;
+  typedef typename DisplacementFieldType::SpacingType   SpacingType;
 
   /** Dimension of parameters. */
   itkStaticConstMacro( SpaceDimension, unsigned int, TransformType::Dimension );
@@ -126,7 +126,7 @@ protected:
 
 private:
   DisplacementFieldTransformParametersAdaptor( const Self & ); //purposely not implemented
-  void operator=( const Self & );             //purposely not implemented
+  void operator=( const Self & );                              //purposely not implemented
 
 }; //class DisplacementFieldTransformParametersAdaptor
 }  // namespace itk

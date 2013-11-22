@@ -42,13 +42,15 @@ SimpleMutexLock::~SimpleMutexLock()
 }
 
 // Lock the MutexLock
-void SimpleMutexLock::Lock()
+void
+SimpleMutexLock::Lock()
 {
   pthread_mutex_lock(&m_MutexLock);
 }
 
 // Unlock the MutexLock
-void SimpleMutexLock::Unlock()
+void
+SimpleMutexLock::Unlock()
 {
   pthread_mutex_unlock(&m_MutexLock);
 }

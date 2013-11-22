@@ -22,8 +22,8 @@
 #include "itkLabelImageToLabelMapFilter.h"
 #include "itkLabelMapOverlayImageFilter.h"
 
-
-int itkLabelMapOverlayImageFilterTest1(int argc, char * argv[])
+int
+itkLabelMapOverlayImageFilterTest1(int argc, char * argv[])
 {
   if( argc != 5 )
     {

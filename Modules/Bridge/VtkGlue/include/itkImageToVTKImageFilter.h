@@ -47,10 +47,10 @@ class ImageToVTKImageFilter : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
-  typedef ImageToVTKImageFilter     Self;
-  typedef ProcessObject             Superclass;
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef ImageToVTKImageFilter    Self;
+  typedef ProcessObject            Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -59,11 +59,11 @@ public:
   itkTypeMacro(ImageToVTKImageFilter, ProcessObject);
 
   /** Some typedefs. */
-  typedef TInputImage                            InputImageType;
-  typedef typename InputImageType::ConstPointer  InputImagePointer;
+  typedef TInputImage                           InputImageType;
+  typedef typename InputImageType::ConstPointer InputImagePointer;
 
-  typedef VTKImageExport< InputImageType>        ExporterFilterType;
-  typedef typename ExporterFilterType::Pointer   ExporterFilterPointer;
+  typedef VTKImageExport< InputImageType>      ExporterFilterType;
+  typedef typename ExporterFilterType::Pointer ExporterFilterPointer;
 
   /** Get the output in the form of a vtkImage.
       This call is delegated to the internal vtkImageImporter filter  */
@@ -72,6 +72,7 @@ public:
   /** Set the input in the form of an itk::Image */
   using Superclass::SetInput;
   void SetInput( const InputImageType * );
+
   InputImageType * GetInput();
 
   /** Return the internal VTK image importer filter.
@@ -89,14 +90,15 @@ public:
 
 protected:
   ImageToVTKImageFilter();
-  virtual ~ImageToVTKImageFilter();
+  virtual
+  ~ImageToVTKImageFilter();
 
 private:
   ImageToVTKImageFilter(const Self&); //purposely not implemented
   void operator=(const Self&);        //purposely not implemented
 
-  ExporterFilterPointer       m_Exporter;
-  vtkImageImport *            m_Importer;
+  ExporterFilterPointer m_Exporter;
+  vtkImageImport *      m_Importer;
 };
 
 } // end namespace itk

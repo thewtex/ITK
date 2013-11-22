@@ -125,8 +125,7 @@ protected:
   Similarity3DTransform(unsigned int paramDim);
   Similarity3DTransform();
   ~Similarity3DTransform()
-  {
-  }
+  {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

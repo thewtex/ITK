@@ -94,7 +94,7 @@ namespace Statistics
  * \ingroup Statistics
  * \ingroup ITKStatistics
  */
-class NormalVariateGenerator:
+class NormalVariateGenerator :
   public RandomVariateGeneratorBase
 {
 public:
@@ -119,7 +119,8 @@ public:
 
 protected:
   NormalVariateGenerator();
-  virtual ~NormalVariateGenerator();
+  virtual
+  ~NormalVariateGenerator();
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** get a variate */

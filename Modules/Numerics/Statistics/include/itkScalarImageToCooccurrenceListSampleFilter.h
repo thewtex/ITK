@@ -48,7 +48,7 @@ namespace Statistics
  */
 
 template< typename TImage >
-class ScalarImageToCooccurrenceListSampleFilter:
+class ScalarImageToCooccurrenceListSampleFilter :
   public ProcessObject
 {
 public:
@@ -67,9 +67,9 @@ public:
 
   /** Neighborhood iterator type. */
   typedef itk::ShapedNeighborhoodIterator<
-    TImage,
-    ConstantBoundaryCondition< TImage >
-    > ShapedNeighborhoodIteratorType;
+      TImage,
+      ConstantBoundaryCondition< TImage >
+      > ShapedNeighborhoodIteratorType;
 
   /** Offset type used for Neighborhoods */
   typedef typename ShapedNeighborhoodIteratorType::OffsetType OffsetType;
@@ -101,7 +101,8 @@ public:
 
 protected:
   ScalarImageToCooccurrenceListSampleFilter();
-  virtual ~ScalarImageToCooccurrenceListSampleFilter() {}
+  virtual
+  ~ScalarImageToCooccurrenceListSampleFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef DataObject::Pointer                           DataObjectPointer;
@@ -116,7 +117,8 @@ private:
   ScalarImageToCooccurrenceListSampleFilter(const Self &); //purposely not
                                                            // implemented
   void operator=(const Self &);                            //purposely not
-                                                           // implemented
+
+  // implemented
 
   OffsetTable m_OffsetTable;
 };  // end of class ScalarImageToListSampleFilter

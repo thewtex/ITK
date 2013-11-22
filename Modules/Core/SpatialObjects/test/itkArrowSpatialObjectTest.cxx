@@ -22,9 +22,10 @@
 
 #include "itkArrowSpatialObject.h"
 
-int itkArrowSpatialObjectTest(int, char* [])
+int
+itkArrowSpatialObjectTest(int, char* [])
 {
-  typedef itk::ArrowSpatialObject<3>   ArrowType;
+  typedef itk::ArrowSpatialObject<3> ArrowType;
 
   ArrowType::Pointer myArrow = ArrowType::New();
 
@@ -38,7 +39,6 @@ int itkArrowSpatialObjectTest(int, char* [])
     }
   std::cout << "[PASSED]" << std::endl;
 
-
   // Testing the direction of the arrow
   std::cout << "Testing direction : ";
 
@@ -48,9 +48,9 @@ int itkArrowSpatialObjectTest(int, char* [])
 
   myArrow->SetDirection(direction);
   if(myArrow->GetDirection()[0] != 0
-    || myArrow->GetDirection()[1] != 1
-    || myArrow->GetDirection()[2] != 0
-    )
+     || myArrow->GetDirection()[1] != 1
+     || myArrow->GetDirection()[2] != 0
+     )
     {
     std::cout << "[FAILURE]" << std::endl;
     return EXIT_FAILURE;
@@ -64,37 +64,36 @@ int itkArrowSpatialObjectTest(int, char* [])
   itk::Point<double,3> out;
   out[0]=0;out[1]=2.1;out[2]=0;
 
-  if(!myArrow->IsInside(in))
-  {
+  if(!myArrow->IsInside(in) )
+    {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
-  if(myArrow->IsInside(out))
-  {
+  if(myArrow->IsInside(out) )
+    {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   std::cout<<"[PASSED]"<<std::endl;
-
 
   std::cout << "ComputeBoundingBox: ";
   myArrow->ComputeBoundingBox();
   ArrowType::BoundingBoxType * boundingBox = myArrow->GetBoundingBox();
 
   if( (boundingBox->GetBounds()[2] != 0 )
-     || (boundingBox->GetBounds()[3] != 1 )
+      || (boundingBox->GetBounds()[3] != 1 )
       )
     {
-      std::cout<<"[FAILED]"<<std::endl;
-      return EXIT_FAILURE;
+    std::cout<<"[FAILED]"<<std::endl;
+    return EXIT_FAILURE;
     }
 
   std::cout << "[PASSED]" << std::endl;
 
   std::cout << "Testing 2D Arrow:";
-  typedef itk::ArrowSpatialObject<2>   Arrow2DType;
+  typedef itk::ArrowSpatialObject<2> Arrow2DType;
   Arrow2DType::Pointer myArrow2D = Arrow2DType::New();
   myArrow2D->Print(std::cout);
 

@@ -40,7 +40,8 @@
 #include "itkGDCMSeriesFileNames.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
   if( argc < 2 )
     {
@@ -56,10 +57,10 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef signed short       PixelType;
-  const unsigned int         Dimension = 3;
+  typedef signed short PixelType;
+  const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType, Dimension >      ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -70,7 +71,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageSeriesReader< ImageType >     ReaderType;
+  typedef itk::ImageSeriesReader< ImageType > ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
   // Software Guide : EndCodeSnippet
@@ -82,7 +83,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::GDCMImageIO       ImageIOType;
+  typedef itk::GDCMImageIO ImageIOType;
 
   ImageIOType::Pointer dicomIO = ImageIOType::New();
 
@@ -99,7 +100,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::GDCMSeriesFileNames     NamesGeneratorType;
+  typedef itk::GDCMSeriesFileNames NamesGeneratorType;
 
   NamesGeneratorType::Pointer nameGenerator = NamesGeneratorType::New();
 
@@ -116,7 +117,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef std::vector<std::string>    FileNamesContainer;
+  typedef std::vector<std::string> FileNamesContainer;
   FileNamesContainer fileNames = nameGenerator->GetInputFileNames();
 
   reader->SetFileNames( fileNames );
@@ -156,7 +157,7 @@ int main( int argc, char* argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::MetaDataDictionary   DictionaryType;
+  typedef itk::MetaDataDictionary DictionaryType;
 
   const  DictionaryType & dictionary = dicomIO->GetMetaDataDictionary();
   // Software Guide : EndCodeSnippet
@@ -210,7 +211,7 @@ int main( int argc, char* argv[] )
   // Software Guide : BeginCodeSnippet
   while( itr != end )
     {
-    itk::MetaDataObjectBase::Pointer  entry = itr->second;
+    itk::MetaDataObjectBase::Pointer entry = itr->second;
 
     MetaDataStringType::Pointer entryvalue =
       dynamic_cast<MetaDataStringType *>( entry.GetPointer() );

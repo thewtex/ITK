@@ -20,33 +20,41 @@
 #include <iostream>
 
 class mammal
- {
- public:
-   virtual int GetType()=0;
-   virtual bool operator== (mammal &);
-   mammal() {};
-   virtual ~mammal() {};
- };
+{
+public:
+  virtual int GetType()=0;
+
+  virtual bool operator==(mammal &);
+
+  mammal() {}
+  virtual
+  ~mammal() {}
+};
 
 class human : public mammal
 {
-  public:
-    int GetType()
-    {
-      return 32;
-    }
+public:
+  int
+  GetType()
+  {
+    return 32;
+  }
+
 };
 
 class naked_mole_rat : public mammal
 {
-  public:
-    int GetType()
-    {
-      return 2;
-    }
+public:
+  int
+  GetType()
+  {
+    return 2;
+  }
+
 };
 
-bool mammal::operator== (mammal &o)
+bool
+mammal::operator==(mammal &o)
 {
   if ( this->GetType() != o.GetType() )
     {
@@ -68,10 +76,12 @@ bool mammal::operator== (mammal &o)
     }
 }
 
-int lookup(const int& i)
+int
+lookup(const int& i)
 {
   static int table[5] = { 23,42,42,32,12 };
-  if ( ! ( 0 <= i && i < 5 ) )
+
+  if ( !( 0 <= i && i < 5 ) )
     {
     itk::RangeError e(__FILE__, __LINE__);
     e.SetLocation("int lookup(const int& )");
@@ -81,12 +91,13 @@ int lookup(const int& i)
   return table[i];
 }
 
-
-int itkExceptionObjectTest(int, char* [] )
+int
+itkExceptionObjectTest(int, char* [] )
 {
   // SOME BASIC TESTS OF THE itk::ExceptionObject 's
 
   itk::RangeError E;
+
   E.SetLocation("itkExceptionObjectTest(int, char**)");
   E.SetDescription("E");
   std::cout << E << std::endl;
@@ -128,7 +139,7 @@ int itkExceptionObjectTest(int, char* [] )
   bool OneShouldFail=true;
   try
     {
-    human john, jane;
+    human          john, jane;
     naked_mole_rat hal;
     OneShouldFail &= (john == john);  // OK
     OneShouldFail &= (jane == john);  // OK

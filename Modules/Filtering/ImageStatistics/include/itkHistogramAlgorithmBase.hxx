@@ -46,6 +46,7 @@ HistogramAlgorithmBase< TInputHistogram >
     os << "not set." << std::endl;
     }
 }
+
 } // end of namespace itk
 
 #endif

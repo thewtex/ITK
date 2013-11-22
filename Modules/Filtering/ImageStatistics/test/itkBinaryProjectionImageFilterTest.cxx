@@ -23,7 +23,8 @@
 
 #include "itkBinaryProjectionImageFilter.h"
 
-int itkBinaryProjectionImageFilterTest(int argc, char * argv[])
+int
+itkBinaryProjectionImageFilterTest(int argc, char * argv[])
 {
   if( argc < 5 )
     {
@@ -65,7 +66,7 @@ int itkBinaryProjectionImageFilterTest(int argc, char * argv[])
   //Exercise Set/Get methods for Foreground Value
   filter->SetForegroundValue( 255 );
 
-  if ( filter->GetForegroundValue( ) != 255 )
+  if ( filter->GetForegroundValue() != 255 )
     {
     std::cerr << "Set/Get Foreground value problem: "
               << filter->GetForegroundValue() << std::endl;
@@ -77,7 +78,7 @@ int itkBinaryProjectionImageFilterTest(int argc, char * argv[])
   //Exercise Set/Get methods for Background Value
   filter->SetBackgroundValue( 0 );
 
-  if ( filter->GetBackgroundValue( ) != 0 )
+  if ( filter->GetBackgroundValue() != 0 )
     {
     std::cerr << "Set/Get Background value problem" << std::endl;
     return EXIT_FAILURE;

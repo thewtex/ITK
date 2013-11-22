@@ -57,8 +57,8 @@ template< typename TScalar = double >
 // Data type for scalars (float or double)
 class Rigid2DTransform :
   public MatrixOffsetTransformBase< TScalar, 2, 2 >        // Dimensions of
-                                                             // input and output
-                                                             // spaces
+                                                           // input and output
+                                                           // spaces
 {
 public:
   /** Standard class typedefs. */
@@ -168,11 +168,14 @@ public:
   /** Set/Get the angle of rotation in radians. These methods
    * are old and are retained for backward compatibility.
    * Instead, use SetAngle() and GetAngle(). */
-  void SetRotation(TScalar angle)
+  void
+  SetRotation(TScalar angle)
   {
     this->SetAngle(angle);
   }
-  virtual const TScalar & GetRotation() const
+
+  virtual const TScalar &
+  GetRotation() const
   {
     return m_Angle;
   }
@@ -229,8 +232,8 @@ public:
    * retained for backward compatibility. Instead, use SetMatrix()
    * GetMatrix().
    */
-  itkLegacyMacro(virtual void SetRotationMatrix(const MatrixType & matrix));
-  itkLegacyMacro(const MatrixType & GetRotationMatrix() const);
+  itkLegacyMacro(virtual void SetRotationMatrix(const MatrixType &matrix) );
+  itkLegacyMacro(const MatrixType &GetRotationMatrix() const);
 #endif
 
 protected:
@@ -257,7 +260,8 @@ protected:
   virtual void ComputeMatrixParameters(void);
 
   /** Update angle without recomputation of other internal variables. */
-  void SetVarAngle(TScalar angle)
+  void
+  SetVarAngle(TScalar angle)
   {
     m_Angle = angle;
   }

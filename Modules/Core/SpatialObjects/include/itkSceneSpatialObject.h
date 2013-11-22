@@ -35,7 +35,7 @@ namespace itk
  */
 
 template< unsigned int TSpaceDimension = 3 >
-class SceneSpatialObject:
+class SceneSpatialObject :
   public Object
 {
 public:
@@ -50,7 +50,7 @@ public:
   typedef SpatialObject< TSpaceDimension >    SpatialObjectType;
   typedef typename SpatialObjectType::Pointer SpatialObjectPointer;
 
-  typedef std::list< SpatialObjectPointer >   ObjectListType;
+  typedef std::list< SpatialObjectPointer > ObjectListType;
 
   itkStaticConstMacro(MaximumDepth, unsigned int, 9999999);
 
@@ -87,8 +87,15 @@ public:
   ModifiedTimeType GetMTime(void) const;
 
   /** Get/Set the ParentID */
-  void SetParentId(int parentid) { m_ParentId = parentid; }
-  int  GetParentId(void) { return m_ParentId; }
+  void
+  SetParentId(int parentid) {
+    m_ParentId = parentid;
+  }
+
+  int
+  GetParentId(void) {
+    return m_ParentId;
+  }
 
   /** Return a SpatialObject in the SceneSpatialObject given its ID */
   SpatialObject< TSpaceDimension > * GetObjectById(int Id);
@@ -119,7 +126,8 @@ protected:
   SceneSpatialObject();
 
   /** destructor */
-  virtual ~SceneSpatialObject();
+  virtual
+  ~SceneSpatialObject();
 
   /** Print the object informations in a stream. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;

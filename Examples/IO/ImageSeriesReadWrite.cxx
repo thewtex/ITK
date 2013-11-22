@@ -43,8 +43,8 @@
 #include "itkPNGImageIO.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   // Verify the number of parameters in the command line
   if( argc < 4 )
@@ -54,7 +54,6 @@ int main( int argc, char ** argv )
     return EXIT_FAILURE;
     }
 
-
   // Software Guide : BeginLatex
   //
   // We start by defining the \code{PixelType} and \code{ImageType}.
@@ -63,12 +62,11 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char                       PixelType;
+  typedef unsigned char PixelType;
   const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType, Dimension >  ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -81,19 +79,17 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageSeriesReader< ImageType >  ReaderType;
-  typedef itk::ImageFileWriter<   ImageType >  WriterType;
+  typedef itk::ImageSeriesReader< ImageType > ReaderType;
+  typedef itk::ImageFileWriter<   ImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
   // Software Guide : EndCodeSnippet
 
-
   const unsigned int first = atoi( argv[1] );
   const unsigned int last  = atoi( argv[2] );
 
   const char * outputFilename = argv[3];
-
 
   // Software Guide : BeginLatex
   //
@@ -102,11 +98,10 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::NumericSeriesFileNames    NameGeneratorType;
+  typedef itk::NumericSeriesFileNames NameGeneratorType;
 
   NameGeneratorType::Pointer nameGenerator = NameGeneratorType::New();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -160,7 +155,6 @@ int main( int argc, char ** argv )
   // Software Guide : BeginCodeSnippet
   writer->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

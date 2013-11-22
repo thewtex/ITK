@@ -61,10 +61,10 @@ class DOMNodeXMLReader : public Object
 {
 public:
   /** Standard class typedefs. */
-  typedef DOMNodeXMLReader            Self;
-  typedef Object                      Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef DOMNodeXMLReader           Self;
+  typedef Object                     Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -119,7 +119,7 @@ protected:
 
 private:
   DOMNodeXMLReader(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);   //purposely not implemented
 
   /** Variable to hold the input XML file name. */
   std::string m_FileName;
@@ -134,9 +134,11 @@ private:
 } // namespace itk
 
 /** The operator ">>" is overloaded such that a DOM object can be conveniently read from an input stream. */
-inline std::istream& operator>>( std::istream& is, itk::DOMNode& object )
+inline std::istream&
+operator>>( std::istream& is, itk::DOMNode& object )
 {
   itk::DOMNodeXMLReader::Pointer reader = itk::DOMNodeXMLReader::New();
+
   reader->SetOutput( &object );
   reader->Update( is );
   return is;

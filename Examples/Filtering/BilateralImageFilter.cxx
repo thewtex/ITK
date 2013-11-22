@@ -80,7 +80,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -98,8 +97,8 @@
 #include "itkBilateralImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 5 )
     {
@@ -108,7 +107,6 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   //  Software Guide : BeginLatex
   //
   //  The image types are instantiated using pixel type and dimension.
@@ -116,16 +114,14 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef    unsigned char    InputPixelType;
-  typedef    unsigned char    OutputPixelType;
+  typedef    unsigned char InputPixelType;
+  typedef    unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
-
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
   //  Software Guide : BeginLatex
   //
@@ -140,14 +136,12 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::BilateralImageFilter<
-               InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -159,7 +153,6 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   filter->SetInput( reader->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -180,14 +173,13 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   const unsigned int Dimension = InputImageType::ImageDimension;
-  double domainSigmas[ Dimension ];
+  double             domainSigmas[ Dimension ];
   for(unsigned int i=0; i<Dimension; i++)
     {
     domainSigmas[i] = atof( argv[3] );
     }
   const double rangeSigma = atof( argv[4] );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -201,12 +193,10 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   filter->SetDomainSigma( domainSigmas );
   filter->SetRangeSigma(  rangeSigma   );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -216,15 +206,15 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-  typedef unsigned char                          WritePixelType;
-  typedef itk::Image< WritePixelType, 2 >        WriteImageType;
+  typedef unsigned char                   WritePixelType;
+  typedef itk::Image< WritePixelType, 2 > WriteImageType;
   typedef itk::RescaleIntensityImageFilter<
-               OutputImageType, WriteImageType > RescaleFilterType;
+      OutputImageType, WriteImageType > RescaleFilterType;
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
 
-  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName( argv[2] );
 
@@ -233,7 +223,6 @@ int main( int argc, char * argv[] )
   writer->SetInput( rescaler->GetOutput() );
   writer->Update();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

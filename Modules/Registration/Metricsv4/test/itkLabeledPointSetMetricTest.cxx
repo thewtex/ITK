@@ -22,7 +22,8 @@
 #include <fstream>
 
 template<unsigned int Dimension>
-int itkLabeledPointSetMetricTestRun()
+int
+itkLabeledPointSetMetricTestRun()
 {
   typedef unsigned int LabelType;
 
@@ -43,7 +44,7 @@ int itkLabeledPointSetMetricTestRun()
     offset[d] = 1.1 + d;
     }
   unsigned long count = 0;
-  float pointSetRadius = 100.0;
+  float         pointSetRadius = 100.0;
   for( float theta = 0; theta < 2.0 * vnl_math::pi; theta += 0.1 )
     {
     LabelType label = 1;
@@ -161,7 +162,8 @@ int itkLabeledPointSetMetricTestRun()
   return EXIT_SUCCESS;
 }
 
-int itkLabeledPointSetMetricTest( int, char* [] )
+int
+itkLabeledPointSetMetricTest( int, char* [] )
 {
   int result = EXIT_SUCCESS;
 

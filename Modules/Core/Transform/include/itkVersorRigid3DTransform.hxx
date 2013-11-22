@@ -27,23 +27,20 @@ template <typename TScalar>
 VersorRigid3DTransform<TScalar>
 ::VersorRigid3DTransform() :
   Superclass(ParametersDimension)
-{
-}
+{}
 
 // Constructor with arguments
 template <typename TScalar>
 VersorRigid3DTransform<TScalar>::VersorRigid3DTransform(unsigned int paramDim) :
   Superclass(paramDim)
-{
-}
+{}
 
 // Constructor with arguments
 template <typename TScalar>
 VersorRigid3DTransform<TScalar>::VersorRigid3DTransform(const MatrixType & matrix,
-                                                            const OutputVectorType & offset) :
+                                                        const OutputVectorType & offset) :
   Superclass(matrix, offset)
-{
-}
+{}
 
 // Set Parameters
 template <typename TScalar>

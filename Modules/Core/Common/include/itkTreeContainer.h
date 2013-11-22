@@ -35,7 +35,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TValueType >
-class TreeContainer:public TreeContainerBase< TValueType >
+class TreeContainer : public TreeContainerBase< TValueType >
 {
 public:
 
@@ -94,7 +94,10 @@ public:
   bool Swap(IteratorType & v, IteratorType & w);
 
   /** Get the root */
-  const TreeNodeType * GetRoot() const { return m_Root.GetPointer(); }
+  const TreeNodeType *
+  GetRoot() const {
+    return m_Root.GetPointer();
+  }
 
   /** Add a child to a given parent using values */
   bool Add(const TValueType child, const TValueType parent);
@@ -105,13 +108,15 @@ public:
 protected:
 
   TreeContainer();
-  virtual ~TreeContainer();
+  virtual
+  ~TreeContainer();
 
   typename TreeNodeType::Pointer m_Root;
 
   int m_DefaultChildrenCount;
 
   void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // namespace itk
 

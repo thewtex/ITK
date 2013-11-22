@@ -38,8 +38,9 @@ namespace itk
 class ITKCommon_EXPORT MapRecord
 {
 public:
-  typedef SizeValueType  MemoryLoadType;
-  virtual ~MapRecord();
+  typedef SizeValueType MemoryLoadType;
+  virtual
+  ~MapRecord();
   /** Reset the record
   */
   void Reset(void);
@@ -61,7 +62,7 @@ public:
  *  It is filled by operator>>(istream&,SmapsRecord&).
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT SmapsRecord:public MapRecord
+class ITKCommon_EXPORT SmapsRecord : public MapRecord
 {
   /** Input operator to fill a SmapsRecord
    *  The format has to be the following:
@@ -80,6 +81,7 @@ class ITKCommon_EXPORT SmapsRecord:public MapRecord
    *  Private_Dirty:        0 kB
    */
   friend ITKCommon_EXPORT std::istream &  operator>>(std::istream & in, SmapsRecord & record);
+
 };
 
 /** \class VMMapSummaryRecord
@@ -88,7 +90,7 @@ class ITKCommon_EXPORT SmapsRecord:public MapRecord
  *  It is filled by operator>>(istream&,VMMapRecord&).
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT VMMapSummaryRecord:public MapRecord
+class ITKCommon_EXPORT VMMapSummaryRecord : public MapRecord
 {
   /** Input operator to fill a VMMapRecord
    *  recordName             [ numberK]
@@ -96,6 +98,7 @@ class ITKCommon_EXPORT VMMapSummaryRecord:public MapRecord
    *  MALLOC                  [  18536K]
    */
   friend ITKCommon_EXPORT std::istream &  operator>>(std::istream & in, VMMapSummaryRecord & record);
+
 };
 
 /** \class VMMapRecord
@@ -104,7 +107,7 @@ class ITKCommon_EXPORT VMMapSummaryRecord:public MapRecord
  *  It is filled by operator>>(istream&,SmapsRecord&).
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT VMMapRecord:public MapRecord
+class ITKCommon_EXPORT VMMapRecord : public MapRecord
 {
   /** Input operator to fill a VMMapRecord
    *  recordName address [ numberK] permissions mode
@@ -112,6 +115,7 @@ class ITKCommon_EXPORT VMMapRecord:public MapRecord
    *  __DATA                         8fe51000 [   4K] rw-/rwx SM=COW /usr/lib/dyld
    */
   friend ITKCommon_EXPORT std::istream &  operator>>(std::istream & in, VMMapRecord & record);
+
 };
 
 /** MAP DATA **/
@@ -126,9 +130,10 @@ class ITKCommon_EXPORT MapData
 {
 public:
   /** need a large enough type to be able to accumulate the SmapsRecord */
-  typedef SizeValueType  MemoryLoadType;
+  typedef SizeValueType MemoryLoadType;
   //todo delete records
-  virtual ~MapData();
+  virtual
+  ~MapData();
 
   /** Returns the heap usage in kB of the process */
   virtual MemoryLoadType GetHeapUsage() = 0;
@@ -161,12 +166,13 @@ protected:
  *  Smaps files have been added since the linux kernel 2.6
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT SmapsData_2_6:public MapData
+class ITKCommon_EXPORT SmapsData_2_6 : public MapData
 {
 public:
   typedef MapData::MemoryLoadType MemoryLoadType;
 
-  virtual ~SmapsData_2_6();
+  virtual
+  ~SmapsData_2_6();
 
   /** Returns the heap usage in kB of the process */
   virtual MemoryLoadType GetHeapUsage();
@@ -190,12 +196,13 @@ protected:
  *  On Panther, /usr/bin/vmmap used to be installed by the DevTools.pkg,
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT VMMapData_10_2:public MapData
+class ITKCommon_EXPORT VMMapData_10_2 : public MapData
 {
 public:
   typedef MapData::MemoryLoadType MemoryLoadType;
   VMMapData_10_2();
-  virtual ~VMMapData_10_2();
+  virtual
+  ~VMMapData_10_2();
 
   /** Returns the heap usage in kB of the process */
   virtual MemoryLoadType GetHeapUsage();
@@ -224,7 +231,8 @@ class MapFileParser
 public:
   typedef typename TMapData::MemoryLoadType MemoryLoadType;
 
-  virtual ~MapFileParser();
+  virtual
+  ~MapFileParser();
   /** Load and parse a Map file pointed by mapFileLocation.
    *  If mapFileLocation is empty, load the default file
    *  Throw an exception is the file can't be opened.
@@ -268,16 +276,18 @@ protected:
  * \ingroup ITKCommon
  */
 template< typename TSmapsDataType >
-class SmapsFileParser:public MapFileParser< TSmapsDataType >
+class SmapsFileParser : public MapFileParser< TSmapsDataType >
 {
 public:
-  virtual ~SmapsFileParser();
+  virtual
+  ~SmapsFileParser();
   /** Load and parse the smaps file pointed by smapsFileLocation.
    *  If smapsFileLocation is empty, load the file located at
    *  "/proc/" + PID + "/smaps"
    *  Throw an exception is the file can't be opened.
    */
   virtual void ReadFile(const std::string & mapFileLocation = "");
+
 };
 
 /** \class VMMapFileParser
@@ -286,14 +296,16 @@ public:
  * \ingroup ITKCommon
  */
 template< typename TVMMapDataType >
-class VMMapFileParser:public MapFileParser< TVMMapDataType >
+class VMMapFileParser : public MapFileParser< TVMMapDataType >
 {
 public:
-  virtual ~VMMapFileParser();
+  virtual
+  ~VMMapFileParser();
   /** If no vmmap file, create one using "vmmap pid" command
    *  Throw an exception is the file can't be created/opened.
    */
   virtual void ReadFile(const std::string & mapFileLocation = "");
+
 };
 }  // end namespace itk
 

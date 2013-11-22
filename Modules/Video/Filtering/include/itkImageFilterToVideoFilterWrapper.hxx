@@ -49,10 +49,11 @@ ImageFilterToVideoFilterWrapper<TImageToImageFilter>::
 PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   if (m_ImageFilter)
     {
     os << indent << "ImageFilter:" << std::endl;
-    m_ImageFilter->Print(os, indent.GetNextIndent());
+    m_ImageFilter->Print(os, indent.GetNextIndent() );
     }
   else
     {
@@ -70,14 +71,14 @@ ImageFilterToVideoFilterWrapper<TImageToImageFilter>::
 TemporalStreamingGenerateData()
 {
   // Make sure ImageFilter is not null
-  if (m_ImageFilter.IsNull())
+  if (m_ImageFilter.IsNull() )
     {
     itkExceptionMacro("ImageFilter has not been set");
     }
 
   // Get the input and output video streams
   const InputVideoStreamType* input = this->GetInput();
-  OutputVideoStreamType* output = this->GetOutput();
+  OutputVideoStreamType*      output = this->GetOutput();
 
   // Get input and output frame numbers
   typename OutputVideoStreamType::TemporalRegionType outReqTempRegion =
@@ -89,19 +90,18 @@ TemporalStreamingGenerateData()
   SizeValueType inFrameNum = inReqTempRegion.GetFrameStart();
 
   // Set up the internal image pipeline
-  m_ImageFilter->SetInput(input->GetFrame(inFrameNum));
+  m_ImageFilter->SetInput(input->GetFrame(inFrameNum) );
 
   // Update the filter
   m_ImageFilter->Update();
 
   // Set the output frame
-  output->SetFrame(outFrameNum, m_ImageFilter->GetOutput());
+  output->SetFrame(outFrameNum, m_ImageFilter->GetOutput() );
 
   // Make a new output for the filter so this output doesn't get destroyed
   m_ImageFilter->GetOutput()->DisconnectPipeline();
   m_ImageFilter->MakeOutput(0);
 }
-
 
 } // end namespace itk
 

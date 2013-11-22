@@ -90,6 +90,7 @@ NeighborhoodBinaryThresholdImageFunction< TInputImage, TCoordRep >
 
   return ( allInside );
 }
+
 } // end namespace itk
 
 #endif

@@ -76,6 +76,7 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
 ::SetInputImage(const InputImageType *ptr)
 {
   Superclass::SetInputImage(ptr);
+
   m_OperatorImageFunction->SetInputImage(ptr);
 }
 
@@ -293,7 +294,7 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
         {
         const unsigned int idx = 2 * direction + 1; // select only gaussian kernel;
         const unsigned int center = (unsigned int)( ( m_OperatorArray[idx].GetSize()[direction] - 1 ) / 2 );
-        TOutput      centerval = m_OperatorArray[idx].GetCenterValue();
+        TOutput            centerval = m_OperatorArray[idx].GetCenterValue();
         m_OperatorArray[idx][center] = 0;
         m_OperatorImageFunction->SetOperator(m_OperatorArray[idx]);
         value = m_OperatorImageFunction->EvaluateAtIndex(index) + centerval * value;
@@ -302,8 +303,8 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
 
     // then derivative in the direction
     const unsigned int idx = 2 * ii;
-    const signed int center = (unsigned int)( ( m_OperatorArray[idx].GetSize()[ii] - 1 ) / 2 );
-    TOutput    centerval = m_OperatorArray[idx].GetCenterValue();
+    const signed int   center = (unsigned int)( ( m_OperatorArray[idx].GetSize()[ii] - 1 ) / 2 );
+    TOutput            centerval = m_OperatorArray[idx].GetCenterValue();
     m_OperatorArray[idx][center] = 0;
     m_OperatorImageFunction->SetOperator(m_OperatorArray[idx]);
     value = m_OperatorImageFunction->EvaluateAtIndex(index) + centerval * value;
@@ -431,6 +432,7 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
   this->ConvertContinuousIndexToNearestIndex(cindex, index);
   return this->EvaluateAtIndex(index);
 }
+
 } // end namespace itk
 
 #endif

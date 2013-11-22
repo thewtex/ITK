@@ -16,14 +16,15 @@
  *
  *=========================================================================*/
 
-
 #include "itkCovarianceImageFunction.h"
 
-int itkCovarianceImageFunctionTest(int, char* [] )
+int
+itkCovarianceImageFunctionTest(int, char* [] )
 {
 
   const unsigned int Dimension = 3;
-  typedef unsigned char   PixelComponentType;
+
+  typedef unsigned char PixelComponentType;
   const unsigned int VectorDimension = 4;
 
   typedef itk::FixedArray< PixelComponentType, VectorDimension > PixelType;
@@ -31,10 +32,10 @@ int itkCovarianceImageFunctionTest(int, char* [] )
   typedef itk::CovarianceImageFunction< ImageType >              FunctionType;
 
   // Create and allocate the image
-  ImageType::Pointer      image = ImageType::New();
-  ImageType::SizeType     size;
-  ImageType::IndexType    start;
-  ImageType::RegionType   region;
+  ImageType::Pointer    image = ImageType::New();
+  ImageType::SizeType   size;
+  ImageType::IndexType  start;
+  ImageType::RegionType region;
 
   size[0] = 20;
   size[1] = 20;
@@ -63,13 +64,13 @@ int itkCovarianceImageFunctionTest(int, char* [] )
 
   function->SetNeighborhoodRadius( 5 );
 
-  ImageType::IndexType    index;
+  ImageType::IndexType index;
 
   index[0] = 10;
   index[1] = 10;
   index[2] = 10;
 
-  FunctionType::OutputType  covariance;
+  FunctionType::OutputType covariance;
 
   covariance = function->EvaluateAtIndex( index );
   std::cout << "function->EvaluateAtIndex( index ): " << covariance << std::endl;
@@ -95,7 +96,6 @@ int itkCovarianceImageFunctionTest(int, char* [] )
   // Test GetConstReferenceMacro
   const unsigned int & neighborhoodRadius = function->GetNeighborhoodRadius();
   std::cout << "function->GetNeighborhoodRadius(): " << neighborhoodRadius << std::endl;
-
 
   // since the input image is constant
   // the should be equal to the initial value

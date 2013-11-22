@@ -27,14 +27,12 @@ namespace itk
 template< typename TTermContainer >
 LevelSetEquationContainer< TTermContainer >
 ::LevelSetEquationContainer()
-{
-}
+{}
 
 template< typename TTermContainer >
 LevelSetEquationContainer< TTermContainer >
 ::~LevelSetEquationContainer()
-{
-}
+{}
 
 template< typename TTermContainer >
 void
@@ -50,7 +48,7 @@ LevelSetEquationContainer< TTermContainer >
       }
     else
       {
-      if( ! iEquation->GetLevelSetContainer() )
+      if( !iEquation->GetLevelSetContainer() )
         {
         itkGenericExceptionMacro( << "m_LevelSetContainer and iEquation->GetLevelSetContainer() are NULL" );
         }
@@ -71,8 +69,8 @@ LevelSetEquationContainer< TTermContainer >
 template< typename TTermContainer >
 typename LevelSetEquationContainer< TTermContainer >::TermContainerType*
 LevelSetEquationContainer< TTermContainer >
-::GetEquation( const LevelSetIdentifierType& iId ) const
-{
+::GetEquation( const LevelSetIdentifierType &iId ) const
+  {
   if( this->m_Container.empty() )
     {
     itkGenericExceptionMacro( << "m_Container is empty" );
@@ -84,7 +82,7 @@ LevelSetEquationContainer< TTermContainer >
     itkGenericExceptionMacro( <<"this equation " << iId << " does not exist" );
     }
   return it->second;
-}
+  }
 
 template< typename TTermContainer >
 typename LevelSetEquationContainer< TTermContainer >::Iterator
@@ -120,8 +118,8 @@ LevelSetEquationContainer< TTermContainer >
 ::UpdateInternalEquationTerms()
 {
   for( MapContainerIterator it = this->m_Container.begin();
-    it != this->m_Container.end();
-    ++it )
+       it != this->m_Container.end();
+       ++it )
     {
     (it->second )->Update();
     }
@@ -135,7 +133,7 @@ LevelSetEquationContainer< TTermContainer >
                const LevelSetOutputRealType & newValue )
 {
   for( MapContainerIterator it = this->m_Container.begin();
-    it != this->m_Container.end(); ++it )
+       it != this->m_Container.end(); ++it )
     {
     (it->second )->UpdatePixel( iP, oldValue, newValue );
     }
@@ -147,12 +145,12 @@ LevelSetEquationContainer< TTermContainer >
 ::InitializeParameters()
 {
   for( MapContainerIterator it = this->m_Container.begin();
-    it != this->m_Container.end();
-    ++it )
+       it != this->m_Container.end();
+       ++it )
     {
     (it->second )->InitializeParameters();
     }
-  }
+}
 
 template< typename TTermContainer >
 typename LevelSetEquationContainer< TTermContainer >::LevelSetOutputRealType

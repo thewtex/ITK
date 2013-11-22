@@ -31,10 +31,10 @@ OBJMeshIOFactory
 ::OBJMeshIOFactory()
 {
   this->RegisterOverride( "itkMeshIOBase",
-                         "itkOBJMeshIO",
-                         "OBJ Mesh IO",
-                         1,
-                         CreateObjectFunction< OBJMeshIO >::New() );
+                          "itkOBJMeshIO",
+                          "OBJ Mesh IO",
+                          1,
+                          CreateObjectFunction< OBJMeshIO >::New() );
 }
 
 OBJMeshIOFactory
@@ -54,4 +54,5 @@ OBJMeshIOFactory
 {
   return "OBJ Mesh IO Factory, allows the loading of OBJ mesh into insight";
 }
+
 } // end namespace itk

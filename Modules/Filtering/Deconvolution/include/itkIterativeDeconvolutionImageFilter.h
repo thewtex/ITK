@@ -47,19 +47,20 @@ namespace itk
  *
  * \ingroup ITKDeconvolution
  */
-template< typename TInputImage, typename TKernelImage=TInputImage, typename TOutputImage=TInputImage, typename TInternalPrecision=double >
+template< typename TInputImage, typename TKernelImage=TInputImage, typename TOutputImage=TInputImage,
+          typename TInternalPrecision=double >
 class IterativeDeconvolutionImageFilter :
-    public FFTConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPrecision >
+  public FFTConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPrecision >
 {
 public:
   /** Standard typedefs. */
-  typedef IterativeDeconvolutionImageFilter               Self;
+  typedef IterativeDeconvolutionImageFilter Self;
   typedef FFTConvolutionImageFilter< TInputImage,
                                      TKernelImage,
                                      TOutputImage,
                                      TInternalPrecision > Superclass;
-  typedef SmartPointer< Self >                            Pointer;
-  typedef SmartPointer< const Self >                      ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Other useful typedefs. */
   typedef TInputImage  InputImageType;
@@ -85,11 +86,13 @@ public:
 
   /** Stop iteration. When this method is called, the iteration will
    * halt after the current iteration has completed. */
-  void SetStopIteration(bool stop)
+  void
+  SetStopIteration(bool stop)
   {
     // Don't call Modified() to avoid triggering a new update.
     m_StopIteration = stop;
   }
+
   itkGetConstMacro(StopIteration, bool);
 
   /** Get the current iteration. */
@@ -97,7 +100,8 @@ public:
 
 protected:
   IterativeDeconvolutionImageFilter();
-  virtual ~IterativeDeconvolutionImageFilter();
+  virtual
+  ~IterativeDeconvolutionImageFilter();
 
   /** Runs before iterating . */
   virtual void Initialize(ProgressAccumulator * progress,
@@ -106,7 +110,7 @@ protected:
 
   /** Performs an iteration. */
   virtual void Iteration(ProgressAccumulator * itkNotUsed(progress),
-                         float itkNotUsed(iterationProgressWeight)) = 0;
+                         float itkNotUsed(iterationProgressWeight) ) = 0;
 
   /** Runs after iterating. */
   virtual void Finish(ProgressAccumulator * progress,

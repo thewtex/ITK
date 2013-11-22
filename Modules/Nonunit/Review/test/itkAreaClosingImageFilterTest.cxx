@@ -22,7 +22,8 @@
 #include "itkSimpleFilterWatcher.h"
 #include "itkAreaClosingImageFilter.h"
 
-int itkAreaClosingImageFilterTest(int argc, char * argv[])
+int
+itkAreaClosingImageFilterTest(int argc, char * argv[])
 {
 
   if( argc != 6 )
@@ -35,8 +36,8 @@ int itkAreaClosingImageFilterTest(int argc, char * argv[])
 
   const int dim = 3;
 
-  typedef unsigned char                  PType;
-  typedef itk::Image< PType, dim >       IType;
+  typedef unsigned char            PType;
+  typedef itk::Image< PType, dim > IType;
 
   typedef itk::ImageFileReader< IType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
@@ -76,25 +77,24 @@ int itkAreaClosingImageFilterTest(int argc, char * argv[])
     return EXIT_FAILURE;
     }
 
-
   filter->SetInput( reader->GetOutput() );
 
   filter->SetLambda( atoi(argv[3]) );
-  if ( filter->GetLambda( ) != atoi(argv[3]) )
+  if ( filter->GetLambda() != atoi(argv[3]) )
     {
     std::cerr << "Set/Get Lambda problem." << std::endl;
     return EXIT_FAILURE;
     }
 
   filter->SetFullyConnected( atoi(argv[4]) );
-  if ( filter->GetFullyConnected( ) != (bool)atoi(argv[4]) )
+  if ( filter->GetFullyConnected() != (bool)atoi(argv[4]) )
     {
     std::cerr << "Set/Get FullyConnected problem." << std::endl;
     return EXIT_FAILURE;
     }
 
   filter->SetUseImageSpacing( atoi(argv[5]) );
-  if ( filter->GetUseImageSpacing( ) != (bool)atoi(argv[5]) )
+  if ( filter->GetUseImageSpacing() != (bool)atoi(argv[5]) )
     {
     std::cerr << "Set/Get UseImageSpacing problem." << std::endl;
     return EXIT_FAILURE;

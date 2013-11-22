@@ -35,7 +35,7 @@ class CellBase;
  *
  * \ingroup ITKBioCell
  */
-class CellularAggregateBase:public Object
+class CellularAggregateBase : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -64,9 +64,11 @@ public:
 
 protected:
   CellularAggregateBase();
-  virtual ~CellularAggregateBase();
+  virtual
+  ~CellularAggregateBase();
   CellularAggregateBase(const Self &);
   void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end namespace bio
 } // end namespace itk

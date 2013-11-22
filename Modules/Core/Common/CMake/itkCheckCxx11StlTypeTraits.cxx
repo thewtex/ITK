@@ -16,15 +16,15 @@
  *
  *=========================================================================*/
 
-
 // C++11 moved the type traits from the std::tr1 namespace to just std
 // namespace. This tries to compile and check for compatibility with
 // the C++11 for the type_traits.
 
 #include <type_traits>
 
-int main(void)
+int
+main(void)
 {
-    // Just try to use one type_traits function in tr1
+  // Just try to use one type_traits function in tr1
   return std::is_convertible<float, double>::value;
 }

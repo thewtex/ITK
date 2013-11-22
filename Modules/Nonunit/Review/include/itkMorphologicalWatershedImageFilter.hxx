@@ -55,8 +55,9 @@ MorphologicalWatershedImageFilter< TInputImage, TOutputImage >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( !input )
-        { return; }
+            { return; }
   input->SetRequestedRegion( input->GetLargestPossibleRegion() );
 }
 
@@ -96,15 +97,15 @@ MorphologicalWatershedImageFilter< TInputImage, TOutputImage >
 
   // label the components
   typedef ConnectedComponentImageFilter< TOutputImage, TOutputImage >
-  ConnectedCompType;
+    ConnectedCompType;
   typename ConnectedCompType::Pointer label = ConnectedCompType::New();
   label->SetFullyConnected(m_FullyConnected);
   label->SetInput( rmin->GetOutput() );
 
   // the watershed
   typedef
-  MorphologicalWatershedFromMarkersImageFilter< TInputImage, TOutputImage >
-  WatershedType;
+    MorphologicalWatershedFromMarkersImageFilter< TInputImage, TOutputImage >
+    WatershedType;
   typename WatershedType::Pointer wshed = WatershedType::New();
   wshed->SetInput( this->GetInput() );
   wshed->SetMarkerImage( label->GetOutput() );
@@ -161,5 +162,6 @@ MorphologicalWatershedImageFilter< TInputImage, TOutputImage >
      << static_cast< typename NumericTraits< InputImagePixelType >::PrintType >( m_Level )
      << std::endl;
 }
+
 } // end namespace itk
 #endif

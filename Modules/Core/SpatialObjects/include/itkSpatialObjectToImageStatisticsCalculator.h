@@ -34,7 +34,7 @@ namespace itk
  * \ingroup ITKSpatialObjects
  */
 template< typename TInputImage, typename TInputSpatialObject, unsigned int TSampleDimension = 1 >
-class SpatialObjectToImageStatisticsCalculator:public Object
+class SpatialObjectToImageStatisticsCalculator : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -94,13 +94,22 @@ public:
   itkSetObjectMacro(SpatialObject, SpatialObjectType);
 
   /** Get the mean */
-  const VectorType & GetMean() const { return m_Mean; }
+  const VectorType &
+  GetMean() const {
+    return m_Mean;
+  }
 
   /** Get the covariance matrix */
-  const MatrixType & GetCovarianceMatrix() const { return m_CovarianceMatrix; }
+  const MatrixType &
+  GetCovarianceMatrix() const {
+    return m_CovarianceMatrix;
+  }
 
   /** Get the sum of pixels */
-  AccumulateType GetSum() const { return m_Sum; }
+  AccumulateType
+  GetSum() const {
+    return m_Sum;
+  }
 
   /** Get the number of pixels inside the object */
   itkGetConstMacro(NumberOfPixels, SizeValueType);
@@ -110,7 +119,8 @@ public:
 
 protected:
   SpatialObjectToImageStatisticsCalculator();
-  virtual ~SpatialObjectToImageStatisticsCalculator() {}
+  virtual
+  ~SpatialObjectToImageStatisticsCalculator() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   bool ComputeStatistics();

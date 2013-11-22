@@ -69,24 +69,41 @@ public:
                  unsigned int depth = MaximumDepth,
                  char *spatialObjectTypeName = NULL);
 
-  const MetaEvent * GetEvent() const { return m_Event; }
-  void  SetEvent(MetaEvent *event) { m_Event = event; }
+  const MetaEvent *
+  GetEvent() const {
+    return m_Event;
+  }
+
+  void
+  SetEvent(MetaEvent *event) {
+    m_Event = event;
+  }
 
   /** Set if the points should be saved in binary/ASCII */
-  void SetBinaryPoints(bool binary) { m_BinaryPoints = binary; }
+  void
+  SetBinaryPoints(bool binary) {
+    m_BinaryPoints = binary;
+  }
 
   /** set/get the precision for writing out numbers as plain text */
-  void SetTransformPrecision(unsigned int precision)
+  void
+  SetTransformPrecision(unsigned int precision)
   {
     m_TransformPrecision = precision;
   }
-  unsigned int GetTransformPrecision(){ return m_TransformPrecision; }
+
+  unsigned int
+  GetTransformPrecision(){
+    return m_TransformPrecision;
+  }
 
   /** Set if the images should be written in different files */
-  void SetWriteImagesInSeparateFile(bool separate)
+  void
+  SetWriteImagesInSeparateFile(bool separate)
   {
     m_WriteImagesInSeparateFile = separate;
   }
+
   /** add new SpatialObject/MetaObject converters at runtime
    *
    *  Every Converter is mapped to both a metaObject type name
@@ -112,19 +129,23 @@ private:
   typedef std::list< MetaObject * > MetaObjectListType;
 
   template <typename TConverter>
-    MetaObject *SpatialObjectToMetaObject(SpatialObjectPointer &so)
+  MetaObject *
+  SpatialObjectToMetaObject(SpatialObjectPointer &so)
   {
     typename TConverter::Pointer converter = TConverter::New();
     // needed just for Image & ImageMask
     converter->SetWriteImagesInSeparateFile(this->m_WriteImagesInSeparateFile);
-    return converter->SpatialObjectToMetaObject(so.GetPointer());
+    return converter->SpatialObjectToMetaObject(so.GetPointer() );
   }
+
   template <typename TConverter>
-    SpatialObjectPointer MetaObjectToSpatialObject(const MetaObject *mo)
+  SpatialObjectPointer
+  MetaObjectToSpatialObject(const MetaObject *mo)
   {
     typename TConverter::Pointer converter = TConverter::New();
     return converter->MetaObjectToSpatialObject(mo);
   }
+
   void SetTransform(MetaObject *obj, TransformType *transform);
 
   void SetTransform(SpatialObjectType *so, MetaObject *obj);

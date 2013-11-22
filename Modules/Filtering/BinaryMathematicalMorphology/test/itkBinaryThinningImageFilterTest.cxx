@@ -21,7 +21,8 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkImageFileWriter.h"
 
-int itkBinaryThinningImageFilterTest(int argc, char* argv[] )
+int
+itkBinaryThinningImageFilterTest(int argc, char* argv[] )
 {
   if( argc < 3 )
     {
@@ -31,21 +32,21 @@ int itkBinaryThinningImageFilterTest(int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef  short          InputPixelType;
-  typedef  unsigned char  OutputPixelType;
+  typedef  short         InputPixelType;
+  typedef  unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 > InputImageType;
+  typedef itk::Image< OutputPixelType, 2 > OutputImageType;
 
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
-  typedef itk::BinaryThinningImageFilter< InputImageType, InputImageType >  ThinningType;
+  typedef itk::ImageFileReader< InputImageType >                              ReaderType;
+  typedef itk::BinaryThinningImageFilter< InputImageType, InputImageType >    ThinningType;
   typedef itk::RescaleIntensityImageFilter< InputImageType, OutputImageType > RescaleType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType >                             WriterType;
 
-  ReaderType::Pointer reader = ReaderType::New();
+  ReaderType::Pointer   reader = ReaderType::New();
   ThinningType::Pointer thinning = ThinningType::New();
-  RescaleType::Pointer rescaler = RescaleType::New();
-  WriterType::Pointer writer = WriterType::New();
+  RescaleType::Pointer  rescaler = RescaleType::New();
+  WriterType::Pointer   writer = WriterType::New();
 
   // Set up the reader
   reader->SetFileName( argv[1] );

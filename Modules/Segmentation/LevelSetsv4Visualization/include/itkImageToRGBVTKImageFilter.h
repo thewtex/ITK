@@ -31,14 +31,14 @@ namespace itk
  * \ingroup ITKLevelSetsv4Visualization
  */
 template< typename TInputImage >
-class ImageToRGBVTKImageFilter:public ProcessObject
+class ImageToRGBVTKImageFilter : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
-  typedef ImageToRGBVTKImageFilter    Self;
-  typedef ProcessObject               Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef ImageToRGBVTKImageFilter   Self;
+  typedef ProcessObject              Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -68,11 +68,12 @@ public:
 
 protected:
   ImageToRGBVTKImageFilter();
-  virtual ~ImageToRGBVTKImageFilter();
+  virtual
+  ~ImageToRGBVTKImageFilter();
 
 private:
   ImageToRGBVTKImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);        //purposely not implemented
+  void operator=(const Self &);           //purposely not implemented
 
   InputImagePointer               m_Input;
   vtkSmartPointer< vtkImageData > m_Output;

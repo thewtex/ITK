@@ -193,14 +193,12 @@ FreeSurferAsciiMeshIO
 void
 FreeSurferAsciiMeshIO
 ::ReadPointData(void * itkNotUsed( buffer) )
-{
-}
+{}
 
 void
 FreeSurferAsciiMeshIO
 ::ReadCellData(void * itkNotUsed( buffer) )
-{
-}
+{}
 
 void
 FreeSurferAsciiMeshIO
@@ -306,13 +304,14 @@ FreeSurferAsciiMeshIO
     case ULONGLONG:
       {
       WritePoints( static_cast< unsigned long long * >( buffer ), outputFile,
-                  static_cast< unsigned long long >( itk::NumericTraits< unsigned long >::Zero ) );
+                   static_cast< unsigned long long >( itk::NumericTraits< unsigned long >::Zero ) );
 
       break;
       }
     case LONGLONG:
       {
-      WritePoints( static_cast< long long * >( buffer ), outputFile, static_cast< long long >( itk::NumericTraits< long >::Zero ) );
+      WritePoints( static_cast< long long * >( buffer ), outputFile,
+                   static_cast< long long >( itk::NumericTraits< long >::Zero ) );
 
       break;
       }
@@ -410,12 +409,13 @@ FreeSurferAsciiMeshIO
     case ULONGLONG:
       {
       WriteCells( static_cast< unsigned long long * >( buffer ), outputFile,
-                 static_cast< unsigned long long >( itk::NumericTraits< unsigned long >::Zero ) );
+                  static_cast< unsigned long long >( itk::NumericTraits< unsigned long >::Zero ) );
       break;
       }
     case LONGLONG:
       {
-      WriteCells( static_cast< long long * >( buffer ), outputFile, static_cast< long long >( itk::NumericTraits< long >::Zero ) );
+      WriteCells( static_cast< long long * >( buffer ), outputFile,
+                  static_cast< long long >( itk::NumericTraits< long >::Zero ) );
       break;
       }
     case FLOAT:
@@ -445,20 +445,17 @@ FreeSurferAsciiMeshIO
 void
 FreeSurferAsciiMeshIO
 ::WritePointData(void * itkNotUsed( buffer) )
-{
-}
+{}
 
 void
 FreeSurferAsciiMeshIO
 ::WriteCellData(void * itkNotUsed( buffer) )
-{
-}
+{}
 
 void
 FreeSurferAsciiMeshIO
 ::Write()
-{
-}
+{}
 
 void
 FreeSurferAsciiMeshIO
@@ -466,4 +463,5 @@ FreeSurferAsciiMeshIO
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // namespace itk end

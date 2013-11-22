@@ -58,6 +58,7 @@ DeformationFieldJacobianDeterminantFilter< TInputImage, TRealType, TOutputImage 
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

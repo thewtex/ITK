@@ -54,15 +54,18 @@ public:
   virtual void Learn(LayerType* layer, TTargetVector error,ValueType) = 0;
 
 protected:
-  LearningFunctionBase() {};
-  ~LearningFunctionBase() {};
+  LearningFunctionBase() {}
+  ~LearningFunctionBase() {}
 
   /** Method to print the object. */
-  virtual void PrintSelf( std::ostream& os, Indent indent ) const
-    {
+  virtual void
+  PrintSelf( std::ostream& os, Indent indent ) const
+  {
     Superclass::PrintSelf( os, indent );
+
     os << indent << "LearningFunctionBase(" << this << ")" << std::endl;
-    }
+  }
+
 };
 
 } // end namespace Statistics

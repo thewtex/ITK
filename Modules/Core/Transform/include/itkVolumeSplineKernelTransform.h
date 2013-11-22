@@ -31,10 +31,10 @@ namespace itk
  * \ingroup ITKTransform
  */
 template< typename TScalar, // Data type for scalars (float or
-                             // double)
+                            // double)
           unsigned int NDimensions = 3 >
 // Number of dimensions
-class VolumeSplineKernelTransform:
+class VolumeSplineKernelTransform :
   public KernelTransform< TScalar, NDimensions >
 {
 public:
@@ -74,7 +74,8 @@ public:
 
 protected:
   VolumeSplineKernelTransform() {}
-  virtual ~VolumeSplineKernelTransform() {}
+  virtual
+  ~VolumeSplineKernelTransform() {}
 
   /** These (rather redundant) typedefs are needed because on typedefs are not inherited. */
   typedef typename Superclass::GMatrixType GMatrixType;
@@ -99,6 +100,7 @@ protected:
 private:
   VolumeSplineKernelTransform(const Self &); //purposely not implemented
   void operator=(const Self &);              //purposely not implemented
+
 };
 } // namespace itk
 

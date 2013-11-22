@@ -79,7 +79,8 @@ OneHiddenLayerBackPropagationNeuralNetwork<TMeasurementVector,TTargetVector>
   InputLayerOutputWeights->SetRange(1.0);  //0.5
   InputLayerOutputWeights->Initialize();
 
-  typename LearningLayerType::WeightSetType::Pointer HiddenLayer1OutputWeights = LearningLayerType::WeightSetType::New();
+  typename LearningLayerType::WeightSetType::Pointer HiddenLayer1OutputWeights =
+    LearningLayerType::WeightSetType::New();
   HiddenLayer1OutputWeights->SetNumberOfInputNodes(m_NumOfFirstHiddenNodes);
   HiddenLayer1OutputWeights->SetNumberOfOutputNodes(m_NumOfOutputNodes);
   HiddenLayer1OutputWeights->SetCompleteConnectivity();
@@ -122,7 +123,6 @@ OneHiddenLayerBackPropagationNeuralNetwork<TMeasurementVector,TTargetVector>
   hiddenlayer1->SetOutputWeightSet(HiddenLayer1OutputWeights);
   outputlayer->SetInputWeightSet(HiddenLayer1OutputWeights);
 }
-
 
 template<typename TMeasurementVector, typename TTargetVector>
 void

@@ -53,7 +53,7 @@ public:
 
   /** Evaluate the derivative at the specified input position */
   virtual ScalarType EvaluateDerivative(const ScalarType& dist, const ArrayType& input,
-                                                    char mode,int element_id=0) const=0;
+                                        char mode,int element_id=0) const=0;
 
   itkSetMacro(Radius,ScalarType);
   itkGetConstMacro(Radius, ScalarType );
@@ -64,17 +64,19 @@ public:
 protected:
 
   RadialBasisFunctionBase()
-    {
+  {
     m_Radius = 0;
-    }
-  ~RadialBasisFunctionBase() {};
+  }
+
+  ~RadialBasisFunctionBase() {}
 
   /** Method to print the object. */
-  virtual void PrintSelf( std::ostream& os, Indent indent ) const
-    {
+  virtual void
+  PrintSelf( std::ostream& os, Indent indent ) const
+  {
     os << indent << "RadialBasisFunctionBase(" << this << ")" << std::endl;
     Superclass::PrintSelf( os, indent );
-    }
+  }
 
 private:
 
@@ -82,7 +84,8 @@ private:
   ScalarType m_Radius;
 
   RadialBasisFunctionBase(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);          //purposely not implemented
+
 };
 
 } // end namespace Statistics

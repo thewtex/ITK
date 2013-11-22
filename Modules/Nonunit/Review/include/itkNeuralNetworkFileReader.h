@@ -25,7 +25,6 @@
 
 #include "itkBackPropagationLayer.h"
 
-
 #include "itkSumInputFunction.h"
 #include "itkProductInputFunction.h"
 
@@ -54,7 +53,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TNetwork >
-class NeuralNetworkFileReader:public Object
+class NeuralNetworkFileReader : public Object
 {
 public:
 
@@ -73,7 +72,7 @@ public:
   typedef typename TNetwork::MeasurementVectorType MeasurementVectorType;
   typedef typename TNetwork::TargetVectorType      TargetVectorType;
   typedef Statistics::BackPropagationLayer<
-    MeasurementVectorType, TargetVectorType >           BackPropagationLayerType;
+      MeasurementVectorType, TargetVectorType >           BackPropagationLayerType;
   typedef typename BackPropagationLayerType::Pointer BackPropagationLayerPointer;
   typedef typename MeasurementVectorType::ValueType  MeasurementVectorValueType;
 
@@ -130,7 +129,7 @@ private:
   typedef struct {
     std::string name;
     std::string value;
-  }                                 LineType;
+    }                                 LineType;
 
   typedef std::list< LineType > LinesContainer;
 

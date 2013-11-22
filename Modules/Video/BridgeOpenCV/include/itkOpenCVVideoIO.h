@@ -22,7 +22,6 @@
 #include "cv.h"
 #include "highgui.h"
 
-
 namespace itk
 {
 /** \class OpenCVVideoIO
@@ -31,13 +30,13 @@ namespace itk
  *
  * \ingroup ITKVideoBridgeOpenCV
  */
-class OpenCVVideoIO:public VideoIOBase
+class OpenCVVideoIO : public VideoIOBase
 {
 public:
   /** Standard class typedefs. */
-  typedef OpenCVVideoIO                  Self;
-  typedef VideoIOBase                    Superclass;
-  typedef SmartPointer< Self >           Pointer;
+  typedef OpenCVVideoIO        Self;
+  typedef VideoIOBase          Superclass;
+  typedef SmartPointer< Self > Pointer;
 
   typedef Superclass::TemporalOffsetType TemporalOffsetType;
   typedef Superclass::FrameOffsetType    FrameOffsetType;
@@ -80,27 +79,44 @@ public:
 
   /** Virtual accessor functions to be implemented in each derived class */
   virtual TemporalOffsetType GetPositionInMSec() const;
+
   virtual TemporalRatioType GetRatio() const;
+
   virtual FrameOffsetType GetFrameTotal() const;
+
   virtual TemporalRatioType GetFramesPerSecond() const;
+
   virtual FrameOffsetType GetCurrentFrame() const;
+
   virtual FrameOffsetType GetIFrameInterval() const;
+
   virtual FrameOffsetType GetLastIFrame() const;
 
   /*-------- This part of the interfaces deals with writing data. ----- */
 
   /** Get/Set the camera index */
   virtual void SetCameraIndex(CameraIDType idx);
+
   virtual CameraIDType GetCameraIndex() const;
 
   /** Override Accessors to pass default values since OpenCV doesn't handle
    * this type of meta data. */
-  virtual double GetSpacing(unsigned int itkNotUsed(i)) const
-    { return 1.0; }
-  virtual double GetOrigin(unsigned int itkNotUsed(i)) const
-    { return 0.0; }
+  virtual double
+  GetSpacing(unsigned int itkNotUsed(i) ) const
+  {
+    return 1.0;
+  }
+
+  virtual double
+  GetOrigin(unsigned int itkNotUsed(i) ) const
+  {
+    return 0.0;
+  }
+
   virtual std::vector< double > GetDirection(unsigned int i) const
-    { return this->GetDefaultDirection(i); }
+  {
+    return this->GetDefaultDirection(i);
+  }
 
   /** Determine the file type. Returns true if this ImageIO can write the
    * file specified. */
@@ -140,19 +156,18 @@ protected:
   void OpenWriter();
 
 private:
-  OpenCVVideoIO(const Self &);     //purposely not implemented
+  OpenCVVideoIO(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
 
   /** Member Variables */
-  IplImage*           m_CVImage;
-  IplImage*           m_TempImage;
-  CvCapture*          m_Capture;
-  CvVideoWriter*      m_Writer;
-  int                 m_FourCC;
+  IplImage*      m_CVImage;
+  IplImage*      m_TempImage;
+  CvCapture*     m_Capture;
+  CvVideoWriter* m_Writer;
+  int            m_FourCC;
 
   /** device index for reading from a camera (may move to base class) */
-  int                 m_CameraIndex;
-
+  int m_CameraIndex;
 
 };
 } // end namespace itk

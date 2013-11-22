@@ -21,7 +21,6 @@
 //  ARGUMENTS: {WhiteMatterSegmentation.mhd}
 //  Software Guide : EndCommandLineArgs
 
-
 #include "itkConfidenceConnectedImageFilter.h"
 #include "itkCastImageFilter.h"
 #include "itkCurvatureFlowImageFilter.h"
@@ -36,8 +35,8 @@
 //
 // Software Guide : EndLatex
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 3 )
     {
@@ -47,10 +46,9 @@ int main( int argc, char *argv[] )
     return 1;
     }
 
-
-  typedef   float           InternalPixelType;
-  const     unsigned int    Dimension = 3;
-  typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
+  typedef   float InternalPixelType;
+  const     unsigned int Dimension = 3;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
 
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
@@ -58,7 +56,6 @@ int main( int argc, char *argv[] )
   typedef itk::CastImageFilter< InternalImageType, OutputImageType >
     CastingFilterType;
   CastingFilterType::Pointer caster = CastingFilterType::New();
-
 
   typedef  itk::ImageFileReader< InternalImageType > ReaderType;
   typedef  itk::ImageFileWriter<  OutputImageType  > WriterType;
@@ -72,7 +69,7 @@ int main( int argc, char *argv[] )
   typedef itk::CurvatureFlowImageFilter< InternalImageType, InternalImageType >
     CurvatureFlowImageFilterType;
   CurvatureFlowImageFilterType::Pointer smoothing =
-                         CurvatureFlowImageFilterType::New();
+    CurvatureFlowImageFilterType::New();
 
   typedef itk::ConfidenceConnectedImageFilter<InternalImageType, InternalImageType>
     ConnectedFilterType;
@@ -130,7 +127,6 @@ int main( int argc, char *argv[] )
     std::cerr << "Exception caught !" << std::endl;
     std::cerr << excep << std::endl;
     }
-
 
   return EXIT_SUCCESS;
 }

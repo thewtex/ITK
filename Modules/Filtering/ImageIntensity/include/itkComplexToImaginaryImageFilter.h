@@ -37,25 +37,29 @@ class ComplexToImaginary
 public:
   ComplexToImaginary() {}
   ~ComplexToImaginary() {}
-  bool operator!=(const ComplexToImaginary &) const
+  bool
+  operator!=(const ComplexToImaginary &) const
   {
     return false;
   }
 
-  bool operator==(const ComplexToImaginary & other) const
+  bool
+  operator==(const ComplexToImaginary & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return (TOutput)( A.imag() );
   }
+
 };
 }
 
 template< typename TInputImage, typename TOutputImage >
-class ComplexToImaginaryImageFilter:
+class ComplexToImaginaryImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::ComplexToImaginary<
@@ -66,9 +70,9 @@ public:
   /** Standard class typedefs. */
   typedef ComplexToImaginaryImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::ComplexToImaginary< typename TInputImage::PixelType,
-                                 typename TOutputImage::PixelType > > Superclass;
+      TInputImage, TOutputImage,
+      Functor::ComplexToImaginary< typename TInputImage::PixelType,
+                                   typename TOutputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -93,11 +97,13 @@ public:
 
 protected:
   ComplexToImaginaryImageFilter() {}
-  virtual ~ComplexToImaginaryImageFilter() {}
+  virtual
+  ~ComplexToImaginaryImageFilter() {}
 
 private:
   ComplexToImaginaryImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                //purposely not implemented
+
 };
 } // end namespace itk
 

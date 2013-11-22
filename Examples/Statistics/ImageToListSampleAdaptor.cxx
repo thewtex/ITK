@@ -53,7 +53,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkImageToListSampleAdaptor.h"
 #include "itkImage.h"
@@ -61,7 +60,8 @@
 #include "itkComposeImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -80,9 +80,9 @@ int main()
   random->SetMin(    0.0 );
   random->SetMax( 1000.0 );
 
-  typedef FloatImage2DType::SpacingValueType  SpacingValueType;
-  typedef FloatImage2DType::SizeValueType     SizeValueType;
-  typedef FloatImage2DType::PointValueType    PointValueType;
+  typedef FloatImage2DType::SpacingValueType SpacingValueType;
+  typedef FloatImage2DType::SizeValueType    SizeValueType;
+  typedef FloatImage2DType::PointValueType   PointValueType;
 
   SizeValueType size[2] = {20, 20};
   random->SetSize( size );
@@ -113,7 +113,7 @@ int main()
   typedef itk::FixedArray< float, 1 >            MeasurementVectorType;
   typedef itk::Image< MeasurementVectorType, 2 > ArrayImageType;
   typedef itk::ComposeImageFilter< FloatImage2DType, ArrayImageType >
-                                                 CasterType;
+    CasterType;
 
   CasterType::Pointer caster = CasterType::New();
   caster->SetInput( random->GetOutput() );
@@ -131,7 +131,7 @@ int main()
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::ImageToListSampleAdaptor<
-                                                  ArrayImageType > SampleType;
+      ArrayImageType > SampleType;
   SampleType::Pointer sample = SampleType::New();
   // Software Guide : EndCodeSnippet
 

@@ -17,7 +17,8 @@
  *=========================================================================*/
 #include <itkMetaImageIO.h>
 
-int itkMetaTestLongFilename( int , char *[] )
+int
+itkMetaTestLongFilename( int , char *[] )
 {
   itk::MetaImageIO::Pointer metaImageIO =
     itk::MetaImageIO::New();
@@ -73,9 +74,10 @@ int itkMetaTestLongFilename( int , char *[] )
     "01234597890123459789012345978901234597890123459789"
     "01234597890123459789012345978901234597890123459789"
     ".mhd";
+
   // since we haven't created this file, it can't exist. If the
   // reported crash happens, the test will end with a segfault.
-  if(!metaImageIO->CanReadFile(doublePlusLongFilename))
+  if(!metaImageIO->CanReadFile(doublePlusLongFilename) )
     {
     return EXIT_SUCCESS;
     }

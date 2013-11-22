@@ -39,7 +39,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TInputMesh, typename TOutputMesh, typename TDisplacementField >
-class WarpMeshFilter:
+class WarpMeshFilter :
   public MeshToMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
@@ -86,6 +86,7 @@ protected:
 private:
   WarpMeshFilter(const WarpMeshFilter &); //purposely not implemented
   void operator=(const WarpMeshFilter &); //purposely not implemented
+
 };
 } // end namespace itk
 

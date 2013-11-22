@@ -31,7 +31,8 @@
 #include "itkGroupSpatialObject.h"
 #include "itkLevelOrderTreeIterator.h"
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
   // Software Guide : BeginLatex
   // Next we define the type of node and the type of tree we plan to use.
@@ -70,7 +71,7 @@ int main( int , char *[] )
   // Software Guide : EndLatex
   // Software Guide : BeginCodeSnippet
   TreeType::Pointer tree = TreeType::New();
-  tree->SetRoot(object0.GetPointer());
+  tree->SetRoot(object0.GetPointer() );
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -82,10 +83,10 @@ int main( int , char *[] )
   // Software Guide : BeginCodeSnippet
   itk::LevelOrderTreeIterator<TreeType> levelIt(tree,10);
   levelIt.GoToBegin();
-  while(!levelIt.IsAtEnd())
+  while(!levelIt.IsAtEnd() )
     {
     std::cout << levelIt.Get()->GetId() << " ("<< levelIt.GetLevel()
-      << ")" << std::endl;
+              << ")" << std::endl;
     ++levelIt;
     }
   // Software Guide : EndCodeSnippet
@@ -95,11 +96,10 @@ int main( int , char *[] )
   // how to use the \doxygen{PreOrderTreeIterator} to add a fourth object to the tree.
   // Software Guide : EndLatex
   // Software Guide : BeginCodeSnippet
-  NodeType::Pointer object4 = NodeType::New();
+  NodeType::Pointer                   object4 = NodeType::New();
   itk::PreOrderTreeIterator<TreeType> preIt( tree );
-  preIt.Add(object4.GetPointer());
+  preIt.Add(object4.GetPointer() );
   // Software Guide : EndCodeSnippet
-
 
   return EXIT_SUCCESS;
 }

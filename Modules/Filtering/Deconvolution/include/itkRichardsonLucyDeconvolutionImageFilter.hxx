@@ -119,6 +119,7 @@ RichardsonLucyDeconvolutionImageFilter< TInputImage, TKernelImage, TOutputImage,
 {
   // Set up minipipeline to compute the new estimate
   InternalComplexImagePointerType transformedEstimate;
+
   this->TransformPaddedInput( this->m_CurrentEstimate,
                               transformedEstimate, progress,
                               0.1f * iterationProgressWeight );

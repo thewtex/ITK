@@ -28,20 +28,22 @@ template< typename TFilterType >
 class DeconvolutionIterationCommand : public itk::Command
 {
 public:
-  typedef DeconvolutionIterationCommand  Self;
-  typedef itk::Command                   Superclass;
-  typedef itk::SmartPointer< Self >      Pointer;
+  typedef DeconvolutionIterationCommand Self;
+  typedef itk::Command                  Superclass;
+  typedef itk::SmartPointer< Self >     Pointer;
   itkNewMacro( Self );
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
   {
     this->Execute( (const itk::Object *)caller, event);
   }
 
-  void Execute(const itk::Object *object, const itk::EventObject & event)
+  void
+  Execute(const itk::Object *object, const itk::EventObject & event)
   {
     m_NumberOfIterations++;
-    if ( ! itk::IterationEvent().CheckEvent( &event ) )
+    if ( !itk::IterationEvent().CheckEvent( &event ) )
       {
       return;
       }
@@ -59,7 +61,8 @@ public:
       }
   }
 
-  bool GetInvoked() const
+  bool
+  GetInvoked() const
   {
     return ( m_NumberOfIterations > 0 );
   }
@@ -71,7 +74,7 @@ protected:
   }
 
 private:
-  int  m_NumberOfIterations;
+  int m_NumberOfIterations;
 };
 
 } // end namespace itk

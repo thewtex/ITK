@@ -58,7 +58,7 @@ ZeroFluxNeumannBoundaryCondition< TInputImage, TOutputImage >
   // \endcode
   //
   return static_cast< OutputPixelType >
-    (*( reinterpret_cast< PixelType * >( ( data->operator[](linear_index) ) ) ) );
+         (*( reinterpret_cast< PixelType * >( ( data->operator[](linear_index) ) ) ) );
 }
 
 template< typename TInputImage, typename TOutputImage >
@@ -77,9 +77,8 @@ ZeroFluxNeumannBoundaryCondition< TInputImage, TOutputImage >
     }
 
   return static_cast< OutputPixelType >
-    ( neighborhoodAccessorFunctor.Get( data->operator[](linear_index) ) );
+         ( neighborhoodAccessorFunctor.Get( data->operator[](linear_index) ) );
 }
-
 
 template< typename TInputImage, typename TOutputImage >
 typename ZeroFluxNeumannBoundaryCondition< TInputImage, TOutputImage >::RegionType
@@ -149,7 +148,6 @@ ZeroFluxNeumannBoundaryCondition< TInputImage, TOutputImage >
 
   return inputRequestedRegion;
 }
-
 
 template< typename TInputImage, typename TOutputImage >
 typename ZeroFluxNeumannBoundaryCondition< TInputImage, TOutputImage >::OutputPixelType

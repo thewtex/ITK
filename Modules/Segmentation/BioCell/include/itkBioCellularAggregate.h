@@ -40,7 +40,7 @@ namespace bio
  * \ingroup ITKBioCell
  */
 template< unsigned int NSpaceDimension = 3 >
-class CellularAggregate:public CellularAggregateBase
+class CellularAggregate : public CellularAggregateBase
 {
 public:
   /** Standard class typedefs. */
@@ -64,13 +64,13 @@ public:
 
   /** Mesh Traits */
   typedef DefaultDynamicMeshTraits<
-    PointPixelType,                     // PixelType
-    NSpaceDimension,                    // Points Dimension
-    NSpaceDimension,                    // Max.Topological Dimension
-    double,                             // Type for coordinates
-    double,                             // Type for interpolation
-    CellPixelType                       // Type for values in the cells
-    >  MeshTraits;
+      PointPixelType,                   // PixelType
+      NSpaceDimension,                  // Points Dimension
+      NSpaceDimension,                  // Max.Topological Dimension
+      double,                           // Type for coordinates
+      double,                           // Type for interpolation
+      CellPixelType                     // Type for values in the cells
+      >  MeshTraits;
 
   /** Mesh Traits */
   typedef Mesh<  PointPixelType,
@@ -96,8 +96,8 @@ public:
 
   /**   Voronoi region around a bio::Cell */
   typedef CellInterface<
-    typename MeshType::CellPixelType,
-    typename MeshType::CellTraits >      CellInterfaceType;
+      typename MeshType::CellPixelType,
+      typename MeshType::CellTraits >      CellInterfaceType;
 
   typedef PolygonCell<  CellInterfaceType >           VoronoiRegionType;
   typedef typename VoronoiRegionType::SelfAutoPointer VoronoiRegionAutoPointer;
@@ -112,7 +112,10 @@ public:
 public:
   unsigned int GetNumberOfCells(void) const;
 
-  static unsigned int GetDimension() { return SpaceDimension; }
+  static unsigned int
+  GetDimension() {
+    return SpaceDimension;
+  }
 
   void SetGrowthRadiusLimit(double value);
 
@@ -147,7 +150,8 @@ public:
 
 protected:
   CellularAggregate();
-  virtual ~CellularAggregate();
+  virtual
+  ~CellularAggregate();
   CellularAggregate(const Self &);
   void operator=(const Self &);
 

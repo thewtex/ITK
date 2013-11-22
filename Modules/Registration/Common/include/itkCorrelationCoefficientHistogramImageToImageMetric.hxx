@@ -86,8 +86,8 @@ CorrelationCoefficientHistogramImageToImageMetric< TFixedImage, TMovingImage >
   for ( unsigned int i = 0; i < this->m_HistogramSize[0]; i++ )
     {
     varX += static_cast< double >( histogram.GetFrequency(i, 0) )
-            / histogram.GetTotalFrequency()
-            * vcl_pow(histogram.GetMeasurement(i, 0), 2);
+      / histogram.GetTotalFrequency()
+      * vcl_pow(histogram.GetMeasurement(i, 0), 2);
     }
 
   return varX - vcl_pow(MeanX(histogram), 2);
@@ -104,8 +104,8 @@ CorrelationCoefficientHistogramImageToImageMetric< TFixedImage, TMovingImage >
   for ( unsigned int i = 0; i < this->m_HistogramSize[1]; i++ )
     {
     varY += static_cast< double >( histogram.GetFrequency(i, 1) )
-            / histogram.GetTotalFrequency()
-            * vcl_pow(histogram.GetMeasurement(i, 1), 2);
+      / histogram.GetTotalFrequency()
+      * vcl_pow(histogram.GetMeasurement(i, 1), 2);
     }
 
   return varY - vcl_pow(MeanY(histogram), 2);
@@ -131,8 +131,8 @@ CorrelationCoefficientHistogramImageToImageMetric< TFixedImage, TMovingImage >
       index[1] = j;
 
       var += histogram.GetFrequency(index)
-             * ( histogram.GetMeasurement(i, 0) - meanX )
-             * ( histogram.GetMeasurement(j, 1) - meanY );
+        * ( histogram.GetMeasurement(i, 0) - meanX )
+        * ( histogram.GetMeasurement(j, 1) - meanY );
       }
     }
 
@@ -140,6 +140,7 @@ CorrelationCoefficientHistogramImageToImageMetric< TFixedImage, TMovingImage >
 
   return var;
 }
+
 }
 
 #endif // itkCorrelationCoefficientHistogramImageToImageMetric_hxx

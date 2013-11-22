@@ -25,9 +25,9 @@
 #include "itkImageRegionIterator.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-
 template< typename TImage >
-void GenerateImage( typename TImage::Pointer ioImage )
+void
+GenerateImage( typename TImage::Pointer ioImage )
 {
   typename TImage::IndexType  index;
   index.Fill( 0 );
@@ -61,7 +61,8 @@ void GenerateImage( typename TImage::Pointer ioImage )
     }
 }
 
-int itkVTKVisualize2DShiLevelSetLayersTest( int , char* [] )
+int
+itkVTKVisualize2DShiLevelSetLayersTest( int , char* [] )
 {
   typedef unsigned char PixelType;
   const unsigned int Dimension = 2;
@@ -73,13 +74,13 @@ int itkVTKVisualize2DShiLevelSetLayersTest( int , char* [] )
   typedef itk::ShiSparseLevelSetImage< Dimension > LevelSetType;
 
   typedef itk::BinaryImageToLevelSetImageAdaptor< ImageType,
-      LevelSetType > BinaryToLevelSetAdaptorType;
+                                                  LevelSetType > BinaryToLevelSetAdaptorType;
 
   BinaryToLevelSetAdaptorType::Pointer adaptor = BinaryToLevelSetAdaptorType::New();
   adaptor->SetInputImage( image );
   adaptor->Initialize();
 
-  typedef BinaryToLevelSetAdaptorType::LevelSetType           SparseLevelSetType;
+  typedef BinaryToLevelSetAdaptorType::LevelSetType SparseLevelSetType;
   SparseLevelSetType::Pointer LevelSet = adaptor->GetLevelSet();
 
   typedef itk::VTKVisualize2DSparseLevelSetLayers< ImageType, LevelSetType > VisualizationType;

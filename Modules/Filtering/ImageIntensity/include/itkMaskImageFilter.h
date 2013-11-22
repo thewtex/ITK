@@ -42,18 +42,22 @@ public:
     m_MaskingValue = NumericTraits< TMask >::ZeroValue();
     InitializeOutsideValue( static_cast<TOutput*>( NULL ) );
   }
+
   ~MaskInput() {}
-  bool operator!=(const MaskInput &) const
+  bool
+  operator!=(const MaskInput &) const
   {
     return false;
   }
 
-  bool operator==(const MaskInput & other) const
+  bool
+  operator==(const MaskInput & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A, const TMask & B) const
+  inline TOutput
+  operator()(const TInput & A, const TMask & B) const
   {
     if ( B != m_MaskingValue )
       {
@@ -66,24 +70,29 @@ public:
   }
 
   /** Method to explicitly set the outside value of the mask */
-  void SetOutsideValue(const TOutput & outsideValue)
+  void
+  SetOutsideValue(const TOutput & outsideValue)
   {
     m_OutsideValue = outsideValue;
   }
 
   /** Method to get the outside value of the mask */
-  const TOutput & GetOutsideValue() const
+  const TOutput &
+  GetOutsideValue() const
   {
     return m_OutsideValue;
   }
 
   /** Method to explicitly set the masking value */
-  void SetMaskingValue(const TMask & maskingValue)
+  void
+  SetMaskingValue(const TMask & maskingValue)
   {
     m_MaskingValue = maskingValue;
   }
+
   /** Method to get the masking value */
-  const TMask & GetMaskingValue() const
+  const TMask &
+  GetMaskingValue() const
   {
     return m_MaskingValue;
   }
@@ -91,13 +100,15 @@ public:
 private:
 
   template < typename TPixelType >
-  void InitializeOutsideValue( TPixelType * )
+  void
+  InitializeOutsideValue( TPixelType * )
   {
     this->m_OutsideValue = NumericTraits< TPixelType >::Zero;
   }
 
   template < typename TValueType >
-  void InitializeOutsideValue( VariableLengthVector<TValueType> * )
+  void
+  InitializeOutsideValue( VariableLengthVector<TValueType> * )
   {
     // set the outside value to be of zero length
     this->m_OutsideValue = VariableLengthVector< TValueType >(0);
@@ -141,7 +152,7 @@ private:
  * \endwiki
  */
 template< typename TInputImage, typename TMaskImage, typename TOutputImage = TInputImage >
-class MaskImageFilter:
+class MaskImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage, TMaskImage, TOutputImage,
                             Functor::MaskInput<
@@ -177,18 +188,22 @@ public:
    *  the original value of the input image while pixels not set in
    *  the mask will be set to the "OutsideValue".
    */
-  void SetMaskImage(const MaskImageType *maskImage)
+  void
+  SetMaskImage(const MaskImageType *maskImage)
   {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast< MaskImageType * >( maskImage ) );
   }
-  const MaskImageType * GetMaskImage()
+
+  const MaskImageType *
+  GetMaskImage()
   {
-    return static_cast<const MaskImageType*>(this->ProcessObject::GetInput(1));
+    return static_cast<const MaskImageType*>(this->ProcessObject::GetInput(1) );
   }
 
   /** Method to explicitly set the outside value of the mask. Defaults to 0 */
-  void SetOutsideValue(const typename TOutputImage::PixelType & outsideValue)
+  void
+  SetOutsideValue(const typename TOutputImage::PixelType & outsideValue)
   {
     if ( this->GetOutsideValue() != outsideValue )
       {
@@ -197,13 +212,15 @@ public:
       }
   }
 
-  const typename TOutputImage::PixelType & GetOutsideValue() const
+  const typename TOutputImage::PixelType &
+  GetOutsideValue() const
   {
     return this->GetFunctor().GetOutsideValue();
   }
 
   /** Method to explicitly set the masking value of the mask. Defaults to 0 */
-  void SetMaskingValue(const typename TMaskImage::PixelType & maskingValue)
+  void
+  SetMaskingValue(const typename TMaskImage::PixelType & maskingValue)
   {
     if ( this->GetMaskingValue() != maskingValue )
       {
@@ -213,12 +230,14 @@ public:
   }
 
   /** Method to get the masking value of the mask. */
-  const typename TMaskImage::PixelType & GetMaskingValue() const
+  const typename TMaskImage::PixelType &
+  GetMaskingValue() const
   {
     return this->GetFunctor().GetMaskingValue();
   }
 
-  void BeforeThreadedGenerateData()
+  void
+  BeforeThreadedGenerateData()
   {
     typedef typename TOutputImage::PixelType PixelType;
     this->CheckOutsideValue( static_cast<PixelType*>(NULL) );
@@ -236,11 +255,14 @@ public:
 
 protected:
   MaskImageFilter() {}
-  virtual ~MaskImageFilter() {}
+  virtual
+  ~MaskImageFilter() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
+
     os << indent << "OutsideValue: "  << this->GetOutsideValue() << std::endl;
   }
 
@@ -249,10 +271,12 @@ private:
   void operator=(const Self &);  //purposely not implemented
 
   template < typename TPixelType >
-  void CheckOutsideValue( const TPixelType * ) {}
+  void
+  CheckOutsideValue( const TPixelType * ) {}
 
   template < typename TValue >
-  void CheckOutsideValue( const VariableLengthVector< TValue > * )
+  void
+  CheckOutsideValue( const VariableLengthVector< TValue > * )
   {
     // Check to see if the outside value contains only zeros. If so,
     // resize it to have the same number of zeros as the output
@@ -278,7 +302,7 @@ private:
         <<  this->GetFunctor().GetOutsideValue().GetSize()
         << " is not the same as the "
         << "number of components in the image: "
-        << this->GetOutput()->GetVectorLength());
+        << this->GetOutput()->GetVectorLength() );
       }
   }
 

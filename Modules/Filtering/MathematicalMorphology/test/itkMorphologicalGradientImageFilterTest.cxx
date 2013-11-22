@@ -21,15 +21,16 @@
 #include "itkBinaryBallStructuringElement.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkMorphologicalGradientImageFilterTest(int argc, char * argv[])
+int
+itkMorphologicalGradientImageFilterTest(int argc, char * argv[])
 {
   if( argc < 3 )
-  {
+    {
     std::cerr << "Missing Arguments" << std::endl;
     std::cerr << "Usage: " << std::endl;
     std::cerr << argv[0] << " inputImage outputImage " << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   const int dim = 2;
 
@@ -41,25 +42,25 @@ int itkMorphologicalGradientImageFilterTest(int argc, char * argv[])
   reader->SetFileName(argv[1]);
 
   typedef itk::BinaryBallStructuringElement< PType, dim  > StructuringElementType;
-  StructuringElementType  structuringElement;
+  StructuringElementType structuringElement;
   structuringElement.SetRadius( 2 );
   structuringElement.CreateStructuringElement();
 
   typedef itk::MorphologicalGradientImageFilter< IType, IType, StructuringElementType > GradientType;
   GradientType::Pointer gradient = GradientType::New();
-  gradient->SetInput(reader->GetOutput());
+  gradient->SetInput(reader->GetOutput() );
   gradient->SetKernel(  structuringElement );
 
   itk::SimpleFilterWatcher watcher(gradient);
 
   typedef itk::ImageFileWriter< IType > WriterType;
   WriterType::Pointer writer = WriterType::New();
-  writer->SetInput(gradient->GetOutput());
+  writer->SetInput(gradient->GetOutput() );
   writer->SetFileName(argv[2]);
 
   try
     {
-  writer->Update();
+    writer->Update();
     }
   catch( itk::ExceptionObject & excp )
     {

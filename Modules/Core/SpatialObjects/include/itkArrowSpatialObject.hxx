@@ -173,6 +173,7 @@ ArrowSpatialObject< TDimension >
 {
   //TODO: What should happen if TDimension is not equal to 3
   VectorType offset;
+
   for ( unsigned int i = 0; i < TDimension; i++ )
     {
     offset[i] = m_Position[i];
@@ -196,8 +197,7 @@ ArrowSpatialObject< TDimension >
   this->Modified();
 }
 
-template< > void ArrowSpatialObject< 3 > ::UpdateTransform();
-
+template< > void ArrowSpatialObject< 3 >::UpdateTransform();
 
 /** Print the object */
 template< unsigned int TDimension >
@@ -211,6 +211,7 @@ ArrowSpatialObject< TDimension >
   os << indent << "Direction = " << m_Direction << std::endl;
   os << indent << "Length = " << m_Length << std::endl;
 }
+
 } // end namespace itk
 
 #endif // end __itkArrowSpatialObject_hxx

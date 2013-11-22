@@ -45,7 +45,7 @@ namespace itk
  */
 
 template< typename TFixedPointSet,  typename TMovingImage >
-class PointSetToImageMetric:public SingleValuedCostFunction
+class PointSetToImageMetric : public SingleValuedCostFunction
 {
 public:
   /** Standard class typedefs. */
@@ -91,8 +91,8 @@ public:
 
   /**  Type of the Interpolator Base class */
   typedef InterpolateImageFunction<
-    MovingImageType,
-    CoordinateRepresentationType > InterpolatorType;
+      MovingImageType,
+      CoordinateRepresentationType > InterpolatorType;
 
   /** Gaussian filter to compute the gradient of the Moving Image */
   typedef typename NumericTraits< MovingImagePixelType >::RealType RealType;
@@ -103,7 +103,7 @@ public:
   typedef SmartPointer< GradientImageType > GradientImagePointer;
   typedef GradientRecursiveGaussianImageFilter< MovingImageType,
                                                 GradientImageType >
-  GradientImageFilterType;
+    GradientImageFilterType;
 
   typedef typename GradientImageFilterType::Pointer GradientImageFilterPointer;
 
@@ -158,8 +158,11 @@ public:
   itkGetConstReferenceMacro(ComputeGradient, bool);
 
   /** Return the number of parameters required by the Transform */
-  unsigned int GetNumberOfParameters(void) const
-  { return m_Transform->GetNumberOfParameters(); }
+  unsigned int
+  GetNumberOfParameters(void) const
+  {
+    return m_Transform->GetNumberOfParameters();
+  }
 
   /** Initialize the Metric by making sure that all the components
    *  are present and plugged together correctly     */
@@ -168,7 +171,8 @@ public:
 
 protected:
   PointSetToImageMetric();
-  virtual ~PointSetToImageMetric() {}
+  virtual
+  ~PointSetToImageMetric() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   mutable SizeValueType m_NumberOfPixelsCounted;
@@ -188,6 +192,7 @@ protected:
 private:
   PointSetToImageMetric(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
+
 };
 } // end namespace itk
 

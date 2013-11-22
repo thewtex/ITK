@@ -43,7 +43,6 @@
 #include "itkImageFileWriter.h"
 // Software Guide : EndCodeSnippet
 
-
 //  Software Guide : BeginLatex
 //
 //  We use the \doxygen{GradientRecursiveGaussianImageFilter} in order to
@@ -58,8 +57,8 @@
 #include "itkGradientRecursiveGaussianImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   // Verify the number of parameters in the command line
   if( argc < 3 )
@@ -68,7 +67,6 @@ int main( int argc, char ** argv )
     std::cerr << argv[0] << " inputImageFile  outputVectorImageFile " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -79,17 +77,16 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef signed short          InputPixelType;
-  typedef float                 ComponentType;
-  const   unsigned int          Dimension = 2;
+  typedef signed short InputPixelType;
+  typedef float        ComponentType;
+  const   unsigned int Dimension = 2;
 
   typedef itk::CovariantVector< ComponentType,
-                                    Dimension  >      OutputPixelType;
+                                Dimension  >      OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  Dimension >    InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >    OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -99,10 +96,9 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -114,12 +110,11 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::GradientRecursiveGaussianImageFilter<
-                                          InputImageType,
-                                          OutputImageType    > FilterType;
+      InputImageType,
+      OutputImageType    > FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -129,11 +124,9 @@ int main( int argc, char ** argv )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   filter->SetSigma( 1.5 );      // Sigma in millimeters
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -152,13 +145,11 @@ int main( int argc, char ** argv )
   WriterType::Pointer writer = WriterType::New();
   // Software Guide : EndCodeSnippet
 
-
   //
   // Here we recover the file names from the command line arguments
   //
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[2];
-
 
   //  Software Guide : BeginLatex
   //
@@ -177,7 +168,6 @@ int main( int argc, char ** argv )
   writer->SetFileName( outputFilename );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Below we connect the reader, filter and writer to form the data
@@ -189,7 +179,6 @@ int main( int argc, char ** argv )
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -211,7 +200,6 @@ int main( int argc, char ** argv )
     return EXIT_FAILURE;
     }
   // Software Guide : EndCodeSnippet
-
 
   return EXIT_SUCCESS;
 }

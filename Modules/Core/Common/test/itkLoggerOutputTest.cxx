@@ -21,8 +21,8 @@
 #include "itkStdStreamLogOutput.h"
 #include "itkLoggerOutput.h"
 
-
-int itkLoggerOutputTest( int argc, char *argv [] )
+int
+itkLoggerOutputTest( int argc, char *argv [] )
 {
   try
     {
@@ -31,7 +31,6 @@ int itkLoggerOutputTest( int argc, char *argv [] )
       std::cout << "Usage: " << argv[0] << " logFilename" << std::endl;
       return EXIT_FAILURE;
       }
-
 
     // Create an ITK StdStreamLogOutputs
     itk::StdStreamLogOutput::Pointer coutput = itk::StdStreamLogOutput::New();

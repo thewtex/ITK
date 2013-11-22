@@ -35,7 +35,6 @@
 #define __itkPhilipsRECImageIO_h
 #include "ITKIOPhilipsRECExport.h"
 
-
 #include "itkImageIOBase.h"
 #include "itkVectorContainer.h"
 #include "vnl/vnl_vector_fixed.h"
@@ -51,7 +50,7 @@ namespace itk
  * \ingroup ITKIOPhilipsREC
  */
 
-class ITKIOPhilipsREC_EXPORT PhilipsRECImageIO:public ImageIOBase
+class ITKIOPhilipsREC_EXPORT PhilipsRECImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -88,7 +87,7 @@ public:
 
   typedef VectorContainer< unsigned int, ImageTypeRescaleValuesType > ImageTypeRescaleValuesContainerType;
   typedef ImageTypeRescaleValuesContainerType::Pointer
-  ImageTypeRescaleValuesContainerTypePtr;
+    ImageTypeRescaleValuesContainerTypePtr;
   typedef VectorContainer< unsigned int,
                            ImageTypeRescaleValuesContainerTypePtr > ScanningSequenceImageTypeRescaleValuesContainerType;
   typedef double                                                 GradientBvalueType;
@@ -120,20 +119,23 @@ public:
        * \post This function will always return false (Not implemented).
        * \return Returns true if this ImageIO can write the file specified.
        */
-  virtual bool CanWriteFile( const char *itkNotUsed(FileNameToWrite) )
+  virtual bool
+  CanWriteFile( const char *itkNotUsed(FileNameToWrite) )
   {
     return false;
   }
 
   /** Set the spacing and dimension information for the set filename. */
-  virtual void WriteImageInformation()
+  virtual void
+  WriteImageInformation()
   {
     return;
   }
 
   /** Writes the data to disk from the memory buffer provided. Make sure
        * that the IORegions has been set properly. */
-  virtual void Write( const void *itkNotUsed(buffer) )
+  virtual void
+  Write( const void *itkNotUsed(buffer) )
   {
     return;
   }

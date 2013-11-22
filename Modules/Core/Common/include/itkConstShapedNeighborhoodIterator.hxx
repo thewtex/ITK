@@ -131,7 +131,7 @@ void
 ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
 ::CreateActiveListFromNeighborhood(const NeighborhoodType &neighborhood)
 {
-  if (this->GetRadius() != neighborhood.GetRadius())
+  if (this->GetRadius() != neighborhood.GetRadius() )
     {
     itkGenericExceptionMacro(<< "Radius of shaped iterator("
                              << this->GetRadius()
@@ -144,11 +144,11 @@ ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
     {
     if (*nit)
       {
-      this->ActivateOffset(GetOffset(idx));
+      this->ActivateOffset(GetOffset(idx) );
       }
     else
       {
-      this->DeactivateOffset(GetOffset(idx));
+      this->DeactivateOffset(GetOffset(idx) );
       }
     }
 }
@@ -169,6 +169,7 @@ ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
     // the shaped optimization.
 
     NeighborhoodIterator< TImage, TBoundaryCondition >::operator++();
+
     }
   else
     {
@@ -218,8 +219,8 @@ ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition > &
 ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
 ::operator--()
 {
-  unsigned int                  i;
-  IndexListConstIterator        it;
+  unsigned int           i;
+  IndexListConstIterator it;
 
   // Repositioning neighborhood, previous bounds check on neighborhood
   // location is invalid.
@@ -232,6 +233,7 @@ ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
     // the shaped optimization.
 
     NeighborhoodIterator< TImage, TBoundaryCondition >::operator--();
+
     }
   else
     {
@@ -282,10 +284,10 @@ ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition > &
 ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
 ::operator+=(const OffsetType & idx)
 {
-  unsigned int                  i;
-  IndexListConstIterator        it;
-  OffsetValueType               accumulator = 0;
-  const OffsetValueType *       stride = this->GetImagePointer()->GetOffsetTable();
+  unsigned int            i;
+  IndexListConstIterator  it;
+  OffsetValueType         accumulator = 0;
+  const OffsetValueType * stride = this->GetImagePointer()->GetOffsetTable();
 
   // Repositioning neighborhood, previous bounds check on neighborhood
   // location is invalid.
@@ -298,6 +300,7 @@ ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
     // the shaped optimization.
 
     NeighborhoodIterator< TImage, TBoundaryCondition >::operator+=(idx);
+
     }
   else
     {
@@ -339,10 +342,10 @@ ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition > &
 ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
 ::operator-=(const OffsetType & idx)
 {
-  unsigned int                  i;
-  IndexListConstIterator        it;
-  OffsetValueType               accumulator = 0;
-  const OffsetValueType *       stride = this->GetImagePointer()->GetOffsetTable();
+  unsigned int            i;
+  IndexListConstIterator  it;
+  OffsetValueType         accumulator = 0;
+  const OffsetValueType * stride = this->GetImagePointer()->GetOffsetTable();
 
   // Repositioning neighborhood, previous bounds check on neighborhood
   // location is invalid.
@@ -355,6 +358,7 @@ ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
     // the shaped optimization.
 
     NeighborhoodIterator< TImage, TBoundaryCondition >::operator-=(idx);
+
     }
   else
     {
@@ -390,6 +394,7 @@ ConstShapedNeighborhoodIterator< TImage, TBoundaryCondition >
     }
   return *this;
 }
+
 } // namespace itk
 
 #endif

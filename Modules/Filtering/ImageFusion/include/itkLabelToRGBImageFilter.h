@@ -46,7 +46,7 @@ namespace itk
  * \ingroup ITKImageFusion
  */
 template< typename TLabelImage, typename  TOutputImage >
-class LabelToRGBImageFilter:
+class LabelToRGBImageFilter :
   public
   UnaryFunctorImageFilter< TLabelImage, TOutputImage,
                            Functor::LabelToRGBFunctor<
@@ -99,7 +99,8 @@ public:
 
 protected:
   LabelToRGBImageFilter();
-  virtual ~LabelToRGBImageFilter() {}
+  virtual
+  ~LabelToRGBImageFilter() {}
 
   /** Process to execute before entering the multithreaded section */
   void BeforeThreadedGenerateData(void);

@@ -21,9 +21,11 @@
 
 #include <fstream>
 
-int main()
+int
+main()
 {
   std::ofstream ostr( L"tmptest.txt" );
   std::ifstream istr( L"tmptest.txt" );
+
   return 0;
 }

@@ -37,7 +37,7 @@ DOMReader<TOutput>::DOMReader() : m_Output( NULL )
   this->m_Logger->AddLogOutput( defout );
   // settings that may be important
   this->m_Logger->SetName( this->GetNameOfClass() );
-  this->m_Logger->SetPriorityLevel( Logger::NOTSET ); // log everything
+  this->m_Logger->SetPriorityLevel( Logger::NOTSET );       // log everything
   this->m_Logger->SetLevelForFlushing( Logger::MUSTFLUSH ); // never flush (MUSTFLUSH actually leads to no flush, a bug in Logger)
   // some other settings
   this->m_Logger->SetTimeStampFormat( Logger::HUMANREADABLE );
@@ -61,17 +61,17 @@ DOMReader<TOutput>::SetOutput( OutputType* output )
 template< typename TOutput >
 typename DOMReader<TOutput>::OutputType *
 DOMReader<TOutput>::GetOutput()
-{
+  {
   return this->m_Output;
-}
+  }
 
 /** Get the output object for read-only access. */
 template< typename TOutput >
 const typename DOMReader<TOutput>::OutputType *
 DOMReader<TOutput>::GetOutput() const
-{
+  {
   return this->m_Output;
-}
+  }
 
 /**
  * Function called by Update() or end-users to generate the output object from a DOM object.

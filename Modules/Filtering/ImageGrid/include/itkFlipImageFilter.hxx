@@ -44,6 +44,7 @@ FlipImageFilter< TImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "FlipAxes: " << m_FlipAxes << std::endl;
   os << indent << "FlipAboutOrigin: " << m_FlipAboutOrigin << std::endl;
 }
@@ -199,7 +200,7 @@ FlipImageFilter< TImage >
 
   // support progress methods/callbacks
   const typename OutputImageRegionType::SizeType &regionSize = outputRegionForThread.GetSize();
-  const size_t numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() / regionSize[0];
+  const size_t     numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() / regionSize[0];
   ProgressReporter progress( this, threadId, numberOfLinesToProcess );
 
   const typename TImage::SizeType & outputLargestPossibleSize =
@@ -209,7 +210,7 @@ FlipImageFilter< TImage >
 
   // compute the input region the output region maps to
   typename TImage::RegionType inputReginForThread( outputRegionForThread );
-   for ( unsigned int j = 0; j < ImageDimension; j++ )
+  for ( unsigned int j = 0; j < ImageDimension; j++ )
     {
     if ( m_FlipAxes[j] )
       {
@@ -222,8 +223,8 @@ FlipImageFilter< TImage >
       }
     }
 
- // Setup output region iterator
-  ImageScanlineIterator< TImage > outputIt(outputPtr, outputRegionForThread);
+  // Setup output region iterator
+  ImageScanlineIterator< TImage >      outputIt(outputPtr, outputRegionForThread);
   ImageScanlineConstIterator< TImage > inputIter(inputPtr, inputReginForThread);
 
   IndexValueType offset[ImageDimension];
@@ -232,7 +233,7 @@ FlipImageFilter< TImage >
     if ( m_FlipAxes[j] )
       {
       offset[j] = 2 * outputLargestPossibleIndex[j]
-                  + static_cast< IndexValueType >( outputLargestPossibleSize[j] ) - 1;
+        + static_cast< IndexValueType >( outputLargestPossibleSize[j] ) - 1;
       }
     else
       {
@@ -285,8 +286,8 @@ FlipImageFilter< TImage >
         }
       }
 
-      outputIt.NextLine();
-      progress.CompletedPixel();
+    outputIt.NextLine();
+    progress.CompletedPixel();
 
     }
 }

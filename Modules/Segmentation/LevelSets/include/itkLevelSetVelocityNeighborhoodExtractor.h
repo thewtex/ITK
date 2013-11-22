@@ -55,7 +55,7 @@ template<
   typename TAuxValue,
   unsigned int VAuxDimension = 1
   >
-class LevelSetVelocityNeighborhoodExtractor:
+class LevelSetVelocityNeighborhoodExtractor :
   public LevelSetNeighborhoodExtractor< TLevelSet >
 {
 public:
@@ -84,7 +84,7 @@ public:
 
   /** AuxVarType typedef support. */
   typedef AuxVarTypeDefault< TAuxValue, VAuxDimension, itkGetStaticConstMacro(SetDimension) >
-  AuxVarType;
+    AuxVarType;
   typedef typename AuxVarType::AuxValueType         AuxValueType;
   typedef typename AuxVarType::AuxValueVectorType   AuxValueVectorType;
   typedef typename AuxVarType::AuxValueContainer    AuxValueContainer;
@@ -93,7 +93,8 @@ public:
   typedef typename AuxVarType::AuxImageConstPointer AuxImageConstPointer;
 
   /** Set the auxiliary images. */
-  void SetAuxImage(const AuxImageType *ptr, unsigned int idx = 0)
+  void
+  SetAuxImage(const AuxImageType *ptr, unsigned int idx = 0)
   {
     if ( idx < VAuxDimension && m_AuxImage[idx] != ptr )
       {
@@ -103,7 +104,8 @@ public:
   }
 
   /** Get the auxiliary images. */
-  AuxImageConstPointer GetAuxImage(unsigned int idx = 0)
+  AuxImageConstPointer
+  GetAuxImage(unsigned int idx = 0)
   {
     if ( idx >= VAuxDimension )
       {
@@ -136,7 +138,8 @@ private:
   LevelSetVelocityNeighborhoodExtractor(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 
   typename AuxValueContainer::Pointer m_AuxInsideValues;
   typename AuxValueContainer::Pointer m_AuxOutsideValues;

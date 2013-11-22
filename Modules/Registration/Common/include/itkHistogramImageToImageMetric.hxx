@@ -45,7 +45,8 @@ HistogramImageToImageMetric< TFixedImage, TMovingImage >
 }
 
 template< typename TFixedImage, typename TMovingImage >
-void HistogramImageToImageMetric< TFixedImage, TMovingImage >
+void
+HistogramImageToImageMetric< TFixedImage, TMovingImage >
 ::SetUpperBound(const MeasurementVectorType & bounds)
 {
   m_UpperBound = bounds;
@@ -57,12 +58,13 @@ template< typename TFixedImage, typename TMovingImage >
 const typename HistogramImageToImageMetric< TFixedImage, TMovingImage >::MeasurementVectorType &
 HistogramImageToImageMetric< TFixedImage, TMovingImage >
 ::GetUpperBound() const
-{
+  {
   return m_UpperBound;
-}
+  }
 
 template< typename TFixedImage, typename TMovingImage >
-void HistogramImageToImageMetric< TFixedImage, TMovingImage >
+void
+HistogramImageToImageMetric< TFixedImage, TMovingImage >
 ::SetLowerBound(const MeasurementVectorType & bounds)
 {
   m_LowerBound = bounds;
@@ -74,12 +76,13 @@ template< typename TFixedImage, typename TMovingImage >
 const typename HistogramImageToImageMetric< TFixedImage, TMovingImage >::MeasurementVectorType &
 HistogramImageToImageMetric< TFixedImage, TMovingImage >
 ::GetLowerBound() const
-{
+  {
   return m_LowerBound;
-}
+  }
 
 template< typename TFixedImage, typename TMovingImage >
-void HistogramImageToImageMetric< TFixedImage, TMovingImage >
+void
+HistogramImageToImageMetric< TFixedImage, TMovingImage >
 ::Initialize()
 throw ( ExceptionObject )
 {
@@ -273,7 +276,7 @@ HistogramImageToImageMetric< TFixedImage, TMovingImage >
     }
 
   typedef itk::ImageRegionConstIteratorWithIndex< FixedImageType >
-  FixedIteratorType;
+    FixedIteratorType;
 
   typename FixedImageType::IndexType index;
   typename FixedImageType::RegionType fixedRegion;
@@ -392,6 +395,7 @@ HistogramImageToImageMetric< TFixedImage, TMovingImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Padding value: "
      << static_cast< typename NumericTraits< FixedImagePixelType >::PrintType >(
     m_PaddingValue )
@@ -408,6 +412,7 @@ HistogramImageToImageMetric< TFixedImage, TMovingImage >
   os << indent << "Histogram computed by GetValue(): ";
   os << m_Histogram.GetPointer() << std::endl;
 }
+
 } // end namespace itk
 
 #endif // itkHistogramImageToImageMetric_hxx

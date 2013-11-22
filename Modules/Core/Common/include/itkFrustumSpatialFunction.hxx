@@ -148,6 +148,7 @@ FrustumSpatialFunction< VImageDimension, TInput >::PrintSelf(std::ostream & os, 
   os << indent << "BottomPlane: " << m_BottomPlane << std::endl;
   os << indent << "RotationPlane: " << m_RotationPlane << std::endl;
 }
+
 } // end namespace itk
 
 #endif

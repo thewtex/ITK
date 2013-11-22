@@ -30,7 +30,7 @@ namespace itk
  * implementing the mini-pipeline).
  * \ingroup ITKWatersheds
  */
-class WatershedMiniPipelineProgressCommand:public Command
+class WatershedMiniPipelineProgressCommand : public Command
 {
 public:
   /** Smart pointer declaration methods */
@@ -48,10 +48,17 @@ public:
 
   /** Set/Get the filter whose UpdateProgress will be set by this
    * command object */
-  void SetFilter(ProcessObject *p)
-  { m_Filter = p; }
-  const ProcessObject * GetFilter()
-  { return m_Filter; }
+  void
+  SetFilter(ProcessObject *p)
+  {
+    m_Filter = p;
+  }
+
+  const ProcessObject *
+  GetFilter()
+  {
+    return m_Filter;
+  }
 
   /** Set/Get the base count for stepping through filter progress values */
   itkSetMacro(Count, double);
@@ -63,9 +70,10 @@ public:
   itkGetConstMacro(NumberOfFilters, double);
 
 protected:
-  WatershedMiniPipelineProgressCommand():m_Count(0.0), m_Filter(NULL),
+  WatershedMiniPipelineProgressCommand() : m_Count(0.0), m_Filter(NULL),
     m_NumberOfFilters(1.0) {}
-  virtual ~WatershedMiniPipelineProgressCommand() {}
+  virtual
+  ~WatershedMiniPipelineProgressCommand() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

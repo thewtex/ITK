@@ -20,7 +20,8 @@
 #include "itkLabelMap.h"
 #include "itkLabelObject.h"
 
-int itkLabelMapTest(int argc, char * argv[])
+int
+itkLabelMapTest(int argc, char * argv[])
 {
 
   if( argc != 1 )
@@ -138,7 +139,6 @@ int itkLabelMapTest(int argc, char * argv[])
   idx[1] = 21;
   idx[2] = 30;
   lo2->AddLine( idx, 10 );
-
 
   map->PushLabelObject(lo2);
   loCheck = map->GetLabelObject(idx);

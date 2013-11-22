@@ -135,6 +135,7 @@ ThresholdImageFilter< TImage >
                        ThreadIdType threadId)
 {
   const SizeValueType size0 = outputRegionForThread.GetSize(0);
+
   if( size0 == 0)
     {
     return;
@@ -154,7 +155,7 @@ ThresholdImageFilter< TImage >
   OutputIterator outIt(outputPtr, outputRegionForThread);
 
   // support progress methods/callbacks
-  const size_t numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() / size0;
+  const size_t     numberOfLinesToProcess = outputRegionForThread.GetNumberOfPixels() / size0;
   ProgressReporter progress( this, threadId, numberOfLinesToProcess );
 
   // walk the regions, threshold each pixel
@@ -181,6 +182,7 @@ ThresholdImageFilter< TImage >
     progress.CompletedPixel();
     }
 }
+
 } // end namespace itk
 
 #endif

@@ -38,6 +38,7 @@ VectorGradientMagnitudeImageFilter< TInputImage, TRealType, TOutputImage >
   unsigned i;
 
   Superclass::PrintSelf(os, indent);
+
   os << indent << "m_UseImageSpacing = "          << m_UseImageSpacing
      << std::endl;
   os << indent << "m_UsePrincipleComponents = "   << m_UseImageSpacing
@@ -203,7 +204,7 @@ VectorGradientMagnitudeImageFilter< TInputImage, TRealType, TOutputImage >
   // cast might not be necessary, but CastImagefilter is optimized for
   // the case where the InputImageType == OutputImageType
   typename VectorCastImageFilter< TInputImage, RealVectorImageType >::Pointer
-    caster = VectorCastImageFilter< TInputImage, RealVectorImageType >::New();
+  caster = VectorCastImageFilter< TInputImage, RealVectorImageType >::New();
   caster->SetInput( this->GetInput() );
   caster->GetOutput()->SetRequestedRegion( this->GetInput()->GetRequestedRegion() );
   caster->Update();
@@ -353,6 +354,7 @@ VectorGradientMagnitudeImageFilter< TInputImage, TRealType, TOutputImage >
 
   return num;
 }
+
 } // end namespace itk
 
 #endif

@@ -26,20 +26,19 @@ namespace itk {
 
 FileFreeImageIO
 ::FileFreeImageIO()
-{
-}
+{}
 
 FileFreeImageIO
 ::~FileFreeImageIO()
-{
-}
+{}
 
 bool
 FileFreeImageIO
 ::CanReadFile(const char* filename)
 {
   itksys::RegularExpression findPrefix("^FileFreeIO::");
-  if (findPrefix.find(filename))
+
+  if (findPrefix.find(filename) )
     {
     return true;
     }
@@ -60,67 +59,67 @@ FileFreeImageIO
   // spacing
   // origin
   // direction
-  std::vector<unsigned int> sizeVector;
-  std::vector<double> spacingVector;
-  std::vector<double> originVector;
+  std::vector<unsigned int>         sizeVector;
+  std::vector<double>               spacingVector;
+  std::vector<double>               originVector;
   std::vector<std::vector<double> > directionVector;
 
   itksys::RegularExpression findSize("Size=([^:$]*)");
 
-  if (findSize.find(this->GetFileName()))
+  if (findSize.find(this->GetFileName() ) )
     {
     std::vector<std::string> tempVector;
     std::cout << "Size is: " << findSize.match(1) << std::endl;
     this->SplitString(findSize.match(1), ",", tempVector);
     for (std::vector<std::string>::size_type i = 0; i < tempVector.size(); i++)
       {
-      sizeVector.push_back(atoi(tempVector[i].c_str()));
+      sizeVector.push_back(atoi(tempVector[i].c_str() ) );
       }
     }
 
   itksys::RegularExpression findSpacing("Spacing=([^:$]*)");
-  if (findSpacing.find(this->GetFileName()))
+  if (findSpacing.find(this->GetFileName() ) )
     {
     std::vector<std::string> tempVector;
     std::cout << "Spacing is: " << findSpacing.match(1) << std::endl;
     this->SplitString(findSpacing.match(1), ",", tempVector);
     for (std::vector<std::string>::size_type i = 0; i < tempVector.size(); i++)
       {
-      spacingVector.push_back(atof(tempVector[i].c_str()));
+      spacingVector.push_back(atof(tempVector[i].c_str() ) );
       }
     }
 
   itksys::RegularExpression findOrigin("Origin=([^:$]*)");
-  if (findOrigin.find(this->GetFileName()))
+  if (findOrigin.find(this->GetFileName() ) )
     {
     std::vector<std::string> tempVector;
     std::cout << "Origin is: " << findOrigin.match(1) << std::endl;
     this->SplitString(findOrigin.match(1), ",", tempVector);
     for (std::vector<std::string>::size_type i = 0; i < tempVector.size(); i++)
       {
-      originVector.push_back(atof(tempVector[i].c_str()));
+      originVector.push_back(atof(tempVector[i].c_str() ) );
       }
     }
 
   itksys::RegularExpression findDirection("Direction=([^:$]*)");
-  if (findDirection.find(this->GetFileName()))
+  if (findDirection.find(this->GetFileName() ) )
     {
     std::vector<std::string> tempVector;
     std::cout << "Direction is: " << findDirection.match(1) << std::endl;
     this->SplitString(findDirection.match(1), ",", tempVector);
     std::vector<std::string>::size_type ii = 0;
-    directionVector.resize(sizeVector.size());
+    directionVector.resize(sizeVector.size() );
     for (std::vector<std::string>::size_type i = 0; i < tempVector.size() / 2; i++)
       {
       for (std::vector<std::string>::size_type j = 0; j < tempVector.size() / 2; j++)
         {
 
-        directionVector[i].push_back(atof(tempVector[ii].c_str()));
+        directionVector[i].push_back(atof(tempVector[ii].c_str() ) );
         ii++;
         }
       }
     }
-  if (originVector.empty())
+  if (originVector.empty() )
     {
     for (std::vector<std::string>::size_type i = 0; i < sizeVector.size(); i++)
       {
@@ -128,7 +127,7 @@ FileFreeImageIO
       }
     }
 
-  if (spacingVector.empty())
+  if (spacingVector.empty() )
     {
     for (std::vector<std::string>::size_type i = 0; i < sizeVector.size(); i++)
       {
@@ -136,9 +135,9 @@ FileFreeImageIO
       }
     }
 
-  if (directionVector.empty())
+  if (directionVector.empty() )
     {
-    directionVector.resize(sizeVector.size());
+    directionVector.resize(sizeVector.size() );
     for (std::vector<std::string>::size_type i = 0; i < sizeVector.size(); i++)
       {
       for (std::vector<std::string>::size_type j = 0; j < sizeVector.size(); j++)
@@ -155,7 +154,7 @@ FileFreeImageIO
       }
     }
 
-  this->SetNumberOfDimensions(sizeVector.size());
+  this->SetNumberOfDimensions(sizeVector.size() );
   this->SetNumberOfComponents(1);
   this->SetPixelType(SCALAR);
   this->SetComponentType(UCHAR);
@@ -176,7 +175,7 @@ void
 FileFreeImageIO
 ::Read(void *buffer)
 {
-  memset(buffer, (unsigned char) 175, this->GetImageSizeInBytes());
+  memset(buffer, (unsigned char) 175, this->GetImageSizeInBytes() );
 }
 
 bool
@@ -189,28 +188,27 @@ FileFreeImageIO
 void
 FileFreeImageIO
 ::WriteImageInformation()
-{
-}
+{}
 
 void
 FileFreeImageIO
 ::Write(const void *)
-{
-}
+{}
 
 void
 FileFreeImageIO
-::SplitString (const std::string &text,
-               const std::string &separators,
-               std::vector<std::string> &words)
+::SplitString(const std::string &text,
+              const std::string &separators,
+              std::vector<std::string> &words)
 {
   const std::string::size_type n = text.length();
-  std::string::size_type start = text.find_first_not_of(separators);
+  std::string::size_type       start = text.find_first_not_of(separators);
+
   while (start < n)
     {
     std::string::size_type stop = text.find_first_of(separators, start);
     if (stop > n) stop = n;
-    words.push_back(text.substr(start, stop - start));
+    words.push_back(text.substr(start, stop - start) );
     start = text.find_first_not_of(separators, stop+1);
     }
 }

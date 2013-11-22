@@ -35,7 +35,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TImage, typename TFunction >
-class ShapedFloodFilledImageFunctionConditionalIterator:public
+class ShapedFloodFilledImageFunctionConditionalIterator : public
   ShapedFloodFilledImageFunctionConditionalConstIterator< TImage, TFunction >
 {
 public:
@@ -78,32 +78,39 @@ public:
    * an explicit seed pixel for the flood fill, the "startIndex" */
   ShapedFloodFilledImageFunctionConditionalIterator(ImageType *imagePtr,
                                                     FunctionType *fnPtr,
-                                                    IndexType startIndex):Superclass(imagePtr, fnPtr, startIndex) {}
+                                                    IndexType startIndex) : Superclass(imagePtr, fnPtr, startIndex) {}
 
   /** Constructor establishes an iterator to walk a particular image and a
    * particular region of that image. This version of the constructor uses
    * an explicit list of seed pixels for the flood fill, the "startIndex" */
   ShapedFloodFilledImageFunctionConditionalIterator(ImageType *imagePtr,
                                                     FunctionType *fnPtr,
-                                                    std::vector< IndexType > & startIndex):Superclass(imagePtr, fnPtr,
-                                                                                                      startIndex) {}
+                                                    std::vector< IndexType > & startIndex) : Superclass(imagePtr, fnPtr,
+                                                                                                        startIndex) {}
 
   /** Constructor establishes an iterator to walk a particular image and a
    * particular region of that image. This version of the constructor
    * should be used when the seed pixel is unknown. */
   ShapedFloodFilledImageFunctionConditionalIterator(ImageType *imagePtr,
-                                                    FunctionType *fnPtr):Superclass(imagePtr, fnPtr) {}
+                                                    FunctionType *fnPtr) : Superclass(imagePtr, fnPtr) {}
 
   /** Get the pixel value */
-  const PixelType Get(void) const
-  { return const_cast< ImageType * >( this->m_Image.GetPointer() )->GetPixel( this->m_IndexStack.front() ); }
+  const PixelType
+  Get(void) const
+  {
+    return const_cast< ImageType * >( this->m_Image.GetPointer() )->GetPixel( this->m_IndexStack.front() );
+  }
 
   /** Set the pixel value */
-  void Set(const PixelType & value)
-  { const_cast< ImageType * >( this->m_Image.GetPointer() )->GetPixel( this->m_IndexStack.front() ) = value; }
+  void
+  Set(const PixelType & value)
+  {
+    const_cast< ImageType * >( this->m_Image.GetPointer() )->GetPixel( this->m_IndexStack.front() ) = value;
+  }
 
   /** Default Destructor. */
-  virtual ~ShapedFloodFilledImageFunctionConditionalIterator() {}
+  virtual
+  ~ShapedFloodFilledImageFunctionConditionalIterator() {}
 };
 } // end namespace itk
 

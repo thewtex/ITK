@@ -72,7 +72,8 @@ bool IsGPUAvailable();
 std::string GetTypename(const std::type_info& intype);
 
 /** Get Typename in String if a valid type */
-bool GetValidTypename(const std::type_info& intype, const std::vector<std::string>& validtypes, std::string& retTypeName);
+bool GetValidTypename(const std::type_info& intype, const std::vector<std::string>& validtypes,
+                      std::string& retTypeName);
 
 /** Get 64-bit pragma */
 std::string Get64BitPragma();

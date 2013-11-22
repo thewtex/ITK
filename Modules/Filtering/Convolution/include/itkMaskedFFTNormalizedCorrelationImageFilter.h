@@ -137,14 +137,14 @@ namespace itk
 
 template <typename TInputImage, typename TOutputImage, typename TMaskImage=TInputImage >
 class MaskedFFTNormalizedCorrelationImageFilter :
-    public ImageToImageFilter< TInputImage, TOutputImage >
+  public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
-  typedef MaskedFFTNormalizedCorrelationImageFilter                     Self;
-  typedef ImageToImageFilter < TInputImage, TOutputImage >              Superclass;
-  typedef SmartPointer<Self>                                            Pointer;
-  typedef SmartPointer<const Self>                                      ConstPointer;
+  typedef MaskedFFTNormalizedCorrelationImageFilter        Self;
+  typedef ImageToImageFilter < TInputImage, TOutputImage > Superclass;
+  typedef SmartPointer<Self>                               Pointer;
+  typedef SmartPointer<const Self>                         ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -158,70 +158,82 @@ public:
                       TOutputImage::ImageDimension);
 
   /** Extract some information from the image types. */
-  typedef TInputImage                               InputImageType;
-  typedef typename InputImageType::RegionType       InputRegionType;
-  typedef typename InputImageType::Pointer          InputImagePointer;
-  typedef typename InputImageType::ConstPointer     InputImageConstPointer;
-  typedef typename InputImageType::SizeType         InputSizeType;
-  typedef typename itk::SizeValueType               SizeValueType;
+  typedef TInputImage                           InputImageType;
+  typedef typename InputImageType::RegionType   InputRegionType;
+  typedef typename InputImageType::Pointer      InputImagePointer;
+  typedef typename InputImageType::ConstPointer InputImageConstPointer;
+  typedef typename InputImageType::SizeType     InputSizeType;
+  typedef typename itk::SizeValueType           SizeValueType;
 
-  typedef TOutputImage                              OutputImageType;
-  typedef typename OutputImageType::Pointer         OutputImagePointer;
-  typedef typename OutputImageType::PixelType       OutputPixelType;
+  typedef TOutputImage                        OutputImageType;
+  typedef typename OutputImageType::Pointer   OutputImagePointer;
+  typedef typename OutputImageType::PixelType OutputPixelType;
 
-  typedef OutputPixelType                           RealPixelType;
-  typedef Image< RealPixelType, ImageDimension>     RealImageType;
-  typedef typename RealImageType::Pointer           RealImagePointer;
-  typedef typename RealImageType::IndexType         RealIndexType;
-  typedef typename RealImageType::SizeType          RealSizeType;
-  typedef typename RealImageType::RegionType        RealRegionType;
-  typedef typename RealImageType::PointType         RealPointType;
+  typedef OutputPixelType                       RealPixelType;
+  typedef Image< RealPixelType, ImageDimension> RealImageType;
+  typedef typename RealImageType::Pointer       RealImagePointer;
+  typedef typename RealImageType::IndexType     RealIndexType;
+  typedef typename RealImageType::SizeType      RealSizeType;
+  typedef typename RealImageType::RegionType    RealRegionType;
+  typedef typename RealImageType::PointType     RealPointType;
 
-  typedef TMaskImage                                MaskImageType;
-  typedef typename MaskImageType::Pointer           MaskImagePointer;
+  typedef TMaskImage                      MaskImageType;
+  typedef typename MaskImageType::Pointer MaskImagePointer;
 
-  typedef Image< std::complex<RealPixelType>, ImageDimension >  FFTImageType;
-  typedef typename FFTImageType::Pointer                        FFTImagePointer;
+  typedef Image< std::complex<RealPixelType>, ImageDimension > FFTImageType;
+  typedef typename FFTImageType::Pointer                       FFTImagePointer;
 
   /** Set and get the fixed image */
-  void SetFixedImage(const InputImageType *input)
-    {
-      this->SetNthInput(0, const_cast<InputImageType *>(input) );
-    }
-  InputImageType * GetFixedImage()
-    {
-      return itkDynamicCastInDebugMode<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(0)));
-    }
+  void
+  SetFixedImage(const InputImageType *input)
+  {
+    this->SetNthInput(0, const_cast<InputImageType *>(input) );
+  }
+
+  InputImageType *
+  GetFixedImage()
+  {
+    return itkDynamicCastInDebugMode<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(0) ) );
+  }
 
   /** Set and get the moving image */
-  void SetMovingImage(const InputImageType *input)
-    {
-      this->SetNthInput(1, const_cast<InputImageType *>(input) );
-    }
-  InputImageType * GetMovingImage()
-    {
-      return itkDynamicCastInDebugMode<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1)));
-    }
+  void
+  SetMovingImage(const InputImageType *input)
+  {
+    this->SetNthInput(1, const_cast<InputImageType *>(input) );
+  }
+
+  InputImageType *
+  GetMovingImage()
+  {
+    return itkDynamicCastInDebugMode<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(1) ) );
+  }
 
   /** Set and get the fixed mask */
-  void SetFixedImageMask(const MaskImageType *input)
-    {
-      this->SetNthInput(2, const_cast<MaskImageType *>(input) );
-    }
-  MaskImageType * GetFixedImageMask()
-    {
-      return itkDynamicCastInDebugMode<MaskImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(2)));
-    }
+  void
+  SetFixedImageMask(const MaskImageType *input)
+  {
+    this->SetNthInput(2, const_cast<MaskImageType *>(input) );
+  }
+
+  MaskImageType *
+  GetFixedImageMask()
+  {
+    return itkDynamicCastInDebugMode<MaskImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput(2) ) );
+  }
 
   /** Set and get the moving mask */
-  void SetMovingImageMask(const MaskImageType *input)
-    {
-      this->SetNthInput(3, const_cast<MaskImageType *>(input) );
-    }
-  MaskImageType * GetMovingImageMask()
-    {
-      return itkDynamicCastInDebugMode<MaskImageType * >(const_cast<DataObject *>(this->ProcessObject::GetInput(3)));
-    }
+  void
+  SetMovingImageMask(const MaskImageType *input)
+  {
+    this->SetNthInput(3, const_cast<MaskImageType *>(input) );
+  }
+
+  MaskImageType *
+  GetMovingImageMask()
+  {
+    return itkDynamicCastInDebugMode<MaskImageType * >(const_cast<DataObject *>(this->ProcessObject::GetInput(3) ) );
+  }
 
   /** Set and get the required number of overlapping pixels */
   itkSetMacro(RequiredNumberOfOverlappingPixels,SizeValueType);
@@ -242,7 +254,7 @@ public:
 #endif
 
 protected:
-  MaskedFFTNormalizedCorrelationImageFilter():m_TotalForwardAndInverseFFTs(12)
+  MaskedFFTNormalizedCorrelationImageFilter() : m_TotalForwardAndInverseFFTs(12)
   {
     this->SetNumberOfRequiredInputs(2);
     m_RequiredNumberOfOverlappingPixels = 0;
@@ -250,7 +262,9 @@ protected:
     m_MaximumNumberOfOverlappingPixels = 0;
     m_AccumulatedProgress = 0.0;
   }
-  virtual ~MaskedFFTNormalizedCorrelationImageFilter() {}
+
+  virtual
+  ~MaskedFFTNormalizedCorrelationImageFilter() {}
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   /** Overlap the VerifyInputInformation method */
@@ -282,20 +296,25 @@ protected:
   typename LocalInputImageType::Pointer RotateImage( LocalInputImageType * inputImage );
 
   template< typename LocalInputImageType, typename LocalOutputImageType >
-  typename LocalOutputImageType::Pointer CalculateForwardFFT( LocalInputImageType * inputImage, InputSizeType & FFTImageSize );
+  typename LocalOutputImageType::Pointer CalculateForwardFFT( LocalInputImageType * inputImage,
+                                                              InputSizeType & FFTImageSize );
 
   template< typename LocalInputImageType, typename LocalOutputImageType >
-  typename LocalOutputImageType::Pointer CalculateInverseFFT( LocalInputImageType * inputImage, RealSizeType & combinedImageSize );
+  typename LocalOutputImageType::Pointer CalculateInverseFFT( LocalInputImageType * inputImage,
+                                                              RealSizeType & combinedImageSize );
 
   // Helper math methods.
   template< typename LocalInputImageType, typename LocalOutputImageType >
-  typename LocalOutputImageType::Pointer ElementProduct( LocalInputImageType * inputImage1, LocalInputImageType * inputImage2 );
+  typename LocalOutputImageType::Pointer ElementProduct( LocalInputImageType * inputImage1,
+                                                         LocalInputImageType * inputImage2 );
 
   template< typename LocalInputImageType >
-  typename LocalInputImageType::Pointer ElementQuotient( LocalInputImageType * inputImage1, LocalInputImageType * inputImage2 );
+  typename LocalInputImageType::Pointer ElementQuotient( LocalInputImageType * inputImage1,
+                                                         LocalInputImageType * inputImage2 );
 
   template< typename LocalInputImageType >
-  typename LocalInputImageType::Pointer ElementSubtraction( LocalInputImageType * inputImage1, LocalInputImageType * inputImage2 );
+  typename LocalInputImageType::Pointer ElementSubtraction( LocalInputImageType * inputImage1,
+                                                            LocalInputImageType * inputImage2 );
 
   template< typename LocalInputImageType >
   typename LocalInputImageType::Pointer ElementPositive( LocalInputImageType * inputImage );
@@ -317,7 +336,7 @@ protected:
 
 private:
   MaskedFFTNormalizedCorrelationImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                            //purposely not implemented
 
   /** Larger values zero-out pixels on a larger border around the correlation image.
    * Thus, larger values remove less stable computations but also limit the capture range.

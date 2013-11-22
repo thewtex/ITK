@@ -31,7 +31,7 @@ namespace itk
  */
 template<typename TTransform>
 class GaussianExponentialDiffeomorphicTransformParametersAdaptor
-: public ConstantVelocityFieldTransformParametersAdaptor<TTransform>
+  : public ConstantVelocityFieldTransformParametersAdaptor<TTransform>
 {
 public:
 
@@ -46,10 +46,10 @@ public:
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( GaussianExponentialDiffeomorphicTransformParametersAdaptor,
-   ConstantVelocityFieldTransformParametersAdaptor );
+                ConstantVelocityFieldTransformParametersAdaptor );
 
-  typedef TTransform                               TransformType;
-  typedef typename TransformType::ScalarType       ScalarType;
+  typedef TTransform                         TransformType;
+  typedef typename TransformType::ScalarType ScalarType;
 
   /**
    * Get/Set the Gaussian smoothing standard deviation for the velocity field.
@@ -73,12 +73,12 @@ protected:
 
 private:
   GaussianExponentialDiffeomorphicTransformParametersAdaptor( const Self & ); //purposely not implemented
-  void operator=( const Self & );             //purposely not implemented
+  void operator=( const Self & );                                             //purposely not implemented
 
-  ScalarType          m_GaussianSmoothingVarianceForTheConstantVelocityField;
-  ScalarType          m_GaussianSmoothingVarianceForTheUpdateField;
-  ModifiedTimeType    m_GaussianSmoothingVarianceForTheConstantVelocityFieldSetTime;
-  ModifiedTimeType    m_GaussianSmoothingVarianceForTheUpdateFieldSetTime;
+  ScalarType       m_GaussianSmoothingVarianceForTheConstantVelocityField;
+  ScalarType       m_GaussianSmoothingVarianceForTheUpdateField;
+  ModifiedTimeType m_GaussianSmoothingVarianceForTheConstantVelocityFieldSetTime;
+  ModifiedTimeType m_GaussianSmoothingVarianceForTheUpdateFieldSetTime;
 
 }; //class GaussianExponentialDiffeomorphicTransformParametersAdaptor
 }  // namespace itk

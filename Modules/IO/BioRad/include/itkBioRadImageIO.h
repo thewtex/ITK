@@ -47,7 +47,7 @@ namespace itk
  *
  * \ingroup ITKIOBioRad
  */
-class ITKIOBioRad_EXPORT BioRadImageIO:public ImageIOBase
+class ITKIOBioRad_EXPORT BioRadImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -81,7 +81,8 @@ public:
 
   /** Writes the spacing and dimensions of the image.
    * Assumes SetFileName has been called with a valid file name. */
-  virtual void WriteImageInformation() {}
+  virtual void
+  WriteImageInformation() {}
 
   /** Writes the data to disk from the memory buffer provided. Make sure
    * that the IORegion has been set properly. */
@@ -101,6 +102,7 @@ protected:
 private:
   BioRadImageIO(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

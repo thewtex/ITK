@@ -34,6 +34,7 @@ YenThresholdCalculator<THistogram, TOutput>
 ::GenerateData(void)
 {
   const HistogramType * histogram = this->GetInput();
+
   // histogram->Print(std::cout);
   if ( histogram->GetTotalFrequency() == 0 )
     {
@@ -47,12 +48,12 @@ YenThresholdCalculator<THistogram, TOutput>
 
   unsigned int size = histogram->GetSize(0);
 
-  int threshold;
-  int ih, it;
-  double crit;
-  double max_crit;
+  int                 threshold;
+  int                 ih, it;
+  double              crit;
+  double              max_crit;
   std::vector<double> norm_histo(size); /* normalized histogram */
-  std::vector<double> P1(size); /* cumulative normalized histogram */
+  std::vector<double> P1(size);         /* cumulative normalized histogram */
   std::vector<double> P1_sq(size);
   std::vector<double> P2_sq(size);
 
@@ -86,7 +87,11 @@ YenThresholdCalculator<THistogram, TOutput>
   max_crit = itk::NumericTraits<double>::NonpositiveMin();
   for ( it = 0; (unsigned)it < size; it++ )
     {
-    crit = -1.0 * (( P1_sq[it] * P2_sq[it] )> 0.0? vcl_log( P1_sq[it] * P2_sq[it]):0.0) +  2 * ( ( P1[it] * ( 1.0 - P1[it] ) )>0.0? vcl_log(  P1[it] * ( 1.0 - P1[it] ) ): 0.0);
+    crit = -1.0 *
+      ( ( P1_sq[it] * P2_sq[it] )>
+        0.0 ? vcl_log( P1_sq[it] *
+                       P2_sq[it]) : 0.0) +  2 *
+      ( ( P1[it] * ( 1.0 - P1[it] ) )>0.0 ? vcl_log(  P1[it] * ( 1.0 - P1[it] ) ) : 0.0);
     if ( crit > max_crit )
       {
       max_crit = crit;

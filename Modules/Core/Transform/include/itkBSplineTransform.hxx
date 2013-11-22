@@ -30,7 +30,7 @@ namespace itk
 // Constructor with default arguments
 template <typename TScalar, unsigned int NDimensions, unsigned int VSplineOrder>
 BSplineTransform<TScalar, NDimensions, VSplineOrder>
-::BSplineTransform() : Superclass( )
+::BSplineTransform() : Superclass()
 {
 
   /** Fixed Parameters store the following information:
@@ -67,8 +67,7 @@ BSplineTransform<TScalar, NDimensions, VSplineOrder>
 template <typename TScalar, unsigned int NDimensions, unsigned int VSplineOrder>
 BSplineTransform<TScalar, NDimensions, VSplineOrder>
 ::~BSplineTransform()
-{
-}
+{}
 
 // Get the number of parameters
 template <typename TScalar, unsigned int NDimensions, unsigned int VSplineOrder>
@@ -185,6 +184,7 @@ BSplineTransform<TScalar, NDimensions, VSplineOrder>
 
   // set the grid size parameters
   SizeType gridSize;
+
   for( unsigned int i = 0; i < NDimensions; i++ )
     {
     gridSize[i] = static_cast<SizeValueType>( this->m_FixedParameters[i] );
@@ -241,7 +241,7 @@ BSplineTransform<TScalar, NDimensions, VSplineOrder>
   for( unsigned int i = 0; i < NDimensions; i++ )
     {
     this->m_FixedParameters[i] = static_cast<ParametersValueType>(
-      this->m_TransformDomainMeshSize[i] + SplineOrder );
+        this->m_TransformDomainMeshSize[i] + SplineOrder );
     }
 }
 
@@ -265,7 +265,7 @@ BSplineTransform<TScalar, NDimensions, VSplineOrder>
   for( unsigned int i = 0; i < NDimensions; i++ )
     {
     this->m_FixedParameters[NDimensions + i] = static_cast<ParametersValueType>(
-      origin[i] + this->m_TransformDomainOrigin[i] );
+        origin[i] + this->m_TransformDomainOrigin[i] );
     }
 }
 
@@ -300,7 +300,6 @@ BSplineTransform<TScalar, NDimensions, VSplineOrder>
       }
     }
 }
-
 
 // Set the Fixed Parameters
 template <typename TScalar, unsigned int NDimensions, unsigned int VSplineOrder>
@@ -393,7 +392,7 @@ BSplineTransform<TScalar, NDimensions, VSplineOrder>
       this->m_TransformDomainMeshSize[i] =
         images[0]->GetLargestPossibleRegion().GetSize()[i] - SplineOrder;
       this->m_TransformDomainPhysicalDimensions[i] = static_cast<ScalarType>(
-        this->m_TransformDomainMeshSize[i] ) * images[0]->GetSpacing()[i];
+          this->m_TransformDomainMeshSize[i] ) * images[0]->GetSpacing()[i];
       origin[i] += ( images[0]->GetSpacing()[i] * 0.5 * ( SplineOrder - 1 ) );
       }
     origin = this->m_TransformDomainDirection * origin;
@@ -410,10 +409,10 @@ BSplineTransform<TScalar, NDimensions, VSplineOrder>
       if( numberOfPixels_j * SpaceDimension != totalParameters )
         {
         itkExceptionMacro( << "SetCoefficientImage() has array of images that are "
-          << "not the correct size. "
-          << numberOfPixels_j * SpaceDimension << " != " << totalParameters
-          << " for image at index " << j << "  \n" << images[j]
-          );
+                           << "not the correct size. "
+                           << numberOfPixels_j * SpaceDimension << " != " << totalParameters
+                           << " for image at index " << j << "  \n" << images[j]
+                           );
         }
       const ParametersValueType * const baseImagePointer = images[j]->GetBufferPointer();
 
@@ -474,6 +473,7 @@ BSplineTransform<TScalar, NDimensions, VSplineOrder>
   //Needed so that index can be changed.
 
   bool inside = true;
+
   for( unsigned int j = 0; j < SpaceDimension; j++ )
     {
     ScalarType maxLimit = static_cast<ScalarType>( gridSize[j] ) - 0.5
@@ -500,7 +500,7 @@ template <typename TScalar, unsigned int NDimensions, unsigned int VSplineOrder>
 void
 BSplineTransform<TScalar, NDimensions, VSplineOrder>
 ::TransformPoint( const InputPointType & point, OutputPointType & outputPoint,
-  WeightsType & weights, ParameterIndexArrayType & indices, bool & inside ) const
+                  WeightsType & weights, ParameterIndexArrayType & indices, bool & inside ) const
 {
   inside = true;
 
@@ -523,7 +523,7 @@ BSplineTransform<TScalar, NDimensions, VSplineOrder>
     this->m_WeightsFunction->Evaluate( index, weights, supportIndex );
 
     // For each dimension, correlate coefficient with weights
-    SizeType   supportSize;
+    SizeType supportSize;
     supportSize.Fill( SplineOrder + 1 );
     RegionType supportRegion;
     supportRegion.SetSize( supportSize );
@@ -544,30 +544,30 @@ BSplineTransform<TScalar, NDimensions, VSplineOrder>
 
     while( !coeffIterator[0].IsAtEnd() )
       {
-       while( !coeffIterator[0].IsAtEndOfLine() )
-         {
-         // multiply weigth with coefficient
-         for( unsigned int j = 0; j < SpaceDimension; j++ )
-           {
-           outputPoint[j] += static_cast<ScalarType>(
-             weights[counter] * coeffIterator[j].Get() );
-           }
+      while( !coeffIterator[0].IsAtEndOfLine() )
+        {
+        // multiply weigth with coefficient
+        for( unsigned int j = 0; j < SpaceDimension; j++ )
+          {
+          outputPoint[j] += static_cast<ScalarType>(
+              weights[counter] * coeffIterator[j].Get() );
+          }
 
-         // populate the indices array
-         indices[counter] = &( coeffIterator[0].Value() ) - basePointer;
+        // populate the indices array
+        indices[counter] = &( coeffIterator[0].Value() ) - basePointer;
 
-         // go to next coefficient in the support region
-         ++counter;
-         for( unsigned int j = 0; j < SpaceDimension; j++ )
-           {
-           ++( coeffIterator[j] );
-           }
-         } // end scanline
+        // go to next coefficient in the support region
+        ++counter;
+        for( unsigned int j = 0; j < SpaceDimension; j++ )
+          {
+          ++( coeffIterator[j] );
+          }
+        }  // end scanline
 
-       for( unsigned int j = 0; j < SpaceDimension; j++ )
-         {
-         coeffIterator[j].NextLine();
-         }
+      for( unsigned int j = 0; j < SpaceDimension; j++ )
+        {
+        coeffIterator[j].NextLine();
+        }
       }
     // return results
     for( unsigned int j = 0; j < SpaceDimension; j++ )
@@ -590,19 +590,19 @@ template <typename TScalar, unsigned int NDimensions, unsigned int VSplineOrder>
 void
 BSplineTransform<TScalar, NDimensions, VSplineOrder>
 ::ComputeJacobianWithRespectToParameters( const InputPointType & point,
-  JacobianType & jacobian ) const
+                                          JacobianType & jacobian ) const
 {
   // Zero all components of jacobian
   jacobian.SetSize( SpaceDimension, this->GetNumberOfParameters() );
   jacobian.Fill( 0.0 );
-  RegionType   supportRegion;
-  SizeType     supportSize;
+  RegionType supportRegion;
+  SizeType   supportSize;
   supportSize.Fill( SplineOrder + 1 );
   supportRegion.SetSize( supportSize );
 
   ContinuousIndexType index;
   this->m_CoefficientImages[0]->
-    TransformPhysicalPointToContinuousIndex( point, index );
+  TransformPhysicalPointToContinuousIndex( point, index );
 
   // NOTE: if the support region does not lie totally within the grid we assume
   // zero displacement and do no computations beyond zeroing out the value
@@ -633,7 +633,7 @@ BSplineTransform<TScalar, NDimensions, VSplineOrder>
   SizeValueType numberOfParametersPerDimension = this->GetNumberOfParametersPerDimension();
 
   ImageRegionConstIteratorWithIndex<ImageType> It( this->m_CoefficientImages[0], supportRegion );
-  unsigned long counter = 0;
+  unsigned long                                counter = 0;
   for( It.GoToBegin(); !It.IsAtEnd(); ++It )
     {
     typename ImageType::OffsetType currentIndex = It.GetIndex() - startIndex;
@@ -653,6 +653,5 @@ BSplineTransform<TScalar, NDimensions, VSplineOrder>
 }
 
 } // namespace
-
 
 #endif

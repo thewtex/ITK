@@ -116,7 +116,7 @@ MaskNeighborhoodOperatorImageFilter< TInputImage, TMaskImage, TOutputImage, TOpe
   // only concerned with centering the neighborhood operator at the
   // pixels that correspond to output pixels.
   typedef NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< InputImageType >
-  BFC;
+    BFC;
 
   typedef typename BFC::FaceListType FaceListType;
   BFC          faceCalculator;
@@ -175,10 +175,12 @@ MaskNeighborhoodOperatorImageFilter< TInputImage, TMaskImage, TOutputImage, TOpe
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Default value : "
      << static_cast< typename NumericTraits< OutputPixelType >::PrintType >( m_DefaultValue ) << std::endl;
   os << indent << "UseDefaultValue : " << m_UseDefaultValue << std::endl;
 }
+
 } // end namespace itk
 
 #endif

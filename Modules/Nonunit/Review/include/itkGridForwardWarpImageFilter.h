@@ -55,7 +55,7 @@ template<
   typename TDisplacementField,
   typename TOutputImage
   >
-class GridForwardWarpImageFilter:
+class GridForwardWarpImageFilter :
   public ImageToImageFilter< TDisplacementField, TOutputImage >
 {
 public:

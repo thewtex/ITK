@@ -18,7 +18,6 @@
 #ifndef __itkWatershedSegmenter_h
 #define __itkWatershedSegmenter_h
 
-
 #include "itkWatershedBoundary.h"
 #include "itkWatershedSegmentTable.h"
 #include "itkEquivalencyTable.h"
@@ -85,7 +84,7 @@ namespace watershed
  * \ingroup ITKWatersheds
  */
 template< typename TInputImage >
-class Segmenter:
+class Segmenter :
   public ProcessObject
 {
 public:
@@ -98,11 +97,11 @@ public:
                       TInputImage::ImageDimension);
 
   typedef Image< IdentifierType, itkGetStaticConstMacro(ImageDimension) >
-  OutputImageType;
+    OutputImageType;
   typedef typename InputImageType::RegionType ImageRegionType;
   typedef typename InputImageType::PixelType  InputPixelType;
   typedef Boundary< InputPixelType, itkGetStaticConstMacro(ImageDimension) >
-  BoundaryType;
+    BoundaryType;
   typedef typename BoundaryType::IndexType         BoundaryIndexType;
   typedef typename BoundaryType::FlatHashValueType BoundaryFlatHashValueType;
   typedef SegmentTable< InputPixelType >           SegmentTableType;
@@ -129,47 +128,63 @@ public:
   itkStaticConstMacro(NULL_FLOW, unsigned long, -1);
 
   /** Get/Set the input image.   */
-  InputImageType * GetInputImage(void)
+  InputImageType *
+  GetInputImage(void)
   {
     return itkDynamicCastInDebugMode< InputImageType * >
-           ( this->ProcessObject::GetInput(0) );
+             ( this->ProcessObject::GetInput(0) );
   }
 
-  void SetInputImage(InputImageType *img)
-  {  this->ProcessObject::SetNthInput(0, img); }
+  void
+  SetInputImage(InputImageType *img)
+  {
+    this->ProcessObject::SetNthInput(0, img);
+  }
 
   /** Get/Set the labeled output image.  The output image is always of
     IdentifierType integers. */
-  OutputImageType * GetOutputImage(void)
+  OutputImageType *
+  GetOutputImage(void)
   {
     return itkDynamicCastInDebugMode< OutputImageType * >
-           ( this->ProcessObject::GetOutput(0) );
+             ( this->ProcessObject::GetOutput(0) );
   }
 
-  void SetOutputImage(OutputImageType *img)
-  { this->ProcessObject::SetNthOutput(0, img);    }
+  void
+  SetOutputImage(OutputImageType *img)
+  {
+    this->ProcessObject::SetNthOutput(0, img);
+  }
 
   /** Get/Set the segment table.  The segment table is a table of segmentation
    * information identifying each region produced by the labeling algorithm. */
-  SegmentTableType * GetSegmentTable(void)
+  SegmentTableType *
+  GetSegmentTable(void)
   {
     return itkDynamicCastInDebugMode< SegmentTableType * >
-           ( this->ProcessObject::GetOutput(1) );
+             ( this->ProcessObject::GetOutput(1) );
   }
 
-  void SetSegmentTable(SegmentTableType *s)
-  { this->ProcessObject::SetNthOutput(1, s); }
+  void
+  SetSegmentTable(SegmentTableType *s)
+  {
+    this->ProcessObject::SetNthOutput(1, s);
+  }
 
   /** Returns the boundary information data necessary only for data streaming
     applications.  */
-  BoundaryType * GetBoundary(void)
+  BoundaryType *
+  GetBoundary(void)
   {
     return itkDynamicCastInDebugMode< BoundaryType * >
-           ( this->ProcessObject::GetOutput(2) );
+             ( this->ProcessObject::GetOutput(2) );
   }
 
-  void SetBoundary(BoundaryType *b)
-  { this->ProcessObject::SetNthOutput(2, b); }
+  void
+  SetBoundary(BoundaryType *b)
+  {
+    this->ProcessObject::SetNthOutput(2, b);
+  }
 
   /** Standard non-threaded pipeline execution method. */
   void GenerateData();
@@ -180,15 +195,19 @@ public:
    * complete volume being streamed.  The member variables controlled by
    * this method will not be modified by the Itk pipeline and are necessary
    * for analysis of boundaries.   */
-  void SetLargestPossibleRegion(ImageRegionType reg)
+  void
+  SetLargestPossibleRegion(ImageRegionType reg)
   {
     if ( reg == m_LargestPossibleRegion ) { return; }
     m_LargestPossibleRegion = reg;
     this->Modified();
   }
 
-  ImageRegionType GetLargestPossibleRegion() const
-  { return m_LargestPossibleRegion; }
+  ImageRegionType
+  GetLargestPossibleRegion() const
+  {
+    return m_LargestPossibleRegion;
+  }
 
   /** Helper function.  Other classes may have occasion to use this. Relabels
       an image according to a table of equivalencies. */
@@ -241,18 +260,18 @@ protected:
     //    InputPixelType  bounds_max; // <-- may not be necc.
     InputPixelType value;
     bool is_on_boundary;
-    flat_region_t():is_on_boundary(false) {}
-  };
+    flat_region_t() : is_on_boundary(false) {}
+    };
 
   /** Table for storing flat region information.  */
   typedef itksys::hash_map< IdentifierType, flat_region_t, itksys::hash< IdentifierType > >
-  flat_region_table_t;
+    flat_region_table_t;
 
   struct connectivity_t {
     unsigned int size;
     unsigned int *index;
     typename InputImageType::OffsetType * direction;
-  };
+    };
 
   /** Table for storing tables of edges.  This is convenient in
    * generating the segment table,  even though the edge tables
@@ -262,14 +281,16 @@ protected:
                             > edge_table_t;
 
   typedef itksys::hash_map< IdentifierType, edge_table_t, itksys::hash< IdentifierType >
-                         > edge_table_hash_t;
+                            > edge_table_hash_t;
 
   Segmenter();
   Segmenter(const Self &) {}
-  virtual ~Segmenter();
+  virtual
+  ~Segmenter();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void operator=(const Self &) {}
+  void
+  operator=(const Self &) {}
 
   /** Constructs the connectivity list and the corresponding set of directional
    * Offset indices. */
@@ -370,11 +391,11 @@ private:
    *  streaming applications*/
   ImageRegionType m_LargestPossibleRegion;
 
-  bool            m_SortEdgeLists;
-  bool            m_DoBoundaryAnalysis;
-  double          m_Threshold;
-  double          m_MaximumFloodLevel;
-  IdentifierType  m_CurrentLabel;
+  bool           m_SortEdgeLists;
+  bool           m_DoBoundaryAnalysis;
+  double         m_Threshold;
+  double         m_MaximumFloodLevel;
+  IdentifierType m_CurrentLabel;
 };
 } // end namespace watershed
 } // end namespace itk

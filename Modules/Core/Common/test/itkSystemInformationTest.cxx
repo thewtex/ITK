@@ -26,7 +26,6 @@
  *
  *=========================================================================*/
 
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -37,7 +36,8 @@
 #include <time.h>
 #include <string.h>
 
-void itkSystemInformationPrintFile(const char* name, std::ostream& os)
+void
+itkSystemInformationPrintFile(const char* name, std::ostream& os)
 {
   // Preserve valuable output regardless of the limits set in
   // CMake/CTestCustom.cmake
@@ -69,7 +69,8 @@ void itkSystemInformationPrintFile(const char* name, std::ostream& os)
     }
 }
 
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
   if(argc != 2)
     {
@@ -81,14 +82,14 @@ int main(int argc, char* argv[])
 
   const char* files[] =
     {
-      "CMakeCache.txt",
-      "Modules/Core/Common/itkConfigure.h",
-      "CMakeFiles/CMakeOutput.log",
-      "CMakeFiles/CMakeError.log",
-      "ITKConfig.cmake",
-      "ITKConfigVersion.cmake",
-      "ITKTargets.cmake",
-      0
+    "CMakeCache.txt",
+    "Modules/Core/Common/itkConfigure.h",
+    "CMakeFiles/CMakeOutput.log",
+    "CMakeFiles/CMakeError.log",
+    "ITKConfig.cmake",
+    "ITKConfigVersion.cmake",
+    "ITKTargets.cmake",
+    0
     };
 
   for(const char** f = files; *f; ++f)

@@ -21,12 +21,12 @@
 #include "itkImageRegionReverseIterator.h"
 #include "itkImageRegionReverseConstIterator.h"
 
-
 // This routine is used to make sure that we call the "const" version
 // of GetPixel() (via the operator[])
 template <typename T, unsigned int VImageDimension>
-void TestConstPixelAccess(const itk::Image<T, VImageDimension> &in,
-                          itk::Image<T, VImageDimension> &out)
+void
+TestConstPixelAccess(const itk::Image<T, VImageDimension> &in,
+                     itk::Image<T, VImageDimension> &out)
 {
   typename itk::Image<T, VImageDimension>::IndexType regionStartIndex3D = {{5, 10, 15}};
   typename itk::Image<T, VImageDimension>::IndexType regionEndIndex3D = {{8, 15, 17}};
@@ -43,11 +43,11 @@ void TestConstPixelAccess(const itk::Image<T, VImageDimension> &in,
   out[regionEndIndex3D] = in[regionStartIndex3D];
 }
 
-
-int itkImageReverseIteratorTest(int, char* [] )
+int
+itkImageReverseIteratorTest(int, char* [] )
 {
 
-  typedef itk::Vector< unsigned short, 5 >   PixelType;
+  typedef itk::Vector< unsigned short, 5 > PixelType;
   const unsigned int Dimension = 3;
 
   typedef itk::Image< PixelType, Dimension > ImageType;
@@ -66,7 +66,6 @@ int itkImageReverseIteratorTest(int, char* [] )
   ImageType::IndexType bufferStartIndex3D = {{2, 3, 5}};
   ImageType::IndexType regionStartIndex3D = {{5, 10, 12}};
   ImageType::IndexType regionEndIndex3D = {{8, 15, 17}};
-
 
   ImageType::RegionType region;
   region.SetSize(imageSize3D);
@@ -96,7 +95,6 @@ int itkImageReverseIteratorTest(int, char* [] )
   (*o3)[regionStartIndex3D] = vec;
   (*o3)[regionEndIndex3D] = (*o3)[regionStartIndex3D];
   TestConstPixelAccess(*o3, *o3);
-
 
   itk::ImageIterator< ImageType > standardIt(o3, region);
 
@@ -129,8 +127,7 @@ int itkImageReverseIteratorTest(int, char* [] )
       }
     std::cout << std::endl;
     }
-  while (!backIt.IsAtBegin()); // stop when we reach the beginning
-
+  while (!backIt.IsAtBegin() ); // stop when we reach the beginning
 
   // Iterate over a region backwards using a reverse iterator
   itk::ImageRegionReverseIterator< ImageType > reverseIt(o3, region);
@@ -167,7 +164,7 @@ int itkImageReverseIteratorTest(int, char* [] )
       }
     std::cout << std::endl;
     }
-  while (!backReverseIt.IsAtBegin()); // stop when we reach the beginning
+  while (!backReverseIt.IsAtBegin() ); // stop when we reach the beginning
 
   // Iterate over a region backwards using a reverse const iterator
   itk::ImageRegionReverseConstIterator< ImageType > reverseConstIt(o3, region);

@@ -22,11 +22,13 @@
 #include "itkImageFileWriter.h"
 #include "itkFilterWatcher.h"
 
-int itkIsolatedConnectedImageFilterTest(int ac, char* av[] )
+int
+itkIsolatedConnectedImageFilterTest(int ac, char* av[] )
 {
   if(ac < 8)
     {
-    std::cerr << "Usage: " << av[0] << " InputImage OutputImage FindUpper(true,false) seed1_x seed1_y seed2_x seed2_y [seed1_x2 seed1_y2 seed2_x2 seed2_y2]*\n";
+    std::cerr << "Usage: " << av[0] <<
+    " InputImage OutputImage FindUpper(true,false) seed1_x seed1_y seed2_x seed2_y [seed1_x2 seed1_y2 seed2_x2 seed2_y2]*\n";
     return -1;
     }
 
@@ -40,9 +42,9 @@ int itkIsolatedConnectedImageFilterTest(int ac, char* av[] )
   typedef itk::IsolatedConnectedImageFilter<myImage,myImage> FilterType;
 
   FilterType::Pointer filter = FilterType::New();
-  FilterWatcher watcher(filter);
+  FilterWatcher       watcher(filter);
 
-  filter->SetInput(input->GetOutput());
+  filter->SetInput(input->GetOutput() );
 
   FilterType::IndexType seed1;
 
@@ -74,9 +76,9 @@ int itkIsolatedConnectedImageFilterTest(int ac, char* av[] )
   // Test SetMacro
   std::string findUpper = av[3];
   if (findUpper == "true")
-    { filter->FindUpperThresholdOn(); }
+          { filter->FindUpperThresholdOn(); }
   else
-    { filter->FindUpperThresholdOff(); }
+          { filter->FindUpperThresholdOff(); }
 
   // Test GetMacros
   PixelType lower = filter->GetLower();
@@ -133,12 +135,11 @@ int itkIsolatedConnectedImageFilterTest(int ac, char* av[] )
   writer->SetFileName( av[2] );
   writer->Update();
 
-
   // Now flip the mode to test whether it fails
   if (findUpper == "true")
-    { filter->FindUpperThresholdOff(); }
+          { filter->FindUpperThresholdOff(); }
   else
-    { filter->FindUpperThresholdOn(); }
+          { filter->FindUpperThresholdOn(); }
 
   try
     {
@@ -160,7 +161,6 @@ int itkIsolatedConnectedImageFilterTest(int ac, char* av[] )
     {
     std::cout << "When mode flipped: Selection of isolating threshold succeeded" << std::endl;
     }
-
 
   return EXIT_SUCCESS;
 }

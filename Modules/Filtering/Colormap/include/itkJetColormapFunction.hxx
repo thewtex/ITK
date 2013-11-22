@@ -56,6 +56,7 @@ JetColormapFunction< TScalar, TRGBPixel >
 
   return pixel;
 }
+
 } // end namespace Function
 } // end namespace itk
 

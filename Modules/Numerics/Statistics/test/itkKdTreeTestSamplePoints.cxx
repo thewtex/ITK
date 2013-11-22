@@ -20,9 +20,10 @@
 #include "itkKdTreeGenerator.h"
 #include <fstream>
 
-int itkKdTreeTestSamplePoints(int , char *[] )
+int
+itkKdTreeTestSamplePoints(int , char *[] )
 {
-  typedef itk::Array< double > MeasurementVectorType;
+  typedef itk::Array< double >                                 MeasurementVectorType;
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
 
   const SampleType::MeasurementVectorSizeType measurementVectorSize = 2;
@@ -30,7 +31,7 @@ int itkKdTreeTestSamplePoints(int , char *[] )
   SampleType::Pointer sample = SampleType::New();
   sample->SetMeasurementVectorSize( measurementVectorSize );
 
-  const unsigned int numberOfDataPoints = 5;
+  const unsigned int    numberOfDataPoints = 5;
   MeasurementVectorType mv( measurementVectorSize );
   mv[0] = 0.0342;
   mv[1] = 0.5175;
@@ -73,7 +74,7 @@ int itkKdTreeTestSamplePoints(int , char *[] )
 
   MeasurementVectorType queryPoint( measurementVectorSize );
 
-  unsigned int numberOfNeighbors = 1;
+  unsigned int                           numberOfNeighbors = 1;
   TreeType::InstanceIdentifierVectorType neighbors;
 
   MeasurementVectorType result( measurementVectorSize );
@@ -84,7 +85,7 @@ int itkKdTreeTestSamplePoints(int , char *[] )
   //  Check that for every point in the sample, its closest point is itself.
   //
   typedef itk::Statistics::EuclideanDistanceMetric< MeasurementVectorType > DistanceMetricType;
-  typedef DistanceMetricType::OriginType OriginType;
+  typedef DistanceMetricType::OriginType                                    OriginType;
 
   DistanceMetricType::Pointer distanceMetric = DistanceMetricType::New();
 
@@ -106,7 +107,7 @@ int itkKdTreeTestSamplePoints(int , char *[] )
     for ( unsigned int i = 0; i < numberOfNeighbors; ++i )
       {
       const double distance =
-        distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i] ));
+        distanceMetric->Evaluate( tree->GetMeasurementVector( neighbors[i] ) );
 
       if( distance > vnl_math::eps )
         {
@@ -136,7 +137,6 @@ int itkKdTreeTestSamplePoints(int , char *[] )
   queryPoint[0] = 1.0;
   queryPoint[1] = 0.1;
 
-
   tree->Search( queryPoint, numberOfNeighbors, neighbors );
 
   //
@@ -148,11 +148,11 @@ int itkKdTreeTestSamplePoints(int , char *[] )
   // Compute the distance to the "presumed" nearest neighbor
   //
   double result_dist = vcl_sqrt(
-        (result[0] - queryPoint[0]) *
-        (result[0] - queryPoint[0]) +
-        (result[1] - queryPoint[1]) *
-        (result[1] - queryPoint[1])
-        );
+      (result[0] - queryPoint[0]) *
+      (result[0] - queryPoint[0]) +
+      (result[1] - queryPoint[1]) *
+      (result[1] - queryPoint[1])
+      );
 
   //
   // Compute the distance to all other points, to verify

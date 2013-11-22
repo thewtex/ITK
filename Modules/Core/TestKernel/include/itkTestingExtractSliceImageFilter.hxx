@@ -32,7 +32,7 @@ namespace Testing
  */
 template< typename TInputImage, typename TOutputImage >
 ExtractSliceImageFilter< TInputImage, TOutputImage >
-::ExtractSliceImageFilter():
+::ExtractSliceImageFilter() :
 #ifdef ITKV3_COMPATIBILITY
   m_DirectionCollaspeStrategy(DIRECTIONCOLLAPSETOGUESS)
 #else
@@ -73,9 +73,9 @@ ExtractSliceImageFilter< TInputImage, TOutputImage >
 {
   m_ExtractionRegion = extractRegion;
 
-  unsigned int         nonzeroSizeCount = 0;
-  InputImageSizeType   inputSize = extractRegion.GetSize();
-  OutputImageSizeType  outputSize;
+  unsigned int        nonzeroSizeCount = 0;
+  InputImageSizeType  inputSize = extractRegion.GetSize();
+  OutputImageSizeType outputSize;
   outputSize.Fill(0);
   OutputImageIndexType outputIndex;
   outputIndex.Fill(0);
@@ -122,7 +122,7 @@ ExtractSliceImageFilter< TInputImage, TOutputImage >
   // this filter allows the input and the output to be of different dimensions
 
   // get pointers to the input and output
-  TOutputImage      * outputPtr = this->GetOutput();
+  TOutputImage *      outputPtr = this->GetOutput();
   const TInputImage * inputPtr  = this->GetInput();
 
   if ( !outputPtr || !inputPtr )
@@ -213,33 +213,33 @@ ExtractSliceImageFilter< TInputImage, TOutputImage >
     // length cosine vector, reset the directions to identity.
     switch(m_DirectionCollaspeStrategy)
       {
-    case DIRECTIONCOLLAPSETOIDENTITY:
+      case DIRECTIONCOLLAPSETOIDENTITY:
         {
         outputDirection.SetIdentity();
         }
-      break;
-    case DIRECTIONCOLLAPSETOSUBMATRIX:
+        break;
+      case DIRECTIONCOLLAPSETOSUBMATRIX:
         {
         if ( vnl_determinant( outputDirection.GetVnlMatrix() ) == 0.0 )
           {
           itkExceptionMacro( << "Invalid submatrix extracted for collapsed direction." );
           }
         }
-      break;
-    case DIRECTIONCOLLAPSETOGUESS:
+        break;
+      case DIRECTIONCOLLAPSETOGUESS:
         {
         if ( vnl_determinant( outputDirection.GetVnlMatrix() ) == 0.0 )
           {
           outputDirection.SetIdentity();
           }
         }
-      break;
-    case DIRECTIONCOLLAPSETOUNKOWN:
-    default:
+        break;
+      case DIRECTIONCOLLAPSETOUNKOWN:
+      default:
         {
         itkExceptionMacro( << "It is required that the strategy for collapsing the direction matrix be explicitly specified. "
-          << "Set with either myfilter->SetDirectionCollapseToIdentity() or myfilter->SetDirectionCollapseToSubmatrix() "
-          << typeid( ImageBase< InputImageDimension > * ).name() );
+                           << "Set with either myfilter->SetDirectionCollapseToIdentity() or myfilter->SetDirectionCollapseToSubmatrix() "
+                           << typeid( ImageBase< InputImageDimension > * ).name() );
         }
       }
 
@@ -280,7 +280,7 @@ ExtractSliceImageFilter< TInputImage, TOutputImage >
 
   // Get the input and output pointers
   const TInputImage * inputPtr = this->GetInput();
-  TOutputImage     * outputPtr = this->GetOutput();
+  TOutputImage *      outputPtr = this->GetOutput();
 
   // support progress methods/callbacks
   ProgressReporter progress( this, threadId, outputRegionForThread.GetNumberOfPixels() );

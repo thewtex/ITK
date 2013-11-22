@@ -20,8 +20,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
-int itkGradientRecursiveGaussianFilterTest4(int argc, char* argv[] )
+int
+itkGradientRecursiveGaussianFilterTest4(int argc, char* argv[] )
 {
 
   if ( argc != 3 )
@@ -39,43 +39,37 @@ int itkGradientRecursiveGaussianFilterTest4(int argc, char* argv[] )
   const unsigned int myDimension = 2;
 
   // Declare the types of the images
-  typedef itk::Image<float, myDimension>           myImageType;
+  typedef itk::Image<float, myDimension> myImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>             myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>              mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>        myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Create the image
   myImageType::Pointer inputImage  = myImageType::New();
-
 
   typedef itk::ImageFileReader<myImageType> myReaderType;
   myReaderType::Pointer reader = myReaderType::New();
   reader->SetFileName( inFileName );
 
-
   typedef itk::VectorImage< float, myDimension> myGradientImageType;
 
-
   // Declare the type for the
-  typedef itk::GradientRecursiveGaussianImageFilter< myImageType, myGradientImageType >  myFilterType;
-
+  typedef itk::GradientRecursiveGaussianImageFilter< myImageType, myGradientImageType > myFilterType;
 
   // Create a  Filter
   myFilterType::Pointer filter = myFilterType::New();
-
 
   // Connect the input images
   filter->SetInput( reader->GetOutput() );
 
   // Select the value of Sigma
   filter->SetSigma( 2.5 );
-
 
   typedef itk::ImageFileWriter<myGradientImageType> myWriterType;
   myWriterType::Pointer writer = myWriterType::New();

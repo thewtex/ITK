@@ -88,6 +88,7 @@ MeanImageFunction< TInputImage, TCoordRep >
 
   return ( sum );
 }
+
 } // end namespace itk
 
 #endif

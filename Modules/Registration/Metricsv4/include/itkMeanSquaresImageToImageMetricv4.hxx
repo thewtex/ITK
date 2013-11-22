@@ -23,7 +23,8 @@
 namespace itk
 {
 
-template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits >
+template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+           typename TMetricTraits >
 MeanSquaresImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType,TMetricTraits>
 ::MeanSquaresImageToImageMetricv4()
 {
@@ -33,13 +34,14 @@ MeanSquaresImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternal
   this->m_SparseGetValueAndDerivativeThreader = MeanSquaresSparseGetValueAndDerivativeThreaderType::New();
 }
 
-template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits >
+template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+           typename TMetricTraits >
 MeanSquaresImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType,TMetricTraits>
 ::~MeanSquaresImageToImageMetricv4()
-{
-}
+{}
 
-template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType, typename TMetricTraits >
+template < typename TFixedImage, typename TMovingImage, typename TVirtualImage, typename TInternalComputationValueType,
+           typename TMetricTraits >
 void
 MeanSquaresImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType,TMetricTraits>
 ::PrintSelf(std::ostream& os, Indent indent) const
@@ -48,6 +50,5 @@ MeanSquaresImageToImageMetricv4<TFixedImage,TMovingImage,TVirtualImage,TInternal
 }
 
 } // end namespace itk
-
 
 #endif

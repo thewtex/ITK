@@ -43,7 +43,7 @@ namespace itk {
  */
 template<typename TInputImage>
 class BinaryGrindPeakImageFilter :
-    public ImageToImageFilter<TInputImage, TInputImage>
+  public ImageToImageFilter<TInputImage, TInputImage>
 {
 public:
   /** Standard class typedefs. */
@@ -53,16 +53,16 @@ public:
   typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage                              InputImageType;
-  typedef TInputImage                              OutputImageType;
-  typedef typename InputImageType::Pointer         InputImagePointer;
-  typedef typename InputImageType::ConstPointer    InputImageConstPointer;
-  typedef typename InputImageType::RegionType      InputImageRegionType;
-  typedef typename InputImageType::PixelType       InputImagePixelType;
-  typedef typename OutputImageType::Pointer        OutputImagePointer;
-  typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
-  typedef typename OutputImageType::RegionType     OutputImageRegionType;
-  typedef typename OutputImageType::PixelType      OutputImagePixelType;
+  typedef TInputImage                            InputImageType;
+  typedef TInputImage                            OutputImageType;
+  typedef typename InputImageType::Pointer       InputImagePointer;
+  typedef typename InputImageType::ConstPointer  InputImageConstPointer;
+  typedef typename InputImageType::RegionType    InputImageRegionType;
+  typedef typename InputImageType::PixelType     InputImagePixelType;
+  typedef typename OutputImageType::Pointer      OutputImagePointer;
+  typedef typename OutputImageType::ConstPointer OutputImageConstPointer;
+  typedef typename OutputImageType::RegionType   OutputImageRegionType;
+  typedef typename OutputImageType::PixelType    OutputImagePixelType;
 
   /** ImageDimension constants */
   itkStaticConstMacro(InputImageDimension, unsigned int,
@@ -90,7 +90,7 @@ public:
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
   itkConceptMacro(InputOStreamWritableCheck,
-                  (Concept::OStreamWritable<InputImagePixelType>));
+                  (Concept::OStreamWritable<InputImagePixelType>) );
   // End concept checking
 #endif
 
@@ -110,7 +110,7 @@ public:
 
 protected:
   BinaryGrindPeakImageFilter();
-  ~BinaryGrindPeakImageFilter() {};
+  ~BinaryGrindPeakImageFilter() {}
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   /** BinaryGrindPeakImageFilter needs the entire input be
@@ -119,7 +119,7 @@ protected:
   void GenerateInputRequestedRegion();
 
   /** BinaryGrindPeakImageFilter will produce the entire output. */
-  void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
+  void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output) );
 
   /** Single-threaded version of GenerateData.  This filter delegates
    * to GrayscaleGeodesicErodeImageFilter. */
@@ -127,13 +127,13 @@ protected:
 
 private:
   BinaryGrindPeakImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);             //purposely not implemented
 
   InputImagePixelType m_ForegroundValue;
 
   InputImagePixelType m_BackgroundValue;
 
-  bool                m_FullyConnected;
+  bool m_FullyConnected;
 
 }; // end of class
 

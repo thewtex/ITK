@@ -49,7 +49,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class TileImageFilter:
+class TileImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -94,7 +94,7 @@ public:
 public:
     int                   m_ImageNumber;
     OutputImageRegionType m_Region;
-    TileInfo():m_ImageNumber(-1) {}
+    TileInfo() : m_ImageNumber(-1) {}
   };
 
   typedef Image< TileInfo, itkGetStaticConstMacro(OutputImageDimension) > TileImageType;
@@ -144,7 +144,8 @@ protected:
    *
    * \sa ProcessObject::VerifyInputInformation
    */
-  virtual void VerifyInputInformation() {}
+  virtual void
+  VerifyInputInformation() {}
 
 private:
   TileImageFilter(const Self &); //purposely not implemented

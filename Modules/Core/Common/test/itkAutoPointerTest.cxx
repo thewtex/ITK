@@ -21,23 +21,35 @@
 #include "itkAutoPointer.h"
 
 class TestObject
- {
-  public:
-    typedef TestObject                   Self;
-    typedef itk::AutoPointer<Self>       AutoPointer;
-    typedef itk::AutoPointer<const Self> ConstAutoPointer;
-    TestObject() { std::cout << "TestObject Contructed" << std::endl; }
-    virtual ~TestObject() { std::cout << "TestObject Destructed" << std::endl; }
-    const char * GetClassName(void) const { return "my Class name is TestObject"; }
-  };
+{
+public:
+  typedef TestObject                   Self;
+  typedef itk::AutoPointer<Self>       AutoPointer;
+  typedef itk::AutoPointer<const Self> ConstAutoPointer;
+  TestObject() {
+    std::cout << "TestObject Contructed" << std::endl;
+  }
 
+  virtual
+  ~TestObject() {
+    std::cout << "TestObject Destructed" << std::endl;
+  }
 
-int itkAutoPointerTest(int, char* [] )
+  const char *
+  GetClassName(void) const {
+    return "my Class name is TestObject";
+  }
+
+};
+
+int
+itkAutoPointerTest(int, char* [] )
 {
 
   TestObject * obj = new TestObject;
 
   TestObject::AutoPointer ptr1;
+
   ptr1.TakeOwnership( obj );
 
   std::cout << "after assignment from raw pointer" << std::endl;
@@ -73,13 +85,10 @@ int itkAutoPointerTest(int, char* [] )
     std::cout << "ptr1 < ptr2" << std::endl;
     }
 
-
   TestObject::ConstAutoPointer cptr1;
   cptr1.TakeOwnership( new TestObject );
 
-
   TestObject::ConstAutoPointer cptr2( cptr1 );
-
 
   return EXIT_SUCCESS;
 }

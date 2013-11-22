@@ -211,12 +211,14 @@ EllipseSpatialObject< TDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "Radius: " << m_Radius << std::endl;
 }
 
 /** Copy the information from another spatial object */
 template< unsigned int TDimension >
-void EllipseSpatialObject< TDimension >
+void
+EllipseSpatialObject< TDimension >
 ::CopyInformation(const DataObject *data)
 {
   // check if we are the same type
@@ -235,6 +237,7 @@ void EllipseSpatialObject< TDimension >
   // copy the internal info
   this->SetRadius( source->GetRadius() );
 }
+
 } // end namespace itk
 
 #endif

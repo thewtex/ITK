@@ -26,7 +26,7 @@ namespace itk
 /** Constructor */
 template< typename TTreeType >
 ChildTreeIterator< TTreeType >::ChildTreeIterator(TTreeType *tree,
-                                                  const TreeNodeType *start):
+                                                  const TreeNodeType *start) :
   TreeIteratorBase< TTreeType >(tree, start)
 {
   m_ListPosition = 0;
@@ -37,7 +37,7 @@ ChildTreeIterator< TTreeType >::ChildTreeIterator(TTreeType *tree,
 
 template< typename TTreeType >
 ChildTreeIterator< TTreeType >::ChildTreeIterator(
-  const TreeIteratorBase< TTreeType > & iterator):
+  const TreeIteratorBase< TTreeType > & iterator) :
   TreeIteratorBase< TTreeType >( iterator.GetTree(), iterator.GetNode() )
 {
   m_ListPosition = 0;
@@ -108,21 +108,23 @@ ChildTreeIterator< TTreeType >::HasNext() const
 template< typename TTreeType >
 const typename ChildTreeIterator< TTreeType >::ValueType &
 ChildTreeIterator< TTreeType >::Next()
-{
+  {
   m_ListPosition++;
   this->m_Position = m_ParentNode->GetChild(m_ListPosition);
   return this->m_Position->Get();
-}
+  }
 
 /** Clone function */
 template< typename TTreeType >
-TreeIteratorBase< TTreeType > *ChildTreeIterator< TTreeType >::Clone()
+TreeIteratorBase< TTreeType > *
+ChildTreeIterator< TTreeType >::Clone()
 {
   ChildTreeIterator< TTreeType > *clone = new ChildTreeIterator< TTreeType >(
-    const_cast< TTreeType * >( this->m_Tree ), this->m_Position);
+      const_cast< TTreeType * >( this->m_Tree ), this->m_Position);
   *clone = *this;
   return clone;
 }
+
 } // namespace
 
 #endif

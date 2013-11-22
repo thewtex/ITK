@@ -26,7 +26,7 @@ template <typename TScalar>
 typename CompositeTransformIOHelperTemplate<TScalar>::ConstTransformListType &
 CompositeTransformIOHelperTemplate<TScalar>
 ::GetTransformList(const TransformType *transform)
-{
+  {
   this->m_TransformList.clear();
   // try each CompositeTransform Type, starting with
   // most common
@@ -40,10 +40,10 @@ CompositeTransformIOHelperTemplate<TScalar>
      this->BuildTransformList<9>(transform) == 0)
     {
     itkGenericExceptionMacro(<< "Unsupported Composite Transform Type "
-                             << transform->GetTransformTypeAsString());
+                             << transform->GetTransformTypeAsString() );
     }
   return m_TransformList;
-}
+  }
 
 template <typename TScalar>
 void
@@ -62,7 +62,7 @@ CompositeTransformIOHelperTemplate<TScalar>
      this->InternalSetTransformList<9>(transform,transformList) == 0)
     {
     itkGenericExceptionMacro(<< "Unsupported Composite Transform Type "
-                             << transform->GetTransformTypeAsString());
+                             << transform->GetTransformTypeAsString() );
     }
 }
 
@@ -87,14 +87,14 @@ CompositeTransformIOHelperTemplate<TScalar>
   //
   // push the composite on the list first, as per the convention for
   // the TransformFileReader
-  this->m_TransformList.push_back(const_cast<TransformType *>(transform));
+  this->m_TransformList.push_back(const_cast<TransformType *>(transform) );
 
   const typename CompositeType::TransformQueueType &transforms =
-  composite->GetTransformQueue();
+    composite->GetTransformQueue();
   for(typename CompositeType::TransformQueueType::const_iterator it =
-      transforms.begin(); it != transforms.end(); ++it)
+        transforms.begin(); it != transforms.end(); ++it)
     {
-    const TransformType *curTransform = dynamic_cast<const TransformType *>((*it).GetPointer());
+    const TransformType *curTransform = dynamic_cast<const TransformType *>( (*it).GetPointer() );
     if(curTransform == 0)
       {
       itkGenericExceptionMacro(<< "Failure to convert transform of type "
@@ -115,8 +115,8 @@ CompositeTransformIOHelperTemplate<TScalar>
 {
   //
   // local composite transform type
-  typedef itk::CompositeTransform<TScalar,TDim>      CompositeType;
-  typedef typename CompositeType::TransformType      ComponentTransformType;
+  typedef itk::CompositeTransform<TScalar,TDim> CompositeType;
+  typedef typename CompositeType::TransformType ComponentTransformType;
 
   //
   // see if we've found the right type
@@ -134,13 +134,13 @@ CompositeTransformIOHelperTemplate<TScalar>
   for(; it != transformList.end(); ++it)
     {
     ComponentTransformType *component =
-    dynamic_cast<ComponentTransformType *>((*it).GetPointer());
+      dynamic_cast<ComponentTransformType *>( (*it).GetPointer() );
     if(component == 0)
       {
       itkGenericExceptionMacro(<< "Can't assign transform of type "
                                << (*it)->GetTransformTypeAsString()
                                << " to a Composite Transform of type "
-                               << composite->GetTransformTypeAsString());
+                               << composite->GetTransformTypeAsString() );
       }
     composite->AddTransform(component);
     }

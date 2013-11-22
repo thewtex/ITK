@@ -41,7 +41,6 @@ StatisticsPositionLabelMapFilter<TImage>
   this->m_Attribute = LabelObjectType::CENTER_OF_GRAVITY;
 }
 
-
 template <typename TImage>
 void
 StatisticsPositionLabelMapFilter<TImage>
@@ -76,5 +75,5 @@ StatisticsPositionLabelMapFilter<TImage>
     }
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

@@ -43,49 +43,56 @@ template< typename T = double >
 class VNLIterativeSparseSolverTraits
 {
 public:
-  typedef T                               ValueType;
-  typedef vnl_sparse_matrix< ValueType >  MatrixType;
-  typedef vnl_vector< ValueType >         VectorType;
-  typedef vnl_lsqr                        SolverType;
+  typedef T                              ValueType;
+  typedef vnl_sparse_matrix< ValueType > MatrixType;
+  typedef vnl_vector< ValueType >        VectorType;
+  typedef vnl_lsqr                       SolverType;
 
   /** \return false (it is not a direct solver, it is an iterative solver) */
-  static bool IsDirectSolver()
+  static bool
+  IsDirectSolver()
   {
     return false;
   }
 
   /** \brief initialize a square sparse matrix of size iN x iN */
-  static MatrixType InitializeSparseMatrix(const unsigned int & iN)
+  static MatrixType
+  InitializeSparseMatrix(const unsigned int & iN)
   {
     return MatrixType(iN, iN);
   }
 
   /** \brief initialize a sparse matrix of size iRow x iCol */
-  static MatrixType InitializeSparseMatrix(const unsigned int & iRow, const unsigned int& iCol)
+  static MatrixType
+  InitializeSparseMatrix(const unsigned int & iRow, const unsigned int& iCol)
   {
     return MatrixType(iRow, iCol);
   }
 
   /** \brief initialize a vector of size iN */
-  static VectorType InitializeVector(const unsigned int & iN)
+  static VectorType
+  InitializeVector(const unsigned int & iN)
   {
     return VectorType(iN);
   }
 
   /** \brief iA[iR][iC] = iV */
-  static void FillMatrix(MatrixType & iA, const unsigned int & iR, const unsigned int & iC, const ValueType & iV)
+  static void
+  FillMatrix(MatrixType & iA, const unsigned int & iR, const unsigned int & iC, const ValueType & iV)
   {
     iA(iR, iC) = iV;
   }
 
   /** \brief iA[iR][iC] += iV */
-  static void AddToMatrix(MatrixType & iA, const unsigned int & iR, const unsigned int & iC, const ValueType & iV)
+  static void
+  AddToMatrix(MatrixType & iA, const unsigned int & iR, const unsigned int & iC, const ValueType & iV)
   {
     iA(iR, iC) += iV;
   }
 
   /** \brief Solve the linear system \f$ iA \cdot oX = iB \f$ */
-  static bool Solve(const MatrixType & iA, const VectorType & iB, VectorType & oX)
+  static bool
+  Solve(const MatrixType & iA, const VectorType & iB, VectorType & oX)
   {
     typedef vnl_sparse_matrix_linear_system< ValueType > SparseLinearSystemType;
     SparseLinearSystemType system(iA, iB);
@@ -95,9 +102,10 @@ public:
   }
 
   /** \brief Solve the linear systems: \f$ iA \cdot oX = iBx \f$, \f$ iA \cdot oY = iBy \f$, \f$ iA \cdot oZ = iBz \f$ */
-  static bool Solve(const MatrixType & iA,
-             const VectorType & iBx, const VectorType & iBy, const VectorType & iBz,
-             VectorType & oX, VectorType & oY, VectorType & oZ )
+  static bool
+  Solve(const MatrixType & iA,
+        const VectorType & iBx, const VectorType & iBy, const VectorType & iBz,
+        VectorType & oX, VectorType & oY, VectorType & oZ )
   {
     bool result1 = Solve(iA, iBx, 100000, oX);
     bool result2 = Solve(iA, iBy, 100000, oY);
@@ -107,9 +115,10 @@ public:
   }
 
   /** \brief Solve the linear systems: \f$ iA \cdot oX = iBx \f$, \f$ iA \cdot oY = iBy \f$ */
-  static bool Solve(const MatrixType & iA,
-             const VectorType & iBx, const VectorType & iBy,
-             VectorType & oX, VectorType & oY)
+  static bool
+  Solve(const MatrixType & iA,
+        const VectorType & iBx, const VectorType & iBy,
+        VectorType & oX, VectorType & oY)
   {
     bool result1 = Solve(iA, iBx, oX);
     bool result2 = Solve(iA, iBy, oY);
@@ -118,10 +127,11 @@ public:
   }
 
   /** \brief Solve the linear systems: \f$ iA \cdot oX = iBx \f$ in N iterations */
-  static bool Solve(const MatrixType & iA,
-             const VectorType & iB,
-             const long & iNbIter,
-             VectorType & oX)
+  static bool
+  Solve(const MatrixType & iA,
+        const VectorType & iB,
+        const long & iNbIter,
+        VectorType & oX)
   {
     typedef vnl_sparse_matrix_linear_system< ValueType > SparseLinearSystemType;
     SparseLinearSystemType system(iA, iB);
@@ -130,6 +140,7 @@ public:
     solver.set_max_iterations(iNbIter);
     return solver.minimize(oX);
   }
+
 };
 
 #endif

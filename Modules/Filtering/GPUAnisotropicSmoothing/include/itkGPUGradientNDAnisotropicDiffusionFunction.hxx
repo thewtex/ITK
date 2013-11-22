@@ -100,13 +100,13 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   // Using unsigned short instead of unsigned char in the kernel definition
   // is a known workaround to this problem.
   if (pixeltypename == "unsigned char")
-  {
+    {
     defines << "#define ARGTYPE unsigned short\n";
-  }
+    }
   else
-  {
+    {
     defines << "#define ARGTYPE " << pixeltypename << "\n";
-  }
+    }
 #else
   defines << "#define ARGTYPE " << pixeltypename << "\n";
 #endif
@@ -124,7 +124,8 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
 template< typename TImage >
 void
 GPUGradientNDAnisotropicDiffusionFunction< TImage >
-::GPUComputeUpdate( const typename TImage::Pointer output, typename TImage::Pointer buffer, void *itkNotUsed(globalData) )
+::GPUComputeUpdate( const typename TImage::Pointer output, typename TImage::Pointer buffer,
+                    void *itkNotUsed(globalData) )
 {
   /** Launch GPU kernel to update buffer with output
    * GPU version of ComputeUpdate() - compute entire update buffer */
@@ -171,7 +172,8 @@ GPUGradientNDAnisotropicDiffusionFunction< TImage >
   // filter scale parameter
   for(int i=0; i<ImageDim; i++)
     {
-    this->m_GPUKernelManager->SetKernelArg(this->m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(float), &(imgScale[i]) );
+    this->m_GPUKernelManager->SetKernelArg(this->m_ComputeUpdateGPUKernelHandle, argidx++, sizeof(float),
+                                           &(imgScale[i]) );
     }
 
   // image size

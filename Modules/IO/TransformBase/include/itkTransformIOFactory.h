@@ -32,14 +32,14 @@ typedef enum { ReadMode, WriteMode } TransformIOFactoryFileModeType;
  * \ingroup ITKIOTransformBase
  */
 template<typename ParametersValueType>
-class TransformIOFactoryTemplate:public Object
+class TransformIOFactoryTemplate : public Object
 {
 public:
   /** Standard class typedefs. */
-  typedef TransformIOFactoryTemplate          Self;
-  typedef Object                              Superclass;
-  typedef SmartPointer< Self >                Pointer;
-  typedef SmartPointer< const Self >          ConstPointer;
+  typedef TransformIOFactoryTemplate Self;
+  typedef Object                     Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Class Methods used to interface with the registered factories */
 
@@ -64,7 +64,8 @@ protected:
 
 private:
   TransformIOFactoryTemplate(const Self &); //purposely not implemented
-  void operator=(const Self &);     //purposely not implemented
+  void operator=(const Self &);             //purposely not implemented
+
 };
 
 /** This helps to meet backward compatibility */

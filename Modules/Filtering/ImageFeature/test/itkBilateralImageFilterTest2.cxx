@@ -22,7 +22,8 @@
 #include "itkImageFileWriter.h"
 #include "itkFilterWatcher.h"
 
-int itkBilateralImageFilterTest2(int ac, char* av[] )
+int
+itkBilateralImageFilterTest2(int ac, char* av[] )
 {
   if(ac < 3)
     {
@@ -41,9 +42,9 @@ int itkBilateralImageFilterTest2(int ac, char* av[] )
   typedef itk::BilateralImageFilter<myImage,myImage> FilterType;
 
   FilterType::Pointer filter = FilterType::New();
-  FilterWatcher watcher(filter, "filter");
+  FilterWatcher       watcher(filter, "filter");
 
-  filter->SetInput(input->GetOutput());
+  filter->SetInput(input->GetOutput() );
 
   // these settings reduce the amount of noise by a factor of 10
   // when the original signal to noise level is 5
@@ -55,7 +56,7 @@ int itkBilateralImageFilterTest2(int ac, char* av[] )
   double domainSigma[dimension];
   for (unsigned int i = 0; i < dimension; i++)
     {
-      domainSigma[i] = 4.0;
+    domainSigma[i] = 4.0;
     }
   filter->SetDomainSigma(domainSigma);
 
@@ -63,8 +64,8 @@ int itkBilateralImageFilterTest2(int ac, char* av[] )
   std::cout << "filter->GetDomainSigma(): " << filter->GetDomainSigma() << std::endl;
 
   // Test itkSetMacro
-  unsigned int filterDimensionality = dimension;
-  unsigned long  numberOfRangeGaussianSamples = 100;
+  unsigned int  filterDimensionality = dimension;
+  unsigned long numberOfRangeGaussianSamples = 100;
   filter->SetFilterDimensionality(filterDimensionality);
   filter->SetNumberOfRangeGaussianSamples(numberOfRangeGaussianSamples);
 
@@ -96,10 +97,10 @@ int itkBilateralImageFilterTest2(int ac, char* av[] )
 
   // Generate test image
   itk::ImageFileWriter<myImage>::Pointer writer;
-    writer = itk::ImageFileWriter<myImage>::New();
-    writer->SetInput( filter->GetOutput() );
-    writer->SetFileName( av[2] );
-    writer->Update();
+  writer = itk::ImageFileWriter<myImage>::New();
+  writer->SetInput( filter->GetOutput() );
+  writer->SetFileName( av[2] );
+  writer->Update();
 
   return EXIT_SUCCESS;
 }

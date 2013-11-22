@@ -26,7 +26,8 @@
 
 #include "QuickView.h"
 
-int itkVtkMedianFilterTest(int argc, char * argv[])
+int
+itkVtkMedianFilterTest(int argc, char * argv[])
 {
   // Verify command line arguments
   if( argc < 2 )
@@ -48,39 +49,39 @@ int itkVtkMedianFilterTest(int argc, char * argv[])
   reader->SetFileName( inputFilename );
 
   // Create and setup a median filter
-  FilterType::Pointer medianFilter = FilterType::New();
+  FilterType::Pointer       medianFilter = FilterType::New();
   FilterType::InputSizeType radius;
   radius.Fill(2);
   if (argc > 2)
     {
-    radius.Fill(atoi(argv[2]));
+    radius.Fill(atoi(argv[2]) );
     }
 
   medianFilter->SetRadius(radius);
   medianFilter->SetInput( reader->GetOutput() );
 
   SubtractType::Pointer diff = SubtractType::New();
-  diff->SetInput1(reader->GetOutput());
-  diff->SetInput2(medianFilter->GetOutput());
+  diff->SetInput1(reader->GetOutput() );
+  diff->SetInput2(medianFilter->GetOutput() );
 
   QuickView viewer;
   viewer.AddImage(
     reader->GetOutput(),true,
-    itksys::SystemTools::GetFilenameName(inputFilename));
+    itksys::SystemTools::GetFilenameName(inputFilename) );
 
   std::stringstream desc;
   desc << "MedianImageFilter, radius = " << radius;
   viewer.AddImage(
     medianFilter->GetOutput(),
     true,
-    desc.str());
+    desc.str() );
 
   std::stringstream desc2;
   desc2 << "Original - Median";
   viewer.AddImage(
     diff->GetOutput(),
     true,
-    desc2.str());
+    desc2.str() );
 
   // For testing, turn off interaction
   viewer.Visualize(false);

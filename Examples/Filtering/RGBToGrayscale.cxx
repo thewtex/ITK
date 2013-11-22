@@ -25,7 +25,6 @@
 //
 //  Software Guide : EndLatex
 
-
 //  Software Guide : BeginLatex
 //
 //  The first step required to use this filter is to include its header file.
@@ -38,14 +37,13 @@
 #include "itkRGBToLuminanceImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkRGBPixel.h"
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 3 )
     {
@@ -56,28 +54,25 @@ int main( int argc, char * argv[] )
 
   const unsigned int Dimension = 2;
 
-  typedef   itk::RGBPixel< unsigned char >            InputPixelType;
-  typedef   itk::Image< InputPixelType, Dimension >   InputImageType;
-  typedef   itk::Image< unsigned char,  Dimension >   OutputImageType;
+  typedef   itk::RGBPixel< unsigned char >          InputPixelType;
+  typedef   itk::Image< InputPixelType, Dimension > InputImageType;
+  typedef   itk::Image< unsigned char,  Dimension > OutputImageType;
 
-
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
   reader->SetFileName( argv[1] );
 
-
   typedef itk::RGBToLuminanceImageFilter<
-                                 InputImageType,
-                                 OutputImageType >  FilterType;
+      InputImageType,
+      OutputImageType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
   filter->SetInput( reader->GetOutput() );
 
-
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
 

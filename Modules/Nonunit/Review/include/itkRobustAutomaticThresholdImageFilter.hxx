@@ -100,5 +100,6 @@ RobustAutomaticThresholdImageFilter< TInputImage, TGradientImage, TOutputImage >
   os << indent << "InsideValue: "
      << static_cast< typename NumericTraits< OutputPixelType >::PrintType >( m_InsideValue ) << std::endl;
 }
+
 } // end namespace itk
 #endif

@@ -108,7 +108,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TOutputMesh >
-class AutomaticTopologyMeshSource:public MeshSource< TOutputMesh >
+class AutomaticTopologyMeshSource : public MeshSource< TOutputMesh >
 {
 public:
   /** Standard "Self" typedef. */
@@ -136,7 +136,7 @@ public:
 
   /** This class requires that the mesh being built use ::itk::IdentifierType
    * as the identifier type for all its elements. */
-  typedef ::itk::IdentifierType IdentifierType;
+  typedef::itk::IdentifierType IdentifierType;
 
   /** Array of IdentifierType objects used to specify cells. */
   typedef Array< IdentifierType > IdentifierArrayType;
@@ -144,9 +144,9 @@ public:
   /** hash_map typedefs. */
 
   typedef itksys::hash_map<
-    PointType,
-    IdentifierType,
-    StructHashFunction< PointHashType > >          PointHashMap;
+      PointType,
+      IdentifierType,
+      StructHashFunction< PointHashType > >          PointHashMap;
 
   /** The dimension of the output mesh. */
   itkStaticConstMacro(PointDimension, unsigned int,
@@ -334,7 +334,8 @@ public:
   class IdentifierArrayHashFunction
   {
 public:
-    IdentifierType operator()(Array< IdentifierType > identifierArray) const
+    IdentifierType
+    operator()(Array< IdentifierType > identifierArray) const
     {
       typedef IdentifierType IdType;
 
@@ -353,12 +354,14 @@ public:
 
       return hash;
     }
+
   };
 
   class IdentifierArrayEqualsFunction
   {
 public:
-    bool operator()(
+    bool
+    operator()(
       Array< IdentifierType > identifierArray1,
       Array< IdentifierType > identifierArray2
       ) const
@@ -378,13 +381,15 @@ public:
 
       return ( identifierArray1 == identifierArray2 );
     }
+
   };
 
 protected:
   AutomaticTopologyMeshSource();
   ~AutomaticTopologyMeshSource();
 
-  void GenerateData() {}  // GenerateData is a no-op, since the entries
+  void
+  GenerateData() {}       // GenerateData is a no-op, since the entries
                           // are controlled manually
 
 private:
@@ -392,10 +397,10 @@ private:
   void operator=(const Self &);               //purposely not implemented
 
   typedef itksys::hash_map<
-    Array< IdentifierType >,
-    IdentifierType,
-    IdentifierArrayHashFunction,
-    IdentifierArrayEqualsFunction >          CellHashMap;
+      Array< IdentifierType >,
+      IdentifierType,
+      IdentifierArrayHashFunction,
+      IdentifierArrayEqualsFunction >          CellHashMap;
 
   PointHashMap m_PointsHashTable;
   CellHashMap  m_CellsHashTable;

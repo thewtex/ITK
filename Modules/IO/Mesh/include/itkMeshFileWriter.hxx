@@ -57,22 +57,22 @@ template< typename TInputMesh >
 const typename MeshFileWriter< TInputMesh >::InputMeshType *
 MeshFileWriter< TInputMesh >
 ::GetInput(void)
-{
+  {
   if ( this->GetNumberOfInputs() < 1 )
     {
     return 0;
     }
 
   return static_cast< TInputMesh * >( this->ProcessObject::GetInput(0) );
-}
+  }
 
 template< typename TInputMesh >
 const typename MeshFileWriter< TInputMesh >::InputMeshType *
 MeshFileWriter< TInputMesh >
 ::GetInput(unsigned int idx)
-{
+  {
   return static_cast< TInputMesh * >( this->ProcessObject::GetInput(idx) );
-}
+  }
 
 template< typename TInputMesh >
 void
@@ -181,7 +181,8 @@ MeshFileWriter< TInputMesh >
   if ( input->GetCells() && input->GetNumberOfCells() )
     {
     SizeValueType cellsBufferSize = 2 * input->GetNumberOfCells();
-    for ( typename TInputMesh::CellsContainerConstIterator ct = input->GetCells()->Begin(); ct != input->GetCells()->End(); ++ct )
+    for ( typename TInputMesh::CellsContainerConstIterator ct = input->GetCells()->Begin();
+          ct != input->GetCells()->End(); ++ct )
       {
       cellsBufferSize += ct->Value()->GetNumberOfPoints();
       }
@@ -291,8 +292,8 @@ MeshFileWriter< TInputMesh >
   if ( input->GetPointData()->Size() )
     {
     const SizeValueType numberOfComponents = input->GetPointData()->Size()
-                                       * MeshConvertPixelTraits< typename TInputMesh::PixelType >::GetNumberOfComponents(
-      input->GetPointData()->ElementAt(0) );
+      * MeshConvertPixelTraits< typename TInputMesh::PixelType >::GetNumberOfComponents(
+        input->GetPointData()->ElementAt(0) );
 
     typedef typename itk::NumericTraits< typename TInputMesh::PixelType >::ValueType ValueType;
     ValueType * buffer = new ValueType[numberOfComponents];
@@ -314,8 +315,8 @@ MeshFileWriter< TInputMesh >
   if ( input->GetCellData()->Size() )
     {
     const SizeValueType numberOfComponents = input->GetCellData()->Size()
-                                       * MeshConvertPixelTraits< typename TInputMesh::CellPixelType >::GetNumberOfComponents(
-      input->GetCellData()->ElementAt(0) );
+      * MeshConvertPixelTraits< typename TInputMesh::CellPixelType >::GetNumberOfComponents(
+        input->GetCellData()->ElementAt(0) );
 
     typedef typename itk::NumericTraits< typename TInputMesh::CellPixelType >::ValueType ValueType;
     ValueType * buffer = new ValueType[numberOfComponents];
@@ -431,7 +432,7 @@ MeshFileWriter< TInputMesh >
   // Should define NumericTraitsArrayPixel
 
   unsigned int numberOfComponents = MeshConvertPixelTraits< typename TInputMesh::PixelType >::GetNumberOfComponents(
-    pointData->ElementAt(0) );
+      pointData->ElementAt(0) );
 
   SizeValueType index = 0;
   typename TInputMesh::PointDataContainer::ConstIterator pter = pointData->Begin();
@@ -440,7 +441,7 @@ MeshFileWriter< TInputMesh >
     for ( unsigned int jj = 0; jj < numberOfComponents; jj++ )
       {
       data[index++] = static_cast< Output >
-                    ( MeshConvertPixelTraits< typename TInputMesh::PixelType >::GetNthComponent( jj, pter.Value() ) );
+        ( MeshConvertPixelTraits< typename TInputMesh::PixelType >::GetNthComponent( jj, pter.Value() ) );
       }
 
     ++pter;
@@ -461,7 +462,7 @@ MeshFileWriter< TInputMesh >
   // Should define NumericTraitsArrayPixel
 
   unsigned int numberOfComponents = MeshConvertPixelTraits< typename TInputMesh::CellPixelType >::GetNumberOfComponents(
-    cellData->ElementAt(0) );
+      cellData->ElementAt(0) );
   SizeValueType index = 0;
   typename TInputMesh::CellDataContainer::ConstIterator cter = cellData->Begin();
   while ( cter != cellData->End() )
@@ -469,7 +470,7 @@ MeshFileWriter< TInputMesh >
     for ( unsigned int jj = 0; jj < numberOfComponents; jj++ )
       {
       data[index++] = static_cast< Output >
-                    ( MeshConvertPixelTraits< typename TInputMesh::CellPixelType >::GetNthComponent( jj, cter.Value() ) );
+        ( MeshConvertPixelTraits< typename TInputMesh::CellPixelType >::GetNthComponent( jj, cter.Value() ) );
       }
     ++cter;
     }
@@ -513,6 +514,7 @@ MeshFileWriter< TInputMesh >
     os << indent << "FactorySpecifiedMeshIO: Off\n";
     }
 }
+
 } // end namespace itk
 
 #endif

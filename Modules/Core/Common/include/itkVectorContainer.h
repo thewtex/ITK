@@ -48,7 +48,7 @@ template<
   typename TElementIdentifier,
   typename TElement
   >
-class VectorContainer:
+class VectorContainer :
   public Object,
   private std::vector< TElement >
 {
@@ -74,22 +74,22 @@ protected:
   /** Provide pass-through constructors corresponding to all the STL
    * vector constructors.  These are for internal use only since this is also
    * an Object which must be constructed through the "New()" routine. */
-  VectorContainer():
+  VectorContainer() :
     Object(), VectorType() {}
-  VectorContainer(size_type n):
+  VectorContainer(size_type n) :
     Object(), VectorType(n) {}
-  VectorContainer(size_type n, const Element & x):
+  VectorContainer(size_type n, const Element & x) :
     Object(), VectorType(n, x) {}
-  VectorContainer(const Self & r):
+  VectorContainer(const Self & r) :
     Object(), VectorType(r) {}
   template< typename TInputIterator >
-  VectorContainer(TInputIterator first, TInputIterator last):
+  VectorContainer(TInputIterator first, TInputIterator last) :
     Object(), VectorType(first, last) {}
 
 public:
 
   /** This type is provided to Adapt this container as an STL container */
-  typedef VectorType                     STLContainerType;
+  typedef VectorType STLContainerType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -102,13 +102,15 @@ public:
   class ConstIterator;
 
   /** Cast the container to a STL container type */
-  STLContainerType & CastToSTLContainer()
+  STLContainerType &
+  CastToSTLContainer()
   {
     return dynamic_cast< STLContainerType & >( *this );
   }
 
   /** Cast the container to a const STL container type */
-  const STLContainerType & CastToSTLConstContainer() const
+  const STLContainerType &
+  CastToSTLConstContainer() const
   {
     return dynamic_cast< const STLContainerType & >( *this );
   }
@@ -167,24 +169,69 @@ public:
   {
 public:
     Iterator() {}
-    Iterator(size_type d, const VectorIterator & i):m_Pos(d), m_Iter(i) {}
-    Iterator & operator*()    { return *this; }
-    Iterator * operator->()   { return this; }
-    Iterator & operator++()   { ++m_Pos; ++m_Iter; return *this; }
-    Iterator operator++(int) { Iterator temp(*this); ++m_Pos; ++m_Iter; return temp; }
-    Iterator & operator--()   { --m_Pos; --m_Iter; return *this; }
-    Iterator operator--(int) { Iterator temp(*this); --m_Pos; --m_Iter; return temp; }
-    bool operator==(const Iterator & r) const { return m_Iter == r.m_Iter; }
-    bool operator!=(const Iterator & r) const { return m_Iter != r.m_Iter; }
-    bool operator==(const ConstIterator & r) const { return m_Iter == r.m_Iter; }
-    bool operator!=(const ConstIterator & r) const { return m_Iter != r.m_Iter; }
+    Iterator(size_type d, const VectorIterator & i) : m_Pos(d), m_Iter(i) {}
+    Iterator &
+    operator*()    {
+      return *this;
+    }
+
+    Iterator *
+    operator->()   {
+      return this;
+    }
+
+    Iterator &
+    operator++()   {
+      ++m_Pos; ++m_Iter; return *this;
+    }
+
+    Iterator
+    operator++(int) {
+      Iterator temp(*this); ++m_Pos; ++m_Iter; return temp;
+    }
+
+    Iterator &
+    operator--()   {
+      --m_Pos; --m_Iter; return *this;
+    }
+
+    Iterator
+    operator--(int) {
+      Iterator temp(*this); --m_Pos; --m_Iter; return temp;
+    }
+
+    bool
+    operator==(const Iterator & r) const {
+      return m_Iter == r.m_Iter;
+    }
+
+    bool
+    operator!=(const Iterator & r) const {
+      return m_Iter != r.m_Iter;
+    }
+
+    bool
+    operator==(const ConstIterator & r) const {
+      return m_Iter == r.m_Iter;
+    }
+
+    bool
+    operator!=(const ConstIterator & r) const {
+      return m_Iter != r.m_Iter;
+    }
 
     /** Get the index into the VectorContainer associated with this iterator.
         */
-    ElementIdentifier Index(void) const { return static_cast< ElementIdentifier >( m_Pos ); }
+    ElementIdentifier
+    Index(void) const {
+      return static_cast< ElementIdentifier >( m_Pos );
+    }
 
     /** Get the value at this iterator's location in the VectorContainer.   */
-    Element & Value(void) const { return *m_Iter; }
+    Element &
+    Value(void) const {
+      return *m_Iter;
+    }
 
 private:
     size_type      m_Pos;
@@ -201,25 +248,78 @@ private:
   {
 public:
     ConstIterator() {}
-    ConstIterator(size_type d, const VectorConstIterator & i):m_Pos(d), m_Iter(i) {}
-    ConstIterator(const Iterator & r) { m_Pos = r.m_Pos; m_Iter = r.m_Iter; }
-    ConstIterator & operator*()    { return *this; }
-    ConstIterator * operator->()   { return this; }
-    ConstIterator & operator++()   { ++m_Pos; ++m_Iter; return *this; }
-    ConstIterator operator++(int) { ConstIterator temp(*this); ++m_Pos; ++m_Iter; return temp; }
-    ConstIterator & operator--()   { --m_Pos; --m_Iter; return *this; }
-    ConstIterator operator--(int) { ConstIterator temp(*this); --m_Pos; --m_Iter; return temp; }
-    ConstIterator & operator=(const Iterator & r) { m_Pos = r.m_Pos; m_Iter = r.m_Iter; return *this; }
-    bool operator==(const Iterator & r) const { return m_Iter == r.m_Iter; }
-    bool operator!=(const Iterator & r) const { return m_Iter != r.m_Iter; }
-    bool operator==(const ConstIterator & r) const { return m_Iter == r.m_Iter; }
-    bool operator!=(const ConstIterator & r) const { return m_Iter != r.m_Iter; }
+    ConstIterator(size_type d, const VectorConstIterator & i) : m_Pos(d), m_Iter(i) {}
+    ConstIterator(const Iterator & r) {
+      m_Pos = r.m_Pos; m_Iter = r.m_Iter;
+    }
+
+    ConstIterator &
+    operator*()    {
+      return *this;
+    }
+
+    ConstIterator *
+    operator->()   {
+      return this;
+    }
+
+    ConstIterator &
+    operator++()   {
+      ++m_Pos; ++m_Iter; return *this;
+    }
+
+    ConstIterator
+    operator++(int) {
+      ConstIterator temp(*this); ++m_Pos; ++m_Iter; return temp;
+    }
+
+    ConstIterator &
+    operator--()   {
+      --m_Pos; --m_Iter; return *this;
+    }
+
+    ConstIterator
+    operator--(int) {
+      ConstIterator temp(*this); --m_Pos; --m_Iter; return temp;
+    }
+
+    ConstIterator &
+    operator=(const Iterator & r) {
+      m_Pos = r.m_Pos; m_Iter = r.m_Iter; return *this;
+    }
+
+    bool
+    operator==(const Iterator & r) const {
+      return m_Iter == r.m_Iter;
+    }
+
+    bool
+    operator!=(const Iterator & r) const {
+      return m_Iter != r.m_Iter;
+    }
+
+    bool
+    operator==(const ConstIterator & r) const {
+      return m_Iter == r.m_Iter;
+    }
+
+    bool
+    operator!=(const ConstIterator & r) const {
+      return m_Iter != r.m_Iter;
+    }
 
     /** Get the index into the VectorContainer associated with this iterator.
         */
-    ElementIdentifier Index(void) const { return static_cast< ElementIdentifier >( m_Pos ); }
+    ElementIdentifier
+    Index(void) const {
+      return static_cast< ElementIdentifier >( m_Pos );
+    }
+
     /** Get the value at this iterator's location in the VectorContainer.   */
-    const Element & Value(void) const { return *m_Iter; }
+    const Element &
+    Value(void) const {
+      return *m_Iter;
+    }
 
 private:
     size_type           m_Pos;
@@ -351,6 +451,7 @@ private:
    * Clear the elements. The final size will be zero.
    */
   void Initialize(void);
+
 };
 } // end namespace itk
 

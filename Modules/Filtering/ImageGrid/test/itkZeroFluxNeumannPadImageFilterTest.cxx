@@ -27,16 +27,17 @@ typedef ShortImage::IndexValueType IndexValueType;
 
 typedef itk::ZeroFluxNeumannPadImageFilter< ShortImage, FloatImage > FilterType;
 
-static bool VerifyFilterOutput(const ShortImage * inputImage,
-                               const FloatImage * outputImage)
+static bool
+VerifyFilterOutput(const ShortImage * inputImage,
+                   const FloatImage * outputImage)
 {
   ShortImage::RegionType inputRegion = inputImage->GetLargestPossibleRegion();
-  ShortImage::IndexType inputIndex = inputRegion.GetIndex();
-  ShortImage::SizeType  inputSize  = inputRegion.GetSize();
+  ShortImage::IndexType  inputIndex = inputRegion.GetIndex();
+  ShortImage::SizeType   inputSize  = inputRegion.GetSize();
 
   ShortImage::RegionType outputRegion = outputImage->GetLargestPossibleRegion();
   itk::ImageRegionConstIteratorWithIndex< FloatImage >
-    outputIterator(outputImage, outputRegion);
+  outputIterator(outputImage, outputRegion);
 
   // Check pixel values
   for (; !outputIterator.IsAtEnd(); ++outputIterator)
@@ -63,7 +64,7 @@ static bool VerifyFilterOutput(const ShortImage * inputImage,
           borderIdx[i] = inputIndex[i];
           }
         else if ( borderIdx[i] > inputIndex[i] +
-             static_cast<ShortImage::IndexValueType>( inputSize[i] ) - 1)
+                  static_cast<ShortImage::IndexValueType>( inputSize[i] ) - 1)
           {
           borderIdx[i] = inputIndex[i] + inputSize[i] - 1;
           }
@@ -83,10 +84,11 @@ static bool VerifyFilterOutput(const ShortImage * inputImage,
   return true;
 }
 
-static bool VerifyFilter(const ShortImage * inputImage,
-                         FilterType * padFilter,
-                         const SizeValueType * lowerBound,
-                         const SizeValueType * upperBound)
+static bool
+VerifyFilter(const ShortImage * inputImage,
+             FilterType * padFilter,
+             const SizeValueType * lowerBound,
+             const SizeValueType * upperBound)
 {
   std::cout << "Verifying filter output metadata." << std::endl;
 
@@ -176,8 +178,8 @@ static bool VerifyFilter(const ShortImage * inputImage,
   return true;
 }
 
-
-int itkZeroFluxNeumannPadImageFilterTest( int, char* [] )
+int
+itkZeroFluxNeumannPadImageFilterTest( int, char* [] )
 {
   // Test the creation of an image with native type
   ShortImage::Pointer inputImage = ShortImage::New();
@@ -186,6 +188,7 @@ int itkZeroFluxNeumannPadImageFilterTest( int, char* [] )
   ShortImage::IndexType  inputIndex = {{0, 0}};
   ShortImage::SizeType   inputSize  = {{8, 12}};
   ShortImage::RegionType inputRegion;
+
   inputRegion.SetSize( inputSize );
   inputRegion.SetIndex( inputIndex );
   inputImage->SetLargestPossibleRegion( inputRegion );
@@ -197,7 +200,7 @@ int itkZeroFluxNeumannPadImageFilterTest( int, char* [] )
   short i = 0;
   for (; !iterator.IsAtEnd(); ++iterator, ++i)
     {
-      iterator.Set( i );
+    iterator.Set( i );
     }
 
   // Create a filter

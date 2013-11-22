@@ -40,7 +40,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class ScalarToArrayCastImageFilter:
+class ScalarToArrayCastImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -68,7 +68,8 @@ public:
 
 protected:
   ScalarToArrayCastImageFilter();
-  virtual ~ScalarToArrayCastImageFilter() {}
+  virtual
+  ~ScalarToArrayCastImageFilter() {}
 
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                             ThreadIdType threadId);
@@ -76,6 +77,7 @@ protected:
 private:
   ScalarToArrayCastImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);               //purposely not implemented
+
 };
 } // end namespace itk
 

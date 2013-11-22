@@ -31,6 +31,7 @@ RGBPixel< T >
 ::operator=(const ComponentType r[3])
 {
   BaseArray::operator=(r);
+
   return *this;
 }
 
@@ -197,6 +198,7 @@ operator>>(std::istream & is, RGBPixel< TComponent > & c)
   c.SetBlue(blue);
   return is;
 }
+
 } // end namespace itk
 
 #endif

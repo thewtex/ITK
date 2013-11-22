@@ -25,7 +25,7 @@ template< typename TInputImage,
           typename TMembershipFunction,
           typename TTrainingImage >
 ImageGaussianModelEstimator< TInputImage, TMembershipFunction, TTrainingImage >
-::ImageGaussianModelEstimator(void):
+::ImageGaussianModelEstimator(void) :
   m_Covariance(NULL)
 {}
 
@@ -301,6 +301,7 @@ ImageGaussianModelEstimator< TInputImage, TMembershipFunction, TTrainingImage >
       }     // end if loop
     }       // end class index loop
 }           // end EstimateGaussianModelParameters
+
 }           // namespace itk
 
 #endif

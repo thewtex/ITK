@@ -51,7 +51,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingImage >
-class KappaStatisticImageToImageMetric:
+class KappaStatisticImageToImageMetric :
   public ImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
@@ -121,7 +121,8 @@ public:
 
 protected:
   KappaStatisticImageToImageMetric();
-  virtual ~KappaStatisticImageToImageMetric() {}
+  virtual
+  ~KappaStatisticImageToImageMetric() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

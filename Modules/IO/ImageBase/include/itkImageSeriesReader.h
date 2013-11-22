@@ -42,7 +42,7 @@ namespace itk
  */
 
 template< typename TOutputImage >
-class ITKIOImageBase_HIDDEN ImageSeriesReader:public ImageSource< TOutputImage >
+class ITKIOImageBase_HIDDEN ImageSeriesReader : public ImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -78,7 +78,8 @@ public:
 
   /** Set the vector of strings that contains the file names. Files
    * are processed in sequential order. */
-  void SetFileNames(const FileNamesContainer & name)
+  void
+  SetFileNames(const FileNamesContainer & name)
   {
     if ( m_FileNames != name )
       {
@@ -87,14 +88,16 @@ public:
       }
   }
 
-  const FileNamesContainer & GetFileNames() const
+  const FileNamesContainer &
+  GetFileNames() const
   {
     return m_FileNames;
   }
 
   /** Set the first file name to be processed. This deletes previous
    * filenames. */
-  void SetFileName(std::string const & name)
+  void
+  SetFileName(std::string const & name)
   {
     m_FileNames.clear();
     m_FileNames.push_back(name);
@@ -102,7 +105,8 @@ public:
   }
 
   /** Add a single filename to the list of files. */
-  void AddFileName(std::string const & name)
+  void
+  AddFileName(std::string const & name)
   {
     m_FileNames.push_back(name);
     this->Modified();
@@ -155,7 +159,7 @@ public:
   itkBooleanMacro(UseStreaming);
 
 protected:
-  ImageSeriesReader():m_ImageIO(0), m_ReverseOrder(false),
+  ImageSeriesReader() : m_ImageIO(0), m_ReverseOrder(false),
     m_UseStreaming(true), m_MetaDataDictionaryArrayUpdate(true) {}
   ~ImageSeriesReader();
   void PrintSelf(std::ostream & os, Indent indent) const;

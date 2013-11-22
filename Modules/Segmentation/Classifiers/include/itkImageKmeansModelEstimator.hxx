@@ -717,6 +717,7 @@ ImageKmeansModelEstimator< TInputImage, TMembershipFunction >
 
   return LBG_COMPLETED;
 } // End WithoutCodebookUseLBG()
+
 } // namespace itk
 
 #endif

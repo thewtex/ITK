@@ -20,7 +20,7 @@
 namespace itk
 {
 TimeProbe
-::TimeProbe():ResourceProbe< TimeStampType, TimeStampType >("Time", "s")
+::TimeProbe() : ResourceProbe< TimeStampType, TimeStampType >("Time", "s")
 {
   m_RealTimeClock   = RealTimeClock::New();
 }
@@ -43,5 +43,6 @@ TimeProbe
 {
   return this->GetMean();
 }
+
 #endif
 } // end namespace itk

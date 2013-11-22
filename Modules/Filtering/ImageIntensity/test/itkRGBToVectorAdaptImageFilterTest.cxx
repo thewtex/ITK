@@ -28,36 +28,34 @@
  *
  */
 
-
 #include "itkAdaptImageFilter.h"
 #include "itkRGBToVectorPixelAccessor.h"
 
 #include "vnl/vnl_sample.h"
-
 
 //-------------------------
 //
 //   Main code
 //
 //-------------------------
-int itkRGBToVectorAdaptImageFilterTest(int, char* [] ) {
-
+int
+itkRGBToVectorAdaptImageFilterTest(int, char* [] ) {
 
   //-------------------------------------
   //     Typedefs for convenience
   //-------------------------------------
-  typedef itk::RGBPixel< float >                  RGBPixelType;
-  typedef itk::Image< RGBPixelType,   2 >         RGBImageType;
+  typedef itk::RGBPixel< float >          RGBPixelType;
+  typedef itk::Image< RGBPixelType,   2 > RGBImageType;
 
-  typedef itk::ImageRegionIteratorWithIndex< RGBImageType >  myRGBIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex< RGBImageType > myRGBIteratorType;
 
-  typedef itk::Accessor::RGBToVectorPixelAccessor<float>    AccessorType;
+  typedef itk::Accessor::RGBToVectorPixelAccessor<float> AccessorType;
 
-  typedef AccessorType::ExternalType              VectorPixelType;
+  typedef AccessorType::ExternalType VectorPixelType;
 
-  typedef itk::Image< VectorPixelType,   2 >      myImageType;
+  typedef itk::Image< VectorPixelType,   2 > myImageType;
 
-  typedef itk::ImageRegionIteratorWithIndex< myImageType >  myVectorIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex< myImageType > myVectorIteratorType;
 
   RGBImageType::SizeType size;
   size[0] = 100;
@@ -73,11 +71,10 @@ int itkRGBToVectorAdaptImageFilterTest(int, char* [] ) {
 
   RGBImageType::Pointer myImage = RGBImageType::New();
 
-
   myImage->SetRegions( region );
   myImage->Allocate();
 
-  myRGBIteratorType  it1( myImage, myImage->GetRequestedRegion() );
+  myRGBIteratorType it1( myImage, myImage->GetRequestedRegion() );
 
   // Value to initialize the pixels
   RGBImageType::PixelType color;
@@ -100,40 +97,41 @@ int itkRGBToVectorAdaptImageFilterTest(int, char* [] ) {
                                  myImageType,
                                  AccessorType   >  AdaptFilterType;
 
-  AdaptFilterType::Pointer  adaptImageToVector = AdaptFilterType::New();
+  AdaptFilterType::Pointer adaptImageToVector = AdaptFilterType::New();
 
   adaptImageToVector->SetInput(myImage);
   adaptImageToVector->UpdateLargestPossibleRegion();
 
-  myVectorIteratorType  it(
-            adaptImageToVector->GetOutput(),
-            adaptImageToVector->GetOutput()->GetRequestedRegion() );
+  myVectorIteratorType it(
+    adaptImageToVector->GetOutput(),
+    adaptImageToVector->GetOutput()->GetRequestedRegion() );
 
   std::cout << "--- Read Vector values --- " << std::endl;
 
   it.GoToBegin();
   it1.GoToBegin();
   while( !it.IsAtEnd() )
-  {
-  VectorPixelType v =   it.Get();
-  RGBPixelType    c =  it1.Get();
-
-  if ( v[0] != c.GetRed()   ||
-       v[1] != c.GetGreen() ||
-       v[2] != c.GetBlue()     )
     {
-    std::cerr << "Vector pixel = " << v << std::endl;
-    std::cerr << "does not match " << std::endl;
-    std::cerr << "RGB    pixel = " << c << std::endl;
-    std::cerr << "myImage->GetRequestedRegion()" << myImage->GetRequestedRegion() << std::endl;
-    std::cerr << "adaptImageToVector->GetRequestedRegion()" << adaptImageToVector->GetOutput()->GetRequestedRegion() << std::endl;
-    passed = false;
-    break;
-    }
+    VectorPixelType v =   it.Get();
+    RGBPixelType    c =  it1.Get();
 
-  ++it;
-  ++it1;
-  }
+    if ( v[0] != c.GetRed()   ||
+         v[1] != c.GetGreen() ||
+         v[2] != c.GetBlue()     )
+      {
+      std::cerr << "Vector pixel = " << v << std::endl;
+      std::cerr << "does not match " << std::endl;
+      std::cerr << "RGB    pixel = " << c << std::endl;
+      std::cerr << "myImage->GetRequestedRegion()" << myImage->GetRequestedRegion() << std::endl;
+      std::cerr << "adaptImageToVector->GetRequestedRegion()" <<
+      adaptImageToVector->GetOutput()->GetRequestedRegion() << std::endl;
+      passed = false;
+      break;
+      }
+
+    ++it;
+    ++it1;
+    }
 
   std::cout << std::endl;
   if (passed)

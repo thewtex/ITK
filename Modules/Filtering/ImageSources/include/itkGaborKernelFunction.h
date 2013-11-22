@@ -47,7 +47,7 @@ namespace itk
  * \ingroup ITKImageSources
  */
 template< typename TRealValueType>
-class GaborKernelFunction:public KernelFunctionBase<TRealValueType>
+class GaborKernelFunction : public KernelFunctionBase<TRealValueType>
 {
 public:
   /** Standard class typedefs. */
@@ -62,12 +62,13 @@ public:
   itkTypeMacro(GaborKernelFunction, KernelFunctionBase);
 
   /** Evaluate the function. */
-  inline TRealValueType Evaluate(const TRealValueType & u) const
+  inline TRealValueType
+  Evaluate(const TRealValueType & u) const
   {
     TRealValueType parameter = vnl_math_sqr(u / this->m_Sigma);
     TRealValueType envelope = vcl_exp(static_cast< TRealValueType >(-0.5) * parameter);
     TRealValueType phase = static_cast< TRealValueType >(2.0 * vnl_math::pi) * this->m_Frequency * u
-                   + this->m_PhaseOffset;
+      + this->m_PhaseOffset;
 
     if ( this->m_CalculateImaginaryPart )
       {
@@ -94,22 +95,24 @@ public:
 
 protected:
   GaborKernelFunction()
-    {
+  {
     this->m_CalculateImaginaryPart = false;
     this->m_Sigma = NumericTraits< TRealValueType >::One;
     this->m_Frequency = static_cast<TRealValueType>(0.4);
     this->m_PhaseOffset = NumericTraits< TRealValueType >::Zero;
-    }
-  ~GaborKernelFunction() {};
-  void PrintSelf(std::ostream & os, Indent indent) const
-    {
+  }
+
+  ~GaborKernelFunction() {}
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
     Superclass::PrintSelf(os, indent);
 
     os << indent << "Sigma: " << this->GetSigma() << std::endl;
     os << indent << "Frequency: " << this->GetFrequency() << std::endl;
     os << indent << "PhaseOffset: " << this->GetPhaseOffset() << std::endl;
     os << indent << "CalculateImaginaryPart: " << this->GetCalculateImaginaryPart() << std::endl;
-    }
+  }
 
 private:
   GaborKernelFunction(const Self &); //purposely not implemented

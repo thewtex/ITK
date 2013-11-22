@@ -47,7 +47,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TInputMesh, typename TOutputMesh >
-class SimplexMeshAdaptTopologyFilter:public MeshToMeshFilter< TInputMesh, TOutputMesh >
+class SimplexMeshAdaptTopologyFilter : public MeshToMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
   /** Standard "Self" typedef. */
@@ -101,11 +101,11 @@ public:
   class SimplexCellVisitor
   {
 public:
-    InputMeshPointer            mesh;
-    double                      totalArea;
-    double                      totalCurvature;
-    double                      minCellSize;
-    double                      maxCellSize;
+    InputMeshPointer mesh;
+    double           totalArea;
+    double           totalCurvature;
+    double           minCellSize;
+    double           maxCellSize;
     typename DoubleValueMapType::Pointer areaMap;
     typename DoubleValueMapType::Pointer curvatureMap;
 
@@ -127,13 +127,14 @@ public:
     /** \brief visits all polygon cells and computes the area,
      *  NOTE: works for convex polygons only!!!
      */
-    void Visit(CellIdentifier cellId, InputPolygonType *poly)
+    void
+    Visit(CellIdentifier cellId, InputPolygonType *poly)
     {
       typename InputPolygonType::PointIdIterator it =  poly->PointIdsBegin();
 
-      double        meanCurvature = 0;
+      double          meanCurvature = 0;
       PointIdentifier refPoint = *it;
-      double        val = mesh->GetMeanCurvature(*it++);
+      double          val = mesh->GetMeanCurvature(*it++);
       meanCurvature += vcl_abs(val);
 
       PointIdentifier id1 = *it;
@@ -170,7 +171,8 @@ public:
       if ( meanCurvature < minCurvature ) { minCurvature = meanCurvature; }
     }
 
-    double ComputeArea(PointIdentifier p1, PointIdentifier p2, PointIdentifier p3)
+    double
+    ComputeArea(PointIdentifier p1, PointIdentifier p2, PointIdentifier p3)
     {
       InputPointType v1, v2, v3;
 
@@ -184,45 +186,54 @@ public:
       return vcl_abs (itk_cross_3d( ( v2 - v1 ).GetVnlVector(), ( v3 - v1 ).GetVnlVector() ).two_norm() / 2.0);
     }
 
-    typename DoubleValueMapType::Pointer GetAreaMap()
+    typename DoubleValueMapType::Pointer
+    GetAreaMap()
     {
       return areaMap;
     }
 
-    typename DoubleValueMapType::Pointer GetCurvatureMap()
+    typename DoubleValueMapType::Pointer
+    GetCurvatureMap()
     {
       return curvatureMap;
     }
 
-    double GetTotalMeshArea()
+    double
+    GetTotalMeshArea()
     {
       return totalArea;
     }
 
-    double GetTotalMeanCurvature()
+    double
+    GetTotalMeanCurvature()
     {
       return totalCurvature / ( curvatureMap->Size() );
     }
 
-    double GetMaximumCellSize()
+    double
+    GetMaximumCellSize()
     {
       return maxCellSize;
     }
 
-    double GetMinimumCellSize()
+    double
+    GetMinimumCellSize()
     {
       return minCellSize;
     }
 
-    double GetMaximumCurvature()
+    double
+    GetMaximumCurvature()
     {
       return maxCurvature;
     }
 
-    double GetMinimumCurvature()
+    double
+    GetMinimumCurvature()
     {
       return minCurvature;
     }
+
   };
 
   // cell visitor stuff
@@ -230,7 +241,7 @@ public:
                                                    InputCellTraitsType,
                                                    InputPolygonType,
                                                    SimplexCellVisitor >
-  SimplexVisitorInterfaceType;
+    SimplexVisitorInterfaceType;
 
   typedef typename SimplexVisitorInterfaceType::Pointer SimplexVisitorInterfacePointer;
   typedef typename InputCellType::MultiVisitor          CellMultiVisitorType;
@@ -250,7 +261,8 @@ protected:
   ~SimplexMeshAdaptTopologyFilter();
   SimplexMeshAdaptTopologyFilter(const Self &) {}
 
-  void operator=(const Self &) {}
+  void
+  operator=(const Self &) {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

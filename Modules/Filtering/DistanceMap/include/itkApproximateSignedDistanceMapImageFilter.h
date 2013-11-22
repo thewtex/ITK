@@ -72,7 +72,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class ApproximateSignedDistanceMapImageFilter:public ImageToImageFilter< TInputImage, TOutputImage >
+class ApproximateSignedDistanceMapImageFilter : public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard typedefs */
@@ -130,7 +130,8 @@ public:
 
 protected:
   ApproximateSignedDistanceMapImageFilter();
-  virtual ~ApproximateSignedDistanceMapImageFilter() {}
+  virtual
+  ~ApproximateSignedDistanceMapImageFilter() {}
   virtual void GenerateData();
 
   void PrintSelf(std::ostream & os, Indent indent) const;

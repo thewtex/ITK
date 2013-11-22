@@ -36,11 +36,11 @@ VideoToVideoFilter()
 {
   this->SetNumberOfRequiredInputs(1);
 }
+
 template<typename TInputVideoStream, typename TOutputVideoStream>
 VideoToVideoFilter<TInputVideoStream, TOutputVideoStream>
 ::~VideoToVideoFilter()
-{
-}
+{}
 
 template<typename TInputVideoStream, typename TOutputVideoStream>
 void
@@ -62,7 +62,7 @@ SetInput(const TInputVideoStream* videoStream)
 {
   // We keep this const_cast because in actuality, we do want to be able to
   // change the requested regions on the input so we need a non-const version
-  this->SetInput(0, const_cast< InputVideoStreamType* >(videoStream));
+  this->SetInput(0, const_cast< InputVideoStreamType* >(videoStream) );
 }
 
 //
@@ -76,7 +76,7 @@ SetInput(unsigned int idx, const TInputVideoStream* videoStream)
   // We keep this const_cast because in actuality, we do want to be able to
   // change the requested regions on the input so we need a non-const version
   this->TemporalProcessObject::SetNthInput( idx,
-                                const_cast< InputVideoStreamType* >(videoStream) );
+                                            const_cast< InputVideoStreamType* >(videoStream) );
 }
 
 //
@@ -91,7 +91,7 @@ GetInput() const
     {
     return NULL;
     }
-  return static_cast< const InputVideoStreamType* >(this->ProcessObject::GetInput(0));
+  return static_cast< const InputVideoStreamType* >(this->ProcessObject::GetInput(0) );
 }
 
 //
@@ -102,7 +102,7 @@ const TInputVideoStream*
 VideoToVideoFilter<TInputVideoStream, TOutputVideoStream>::
 GetInput(unsigned int idx) const
 {
-  return static_cast< const InputVideoStreamType* >(this->ProcessObject::GetInput(idx));
+  return static_cast< const InputVideoStreamType* >(this->ProcessObject::GetInput(idx) );
 }
 
 //
@@ -150,7 +150,7 @@ TInputVideoStream*
 VideoToVideoFilter<TInputVideoStream, TOutputVideoStream>::
 GetInput(unsigned int idx)
 {
-  return static_cast< InputVideoStreamType* >(this->ProcessObject::GetInput(idx));
+  return static_cast< InputVideoStreamType* >(this->ProcessObject::GetInput(idx) );
 }
 
 //
@@ -170,6 +170,7 @@ GenerateOutputRequestedRegion(DataObject* output)
     this->GetOutput()->GetRequestedTemporalRegion().GetFrameStart();
   SizeValueType outFrameDuration =
     this->GetOutput()->GetRequestedTemporalRegion().GetFrameDuration();
+
   for (SizeValueType i = outFrameStart; i < outFrameStart + outFrameDuration; ++i)
     {
     // Get the requested spatial region for this frame
@@ -191,7 +192,7 @@ GenerateOutputRequestedRegion(DataObject* output)
     if (!validRegion)
       {
       this->GetOutput()->SetFrameRequestedSpatialRegion(i,
-        this->GetOutput()->GetFrameLargestPossibleSpatialRegion(i));
+                                                        this->GetOutput()->GetFrameLargestPossibleSpatialRegion(i) );
       }
     }
 }
@@ -215,15 +216,16 @@ GenerateInputRequestedRegion()
 
   // Convert to input spatial region (TODO: handle dificult cases)
   InputFrameSpatialRegionType inputRegion;
-  inputRegion.SetSize(outputRegion.GetSize());
-  inputRegion.SetIndex(outputRegion.GetIndex());
+
+  inputRegion.SetSize(outputRegion.GetSize() );
+  inputRegion.SetIndex(outputRegion.GetIndex() );
 
   // Create input spatial regions for each frame of each input
   for (unsigned int i = 0; i < this->GetNumberOfInputs(); ++i)
     {
     // Get the input and it's requeted temporal region
     InputVideoStreamType* input = dynamic_cast<InputVideoStreamType*>(
-      this->ProcessObject::GetInput(i));
+        this->ProcessObject::GetInput(i) );
     if (!input)
       {
       continue;
@@ -250,6 +252,7 @@ VideoToVideoFilter<TInputVideoStream, TOutputVideoStream>::
 BeforeTemporalStreamingGenerateData()
 {
   InputVideoStreamType* input = this->GetInput();
+
   input->SetMinimumBufferSize(this->TemporalProcessObject::m_UnitInputNumberOfFrames);
 }
 

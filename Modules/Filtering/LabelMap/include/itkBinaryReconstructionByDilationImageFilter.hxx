@@ -21,7 +21,6 @@
 #include "itkBinaryReconstructionByDilationImageFilter.h"
 #include "itkProgressAccumulator.h"
 
-
 namespace itk {
 
 template<typename TInputImage>
@@ -41,16 +40,16 @@ BinaryReconstructionByDilationImageFilter<TInputImage>
 ::SetMarkerImage( const InputImageType * input )
 {
   // Process object is not const-correct, so the const casting is required.
-  this->ProcessObject::SetInput( "MarkerImage", const_cast< InputImageType * >( input ));
+  this->ProcessObject::SetInput( "MarkerImage", const_cast< InputImageType * >( input ) );
 }
 
 template<typename TInputImage>
 typename BinaryReconstructionByDilationImageFilter<TInputImage>::InputImageType *
 BinaryReconstructionByDilationImageFilter<TInputImage>
 ::GetMarkerImage()
-{
-  return static_cast<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput( "MarkerImage" )));
-}
+  {
+  return static_cast<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput( "MarkerImage" ) ) );
+  }
 
 template<typename TInputImage>
 void
@@ -58,16 +57,16 @@ BinaryReconstructionByDilationImageFilter<TInputImage>
 ::SetMaskImage( const InputImageType * input )
 {
   // Process object is not const-correct, so the const casting is required.
-  this->ProcessObject::SetInput( "MaskImage", const_cast< InputImageType * >( input ));
+  this->ProcessObject::SetInput( "MaskImage", const_cast< InputImageType * >( input ) );
 }
 
 template<typename TInputImage>
 typename BinaryReconstructionByDilationImageFilter<TInputImage>::InputImageType *
 BinaryReconstructionByDilationImageFilter<TInputImage>
 ::GetMaskImage()
-{
-  return static_cast<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput( "MaskImage" )));
-}
+  {
+  return static_cast<InputImageType*>(const_cast<DataObject *>(this->ProcessObject::GetInput( "MaskImage" ) ) );
+  }
 
 template<typename TInputImage>
 void
@@ -78,19 +77,19 @@ BinaryReconstructionByDilationImageFilter<TInputImage>
   Superclass::GenerateInputRequestedRegion();
 
   // We need all the input.
-  InputImagePointer input = const_cast<InputImageType *>(this->GetMarkerImage());
+  InputImagePointer input = const_cast<InputImageType *>(this->GetMarkerImage() );
+
   if( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
     }
 
-  input = const_cast<InputImageType *>(this->GetMaskImage());
+  input = const_cast<InputImageType *>(this->GetMaskImage() );
   if( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
     }
 }
-
 
 template<typename TInputImage>
 void
@@ -98,9 +97,8 @@ BinaryReconstructionByDilationImageFilter<TInputImage>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
-    ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
+  ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
 }
-
 
 template<typename TInputImage>
 void
@@ -109,6 +107,7 @@ BinaryReconstructionByDilationImageFilter<TInputImage>
 {
   // Create a process accumulator for tracking the progress of this minipipeline
   ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
+
   progress->SetMiniPipelineFilter(this);
 
   // Allocate the output
@@ -148,7 +147,6 @@ BinaryReconstructionByDilationImageFilter<TInputImage>
   this->GraftOutput( binarizer->GetOutput() );
 }
 
-
 template<typename TInputImage>
 void
 BinaryReconstructionByDilationImageFilter<TInputImage>
@@ -157,9 +155,11 @@ BinaryReconstructionByDilationImageFilter<TInputImage>
   Superclass::PrintSelf(os, indent);
 
   os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
-  os << indent << "BackgroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
-  os << indent << "ForegroundValue: "  << static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_ForegroundValue) << std::endl;
+  os << indent << "BackgroundValue: "  <<
+    static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_BackgroundValue) << std::endl;
+  os << indent << "ForegroundValue: "  <<
+    static_cast<typename NumericTraits<OutputImagePixelType>::PrintType>(m_ForegroundValue) << std::endl;
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

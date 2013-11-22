@@ -41,8 +41,8 @@ namespace itk
  * \wikiexample{Utilities/TimeProbe,Time probe}
  * \endwiki
  */
-class ITKCommon_EXPORT TimeProbe:public
-  ResourceProbe< RealTimeClock::TimeStampType, RealTimeClock::TimeStampType >
+class ITKCommon_EXPORT TimeProbe : public
+                       ResourceProbe< RealTimeClock::TimeStampType, RealTimeClock::TimeStampType >
 {
 public:
 
@@ -60,7 +60,8 @@ public:
   TimeProbe();
 
   /** Destructor */
-  virtual ~TimeProbe();
+  virtual
+  ~TimeProbe();
 
   /** Get the current time.
    *  Warning: the returned value is not the elapsed time since the last Start() call.

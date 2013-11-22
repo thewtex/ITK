@@ -41,11 +41,13 @@ public:
 
   cl_command_queue GetCommandQueue(int i);
 
-  unsigned int GetNumberOfCommandQueues() {
+  unsigned int
+  GetNumberOfCommandQueues() {
     return m_NumberOfDevices;
   }
 
-  cl_context GetCurrentContext() {
+  cl_context
+  GetCurrentContext() {
     return m_Context;
   }
 

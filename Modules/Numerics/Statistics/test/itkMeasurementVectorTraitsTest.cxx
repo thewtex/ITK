@@ -67,8 +67,8 @@
     return EXIT_FAILURE; \
     }
 
-
-int itkMeasurementVectorTraitsTest(int, char* [] )
+int
+itkMeasurementVectorTraitsTest(int, char* [] )
 {
   std::cout << "MeasurementVectorTraits Test" << std::endl;
 
@@ -87,7 +87,6 @@ int itkMeasurementVectorTraitsTest(int, char* [] )
   typedef itk::VariableLengthVector< float >               MeasurementVectorType3b;
   typedef std::vector< float >                             MeasurementVectorType4b;
   typedef itk::NumericTraits<float>::MeasurementVectorType MeasurementVectorType5b;
-
 
   MeasurementVectorType1 measure1;
   MeasurementVectorType2 measure2;
@@ -125,7 +124,7 @@ int itkMeasurementVectorTraitsTest(int, char* [] )
   itk::NumericTraits< MeasurementVectorType4b >::SetLength( measure4b, length2 );
 
   // against each other
-#if !(defined(_MSC_VER) && (_MSC_VER <= 1200))
+#if !(defined(_MSC_VER) && (_MSC_VER <= 1200) )
   itkAssertSameLengthTest( measure1b, measure1b );
 #endif
   itkAssertSameLengthTest( measure2b, measure2b );
@@ -143,9 +142,8 @@ int itkMeasurementVectorTraitsTest(int, char* [] )
   itk::NumericTraits< MeasurementVectorType3b >::SetLength( measure3bb, length1 );
   itk::NumericTraits< MeasurementVectorType4b >::SetLength( measure4bb, length1 );
 
-
   // against each other
-#if !(defined(_MSC_VER) && (_MSC_VER <= 1200))
+#if !(defined(_MSC_VER) && (_MSC_VER <= 1200) )
   itkAssertLengthExceptionMacro( measure1b, measure1bb );
 #endif
   itkAssertLengthExceptionMacro( measure2b, measure2bb );

@@ -22,7 +22,8 @@
 #include "itkQuadEdgeMeshExtendedTraits.h"
 #include "itkDiscreteGaussianCurvatureQuadEdgeMeshFilter.h"
 
-int itkDiscreteGaussianCurvatureQuadEdgeMeshFilterTest( int argc, char* argv[] )
+int
+itkDiscreteGaussianCurvatureQuadEdgeMeshFilterTest( int argc, char* argv[] )
 {
   if( argc < 2 )
     {
@@ -36,26 +37,26 @@ int itkDiscreteGaussianCurvatureQuadEdgeMeshFilterTest( int argc, char* argv[] )
   typedef double CoordType;
 
   typedef itk::QuadEdgeMeshExtendedTraits <
-    CoordType,
-    Dimension,
-    2,
-    CoordType,
-    CoordType,
-    CoordType,
-    bool,
-    bool > Traits;
+      CoordType,
+      Dimension,
+      2,
+      CoordType,
+      CoordType,
+      CoordType,
+      bool,
+      bool > Traits;
 
   typedef itk::QuadEdgeMesh< CoordType, Dimension, Traits > MeshType;
   typedef itk::DiscreteGaussianCurvatureQuadEdgeMeshFilter<
-    MeshType, MeshType > CurvatureFilterType;
+      MeshType, MeshType > CurvatureFilterType;
 
   typedef itk::MeshFileReader< MeshType > ReaderType;
 
-  ReaderType::Pointer reader = ReaderType::New( );
+  ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
   try
     {
-    reader->Update( );
+    reader->Update();
     }
   catch( itk::ExceptionObject & excp )
     {

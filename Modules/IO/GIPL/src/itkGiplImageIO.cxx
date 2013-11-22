@@ -98,7 +98,8 @@ GiplImageIO::~GiplImageIO()
   delete m_Internal;
 }
 
-bool GiplImageIO::CanReadFile(const char *filename)
+bool
+GiplImageIO::CanReadFile(const char *filename)
 {
   // First check the filename extension
   bool extensionFound = CheckExtension(filename);
@@ -173,7 +174,8 @@ bool GiplImageIO::CanReadFile(const char *filename)
   return false;
 }
 
-bool GiplImageIO::CanWriteFile(const char *name)
+bool
+GiplImageIO::CanWriteFile(const char *name)
 {
   std::string filename = name;
 
@@ -193,10 +195,11 @@ bool GiplImageIO::CanWriteFile(const char *name)
   return true;
 }
 
-void GiplImageIO::Read(void *buffer)
+void
+GiplImageIO::Read(void *buffer)
 {
   const uint32_t dimensions = this->GetNumberOfDimensions();
-  uint32_t numberOfPixels = 1;
+  uint32_t       numberOfPixels = 1;
 
   for ( unsigned int dim = 0; dim < dimensions; dim++ )
     {
@@ -251,7 +254,8 @@ void GiplImageIO::Read(void *buffer)
  *  Read Information about the Gipl file
  *  and put the cursor of the stream just before the first data pixel
  */
-void GiplImageIO::ReadImageInformation()
+void
+GiplImageIO::ReadImageInformation()
 {
   unsigned int i;
 
@@ -1106,13 +1110,16 @@ GiplImageIO
 }
 
 /** Print Self Method */
-void GiplImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+GiplImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "PixelType " << m_PixelType << "\n";
 }
 
-bool GiplImageIO::CheckExtension(const char *filename)
+bool
+GiplImageIO::CheckExtension(const char *filename)
 {
   std::string fname = filename;
 
@@ -1142,4 +1149,5 @@ bool GiplImageIO::CheckExtension(const char *filename)
 
   return extensionFound;
 }
+
 } // end namespace itk

@@ -18,14 +18,12 @@
 
 #include "itkImageRegionSplitterBase.h"
 
-
 namespace itk
 {
 
 ImageRegionSplitterBase
 ::ImageRegionSplitterBase()
-{
-}
+{}
 
 void
 ImageRegionSplitterBase

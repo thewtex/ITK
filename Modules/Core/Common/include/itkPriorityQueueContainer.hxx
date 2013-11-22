@@ -30,14 +30,14 @@ namespace itk
 template< typename TElement,
           typename TElementIdentifier >
 ElementWrapperInterface< TElement, TElementIdentifier >::ElementWrapperInterface()
-  {}
+{}
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
 template< typename TElement,
           typename TElementIdentifier >
 ElementWrapperInterface< TElement, TElementIdentifier >::~ElementWrapperInterface()
-  {}
+{}
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -46,11 +46,10 @@ template< typename TElement,
 const
 typename ElementWrapperInterface< TElement, TElementIdentifier >::ElementIdentifierType
 ElementWrapperInterface< TElement, TElementIdentifier >::m_ElementNotFound
-= NumericTraits< TElementIdentifier >::max();
+  = NumericTraits< TElementIdentifier >::max();
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-
 
 // -----------------------------------------------------------------------------
 // ElementWrapperPointerInterface
@@ -80,6 +79,7 @@ GetLocation(const ElementWrapperPointerType & element) const
 {
   return ( ( *element ).GetLocation(*element) );
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -92,6 +92,7 @@ SetLocation(ElementWrapperPointerType & element,
 {
   ( *element ).SetLocation(*element, identifier);
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -104,6 +105,7 @@ is_less(const ElementWrapperPointerType & element1,
 {
   return ( ( *element1 ).is_less( ( *element1 ), ( *element2 ) ) );
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -116,6 +118,7 @@ is_greater(const ElementWrapperPointerType & element1,
 {
   return ( ( *element1 ).is_greater( ( *element1 ), ( *element2 ) ) );
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -123,29 +126,34 @@ template< typename TElement,
           typename TElementIdentifier >
 const TElementIdentifier
 ElementWrapperPointerInterface< TElement, TElementIdentifier >::m_ElementNotFound
-= NumericTraits< TElementIdentifier >::max();
+  = NumericTraits< TElementIdentifier >::max();
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-
 
 // -----------------------------------------------------------------------------
 // MinPriorityQueueElementWrapper
 // -----------------------------------------------------------------------------
-template<  typename TElement,  typename TElementPriority, typename TElementIdentifier > MinPriorityQueueElementWrapper< TElement, TElementPriority, TElementIdentifier >::
+template<  typename TElement,  typename TElementPriority,
+           typename TElementIdentifier > MinPriorityQueueElementWrapper< TElement, TElementPriority,
+                                                                         TElementIdentifier >::
 MinPriorityQueueElementWrapper() : m_Priority(0), m_Location( Superclass::m_ElementNotFound )
 {}
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
-template<  typename TElement,  typename TElementPriority, typename TElementIdentifier > MinPriorityQueueElementWrapper< TElement, TElementPriority, TElementIdentifier >::
-MinPriorityQueueElementWrapper(ElementType element, ElementPriorityType priority):
+template<  typename TElement,  typename TElementPriority,
+           typename TElementIdentifier > MinPriorityQueueElementWrapper< TElement, TElementPriority,
+                                                                         TElementIdentifier >::
+MinPriorityQueueElementWrapper(ElementType element, ElementPriorityType priority) :
   m_Element(element), m_Priority(priority), m_Location( Superclass::m_ElementNotFound )
 {}
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
-template< typename TElement,  typename TElementPriority, typename TElementIdentifier > MinPriorityQueueElementWrapper< TElement, TElementPriority, TElementIdentifier >::
+template< typename TElement,  typename TElementPriority,
+          typename TElementIdentifier > MinPriorityQueueElementWrapper< TElement, TElementPriority,
+                                                                        TElementIdentifier >::
 ~MinPriorityQueueElementWrapper() {}
 // -----------------------------------------------------------------------------
 
@@ -157,6 +165,7 @@ operator>(const MinPriorityQueueElementWrapper & other) const
 {
   return this->m_Priority > other.m_Priority;
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -167,6 +176,7 @@ operator<(const MinPriorityQueueElementWrapper & other) const
 {
   return this->m_Priority < other.m_Priority;
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -177,6 +187,7 @@ operator==(const MinPriorityQueueElementWrapper & other) const
 {
   return this->m_Priority == other.m_Priority;
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -189,6 +200,7 @@ GetLocation(const MinPriorityQueueElementWrapper & element) const
 {
   return element.m_Location;
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -200,6 +212,7 @@ SetLocation(MinPriorityQueueElementWrapper & element,
 {
   element.m_Location = identifier;
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -211,6 +224,7 @@ is_less(const MinPriorityQueueElementWrapper & element1,
 {
   return ( element1 < element2 );
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -222,22 +236,26 @@ is_greater(const MinPriorityQueueElementWrapper & element1,
 {
   return ( element1 > element2 );
 }
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
 
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
 // MaxPriorityQueueElementWrapper
 // -----------------------------------------------------------------------------
-template<  typename TElement,  typename TElementPriority, typename TElementIdentifier > MaxPriorityQueueElementWrapper< TElement, TElementPriority, TElementIdentifier >::
+template<  typename TElement,  typename TElementPriority,
+           typename TElementIdentifier > MaxPriorityQueueElementWrapper< TElement, TElementPriority,
+                                                                         TElementIdentifier >::
 MaxPriorityQueueElementWrapper() : Superclass()
 {}
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
-template<  typename TElement,  typename TElementPriority, typename TElementIdentifier > MaxPriorityQueueElementWrapper< TElement, TElementPriority, TElementIdentifier >::
-MaxPriorityQueueElementWrapper(ElementType element, ElementPriorityType priority):
+template<  typename TElement,  typename TElementPriority,
+           typename TElementIdentifier > MaxPriorityQueueElementWrapper< TElement, TElementPriority,
+                                                                         TElementIdentifier >::
+MaxPriorityQueueElementWrapper(ElementType element, ElementPriorityType priority) :
   Superclass( element, priority )
 {}
 // -----------------------------------------------------------------------------
@@ -251,6 +269,7 @@ is_less(const MaxPriorityQueueElementWrapper & element1,
 {
   return ( element1 > element2 );
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -262,6 +281,7 @@ is_less(const Superclass & element1,
 {
   return Superclass::is_less(element1, element2);
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -273,6 +293,7 @@ is_greater(const MaxPriorityQueueElementWrapper & element1,
 {
   return ( element1 < element2 );
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -284,10 +305,10 @@ is_greater(const Superclass & element1,
 {
   return Superclass::is_greater(element1, element2);
 }
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
 
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
 // PriorityQueueContainer
@@ -300,8 +321,8 @@ template<
   >
 const TElementIdentifier
 PriorityQueueContainer< TElementWrapper, TElementWrapperInterface,
-  TElementPriority, TElementIdentifier >::m_ElementNotFound
-= NumericTraits< TElementIdentifier >::max();
+                        TElementPriority, TElementIdentifier >::m_ElementNotFound
+  = NumericTraits< TElementIdentifier >::max();
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -312,7 +333,7 @@ template<
   typename TElementIdentifier
   >
 PriorityQueueContainer< TElementWrapper, TElementWrapperInterface,
-  TElementPriority, TElementIdentifier >::
+                        TElementPriority, TElementIdentifier >::
 PriorityQueueContainer() : Superclass() {}
 // -----------------------------------------------------------------------------
 
@@ -324,7 +345,7 @@ template<
   typename TElementIdentifier
   >
 PriorityQueueContainer< TElementWrapper, TElementWrapperInterface,
-  TElementPriority, TElementIdentifier >::
+                        TElementPriority, TElementIdentifier >::
 ~PriorityQueueContainer()  {}
 // -----------------------------------------------------------------------------
 
@@ -337,11 +358,12 @@ template<
   >
 void
 PriorityQueueContainer< TElementWrapper, TElementWrapperInterface,
-  TElementPriority, TElementIdentifier >::
+                        TElementPriority, TElementIdentifier >::
 Clear()
 {
   this->Initialize();
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -353,11 +375,12 @@ template<
   >
 bool
 PriorityQueueContainer< TElementWrapper, TElementWrapperInterface,
-  TElementPriority, TElementIdentifier >::
+                        TElementPriority, TElementIdentifier >::
 Empty() const
 {
   return ( this->empty() );
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -369,12 +392,13 @@ template<
   >
 void
 PriorityQueueContainer< TElementWrapper, TElementWrapperInterface,
-  TElementPriority, TElementIdentifier >::
+                        TElementPriority, TElementIdentifier >::
 Push( ElementWrapperType element)
 {
   this->push_back(element);
   this->UpdateUpTree( this->Size() - 1);
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -386,18 +410,18 @@ template<
   >
 const typename
 PriorityQueueContainer< TElementWrapper, TElementWrapperInterface,
-  TElementPriority, TElementIdentifier >::
- ElementWrapperType &
+                        TElementPriority, TElementIdentifier >::
+ElementWrapperType &
 PriorityQueueContainer< TElementWrapper, TElementWrapperInterface,
-  TElementPriority, TElementIdentifier >::
+                        TElementPriority, TElementIdentifier >::
 Peek() const
-{
+  {
   if( Empty() )
     {
     itkGenericExceptionMacro( <<"Empty PriorityQueueContainer" );
     }
   return ( GetElementAtLocation(0) );
-}
+  }
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -409,14 +433,14 @@ template<
   >
 void
 PriorityQueueContainer< TElementWrapper, TElementWrapperInterface,
-  TElementPriority, TElementIdentifier >::
+                        TElementPriority, TElementIdentifier >::
 Pop()
 {
   m_Interface.SetLocation(this->front(), //GetElementAtLocation(0),
                           m_ElementNotFound);
   if ( this->Size() > 1 )
     {
-    SetElementAtLocation( 0, this->back() );// GetElementAtLocation( this->Size() - 1 ) );
+    SetElementAtLocation( 0, this->back() ); // GetElementAtLocation( this->Size() - 1 ) );
     this->pop_back();
     UpdateDownTree(0);
     }
@@ -428,6 +452,7 @@ Pop()
       }
     }
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -439,7 +464,7 @@ template<
   >
 bool
 PriorityQueueContainer< TElementWrapper, TElementWrapperInterface,
-  TElementPriority, TElementIdentifier >::
+                        TElementPriority, TElementIdentifier >::
 Update( const ElementWrapperType& element)
 {
   ElementIdentifierType location = m_Interface.GetLocation(element);
@@ -457,6 +482,7 @@ Update( const ElementWrapperType& element)
     }
   return false;
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -468,7 +494,7 @@ template<
   >
 bool
 PriorityQueueContainer< TElementWrapper, TElementWrapperInterface,
-  TElementPriority, TElementIdentifier >::
+                        TElementPriority, TElementIdentifier >::
 DeleteElement(const  ElementWrapperType & element)
 {
   ElementIdentifierType location = m_Interface.GetLocation(element);
@@ -501,6 +527,7 @@ DeleteElement(const  ElementWrapperType & element)
     }
   return false;
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -512,15 +539,15 @@ template<
   >
 void
 PriorityQueueContainer< TElementWrapper, TElementWrapperInterface,
-  TElementPriority, TElementIdentifier >::
+                        TElementPriority, TElementIdentifier >::
 UpdateUpTree(const ElementIdentifierType & identifier)
 {
   if ( HasParent( identifier ) )
     {
     ElementIdentifierType id(identifier);
-     ElementWrapperType           element = GetElementAtLocation(id);
+    ElementWrapperType    element = GetElementAtLocation(id);
     ElementIdentifierType parentIdentifier = GetParent(id);
-     ElementWrapperType           parent_element = GetElementAtLocation(parentIdentifier);
+    ElementWrapperType    parent_element = GetElementAtLocation(parentIdentifier);
 
     while ( HasParent( id )
             && m_Interface.is_less(element, parent_element) )
@@ -536,6 +563,7 @@ UpdateUpTree(const ElementIdentifierType & identifier)
     SetElementAtLocation(id, element);
     }
 }
+
 // -----------------------------------------------------------------------------
 
 // -----------------------------------------------------------------------------
@@ -547,11 +575,11 @@ template<
   >
 void
 PriorityQueueContainer< TElementWrapper, TElementWrapperInterface,
-  TElementPriority, TElementIdentifier >::
+                        TElementPriority, TElementIdentifier >::
 UpdateDownTree(const ElementIdentifierType & identifier)
 {
   ElementIdentifierType id(identifier);
-   ElementWrapperType           element = GetElementAtLocation(id);
+  ElementWrapperType    element = GetElementAtLocation(id);
 
   ElementIdentifierType queueSize = this->Size();
 
@@ -580,6 +608,7 @@ UpdateDownTree(const ElementIdentifierType & identifier)
 
   SetElementAtLocation(id, element);
 }
+
 // -----------------------------------------------------------------------------
 }
 

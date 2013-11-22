@@ -35,10 +35,11 @@ template< typename TElementIdentifier, typename TElement >
 typename VectorContainer< TElementIdentifier, TElement >::Element &
 VectorContainer< TElementIdentifier, TElement >
 ::ElementAt(ElementIdentifier id)
-{
+  {
   this->Modified();
   return this->VectorType::operator[](id);
-}
+
+  }
 
 /**
  * Get a reference to the element at the given index.
@@ -50,9 +51,10 @@ template< typename TElementIdentifier, typename TElement >
 const typename VectorContainer< TElementIdentifier, TElement >::Element &
 VectorContainer< TElementIdentifier, TElement >
 ::ElementAt(ElementIdentifier id) const
-{
+  {
   return this->VectorType::operator[](id);
-}
+
+  }
 
 /**
  * Get a reference to the element at the given index.
@@ -66,14 +68,15 @@ template< typename TElementIdentifier, typename TElement >
 typename VectorContainer< TElementIdentifier, TElement >::Element &
 VectorContainer< TElementIdentifier, TElement >
 ::CreateElementAt(ElementIdentifier id)
-{
+  {
   if ( id >= this->VectorType::size() )
     {
     this->CreateIndex(id);
     }
   this->Modified();
   return this->VectorType::operator[](id);
-}
+
+  }
 
 /**
  * Read the element from the given index.

@@ -62,7 +62,7 @@ namespace itk
  * \ingroup ITKBiasCorrection
  */
 template< typename TInputImage >
-class MRASlabIdentifier:public Object
+class MRASlabIdentifier : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -123,7 +123,8 @@ public:
 
 protected:
   MRASlabIdentifier();
-  virtual ~MRASlabIdentifier() {}
+  virtual
+  ~MRASlabIdentifier() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

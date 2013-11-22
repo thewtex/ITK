@@ -37,7 +37,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT MultipleLogOutput:public LogOutput
+class ITKCommon_EXPORT MultipleLogOutput : public LogOutput
 {
 public:
 
@@ -75,7 +75,8 @@ protected:
   MultipleLogOutput();
 
   /** Destructor */
-  virtual ~MultipleLogOutput();
+  virtual
+  ~MultipleLogOutput();
 
 private:
   MultipleLogOutput(const Self &); //purposely not implemented

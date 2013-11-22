@@ -37,8 +37,7 @@ NeuralNetworkObject<TMeasurementVector,TTargetVector>
 template<typename TMeasurementVector, typename TTargetVector>
 NeuralNetworkObject<TMeasurementVector,TTargetVector>
 ::~NeuralNetworkObject()
-{
-}
+{}
 
 /** Print the object */
 template<typename TMeasurementVector, typename TTargetVector>

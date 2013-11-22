@@ -20,13 +20,14 @@
 
 #include "itkNrrdImageIOTest.h"
 
-
 // This test is for the NRRD image IO.  The strategy is to generate random
 // images of various data types, dimensionalities and sizes, write these images
 // as NRRDs, read them back, and compare the read images with the originals.
-int itkNrrdImageIOTest(int ac, char* av[])
+int
+itkNrrdImageIOTest(int ac, char* av[])
 {
   std::string inputFile;
+
   if(ac < 2)
     {
     std::cerr << "Usage: " << av[0] << " Output\n";
@@ -42,7 +43,7 @@ int itkNrrdImageIOTest(int ac, char* av[])
     inputFile = std::string("null");
     }
   const int sz = 10;
-  int ret = EXIT_SUCCESS;
+  int       ret = EXIT_SUCCESS;
 
   ret += itkNrrdImageIOTestReadWriteTest<char, 2>(std::string(av[1]), sz, inputFile);
   ret += itkNrrdImageIOTestReadWriteTest<unsigned short, 2>(std::string(av[1]), sz, inputFile);

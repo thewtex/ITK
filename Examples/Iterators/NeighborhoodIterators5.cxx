@@ -56,7 +56,8 @@
 //
 // Software Guide : EndLatex
 
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   if ( argc < 4 )
     {
@@ -89,7 +90,7 @@ int main( int argc, char ** argv )
     }
 
   ImageType::Pointer output = ImageType::New();
-  output->SetRegions(reader->GetOutput()->GetRequestedRegion());
+  output->SetRegions(reader->GetOutput()->GetRequestedRegion() );
   output->Allocate();
 
   itk::NeighborhoodInnerProduct<ImageType> innerProduct;
@@ -97,11 +98,11 @@ int main( int argc, char ** argv )
   typedef itk::NeighborhoodAlgorithm
     ::ImageBoundaryFacesCalculator< ImageType > FaceCalculatorType;
 
-  FaceCalculatorType faceCalculator;
-  FaceCalculatorType::FaceListType faceList;
+  FaceCalculatorType                         faceCalculator;
+  FaceCalculatorType::FaceListType           faceList;
   FaceCalculatorType::FaceListType::iterator fit;
 
-  IteratorType out;
+  IteratorType             out;
   NeighborhoodIteratorType it;
 
 // Software Guide: BeginLatex
@@ -155,7 +156,7 @@ int main( int argc, char ** argv )
       {
       it = NeighborhoodIteratorType( radius, input, *fit );
       out = IteratorType( output, *fit );
-      for (it.GoToBegin(), out.GoToBegin(); ! it.IsAtEnd(); ++it, ++out)
+      for (it.GoToBegin(), out.GoToBegin(); !it.IsAtEnd(); ++it, ++out)
         {
         out.Set( innerProduct(it.GetSlice(i), it, gaussianOperator) );
         }
@@ -170,7 +171,6 @@ int main( int argc, char ** argv )
       }
     }
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -189,7 +189,7 @@ int main( int argc, char ** argv )
   typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   typedef itk::RescaleIntensityImageFilter< ImageType,
-    WriteImageType > RescaleFilterType;
+                                            WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 

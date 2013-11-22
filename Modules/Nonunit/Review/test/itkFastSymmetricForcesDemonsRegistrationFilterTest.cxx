@@ -22,8 +22,7 @@
 #include "itkCommand.h"
 #include "itkVectorCastImageFilter.h"
 
-
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 template<typename TRegistration>
@@ -31,17 +30,23 @@ class ShowProgressObject
 {
 public:
   ShowProgressObject(TRegistration* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
     std::cout << "Progress: " << m_Process->GetProgress() << "  ";
     std::cout << "Iter: " << m_Process->GetElapsedIterations() << "  ";
     std::cout << "Metric: "   << m_Process->GetMetric()   << "  ";
     std::cout << "RMSChange: " << m_Process->GetRMSChange() << "  ";
     std::cout << std::endl;
+
     if ( m_Process->GetElapsedIterations() == 150 )
-      { m_Process->StopRegistration(); }
-    }
+          { m_Process->StopRegistration(); }
+  }
+
   typename TRegistration::Pointer m_Process;
 };
 }
@@ -50,11 +55,11 @@ public:
 template <typename TImage>
 void
 FillWithCircle(
-TImage * image,
-double * center,
-double radius,
-typename TImage::PixelType foregnd,
-typename TImage::PixelType backgnd )
+  TImage * image,
+  double * center,
+  double radius,
+  typename TImage::PixelType foregnd,
+  typename TImage::PixelType backgnd )
 {
 
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
@@ -70,7 +75,7 @@ typename TImage::PixelType backgnd )
     double distance = 0;
     for( unsigned int j = 0; j < TImage::ImageDimension; j++ )
       {
-      distance += vnl_math_sqr((double) index[j] - center[j]);
+      distance += vnl_math_sqr( (double) index[j] - center[j]);
       }
     if( distance <= r2 ) it.Set( foregnd );
     else it.Set( backgnd );
@@ -78,13 +83,12 @@ typename TImage::PixelType backgnd )
 
 }
 
-
 // Template function to copy image regions
 template <typename TImage>
 void
 CopyImageBuffer(
-TImage *input,
-TImage *output )
+  TImage *input,
+  TImage *output )
 {
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
   Iterator inIt( input, output->GetBufferedRegion() );
@@ -96,26 +100,27 @@ TImage *output )
 
 }
 
-int itkFastSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
+int
+itkFastSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
 {
 
-  typedef unsigned char                         PixelType;
+  typedef unsigned char PixelType;
   enum {ImageDimension = 2};
   typedef itk::Image<PixelType,ImageDimension>  ImageType;
   typedef itk::Vector<float,ImageDimension>     VectorType;
   typedef itk::Image<VectorType,ImageDimension> FieldType;
   typedef itk::Image<VectorType::ValueType,
-      ImageDimension>                           FloatImageType;
-  typedef ImageType::IndexType                  IndexType;
-  typedef ImageType::SizeType                   SizeType;
-  typedef ImageType::RegionType                 RegionType;
+                     ImageDimension>                           FloatImageType;
+  typedef ImageType::IndexType  IndexType;
+  typedef ImageType::SizeType   SizeType;
+  typedef ImageType::RegionType RegionType;
 
   //--------------------------------------------------------
   std::cout << "Generate input images and initial deformation field";
   std::cout << std::endl;
 
   ImageType::SizeValueType sizeArray[ImageDimension] = { 128, 128 };
-  SizeType size;
+  SizeType                 size;
   size.SetSize( sizeArray );
 
   IndexType index;
@@ -141,8 +146,8 @@ int itkFastSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
   initField->SetBufferedRegion( region );
   initField->Allocate();
 
-  double center[ImageDimension];
-  double radius;
+  double    center[ImageDimension];
+  double    radius;
   PixelType fgnd = 250;
   PixelType bgnd = 15;
 
@@ -186,7 +191,7 @@ int itkFastSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
   typedef RegistrationType::DemonsRegistrationFunctionType FunctionType;
   FunctionType * fptr;
   fptr = dynamic_cast<FunctionType *>(
-    registrator->GetDifferenceFunction().GetPointer() );
+      registrator->GetDifferenceFunction().GetPointer() );
   fptr->Print( std::cout );
 
   // exercise other member variables
@@ -202,7 +207,7 @@ int itkFastSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
   registrator->SetStandardDeviations( v );
 
   typedef ShowProgressObject<RegistrationType> ProgressType;
-  ProgressType progressWatch(registrator);
+  ProgressType                                    progressWatch(registrator);
   itk::SimpleMemberCommand<ProgressType>::Pointer command;
   command = itk::SimpleMemberCommand<ProgressType>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -217,7 +222,6 @@ int itkFastSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
   typedef itk::NearestNeighborInterpolateImageFunction<ImageType,CoordRepType>
     InterpolatorType;
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
-
 
   warper->SetInput( moving );
   warper->SetDisplacementField( registrator->GetOutput() );
@@ -236,9 +240,9 @@ int itkFastSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
 
   // compare the warp and fixed images
   itk::ImageRegionIterator<ImageType> fixedIter( fixed,
-      fixed->GetBufferedRegion() );
+                                                 fixed->GetBufferedRegion() );
   itk::ImageRegionIterator<ImageType> warpedIter( warper->GetOutput(),
-      fixed->GetBufferedRegion() );
+                                                  fixed->GetBufferedRegion() );
 
   unsigned int numPixelsDifferent = 0;
   while( !fixedIter.IsAtEnd() )
@@ -317,7 +321,7 @@ int itkFastSymmetricForcesDemonsRegistrationFilterTest(int, char* [] )
   try
     {
     fptr = dynamic_cast<FunctionType *>(
-      registrator->GetDifferenceFunction().GetPointer() );
+        registrator->GetDifferenceFunction().GetPointer() );
     fptr->SetMovingImageInterpolator( NULL );
     registrator->SetInput( initField );
     registrator->Update();

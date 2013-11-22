@@ -44,9 +44,7 @@ BSplineBaseTransform<TScalar, NDimensions, VSplineOrder>
 template <typename TScalar, unsigned int NDimensions, unsigned int VSplineOrder>
 BSplineBaseTransform<TScalar, NDimensions, VSplineOrder>
 ::~BSplineBaseTransform()
-{
-}
-
+{}
 
 // Set the parameters
 template <typename TScalar, unsigned int NDimensions, unsigned int VSplineOrder>
@@ -117,7 +115,6 @@ BSplineBaseTransform<TScalar, NDimensions, VSplineOrder>
   this->m_InternalParametersBuffer = parameters;
   this->SetParameters( this->m_InternalParametersBuffer );
 }
-
 
 template <typename TScalar, unsigned int NDimensions, unsigned int VSplineOrder>
 void
@@ -207,13 +204,13 @@ BSplineBaseTransform<TScalar, NDimensions, VSplineOrder>
    * NOTE: For efficiency, parameters are not copied locally. The parameters
    * are assumed to be maintained by the caller.
    */
-  PixelType *dataPointer = const_cast<PixelType *>( this->m_InternalParametersBuffer.data_block() );
+  PixelType *                  dataPointer = const_cast<PixelType *>( this->m_InternalParametersBuffer.data_block() );
   const NumberOfParametersType numberOfPixels = this->GetNumberOfParametersPerDimension();
 
   for( unsigned int j = 0; j < SpaceDimension; j++ )
     {
     this->m_CoefficientImages[j]->GetPixelContainer()->
-      SetImportPointer( dataPointer + j * numberOfPixels, numberOfPixels );
+    SetImportPointer( dataPointer + j * numberOfPixels, numberOfPixels );
     }
 }
 
@@ -222,21 +219,21 @@ template <typename TScalar, unsigned int NDimensions, unsigned int VSplineOrder>
 const typename BSplineBaseTransform<TScalar, NDimensions, VSplineOrder>::ParametersType &
 BSplineBaseTransform<TScalar, NDimensions, VSplineOrder>
 ::GetParameters() const
-{
+  {
   return this->m_InternalParametersBuffer;
-}
+  }
 
 // Get the parameters
 template <typename TScalar, unsigned int NDimensions, unsigned int VSplineOrder>
 const typename BSplineBaseTransform<TScalar, NDimensions, VSplineOrder>::ParametersType &
 BSplineBaseTransform<TScalar, NDimensions, VSplineOrder>
 ::GetFixedParameters() const
-{
+  {
   // HACK:  This should not be necessary if the
   //       class is kept in a consistent state
   //  this->SetFixedParametersFromCoefficientImageInformation();
   return this->m_FixedParameters;
-}
+  }
 
 // Print self
 template <typename TScalar, unsigned int NDimensions, unsigned int VSplineOrder>
@@ -254,7 +251,6 @@ BSplineBaseTransform<TScalar, NDimensions, VSplineOrder>
   os << this->m_CoefficientImages[SpaceDimension - 1].GetPointer()
      << " ]" << std::endl;
 }
-
 
 /** Get Jacobian at a point. A very specialized function just for BSplines */
 template <typename TScalar, unsigned int NDimensions, unsigned int VSplineOrder>

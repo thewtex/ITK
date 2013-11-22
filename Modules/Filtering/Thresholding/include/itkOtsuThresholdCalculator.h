@@ -45,10 +45,10 @@ class OtsuThresholdCalculator : public HistogramThresholdCalculator<THistogram, 
 {
 public:
   /** Standard class typedefs. */
-  typedef OtsuThresholdCalculator         Self;
-  typedef Object                          Superclass;
-  typedef SmartPointer<Self>              Pointer;
-  typedef SmartPointer<const Self>        ConstPointer;
+  typedef OtsuThresholdCalculator  Self;
+  typedef Object                   Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -57,11 +57,12 @@ public:
   itkTypeMacro(OtsuThresholdCalculator, Object);
 
   /** Type definition for the input image. */
-  typedef THistogram  HistogramType;
-  typedef TOutput     OutputType;
+  typedef THistogram HistogramType;
+  typedef TOutput    OutputType;
 
   /** for backward compatibility. Update() should be preferred. */
-  void Compute()
+  void
+  Compute()
   {
     this->Update();
   }
@@ -71,17 +72,19 @@ protected:
   {
     m_OtsuMultipleThresholdsCalculator = OtsuMultipleThresholdsCalculator<THistogram>::New();
   }
-  virtual ~OtsuThresholdCalculator() {};
+
+  virtual
+  ~OtsuThresholdCalculator() {}
   void GenerateData(void);
 
 private:
   OtsuThresholdCalculator(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);          //purposely not implemented
+
   typename OtsuMultipleThresholdsCalculator<THistogram>::Pointer m_OtsuMultipleThresholdsCalculator;
 };
 
 } // end namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkOtsuThresholdCalculator.hxx"

@@ -55,7 +55,7 @@
 #include "ITKIOGEExport.h"
 
 enum GE_4X_STUDYHDR_OFFSET
-{
+  {
   SIGNA_STHDR_ID = 0,              /*  Study Header Identifier */
   SIGNA_STHDR_REV = 7,             /*  Study Header Revision Number xx.xx.xx */
   SIGNA_STHDR_NUMBLKS = 11,        /*  Number of Study Header Blocks */
@@ -89,10 +89,10 @@ enum GE_4X_STUDYHDR_OFFSET
   SIGNA_STHDR_STATUS = 239,        /*  Patient status */
   SIGNA_STHDR_REQNUM = 240,        /*  Req. Number from Scan Rx first page */
   SIGNA_STHDR_CHECKSUM = 511       /*  checksum */
-};
+  };
 
 enum GE_4X_SERIESHDR_OFFSET
-{
+  {
   SIGNA_SEHDR_ID = 0,               /*  Series Header Identifier */
   SIGNA_SEHDR_REV = 7,              /*  Series Header Revision Number xx.xx.xx */
   SIGNA_SEHDR_NUMBLKS = 11,         /*  Number of Series Header Blocks */
@@ -159,10 +159,10 @@ enum GE_4X_SERIESHDR_OFFSET
   SIGNA_SEHDR_VENC = 238,           /*  unused venc ... see image header */
   SIGNA_SEHDR_GATINGTYPE2 = 239,    /*  more pulse sequence types */
   SIGNA_SEHDR_CHECKSUM = 511        /*  checksum */
-};
+  };
 
 enum GE_4X_IMAGEHDR_OFFSET
-{
+  {
   SIGNA_IMHDR_ID = 0,                /*  Image Header Identifier */
   SIGNA_IMHDR_REV = 7,               /*  Image Header Revision Number xx.xx.xx */
   SIGNA_IMHDR_NUMBLKS = 11,          /*  Number of Image Header Blocks */
@@ -309,18 +309,19 @@ enum GE_4X_IMAGEHDR_OFFSET
   SIGNA_IMHDR_CONCAT_SAT = 295,      /*  concatenated sat selected */
   SIGNA_IMHDR_FRACECHO = 296,        /*  TE Flag */
   SIGNA_IMHDR_ETL = 297,             /*  Echo train length */
-  SIGNA_IMHDR_PHASES = 299,          /*  Slice multiplier to obtain phases for FAST - MP option (multiphase) - number of phases per location */
+  SIGNA_IMHDR_PHASES = 299,          /*  Slice multiplier to obtain phases for FAST - MP option (multiphase) - number of phases per
+                                       location */
   SIGNA_IMHDR_PHASENUM = 300,        /*  Cardiac phase number of current image */
   SIGNA_IMHDR_NUMACQ = 301,          /*  Number of Acquisitions in scan */
   SIGNA_IMHDR_VASC_FLAG = 302,       /*  Vascular imaging flags */
   SIGNA_IMHDR_VENC_SCALE = 303,      /*  VENC scaling factor */
   SIGNA_IMHDR_CHECKSUM = 511         /*  checksum */
-};
+  };
 
 enum GE_4X_OFFSETS {
-    SIGNA_STHDR_START=    6*256,
-    SIGNA_SEHDR_START=    8*256,
-    SIGNA_IHDR_START=     10*256
-};
+  SIGNA_STHDR_START=    6*256,
+  SIGNA_SEHDR_START=    8*256,
+  SIGNA_IHDR_START=     10*256
+  };
 
 #endif  /* __Ge4xHdr_h */

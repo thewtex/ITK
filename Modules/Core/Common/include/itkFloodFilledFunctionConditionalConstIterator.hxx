@@ -223,6 +223,7 @@ FloodFilledFunctionConditionalConstIterator< TImage, TFunction >
     this->m_IsAtEnd = true;
     }
 }
+
 } // end namespace itk
 
 #endif

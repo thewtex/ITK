@@ -241,7 +241,7 @@ BYUMeshIO
   // Get cell buffer
   inputFile.precision(12);
   unsigned int *data = static_cast< unsigned int * >( buffer );
-  SizeValueType  numPoints = 0;
+  SizeValueType numPoints = 0;
   SizeValueType id = itk::NumericTraits< SizeValueType >::Zero;
   SizeValueType index = 2;
   int           ptId;
@@ -279,14 +279,12 @@ BYUMeshIO
 void
 BYUMeshIO
 ::ReadPointData(void * itkNotUsed( buffer) )
-{
-}
+{}
 
 void
 BYUMeshIO
 ::ReadCellData(void * itkNotUsed( buffer) )
-{
-}
+{}
 
 void
 BYUMeshIO
@@ -532,28 +530,27 @@ BYUMeshIO
 void
 BYUMeshIO
 ::WritePointData(void * itkNotUsed( buffer) )
-{
-}
+{}
 
 void
 BYUMeshIO
 ::WriteCellData(void * itkNotUsed( buffer) )
-{
-}
+{}
 
 void
 BYUMeshIO
 ::Write()
-{
-}
+{}
 
 void
 BYUMeshIO
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "PartId: " << m_PartId << std::endl;
   os << indent << "First Cell Id: " << m_FirstCellId << std::endl;
   os << indent << "Last Cell Id: " << m_LastCellId << std::endl;
 }
+
 } // namespace itk end

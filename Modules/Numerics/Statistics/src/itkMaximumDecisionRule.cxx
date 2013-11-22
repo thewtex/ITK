@@ -29,7 +29,7 @@ MaximumDecisionRule
 
   if (discriminantScores.size() > 0)
     {
-    MembershipValueType  max = discriminantScores[0];
+    MembershipValueType max = discriminantScores[0];
     ClassIdentifierType i;
 
     for ( i = 1; i < discriminantScores.size(); i++ )
@@ -43,5 +43,6 @@ MaximumDecisionRule
     }
   return maxIndex;
 }
+
 } // end of namespace Statistics
 } // end of namespace itk

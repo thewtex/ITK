@@ -85,10 +85,14 @@ public:
   vnl_vector< T > operator *(const vnl_vector< T > & matrix) const;
 
   /** Matrix by scalar multiplication.  */
-  void operator*=(const T & value) { m_Matrix *= value; }
+  void
+  operator*=(const T & value) {
+    m_Matrix *= value;
+  }
 
   /** Matrix by scalar multiplication.  */
-  Self operator*(const T & value)
+  Self
+  operator*(const T & value)
   {
     Self result(*this);
 
@@ -97,10 +101,14 @@ public:
   }
 
   /** Matrix by scalar division.  */
-  void operator/=(const T & value) { m_Matrix /= value; }
+  void
+  operator/=(const T & value) {
+    m_Matrix /= value;
+  }
 
   /** Matrix by scalar division.  */
-  Self operator/(const T & value)
+  Self
+  operator/(const T & value)
   {
     Self result(*this);
 
@@ -109,55 +117,64 @@ public:
   }
 
   /** Return an element of the matrix. */
-  inline T & operator()(unsigned int row, unsigned int col)
+  inline T &
+  operator()(unsigned int row, unsigned int col)
   {
     return m_Matrix(row, col);
   }
 
   /** Return an element of the matrix. */
-  inline const T & operator()(unsigned int row, unsigned int col) const
+  inline const T &
+  operator()(unsigned int row, unsigned int col) const
   {
     return m_Matrix(row, col);
   }
 
   /** Return a row of the matrix. */
-  inline T * operator[](unsigned int i)
+  inline T *
+  operator[](unsigned int i)
   {
     return m_Matrix[i];
   }
 
   /** Return a row of the matrix. */
-  inline const T * operator[](unsigned int i) const
+  inline const T *
+  operator[](unsigned int i) const
   {
     return m_Matrix[i];
   }
 
   /** Return the matrix. */
-  inline InternalMatrixType & GetVnlMatrix(void)
+  inline InternalMatrixType &
+  GetVnlMatrix(void)
   {
     return m_Matrix;
   }
 
   /** Return the matrix. */
-  inline const InternalMatrixType & GetVnlMatrix(void) const
+  inline const InternalMatrixType &
+  GetVnlMatrix(void) const
   {
     return m_Matrix;
   }
 
   /** Set the matrix to identity. */
-  inline void SetIdentity(void)
+  inline void
+  SetIdentity(void)
   {
     m_Matrix.set_identity();
   }
 
   /** Fill the matrix with a value. */
-  inline void Fill(const T & value)
+  inline void
+  Fill(const T & value)
   {
     m_Matrix.fill(value);
   }
 
   /** Assignment operator. */
-  inline const Self & operator=(const vnl_matrix< T > & matrix)
+  inline const Self &
+  operator=(const vnl_matrix< T > & matrix)
   {
     m_Matrix = matrix;
     return *this;
@@ -166,13 +183,15 @@ public:
   /** Comparison operators. */
   inline bool operator==(const Self & matrix) const;
 
-  inline bool operator!=(const Self & matrix) const
+  inline bool
+  operator!=(const Self & matrix) const
   {
     return !this->operator==(matrix);
   }
 
   /** Assignment operator. */
-  inline const Self & operator=(const Self & matrix)
+  inline const Self &
+  operator=(const Self & matrix)
   {
     m_Matrix = matrix.m_Matrix;
     return *this;
@@ -192,29 +211,39 @@ public:
   }
 
   /** Default constructor. */
-  VariableSizeMatrix():m_Matrix() {}
+  VariableSizeMatrix() : m_Matrix() {}
 
   VariableSizeMatrix(unsigned int rows, unsigned int cols);
 
   /** Copy constructor. */
-  VariableSizeMatrix(const Self & matrix):m_Matrix(matrix.m_Matrix) {}
+  VariableSizeMatrix(const Self & matrix) : m_Matrix(matrix.m_Matrix) {}
 
   /** Return number of rows in the matrix */
-  inline unsigned int Rows() const { return m_Matrix.rows(); }
+  inline unsigned int
+  Rows() const {
+    return m_Matrix.rows();
+  }
 
   /** Return number of columns in the matrix */
-  inline unsigned int Cols() const { return m_Matrix.cols(); }
+  inline unsigned int
+  Cols() const {
+    return m_Matrix.cols();
+  }
 
   /** Set the matrix size. Old data lost. Returns true if size changed. */
-  inline bool SetSize(unsigned int r, unsigned int c) { return m_Matrix.set_size(r, c); }
+  inline bool
+  SetSize(unsigned int r, unsigned int c) {
+    return m_Matrix.set_size(r, c);
+  }
 
 private:
   InternalMatrixType m_Matrix;
 };
 
 template< typename T >
-std::ostream & operator<<(std::ostream & os,
-                                     const VariableSizeMatrix< T > & v)
+std::ostream &
+operator<<(std::ostream & os,
+           const VariableSizeMatrix< T > & v)
 {
   os << v.GetVnlMatrix(); return os;
 }
@@ -248,6 +277,7 @@ VariableSizeMatrix< T >
     }
   return equal;
 }
+
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION

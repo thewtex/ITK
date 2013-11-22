@@ -21,7 +21,8 @@
 
 #include "itkMinimumProjectionImageFilter.h"
 
-int itkMinimumProjectionImageFilterTest(int argc, char * argv[])
+int
+itkMinimumProjectionImageFilterTest(int argc, char * argv[])
 {
   if( argc < 3 )
     {

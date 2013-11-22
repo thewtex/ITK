@@ -20,7 +20,8 @@
 
 #include "itkMersenneTwisterRandomVariateGenerator.h"
 
-int itkMersenneTwisterRandomVariateGeneratorTest (int, char* [] )
+int
+itkMersenneTwisterRandomVariateGeneratorTest(int, char* [] )
 {
 
   typedef itk::Statistics::MersenneTwisterRandomVariateGenerator Twister;
@@ -78,7 +79,7 @@ int itkMersenneTwisterRandomVariateGeneratorTest (int, char* [] )
   // NB: requires a large number of iterations to have variance converge...
   double sum = 0.0;
   double sum2 = 0.0;
-  int count = 500000;
+  int    count = 500000;
   for ( int i = 0; i < count; i++ )
     {
     double v = twister->GetNormalVariate();
@@ -89,13 +90,13 @@ int itkMersenneTwisterRandomVariateGeneratorTest (int, char* [] )
   double variance = sum2 / (double) count - mean * mean;
   if ( fabs ( mean ) > 0.01 )
     {
-      std::cerr << "Mean was " << mean << " expected 0.0 " << std::endl;
-      return EXIT_FAILURE;
+    std::cerr << "Mean was " << mean << " expected 0.0 " << std::endl;
+    return EXIT_FAILURE;
     }
   if ( fabs ( variance - 1.0 ) > 0.01 )
     {
-      std::cerr << "Variance was " << variance << " expected 1.0 " << std::endl;
-      return EXIT_FAILURE;
+    std::cerr << "Variance was " << variance << " expected 1.0 " << std::endl;
+    return EXIT_FAILURE;
     }
 
   return EXIT_SUCCESS;

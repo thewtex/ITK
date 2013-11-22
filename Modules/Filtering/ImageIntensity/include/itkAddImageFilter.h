@@ -37,22 +37,26 @@ public:
   typedef typename NumericTraits< TInput1 >::AccumulateType AccumulatorType;
   Add2() {}
   ~Add2() {}
-  bool operator!=(const Add2 &) const
+  bool
+  operator!=(const Add2 &) const
   {
     return false;
   }
 
-  bool operator==(const Add2 & other) const
+  bool
+  operator==(const Add2 & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A, const TInput2 & B) const
+  inline TOutput
+  operator()(const TInput1 & A, const TInput2 & B) const
   {
     const AccumulatorType sum = A;
 
     return static_cast< TOutput >( sum + B );
   }
+
 };
 }
 /** \class AddImageFilter
@@ -106,7 +110,7 @@ public:
  * \endwiki
  */
 template< typename TInputImage1, typename TInputImage2 = TInputImage1, typename TOutputImage = TInputImage1 >
-class AddImageFilter:
+class AddImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::Add2<
@@ -145,11 +149,13 @@ public:
 
 protected:
   AddImageFilter() {}
-  virtual ~AddImageFilter() {}
+  virtual
+  ~AddImageFilter() {}
 
 private:
   AddImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

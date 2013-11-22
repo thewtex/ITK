@@ -22,7 +22,8 @@
 #include "itkImageFileWriter.h"
 #include "itkFilterWatcher.h"
 
-int itkOtsuMultipleThresholdsImageFilterTest(int argc, char* argv[] )
+int
+itkOtsuMultipleThresholdsImageFilterTest(int argc, char* argv[] )
 {
   if( argc < 6 )
     {
@@ -40,19 +41,19 @@ int itkOtsuMultipleThresholdsImageFilterTest(int argc, char* argv[] )
   typedef  unsigned short InternalPixelType;
   typedef  unsigned char  OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  2 >   InputImageType;
-  typedef itk::Image< InternalPixelType, 2>  InternalImageType;
-  typedef itk::Image< OutputPixelType, 2 >   OutputImageType;
+  typedef itk::Image< InputPixelType,  2 >  InputImageType;
+  typedef itk::Image< InternalPixelType, 2> InternalImageType;
+  typedef itk::Image< OutputPixelType, 2 >  OutputImageType;
 
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
-  typedef itk::OtsuMultipleThresholdsImageFilter< InputImageType, InternalImageType >  FilterType;
-  typedef itk::RescaleIntensityImageFilter< InternalImageType, OutputImageType > RescaleType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType >                                      ReaderType;
+  typedef itk::OtsuMultipleThresholdsImageFilter< InputImageType, InternalImageType > FilterType;
+  typedef itk::RescaleIntensityImageFilter< InternalImageType, OutputImageType >      RescaleType;
+  typedef itk::ImageFileWriter< OutputImageType >                                     WriterType;
 
-  ReaderType::Pointer reader = ReaderType::New();
-  FilterType::Pointer filter = FilterType::New();
+  ReaderType::Pointer  reader = ReaderType::New();
+  FilterType::Pointer  filter = FilterType::New();
   RescaleType::Pointer rescaler = RescaleType::New();
-  WriterType::Pointer writer = WriterType::New();
+  WriterType::Pointer  writer = WriterType::New();
 
   FilterWatcher watcher(filter);
 
@@ -61,13 +62,13 @@ int itkOtsuMultipleThresholdsImageFilterTest(int argc, char* argv[] )
 
   // Set up the filter parameters.
   filter->SetInput( reader->GetOutput() );
-  filter->SetNumberOfHistogramBins (atoi(argv[3]));
+  filter->SetNumberOfHistogramBins (atoi(argv[3]) );
   filter->SetNumberOfThresholds( atoi(argv[4]) );
   filter->SetLabelOffset( atoi(argv[5]) );
   if( argc > 6 )
-  {
-    filter->SetValleyEmphasis(atoi(argv[6]));
-  }
+    {
+    filter->SetValleyEmphasis(atoi(argv[6]) );
+    }
   try
     {
     filter->Update();

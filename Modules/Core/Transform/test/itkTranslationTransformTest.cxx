@@ -20,27 +20,29 @@
 
 #include "itkTranslationTransform.h"
 
-typedef  itk::Vector<double,2>     VectorType;
+typedef  itk::Vector<double,2> VectorType;
 
 namespace
 {
 
-void PrintVector( const VectorType & v )
+void
+PrintVector( const VectorType & v )
 {
   for( unsigned int i=0; i<VectorType::Dimension; i++)
-  {
+    {
     std::cout << v[i] << ", ";
-  }
+    }
   std::cout << std::endl;
 }
+
 }
 
-
-int itkTranslationTransformTest(int ,char *[] )
+int
+itkTranslationTransformTest(int ,char *[] )
 {
   int any = 0;       // Any errors detected in testing?
 
-  VectorType                   vector2;
+  VectorType vector2;
 
   int i;
 
@@ -48,8 +50,8 @@ int itkTranslationTransformTest(int ,char *[] )
      actually check that the results are correct. */
 
   /* Create a 2D identity transformation and show its parameters */
-  typedef itk::TranslationTransform<double,2>  TransformType;
-  TransformType::Pointer  id2 = TransformType::New();
+  typedef itk::TranslationTransform<double,2> TransformType;
+  TransformType::Pointer id2 = TransformType::New();
   vector2 = id2->GetOffset();
   std::cout << "Vector from instantiating an identity transform:"
             << std::endl;
@@ -68,21 +70,21 @@ int itkTranslationTransformTest(int ,char *[] )
             << std::endl << aff2;
 
   TransformType::Pointer inverse2 = TransformType::New();
-  if(!aff2->GetInverse(inverse2))
-      {
-      std::cout << "Cannot create inverse transform" << std::endl;
-      return EXIT_FAILURE;
-      }
+  if(!aff2->GetInverse(inverse2) )
+    {
+    std::cout << "Cannot create inverse transform" << std::endl;
+    return EXIT_FAILURE;
+    }
 
   std::cout << "Inverse of the given transform:"
             << std::endl << inverse2;
 
-  inverse2 = dynamic_cast<TransformType*>(aff2->GetInverseTransform().GetPointer());
+  inverse2 = dynamic_cast<TransformType*>(aff2->GetInverseTransform().GetPointer() );
   if(!inverse2)
-      {
-      std::cout << "Cannot create inverse transform" << std::endl;
-      return EXIT_FAILURE;
-      }
+    {
+    std::cout << "Cannot create inverse transform" << std::endl;
+    return EXIT_FAILURE;
+    }
 
   std::cout << "Inverse of the given transform:"
             << std::endl << inverse2;
@@ -114,7 +116,7 @@ int itkTranslationTransformTest(int ,char *[] )
   std::cout << "Result of a translation:"
             << std::endl << aff2;
 
-      /* Transform a point */
+  /* Transform a point */
   itk::Point<double, 2> u2, v2;
   u2[0] = 3;
   u2[1] = 5;

@@ -233,7 +233,8 @@ FreeSurferBinaryMeshIO
   // Number of data array
   float *data = static_cast< float * >( buffer );
 
-  m_InputFile.read( static_cast< char * >( buffer ), this->m_NumberOfPoints * this->m_PointDimension * sizeof( float ) );
+  m_InputFile.read( static_cast< char * >( buffer ), this->m_NumberOfPoints * this->m_PointDimension *
+                    sizeof( float ) );
   itk::ByteSwapper< float >::SwapRangeFromSystemToBigEndian(data, this->m_NumberOfPoints * this->m_PointDimension);
 }
 
@@ -244,7 +245,8 @@ FreeSurferBinaryMeshIO
   const unsigned int numberOfCellPoints = 3;
   itk::uint32_t *    data = new itk::uint32_t[this->m_NumberOfCells * numberOfCellPoints];
 
-  m_InputFile.read( reinterpret_cast< char * >( data ), this->m_NumberOfCells * numberOfCellPoints * sizeof( itk::uint32_t ) );
+  m_InputFile.read( reinterpret_cast< char * >( data ), this->m_NumberOfCells * numberOfCellPoints *
+                    sizeof( itk::uint32_t ) );
   itk::ByteSwapper< itk::uint32_t >::SwapRangeFromSystemToBigEndian(data, this->m_NumberOfCells * numberOfCellPoints);
 
   this->WriteCellsBuffer(data, static_cast< unsigned int * >( buffer ), TRIANGLE_CELL, 3, this->m_NumberOfCells);
@@ -271,8 +273,7 @@ FreeSurferBinaryMeshIO
 void
 FreeSurferBinaryMeshIO
 ::ReadCellData(void * itkNotUsed( buffer) )
-{
-}
+{}
 
 void
 FreeSurferBinaryMeshIO
@@ -652,14 +653,12 @@ FreeSurferBinaryMeshIO
 void
 FreeSurferBinaryMeshIO
 ::WriteCellData(void * itkNotUsed( buffer) )
-{
-}
+{}
 
 void
 FreeSurferBinaryMeshIO
 ::Write()
-{
-}
+{}
 
 void
 FreeSurferBinaryMeshIO
@@ -667,4 +666,5 @@ FreeSurferBinaryMeshIO
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // namespace itk end

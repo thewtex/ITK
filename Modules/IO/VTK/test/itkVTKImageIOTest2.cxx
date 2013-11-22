@@ -19,10 +19,10 @@
 #include "itkImageFileWriter.h"
 #include "itkImageFileReader.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkVTKImageIOTest2(int argc, char* argv[] )
+int
+itkVTKImageIOTest2(int argc, char* argv[] )
 {
 
   if( argc < 3 )
@@ -32,16 +32,15 @@ int itkVTKImageIOTest2(int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-
   const unsigned int Dimension = 3;
 
   // Testing to write images of vectors as VTK images.
 
-  typedef float                                            PixelComponentType;
-  typedef itk::Vector< PixelComponentType, Dimension >     PixelType;
-  typedef itk::Image< PixelType, Dimension >               ImageType;
-  typedef itk::ImageFileReader< ImageType >                ReaderType;
-  typedef itk::ImageFileWriter< ImageType >                WriterType;
+  typedef float                                        PixelComponentType;
+  typedef itk::Vector< PixelComponentType, Dimension > PixelType;
+  typedef itk::Image< PixelType, Dimension >           ImageType;
+  typedef itk::ImageFileReader< ImageType >            ReaderType;
+  typedef itk::ImageFileWriter< ImageType >            WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();

@@ -331,7 +331,8 @@ extern integer bisrch_(integer *n, integer *k, integer *l);
  * \param cme estimate for largest eigen-value of iteration matrix
  * \param sme estimate for smallest eigen-value of iteration matrix
  */
-extern doublereal cheby_(doublereal *qa, doublereal *qt, doublereal *rrr, integer *ip, doublereal *cme, doublereal *sme);
+extern doublereal cheby_(doublereal *qa, doublereal *qt, doublereal *rrr, integer *ip, doublereal *cme,
+                         doublereal *sme);
 
 /**
  * Computes estimate for largest eigenvalue for conjugate gradient acceleration
@@ -714,7 +715,8 @@ extern logical tstchg_(integer *ibmth);
 /*
  * FIXME: add doc
  */
-extern int unscal_(integer *n, integer *ia, integer *ja, doublereal *a, doublereal *rhs, doublereal *u, doublereal *d__);
+extern int unscal_(integer *n, integer *ia, integer *ja, doublereal *a, doublereal *rhs, doublereal *u,
+                   doublereal *d__);
 
 /*
  * FIXME: add doc

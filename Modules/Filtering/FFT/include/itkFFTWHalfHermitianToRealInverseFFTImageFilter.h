@@ -46,8 +46,9 @@ namespace itk
  * \sa FFTWGlobalConfiguration
  * \sa InverseFFTImageFilter
  */
-template< typename TInputImage, typename TOutputImage=Image< typename TInputImage::PixelType::value_type, TInputImage::ImageDimension> >
-class FFTWHalfHermitianToRealInverseFFTImageFilter:
+template< typename TInputImage, typename TOutputImage=
+            Image< typename TInputImage::PixelType::value_type, TInputImage::ImageDimension> >
+class FFTWHalfHermitianToRealInverseFFTImageFilter :
   public HalfHermitianToRealInverseFFTImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -62,8 +63,8 @@ public:
 
   typedef FFTWHalfHermitianToRealInverseFFTImageFilter                                Self;
   typedef HalfHermitianToRealInverseFFTImageFilter< InputImageType, OutputImageType > Superclass;
-  typedef SmartPointer< Self >                                                      Pointer;
-  typedef SmartPointer< const Self >                                                ConstPointer;
+  typedef SmartPointer< Self >                                                        Pointer;
+  typedef SmartPointer< const Self >                                                  ConstPointer;
 
   /** The proxy type is a wrapper for the FFTW API since the proxy is
    * only defined over double and float, trying to use any other pixel
@@ -89,25 +90,30 @@ public:
    * FFTW_PATIENT, FFTW_EXHAUSTIVE provided by FFTWGlobalConfiguration.
    * /sa FFTWGlobalConfiguration
    */
-  virtual void SetPlanRigor( const int & value )
+  virtual void
+  SetPlanRigor( const int & value )
   {
     // Use that method to check the value.
     FFTWGlobalConfiguration::GetPlanRigorName( value );
+
     if( m_PlanRigor != value )
       {
       m_PlanRigor = value;
       this->Modified();
       }
   }
+
   itkGetConstReferenceMacro( PlanRigor, int );
-  void SetPlanRigor( const std::string & name )
+  void
+  SetPlanRigor( const std::string & name )
   {
     this->SetPlanRigor( FFTWGlobalConfiguration::GetPlanRigorValue( name ) );
   }
 
 protected:
   FFTWHalfHermitianToRealInverseFFTImageFilter();
-  virtual ~FFTWHalfHermitianToRealInverseFFTImageFilter() {}
+  virtual
+  ~FFTWHalfHermitianToRealInverseFFTImageFilter() {}
 
   virtual void UpdateOutputData(DataObject *output);
 
@@ -120,14 +126,13 @@ protected:
 
 private:
   FFTWHalfHermitianToRealInverseFFTImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                               //purposely not implemented
 
   bool m_CanUseDestructiveAlgorithm;
 
   int m_PlanRigor;
 
 };
-
 
 } // namespace itk
 

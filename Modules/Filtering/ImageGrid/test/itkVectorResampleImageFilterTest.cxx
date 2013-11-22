@@ -20,8 +20,8 @@
 #include "itkImageFileWriter.h"
 #include "itkFilterWatcher.h"
 
-
-int itkVectorResampleImageFilterTest( int argc, char * argv[] )
+int
+itkVectorResampleImageFilterTest( int argc, char * argv[] )
 {
 
   if( argc < 2 )
@@ -32,31 +32,29 @@ int itkVectorResampleImageFilterTest( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const     unsigned int   Dimension = 2;
+  const     unsigned int Dimension = 2;
   typedef   unsigned char                       PixelComponentType;
   typedef   itk::RGBPixel< PixelComponentType > PixelType;
 
-  typedef itk::Image< PixelType,  Dimension >   ImageType;
+  typedef itk::Image< PixelType,  Dimension > ImageType;
 
   typedef itk::VectorResampleImageFilter<
-                            ImageType, ImageType >  FilterType;
+      ImageType, ImageType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
-  FilterWatcher watcher(filter);
+  FilterWatcher       watcher(filter);
 
   typedef itk::VectorLinearInterpolateImageFunction<
-                       ImageType, double >  InterpolatorType;
+      ImageType, double >  InterpolatorType;
 
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
 
   filter->SetInterpolator( interpolator );
 
-
-  typedef itk::IdentityTransform< double, Dimension >  TransformType;
+  typedef itk::IdentityTransform< double, Dimension > TransformType;
   TransformType::Pointer transform = TransformType::New();
 
   filter->SetTransform( transform );
-
 
   ImageType::SpacingType spacing;
   spacing.Fill( 1.0 );
@@ -64,9 +62,9 @@ int itkVectorResampleImageFilterTest( int argc, char * argv[] )
   ImageType::PointType origin;
   origin.Fill( 0.0 );
 
-  ImageType::RegionType     region;
-  ImageType::SizeType       size;
-  ImageType::IndexType      start;
+  ImageType::RegionType region;
+  ImageType::SizeType   size;
+  ImageType::IndexType  start;
 
   size[0] = 128;
   size[1] = 128;
@@ -100,7 +98,6 @@ int itkVectorResampleImageFilterTest( int argc, char * argv[] )
     ++it;
     }
 
-
   PixelType blackValue;
   blackValue.Fill( 0 );
 
@@ -112,7 +109,6 @@ int itkVectorResampleImageFilterTest( int argc, char * argv[] )
 
   filter->SetOutputSpacing( spacing );
 
-
   // keep the origin
   filter->SetOutputOrigin( origin );
 
@@ -122,9 +118,7 @@ int itkVectorResampleImageFilterTest( int argc, char * argv[] )
 
   filter->SetSize( size );
 
-
   filter->SetInput( image );
-
 
   try
     {
@@ -139,11 +133,11 @@ int itkVectorResampleImageFilterTest( int argc, char * argv[] )
   // Write an image for regression testing
   typedef itk::ImageFileWriter<  ImageType  > WriterType;
   WriterType::Pointer writer = WriterType::New();
-  writer->SetInput (filter->GetOutput());
+  writer->SetInput (filter->GetOutput() );
   writer->SetFileName( argv[1] );
   try
     {
-  writer->Update();
+    writer->Update();
     }
   catch( itk::ExceptionObject & excp )
     {

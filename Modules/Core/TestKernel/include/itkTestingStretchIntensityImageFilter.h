@@ -1,4 +1,4 @@
-  /*=========================================================================
+/*=========================================================================
    *
    *  Copyright Insight Software Consortium
    *
@@ -15,37 +15,37 @@
    *  limitations under the License.
    *
    *=========================================================================*/
-  #ifndef __itkTestingStretchIntensityImageFilter_h
-  #define __itkTestingStretchIntensityImageFilter_h
+#ifndef __itkTestingStretchIntensityImageFilter_h
+#define __itkTestingStretchIntensityImageFilter_h
 
-  #include "itkUnaryFunctorImageFilter.h"
+#include "itkUnaryFunctorImageFilter.h"
 
-  namespace itk
-  {
-  namespace Testing
-  {
+namespace itk
+{
+namespace Testing
+{
 
-  /** \class StretchIntensityImageFilter
- *
- * \brief Applies a linear transformation to the intensity levels of the
- * input Image.
- *
- * StretchIntensityImageFilter applies pixel-wise a linear transformation
- * to the intensity values of input image pixels. The linear transformation
- * is defined by the user in terms of the minimum and maximum values that
- * the output image should have.
- *
- * \ingroup ITKTestKernel
- */
+/** \class StretchIntensityImageFilter
+*
+* \brief Applies a linear transformation to the intensity levels of the
+* input Image.
+*
+* StretchIntensityImageFilter applies pixel-wise a linear transformation
+* to the intensity values of input image pixels. The linear transformation
+* is defined by the user in terms of the minimum and maximum values that
+* the output image should have.
+*
+* \ingroup ITKTestKernel
+*/
 template< typename  TInputImage, typename  TOutputImage = TInputImage >
-class StretchIntensityImageFilter: public ImageSource< TOutputImage >
+class StretchIntensityImageFilter : public ImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
-  typedef StretchIntensityImageFilter     Self;
-  typedef ImageSource< TOutputImage >     Superclass;
-  typedef SmartPointer< Self >            Pointer;
-  typedef SmartPointer< const Self >      ConstPointer;
+  typedef StretchIntensityImageFilter Self;
+  typedef ImageSource< TOutputImage > Superclass;
+  typedef SmartPointer< Self >        Pointer;
+  typedef SmartPointer< const Self >  ConstPointer;
 
   typedef typename TOutputImage::PixelType                   OutputPixelType;
   typedef typename TInputImage::PixelType                    InputPixelType;
@@ -76,6 +76,7 @@ public:
   /** Set/Get the image input of this process object.  */
   using Superclass::SetInput;
   virtual void SetInput(const TInputImage *image);
+
   const TInputImage * GetInput(void) const;
 
 #ifdef ITK_USE_CONCEPT_CHECKING
@@ -93,7 +94,8 @@ public:
 
 protected:
   StretchIntensityImageFilter();
-  virtual ~StretchIntensityImageFilter() {}
+  virtual
+  ~StretchIntensityImageFilter() {}
 
   /** Process to execute before entering the multithreaded section */
   void BeforeThreadedGenerateData(void);
@@ -101,8 +103,8 @@ protected:
   /** Print internal ivars */
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  typedef typename Superclass::OutputImageRegionType    OutputImageRegionType;
-  typedef typename TInputImage::RegionType              InputImageRegionType;
+  typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
+  typedef typename TInputImage::RegionType           InputImageRegionType;
 
   /** UnaryFunctorImageFilter can be implemented as a multithreaded filter.
    * Therefore, this implementation provides a ThreadedGenerateData() routine

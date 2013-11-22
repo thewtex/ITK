@@ -38,16 +38,16 @@ template< typename TInputImage, typename TOutputImage, typename TKernel > class 
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TImage, typename TKernel, typename TFunction1 >
-class VanHerkGilWermanErodeDilateImageFilter:
+class VanHerkGilWermanErodeDilateImageFilter :
   public KernelImageFilter< TImage, TImage, TKernel >
 {
 public:
   /** Standard class typedefs. */
   typedef VanHerkGilWermanErodeDilateImageFilter Self;
   typedef KernelImageFilter< TImage, TImage, TKernel >
-                                                 Superclass;
-  typedef SmartPointer< Self >                   Pointer;
-  typedef SmartPointer< const Self >             ConstPointer;
+    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Some convenient typedefs. */
   /** Kernel typedef. */

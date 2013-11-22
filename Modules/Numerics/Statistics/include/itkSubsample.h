@@ -38,7 +38,7 @@ namespace Statistics
  * \ingroup ITKStatistics
  */
 template< typename TSample >
-class Subsample:
+class Subsample :
   public TSample
 {
 public:
@@ -74,7 +74,8 @@ public:
   typedef std::vector< InstanceIdentifier > InstanceIdentifierHolder;
 
   /** Get the Id Holder */
-  virtual const InstanceIdentifierHolder & GetIdHolder() const
+  virtual const InstanceIdentifierHolder &
+  GetIdHolder() const
   { \
     return this->m_IdHolder;
   }
@@ -136,7 +137,8 @@ public:
       m_Sample = iter.m_Sample;
     }
 
-    ConstIterator & operator=(const ConstIterator & iter)
+    ConstIterator &
+    operator=(const ConstIterator & iter)
     {
       m_Iter = iter.m_Iter;
       m_Subsample = iter.m_Subsample;
@@ -144,33 +146,39 @@ public:
       return *this;
     }
 
-    bool operator!=(const ConstIterator & it)
+    bool
+    operator!=(const ConstIterator & it)
     {
       return ( m_Iter != it.m_Iter );
     }
 
-    bool operator==(const ConstIterator & it)
+    bool
+    operator==(const ConstIterator & it)
     {
       return ( m_Iter == it.m_Iter );
     }
 
-    ConstIterator & operator++()
+    ConstIterator &
+    operator++()
     {
       ++m_Iter;
       return *this;
     }
 
-    AbsoluteFrequencyType GetFrequency() const
+    AbsoluteFrequencyType
+    GetFrequency() const
     {
       return m_Sample->GetFrequency(*m_Iter);
     }
 
-    const MeasurementVectorType & GetMeasurementVector() const
+    const MeasurementVectorType &
+    GetMeasurementVector() const
     {
       return m_Sample->GetMeasurementVector(*m_Iter);
     }
 
-    InstanceIdentifier GetInstanceIdentifier() const
+    InstanceIdentifier
+    GetInstanceIdentifier() const
     {
       return ( m_Iter - m_Subsample->GetIdHolder().begin() );
     }
@@ -181,7 +189,7 @@ protected:
 
     // Only to be called from the Subsample
     ConstIterator(typename InstanceIdentifierHolder::const_iterator iter,
-                  const Self *classSample):
+                  const Self *classSample) :
       m_Iter(iter), m_Subsample(classSample), m_Sample( classSample->GetSample() )
     {}
 
@@ -195,19 +203,20 @@ protected:
 private:
   };
 
-  class Iterator:public ConstIterator
+  class Iterator : public ConstIterator
   {
     friend class Subsample;
 
 public:
 
-    Iterator(Self *sample):ConstIterator(sample)
+    Iterator(Self *sample) : ConstIterator(sample)
     {}
 
-    Iterator(const Iterator & iter):ConstIterator(iter)
+    Iterator(const Iterator & iter) : ConstIterator(iter)
     {}
 
-    Iterator & operator=(const Iterator & iter)
+    Iterator &
+    operator=(const Iterator & iter)
     {
       this->ConstIterator::operator=(iter);
       return *this;
@@ -225,7 +234,7 @@ protected:
 
     // Only to be called from the Subsample
     Iterator(typename InstanceIdentifierHolder::iterator iter,
-             Self *classSample):
+             Self *classSample) :
       ConstIterator(iter, classSample)
     {}
 
@@ -234,7 +243,8 @@ private:
 
   /** This method returns an iterator to the beginning of the
       measurement vectors */
-  Iterator Begin()
+  Iterator
+  Begin()
   {
     Iterator iter(m_IdHolder.begin(), this);
 
@@ -243,21 +253,24 @@ private:
 
   /** This method returns an iterator to the beginning of the
       measurement vectors */
-  Iterator  End()
+  Iterator
+  End()
   {
     Iterator iter(m_IdHolder.end(), this);
 
     return iter;
   }
 
-  ConstIterator Begin() const
+  ConstIterator
+  Begin() const
   {
     ConstIterator iter(m_IdHolder.begin(), this);
 
     return iter;
   }
 
-  ConstIterator  End()  const
+  ConstIterator
+  End()  const
   {
     ConstIterator iter(m_IdHolder.end(), this);
 
@@ -266,7 +279,8 @@ private:
 
 protected:
   Subsample();
-  virtual ~Subsample() {}
+  virtual
+  ~Subsample() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

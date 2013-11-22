@@ -45,12 +45,14 @@ namespace Statistics
 
 template<typename TMeasurementVector, typename TTargetVector>
 class RBFNetwork :
-    public MultilayerNeuralNetworkBase<TMeasurementVector, TTargetVector, BackPropagationLayer<TMeasurementVector, TTargetVector> >
+  public MultilayerNeuralNetworkBase<TMeasurementVector, TTargetVector,
+                                     BackPropagationLayer<TMeasurementVector, TTargetVector> >
 {
 public:
-  typedef RBFNetwork               Self;
-  typedef MultilayerNeuralNetworkBase<TMeasurementVector, TTargetVector , BackPropagationLayer<TMeasurementVector, TTargetVector> >
-                                   Superclass;
+  typedef RBFNetwork Self;
+  typedef MultilayerNeuralNetworkBase<TMeasurementVector, TTargetVector ,
+                                      BackPropagationLayer<TMeasurementVector, TTargetVector> >
+    Superclass;
   typedef SmartPointer<Self>       Pointer;
   typedef SmartPointer<const Self> ConstPointer;
 
@@ -77,8 +79,11 @@ public:
   itkSetMacro(Classes, unsigned int);
   itkGetConstReferenceMacro(Classes, unsigned int);
   void SetCenter(TMeasurementVector c);
+
   void SetRadius(ValueType r);
+
   void SetDistanceMetric(DistanceMetricType* f);
+
   void InitializeWeights();
 
   /** Method for creation through the object factory. */
@@ -105,10 +110,26 @@ public:
   //#define __USE_OLD_INTERFACE  Comment out to ensure that new interface works
 #ifdef __USE_OLD_INTERFACE
   //Original Function name before consistency naming changes
-  inline void SetNumOfHiddenNodes(const unsigned int & x) { SetNumOfFirstHiddenNodes(x); }
-  inline unsigned int GetNumOfHiddenNodes(void) const { return GetNumOfFirstHiddenNodes(); }
-  inline void SetHiddenLayerBias(const ValueType & bias) { SetFirstHiddenLayerBias(bias); }
-  ValueType GetHiddenLayerBias(void) const { return GetFirstHiddenLayerBias();}
+  inline void
+  SetNumOfHiddenNodes(const unsigned int & x) {
+    SetNumOfFirstHiddenNodes(x);
+  }
+
+  inline unsigned int
+  GetNumOfHiddenNodes(void) const {
+    return GetNumOfFirstHiddenNodes();
+  }
+
+  inline void
+  SetHiddenLayerBias(const ValueType & bias) {
+    SetFirstHiddenLayerBias(bias);
+  }
+
+  ValueType
+  GetHiddenLayerBias(void) const {
+    return GetFirstHiddenLayerBias();
+  }
+
 #endif
   itkSetMacro(OutputLayerBias, ValueType);
   itkGetConstReferenceMacro(OutputLayerBias, ValueType);
@@ -116,18 +137,26 @@ public:
   virtual NetworkOutputType GenerateOutput(TMeasurementVector samplevector);
 
   void SetInputFunction(InputFunctionInterfaceType* f);
+
   void SetInputTransferFunction(TransferFunctionInterfaceType* f);
+
 #ifdef __USE_OLD_INTERFACE
   //Original Function name before consistency naming changes
-  inline void SetHiddenTransferFunction(TransferFunctionInterfaceType* f) { SetFirstHiddenTransferFunction (f); }
+  inline void
+  SetHiddenTransferFunction(TransferFunctionInterfaceType* f) {
+    SetFirstHiddenTransferFunction (f);
+  }
+
 #endif
   void SetFirstHiddenTransferFunction(TransferFunctionInterfaceType* f);
+
   void SetOutputTransferFunction(TransferFunctionInterfaceType* f);
 
 protected:
 
   RBFNetwork();
-  virtual ~RBFNetwork(){};
+  virtual
+  ~RBFNetwork(){}
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
@@ -135,8 +164,8 @@ protected:
 private:
 
   typename DistanceMetricType::Pointer            m_DistanceMetric;
-  std::vector<TMeasurementVector>                 m_Centers;  // ui....uc
-  std::vector<double>                             m_Radii;
+  std::vector<TMeasurementVector> m_Centers;                  // ui....uc
+  std::vector<double>             m_Radii;
 
   unsigned int m_Classes;
   unsigned int m_NumOfInputNodes;

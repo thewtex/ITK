@@ -46,7 +46,7 @@ namespace itk
  */
 template< typename TInputImage, typename TPolyline,
           typename TOutputImage >
-class PolylineMask2DImageFilter:public ImageToImageFilter< TInputImage, TOutputImage >
+class PolylineMask2DImageFilter : public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -106,11 +106,13 @@ public:
 
 protected:
   PolylineMask2DImageFilter();
-  virtual ~PolylineMask2DImageFilter() {}
+  virtual
+  ~PolylineMask2DImageFilter() {}
 
 private:
   PolylineMask2DImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);            //purposely not implemented
+
 };
 } // end namespace itk
 

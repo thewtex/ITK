@@ -216,12 +216,12 @@ MultiphaseFiniteDifferenceImageFilter< TInputImage,
 ::ResolveTimeStep(const TimeStepVectorType & timeStepList,
                   const std::vector< bool > & valid)
 {
-  TimeStepType oMin = NumericTraits< TimeStepType >::Zero;
+  TimeStepType        oMin = NumericTraits< TimeStepType >::Zero;
   const SizeValueType size = timeStepList.size();
 
   if ( size == valid.size() )
     {
-    bool   flag = false;
+    bool          flag = false;
     SizeValueType k = 0;
     SizeValueType i;
 
@@ -272,7 +272,7 @@ MultiphaseFiniteDifferenceImageFilter< TInputImage,
   if ( this->m_NumberOfIterations != 0 )
     {
     progress = static_cast< float >( this->GetElapsedIterations() )
-               / static_cast< float >( this->m_NumberOfIterations );
+      / static_cast< float >( this->m_NumberOfIterations );
     }
   this->UpdateProgress(progress);
 
@@ -322,6 +322,7 @@ MultiphaseFiniteDifferenceImageFilter< TInputImage,
 
   os << std::endl;
 }
+
 } // end namespace itk
 
 #endif

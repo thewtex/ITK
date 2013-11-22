@@ -30,14 +30,16 @@ class MinFunctor
 public:
   MinFunctor(){}
   ~MinFunctor(){}
-  inline TPixel operator()(const TPixel & A, const TPixel & B) const
+  inline TPixel
+  operator()(const TPixel & A, const TPixel & B) const
   {
     return vnl_math_min(A, B);
   }
+
 };
 
 template< typename TImage, typename TKernel >
-class VanHerkGilWermanErodeImageFilter:
+class VanHerkGilWermanErodeImageFilter :
   public VanHerkGilWermanErodeDilateImageFilter< TImage, TKernel, MinFunctor< typename TImage::PixelType > >
 
 {
@@ -63,12 +65,15 @@ protected:
   {
     this->m_Boundary = NumericTraits< PixelType >::max();
   }
-  virtual ~VanHerkGilWermanErodeImageFilter() {}
+
+  virtual
+  ~VanHerkGilWermanErodeImageFilter() {}
 
 private:
 
   VanHerkGilWermanErodeImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                   //purposely not implemented
+
 };
 } // namespace itk
 

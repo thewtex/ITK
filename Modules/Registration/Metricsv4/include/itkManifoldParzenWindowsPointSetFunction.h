@@ -43,13 +43,13 @@ namespace itk
  */
 template <typename TPointSet, typename TOutput = double, typename TCoordRep = double>
 class ManifoldParzenWindowsPointSetFunction
-: public PointSetFunction<TPointSet, TOutput, TCoordRep>
+  : public PointSetFunction<TPointSet, TOutput, TCoordRep>
 {
 public:
-  typedef ManifoldParzenWindowsPointSetFunction            Self;
-  typedef PointSetFunction<TPointSet, TOutput, TCoordRep>  Superclass;
-  typedef SmartPointer<Self>                               Pointer;
-  typedef SmartPointer<const Self>                         ConstPointer;
+  typedef ManifoldParzenWindowsPointSetFunction           Self;
+  typedef PointSetFunction<TPointSet, TOutput, TCoordRep> Superclass;
+  typedef SmartPointer<Self>                              Pointer;
+  typedef SmartPointer<const Self>                        ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -57,30 +57,30 @@ public:
   /** Extract dimension from output image. */
   itkStaticConstMacro( PointDimension, unsigned int, TPointSet::PointDimension );
 
-  typedef typename Superclass::InputPointSetType   InputPointSetType;
-  typedef typename Superclass::InputPointType      InputPointType;
+  typedef typename Superclass::InputPointSetType InputPointSetType;
+  typedef typename Superclass::InputPointType    InputPointType;
 
   /** Point set typedef support. */
-  typedef TPointSet                                        PointSetType;
-  typedef typename PointSetType::PointType                 PointType;
-  typedef typename PointSetType::PointsContainer           PointsContainer;
-  typedef typename PointsContainer::ElementIdentifier      PointIdentifier;
+  typedef TPointSet                                   PointSetType;
+  typedef typename PointSetType::PointType            PointType;
+  typedef typename PointSetType::PointsContainer      PointsContainer;
+  typedef typename PointsContainer::ElementIdentifier PointIdentifier;
 
   /** Other typedef */
-  typedef TOutput                                          RealType;
-  typedef TOutput                                          OutputType;
-  typedef TCoordRep                                        CoordRepType;
+  typedef TOutput   RealType;
+  typedef TOutput   OutputType;
+  typedef TCoordRep CoordRepType;
 
   /** Typedef for points locator class to speed up finding neighboring points */
-  typedef PointsLocator< PointsContainer>                       PointsLocatorType;
-  typedef typename PointsLocatorType::NeighborsIdentifierType   NeighborsIdentifierType;
+  typedef PointsLocator< PointsContainer>                     PointsLocatorType;
+  typedef typename PointsLocatorType::NeighborsIdentifierType NeighborsIdentifierType;
 
   typedef typename Statistics::
     GaussianMembershipFunction<PointType>                  GaussianType;
-  typedef typename GaussianType::Pointer                   GaussianPointer;
-  typedef typename GaussianType::ConstPointer              GaussianConstPointer;
-  typedef std::vector<GaussianPointer>                     GaussianContainerType;
-  typedef typename GaussianType::CovarianceMatrixType      CovarianceMatrixType;
+  typedef typename GaussianType::Pointer              GaussianPointer;
+  typedef typename GaussianType::ConstPointer         GaussianConstPointer;
+  typedef std::vector<GaussianPointer>                GaussianContainerType;
+  typedef typename GaussianType::CovarianceMatrixType CovarianceMatrixType;
 
   /** Helper functions */
 
@@ -177,7 +177,8 @@ public:
 
 protected:
   ManifoldParzenWindowsPointSetFunction();
-  virtual ~ManifoldParzenWindowsPointSetFunction();
+  virtual
+  ~ManifoldParzenWindowsPointSetFunction();
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
   void GenerateData();
@@ -189,14 +190,14 @@ private:
 
   typename PointsLocatorType::Pointer           m_PointsLocator;
 
-  unsigned int                                  m_CovarianceKNeighborhood;
-  unsigned int                                  m_EvaluationKNeighborhood;
-  RealType                                      m_RegularizationSigma;
-  RealType                                      m_KernelSigma;
+  unsigned int m_CovarianceKNeighborhood;
+  unsigned int m_EvaluationKNeighborhood;
+  RealType     m_RegularizationSigma;
+  RealType     m_KernelSigma;
 
-  GaussianContainerType                         m_Gaussians;
-  bool                                          m_Normalize;
-  bool                                          m_UseAnisotropicCovariances;
+  GaussianContainerType m_Gaussians;
+  bool                  m_Normalize;
+  bool                  m_UseAnisotropicCovariances;
 };
 
 } // end namespace itk

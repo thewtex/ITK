@@ -59,7 +59,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class LaplacianImageFilter:
+class LaplacianImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -103,9 +103,9 @@ public:
   virtual void GenerateInputRequestedRegion()
   throw( InvalidRequestedRegionError );
 
- /** Enable/Disable using the image spacing information in
-   *  calculations. Use this option if you  want derivatives in
-   *  physical space. Default  is UseImageSpacingOn. */
+  /** Enable/Disable using the image spacing information in
+    *  calculations. Use this option if you  want derivatives in
+    *  physical space. Default  is UseImageSpacingOn. */
   itkBooleanMacro( UseImageSpacing );
 
   /** Set/Get whether or not the filter will use the spacing of the input
@@ -130,7 +130,8 @@ protected:
     m_UseImageSpacing = true;
   }
 
-  virtual ~LaplacianImageFilter()  {}
+  virtual
+  ~LaplacianImageFilter()  {}
 
   /** Standard pipeline method. While this class does not implement a
    * ThreadedGenerateData(), its GenerateData() delegates all

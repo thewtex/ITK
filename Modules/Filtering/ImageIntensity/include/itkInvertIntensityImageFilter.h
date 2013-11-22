@@ -34,12 +34,19 @@ class InvertIntensityTransform
 {
 public:
   typedef typename NumericTraits< TInput >::RealType RealType;
-  InvertIntensityTransform() { m_Maximum = NumericTraits< TInput >::max(); }
+  InvertIntensityTransform() {
+    m_Maximum = NumericTraits< TInput >::max();
+  }
+
   ~InvertIntensityTransform() {}
 
-  void SetMaximum(TOutput max) { m_Maximum = max; }
+  void
+  SetMaximum(TOutput max) {
+    m_Maximum = max;
+  }
 
-  bool operator!=(const InvertIntensityTransform & other) const
+  bool
+  operator!=(const InvertIntensityTransform & other) const
   {
     if ( m_Maximum != other.m_Maximum )
       {
@@ -48,12 +55,14 @@ public:
     return false;
   }
 
-  bool operator==(const InvertIntensityTransform & other) const
+  bool
+  operator==(const InvertIntensityTransform & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & x) const
+  inline TOutput
+  operator()(const TInput & x) const
   {
     TOutput result = static_cast< TOutput >( m_Maximum - x );
 
@@ -86,7 +95,7 @@ private:
  * \endwiki
  */
 template< typename  TInputImage, typename  TOutputImage = TInputImage >
-class InvertIntensityImageFilter:
+class InvertIntensityImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::InvertIntensityTransform<
@@ -132,7 +141,8 @@ public:
 
 protected:
   InvertIntensityImageFilter();
-  virtual ~InvertIntensityImageFilter() {}
+  virtual
+  ~InvertIntensityImageFilter() {}
 
 private:
   InvertIntensityImageFilter(const Self &); //purposely not implemented

@@ -28,12 +28,12 @@ template< typename TMeasurementVector >
 GaussianMembershipFunction< TMeasurementVector >
 ::GaussianMembershipFunction()
 {
-  NumericTraits<MeanVectorType>::SetLength(m_Mean, this->GetMeasurementVectorSize());
+  NumericTraits<MeanVectorType>::SetLength(m_Mean, this->GetMeasurementVectorSize() );
   m_Mean.Fill( 0.0 );
 
   m_PreFactor = 1.0 / vcl_sqrt(2.0 * vnl_math::pi); // default univariate
 
-  m_Covariance.SetSize(this->GetMeasurementVectorSize(), this->GetMeasurementVectorSize());
+  m_Covariance.SetSize(this->GetMeasurementVectorSize(), this->GetMeasurementVectorSize() );
   m_Covariance.SetIdentity();
 
   m_InverseCovariance = m_Covariance;
@@ -137,8 +137,8 @@ GaussianMembershipFunction< TMeasurementVector >
     // calculate coefficient C of multivariate gaussian
     m_PreFactor =
       1.0 / ( vcl_sqrt(det) *
-        vcl_pow( vcl_sqrt(2.0 * vnl_math::pi),
-               static_cast< double >( this->GetMeasurementVectorSize() ) ) );
+              vcl_pow( vcl_sqrt(2.0 * vnl_math::pi),
+                       static_cast< double >( this->GetMeasurementVectorSize() ) ) );
     }
   else
     {
@@ -184,9 +184,10 @@ GaussianMembershipFunction< TVector >
 ::InternalClone() const
 {
   LightObject::Pointer loPtr = Superclass::InternalClone();
+
   typename Self::Pointer membershipFunction =
-    dynamic_cast<Self *>(loPtr.GetPointer());
-  if(membershipFunction.IsNull())
+    dynamic_cast<Self *>(loPtr.GetPointer() );
+  if(membershipFunction.IsNull() )
     {
     itkExceptionMacro(<< "downcast to type "
                       << this->GetNameOfClass()
@@ -199,6 +200,7 @@ GaussianMembershipFunction< TVector >
 
   return loPtr;
 }
+
 } // end namespace Statistics
 } // end of namespace itk
 

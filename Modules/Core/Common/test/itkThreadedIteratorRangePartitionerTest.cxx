@@ -23,97 +23,106 @@ class IteratorRangeDomainThreaderAssociate
 public:
   typedef IteratorRangeDomainThreaderAssociate Self;
 
-  typedef std::vector< int > DomainContainerType;
+  typedef std::vector< int >                                                           DomainContainerType;
   typedef itk::ThreadedIteratorRangePartitioner< DomainContainerType::const_iterator > ThreadedPartitionerType;
 
-  class TestDomainThreader: public itk::DomainThreader< ThreadedPartitionerType, Self >
+  class TestDomainThreader : public itk::DomainThreader< ThreadedPartitionerType, Self >
   {
-  public:
+public:
     typedef TestDomainThreader                                   Self;
     typedef itk::DomainThreader< ThreadedPartitionerType, Self > Superclass;
     typedef itk::SmartPointer< Self >                            Pointer;
     typedef itk::SmartPointer< const Self >                      ConstPointer;
 
-    typedef Superclass::DomainPartitionerType     DomainPartitionerType;
-    typedef Superclass::DomainType                DomainType;
+    typedef Superclass::DomainPartitionerType DomainPartitionerType;
+    typedef Superclass::DomainType            DomainType;
 
     itkNewMacro( Self );
 
     typedef std::vector< int >              BorderValuesType;
     typedef std::vector< BorderValuesType > DomainBorderValuesInThreadedExecutionType;
 
-    const DomainBorderValuesInThreadedExecutionType & GetDomainInThreadedExecution() const
-      {
+    const DomainBorderValuesInThreadedExecutionType &
+    GetDomainInThreadedExecution() const
+    {
       return m_DomainInThreadedExecution;
-      }
+    }
 
-  protected:
-    TestDomainThreader() {};
+protected:
+    TestDomainThreader() {}
 
-  private:
-    virtual void BeforeThreadedExecution()
-      {
+private:
+    virtual void
+    BeforeThreadedExecution()
+    {
       this->m_DomainInThreadedExecution.resize( this->GetNumberOfThreadsUsed() );
       BorderValuesType unsetBorderValues( 2, -1 );
       for( itk::ThreadIdType i = 0; i < m_DomainInThreadedExecution.size(); ++i )
         {
         m_DomainInThreadedExecution[i] = unsetBorderValues;
         }
-      }
+    }
 
-    virtual void ThreadedExecution( const DomainType& subdomain,
-                                    const itk::ThreadIdType threadId )
-      {
+    virtual void
+    ThreadedExecution( const DomainType& subdomain,
+                       const itk::ThreadIdType threadId )
+    {
       if( threadId == 0 )
         {
         std::cout << "This is the : " << this->m_Associate->m_ClassDescriptor;
         }
       this->m_DomainInThreadedExecution[threadId].resize( 2 );
-      this->m_DomainInThreadedExecution[threadId][0] = *(subdomain.Begin());
+      this->m_DomainInThreadedExecution[threadId][0] = *(subdomain.Begin() );
       DomainType::IteratorType it = subdomain.End();
       --it;
       this->m_DomainInThreadedExecution[threadId][1] = *it;
-      }
+    }
 
-    virtual void AfterThreadedExecution()
-      {
+    virtual void
+    AfterThreadedExecution()
+    {
       std::cout << "\nDomain partition per thread:" << std::endl;
+
       for( itk::ThreadIdType i = 0; i < m_DomainInThreadedExecution.size(); ++i )
         {
-        std::cout << "ThreadId: " << i << "\t" << m_DomainInThreadedExecution[i][0] << " " << m_DomainInThreadedExecution[i][1] << std::endl;
+        std::cout << "ThreadId: " << i << "\t" << m_DomainInThreadedExecution[i][0] << " " <<
+        m_DomainInThreadedExecution[i][1] << std::endl;
         }
       std::cout << std::endl;
-      }
+    }
 
     DomainBorderValuesInThreadedExecutionType m_DomainInThreadedExecution;
     TestDomainThreader( const Self & ); // purposely not implemented
     void operator=( const Self & );     // purposely not implemented
+
   }; // end TestDomainThreader class
 
   IteratorRangeDomainThreaderAssociate()
-    {
+  {
     m_TestDomainThreader = TestDomainThreader::New();
     m_ClassDescriptor    = "enclosing class";
-    }
+  }
 
-  TestDomainThreader * GetDomainThreader()
-    {
+  TestDomainThreader *
+  GetDomainThreader()
+  {
     return m_TestDomainThreader.GetPointer();
-    }
+  }
 
-  void Execute( const TestDomainThreader::DomainType & completeDomain )
-    {
+  void
+  Execute( const TestDomainThreader::DomainType & completeDomain )
+  {
     m_TestDomainThreader->Execute(this, completeDomain);
-    }
+  }
 
-  private:
-    TestDomainThreader::Pointer m_TestDomainThreader;
+private:
+  TestDomainThreader::Pointer m_TestDomainThreader;
 
-    std::string m_ClassDescriptor;
+  std::string m_ClassDescriptor;
 };
 
-
-int ThreadedIteratorRangePartitionerRunTest(
+int
+ThreadedIteratorRangePartitionerRunTest(
   IteratorRangeDomainThreaderAssociate & enclosingClass,
   itk::ThreadIdType numberOfThreads,
   const IteratorRangeDomainThreaderAssociate::TestDomainThreader::DomainType & fullDomain )
@@ -144,35 +153,37 @@ int ThreadedIteratorRangePartitionerRunTest(
 
   /* Check the results. */
   typedef IteratorRangeDomainThreaderAssociate::TestDomainThreader::BorderValuesType BorderValuesType;
-  int previousEndIndex = -1;
-  const IteratorRangeDomainThreaderAssociate::TestDomainThreader::DomainBorderValuesInThreadedExecutionType domainInThreadedExecution = domainThreader->GetDomainInThreadedExecution();
+  int
+    previousEndIndex = -1;
+  const IteratorRangeDomainThreaderAssociate::TestDomainThreader::DomainBorderValuesInThreadedExecutionType
+    domainInThreadedExecution = domainThreader->GetDomainInThreadedExecution();
   for( itk::ThreadIdType i = 0; i < domainThreader->GetNumberOfThreadsUsed(); ++i )
     {
     BorderValuesType subRange = domainInThreadedExecution[i];
     /* Check that the sub range was assigned something at all */
     if( subRange[0] == -1 ||
         subRange[1] == -1 )
-        {
-        std::cerr << "Error: subRange " << i << " is was not set: "
-                  << subRange[i];
-        return EXIT_FAILURE;
-        }
+      {
+      std::cerr << "Error: subRange " << i << " is was not set: "
+                << subRange[i];
+      return EXIT_FAILURE;
+      }
     /* Check that we got the begin of the range */
-    if( i == 0 && subRange[0] != *(fullDomain.Begin()) )
-        {
-        std::cerr << "Error: subRange[0][0] should be " << *(fullDomain.Begin())
-                  << ", but it's " << subRange[0] << ".";
-        return EXIT_FAILURE;
-        }
+    if( i == 0 && subRange[0] != *(fullDomain.Begin() ) )
+      {
+      std::cerr << "Error: subRange[0][0] should be " << *(fullDomain.Begin() )
+                << ", but it's " << subRange[0] << ".";
+      return EXIT_FAILURE;
+      }
     /* Check that we got the end of the range */
     BorderValuesType::const_iterator fullIt = fullDomain.End();
     --fullIt;
     if( i == numberOfThreads-1 && subRange[1] != *fullIt )
-        {
-        std::cerr << "Error: subRange[N-1][1] should be " << *fullIt
-                  << ", but it's " << subRange[1] << ".";
-        return EXIT_FAILURE;
-        }
+      {
+      std::cerr << "Error: subRange[N-1][1] should be " << *fullIt
+                << ", but it's " << subRange[1] << ".";
+      return EXIT_FAILURE;
+      }
     /* Check that the sub-range endings and beginnings are continuous */
     if( i > 0 )
       {
@@ -192,9 +203,10 @@ int ThreadedIteratorRangePartitionerRunTest(
 }
 
 // Helper function.
-void getIteratorFromIndex( const unsigned int index,
-  const IteratorRangeDomainThreaderAssociate::DomainContainerType & container,
-  IteratorRangeDomainThreaderAssociate::DomainContainerType::const_iterator & it )
+void
+getIteratorFromIndex( const unsigned int index,
+                      const IteratorRangeDomainThreaderAssociate::DomainContainerType & container,
+                      IteratorRangeDomainThreaderAssociate::DomainContainerType::const_iterator & it )
 {
   it = container.begin();
   for( unsigned int ii = 0; ii < index; ++ii )
@@ -203,14 +215,16 @@ void getIteratorFromIndex( const unsigned int index,
     }
 }
 
-void setStartEnd( const unsigned int start,
-  const unsigned int end,
-  const IteratorRangeDomainThreaderAssociate::DomainContainerType & container,
-  IteratorRangeDomainThreaderAssociate::TestDomainThreader::DomainType & fullDomain )
+void
+setStartEnd( const unsigned int start,
+             const unsigned int end,
+             const IteratorRangeDomainThreaderAssociate::DomainContainerType & container,
+             IteratorRangeDomainThreaderAssociate::TestDomainThreader::DomainType & fullDomain )
 {
   std::cout << std::endl << "From starting iterator index = " << start << " ending iterator index " << end << std::endl;
   IteratorRangeDomainThreaderAssociate::TestDomainThreader::DomainType::IteratorType beginIt;
   IteratorRangeDomainThreaderAssociate::TestDomainThreader::DomainType::IteratorType endIt;
+
   getIteratorFromIndex( start, container, beginIt );
   getIteratorFromIndex( end, container, endIt );
 
@@ -218,10 +232,12 @@ void setStartEnd( const unsigned int start,
   fullDomain = newDomain;
 }
 
-int itkThreadedIteratorRangePartitionerTest(int, char* [])
+int
+itkThreadedIteratorRangePartitionerTest(int, char* [])
 {
-  IteratorRangeDomainThreaderAssociate enclosingClass;
-  IteratorRangeDomainThreaderAssociate::TestDomainThreader::ConstPointer domainThreader = enclosingClass.GetDomainThreader();
+  IteratorRangeDomainThreaderAssociate                                   enclosingClass;
+  IteratorRangeDomainThreaderAssociate::TestDomainThreader::ConstPointer domainThreader =
+    enclosingClass.GetDomainThreader();
 
   /* Check # of threads */
   std::cout << "GetGlobalMaximumNumberOfThreads: "
@@ -230,7 +246,8 @@ int itkThreadedIteratorRangePartitionerTest(int, char* [])
   std::cout << "GetGlobalDefaultNumberOfThreads: "
             << domainThreader->GetMultiThreader()->GetGlobalDefaultNumberOfThreads()
             << std::endl;
-  std::cout << "domainThreader->GetMultiThreader()->NumberOfThreads(): " << domainThreader->GetMultiThreader()->GetNumberOfThreads()
+  std::cout << "domainThreader->GetMultiThreader()->NumberOfThreads(): " <<
+  domainThreader->GetMultiThreader()->GetNumberOfThreads()
             << std::endl;
 
   typedef IteratorRangeDomainThreaderAssociate::TestDomainThreader::DomainType DomainType;
@@ -245,7 +262,7 @@ int itkThreadedIteratorRangePartitionerTest(int, char* [])
   setStartEnd( 0, 103, container, fullDomain );
   itk::ThreadIdType numberOfThreads = 1;
   if( ThreadedIteratorRangePartitionerRunTest( enclosingClass, numberOfThreads, fullDomain )
-        != EXIT_SUCCESS )
+      != EXIT_SUCCESS )
     {
     return EXIT_FAILURE;
     }
@@ -254,7 +271,7 @@ int itkThreadedIteratorRangePartitionerTest(int, char* [])
   setStartEnd( 2, 105, container, fullDomain );
   numberOfThreads = 1;
   if( ThreadedIteratorRangePartitionerRunTest( enclosingClass, numberOfThreads, fullDomain )
-        != EXIT_SUCCESS )
+      != EXIT_SUCCESS )
     {
     return EXIT_FAILURE;
     }
@@ -267,7 +284,7 @@ int itkThreadedIteratorRangePartitionerTest(int, char* [])
     numberOfThreads =
       domainThreader->GetMultiThreader()->GetGlobalDefaultNumberOfThreads();
     if( ThreadedIteratorRangePartitionerRunTest( enclosingClass, numberOfThreads, fullDomain )
-          != EXIT_SUCCESS )
+        != EXIT_SUCCESS )
       {
       return EXIT_FAILURE;
       }
@@ -278,7 +295,7 @@ int itkThreadedIteratorRangePartitionerTest(int, char* [])
       domainThreader->GetMultiThreader()->GetGlobalMaximumNumberOfThreads();
     setStartEnd( 6, 6+maxNumberOfThreads/2, container, fullDomain );
     if( ThreadedIteratorRangePartitionerRunTest( enclosingClass, maxNumberOfThreads, fullDomain )
-          != EXIT_SUCCESS )
+        != EXIT_SUCCESS )
       {
       return EXIT_FAILURE;
       }

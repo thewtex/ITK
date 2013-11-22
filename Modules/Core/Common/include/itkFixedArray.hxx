@@ -237,7 +237,8 @@ FixedArray< TValueType, VLength >
 }
 
 template< typename TValueType, unsigned int VLength >
-std::ostream & operator<<(std::ostream & os, const FixedArray< TValueType, VLength > & arr)
+std::ostream &
+operator<<(std::ostream & os, const FixedArray< TValueType, VLength > & arr)
 {
   os << "[";
   if ( VLength == 1 )
@@ -255,6 +256,7 @@ std::ostream & operator<<(std::ostream & os, const FixedArray< TValueType, VLeng
   os << "]";
   return os;
 }
+
 } // namespace itk
 
 #endif

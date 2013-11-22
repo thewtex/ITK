@@ -47,17 +47,15 @@ public:
 
   enum { SpaceDimension=2 };
 
-  typedef Superclass::ParametersType      ParametersType;
-  typedef Superclass::DerivativeType      DerivativeType;
-  typedef Superclass::MeasureType         MeasureType;
-
+  typedef Superclass::ParametersType ParametersType;
+  typedef Superclass::DerivativeType DerivativeType;
+  typedef Superclass::MeasureType    MeasureType;
 
   RSGCostFunction()
-  {
-  }
+  {}
 
-
-  MeasureType  GetValue( const ParametersType & parameters ) const
+  MeasureType
+  GetValue( const ParametersType & parameters ) const
   {
 
     double x = parameters[0];
@@ -70,12 +68,14 @@ public:
     MeasureType measure = 0.5*(3*x*x+4*x*y+6*y*y) - 2*x + 8*y;
 
     std::cout << measure << std::endl;
+
     return measure;
 
   }
 
-  void GetDerivative( const ParametersType & parameters,
-                            DerivativeType  & derivative ) const
+  void
+  GetDerivative( const ParametersType & parameters,
+                 DerivativeType  & derivative ) const
   {
 
     double x = parameters[0];
@@ -91,48 +91,44 @@ public:
 
   }
 
-
-  unsigned int GetNumberOfParameters(void) const
-    {
+  unsigned int
+  GetNumberOfParameters(void) const
+  {
     return SpaceDimension;
-    }
+  }
 
 private:
 };
 
-int itkRegularStepGradientDescentOptimizerTest(int, char* [] )
+int
+itkRegularStepGradientDescentOptimizerTest(int, char* [] )
 {
   std::cout << "RegularStepGradientDescentOptimizer Test ";
   std::cout << std::endl << std::endl;
 
-  typedef  itk::RegularStepGradientDescentOptimizer  OptimizerType;
+  typedef  itk::RegularStepGradientDescentOptimizer OptimizerType;
 
-  typedef  OptimizerType::ScalesType            ScalesType;
-
+  typedef  OptimizerType::ScalesType ScalesType;
 
   // Declaration of a itkOptimizer
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
-
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
 
   // Declaration of the CostFunction
   RSGCostFunction::Pointer costFunction = RSGCostFunction::New();
 
-
   itkOptimizer->SetCostFunction( costFunction.GetPointer() );
 
-
-  typedef RSGCostFunction::ParametersType    ParametersType;
-
+  typedef RSGCostFunction::ParametersType ParametersType;
 
   const unsigned int spaceDimension =
-                      costFunction->GetNumberOfParameters();
+    costFunction->GetNumberOfParameters();
 
   // We start not so far from  | 2 -2 |
-  ParametersType  initialPosition( spaceDimension );
+  ParametersType initialPosition( spaceDimension );
   initialPosition[0] =  100;
   initialPosition[1] = -100;
 
-  ScalesType    parametersScale( spaceDimension );
+  ScalesType parametersScale( spaceDimension );
   parametersScale[0] = 1.0;
   parametersScale[1] = 1.0;
 
@@ -158,7 +154,6 @@ int itkRegularStepGradientDescentOptimizerTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   ParametersType finalPosition = itkOptimizer->GetCurrentPosition();
   std::cout << "Solution        = (";
   std::cout << finalPosition[0] << ",";
@@ -167,7 +162,7 @@ int itkRegularStepGradientDescentOptimizerTest(int, char* [] )
   //
   // check results to see if it is within range
   //
-  bool pass = true;
+  bool   pass = true;
   double trueParameters[2] = { 2, -2 };
   for( unsigned int j = 0; j < 2; j++ )
     {
@@ -183,76 +178,75 @@ int itkRegularStepGradientDescentOptimizerTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   // Run now with a different relaxation factor
 
-  {
-  itkOptimizer->SetInitialPosition( initialPosition );
-
-  itkOptimizer->SetRelaxationFactor( 0.8 );
-  try
     {
-    itkOptimizer->StartOptimization();
-    }
-  catch( itk::ExceptionObject & e )
-    {
-    std::cout << "Exception thrown ! " << std::endl;
-    std::cout << "An error occurred during Optimization" << std::endl;
-    std::cout << "Location    = " << e.GetLocation()    << std::endl;
-    std::cout << "Description = " << e.GetDescription() << std::endl;
-    return EXIT_FAILURE;
-    }
+    itkOptimizer->SetInitialPosition( initialPosition );
 
-  finalPosition = itkOptimizer->GetCurrentPosition();
-  std::cout << "Solution        = (";
-  std::cout << finalPosition[0] << ",";
-  std::cout << finalPosition[1] << ")" << std::endl;
-
-  //
-  // check results to see if it is within range
-  //
-  pass = true;
-  for( unsigned int j = 0; j < 2; j++ )
-    {
-    if( vnl_math_abs( finalPosition[j] - trueParameters[j] ) > 0.01 )
+    itkOptimizer->SetRelaxationFactor( 0.8 );
+    try
       {
-      pass = false;
+      itkOptimizer->StartOptimization();
       }
-    }
+    catch( itk::ExceptionObject & e )
+      {
+      std::cout << "Exception thrown ! " << std::endl;
+      std::cout << "An error occurred during Optimization" << std::endl;
+      std::cout << "Location    = " << e.GetLocation()    << std::endl;
+      std::cout << "Description = " << e.GetDescription() << std::endl;
+      return EXIT_FAILURE;
+      }
 
-  if( !pass )
-    {
-    std::cout << "Test failed." << std::endl;
-    return EXIT_FAILURE;
-    }
+    finalPosition = itkOptimizer->GetCurrentPosition();
+    std::cout << "Solution        = (";
+    std::cout << finalPosition[0] << ",";
+    std::cout << finalPosition[1] << ")" << std::endl;
 
-  }
+    //
+    // check results to see if it is within range
+    //
+    pass = true;
+    for( unsigned int j = 0; j < 2; j++ )
+      {
+      if( vnl_math_abs( finalPosition[j] - trueParameters[j] ) > 0.01 )
+        {
+        pass = false;
+        }
+      }
+
+    if( !pass )
+      {
+      std::cout << "Test failed." << std::endl;
+      return EXIT_FAILURE;
+      }
+
+    }
 
   //
   // Verify that the optimizer doesn't run if the
   // number of iterations is set to zero.
   //
-  {
-  itkOptimizer->SetNumberOfIterations( 0 );
-  itkOptimizer->SetInitialPosition( initialPosition );
+    {
+    itkOptimizer->SetNumberOfIterations( 0 );
+    itkOptimizer->SetInitialPosition( initialPosition );
 
-  try
-    {
-    itkOptimizer->StartOptimization();
-    }
-  catch( itk::ExceptionObject & excp )
-    {
-    std::cout << excp << std::endl;
-    return EXIT_FAILURE;
-    }
+    try
+      {
+      itkOptimizer->StartOptimization();
+      }
+    catch( itk::ExceptionObject & excp )
+      {
+      std::cout << excp << std::endl;
+      return EXIT_FAILURE;
+      }
 
-  if( itkOptimizer->GetCurrentIteration() > 0 )
-    {
-    std::cerr << "The optimizer is running iterations despite of ";
-    std::cerr << "having a maximum number of iterations set to zero" << std::endl;
-    return EXIT_FAILURE;
+    if( itkOptimizer->GetCurrentIteration() > 0 )
+      {
+      std::cerr << "The optimizer is running iterations despite of ";
+      std::cerr << "having a maximum number of iterations set to zero" << std::endl;
+      return EXIT_FAILURE;
+      }
     }
-  }
 
   //
   // Test the Exception if the GradientMagnitudeTolerance is set to a negative value

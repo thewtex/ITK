@@ -45,7 +45,7 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TFeatureImage, typename TOutputPixel >
-class ShapePriorMAPCostFunctionBase:
+class ShapePriorMAPCostFunctionBase :
   public SingleValuedCostFunction
 {
 public:
@@ -110,12 +110,18 @@ public:
 
   /** This method returns the derivative of the cost function corresponding
     * to the specified parameters.   */
-  virtual void GetDerivative(const ParametersType &, DerivativeType &) const
-  { itkExceptionMacro(<< "This function is currently not supported."); }
+  virtual void
+  GetDerivative(const ParametersType &, DerivativeType &) const
+  {
+    itkExceptionMacro(<< "This function is currently not supported.");
+  }
 
   /** Return the number of parameters. */
-  virtual unsigned int GetNumberOfParameters(void) const
-  { return m_ShapeFunction->GetNumberOfParameters(); }
+  virtual unsigned int
+  GetNumberOfParameters(void) const
+  {
+    return m_ShapeFunction->GetNumberOfParameters();
+  }
 
   /** Compute the inside term component of the MAP cost function.
    * Subclasses should override this function */
@@ -140,7 +146,8 @@ public:
 
 protected:
   ShapePriorMAPCostFunctionBase();
-  virtual ~ShapePriorMAPCostFunctionBase() {}
+  virtual
+  ~ShapePriorMAPCostFunctionBase() {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -152,6 +159,7 @@ protected:
 private:
   ShapePriorMAPCostFunctionBase(const Self &); //purposely not implemented
   void operator=(const Self &);                //purposely not implemented
+
 };
 } // end namespace itk
 

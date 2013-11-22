@@ -57,7 +57,7 @@ namespace itk
  */
 
 template< unsigned int VDimension = 3, typename TInput = Point< double, 3 > >
-class ConicShellInteriorExteriorSpatialFunction:
+class ConicShellInteriorExteriorSpatialFunction :
   public InteriorExteriorSpatialFunction< VDimension, TInput >
 {
 public:
@@ -92,7 +92,11 @@ public:
   itkSetMacro(Origin, InputType);
 
   /** Set/Get the gradient at the origin of the function. */
-  GradientType GetOriginGradient() { return m_OriginGradient; }
+  GradientType
+  GetOriginGradient() {
+    return m_OriginGradient;
+  }
+
   void SetOriginGradient(GradientType grad);
 
   /** Set/Get the minimum search distance. */
@@ -113,7 +117,8 @@ public:
 
 protected:
   ConicShellInteriorExteriorSpatialFunction();
-  virtual ~ConicShellInteriorExteriorSpatialFunction();
+  virtual
+  ~ConicShellInteriorExteriorSpatialFunction();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

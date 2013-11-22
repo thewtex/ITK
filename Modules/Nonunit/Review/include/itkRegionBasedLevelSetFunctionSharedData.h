@@ -65,7 +65,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TInputImage, typename TFeatureImage, typename TSingleData >
-class RegionBasedLevelSetFunctionSharedData:public LightObject
+class RegionBasedLevelSetFunctionSharedData : public LightObject
 {
 public:
 
@@ -103,7 +103,7 @@ public:
 
   typedef std::list< unsigned int > ListPixelType;
   typedef Image< ListPixelType, itkGetStaticConstMacro(ImageDimension) >
-  ListImageType;
+    ListImageType;
   typedef typename ListImageType::Pointer               ListImagePointer;
   typedef typename ListImageType::ConstPointer          ListImageConstPointer;
   typedef typename ListImageType::RegionType            ListRegionType;
@@ -116,7 +116,7 @@ public:
   typedef ImageRegionIteratorWithIndex< ListImageType > ListIteratorType;
 
   typedef Vector< float, itkGetStaticConstMacro(ImageDimension) >
-  CentroidVectorType;
+    CentroidVectorType;
   typedef itk::Statistics::ListSample< CentroidVectorType > SampleType;
   typedef itk::Statistics::KdTreeGenerator< SampleType >    TreeGeneratorType;
   typedef typename TreeGeneratorType::Pointer               TreePointer;
@@ -128,7 +128,8 @@ public:
   typedef std::vector< LevelSetDataPointer >           LevelSetDataPointerVector;
   typedef typename LevelSetDataPointerVector::iterator LevelSetDataPointerVectorIterator;
 
-  void SetFunctionCount(const unsigned int & n)
+  void
+  SetFunctionCount(const unsigned int & n)
   {
     this->m_FunctionCount = n;
     this->m_LevelSetDataPointerVector.resize(n, 0);
@@ -142,22 +143,26 @@ public:
       }
   }
 
-  void SetNumberOfNeighbors(const unsigned int & n)
+  void
+  SetNumberOfNeighbors(const unsigned int & n)
   {
     this->m_NumberOfNeighbors = n;
   }
 
-  void CreateHeavisideFunctionOfLevelSetImage(const unsigned int & j, const InputImageType *image)
+  void
+  CreateHeavisideFunctionOfLevelSetImage(const unsigned int & j, const InputImageType *image)
   {
     m_LevelSetDataPointerVector[j]->CreateHeavisideFunctionOfLevelSetImage(image);
   }
 
-  void SetKdTree(KdTreePointer kdtree)
+  void
+  SetKdTree(KdTreePointer kdtree)
   {
     this->m_KdTree = kdtree;
   }
 
-  void AllocateListImage(const FeatureImageType *featureImage)
+  void
+  AllocateListImage(const FeatureImageType *featureImage)
   {
     this->m_NearestNeighborListImage = ListImageType::New();
     this->m_NearestNeighborListImage->CopyInformation(featureImage);
@@ -175,14 +180,15 @@ public:
   KdTreePointer    m_KdTree;
 
 protected:
-  RegionBasedLevelSetFunctionSharedData():m_NumberOfNeighbors(6), m_KdTree(0){}
+  RegionBasedLevelSetFunctionSharedData() : m_NumberOfNeighbors(6), m_KdTree(0){}
   ~RegionBasedLevelSetFunctionSharedData(){}
 
 private:
   RegionBasedLevelSetFunctionSharedData(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 };
 } //end namespace itk
 

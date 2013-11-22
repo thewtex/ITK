@@ -95,5 +95,6 @@ BinaryMorphologicalOpeningImageFilter< TInputImage, TOutputImage, TKernel >
   os << indent << "BackgroundValue: "
      << static_cast< typename NumericTraits< PixelType >::PrintType >( m_BackgroundValue ) << std::endl;
 }
+
 } // end namespace itk
 #endif

@@ -35,7 +35,7 @@ namespace itk
 template< typename TScalar,         // Data type for scalars (float or double)
           unsigned int NDimensions = 3 >
 // Number of dimensions
-class ThinPlateR2LogRSplineKernelTransform:
+class ThinPlateR2LogRSplineKernelTransform :
   public KernelTransform< TScalar, NDimensions >
 {
 public:
@@ -73,7 +73,8 @@ public:
 
 protected:
   ThinPlateR2LogRSplineKernelTransform() {}
-  virtual ~ThinPlateR2LogRSplineKernelTransform() {}
+  virtual
+  ~ThinPlateR2LogRSplineKernelTransform() {}
 
   typedef typename Superclass::GMatrixType GMatrixType;
   /** Compute G(x)
@@ -95,7 +96,8 @@ private:
   ThinPlateR2LogRSplineKernelTransform(const Self &); //purposely not
                                                       // implemented
   void operator=(const Self &);                       //purposely not
-                                                      // implemented
+
+  // implemented
 };
 } // namespace itk
 

@@ -31,14 +31,15 @@
 #include "itkGaussianSpatialObject.h"
 // Software Guide : EndCodeSnippet
 
-int main(int, char* [])
+int
+main(int, char* [])
 {
   // Software Guide : BeginLatex
   // The \doxygen{GaussianSpatialObject} is templated
   // over the dimensionality of the object.
   // Software Guide : EndLatex
   // Software Guide : BeginCodeSnippet
-  typedef itk::GaussianSpatialObject<3>   GaussianType;
+  typedef itk::GaussianSpatialObject<3> GaussianType;
   GaussianType::Pointer myGaussian = GaussianType::New();
   // Software Guide : EndCodeSnippet
 

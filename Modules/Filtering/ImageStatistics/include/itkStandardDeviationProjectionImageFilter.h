@@ -60,19 +60,22 @@ public:
 
   ~StandardDeviationAccumulator(){}
 
-  inline void Initialize()
+  inline void
+  Initialize()
   {
     m_Sum = NumericTraits< TAccumulate >::Zero;
     m_Values.clear();
   }
 
-  inline void operator()(const TInputPixel & input)
+  inline void
+  operator()(const TInputPixel & input)
   {
     m_Sum = m_Sum + input;
     m_Values.push_back(input);
   }
 
-  inline RealType GetValue()
+  inline RealType
+  GetValue()
   {
     // to avoid division by zero
     if ( m_Size <= 1 )
@@ -100,9 +103,9 @@ public:
 template< typename TInputImage,
           typename TOutputImage,
           typename TAccumulate = typename
-                              NumericTraits< typename TOutputImage::PixelType >
-                              ::AccumulateType >
-class StandardDeviationProjectionImageFilter:
+            NumericTraits< typename TOutputImage::PixelType >
+            ::AccumulateType >
+class StandardDeviationProjectionImageFilter :
   public
   ProjectionImageFilter< TInputImage, TOutputImage,
                          Functor::StandardDeviationAccumulator< typename
@@ -145,13 +148,15 @@ public:
 
 protected:
   StandardDeviationProjectionImageFilter() {}
-  virtual ~StandardDeviationProjectionImageFilter() {}
+  virtual
+  ~StandardDeviationProjectionImageFilter() {}
 
 private:
   //purposely not implemented
   StandardDeviationProjectionImageFilter(const Self &);
 
   void operator=(const Self &); //purposely not implemented
+
 };                              // end StandardDeviationProjectionImageFilter
 } //end namespace itk
 

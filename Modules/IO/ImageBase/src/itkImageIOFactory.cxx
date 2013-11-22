@@ -18,7 +18,6 @@
 
 #include "itkImageIOFactory.h"
 
-
 namespace itk
 {
 ImageIOBase::Pointer
@@ -27,6 +26,7 @@ ImageIOFactory::CreateImageIO(const char *path, FileModeType mode)
   std::list< ImageIOBase::Pointer > possibleImageIO;
   std::list< LightObject::Pointer > allobjects =
     ObjectFactoryBase::CreateAllInstance("itkImageIOBase");
+
   for ( std::list< LightObject::Pointer >::iterator i = allobjects.begin();
         i != allobjects.end(); ++i )
     {
@@ -62,4 +62,5 @@ ImageIOFactory::CreateImageIO(const char *path, FileModeType mode)
     }
   return 0;
 }
+
 } // end namespace itk

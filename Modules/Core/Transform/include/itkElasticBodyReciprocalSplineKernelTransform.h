@@ -35,10 +35,10 @@ namespace itk
  * \ingroup ITKTransform
  */
 template< typename TScalar = double,   // Data type for scalars (float or
-                                        // double)
+                                       // double)
           unsigned int NDimensions = 3 >
 // Number of dimensions
-class ElasticBodyReciprocalSplineKernelTransform:
+class ElasticBodyReciprocalSplineKernelTransform :
   public KernelTransform<  TScalar, NDimensions >
 {
 public:
@@ -85,7 +85,8 @@ public:
 
 protected:
   ElasticBodyReciprocalSplineKernelTransform();
-  virtual ~ElasticBodyReciprocalSplineKernelTransform();
+  virtual
+  ~ElasticBodyReciprocalSplineKernelTransform();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef typename Superclass::GMatrixType GMatrixType;

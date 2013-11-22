@@ -24,40 +24,41 @@
 const unsigned int Dimension = 3;
 
 // Declare the types of the output images
-typedef itk::Image<unsigned short,   Dimension>   ImageType;
+typedef itk::Image<unsigned short,   Dimension> ImageType;
 
 // Declare the type of the index,size and region to initialize images
-typedef ImageType::IndexType                     IndexType;
-typedef ImageType::SizeType                      SizeType;
-typedef ImageType::RegionType                    RegionType;
-typedef ImageType::PixelType                     PixelType;
-typedef ImageType::Pointer                       ImagePointerType;
+typedef ImageType::IndexType  IndexType;
+typedef ImageType::SizeType   SizeType;
+typedef ImageType::RegionType RegionType;
+typedef ImageType::PixelType  PixelType;
+typedef ImageType::Pointer    ImagePointerType;
 
 void CreateCubeConfig(
-                  ImagePointerType image,
-                  const unsigned int& StartX,
-                  const unsigned int& StartY,
-                  const unsigned int& StartZ,
-                  const unsigned char& value1,
-                  const unsigned char& value2,
-                  const unsigned char& value3,
-                  const unsigned char& value4,
-                  const unsigned char& value5,
-                  const unsigned char& value6,
-                  const unsigned char& value7,
-                  const unsigned char& value8 );
+  ImagePointerType image,
+  const unsigned int& StartX,
+  const unsigned int& StartY,
+  const unsigned int& StartZ,
+  const unsigned char& value1,
+  const unsigned char& value2,
+  const unsigned char& value3,
+  const unsigned char& value4,
+  const unsigned char& value5,
+  const unsigned char& value6,
+  const unsigned char& value7,
+  const unsigned char& value8 );
 
 void Create16CubeConfig(
-                  ImagePointerType image,
-                  const unsigned int& StartX,
-                  const unsigned int& StartY,
-                  const unsigned int& StartZ,
-                  const unsigned char& value1,
-                  const unsigned char& value2,
-                  const unsigned char& value3,
-                  const unsigned char& value4 );
+  ImagePointerType image,
+  const unsigned int& StartX,
+  const unsigned int& StartY,
+  const unsigned int& StartZ,
+  const unsigned char& value1,
+  const unsigned char& value2,
+  const unsigned char& value3,
+  const unsigned char& value4 );
 
-int itkBinaryMask3DMeshSourceTest(int argc, char *argv[] )
+int
+itkBinaryMask3DMeshSourceTest(int argc, char *argv[] )
 {
   // Declare the type of the Mesh
   typedef itk::Mesh<double>                                  MeshType;
@@ -131,19 +132,20 @@ int itkBinaryMask3DMeshSourceTest(int argc, char *argv[] )
 
 }
 
-void CreateCubeConfig(
-                  ImagePointerType image,
-                  const unsigned int& StartX,
-                  const unsigned int& StartY,
-                  const unsigned int& StartZ,
-                  const unsigned char& value1,
-                  const unsigned char& value2,
-                  const unsigned char& value3,
-                  const unsigned char& value4,
-                  const unsigned char& value5,
-                  const unsigned char& value6,
-                  const unsigned char& value7,
-                  const unsigned char& value8 )
+void
+CreateCubeConfig(
+  ImagePointerType image,
+  const unsigned int& StartX,
+  const unsigned int& StartY,
+  const unsigned int& StartZ,
+  const unsigned char& value1,
+  const unsigned char& value2,
+  const unsigned char& value3,
+  const unsigned char& value4,
+  const unsigned char& value5,
+  const unsigned char& value6,
+  const unsigned char& value7,
+  const unsigned char& value8 )
 {
   IndexType index;
 
@@ -196,7 +198,8 @@ void CreateCubeConfig(
   image->SetPixel( index, value8 );
 }
 
-void Create16CubeConfig(
+void
+Create16CubeConfig(
   ImagePointerType image,
   const unsigned int& StartX,
   const unsigned int& StartY,

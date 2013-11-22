@@ -49,7 +49,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class MorphologicalGradientImageFilter:
+class MorphologicalGradientImageFilter :
   public KernelImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -81,22 +81,22 @@ public:
   typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
 
   typedef FlatStructuringElement< itkGetStaticConstMacro(ImageDimension) >
-  FlatKernelType;
+    FlatKernelType;
   typedef MovingHistogramMorphologicalGradientImageFilter< TInputImage, TOutputImage, TKernel >
-  HistogramFilterType;
+    HistogramFilterType;
   typedef BasicDilateImageFilter< TInputImage, TInputImage, TKernel >
-  BasicDilateFilterType;
+    BasicDilateFilterType;
   typedef BasicErodeImageFilter< TInputImage, TInputImage, TKernel >
-  BasicErodeFilterType;
+    BasicErodeFilterType;
   typedef AnchorDilateImageFilter< TInputImage, FlatKernelType >
-  AnchorDilateFilterType;
+    AnchorDilateFilterType;
   typedef AnchorErodeImageFilter< TInputImage, FlatKernelType > AnchorErodeFilterType;
   typedef VanHerkGilWermanDilateImageFilter< TInputImage, FlatKernelType >
-  VHGWDilateFilterType;
+    VHGWDilateFilterType;
   typedef VanHerkGilWermanErodeImageFilter< TInputImage, FlatKernelType >
-  VHGWErodeFilterType;
+    VHGWErodeFilterType;
   typedef SubtractImageFilter< TInputImage, TInputImage, TOutputImage >
-  SubtractFilterType;
+    SubtractFilterType;
 
   /** Kernel typedef. */
   typedef TKernel KernelType;

@@ -28,7 +28,7 @@ namespace itk
 /** Default constructor  */
 template< typename TValueType >
 VariableLengthVector< TValueType >
-::VariableLengthVector():m_LetArrayManageMemory(true),
+::VariableLengthVector() : m_LetArrayManageMemory(true),
   m_Data(0),
   m_NumElements(0)
 {}
@@ -36,7 +36,7 @@ VariableLengthVector< TValueType >
 /** Constructor with size */
 template< typename TValueType >
 VariableLengthVector< TValueType >
-::VariableLengthVector(unsigned int length):
+::VariableLengthVector(unsigned int length) :
   m_LetArrayManageMemory(true),
   m_Data(0)
 {
@@ -46,7 +46,7 @@ VariableLengthVector< TValueType >
 /** Constructor with user specified data */
 template< typename TValueType >
 VariableLengthVector< TValueType >
-::VariableLengthVector(ValueType *datain, unsigned int sz, bool LetArrayManageMemory):
+::VariableLengthVector(ValueType *datain, unsigned int sz, bool LetArrayManageMemory) :
   m_LetArrayManageMemory(LetArrayManageMemory),
   m_Data(datain),
   m_NumElements(sz)
@@ -55,7 +55,7 @@ VariableLengthVector< TValueType >
 /** Constructor with user specified data */
 template< typename TValueType >
 VariableLengthVector< TValueType >
-::VariableLengthVector(const ValueType *datain, unsigned int sz, bool LetArrayManageMemory):
+::VariableLengthVector(const ValueType *datain, unsigned int sz, bool LetArrayManageMemory) :
   m_LetArrayManageMemory(LetArrayManageMemory)
 {
   m_Data = const_cast< ValueType * >( datain );
@@ -91,7 +91,8 @@ VariableLengthVector< TValueType >
 
 /** Reserve memory of certain size for m_Data */
 template< typename TValueType >
-void VariableLengthVector< TValueType >
+void
+VariableLengthVector< TValueType >
 ::Reserve(ElementIdentifier size)
 {
   if ( m_Data )
@@ -122,7 +123,8 @@ void VariableLengthVector< TValueType >
 
 /** Allocate memory of certain size and return it */
 template< typename TValueType >
-TValueType *VariableLengthVector< TValueType >
+TValueType *
+VariableLengthVector< TValueType >
 ::AllocateElements(ElementIdentifier size) const
 {
   TValueType *data;
@@ -189,12 +191,12 @@ VariableLengthVector< TValueType >
   m_NumElements = sz;
 }
 
-
 template< typename TValueType >
-void VariableLengthVector< TValueType >
+void
+VariableLengthVector< TValueType >
 ::DestroyExistingData()
 {
-    // Free any existing data if we manage its memory.
+  // Free any existing data if we manage its memory.
   if ( !m_LetArrayManageMemory )
     {
     m_Data = 0;
@@ -214,7 +216,8 @@ void VariableLengthVector< TValueType >
 }
 
 template< typename TValueType >
-void VariableLengthVector< TValueType >
+void
+VariableLengthVector< TValueType >
 ::SetSize(unsigned int sz, bool destroyExistingData)
 {
   if ( destroyExistingData )
@@ -259,7 +262,8 @@ void VariableLengthVector< TValueType >
 
 /** Set the all the elements of the array to the specified value */
 template< typename TValueType >
-void VariableLengthVector< TValueType >
+void
+VariableLengthVector< TValueType >
 ::Fill(TValueType const & v)
 {
   for ( ElementIdentifier i = 0; i < m_NumElements; i++ )
@@ -373,6 +377,7 @@ VariableLengthVector< TValueType >
     }
   return sum;
 }
+
 } // namespace itk
 
 #endif

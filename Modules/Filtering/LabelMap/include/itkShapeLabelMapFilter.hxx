@@ -71,7 +71,7 @@ void
 ShapeLabelMapFilter< TImage, TLabelImage >
 ::ThreadedProcessLabelObject(LabelObjectType *labelObject)
 {
-  ImageType *            output = this->GetOutput();
+  ImageType * output = this->GetOutput();
   // const LabelPixelType & label = labelObject->GetLabel();
 
   // Compute the size per pixel, to be used later
@@ -109,14 +109,14 @@ ShapeLabelMapFilter< TImage, TLabelImage >
   MatrixType    centralMoments;
   centralMoments.Fill(0);
 
-  typedef typename LabelObjectType::LengthType  LengthType;
+  typedef typename LabelObjectType::LengthType LengthType;
 
   // Iterate over all the lines
   typename LabelObjectType::ConstLineIterator lit( labelObject );
-  while( ! lit.IsAtEnd() )
+  while( !lit.IsAtEnd() )
     {
     const IndexType & idx = lit.GetLine().GetIndex();
-    LengthType     length = lit.GetLine().GetLength();
+    LengthType        length = lit.GetLine().GetLength();
 
     // Update the nbOfPixels
     nbOfPixels += length;
@@ -244,7 +244,8 @@ ShapeLabelMapFilter< TImage, TLabelImage >
     centralMoments[0][0] += length * ( physicalPosition[0] * physicalPosition[0]
                                        + spacing[0]
                                        * ( length
-                                           - 1 ) * ( ( spacing[0] * ( 2 * length - 1 ) ) / 6.0 + physicalPosition[0] ) );
+                                           - 1 ) *
+                                       ( ( spacing[0] * ( 2 * length - 1 ) ) / 6.0 + physicalPosition[0] ) );
     // the other ones
     for ( unsigned int i = 1; i < ImageDimension; i++ )
       {
@@ -404,11 +405,11 @@ ShapeLabelMapFilter< TImage, TLabelImage >
   it.OverrideBoundaryCondition(&lcbc);
   it.GoToBegin();
 
-  typedef typename NeighborIteratorType::NeighborIndexType   NeighborIndexType;
+  typedef typename NeighborIteratorType::NeighborIndexType NeighborIndexType;
 
   // Iterate over all the indexes
   typename LabelObjectType::ConstIndexIterator iit( labelObject );
-  while( ! iit.IsAtEnd() )
+  while( !iit.IsAtEnd() )
     {
     // Move the iterator to the new location
     it += iit.GetIndex() - it.GetIndex();
@@ -492,7 +493,7 @@ ShapeLabelMapFilter< TImage, TLabelImage >
 
   // Iterate over all the lines and fill the image of lines
   typename LabelObjectType::ConstLineIterator lit( labelObject );
-  while( ! lit.IsAtEnd() )
+  while( !lit.IsAtEnd() )
     {
     const IndexType & idx = lit.GetLine().GetIndex();
     for( int i=0; i<ImageDimension-1; i++ )
@@ -528,7 +529,7 @@ ShapeLabelMapFilter< TImage, TLabelImage >
     typename LineImageIteratorType::ConstIterator ci;
     for (ci = lIt.Begin(); ci != lIt.End(); ci++)
       {
-          // std::cout << "-------------" << std::endl;
+      // std::cout << "-------------" << std::endl;
       // the vector of lines in the neighbor
       const VectorLineType & ns = ci.Get();
       // prepare the offset to be stored in the intercepts map
@@ -637,7 +638,8 @@ ShapeLabelMapFilter< TImage, TLabelImage >
   // std::cout << "PerimeterFromInterceptCount<>" << std::endl;
   double perimeter = 0.0;
   double pixelSize = 1.0;
-  int dim = TSpacing::GetVectorDimension();
+  int    dim = TSpacing::GetVectorDimension();
+
   for ( int i = 0; i < dim; i++ )
     {
     pixelSize *= spacing[i];
@@ -654,11 +656,11 @@ ShapeLabelMapFilter< TImage, TLabelImage >
 
   // Crofton's constant
   perimeter *= GeometryUtilities::HyperSphereVolume( dim, 1.0 )
-                 / GeometryUtilities::HyperSphereVolume( dim - 1, 1.0 );
+    / GeometryUtilities::HyperSphereVolume( dim - 1, 1.0 );
   return perimeter;
 }
 
-#if ! defined(ITK_DO_NOT_USE_PERIMETER_SPECIALIZATION)
+#if !defined(ITK_DO_NOT_USE_PERIMETER_SPECIALIZATION)
 template< typename TImage, typename TLabelImage >
 double
 ShapeLabelMapFilter< TImage, TLabelImage >
@@ -677,6 +679,7 @@ ShapeLabelMapFilter< TImage, TLabelImage >
   // std::cout << "nxy: " << intercepts[nxy] << std::endl;
 
   double perimeter = 0.0;
+
   perimeter += dy * intercepts[nx]/2.0;
   perimeter += dx * intercepts[ny]/2.0;
   perimeter += dx*dy / spacing.GetNorm() * intercepts[nxy]/2.0;
@@ -728,6 +731,7 @@ ShapeLabelMapFilter< TImage, TLabelImage >
   // std::cout << "nxyz: " << intercepts[nxyz] << std::endl;
 
   double perimeter = 0.0;
+
   perimeter += vol/dx * intercepts[nx]/2.0 * c1;
   perimeter += vol/dy * intercepts[ny]/2.0 * c2;
   perimeter += vol/dz * intercepts[nz]/2.0 * c3;
@@ -738,6 +742,7 @@ ShapeLabelMapFilter< TImage, TLabelImage >
   perimeter *= 4;
   return perimeter;
 }
+
 #endif
 
 template< typename TImage, typename TLabelImage >

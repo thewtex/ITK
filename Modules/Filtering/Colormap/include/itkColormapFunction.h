@@ -43,14 +43,14 @@ namespace Function
  * \ingroup ITKColormap
  */
 template< typename TScalar, typename TRGBPixel >
-class ColormapFunction:public Object
+class ColormapFunction : public Object
 {
 public:
 
-  typedef ColormapFunction            Self;
-  typedef Object                      Superclass;
-  typedef SmartPointer< Self >        Pointer;
-  typedef SmartPointer< const Self >  ConstPointer;
+  typedef ColormapFunction           Self;
+  typedef Object                     Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(ColormapFunction, Object);
@@ -72,59 +72,64 @@ public:
   itkSetMacro(MaximumInputValue, ScalarType);
   itkGetConstMacro(MaximumInputValue, ScalarType);
 
-  virtual bool operator!=(const ColormapFunction &) const
-    {
+  virtual bool
+  operator!=(const ColormapFunction &) const
+  {
     return false;
-    }
+  }
 
-  virtual bool operator==(const ColormapFunction & other) const
-    {
+  virtual bool
+  operator==(const ColormapFunction & other) const
+  {
     return !( *this != other );
-    }
+  }
 
   virtual RGBPixelType operator()(const ScalarType &) const = 0;
 
 protected:
   ColormapFunction()
-    {
+  {
     this->m_MinimumInputValue = NumericTraits< TScalar >::min();
     this->m_MaximumInputValue = NumericTraits< TScalar >::max();
     this->m_MinimumRGBComponentValue = NumericTraits< RGBComponentType >::min();
     this->m_MaximumRGBComponentValue = NumericTraits< RGBComponentType >::max();
-    }
+  }
 
   ~ColormapFunction() {}
 
   /**
    * Map [min, max] input values to [0, 1].
    */
-  RealType RescaleInputValue(ScalarType v) const
-    {
+  RealType
+  RescaleInputValue(ScalarType v) const
+  {
     RealType d = static_cast< RealType >( this->m_MaximumInputValue -
-      this->m_MinimumInputValue );
+                                          this->m_MinimumInputValue );
     RealType value = ( static_cast< RealType >( v ) -
-      static_cast< RealType >( this->m_MinimumInputValue ) ) / d;
+                       static_cast< RealType >( this->m_MinimumInputValue ) ) / d;
 
     value = vnl_math_max(0.0, value);
     value = vnl_math_min(1.0, value);
     return value;
-    }
+  }
 
   /**
    * Map [0, 1] value to [min, max] rgb component values.
    */
-  RGBComponentType RescaleRGBComponentValue(RealType v) const
-    {
+  RGBComponentType
+  RescaleRGBComponentValue(RealType v) const
+  {
     RealType d = static_cast< RealType >( m_MaximumRGBComponentValue -
-      m_MinimumRGBComponentValue );
+                                          m_MinimumRGBComponentValue );
     const RGBComponentType rescaled = static_cast< RGBComponentType >(
-      d * v ) + this->m_MinimumRGBComponentValue;
+        d * v ) + this->m_MinimumRGBComponentValue;
 
     return rescaled;
-    }
+  }
 
-  void PrintSelf(std::ostream & os, Indent indent) const
-    {
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
     Superclass::PrintSelf(os, indent);
 
     os << indent << "Minimum RGB Component Value: "
@@ -139,11 +144,11 @@ protected:
     os << indent << "Maximum Input Value: "
        << static_cast< typename NumericTraits< ScalarType >::PrintType >(
       this->GetMaximumInputValue() ) << std::endl;
-    }
+  }
 
 private:
   ColormapFunction(const Self &); //purposely not implemented
-  void operator=(const Self &);  //purposely not implemented
+  void operator=(const Self &);   //purposely not implemented
 
   ScalarType m_MinimumInputValue;
   ScalarType m_MaximumInputValue;

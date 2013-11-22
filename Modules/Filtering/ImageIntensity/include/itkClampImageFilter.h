@@ -43,7 +43,7 @@ class Clamp
 {
 public:
 
-  typedef Clamp   Self;
+  typedef Clamp Self;
 
   typedef TInput  InputType;
   typedef TOutput OutputType;
@@ -56,6 +56,7 @@ public:
   ~Clamp();
 
   OutputType GetLowerBound() const;
+
   OutputType GetUpperBound() const;
 
   /** Set the bounds of the range in which the data will be clamped.
@@ -65,19 +66,20 @@ public:
   void SetBounds( const OutputType lowerBound, const OutputType upperBound);
 
   bool operator!=( const Self & other ) const;
+
   bool operator==( const Self & other ) const;
 
   OutputType operator()( const InputType & A ) const;
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   itkConceptMacro(InputConvertibleToOutputCheck,
-    (Concept::Convertible< InputType, OutputType >));
+                  (Concept::Convertible< InputType, OutputType >) );
   itkConceptMacro(InputConvertibleToDoubleCheck,
-    (Concept::Convertible< InputType, double > ));
+                  (Concept::Convertible< InputType, double > ) );
   itkConceptMacro(DoubleLessThanComparableToOutputCheck,
-    (Concept::LessThanComparable< double, OutputType > ));
+                  (Concept::LessThanComparable< double, OutputType > ) );
   itkConceptMacro(DoubleGreaterThanComparableToOutputCheck,
-    (Concept::GreaterThanComparable< double, OutputType > ));
+                  (Concept::GreaterThanComparable< double, OutputType > ) );
 #endif
 
 private:
@@ -85,13 +87,12 @@ private:
   OutputType m_UpperBound;
 };
 
-
 template< typename TInput, typename TOutput >
 inline
 typename Clamp< TInput, TOutput >::OutputType
 Clamp< TInput, TOutput >
 ::operator()( const InputType & A ) const
-  {
+{
   const double dA = static_cast< double >( A );
 
   if ( dA < m_LowerBound )
@@ -105,10 +106,9 @@ Clamp< TInput, TOutput >
     }
 
   return static_cast< OutputType >( A );
-  }
+}
 
 } // end namespace Functor
-
 
 /** \class ClampImageFilter
  *
@@ -142,14 +142,14 @@ class ClampImageFilter :
 {
 public:
   /** Standard class typedefs. */
-  typedef ClampImageFilter               Self;
+  typedef ClampImageFilter Self;
   typedef UnaryFunctorImageFilter< TInputImage, TOutputImage,
                                    Functor::Clamp< typename TInputImage::PixelType,
                                                    typename TOutputImage::PixelType > >
-                                         Superclass;
+    Superclass;
 
-  typedef SmartPointer< Self >           Pointer;
-  typedef SmartPointer< const Self >     ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   typedef typename TInputImage::PixelType  InputPixelType;
   typedef typename TOutputImage::PixelType OutputPixelType;
@@ -161,6 +161,7 @@ public:
   itkTypeMacro(ClampImageFilter, UnaryFunctorImageFilter);
 
   OutputPixelType GetLowerBound() const;
+
   OutputPixelType GetUpperBound() const;
 
   /** Set the bounds of the range in which the data will be clamped.
@@ -171,7 +172,8 @@ public:
 
 protected:
   ClampImageFilter();
-  virtual ~ClampImageFilter() {}
+  virtual
+  ~ClampImageFilter() {}
 
   void GenerateData();
 

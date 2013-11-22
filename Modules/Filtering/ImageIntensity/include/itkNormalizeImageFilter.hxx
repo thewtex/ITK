@@ -39,6 +39,7 @@ NormalizeImageFilter< TInputImage, TOutputImage >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   if ( this->GetInput() )
     {
     InputImagePointer image =
@@ -53,6 +54,7 @@ NormalizeImageFilter< TInputImage, TOutputImage >
 ::Modified() const
 {
   Superclass::Modified();
+
   m_StatisticsFilter->Modified();
   m_ShiftScaleFilter->Modified();
 }
@@ -87,6 +89,7 @@ NormalizeImageFilter< TInputImage, TOutputImage >
   // Graft the mini pipeline output to this filters output
   this->GraftOutput( m_ShiftScaleFilter->GetOutput() );
 }
+
 } // end namespace itk
 
 #endif

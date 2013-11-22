@@ -31,8 +31,7 @@ GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter >::GPUImage
 
 template< typename TInputImage, typename TOutputImage, typename TParentImageFilter >
 GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter >::~GPUImageToImageFilter()
-{
-}
+{}
 
 template< typename TInputImage, typename TOutputImage, typename TParentImageFilter >
 void
@@ -40,6 +39,7 @@ GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter >::PrintSel
                                                                                   Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "GPU: " << ( m_GPUEnabled ? "Enabled" : "Disabled" ) << std::endl;
 }
 
@@ -72,7 +72,8 @@ GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter >::GraftOut
 
 template< typename TInputImage, typename TOutputImage, typename TParentImageFilter >
 void
-GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter >::GraftOutput(const DataObjectIdentifierType & key, DataObject *output)
+GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter >::GraftOutput(
+  const DataObjectIdentifierType & key, DataObject *output)
 {
   typedef typename itk::GPUTraits< TOutputImage >::Type GPUOutputImage;
   typename GPUOutputImage::Pointer otPtr = dynamic_cast< GPUOutputImage * >( this->ProcessObject::GetOutput(key) );

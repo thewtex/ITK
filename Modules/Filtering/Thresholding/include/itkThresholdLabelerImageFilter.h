@@ -45,21 +45,31 @@ template< typename TInput, typename TOutput >
 class ThresholdLabeler
 {
 public:
-  ThresholdLabeler() { m_LabelOffset = NumericTraits< TOutput >::One; }
+  ThresholdLabeler() {
+    m_LabelOffset = NumericTraits< TOutput >::One;
+  }
+
   ~ThresholdLabeler() {}
 
   typedef typename NumericTraits< TInput >::RealType RealThresholdType;
   typedef std::vector< RealThresholdType >           RealThresholdVector;
 
   /** Set the vector of thresholds. */
-  void SetThresholds(const RealThresholdVector & thresholds)
-  { m_Thresholds = thresholds; }
+  void
+  SetThresholds(const RealThresholdVector & thresholds)
+  {
+    m_Thresholds = thresholds;
+  }
 
   /** Set the offset which labels have to start from. */
-  void SetLabelOffset(const TOutput & labelOffset)
-  { m_LabelOffset = labelOffset; }
+  void
+  SetLabelOffset(const TOutput & labelOffset)
+  {
+    m_LabelOffset = labelOffset;
+  }
 
-  bool operator!=(const ThresholdLabeler & other) const
+  bool
+  operator!=(const ThresholdLabeler & other) const
   {
     if ( m_Thresholds != other.m_Thresholds
          || m_LabelOffset != other.m_LabelOffset )
@@ -69,12 +79,14 @@ public:
     return false;
   }
 
-  bool operator==(const ThresholdLabeler & other) const
+  bool
+  operator==(const ThresholdLabeler & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     unsigned int size = m_Thresholds.size();
 
@@ -105,7 +117,7 @@ private:
 }
 
 template< typename TInputImage, typename TOutputImage >
-class ThresholdLabelerImageFilter:
+class ThresholdLabelerImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::ThresholdLabeler<
@@ -116,11 +128,11 @@ public:
   /** Standard class typedefs. */
   typedef ThresholdLabelerImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::ThresholdLabeler<
-      typename TInputImage::PixelType,
-      typename TOutputImage::PixelType >
-    >                                  Superclass;
+      TInputImage, TOutputImage,
+      Functor::ThresholdLabeler<
+        typename TInputImage::PixelType,
+        typename TOutputImage::PixelType >
+      >                                  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -153,7 +165,8 @@ public:
 #endif
 
   /** Set the vector of thresholds. */
-  void SetThresholds(const ThresholdVector & thresholds)
+  void
+  SetThresholds(const ThresholdVector & thresholds)
   {
     m_Thresholds = thresholds;
     m_RealThresholds.clear();
@@ -167,11 +180,15 @@ public:
   }
 
   /** Get the vector of thresholds. */
-  const ThresholdVector & GetThresholds() const
-  { return m_Thresholds; }
+  const ThresholdVector &
+  GetThresholds() const
+  {
+    return m_Thresholds;
+  }
 
   /** Set the vector of real type thresholds. */
-  void SetRealThresholds(const RealThresholdVector & thresholds)
+  void
+  SetRealThresholds(const RealThresholdVector & thresholds)
   {
     m_RealThresholds = thresholds;
     m_Thresholds.clear();
@@ -185,8 +202,11 @@ public:
   }
 
   /** Get the vector of real thresholds. */
-  const RealThresholdVector & GetRealThresholds() const
-  { return m_RealThresholds; }
+  const RealThresholdVector &
+  GetRealThresholds() const
+  {
+    return m_RealThresholds;
+  }
 
   /** Set the offset which labels have to start from. */
   itkSetClampMacro( LabelOffset, OutputPixelType, NumericTraits< OutputPixelType >::Zero,
@@ -195,7 +215,8 @@ public:
 
 protected:
   ThresholdLabelerImageFilter();
-  virtual ~ThresholdLabelerImageFilter() {}
+  virtual
+  ~ThresholdLabelerImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This method is used to set the state of the filter before

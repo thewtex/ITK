@@ -22,21 +22,22 @@
 #include "itkImageFileWriter.h"
 #include "itkTestingMacros.h"
 
-int itkInverseDeconvolutionImageFilterTest(int argc, char * argv[])
+int
+itkInverseDeconvolutionImageFilterTest(int argc, char * argv[])
 {
 
   if ( argc < 4 )
     {
     std::cout << "Usage: " << argv[0]
-      << " inputImage kernelImage outputImage [normalizeImage]" << std::endl;
+              << " inputImage kernelImage outputImage [normalizeImage]" << std::endl;
     return EXIT_FAILURE;
     }
 
   const int ImageDimension = 2;
 
-  typedef float                                  PixelType;
-  typedef itk::Image<PixelType, ImageDimension>  ImageType;
-  typedef itk::ImageFileReader<ImageType>        ReaderType;
+  typedef float                                 PixelType;
+  typedef itk::Image<PixelType, ImageDimension> ImageType;
+  typedef itk::ImageFileReader<ImageType>       ReaderType;
 
   ReaderType::Pointer reader1 = ReaderType::New();
   reader1->SetFileName( argv[1] );

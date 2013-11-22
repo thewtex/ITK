@@ -22,7 +22,8 @@
 #include <fstream>
 
 template<unsigned int Dimension>
-int itkJensenHavrdaCharvatTsallisPointSetMetricTestRun()
+int
+itkJensenHavrdaCharvatTsallisPointSetMetricTestRun()
 {
   typedef itk::PointSet<unsigned char, Dimension> PointSetType;
 
@@ -36,7 +37,7 @@ int itkJensenHavrdaCharvatTsallisPointSetMetricTestRun()
 
   // Produce two simple point sets of 1) a circle and 2) the same circle with an offset
   PointType offset;
-  float normOffset = 0;
+  float     normOffset = 0;
   for( unsigned int d=0; d < Dimension; d++ )
     {
     offset[d] = 2;
@@ -47,7 +48,7 @@ int itkJensenHavrdaCharvatTsallisPointSetMetricTestRun()
   for( float theta = 0; theta < 2.0 * vnl_math::pi; theta += 0.1 )
     {
     PointType fixedPoint;
-    float radius = 100.0;
+    float     radius = 100.0;
     fixedPoint[0] = radius * vcl_cos( theta );
     fixedPoint[1] = radius * vcl_sin( theta );
 // simplistic point set test:
@@ -165,7 +166,8 @@ int itkJensenHavrdaCharvatTsallisPointSetMetricTestRun()
   return EXIT_SUCCESS;
 }
 
-int itkJensenHavrdaCharvatTsallisPointSetMetricTest( int, char* [] )
+int
+itkJensenHavrdaCharvatTsallisPointSetMetricTest( int, char* [] )
 {
   int result = EXIT_SUCCESS;
 

@@ -94,18 +94,19 @@ namespace itk
  */
 template <typename TFixedImage, typename TMovingImage, typename TVirtualImage = TFixedImage,
           typename TInternalComputationValueType = double,
-          typename TMetricTraits = DefaultImageToImageMetricTraitsv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType>
+          typename TMetricTraits =
+            DefaultImageToImageMetricTraitsv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType>
           >
 class MattesMutualInformationImageToImageMetricv4 :
   public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputationValueType, TMetricTraits>
 {
 public:
   /** Standard class typedefs. */
-  typedef MattesMutualInformationImageToImageMetricv4                      Self;
+  typedef MattesMutualInformationImageToImageMetricv4 Self;
   typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage,
-                             TInternalComputationValueType,TMetricTraits>  Superclass;
-  typedef SmartPointer<Self>                                               Pointer;
-  typedef SmartPointer<const Self>                                         ConstPointer;
+                               TInternalComputationValueType,TMetricTraits>  Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -114,29 +115,29 @@ public:
   itkTypeMacro(MattesMutualInformationImageToImageMetricv4, ImageToImageMetricv4);
 
   /** Superclass types */
-  typedef typename Superclass::MeasureType             MeasureType;
-  typedef typename Superclass::DerivativeType          DerivativeType;
-  typedef typename DerivativeType::ValueType           DerivativeValueType;
+  typedef typename Superclass::MeasureType    MeasureType;
+  typedef typename Superclass::DerivativeType DerivativeType;
+  typedef typename DerivativeType::ValueType  DerivativeValueType;
 
-  typedef typename Superclass::FixedImageType          FixedImageType;
-  typedef typename Superclass::FixedImagePointType     FixedImagePointType;
-  typedef typename Superclass::FixedImageIndexType     FixedImageIndexType;
-  typedef typename Superclass::FixedImagePixelType     FixedImagePixelType;
-  typedef typename Superclass::FixedImageGradientType  FixedImageGradientType;
+  typedef typename Superclass::FixedImageType         FixedImageType;
+  typedef typename Superclass::FixedImagePointType    FixedImagePointType;
+  typedef typename Superclass::FixedImageIndexType    FixedImageIndexType;
+  typedef typename Superclass::FixedImagePixelType    FixedImagePixelType;
+  typedef typename Superclass::FixedImageGradientType FixedImageGradientType;
 
   typedef typename Superclass::MovingImagePointType    MovingImagePointType;
   typedef typename Superclass::MovingImagePixelType    MovingImagePixelType;
   typedef typename Superclass::MovingImageGradientType MovingImageGradientType;
 
-  typedef typename Superclass::MovingTransformType     MovingTransformType;
-  typedef typename Superclass::JacobianType            JacobianType;
-  typedef typename Superclass::VirtualImageType        VirtualImageType;
-  typedef typename Superclass::VirtualIndexType        VirtualIndexType;
-  typedef typename Superclass::VirtualPointType        VirtualPointType;
-  typedef typename Superclass::VirtualPointSetType     VirtualPointSetType;
+  typedef typename Superclass::MovingTransformType MovingTransformType;
+  typedef typename Superclass::JacobianType        JacobianType;
+  typedef typename Superclass::VirtualImageType    VirtualImageType;
+  typedef typename Superclass::VirtualIndexType    VirtualIndexType;
+  typedef typename Superclass::VirtualPointType    VirtualPointType;
+  typedef typename Superclass::VirtualPointSetType VirtualPointSetType;
 
   /** Types inherited from Superclass. */
-  typedef typename Superclass::FixedSampledPointSetPointer    FixedSampledPointSetPointer;
+  typedef typename Superclass::FixedSampledPointSetPointer FixedSampledPointSetPointer;
 
   /* Image dimension accessors */
   itkStaticConstMacro(VirtualImageDimension, ImageDimensionType, TVirtualImage::ImageDimension);
@@ -166,14 +167,15 @@ public:
    * Get the internal JointPDF image that was used in
    * creating the metric value.
    */
-  const typename JointPDFType::Pointer GetJointPDF () const
-    {
+  const typename JointPDFType::Pointer
+  GetJointPDF() const
+  {
     if( this->m_ThreaderJointPDF.size() == 0 )
       {
       return typename JointPDFType::Pointer(NULL);
       }
     return this->m_ThreaderJointPDF[0];
-    }
+  }
 
   /**
    * Get the internal JointPDFDeriviative image that was used in
@@ -181,24 +183,33 @@ public:
    * This is only created when a global support transform is used, and
    * derivatives are requested.
    */
-  const typename JointPDFDerivativesType::Pointer GetJointPDFDerivatives () const
-    {
+  const typename JointPDFDerivativesType::Pointer
+  GetJointPDFDerivatives() const
+  {
     if( this->m_ThreaderJointPDFDerivatives.size() == 0 )
       {
       return typename JointPDFDerivativesType::Pointer(NULL);
       }
     return this->m_ThreaderJointPDFDerivatives[0];
-    }
+  }
 
 protected:
   MattesMutualInformationImageToImageMetricv4();
-  virtual ~MattesMutualInformationImageToImageMetricv4();
+  virtual
+  ~MattesMutualInformationImageToImageMetricv4();
 
-  friend class MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< Superclass::VirtualImageDimension >, Superclass, Self >;
-  friend class MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Superclass, Self >;
-  typedef MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< Superclass::VirtualImageDimension >, Superclass, Self >
+  friend class MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner<
+                                                                                           Superclass::
+                                                                                           VirtualImageDimension >,
+                                                                                         Superclass, Self >;
+  friend class MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader<
+    ThreadedIndexedContainerPartitioner, Superclass, Self >;
+  typedef MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner<
+                                                                                      Superclass::VirtualImageDimension >,
+                                                                                    Superclass, Self >
     MattesMutualInformationDenseGetValueAndDerivativeThreaderType;
-  typedef MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Superclass, Self >
+  typedef MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner,
+                                                                                    Superclass, Self >
     MattesMutualInformationSparseGetValueAndDerivativeThreaderType;
 
   void PrintSelf(std::ostream& os, Indent indent) const;
@@ -238,14 +249,14 @@ protected:
   typename CubicBSplineDerivativeFunctionType::Pointer m_CubicBSplineDerivativeKernel;
 
   /** Helper array for storing the values of the JointPDF ratios. */
-  typedef PDFValueType              PRatioType;
-  typedef std::vector<PRatioType>   PRatioArrayType;
+  typedef PDFValueType            PRatioType;
+  typedef std::vector<PRatioType> PRatioArrayType;
 
-  mutable PRatioArrayType           m_PRatioArray;
+  mutable PRatioArrayType m_PRatioArray;
 
   /** Helper array for storing per-parameter linearized index to
    * retrieve the pRatio during evaluation with local-support transform. */
-  mutable std::vector<OffsetValueType>   m_JointPdfIndex1DArray;
+  mutable std::vector<OffsetValueType> m_JointPdfIndex1DArray;
 
   /** The moving image marginal PDF. */
   mutable std::vector<PDFValueType>               m_MovingImageMarginalPDF;
@@ -262,11 +273,11 @@ protected:
 
   /** Store the per-point local derivative result by parzen window bin.
    * For local-support transforms only. */
-  mutable std::vector<DerivativeType>              m_LocalDerivativeByParzenBin;
+  mutable std::vector<DerivativeType> m_LocalDerivativeByParzenBin;
 
 private:
   MattesMutualInformationImageToImageMetricv4(const Self &); //purposely not implemented
-  void operator = (const Self &); //purposely not implemented
+  void operator =(const Self &);                             //purposely not implemented
 
   /** Perform the final step in computing results */
   virtual void ComputeResults( void ) const;

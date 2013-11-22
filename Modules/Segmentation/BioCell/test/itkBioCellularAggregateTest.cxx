@@ -20,15 +20,14 @@
 
 #include "itkBioCellularAggregate.h"
 
-
-int itkBioCellularAggregateTest( int, char * [] )
+int
+itkBioCellularAggregateTest( int, char * [] )
 {
-   typedef itk::bio::CellularAggregate<4> CellularAggregateType;
+  typedef itk::bio::CellularAggregate<4> CellularAggregateType;
 
-   CellularAggregateType::Pointer  aggregate = CellularAggregateType::New();
-   std::cout << aggregate << std::endl;
+  CellularAggregateType::Pointer aggregate = CellularAggregateType::New();
+  std::cout << aggregate << std::endl;
 
-
-   std::cout << "Test Passed !" << std::endl;
-   return EXIT_SUCCESS;
+  std::cout << "Test Passed !" << std::endl;
+  return EXIT_SUCCESS;
 }

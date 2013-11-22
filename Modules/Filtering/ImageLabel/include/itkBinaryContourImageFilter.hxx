@@ -63,6 +63,7 @@ BinaryContourImageFilter< TInputImage, TOutputImage >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( !input )
     {
     return;
@@ -76,6 +77,7 @@ BinaryContourImageFilter< TInputImage, TOutputImage >
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   OutputImagePointer output = this->GetOutput();
+
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -84,11 +86,12 @@ void
 BinaryContourImageFilter< TInputImage, TOutputImage >
 ::BeforeThreadedGenerateData()
 {
-  OutputImagePointer output = this->GetOutput();
+  OutputImagePointer     output = this->GetOutput();
   InputImageConstPointer input = this->GetInput();
 
   ThreadIdType nbOfThreads = this->GetNumberOfThreads();
   ThreadIdType maxNumberOfThreads = itk::MultiThreader::GetGlobalMaximumNumberOfThreads();
+
   if ( maxNumberOfThreads != 0 )
     {
     nbOfThreads = vnl_math_min( this->GetNumberOfThreads(), maxNumberOfThreads );
@@ -97,13 +100,13 @@ BinaryContourImageFilter< TInputImage, TOutputImage >
   // SplitRequestedRegion
   // to get the real number of threads which will be used
   RegionType splitRegion;  // dummy region - just to call
-                                                  // the following method
+  // the following method
   nbOfThreads = this->SplitRequestedRegion(0, nbOfThreads, splitRegion);
 
   m_Barrier = Barrier::New();
   m_Barrier->Initialize(nbOfThreads);
 
-  RegionType tempRegion = output->GetRequestedRegion();
+  RegionType    tempRegion = output->GetRequestedRegion();
   SizeValueType pixelcount = tempRegion.GetNumberOfPixels();
 
   SizeValueType xsize = tempRegion.GetSize()[0];
@@ -124,8 +127,8 @@ BinaryContourImageFilter< TInputImage, TOutputImage >
 ::ThreadedGenerateData(const RegionType & outputRegionForThread,
                        ThreadIdType threadId)
 {
-  OutputImagePointer      output  = this->GetOutput();
-  InputImageConstPointer  input   = this->GetInput();
+  OutputImagePointer     output  = this->GetOutput();
+  InputImageConstPointer input   = this->GetInput();
 
   // create a line iterator
   typedef itk::ImageLinearConstIteratorWithIndex< InputImageType >
@@ -147,9 +150,9 @@ BinaryContourImageFilter< TInputImage, TOutputImage >
   ProgressReporter progress(this, threadId, linecountForThread * 2);
 
   // find the split axis
-  IndexType     outputRegionIdx = output->GetRequestedRegion().GetIndex();
-  IndexType     outputRegionForThreadIdx = outputRegionForThread.GetIndex();
-  unsigned int  splitAxis = 0;
+  IndexType    outputRegionIdx = output->GetRequestedRegion().GetIndex();
+  IndexType    outputRegionForThreadIdx = outputRegionForThread.GetIndex();
+  unsigned int splitAxis = 0;
 
   for ( unsigned int i = 0; i < ImageDimension; i++ )
     {
@@ -190,7 +193,7 @@ BinaryContourImageFilter< TInputImage, TOutputImage >
         {
         // We've hit the start of a run
         SizeValueType length = 0;
-        IndexType thisIndex = inLineIt.GetIndex();
+        IndexType     thisIndex = inLineIt.GetIndex();
 
         outLineIt.Set(m_BackgroundValue);
 
@@ -213,7 +216,7 @@ BinaryContourImageFilter< TInputImage, TOutputImage >
         {
         // We've hit the start of a run
         SizeValueType length = 0;
-        IndexType thisIndex = inLineIt.GetIndex();
+        IndexType     thisIndex = inLineIt.GetIndex();
 
         outLineIt.Set(PVal);
         ++length;
@@ -242,16 +245,16 @@ BinaryContourImageFilter< TInputImage, TOutputImage >
   this->Wait();
 
   // now process the map and make appropriate entries in an equivalence table
-  SizeValueType pixelcount = output->GetRequestedRegion().GetNumberOfPixels();
-  SizeValueType xsize = output->GetRequestedRegion().GetSize()[0];
+  SizeValueType   pixelcount = output->GetRequestedRegion().GetNumberOfPixels();
+  SizeValueType   xsize = output->GetRequestedRegion().GetSize()[0];
   OffsetValueType linecount = pixelcount / xsize;
 
   SizeValueType lastLineIdForThread =  linecount;
   if ( threadId != m_NumberOfThreads - 1 )
     {
     lastLineIdForThread = firstLineIdForThread
-                          + RegionType( outputRegionIdx,
-                                        outputRegionForThread.GetSize() ).GetNumberOfPixels() / xsizeForThread;
+      + RegionType( outputRegionIdx,
+                    outputRegionForThread.GetSize() ).GetNumberOfPixels() / xsizeForThread;
     }
 
   for ( SizeValueType thisIdx = firstLineIdForThread;
@@ -308,11 +311,11 @@ BinaryContourImageFilter< TInputImage, TOutputImage >
 
   const unsigned int PretendDimension = ImageDimension - 1;
 
-  typedef Image< OffsetValueType, PretendDimension >          PretendImageType;
-  typedef typename PretendImageType::Pointer                  PretendImagePointer;
-  typedef typename PretendImageType::RegionType               PretendImageRegionType;
-  typedef typename PretendImageType::RegionType::SizeType     PretendSizeType;
-  typedef typename PretendImageType::RegionType::IndexType    PretendIndexType;
+  typedef Image< OffsetValueType, PretendDimension >       PretendImageType;
+  typedef typename PretendImageType::Pointer               PretendImagePointer;
+  typedef typename PretendImageType::RegionType            PretendImageRegionType;
+  typedef typename PretendImageType::RegionType::SizeType  PretendSizeType;
+  typedef typename PretendImageType::RegionType::IndexType PretendIndexType;
 
   PretendImagePointer fakeImage = PretendImageType::New();
 
@@ -504,6 +507,7 @@ BinaryContourImageFilter< TInputImage, TOutputImage >
   os << indent << "BackgroundValue: "
      << static_cast< typename NumericTraits< OutputImagePixelType >::PrintType >( m_BackgroundValue ) << std::endl;
 }
+
 } // end namespace itk
 
 #endif

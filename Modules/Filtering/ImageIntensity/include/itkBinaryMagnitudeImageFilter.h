@@ -35,24 +35,28 @@ class Modulus2
 public:
   Modulus2() {}
   ~Modulus2() {}
-  bool operator!=(const Modulus2 &) const
+  bool
+  operator!=(const Modulus2 &) const
   {
     return false;
   }
 
-  bool operator==(const Modulus2 & other) const
+  bool
+  operator==(const Modulus2 & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A,
-                            const TInput2 & B) const
+  inline TOutput
+  operator()(const TInput1 & A,
+             const TInput2 & B) const
   {
     const double dA = static_cast< double >( A );
     const double dB = static_cast< double >( B );
 
     return static_cast< TOutput >( vcl_sqrt(dA * dA + dB * dB) );
   }
+
 };
 }
 /** \class BinaryMagnitudeImageFilter
@@ -81,7 +85,7 @@ public:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage1, typename TInputImage2, typename TOutputImage >
-class BinaryMagnitudeImageFilter:
+class BinaryMagnitudeImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::Modulus2<
@@ -121,11 +125,13 @@ public:
 
 protected:
   BinaryMagnitudeImageFilter() {}
-  virtual ~BinaryMagnitudeImageFilter() {}
+  virtual
+  ~BinaryMagnitudeImageFilter() {}
 
 private:
   BinaryMagnitudeImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
+
 };
 } // end namespace itk
 

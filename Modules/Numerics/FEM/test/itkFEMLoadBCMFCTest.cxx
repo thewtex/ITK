@@ -16,12 +16,12 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSolver.h"
 #include "itkFEMSpatialObjectReader.h"
 #include "itkFEMSpatialObjectWriter.h"
 
-int itkFEMLoadBCMFCTest(int argc, char *argv[])
+int
+itkFEMLoadBCMFCTest(int argc, char *argv[])
 {
   if(argc < 1)
     {

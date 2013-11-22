@@ -23,40 +23,40 @@ namespace itk
 {
 namespace bio
 {
-CellBase::ColorType CellBase:: DefaultColor;
+CellBase::ColorType CellBase::DefaultColor;
 
-double CellBase:: DefaultRadius         =        1.00;            // microns
+double CellBase::DefaultRadius         =        1.00;             // microns
 
-double CellBase:: GrowthRadiusIncrement =        0.01;            // microns
-double CellBase:: GrowthRadiusLimit     =        2.00;            // microns
+double CellBase::GrowthRadiusIncrement =        0.01;             // microns
+double CellBase::GrowthRadiusLimit     =        2.00;             // microns
 
-SizeValueType CellBase:: MaximumGenerationLimit =        30L;     // 30th
+SizeValueType CellBase::MaximumGenerationLimit =        30L;      // 30th
                                                                   // generation
 
-SizeValueType CellBase:: GrowthMaximumLatencyTime    =   50;
-SizeValueType CellBase:: DivisionMaximumLatencyTime  =   50;
+SizeValueType CellBase::GrowthMaximumLatencyTime    =   50;
+SizeValueType CellBase::DivisionMaximumLatencyTime  =   50;
 
-double CellBase:: NutrientSelfRepairLevel  =       0;
-double CellBase:: EnergySelfRepairLevel    =       0;
+double CellBase::NutrientSelfRepairLevel  =       0;
+double CellBase::EnergySelfRepairLevel    =       0;
 
-double CellBase:: DefaultEnergyIntake      =       1;
-double CellBase:: DefaultNutrientsIntake   =       1;
+double CellBase::DefaultEnergyIntake      =       1;
+double CellBase::DefaultNutrientsIntake   =       1;
 
-SizeValueType CellBase:: Counter = 0;     // number of cells created
+SizeValueType CellBase::Counter = 0;      // number of cells created
 
-CellBase::GeneIdType CellBase:: RedGene   = "Red";
-CellBase::GeneIdType CellBase:: GreenGene = "Green";
-CellBase::GeneIdType CellBase:: BlueGene  = "Blue";
-CellBase::GeneIdType CellBase:: Cdk2E     = "Cdk2E";
-CellBase::GeneIdType CellBase:: Caspase   = "Caspase";
-CellBase::GeneIdType CellBase:: Pressurin = "Pressurin";
+CellBase::GeneIdType CellBase::RedGene   = "Red";
+CellBase::GeneIdType CellBase::GreenGene = "Green";
+CellBase::GeneIdType CellBase::BlueGene  = "Blue";
+CellBase::GeneIdType CellBase::Cdk2E     = "Cdk2E";
+CellBase::GeneIdType CellBase::Caspase   = "Caspase";
+CellBase::GeneIdType CellBase::Pressurin = "Pressurin";
 
-double CellBase:: ChemoAttractantLowThreshold  = 200.0f;
-double CellBase:: ChemoAttractantHighThreshold = 255.0f;
+double CellBase::ChemoAttractantLowThreshold  = 200.0f;
+double CellBase::ChemoAttractantHighThreshold = 255.0f;
 
-CellBase::ColorType CellBase:: WellNourishedColor;
-CellBase::ColorType CellBase:: HopefullColor;
-CellBase::ColorType CellBase:: StarvingColor;
+CellBase::ColorType CellBase::WellNourishedColor;
+CellBase::ColorType CellBase::HopefullColor;
+CellBase::ColorType CellBase::StarvingColor;
 
 /**
  *    Constructor Lonely Cell
@@ -87,11 +87,11 @@ CellBase
 
   // delay before starting to grow after Mitosis
   m_GrowthLatencyTime   = static_cast< SizeValueType >(
-    vnl_sample_uniform( 0, this->GetGrowthMaximumLatencyTime() ) );
+      vnl_sample_uniform( 0, this->GetGrowthMaximumLatencyTime() ) );
 
   // add a random time before starting to grow
   m_DivisionLatencyTime = static_cast< SizeValueType >(
-    vnl_sample_uniform( 0, this->GetDivisionMaximumLatencyTime() ) );
+      vnl_sample_uniform( 0, this->GetDivisionMaximumLatencyTime() ) );
 
   m_ScheduleApoptosis    = false;
   m_ChemoAttractantLevel = 200.0f;
@@ -622,5 +622,6 @@ CellBase
 {
   CellBase::ChemoAttractantHighThreshold = highvalue;
 }
+
 }  // end namespace bio
 }  // end namespace itk

@@ -93,4 +93,5 @@ LightProcessObject
   // Notify end event observers
   this->InvokeEvent( EndEvent() );
 }
+
 } // end namespace itk

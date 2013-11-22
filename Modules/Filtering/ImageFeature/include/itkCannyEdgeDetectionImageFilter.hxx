@@ -192,9 +192,9 @@ CannyEdgeDetectionImageFilter< TInputImage, TOutputImage >
     for ( unsigned int j = i + 1; j < ImageDimension; j++ )
       {
       dxy[k] = 0.25 * it.GetPixel(m_Center - m_Stride[i] - m_Stride[j])
-               - 0.25 * it.GetPixel(m_Center - m_Stride[i] + m_Stride[j])
-               - 0.25 * it.GetPixel(m_Center + m_Stride[i] - m_Stride[j])
-               + 0.25 * it.GetPixel(m_Center + m_Stride[i] + m_Stride[j]);
+        - 0.25 * it.GetPixel(m_Center - m_Stride[i] + m_Stride[j])
+        - 0.25 * it.GetPixel(m_Center + m_Stride[i] - m_Stride[j])
+        + 0.25 * it.GetPixel(m_Center + m_Stride[i] + m_Stride[j]);
 
       deriv += 2.0 * dx[i] * dx[j] * dxy[k];
       k++;
@@ -600,5 +600,6 @@ CannyEdgeDetectionImageFilter< TInputImage, TOutputImage >
   os << "UpdateBuffer1: " << std::endl;
   m_UpdateBuffer1->Print( os, indent.GetNextIndent() );
 }
+
 } //end of itk namespace
 #endif

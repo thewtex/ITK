@@ -80,10 +80,10 @@ template< typename TInputImage, typename TOutputImage >
 const typename ConfidenceConnectedImageFilter<TInputImage,TOutputImage>::SeedsContainerType &
 ConfidenceConnectedImageFilter< TInputImage, TOutputImage >
 ::GetSeeds() const
-{
+  {
   itkDebugMacro("returning Seeds");
   return this->m_Seeds;
-}
+  }
 
 /**
  * Standard PrintSelf method.
@@ -115,6 +115,7 @@ ConfidenceConnectedImageFilter< TInputImage, TOutputImage >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   if ( this->GetInput() )
     {
     InputImagePointer input =
@@ -129,6 +130,7 @@ ConfidenceConnectedImageFilter< TInputImage, TOutputImage >
 ::EnlargeOutputRequestedRegion(DataObject *output)
 {
   Superclass::EnlargeOutputRequestedRegion(output);
+
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -430,6 +432,7 @@ ConfidenceConnectedImageFilter< TInputImage, TOutputImage >
     throw ProcessAborted(__FILE__, __LINE__);
     }
 }
+
 } // end namespace itk
 
 #endif

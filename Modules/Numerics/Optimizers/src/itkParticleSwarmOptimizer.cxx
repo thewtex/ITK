@@ -20,7 +20,6 @@
 namespace itk
 {
 
-
 ParticleSwarmOptimizer
 ::ParticleSwarmOptimizer(void)
 {
@@ -32,17 +31,16 @@ ParticleSwarmOptimizer
   this->m_GlobalCoefficient = 1.49609;
 }
 
-
 ParticleSwarmOptimizer
 ::~ParticleSwarmOptimizer()
-{
-}
+{}
 
 void
 ParticleSwarmOptimizer
 ::PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
+
   os<<"Acceleration coefficients [inertia, personal, global]: ";
   os<<"["<<this->m_InertiaCoefficient<<", "<<this->m_PersonalCoefficient<<", ";
   os<<this->m_GlobalCoefficient<<"]\n";
@@ -60,7 +58,7 @@ ParticleSwarmOptimizer
 
   for( j=0; j<m_NumberOfParticles; j++ )
     {
-    ParticleData & p = m_Particles[j];
+    ParticleData &            p = m_Particles[j];
     ParametersType::ValueType phi1, phi2;
     phi1 = randomGenerator->GetVariateWithClosedRange() * this->m_PersonalCoefficient;
     phi2 = randomGenerator->GetVariateWithClosedRange() * this->m_GlobalCoefficient;
@@ -70,8 +68,8 @@ ParticleSwarmOptimizer
         m_InertiaCoefficient*p.m_CurrentVelocity[k] +
         phi1*(p.m_BestParameters[k]-p.m_CurrentParameters[k]) +
         phi2*(m_ParametersBestValue[k]-p.m_CurrentParameters[k]);
-                       //update location and ensure that it stays
-                       //inside the feasible region
+      //update location and ensure that it stays
+      //inside the feasible region
       p.m_CurrentParameters[k] += p.m_CurrentVelocity[k];
       if( p.m_CurrentParameters[k] < m_ParameterBounds[k].first )
         {

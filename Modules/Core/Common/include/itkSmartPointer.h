@@ -47,17 +47,23 @@ public:
 
   /** Constructor  */
   SmartPointer ()
-  { m_Pointer = 0; }
+  {
+    m_Pointer = 0;
+  }
 
   /** Copy constructor  */
-  SmartPointer (const SmartPointer< ObjectType > & p):
+  SmartPointer (const SmartPointer< ObjectType > & p) :
     m_Pointer(p.m_Pointer)
-  { this->Register(); }
+  {
+    this->Register();
+  }
 
   /** Constructor to pointer p  */
-  SmartPointer (ObjectType *p):
+  SmartPointer (ObjectType *p) :
     m_Pointer(p)
-  { this->Register(); }
+  {
+    this->Register();
+  }
 
   /** Destructor  */
   ~SmartPointer ()
@@ -67,55 +73,90 @@ public:
   }
 
   /** Overload operator ->  */
-  ObjectType * operator->() const
-  { return m_Pointer; }
+  ObjectType *
+  operator->() const
+  {
+    return m_Pointer;
+  }
 
   /** Return pointer to object.  */
   operator ObjectType *() const
-        { return m_Pointer; }
+            { return m_Pointer; }
 
   /** Test if the pointer has been initialized */
-  bool IsNotNull() const
-  { return m_Pointer != 0; }
-  bool IsNull() const
-  { return m_Pointer == 0; }
+  bool
+  IsNotNull() const
+  {
+    return m_Pointer != 0;
+  }
+
+  bool
+  IsNull() const
+  {
+    return m_Pointer == 0;
+  }
 
   /** Template comparison operators. */
   template< typename TR >
-  bool operator==(TR r) const
-  { return ( m_Pointer == static_cast< const ObjectType * >( r ) ); }
+  bool
+  operator==(TR r) const
+  {
+    return ( m_Pointer == static_cast< const ObjectType * >( r ) );
+  }
 
   template< typename TR >
-  bool operator!=(TR r) const
-  { return ( m_Pointer != static_cast< const ObjectType * >( r ) ); }
+  bool
+  operator!=(TR r) const
+  {
+    return ( m_Pointer != static_cast< const ObjectType * >( r ) );
+  }
 
   /** Access function to pointer. */
-  ObjectType * GetPointer() const
-  { return m_Pointer; }
+  ObjectType *
+  GetPointer() const
+  {
+    return m_Pointer;
+  }
 
   /** Comparison of pointers. Less than comparison.  */
-  bool operator<(const SmartPointer & r) const
-  { return (void *)m_Pointer < (void *)r.m_Pointer; }
+  bool
+  operator<(const SmartPointer & r) const
+  {
+    return (void *)m_Pointer < (void *)r.m_Pointer;
+  }
 
   /** Comparison of pointers. Greater than comparison.  */
-  bool operator>(const SmartPointer & r) const
-  { return (void *)m_Pointer > (void *)r.m_Pointer; }
+  bool
+  operator>(const SmartPointer & r) const
+  {
+    return (void *)m_Pointer > (void *)r.m_Pointer;
+  }
 
   /** Comparison of pointers. Less than or equal to comparison.  */
-  bool operator<=(const SmartPointer & r) const
-  { return (void *)m_Pointer <= (void *)r.m_Pointer; }
+  bool
+  operator<=(const SmartPointer & r) const
+  {
+    return (void *)m_Pointer <= (void *)r.m_Pointer;
+  }
 
   /** Comparison of pointers. Greater than or equal to comparison.  */
-  bool operator>=(const SmartPointer & r) const
-  { return (void *)m_Pointer >= (void *)r.m_Pointer; }
+  bool
+  operator>=(const SmartPointer & r) const
+  {
+    return (void *)m_Pointer >= (void *)r.m_Pointer;
+  }
 
   /** Overload operator assignment.  */
   // cppcheck-suppress operatorEqVarError
-  SmartPointer & operator=(const SmartPointer & r)
-  { return this->operator=( r.GetPointer() ); }
+  SmartPointer &
+  operator=(const SmartPointer & r)
+  {
+    return this->operator=( r.GetPointer() );
+  }
 
   /** Overload operator assignment.  */
-  SmartPointer & operator=(ObjectType *r)
+  SmartPointer &
+  operator=(ObjectType *r)
   {
     if ( m_Pointer != r )
       {
@@ -129,7 +170,8 @@ public:
   }
 
   /** Function to print object pointed to  */
-  ObjectType * Print(std::ostream & os) const
+  ObjectType *
+  Print(std::ostream & os) const
   {
     if( this->IsNull() )
       {
@@ -147,23 +189,28 @@ private:
   /** The pointer to the object referred to by this smart pointer. */
   ObjectType *m_Pointer;
 
-  void Register()
+  void
+  Register()
   {
     if ( m_Pointer ) { m_Pointer->Register(); }
   }
 
-  void UnRegister()
+  void
+  UnRegister()
   {
     if ( m_Pointer ) { m_Pointer->UnRegister(); }
   }
+
 };
 
 template< typename T >
-std::ostream & operator<<(std::ostream & os, SmartPointer< T > p)
+std::ostream &
+operator<<(std::ostream & os, SmartPointer< T > p)
 {
   p.Print(os);
   return os;
 }
+
 } // end namespace itk
 
 #endif

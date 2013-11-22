@@ -40,12 +40,13 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class MovingHistogramDilateImageFilter:
+class MovingHistogramDilateImageFilter :
   public MovingHistogramMorphologyImageFilter< TInputImage, TOutputImage, TKernel,
                                                typename Function::MorphologyHistogram< typename TInputImage::PixelType,
                                                                                        typename std::greater< typename
                                                                                                               TInputImage
-                                                                                                              ::PixelType > > >
+                                                                                                              ::
+                                                                                                              PixelType > > >
 {
 public:
   /** Standard class typedefs. */
@@ -54,7 +55,9 @@ public:
                                                 typename Function::MorphologyHistogram< typename TInputImage::PixelType,
                                                                                         typename std::greater< typename
                                                                                                                TInputImage
-                                                                                                               ::PixelType > > >  Superclass;
+                                                                                                               ::
+                                                                                                               PixelType > > >
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -91,6 +94,7 @@ protected:
 private:
   MovingHistogramDilateImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                   //purposely not implemented
+
 };                                                // end of class
 } // end namespace itk
 

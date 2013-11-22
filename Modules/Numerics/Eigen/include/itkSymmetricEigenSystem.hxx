@@ -115,6 +115,7 @@ SymmetricEigenSystem< TMatrixElement, VNumberOfRows >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

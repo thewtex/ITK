@@ -16,60 +16,66 @@
  *
  *=========================================================================*/
 
-
 #include "itkFastMarchingExtensionImageFilterBase.h"
 #include "itkFastMarchingThresholdStoppingCriterion.h"
 #include "itkCommand.h"
 
-
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 }
 
-int itkFastMarchingExtensionImageFilterTest(int, char* [] )
+int
+itkFastMarchingExtensionImageFilterTest(int, char* [] )
 {
   // create a fastmarching object
   const unsigned int Dimension = 2;
+
   typedef float PixelType;
 
   typedef itk::Image< PixelType, Dimension > FloatImageType;
 
   typedef itk::FastMarchingThresholdStoppingCriterion< FloatImageType, FloatImageType >
-      CriterionType;
+    CriterionType;
   CriterionType::Pointer criterion = CriterionType::New();
   criterion->SetThreshold( 100. );
 
   typedef itk::FastMarchingExtensionImageFilterBase<
       FloatImageType, FloatImageType, unsigned char, 1 >
-      MarcherType;
+    MarcherType;
 
   MarcherType::Pointer marcher = MarcherType::New();
   marcher->SetStoppingCriterion( criterion );
 
-  ShowProgressObject progressWatch(marcher);
+  ShowProgressObject                                    progressWatch(marcher);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
                                &ShowProgressObject::ShowProgress);
   marcher->AddObserver( itk::ProgressEvent(), command);
 
-
   bool passed;
 
   // setup trial points
-  typedef MarcherType::NodeType               NodeType;
-  typedef MarcherType::NodePairType           NodePairType;
-  typedef MarcherType::NodePairContainerType  NodePairContainerType;
+  typedef MarcherType::NodeType              NodeType;
+  typedef MarcherType::NodePairType          NodePairType;
+  typedef MarcherType::NodePairContainerType NodePairContainerType;
 
   // setup alive points
   NodePairContainerType::Pointer AlivePoints = NodePairContainerType::New();
@@ -85,7 +91,6 @@ int itkFastMarchingExtensionImageFilterTest(int, char* [] )
   AlivePoints->push_back( NodePairType( index, 42. ) );
 
   marcher->SetAlivePoints( AlivePoints );
-
 
   // setup trial points
   NodePairContainerType::Pointer TrialPoints = NodePairContainerType::New();
@@ -118,7 +123,7 @@ int itkFastMarchingExtensionImageFilterTest(int, char* [] )
   marcher->SetOutputSize( size );
 
   // setup a speed image of ones
-  FloatImageType::Pointer speedImage = FloatImageType::New();
+  FloatImageType::Pointer    speedImage = FloatImageType::New();
   FloatImageType::RegionType region;
   region.SetSize( size );
   speedImage->SetLargestPossibleRegion( region );
@@ -126,7 +131,7 @@ int itkFastMarchingExtensionImageFilterTest(int, char* [] )
   speedImage->Allocate();
 
   itk::ImageRegionIterator<FloatImageType>
-    speedIter( speedImage, speedImage->GetBufferedRegion() );
+  speedIter( speedImage, speedImage->GetBufferedRegion() );
   while ( !speedIter.IsAtEnd() )
     {
     speedIter.Set( 1.0 );
@@ -149,8 +154,8 @@ int itkFastMarchingExtensionImageFilterTest(int, char* [] )
     }
   if ( !passed ) { return EXIT_FAILURE; }
 
-  typedef MarcherType::AuxValueVectorType     VectorType;
-  typedef MarcherType::AuxValueContainerType  AuxValueContainerType;
+  typedef MarcherType::AuxValueVectorType    VectorType;
+  typedef MarcherType::AuxValueContainerType AuxValueContainerType;
 
   AuxValueContainerType::Pointer auxAliveValues = AuxValueContainerType::New();
 
@@ -169,7 +174,6 @@ int itkFastMarchingExtensionImageFilterTest(int, char* [] )
     std::cout << err << std::endl;
     }
   if ( !passed ) { return EXIT_FAILURE; }
-
 
   VectorType vector;
   vector[0] = 48;
@@ -211,7 +215,6 @@ int itkFastMarchingExtensionImageFilterTest(int, char* [] )
     }
   if ( !passed ) { return EXIT_FAILURE; }
 
-
   auxTrialValues->push_back( vector );
   auxTrialValues->push_back( vector );
   auxTrialValues->push_back( vector );
@@ -234,23 +237,22 @@ int itkFastMarchingExtensionImageFilterTest(int, char* [] )
     }
   if ( !passed ) { return EXIT_FAILURE; }
 
-
   // check the results
   passed = true;
   FloatImageType::Pointer output = marcher->GetOutput();
   itk::ImageRegionIterator<FloatImageType>
-    iterator( output, output->GetBufferedRegion() );
+  iterator( output, output->GetBufferedRegion() );
 
   typedef MarcherType::AuxImageType AuxImageType;
   AuxImageType::Pointer auxImage = marcher->GetAuxiliaryImage(0);
   itk::ImageRegionIterator<AuxImageType>
-    auxIterator( auxImage, auxImage->GetBufferedRegion() );
+  auxIterator( auxImage, auxImage->GetBufferedRegion() );
 
   while( !iterator.IsAtEnd() )
     {
     FloatImageType::IndexType tempIndex;
-    double distance;
-    float outputValue;
+    double                    distance;
+    float                     outputValue;
 
     tempIndex = iterator.GetIndex();
     tempIndex -= offset0;

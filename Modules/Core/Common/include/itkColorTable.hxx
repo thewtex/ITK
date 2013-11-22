@@ -75,10 +75,10 @@ ColorTable< TPixel >
   if (NumericTraits<TPixel>::is_integer)
     {
     scale =
-      static_cast< typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::max()) -
-      static_cast<  typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::NonpositiveMin());
+      static_cast< typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::max() ) -
+      static_cast<  typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::NonpositiveMin() );
     shift =
-      static_cast<  typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::NonpositiveMin());
+      static_cast<  typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::NonpositiveMin() );
     }
   else
     {
@@ -86,39 +86,39 @@ ColorTable< TPixel >
     shift = NumericTraits< TPixel >::Zero;
     }
 
-  m_Color[0].Set((TPixel)(0.9 * scale + shift),
-                 (TPixel)(              shift),
-                 (TPixel)(              shift) );
+  m_Color[0].Set( (TPixel)(0.9 * scale + shift),
+                  (TPixel)(              shift),
+                  (TPixel)(              shift) );
   m_ColorName[0] = "Red";
 
-  m_Color[1].Set((TPixel)(0.8 * scale + shift),
-                 (TPixel)(              shift),
-                 (TPixel)(0.8 * scale + shift));
+  m_Color[1].Set( (TPixel)(0.8 * scale + shift),
+                  (TPixel)(              shift),
+                  (TPixel)(0.8 * scale + shift) );
   m_ColorName[1] = "Purple";
 
-  m_Color[2].Set((TPixel)(              shift),
-                 (TPixel)(0.8 * scale + shift),
-                 (TPixel)(0.8 * scale + shift));
+  m_Color[2].Set( (TPixel)(              shift),
+                  (TPixel)(0.8 * scale + shift),
+                  (TPixel)(0.8 * scale + shift) );
   m_ColorName[2] = "Aqua";
 
-  m_Color[3].Set((TPixel)(0.8 * scale + shift),
-                 (TPixel)(0.8 * scale + shift),
-                 (TPixel)(              shift));
+  m_Color[3].Set( (TPixel)(0.8 * scale + shift),
+                  (TPixel)(0.8 * scale + shift),
+                  (TPixel)(              shift) );
   m_ColorName[3] = "Yellow";
 
-  m_Color[4].Set((TPixel)(              shift),
-                 (TPixel)(0.9 * scale + shift),
-                 (TPixel)(              shift));
+  m_Color[4].Set( (TPixel)(              shift),
+                  (TPixel)(0.9 * scale + shift),
+                  (TPixel)(              shift) );
   m_ColorName[4] = "Green";
 
-  m_Color[5].Set((TPixel)(              shift),
-                 (TPixel)(              shift),
-                 (TPixel)(0.9 * scale + shift));
+  m_Color[5].Set( (TPixel)(              shift),
+                  (TPixel)(              shift),
+                  (TPixel)(0.9 * scale + shift) );
   m_ColorName[5] = "Blue";
 
-  m_Color[6].Set((TPixel)(0.7 * scale + shift),
-                 (TPixel)(0.7 * scale + shift),
-                 (TPixel)(0.7 * scale + shift));
+  m_Color[6].Set( (TPixel)(0.7 * scale + shift),
+                  (TPixel)(0.7 * scale + shift),
+                  (TPixel)(0.7 * scale + shift) );
   m_ColorName[6] = "Grey0.70";
   //
   // to avoid numeric exception, need to make
@@ -127,9 +127,9 @@ ColorTable< TPixel >
   // on this assignment, even if realMax was
   // set to NumericTraits<TPixel>::max().
   typename NumericTraits< TPixel >::RealType
-    realMax(1.0 * scale + shift);
-  TPixel pixelMax(NumericTraits< TPixel >::max());
-  if(realMax < NumericTraits< TPixel >::max())
+         realMax(1.0 * scale + shift);
+  TPixel pixelMax(NumericTraits< TPixel >::max() );
+  if(realMax < NumericTraits< TPixel >::max() )
     {
     pixelMax = static_cast< TPixel >(realMax);
     }
@@ -155,8 +155,8 @@ ColorTable< TPixel >
   if (NumericTraits<TPixel>::is_integer)
     {
     range =
-      static_cast< typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::max()) -
-      static_cast<  typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::NonpositiveMin());
+      static_cast< typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::max() ) -
+      static_cast<  typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::NonpositiveMin() );
     minimum = NumericTraits< TPixel >::NonpositiveMin();
     }
   else
@@ -211,10 +211,10 @@ ColorTable< TPixel >
   if (NumericTraits<TPixel>::is_integer)
     {
     scale =
-      static_cast< typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::max()) -
-      static_cast<  typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::NonpositiveMin());
+      static_cast< typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::max() ) -
+      static_cast<  typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::NonpositiveMin() );
     shift =
-      static_cast<  typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::NonpositiveMin());
+      static_cast<  typename NumericTraits< TPixel >::RealType>(NumericTraits< TPixel >::NonpositiveMin() );
     }
   else
     {
@@ -226,14 +226,14 @@ ColorTable< TPixel >
     //
     // avoid overflow
     typename NumericTraits < TPixel >::RealType
-      realR((( i + 1 ) / ( n / 2.0 + 1 ) ) * scale + shift);
-    TPixel r(NumericTraits< TPixel >::max());
-    if(realR < NumericTraits< TPixel >::max())
+           realR( ( ( i + 1 ) / ( n / 2.0 + 1 ) ) * scale + shift);
+    TPixel r(NumericTraits< TPixel >::max() );
+    if(realR < NumericTraits< TPixel >::max() )
       {
       r = static_cast< TPixel >(realR);
       }
-    TPixel g(static_cast<TPixel>( shift));
-    TPixel b(static_cast<TPixel>( shift));
+    TPixel g(static_cast<TPixel>( shift) );
+    TPixel b(static_cast<TPixel>( shift) );
     m_Color[i].Set(r,g,b);
     std::ostringstream name;
     name << "Heat" << std::fixed << std::setprecision(2)
@@ -244,19 +244,19 @@ ColorTable< TPixel >
   for ( i = 0; i < n / 2; i++ )
     {
     typename NumericTraits< TPixel >::RealType
-      rdouble(1.0 * scale + shift);
-    TPixel r(NumericTraits<TPixel>::max());
+           rdouble(1.0 * scale + shift);
+    TPixel r(NumericTraits<TPixel>::max() );
     if( rdouble < NumericTraits<TPixel>::max() )
       {
       r = static_cast<TPixel>(rdouble);
       }
-    TPixel g = static_cast<TPixel>((( i + 1 ) / ( n / 2.0 + 1 )) * scale + shift);
-    TPixel b = static_cast<TPixel>((( i + 1 ) / ( n / 2.0 + 1 )) * scale + shift);
+    TPixel g = static_cast<TPixel>( ( ( i + 1 ) / ( n / 2.0 + 1 ) ) * scale + shift);
+    TPixel b = static_cast<TPixel>( ( ( i + 1 ) / ( n / 2.0 + 1 ) ) * scale + shift);
     m_Color[(size_t)(i + n / 2.0 )].Set(r,g,b);
     std::ostringstream name;
     name << "Heat" << std::fixed << std::setprecision(2)
          << ( i + n / 2.0 ) / (float)n;
-    m_ColorName[static_cast<size_t>(( i + n / 2.0 ))] = name.str();
+    m_ColorName[static_cast<size_t>( ( i + n / 2.0 ) )] = name.str();
     }
 }
 
@@ -286,11 +286,11 @@ ColorTable< TPixel >
     }
   for ( i = 0; i < n; i++ )
     {
-      r = static_cast< TPixel >( vnl_sample_uniform( minimum, maximum));
+    r = static_cast< TPixel >( vnl_sample_uniform( minimum, maximum) );
     m_Color[i][0] = r;
-    g = static_cast< TPixel >( vnl_sample_uniform( minimum, maximum));
+    g = static_cast< TPixel >( vnl_sample_uniform( minimum, maximum) );
     m_Color[i][1] = g;
-    b = static_cast< TPixel >( vnl_sample_uniform( minimum, maximum));
+    b = static_cast< TPixel >( vnl_sample_uniform( minimum, maximum) );
     m_Color[i][2] = b;
     std::ostringstream name;
     name << "Random(" << std::fixed << std::setprecision(2)
@@ -402,11 +402,11 @@ ColorTable< TPixel >
     {
     double match;
     match = ( r - (double)m_Color[i].GetRed() )
-            * ( r - (double)m_Color[i].GetRed() );
+      * ( r - (double)m_Color[i].GetRed() );
     match += ( g - (double)m_Color[i].GetGreen() )
-             * ( g - (double)m_Color[i].GetGreen() );
+      * ( g - (double)m_Color[i].GetGreen() );
     match += ( b - (double)m_Color[i].GetGreen() )
-             * ( b - (double)m_Color[i].GetBlue() );
+      * ( b - (double)m_Color[i].GetBlue() );
     if ( i == 0 || match < bestMatch )
       {
       bestMatch = match;
@@ -415,6 +415,7 @@ ColorTable< TPixel >
     }
   return bestMatchColor;
 }
+
 } // namespace itk
 
 #endif

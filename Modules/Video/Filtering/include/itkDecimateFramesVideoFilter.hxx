@@ -41,7 +41,6 @@ DecimateFramesVideoFilter()
   this->SetPreservedFrameSpacing(2);
 }
 
-
 //
 // PrintSelf
 //
@@ -51,11 +50,11 @@ DecimateFramesVideoFilter<TVideoStream>::
 PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent
      << "NumberOfFrames: " << this->TemporalProcessObject::m_UnitInputNumberOfFrames
      << std::endl;
 }
-
 
 //
 // SetPreservedFrameSpacing
@@ -69,7 +68,6 @@ SetPreservedFrameSpacing(SizeValueType numFrames)
   this->Modified();
 }
 
-
 //
 // GetPreservedFrameSpacing
 //
@@ -81,7 +79,6 @@ GetPreservedFrameSpacing()
   return this->TemporalProcessObject::m_FrameSkipPerOutput;
 }
 
-
 //
 // ThreadedGenerateData
 //
@@ -89,11 +86,11 @@ template<typename TVideoStream>
 void
 DecimateFramesVideoFilter<TVideoStream>::
 ThreadedGenerateData(const FrameSpatialRegionType& outputRegionForThread,
-                     int itkNotUsed(threadId))
+                     int itkNotUsed(threadId) )
 {
   // Get the input and output video streams
   const InputVideoStreamType* input = this->GetInput();
-  OutputVideoStreamType* output = this->GetOutput();
+  OutputVideoStreamType*      output = this->GetOutput();
 
   // Get input and output frame numbers
   typename OutputVideoStreamType::TemporalRegionType outReqTempRegion =
@@ -111,14 +108,14 @@ ThreadedGenerateData(const FrameSpatialRegionType& outputRegionForThread,
   // Get iterators for requested region of input and output frames
   typedef ImageRegionConstIterator<FrameType> InputIterType;
   typedef ImageRegionIterator<FrameType>      OutputIterType;
-  InputIterType inIter(input->GetFrame(inFrameNum), outputRegionForThread);
+  InputIterType  inIter(input->GetFrame(inFrameNum), outputRegionForThread);
   OutputIterType outIter(output->GetFrame(outFrameNum), outputRegionForThread);
 
   // Pass the values from input to output
-  while(!outIter.IsAtEnd())
+  while(!outIter.IsAtEnd() )
     {
     // Compute the average and set the output pixel's value
-    outIter.Set(inIter.Get());
+    outIter.Set(inIter.Get() );
 
     // Update the iterators
     ++outIter;

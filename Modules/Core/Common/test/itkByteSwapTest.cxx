@@ -19,19 +19,19 @@
 #include <iostream>
 #include "itkByteSwapper.h"
 
-int itkByteSwapTest ( int, char*[] )
+int
+itkByteSwapTest( int, char*[] )
 {
   // Test out the Byte Swap code
 
   std::cout << "Starting test" << std::endl;
 
-  unsigned char uc = 'a', uc1 = 'a';
+  unsigned char  uc = 'a', uc1 = 'a';
   unsigned short us = 1, us1 = 1;
-  unsigned int ui = 1, ui1 = 1;
-  unsigned long ul = 1, ul1 = 1;
-  float f = 1.0, f1 = 1.0;
-  double d = 1.0, d1 = 1.0;
-
+  unsigned int   ui = 1, ui1 = 1;
+  unsigned long  ul = 1, ul1 = 1;
+  float          f = 1.0, f1 = 1.0;
+  double         d = 1.0, d1 = 1.0;
 
   // Try to swap a char
 
@@ -91,7 +91,6 @@ int itkByteSwapTest ( int, char*[] )
     return EXIT_FAILURE;
     }
   std::cout << "Passed unsigned int: " << ui << std::endl;
-
 
   try
     {

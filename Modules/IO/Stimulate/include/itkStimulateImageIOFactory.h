@@ -38,7 +38,7 @@ namespace itk
  * \brief Create instances of StimulateImageIO objects using an object factory.
  * \ingroup ITKIOStimulate
  */
-class ITKIOStimulate_EXPORT StimulateImageIOFactory:public ObjectFactoryBase
+class ITKIOStimulate_EXPORT StimulateImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -59,7 +59,8 @@ public:
   itkTypeMacro(StimulateImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     StimulateImageIOFactory::Pointer stimulateFactory = StimulateImageIOFactory::New();
 
@@ -73,6 +74,7 @@ protected:
 private:
   StimulateImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);          //purposely not implemented
+
 };
 } // end namespace itk
 

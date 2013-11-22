@@ -23,8 +23,8 @@
 #include "itkImageFileWriter.h"
 #include "itkFilterWatcher.h"
 
-
-int itkInverseDeformationFieldImageFilterTest( int argc, char * argv[] )
+int
+itkInverseDeformationFieldImageFilterTest( int argc, char * argv[] )
 {
 
   if( argc < 2 )
@@ -35,17 +35,17 @@ int itkInverseDeformationFieldImageFilterTest( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const     unsigned int   Dimension = 2;
-  typedef   float          VectorComponentType;
+  const     unsigned int Dimension = 2;
+  typedef   float VectorComponentType;
 
-  typedef   itk::Vector< VectorComponentType, Dimension >    VectorType;
+  typedef   itk::Vector< VectorComponentType, Dimension > VectorType;
 
-  typedef itk::Image< VectorType,  Dimension >   DeformationFieldType;
+  typedef itk::Image< VectorType,  Dimension > DeformationFieldType;
 
   typedef itk::InverseDeformationFieldImageFilter<
-                                    DeformationFieldType,
-                                    DeformationFieldType
-                                             >  FilterType;
+      DeformationFieldType,
+      DeformationFieldType
+      >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
@@ -60,9 +60,9 @@ int itkInverseDeformationFieldImageFilterTest( int argc, char * argv[] )
   DeformationFieldType::PointType origin;
   origin.Fill( 0.0 );
 
-  DeformationFieldType::RegionType     region;
-  DeformationFieldType::SizeType       size;
-  DeformationFieldType::IndexType      start;
+  DeformationFieldType::RegionType region;
+  DeformationFieldType::SizeType   size;
+  DeformationFieldType::IndexType  start;
 
   size[0] = 128;
   size[1] = 128;
@@ -72,7 +72,6 @@ int itkInverseDeformationFieldImageFilterTest( int argc, char * argv[] )
 
   region.SetSize( size );
   region.SetIndex( start );
-
 
   field->SetOrigin( origin );
   field->SetSpacing( spacing );
@@ -99,16 +98,13 @@ int itkInverseDeformationFieldImageFilterTest( int argc, char * argv[] )
   // different geometry should be used.
   filter->SetOutputSpacing( spacing );
 
-
   // keep the origin
   filter->SetOutputOrigin( origin );
 
   // set the size
   filter->SetSize( size );
 
-
   filter->SetInput( field );
-
 
   filter->SetSubsamplingFactor( 16 );
 
@@ -127,7 +123,7 @@ int itkInverseDeformationFieldImageFilterTest( int argc, char * argv[] )
 
   WriterType::Pointer writer = WriterType::New();
 
-  writer->SetInput (filter->GetOutput());
+  writer->SetInput (filter->GetOutput() );
   writer->SetFileName( argv[1] );
 
   try

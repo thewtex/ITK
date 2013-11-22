@@ -18,7 +18,6 @@
 #ifndef __itkWatershedBoundaryResolver_h
 #define __itkWatershedBoundaryResolver_h
 
-
 #include "itkWatershedSegmenter.h"
 
 namespace itk
@@ -61,7 +60,7 @@ namespace watershed
  * \ingroup ITKWatersheds
  */
 template< typename TPixelType, unsigned int TDimension >
-class BoundaryResolver:public ProcessObject
+class BoundaryResolver : public ProcessObject
 {
 public:
   /** Set up smart pointer and object factory definitions.   */
@@ -83,16 +82,30 @@ public:
   typedef DataObject::Pointer                          DataObjectPointer;
 
   /** Set/Get the first of two boundaries that are to be resolved.   */
-  void SetBoundaryA(BoundaryType *bd)
-  { this->ProcessObject::SetNthInput(0, bd); }
-  typename BoundaryType::Pointer GetBoundaryA()
-  { return static_cast< BoundaryType * >( this->GetInput(0) );  }
+  void
+  SetBoundaryA(BoundaryType *bd)
+  {
+    this->ProcessObject::SetNthInput(0, bd);
+  }
+
+  typename BoundaryType::Pointer
+  GetBoundaryA()
+  {
+    return static_cast< BoundaryType * >( this->GetInput(0) );
+  }
 
   /** Set/Get the second of two boundaries that are to be resolved.  */
-  void SetBoundaryB(BoundaryType *bd)
-  { this->ProcessObject::SetNthInput(1, bd); }
-  typename BoundaryType::Pointer GetBoundaryB()
-  { return static_cast< BoundaryType * >( this->GetInput(1) );  }
+  void
+  SetBoundaryB(BoundaryType *bd)
+  {
+    this->ProcessObject::SetNthInput(1, bd);
+  }
+
+  typename BoundaryType::Pointer
+  GetBoundaryB()
+  {
+    return static_cast< BoundaryType * >( this->GetInput(1) );
+  }
 
   /**  Set/Get the face of the boundary object that we are going to
    *  resolve. */
@@ -102,9 +115,14 @@ public:
   /** This method sets/gets the equivalency table used to store equivalencies
    *  among segments that are generated from the boundary resolution
    *  algorithm.  */
-  void SetEquivalencyTable(EquivalencyTableType::Pointer a)
-  { this->ProcessObject::SetNthOutput( 0, a.GetPointer() ); }
-  EquivalencyTableType::Pointer GetEquivalencyTable()
+  void
+  SetEquivalencyTable(EquivalencyTableType::Pointer a)
+  {
+    this->ProcessObject::SetNthOutput( 0, a.GetPointer() );
+  }
+
+  EquivalencyTableType::Pointer
+  GetEquivalencyTable()
   {
     return static_cast< EquivalencyTableType * >
            ( this->ProcessObject::GetOutput(0) );
@@ -119,7 +137,7 @@ public:
   virtual DataObjectPointer MakeOutput(DataObjectPointerArraySizeType idx);
 
 protected:
-  BoundaryResolver():m_Face(0)
+  BoundaryResolver() : m_Face(0)
   {
     EquivalencyTable::Pointer eq =
       static_cast< EquivalencyTable * >( this->MakeOutput(0).GetPointer() );
@@ -128,13 +146,16 @@ protected:
     this->ProcessObject::SetNthOutput( 0, eq.GetPointer() );
   }
 
-  virtual ~BoundaryResolver() {}
+  virtual
+  ~BoundaryResolver() {}
   BoundaryResolver(const Self &) {}
-  void operator=(const Self &) {}
+  void
+  operator=(const Self &) {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   unsigned short m_Face;
   void GenerateOutputRequestedRegion(DataObject *output);
+
 };
 } // end namespace watershed
 } // end namespace itk

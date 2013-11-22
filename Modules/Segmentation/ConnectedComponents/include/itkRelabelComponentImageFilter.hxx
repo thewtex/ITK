@@ -37,6 +37,7 @@ RelabelComponentImageFilter< TInputImage, TOutputImage >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
@@ -232,8 +233,8 @@ RelabelComponentImageFilter< TInputImage, TOutputImage >
   os << indent << "MinimumObjectSizez: " << m_MinimumObjectSize << std::endl;
 
   typename ObjectSizeInPixelsContainerType::const_iterator it;
-  ObjectSizeInPhysicalUnitsContainerType::const_iterator   fit;
-  LabelType                                                i;
+  ObjectSizeInPhysicalUnitsContainerType::const_iterator fit;
+  LabelType                                              i;
 
   // limit the number of objects to print
   LabelType numPrint = m_NumberOfObjectsToPrint;
@@ -254,6 +255,7 @@ RelabelComponentImageFilter< TInputImage, TOutputImage >
     os << indent << "..." << std::endl;
     }
 }
+
 } // end namespace itk
 
 #endif

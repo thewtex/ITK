@@ -64,8 +64,9 @@ namespace itk
  */
 /* THistogramMeasurement -- The precision level for which to do
   HistogramMeasurmenets */
-template< typename TInputImage, typename TOutputImage, typename THistogramMeasurement = typename TInputImage::PixelType >
-class HistogramMatchingImageFilter:
+template< typename TInputImage, typename TOutputImage, typename THistogramMeasurement =
+            typename TInputImage::PixelType >
+class HistogramMatchingImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -106,10 +107,17 @@ public:
   typedef typename HistogramType::Pointer                HistogramPointer;
 
   /** Set/Get the source image. */
-  void SetSourceImage(const InputImageType *source)
-  { this->SetInput(source); }
-  const InputImageType * GetSourceImage(void)
-  { return this->GetInput(); }
+  void
+  SetSourceImage(const InputImageType *source)
+  {
+    this->SetInput(source);
+  }
+
+  const InputImageType *
+  GetSourceImage(void)
+  {
+    return this->GetInput();
+  }
 
   /** Set/Get the reference image. */
   void SetReferenceImage(const InputImageType *reference);
@@ -179,7 +187,8 @@ protected:
    *
    * \sa ProcessObject::VerifyInputInformation
    */
-  virtual void VerifyInputInformation() {}
+  virtual void
+  VerifyInputInformation() {}
 
   /** Compute min, max and mean of an image. */
   void ComputeMinMaxMean(const InputImageType *image,

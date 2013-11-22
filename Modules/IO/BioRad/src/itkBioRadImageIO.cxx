@@ -40,12 +40,12 @@ namespace itk
 {
 union Aligned4ByteUnion {
   float localFloatMagFactor;
-  int   localIntNoteNext;
-  char  localChar4Array[4];
-};
+  int localIntNoteNext;
+  char localChar4Array[4];
+  };
 
 struct bioradheader
-{
+  {
   unsigned short nx, ny;               // 0   2*2  image width and height in
   // pixels
   unsigned short npic;                 // 4   2    number of images in file
@@ -65,17 +65,17 @@ struct bioradheader
   // magnification
   char mag_factor[4];                  // 66  4    4 byte real mag. factor (old ver.)
   unsigned char reserved[6];           // 70  6    NOT USED (old ver.=real lens mag.)
-};
+  };
 
 typedef enum
-{
+  {
   NOTE_STATUS_ALL      = 0x0100,
   NOTE_STATUS_DISPLAY  = 0x0200,
   NOTE_STATUS_POSITION = 0x0400
-} biorad_notestatus;
+  } biorad_notestatus;
 
 typedef enum
-{
+  {
   NOTE_TYPE_LIVE       = 1,     // info about live collection
   NOTE_TYPE_FILE1      = 2,     // note from image #1
   NOTE_TYPE_NUMBER     = 3,     // number in multiple image file
@@ -91,10 +91,10 @@ typedef enum
   NOTE_TYPE_STRUCTURE  = 21,    // again internal variable, as a
                                 // structure.
   NOTE_TYPE_4D_SERIES  = 22     // 4D acquisition information
-} biorad_notetype;
+  } biorad_notetype;
 
 struct bioradnote
-{
+  {
   short level;                  //  0 level of note -- no longer
                                 //    used
   char next[4];                 //  2 indicates there is a note
@@ -108,7 +108,7 @@ struct bioradnote
   short x;                      // 12 x coordinate for note
   short y;                      // 14 y coordinate for note
   char text[80];                // 16 info, maybe not null terminated
-};
+  };
 
 BioRadImageIO::BioRadImageIO()
 {
@@ -126,8 +126,9 @@ BioRadImageIO::BioRadImageIO()
 BioRadImageIO::~BioRadImageIO()
 {}
 
-bool BioRadImageIO::OpenBioRadFileForReading(std::ifstream & os,
-                                             const char *filename)
+bool
+BioRadImageIO::OpenBioRadFileForReading(std::ifstream & os,
+                                        const char *filename)
 
 {
   // Make sure that we have a file to
@@ -157,8 +158,9 @@ bool BioRadImageIO::OpenBioRadFileForReading(std::ifstream & os,
   return true;
 }
 
-bool BioRadImageIO::OpenBioRadFileForWriting(std::ofstream & os,
-                                             const char *filename)
+bool
+BioRadImageIO::OpenBioRadFileForWriting(std::ofstream & os,
+                                        const char *filename)
 {
   // Make sure that we have a file to
   if ( *filename == 0 )
@@ -190,7 +192,8 @@ bool BioRadImageIO::OpenBioRadFileForWriting(std::ofstream & os,
 
 // This method will only test if the header looks like a
 // BioRad image file.
-bool BioRadImageIO::CanReadFile(const char *filename)
+bool
+BioRadImageIO::CanReadFile(const char *filename)
 {
   std::ifstream file;
   std::string   fname(filename);
@@ -238,7 +241,8 @@ bool BioRadImageIO::CanReadFile(const char *filename)
   return file_id == BIORAD_MAGIC_NUMBER;
 }
 
-void BioRadImageIO::Read(void *buffer)
+void
+BioRadImageIO::Read(void *buffer)
 {
   std::ifstream file;
 
@@ -264,7 +268,8 @@ void BioRadImageIO::Read(void *buffer)
   file.close();
 }
 
-void BioRadImageIO::InternalReadImageInformation(std::ifstream & file)
+void
+BioRadImageIO::InternalReadImageInformation(std::ifstream & file)
 {
   //read .pic file (header)
   if ( !this->OpenBioRadFileForReading( file, m_FileName.c_str() ) )
@@ -284,37 +289,37 @@ void BioRadImageIO::InternalReadImageInformation(std::ifstream & file)
 
   //byteswap header fields
   ByteSwapper< unsigned short >::
-    SwapFromSystemToLittleEndian( &h.nx);
+  SwapFromSystemToLittleEndian( &h.nx);
   ByteSwapper< unsigned short >::
-    SwapFromSystemToLittleEndian( &h.ny);
+  SwapFromSystemToLittleEndian( &h.ny);
   ByteSwapper< unsigned short >::
-    SwapFromSystemToLittleEndian( &h.npic);
+  SwapFromSystemToLittleEndian( &h.npic);
   ByteSwapper< unsigned short >::
-    SwapFromSystemToLittleEndian( &h.ramp1_min);
+  SwapFromSystemToLittleEndian( &h.ramp1_min);
   ByteSwapper< unsigned short >::
-    SwapFromSystemToLittleEndian( &h.ramp1_max);
+  SwapFromSystemToLittleEndian( &h.ramp1_max);
   ByteSwapper< short >::
-    SwapFromSystemToLittleEndian( &h.byte_format);
+  SwapFromSystemToLittleEndian( &h.byte_format);
   ByteSwapper< short >::
-    SwapFromSystemToLittleEndian( &h.image_number);
+  SwapFromSystemToLittleEndian( &h.image_number);
   ByteSwapper< short >::
-    SwapFromSystemToLittleEndian( &h.image_number);
+  SwapFromSystemToLittleEndian( &h.image_number);
   ByteSwapper< short >::
-    SwapFromSystemToLittleEndian( &h.merged);
+  SwapFromSystemToLittleEndian( &h.merged);
   ByteSwapper< unsigned short >::
-    SwapFromSystemToLittleEndian( &h.color1);
+  SwapFromSystemToLittleEndian( &h.color1);
   ByteSwapper< unsigned short >::
-    SwapFromSystemToLittleEndian( &h.file_id);
+  SwapFromSystemToLittleEndian( &h.file_id);
   ByteSwapper< unsigned short >::
-    SwapFromSystemToLittleEndian( &h.ramp2_min);
+  SwapFromSystemToLittleEndian( &h.ramp2_min);
   ByteSwapper< unsigned short >::
-    SwapFromSystemToLittleEndian( &h.ramp2_max);
+  SwapFromSystemToLittleEndian( &h.ramp2_max);
   ByteSwapper< unsigned short >::
-    SwapFromSystemToLittleEndian( &h.color2);
+  SwapFromSystemToLittleEndian( &h.color2);
   ByteSwapper< short >::
-    SwapFromSystemToLittleEndian( &h.edited);
+  SwapFromSystemToLittleEndian( &h.edited);
   ByteSwapper< short >::
-    SwapFromSystemToLittleEndian( &h.lens);
+  SwapFromSystemToLittleEndian( &h.lens);
   Aligned4ByteUnion localMagFactor;
   memcpy(localMagFactor.localChar4Array, h.mag_factor, 4);
   ByteSwapper< float >::SwapFromSystemToLittleEndian( &(localMagFactor.localFloatMagFactor) );
@@ -361,9 +366,9 @@ void BioRadImageIO::InternalReadImageInformation(std::ifstream & file)
       itkExceptionMacro(<< "Cannot read requested file");
       }
     }
-  int punt(0);
+  int          punt(0);
   unsigned int notes;
-  memcpy(&notes,h.notes,sizeof(notes));
+  memcpy(&notes,h.notes,sizeof(notes) );
   ByteSwapper< unsigned int >::SwapFromSystemToLittleEndian(&notes);
   if(notes != 0)
     {
@@ -381,13 +386,13 @@ void BioRadImageIO::InternalReadImageInformation(std::ifstream & file)
       {
       itkExceptionMacro("BIORadImageIO:Problem with structure alignmet");
       }
-    while(!file.eof())
+    while(!file.eof() )
       {
-      file.read((char *)&note,sizeof(note));
+      file.read( (char *)&note,sizeof(note) );
       ByteSwapper<short>::SwapFromSystemToLittleEndian(&note.level);
       Aligned4ByteUnion localNext;
       memcpy(localNext.localChar4Array, note.next, 4);
-      ByteSwapper<int>::SwapFromSystemToLittleEndian(&(localNext.localIntNoteNext));
+      ByteSwapper<int>::SwapFromSystemToLittleEndian(&(localNext.localIntNoteNext) );
       memcpy(note.next, localNext.localChar4Array, 4);
       ByteSwapper<short>::SwapFromSystemToLittleEndian(&note.num);
       ByteSwapper<short>::SwapFromSystemToLittleEndian(&note.status);
@@ -398,13 +403,13 @@ void BioRadImageIO::InternalReadImageInformation(std::ifstream & file)
       if(note.type == NOTE_TYPE_VARIABLE)
         {
         punt = false;
-        std::string note_text(note.text);
+        std::string        note_text(note.text);
         std::istringstream ss(note_text);
-        std::string label;
+        std::string        label;
         ss >> label;
         short type;
         ss >> type;
-        if((type & 0x00ff) != 1)
+        if( (type & 0x00ff) != 1)
           {
           continue;
           }
@@ -450,7 +455,8 @@ void BioRadImageIO::InternalReadImageInformation(std::ifstream & file)
     }
 }
 
-void BioRadImageIO::ReadImageInformation()
+void
+BioRadImageIO::ReadImageInformation()
 {
   std::ifstream file;
 
@@ -458,7 +464,8 @@ void BioRadImageIO::ReadImageInformation()
   file.close();
 }
 
-bool BioRadImageIO::CanWriteFile(const char *name)
+bool
+BioRadImageIO::CanWriteFile(const char *name)
 {
   std::string filename = name;
 
@@ -485,7 +492,8 @@ bool BioRadImageIO::CanWriteFile(const char *name)
   return true;
 }
 
-void BioRadImageIO::Write(const void *buffer)
+void
+BioRadImageIO::Write(const void *buffer)
 {
   std::ofstream file;
 
@@ -555,7 +563,7 @@ void BioRadImageIO::Write(const void *buffer)
   // To be able to deduce pixel spacing:
   Aligned4ByteUnion mag_factor;
   mag_factor.localFloatMagFactor = static_cast< float >( m_Spacing[0] );
-  ByteSwapper< float >::SwapFromSystemToLittleEndian(&(mag_factor.localFloatMagFactor));
+  ByteSwapper< float >::SwapFromSystemToLittleEndian(&(mag_factor.localFloatMagFactor) );
   memcpy(header.mag_factor, mag_factor.localChar4Array, 4);
   // Set the filename
   // NOTES: This is not very clear what should be written here, some files
@@ -588,8 +596,10 @@ void BioRadImageIO::Write(const void *buffer)
   file.close();
 }
 
-void BioRadImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+BioRadImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk

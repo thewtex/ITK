@@ -60,14 +60,14 @@ OpeningByReconstructionImageFilter, ClosingByReconstructionImageFilter, Reconstr
  */
 
 template< typename TInputImage, typename TOutputImage >
-class ReconstructionByDilationImageFilter:
+class ReconstructionByDilationImageFilter :
   public ReconstructionImageFilter< TInputImage, TOutputImage, std::greater< typename TOutputImage::PixelType > >
 {
 public:
   typedef ReconstructionByDilationImageFilter Self;
   typedef ReconstructionImageFilter<
-    TInputImage, TOutputImage, std::greater< typename TOutputImage::PixelType > >
-  Superclass;
+      TInputImage, TOutputImage, std::greater< typename TOutputImage::PixelType > >
+    Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -110,12 +110,14 @@ protected:
     this->m_MarkerValue = NumericTraits< typename TOutputImage::PixelType >::NonpositiveMin();
   }
 
-  virtual ~ReconstructionByDilationImageFilter() {}
+  virtual
+  ~ReconstructionByDilationImageFilter() {}
 
 private:
   //purposely not implemented
   ReconstructionByDilationImageFilter(const Self &);
   void operator=(const Self &);
+
 };
 // end ReconstructionByDilationImageFilter
 }

@@ -22,10 +22,10 @@
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkDicomImageIOTest(int ac, char* av[])
+int
+itkDicomImageIOTest(int ac, char* av[])
 {
 
   if(ac < 3)
@@ -34,7 +34,6 @@ int itkDicomImageIOTest(int ac, char* av[])
     return EXIT_FAILURE;
     }
 
-
   // ATTENTION THIS IS THE PIXEL TYPE FOR
   // THE RESULTING IMAGE
   typedef short PixelType;
@@ -42,7 +41,7 @@ int itkDicomImageIOTest(int ac, char* av[])
   typedef itk::Image<PixelType, 2> myImage;
 
   itk::ImageFileReader<myImage>::Pointer reader
-                                  = itk::ImageFileReader<myImage>::New();
+    = itk::ImageFileReader<myImage>::New();
   itk::DicomImageIOFactory::RegisterOneFactory();
 
   reader->SetFileName(av[1]);
@@ -63,15 +62,14 @@ int itkDicomImageIOTest(int ac, char* av[])
   typedef itk::Image< WritePixelType, 2 > WriteImageType;
 
   typedef itk::RescaleIntensityImageFilter<
-               myImage, WriteImageType > RescaleFilterType;
+      myImage, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
 
-
-  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
 

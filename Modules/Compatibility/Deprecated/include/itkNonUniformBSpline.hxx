@@ -54,6 +54,7 @@ NonUniformBSpline< TDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "NonUniformBSpline(" << this << ")" << std::endl;
 
   os << indent << "Chord lengths : " << std::endl;
@@ -251,25 +252,25 @@ template< unsigned int TDimension >
 const typename
 NonUniformBSpline< TDimension >::ControlPointListType &
 NonUniformBSpline< TDimension >::GetControlPoints() const
-{
+  {
   return this->m_ControlPoints;
-}
+  }
 
 template< unsigned int TDimension >
 const typename
 NonUniformBSpline< TDimension >::KnotListType &
 NonUniformBSpline< TDimension >::GetKnots() const
-{
+  {
   return this->m_Knots;
-}
+  }
 
 template< unsigned int TDimension >
 const typename
 NonUniformBSpline< TDimension >::PointListType &
 NonUniformBSpline< TDimension >::GetPoints() const
-{
+  {
   return this->m_Points;
-}
+  }
 
 template< unsigned int TDimension >
 void
@@ -421,6 +422,7 @@ NonUniformBSpline< TDimension >
 
   return sum;
 }
+
 } // end namespace itk
 
 #endif //#if !defined( ITK_LEGACY_REMOVE )

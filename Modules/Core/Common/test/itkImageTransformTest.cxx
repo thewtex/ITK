@@ -22,9 +22,10 @@
 #include <fstream>
 
 template <unsigned int TDimension>
-void TestTransform()
+void
+TestTransform()
 {
-  typedef itk::Image<float,TDimension>         ImageType;
+  typedef itk::Image<float,TDimension> ImageType;
 
   typename ImageType::Pointer image =         ImageType::New();
   typename ImageType::Pointer orientedImage = ImageType::New();
@@ -67,7 +68,8 @@ void TestTransform()
   std::cout << "    Image:         " << point << " -> " << index << std::endl;
 }
 
-int itkImageTransformTest(int, char* [] )
+int
+itkImageTransformTest(int, char* [] )
 {
   TestTransform<8>();
   TestTransform<3>();

@@ -22,7 +22,8 @@
 #include "itkImageFileWriter.h"
 #include "itkFilterWatcher.h"
 
-int itkNeighborhoodConnectedImageFilterTest(int ac, char* av[] )
+int
+itkNeighborhoodConnectedImageFilterTest(int ac, char* av[] )
 {
   if(ac < 5)
     {
@@ -40,9 +41,9 @@ int itkNeighborhoodConnectedImageFilterTest(int ac, char* av[] )
   typedef itk::NeighborhoodConnectedImageFilter<myImage,myImage> FilterType;
 
   FilterType::Pointer filter = FilterType::New();
-  FilterWatcher watcher(filter);
+  FilterWatcher       watcher(filter);
 
-  filter->SetInput(input->GetOutput());
+  filter->SetInput(input->GetOutput() );
 
   FilterType::IndexType seed;
 
@@ -76,7 +77,6 @@ int itkNeighborhoodConnectedImageFilterTest(int ac, char* av[] )
   const SizeType & radius2 = filter->GetRadius();
   std::cout << "filter->GetRadius(): " << radius2 << std::endl;
 
-
   try
     {
     input->Update();
@@ -90,10 +90,10 @@ int itkNeighborhoodConnectedImageFilterTest(int ac, char* av[] )
 
   // Generate test image
   itk::ImageFileWriter<myImage>::Pointer writer;
-    writer = itk::ImageFileWriter<myImage>::New();
-    writer->SetInput( filter->GetOutput() );
-    writer->SetFileName( av[2] );
-    writer->Update();
+  writer = itk::ImageFileWriter<myImage>::New();
+  writer->SetInput( filter->GetOutput() );
+  writer->SetFileName( av[2] );
+  writer->Update();
 
-    return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }

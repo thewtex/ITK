@@ -48,6 +48,7 @@ DeformableSimplexMesh3DGradientConstraintForceFilter< TInputMesh, TOutputMesh >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Range = " << m_Range << std::endl;
   os << indent << "Image = " << m_Image << std::endl;
 }
@@ -219,8 +220,8 @@ DeformableSimplexMesh3DGradientConstraintForceFilter< TInputMesh, TOutputMesh >
        && ic[2] >= 0
        && ic[2] < this->m_ImageDepth )
     {
-    bool   stop;
-    SIDE   side = BOTH; //make sure you can set half segment as well but for noe
+    bool stop;
+    SIDE side = BOTH;   //make sure you can set half segment as well but for noe
                         // we just set it to full segment
     int    vpos[3], ii;
     double dist;
@@ -417,6 +418,7 @@ DeformableSimplexMesh3DGradientConstraintForceFilter< TInputMesh, TOutputMesh >
   data->externalForce[1] = vec_for[1];
   data->externalForce[2] = vec_for[2];
 }
+
 } // namespace itk
 
 #endif

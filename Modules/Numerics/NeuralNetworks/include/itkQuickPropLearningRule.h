@@ -57,6 +57,7 @@ public:
 
   typedef typename Superclass::ValueType ValueType;
   virtual void Learn(LayerType* layer, ValueType learningrate);
+
   virtual void Learn(LayerType* layer, TTargetVector errors, ValueType learningrate);
 
   itkSetMacro(Max_Growth_Factor, ValueType);
@@ -67,7 +68,8 @@ public:
 
 protected:
   QuickPropLearningRule();
-  virtual ~QuickPropLearningRule(){};
+  virtual
+  ~QuickPropLearningRule(){}
 
   ValueType m_Momentum;
   ValueType m_Max_Growth_Factor;
@@ -79,13 +81,14 @@ protected:
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
+
 };
 
 } // end namespace Statistics
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkQuickPropLearningRule.hxx"
+#include "itkQuickPropLearningRule.hxx"
 #endif
 
 #endif

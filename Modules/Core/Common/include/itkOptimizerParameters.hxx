@@ -135,7 +135,7 @@ OptimizerParameters< TValueType >
   if( m_Helper == NULL )
     {
     itkGenericExceptionMacro("OptimizerParameters::MoveDataPointer: "
-      "m_Helper must be set.");
+                             "m_Helper must be set.");
     }
   this->m_Helper->MoveDataPointer( this, pointer );
 }
@@ -148,10 +148,10 @@ OptimizerParameters< TValueType >
   if( m_Helper == NULL )
     {
     itkGenericExceptionMacro("OptimizerParameters::SetParameterObject: "
-      "m_Helper must be set.");
+                             "m_Helper must be set.");
     }
-    this->m_Helper->SetParametersObject( this, object );
+  this->m_Helper->SetParametersObject( this, object );
 }
 
-}//namespace itk
+} //namespace itk
 #endif

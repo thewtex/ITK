@@ -82,10 +82,10 @@ template< typename TInputImage, typename TOutputImage >
 const typename ConnectedThresholdImageFilter< TInputImage, TOutputImage >::SeedContainerType &
 ConnectedThresholdImageFilter< TInputImage, TOutputImage >
 ::GetSeeds() const
-{
+  {
   itkDebugMacro("returning Seeds");
   return this->m_Seeds;
-}
+  }
 
 /**
  * Standard PrintSelf method.
@@ -114,6 +114,7 @@ ConnectedThresholdImageFilter< TInputImage, TOutputImage >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   if ( this->GetInput() )
     {
     InputImagePointer image =
@@ -128,6 +129,7 @@ ConnectedThresholdImageFilter< TInputImage, TOutputImage >
 ::EnlargeOutputRequestedRegion(DataObject *output)
 {
   Superclass::EnlargeOutputRequestedRegion(output);
+
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -209,7 +211,7 @@ template< typename TInputImage, typename TOutputImage >
 typename ConnectedThresholdImageFilter< TInputImage, TOutputImage >::InputPixelObjectType *
 ConnectedThresholdImageFilter< TInputImage, TOutputImage >
 ::GetLowerInput()
-{
+  {
   typename InputPixelObjectType::Pointer lower =
     static_cast< InputPixelObjectType * >( this->ProcessObject::GetInput(1) );
   if ( !lower )
@@ -222,13 +224,13 @@ ConnectedThresholdImageFilter< TInputImage, TOutputImage >
     }
 
   return lower;
-}
+  }
 
 template< typename TInputImage, typename TOutputImage >
 typename ConnectedThresholdImageFilter< TInputImage, TOutputImage >::InputPixelObjectType *
 ConnectedThresholdImageFilter< TInputImage, TOutputImage >
 ::GetUpperInput()
-{
+  {
   typename InputPixelObjectType::Pointer upper =
     static_cast< InputPixelObjectType * >( this->ProcessObject::GetInput(2) );
   if ( !upper )
@@ -241,7 +243,7 @@ ConnectedThresholdImageFilter< TInputImage, TOutputImage >
     }
 
   return upper;
-}
+  }
 
 template< typename TInputImage, typename TOutputImage >
 typename ConnectedThresholdImageFilter< TInputImage, TOutputImage >::InputImagePixelType
@@ -326,6 +328,7 @@ ConnectedThresholdImageFilter< TInputImage, TOutputImage >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

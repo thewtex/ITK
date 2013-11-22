@@ -23,7 +23,8 @@
 namespace itk
 {
 template<typename TInputImage, typename TOutputImage>
-void FFTNormalizedCorrelationImageFilter<TInputImage, TOutputImage>
+void
+FFTNormalizedCorrelationImageFilter<TInputImage, TOutputImage>
 ::GenerateData()
 {
   // Generate the output for this filter by calling the more general

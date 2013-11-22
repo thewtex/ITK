@@ -24,13 +24,17 @@ static int done = 0;
 static int numberOfIterations = 10;
 
 static ITK_THREAD_RETURN_TYPE Runner(void*);
+
 static int Thread(int);
+
 } // namespace itkSTLThreadTestImpl
 
-int itkSTLThreadTest(int argc, char* argv[])
+int
+itkSTLThreadTest(int argc, char* argv[])
 {
   // Choose a number of threads.
   int numThreads = 10;
+
   if(argc > 1)
     {
     int nt = atoi(argv[1]);
@@ -71,7 +75,7 @@ int itkSTLThreadTest(int argc, char* argv[])
 
   // Create result array.  Assume failure.
   int* results = new int[numThreads];
-  int i;
+  int  i;
   for(i=0; i < numThreads; ++i)
     {
     results[i] = 0;
@@ -116,14 +120,16 @@ int itkSTLThreadTest(int argc, char* argv[])
 namespace itkSTLThreadTestImpl
 {
 
-static ITK_THREAD_RETURN_TYPE Runner(void* infoIn)
+static ITK_THREAD_RETURN_TYPE
+Runner(void* infoIn)
 {
   // Get the thread id and result pointer and run the method for this
   // thread.
   itk::MultiThreader::ThreadInfoStruct* info =
     static_cast<itk::MultiThreader::ThreadInfoStruct*>(infoIn);
   itk::ThreadIdType tnum = info->ThreadID;
-  int* results = static_cast<int*>(info->UserData);
+  int*              results = static_cast<int*>(info->UserData);
+
   if(results)
     {
     results[tnum] = itkSTLThreadTestImpl::Thread(tnum);
@@ -135,7 +141,8 @@ static ITK_THREAD_RETURN_TYPE Runner(void* infoIn)
   return EXIT_SUCCESS;
 }
 
-static int Thread(int tnum)
+static int
+Thread(int tnum)
 {
   // Implementation in individual thread.  We don't care about
   // mutexing the output because it doesn't matter for the test.
@@ -148,7 +155,8 @@ static int Thread(int tnum)
   int count = 10000+100*tnum;
 
   int iteration=0;
-  while(!done && !(numberOfIterations && (iteration >= numberOfIterations)))
+
+  while(!done && !(numberOfIterations && (iteration >= numberOfIterations) ) )
     {
     // Output progress of this thread.
     std::cout << tnum << ": " << iteration << "\n";
@@ -177,7 +185,7 @@ static int Thread(int tnum)
     }
 
   // Only get here on failure or iterations finished.
-  if(numberOfIterations && (iteration >= numberOfIterations))
+  if(numberOfIterations && (iteration >= numberOfIterations) )
     {
     // Success.
     return EXIT_FAILURE;

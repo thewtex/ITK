@@ -37,7 +37,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInput, typename TOutput, typename TCriterion >
-class EdgeDecimationQuadEdgeMeshFilter:
+class EdgeDecimationQuadEdgeMeshFilter :
   public DecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >
 {
 public:
@@ -45,7 +45,7 @@ public:
   typedef SmartPointer< Self >             Pointer;
   typedef SmartPointer< const Self >       ConstPointer;
   typedef DecimationQuadEdgeMeshFilter<
-    TInput, TOutput, TCriterion >          Superclass;
+      TInput, TOutput, TCriterion >          Superclass;
 
   /** Run-time type information (and related methods).   */
   itkTypeMacro(EdgeDecimationQuadEdgeMeshFilter, DecimationQuadEdgeMeshFilter);
@@ -88,7 +88,8 @@ public:
 protected:
 
   EdgeDecimationQuadEdgeMeshFilter();
-  virtual ~EdgeDecimationQuadEdgeMeshFilter();
+  virtual
+  ~EdgeDecimationQuadEdgeMeshFilter();
 
   bool m_Relocate;
   bool m_CheckOrientation;
@@ -199,9 +200,10 @@ protected:
   * \brief
   * \todo Finish to implement this method!
   */
-  bool CheckOrientation(OutputQEType *iEdge,
-                        const OutputPointIdentifier & iId,
-                        const OutputPointType & iPt)
+  bool
+  CheckOrientation(OutputQEType *iEdge,
+                   const OutputPointIdentifier & iId,
+                   const OutputPointType & iPt)
   {
     OutputMeshPointer           output = this->GetOutput();
     OutputCellsContainerPointer cells = output->GetCells();

@@ -18,12 +18,13 @@
 
 #include "itkAnnulusOperator.h"
 
-int itkAnnulusOperatorTest(int, char* [] )
+int
+itkAnnulusOperatorTest(int, char* [] )
 {
   const unsigned int Dimension = 2;
+
   typedef float                                        PixelType;
   typedef itk::AnnulusOperator< PixelType, Dimension > OperatorType;
-
 
   OperatorType normalizedAnnulus;
   normalizedAnnulus.NormalizeOn();
@@ -83,7 +84,6 @@ int itkAnnulusOperatorTest(int, char* [] )
             << ", r = " << normalizedAnnulus.GetInnerRadius()
             << ", t = " << normalizedAnnulus.GetThickness()
             << std::endl;
-
 
   for (i=0, k=0; i < normalizedAnnulusSize[1]; ++i)
     {
@@ -155,7 +155,6 @@ int itkAnnulusOperatorTest(int, char* [] )
     std::cout << std::endl;
     }
 
-
   // Try making the thickness 0
   std::cout << std::endl << std::endl;
   std::cout << "Setting thickness radius to zero";
@@ -182,7 +181,6 @@ int itkAnnulusOperatorTest(int, char* [] )
       }
     std::cout << std::endl;
     }
-
 
   // Specifying a spacing
   std::cout << std::endl << std::endl;

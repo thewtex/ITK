@@ -62,7 +62,7 @@ class ProgressReporter;
  * \ingroup ITKImageGrid
  */
 template< typename TInputImage, typename TOutputImage >
-class BSplineCenteredResampleImageFilterBase:
+class BSplineCenteredResampleImageFilterBase :
   public BSplineResampleImageFilterBase< TInputImage, TOutputImage >
 {
 public:
@@ -104,7 +104,8 @@ protected:
 
 protected:
   BSplineCenteredResampleImageFilterBase();
-  virtual ~BSplineCenteredResampleImageFilterBase() {}
+  virtual
+  ~BSplineCenteredResampleImageFilterBase() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
@@ -112,8 +113,8 @@ private:
                                                         // implemented
   void operator=(const Self &);                         //purposely not
 
-  typedef typename TInputImage::IndexValueType    IndexValueType;
-  typedef typename TInputImage::SizeValueType     SizeValueType;
+  typedef typename TInputImage::IndexValueType IndexValueType;
+  typedef typename TInputImage::SizeValueType  SizeValueType;
 
   // implemented
 };

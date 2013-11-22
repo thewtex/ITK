@@ -48,14 +48,14 @@ public:
   /*-TYPEDEFS----------------------------------------------------------------*/
 
   /** Standard class typedefs */
-  typedef TInputVideoStream                           InputVideoStreamType;
-  typedef TOutputVideoStream                          OutputVideoStreamType;
+  typedef TInputVideoStream  InputVideoStreamType;
+  typedef TOutputVideoStream OutputVideoStreamType;
   typedef VideoToVideoFilter< InputVideoStreamType,
                               OutputVideoStreamType > Self;
-  typedef VideoSource< OutputVideoStreamType >        Superclass;
-  typedef SmartPointer< Self >                        Pointer;
-  typedef SmartPointer< const Self >                  ConstPointer;
-  typedef WeakPointer< const Self >                   ConstWeakPointer;
+  typedef VideoSource< OutputVideoStreamType > Superclass;
+  typedef SmartPointer< Self >                 Pointer;
+  typedef SmartPointer< const Self >           ConstPointer;
+  typedef WeakPointer< const Self >            ConstWeakPointer;
 
   /** Superclass typedefs */
   typedef typename Superclass::OutputFrameType              OutputFrameType;
@@ -125,7 +125,8 @@ protected:
   virtual void BeforeTemporalStreamingGenerateData();
 
   VideoToVideoFilter();
-  virtual ~VideoToVideoFilter();
+  virtual
+  ~VideoToVideoFilter();
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 

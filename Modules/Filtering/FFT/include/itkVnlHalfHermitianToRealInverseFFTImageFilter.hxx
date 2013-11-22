@@ -68,7 +68,7 @@ VnlHalfHermitianToRealInverseFFTImageFilter< TInputImage, TOutputImage >
 
   // VNL requires the full complex result of the transform, so we
   // produce it here from the half complex image assumed when the output is real.
-  SignalVectorType signal( vectorSize );
+  SignalVectorType                                signal( vectorSize );
   ImageRegionIteratorWithIndex< OutputImageType > oIt( outputPtr,
                                                        outputPtr->GetLargestPossibleRegion() );
 
@@ -113,5 +113,6 @@ VnlHalfHermitianToRealInverseFFTImageFilter< TInputImage, TOutputImage >
     out[i] = signal[i].real() / vectorSize;
     }
 }
+
 }
 #endif

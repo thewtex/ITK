@@ -21,7 +21,8 @@
 #include "itkCastImageFilter.h"
 #include "itkRescaleIntensityImageFilter.h"
 
-int itkPromoteDimensionImageTest(int argc, char* argv[])
+int
+itkPromoteDimensionImageTest(int argc, char* argv[])
 {
   if( argc < 3)
     {
@@ -33,20 +34,20 @@ int itkPromoteDimensionImageTest(int argc, char* argv[])
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[2];
 
-  typedef unsigned char    CharPixelType;  //IO
-  typedef double          RealPixelType;  //Operations
+  typedef unsigned char CharPixelType;    //IO
+  typedef double        RealPixelType;    //Operations
 
-  const    unsigned int    InDimension = 2;
-  const    unsigned int    OutDimension = 3;
+  const    unsigned int InDimension = 2;
+  const    unsigned int OutDimension = 3;
 
-  typedef itk::Image<CharPixelType, InDimension>    InCharImageType;
-  typedef itk::Image<CharPixelType, OutDimension>   OutCharImageType;
-  typedef itk::Image<RealPixelType, InDimension>    RealImageType;
+  typedef itk::Image<CharPixelType, InDimension>  InCharImageType;
+  typedef itk::Image<CharPixelType, OutDimension> OutCharImageType;
+  typedef itk::Image<RealPixelType, InDimension>  RealImageType;
 
-  typedef itk::ImageFileReader< InCharImageType >   ReaderType;
-  typedef itk::ImageFileWriter< OutCharImageType >  WriterType;
+  typedef itk::ImageFileReader< InCharImageType >  ReaderType;
+  typedef itk::ImageFileWriter< OutCharImageType > WriterType;
 
-  typedef itk::CastImageFilter<InCharImageType, RealImageType> CastToRealFilterType;
+  typedef itk::CastImageFilter<InCharImageType, RealImageType>  CastToRealFilterType;
   typedef itk::CastImageFilter<RealImageType, OutCharImageType> CastToCharFilterType;
 
   typedef itk::RescaleIntensityImageFilter<RealImageType, RealImageType> RescaleFilter;
@@ -57,7 +58,7 @@ int itkPromoteDimensionImageTest(int argc, char* argv[])
 
   CastToRealFilterType::Pointer toReal = CastToRealFilterType::New();
   CastToCharFilterType::Pointer toChar = CastToCharFilterType::New();
-  RescaleFilter::Pointer rescale = RescaleFilter::New();
+  RescaleFilter::Pointer        rescale = RescaleFilter::New();
 
   //Setting the ITK pipeline filter
 

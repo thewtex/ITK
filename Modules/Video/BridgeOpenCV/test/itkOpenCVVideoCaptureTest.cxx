@@ -22,7 +22,6 @@
 #include "itkVideoFileReader.h"
 #include "itkOpenCVVideoIOFactory.h"
 
-
 // ITK typedefs
 typedef unsigned char                                 ScalarPixelType;
 typedef itk::Image<ScalarPixelType, 2>                ScalarFrameType;
@@ -36,7 +35,8 @@ typedef itk::VideoFileReader< RGBVideoStreamType >    rgbReaderType;
 //
 // Main test
 //
-int itkOpenCVVideoCaptureTest ( int argc, char *argv[] )
+int
+itkOpenCVVideoCaptureTest( int argc, char *argv[] )
 {
   //
   // Check arguments
@@ -62,11 +62,11 @@ int itkOpenCVVideoCaptureTest ( int argc, char *argv[] )
   // Set up OpenCVVideoCapture
   typedef itk::OpenCVVideoCapture<ScalarVideoStreamType> ScalarCaptureType;
   ScalarCaptureType* scalarCap = new ScalarCaptureType();
-  scalarCap->open(scalarReader->GetOutput());
+  scalarCap->open(scalarReader->GetOutput() );
 
   // Check FourCC
-  scalarCap->set(CV_CAP_PROP_FOURCC, CV_FOURCC('M','P','4','2'));
-  if ((int)scalarCap->get(CV_CAP_PROP_FOURCC) != CV_FOURCC('M','P','4','2'))
+  scalarCap->set(CV_CAP_PROP_FOURCC, CV_FOURCC('M','P','4','2') );
+  if ( (int)scalarCap->get(CV_CAP_PROP_FOURCC) != CV_FOURCC('M','P','4','2') )
     {
     std::cerr << "FourCC not reporting correctly" << std::endl;
     return EXIT_FAILURE;
@@ -81,8 +81,8 @@ int itkOpenCVVideoCaptureTest ( int argc, char *argv[] )
     }
 
   // Check width and height
-  if ((int)(scalarCap->get(CV_CAP_PROP_FRAME_WIDTH)) != atoi(argv[4]) ||
-      (int)(scalarCap->get(CV_CAP_PROP_FRAME_HEIGHT)) != atoi(argv[5]))
+  if ( (int)(scalarCap->get(CV_CAP_PROP_FRAME_WIDTH) ) != atoi(argv[4]) ||
+       (int)(scalarCap->get(CV_CAP_PROP_FRAME_HEIGHT) ) != atoi(argv[5]) )
     {
     std::cerr << "Frame dimensions not reporting correctly. Got ["
               << scalarCap->get(CV_CAP_PROP_FRAME_WIDTH) << ","
@@ -96,12 +96,12 @@ int itkOpenCVVideoCaptureTest ( int argc, char *argv[] )
                                (int)scalarCap->get(CV_CAP_PROP_FOURCC),
                                scalarCap->get(CV_CAP_PROP_FPS),
                                cv::Size(scalarCap->get(CV_CAP_PROP_FRAME_WIDTH),
-                                        scalarCap->get(CV_CAP_PROP_FRAME_HEIGHT)),
+                                        scalarCap->get(CV_CAP_PROP_FRAME_HEIGHT) ),
                                false);
 
   // Loop through the frames and write
   cv::Mat outFrame;
-  while (scalarCap->read(outFrame))
+  while (scalarCap->read(outFrame) )
     {
     scalarWriter << outFrame;
     }
@@ -121,10 +121,10 @@ int itkOpenCVVideoCaptureTest ( int argc, char *argv[] )
   // Set up OpenCVVideoCapture
   typedef itk::OpenCVVideoCapture<RGBVideoStreamType> RGBCaptureType;
   RGBCaptureType* rgbCap = new RGBCaptureType();
-  rgbCap->open(rgbReader->GetOutput());
+  rgbCap->open(rgbReader->GetOutput() );
 
   // Check FourCC
-  if ((int)rgbCap->get(CV_CAP_PROP_FOURCC) != CV_FOURCC('M', 'P', '4', '2'))
+  if ( (int)rgbCap->get(CV_CAP_PROP_FOURCC) != CV_FOURCC('M', 'P', '4', '2') )
     {
     std::cerr << "FourCC not reporting correctly" << std::endl;
     return EXIT_FAILURE;
@@ -139,14 +139,14 @@ int itkOpenCVVideoCaptureTest ( int argc, char *argv[] )
 
   // Set up OpenCV VideoWriter
   cv::VideoWriter rgbWriter(argv[3],
-                               (int)rgbCap->get(CV_CAP_PROP_FOURCC),
-                               rgbCap->get(CV_CAP_PROP_FPS),
-                               cv::Size(rgbCap->get(CV_CAP_PROP_FRAME_WIDTH),
-                                        rgbCap->get(CV_CAP_PROP_FRAME_HEIGHT)),
-                               true);
+                            (int)rgbCap->get(CV_CAP_PROP_FOURCC),
+                            rgbCap->get(CV_CAP_PROP_FPS),
+                            cv::Size(rgbCap->get(CV_CAP_PROP_FRAME_WIDTH),
+                                     rgbCap->get(CV_CAP_PROP_FRAME_HEIGHT) ),
+                            true);
 
   // Loop through the frames and write
-  while (rgbCap->read(outFrame))
+  while (rgbCap->read(outFrame) )
     {
     rgbWriter << outFrame;
     }

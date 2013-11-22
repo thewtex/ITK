@@ -22,7 +22,6 @@
 #include "itkVectorCastImageFilter.h"
 #include "itkImageFileWriter.h"
 
-
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 template<typename TRegistration>
@@ -30,28 +29,32 @@ class DiffeomorphicDemonsShowProgressObject
 {
 public:
   DiffeomorphicDemonsShowProgressObject(TRegistration* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
     std::cout << "Progress: " << m_Process->GetProgress() << "  ";
     std::cout << "Iter: " << m_Process->GetElapsedIterations() << "  ";
     std::cout << "Metric: "   << m_Process->GetMetric()   << "  ";
     std::cout << "RMSChange: " << m_Process->GetRMSChange() << "  ";
     std::cout << std::endl;
-    }
+  }
+
   typename TRegistration::Pointer m_Process;
 };
-
 
 // Template function to fill in an image with a circle.
 template <typename TImage>
 void
 FillWithCircle(
-TImage * image,
-double * center,
-double radius,
-typename TImage::PixelType foregnd,
-typename TImage::PixelType backgnd )
+  TImage * image,
+  double * center,
+  double radius,
+  typename TImage::PixelType foregnd,
+  typename TImage::PixelType backgnd )
 {
 
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
@@ -67,7 +70,7 @@ typename TImage::PixelType backgnd )
     double distance = 0;
     for( unsigned int j = 0; j < TImage::ImageDimension; j++ )
       {
-      distance += vnl_math_sqr((double) index[j] - center[j]);
+      distance += vnl_math_sqr( (double) index[j] - center[j]);
       }
     if( distance <= r2 ) it.Set( foregnd );
     else it.Set( backgnd );
@@ -75,13 +78,12 @@ typename TImage::PixelType backgnd )
 
 }
 
-
 // Template function to copy image regions
 template <typename TImage>
 void
 CopyImageBuffer(
-TImage *input,
-TImage *output )
+  TImage *input,
+  TImage *output )
 {
   typedef itk::ImageRegionIteratorWithIndex<TImage> Iterator;
   Iterator inIt( input, output->GetBufferedRegion() );
@@ -93,7 +95,8 @@ TImage *output )
 
 }
 
-int itkDiffeomorphicDemonsRegistrationFilterTest(int argc, char * argv [] )
+int
+itkDiffeomorphicDemonsRegistrationFilterTest(int argc, char * argv [] )
 {
 
   if( argc < 9 )
@@ -112,24 +115,24 @@ int itkDiffeomorphicDemonsRegistrationFilterTest(int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-  typedef unsigned char                         PixelType;
+  typedef unsigned char PixelType;
   enum {ImageDimension = 2};
   typedef itk::Image<PixelType,ImageDimension>  ImageType;
   typedef itk::Vector<float,ImageDimension>     VectorType;
   typedef itk::Image<VectorType,ImageDimension> FieldType;
   typedef itk::Image<VectorType::ValueType,
-      ImageDimension>                           FloatImageType;
-  typedef ImageType::IndexType                  IndexType;
-  typedef ImageType::SizeType                   SizeType;
-  typedef ImageType::RegionType                 RegionType;
-  typedef ImageType::DirectionType              DirectionType;
+                     ImageDimension>                           FloatImageType;
+  typedef ImageType::IndexType     IndexType;
+  typedef ImageType::SizeType      SizeType;
+  typedef ImageType::RegionType    RegionType;
+  typedef ImageType::DirectionType DirectionType;
 
   //--------------------------------------------------------
   std::cout << "Generate input images and initial deformation field";
   std::cout << std::endl;
 
   ImageType::SizeValueType sizeArray[ImageDimension] = { 128, 128 };
-  SizeType size;
+  SizeType                 size;
   size.SetSize( sizeArray );
 
   IndexType index;
@@ -162,8 +165,8 @@ int itkDiffeomorphicDemonsRegistrationFilterTest(int argc, char * argv [] )
   initField->Allocate();
   initField->SetDirection(direction);
 
-  double center[ImageDimension];
-  double radius;
+  double    center[ImageDimension];
+  double    radius;
   PixelType fgnd = 250;
   PixelType bgnd = 15;
 
@@ -189,7 +192,7 @@ int itkDiffeomorphicDemonsRegistrationFilterTest(int argc, char * argv [] )
   std::cout << "Run registration and warp moving" << std::endl;
 
   typedef itk::DiffeomorphicDemonsRegistrationFilter<
-    ImageType,ImageType,FieldType>                      RegistrationType;
+      ImageType,ImageType,FieldType>                      RegistrationType;
 
   RegistrationType::Pointer registrator = RegistrationType::New();
 
@@ -198,11 +201,11 @@ int itkDiffeomorphicDemonsRegistrationFilterTest(int argc, char * argv [] )
   registrator->SetMovingImage( moving );
   registrator->SetFixedImage( fixed );
 
-  const double intensityDifferenceThreshold = atof( argv[3] );
-  const double maximumUpdateStepLength = atof( argv[4] );
+  const double       intensityDifferenceThreshold = atof( argv[3] );
+  const double       maximumUpdateStepLength = atof( argv[4] );
   const unsigned int numberOfIterations = atoi( argv[5] );
-  const double standardDeviations = atof( argv[6] );
-  const double maximumError = atof( argv[7] );
+  const double       standardDeviations = atof( argv[6] );
+  const double       maximumError = atof( argv[7] );
   const unsigned int maximumKernelWidth = atoi( argv[8] );
 
   registrator->SetIntensityDifferenceThreshold( intensityDifferenceThreshold );
@@ -245,14 +248,12 @@ int itkDiffeomorphicDemonsRegistrationFilterTest(int argc, char * argv [] )
     registrator->SetUseFirstOrderExp( true );
     }
 
-
   // turn on inplace execution
   registrator->InPlaceOn();
 
-
   FunctionType * fptr;
   fptr = dynamic_cast<FunctionType *>(
-    registrator->GetDifferenceFunction().GetPointer() );
+      registrator->GetDifferenceFunction().GetPointer() );
   fptr->Print( std::cout );
 
   // exercise other member variables
@@ -269,7 +270,7 @@ int itkDiffeomorphicDemonsRegistrationFilterTest(int argc, char * argv [] )
 
   typedef DiffeomorphicDemonsShowProgressObject<RegistrationType> ProgressType;
 
-  ProgressType progressWatch(registrator);
+  ProgressType                                    progressWatch(registrator);
   itk::SimpleMemberCommand<ProgressType>::Pointer command;
   command = itk::SimpleMemberCommand<ProgressType>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -284,7 +285,6 @@ int itkDiffeomorphicDemonsRegistrationFilterTest(int argc, char * argv [] )
   typedef itk::NearestNeighborInterpolateImageFunction<ImageType,CoordRepType>
     InterpolatorType;
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
-
 
   warper->SetInput( moving );
   warper->SetDisplacementField( registrator->GetOutput() );
@@ -303,9 +303,9 @@ int itkDiffeomorphicDemonsRegistrationFilterTest(int argc, char * argv [] )
 
   // compare the warp and fixed images
   itk::ImageRegionIterator<ImageType> fixedIter( fixed,
-      fixed->GetBufferedRegion() );
+                                                 fixed->GetBufferedRegion() );
   itk::ImageRegionIterator<ImageType> warpedIter( warper->GetOutput(),
-      fixed->GetBufferedRegion() );
+                                                  fixed->GetBufferedRegion() );
 
   unsigned int numPixelsDifferent = 0;
   while( !fixedIter.IsAtEnd() )
@@ -404,7 +404,7 @@ int itkDiffeomorphicDemonsRegistrationFilterTest(int argc, char * argv [] )
   try
     {
     fptr = dynamic_cast<FunctionType *>(
-      registrator->GetDifferenceFunction().GetPointer() );
+        registrator->GetDifferenceFunction().GetPointer() );
     fptr->SetMovingImageInterpolator( NULL );
     registrator->SetInput( initField );
     registrator->Update();
@@ -424,6 +424,5 @@ int itkDiffeomorphicDemonsRegistrationFilterTest(int argc, char * argv [] )
 
   std::cout << "Test passed" << std::endl;
   return EXIT_SUCCESS;
-
 
 }

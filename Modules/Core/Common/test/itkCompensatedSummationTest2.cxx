@@ -39,43 +39,47 @@ public:
   class TestDomainThreader
     : public itk::DomainThreader< itk::ThreadedIndexedContainerPartitioner, Self >
   {
-  public:
+public:
     typedef TestDomainThreader                                                    Self;
     typedef itk::DomainThreader< itk::ThreadedIndexedContainerPartitioner, Self > Superclass;
     typedef itk::SmartPointer< Self >                                             Pointer;
     typedef itk::SmartPointer< const Self >                                       ConstPointer;
 
-    typedef Superclass::DomainPartitionerType     DomainPartitionerType;
-    typedef Superclass::DomainType                DomainType;
+    typedef Superclass::DomainPartitionerType DomainPartitionerType;
+    typedef Superclass::DomainType            DomainType;
 
     itkNewMacro( Self );
 
-  protected:
-    TestDomainThreader() {};
+protected:
+    TestDomainThreader() {}
 
-  private:
-    virtual void BeforeThreadedExecution()
-      {
+private:
+    virtual void
+    BeforeThreadedExecution()
+    {
       this->m_PerThreadCompensatedSum.resize( this->GetNumberOfThreadsUsed() );
       for( itk::ThreadIdType i=0; i < this->GetNumberOfThreadsUsed(); i++ )
         {
         this->m_PerThreadCompensatedSum[i].ResetToZero();
         }
-      }
+    }
 
-    virtual void ThreadedExecution( const DomainType& subdomain,
-                                    const itk::ThreadIdType threadId )
-      {
+    virtual void
+    ThreadedExecution( const DomainType& subdomain,
+                       const itk::ThreadIdType threadId )
+    {
       itk::CompensatedSummation<double> compensatedSum;
+
       for( DomainType::IndexValueType i=subdomain[0]; i <= subdomain[1]; i++ )
         {
         double value = itk::NumericTraits<double>::One / 7;
         this->m_PerThreadCompensatedSum[threadId].AddElement( value );
         }
-      }
+    }
 
-    virtual void AfterThreadedExecution()
-      {
+    virtual void
+    AfterThreadedExecution()
+    {
       this->m_Associate->m_UncompensatedSumOfThreads = itk::NumericTraits<double>::Zero;
       this->m_Associate->m_CompensatedSumOfThreads.ResetToZero();
 
@@ -86,52 +90,58 @@ public:
         this->m_Associate->m_CompensatedSumOfThreads.AddElement( sum );
         this->m_Associate->m_UncompensatedSumOfThreads += sum;
         }
-      }
+    }
 
     std::vector< itk::CompensatedSummation<double> > m_PerThreadCompensatedSum;
 
     TestDomainThreader( const Self & ); // purposely not implemented
     void operator=( const Self & );     // purposely not implemented
+
   }; // end TestDomainThreader class
 
   CompensatedSummationTest2Associate()
-    {
+  {
     m_TestDomainThreader = TestDomainThreader::New();
     m_ClassDescriptor    = "enclosing class";
     m_UncompensatedSumOfThreads = 0.0;
-    }
+  }
 
-  double GetCompensatedSumOfThreads()
-    {
+  double
+  GetCompensatedSumOfThreads()
+  {
     return this->m_CompensatedSumOfThreads.GetSum();
-    }
+  }
 
-  double GetUncompensatedSumOfThreads()
-    {
+  double
+  GetUncompensatedSumOfThreads()
+  {
     return this->m_UncompensatedSumOfThreads;
-    }
+  }
 
-  TestDomainThreader * GetDomainThreader()
-    {
+  TestDomainThreader *
+  GetDomainThreader()
+  {
     return m_TestDomainThreader.GetPointer();
-    }
+  }
 
-  void Execute( const TestDomainThreader::DomainType & completeDomain )
-    {
+  void
+  Execute( const TestDomainThreader::DomainType & completeDomain )
+  {
     m_TestDomainThreader->Execute(this, completeDomain);
-    }
+  }
 
-  private:
-    TestDomainThreader::Pointer m_TestDomainThreader;
+private:
+  TestDomainThreader::Pointer m_TestDomainThreader;
 
-    std::string                       m_ClassDescriptor;
-    itk::CompensatedSummation<double> m_CompensatedSumOfThreads;
-    double                            m_UncompensatedSumOfThreads;
+  std::string                       m_ClassDescriptor;
+  itk::CompensatedSummation<double> m_CompensatedSumOfThreads;
+  double                            m_UncompensatedSumOfThreads;
 };
 
-int itkCompensatedSummationTest2(int, char* [])
+int
+itkCompensatedSummationTest2(int, char* [])
 {
-  CompensatedSummationTest2Associate enclosingClass;
+  CompensatedSummationTest2Associate                              enclosingClass;
   CompensatedSummationTest2Associate::TestDomainThreader::Pointer domainThreader = enclosingClass.GetDomainThreader();
 
   /* Check # of threads */
@@ -171,7 +181,8 @@ int itkCompensatedSummationTest2(int, char* [])
               << "Error. Expected the sum to be the same for compensated and uncompensated."
               << " Instead, got " << enclosingClass.GetCompensatedSumOfThreads() << " and "
               << enclosingClass.GetUncompensatedSumOfThreads() << std::endl
-              << "Difference: " << enclosingClass.GetCompensatedSumOfThreads() - enclosingClass.GetUncompensatedSumOfThreads()
+              << "Difference: " << enclosingClass.GetCompensatedSumOfThreads() -
+    enclosingClass.GetUncompensatedSumOfThreads()
               << std::endl;
     return EXIT_FAILURE;
     }
@@ -204,7 +215,8 @@ int itkCompensatedSummationTest2(int, char* [])
               << "Compensated:   " << enclosingClass.GetCompensatedSumOfThreads() << std::endl
               << "Uncompensated: " << enclosingClass.GetUncompensatedSumOfThreads()
               << std::endl
-              << "Difference: " << enclosingClass.GetCompensatedSumOfThreads() - enclosingClass.GetUncompensatedSumOfThreads()
+              << "Difference: " << enclosingClass.GetCompensatedSumOfThreads() -
+    enclosingClass.GetUncompensatedSumOfThreads()
               << std::endl;
 
     /* Check that the compensated result is not further from reference than

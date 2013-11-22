@@ -47,7 +47,7 @@ namespace itk
  * \ingroup OSSystemObjects
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT LoggerOutput:public OutputWindow
+class ITKCommon_EXPORT LoggerOutput : public OutputWindow
 {
 public:
   /** Standard class typedefs. */
@@ -90,14 +90,16 @@ public:
 
   itkGetConstMacro(Logger, LoggerType);
 
-  virtual void OverrideITKWindow()
+  virtual void
+  OverrideITKWindow()
   {
     itk::OutputWindow::SetInstance(this);
   }
 
 protected:
-  LoggerOutput():m_Logger(0) {}
-  virtual ~LoggerOutput() {}
+  LoggerOutput() : m_Logger(0) {}
+  virtual
+  ~LoggerOutput() {}
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

@@ -23,7 +23,8 @@
 
 #include <iostream>
 
-int itkMatchCardinalityImageToImageMetricTest(int argc, char* argv[] )
+int
+itkMatchCardinalityImageToImageMetricTest(int argc, char* argv[] )
 {
 
   if (argc < 2)
@@ -36,14 +37,14 @@ int itkMatchCardinalityImageToImageMetricTest(int argc, char* argv[] )
   typedef itk::TranslationTransform<double, 2> TransformType;
   typedef TransformType::OutputVectorType      OffsetType;
   typedef itk::MatchCardinalityImageToImageMetric<ImageType,ImageType>
-                                               MetricType;
-  typedef itk::ImageFileReader<ImageType>      ReaderType;
+    MetricType;
+  typedef itk::ImageFileReader<ImageType> ReaderType;
   typedef itk::NearestNeighborInterpolateImageFunction<ImageType,double>
-                                               InterpolatorType;
+    InterpolatorType;
 
-  ReaderType::Pointer reader = ReaderType::New();
-  MetricType::Pointer metric = MetricType::New();
-  TransformType::Pointer transform = TransformType::New();
+  ReaderType::Pointer       reader = ReaderType::New();
+  MetricType::Pointer       metric = MetricType::New();
+  TransformType::Pointer    transform = TransformType::New();
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
 
   MetricType::ParametersType offset(2);
@@ -51,11 +52,11 @@ int itkMatchCardinalityImageToImageMetricTest(int argc, char* argv[] )
   reader->SetFileName (argv[1]);
   reader->Update();
 
-  metric->SetMovingImage (reader->GetOutput());
-  metric->SetFixedImage (reader->GetOutput());
+  metric->SetMovingImage (reader->GetOutput() );
+  metric->SetFixedImage (reader->GetOutput() );
   metric->SetInterpolator (interpolator);
   metric->SetTransform (transform);
-  metric->SetFixedImageRegion (reader->GetOutput()->GetLargestPossibleRegion());
+  metric->SetFixedImageRegion (reader->GetOutput()->GetLargestPossibleRegion() );
   metric->Initialize();
 
   std::cout << "First measure matches..." << std::endl;

@@ -143,8 +143,8 @@ template< typename TInputImage,
           typename TFeatureImage,
           typename TOutputPixelType = float,
           typename TOutputImage = Image< TOutputPixelType,
-                                      TInputImage::ImageDimension > >
-class NarrowBandLevelSetImageFilter:
+                                         TInputImage::ImageDimension > >
+class NarrowBandLevelSetImageFilter :
   public NarrowBandImageFilterBase< TInputImage, TOutputImage >
 {
 public:
@@ -166,7 +166,7 @@ public:
 
   /** The generic level set function type */
   typedef SegmentationLevelSetFunction< OutputImageType, FeatureImageType >
-  SegmentationFunctionType;
+    SegmentationFunctionType;
 
   /** The type used for the advection field */
   typedef typename SegmentationFunctionType::VectorImageType VectorImageType;
@@ -176,41 +176,52 @@ public:
 
   /** Set/Get the feature image to be used for speed function of the level set
    *  equation.  Equivalent to calling Set/GetInput(1, ..) */
-  virtual void SetFeatureImage(const FeatureImageType *f)
+  virtual void
+  SetFeatureImage(const FeatureImageType *f)
   {
     this->ProcessObject::SetNthInput( 1, const_cast< FeatureImageType * >( f ) );
     m_SegmentationFunction->SetFeatureImage(f);
   }
 
-  virtual FeatureImageType * GetFeatureImage()
+  virtual FeatureImageType *
+  GetFeatureImage()
   {
     return ( static_cast< FeatureImageType * >( this->ProcessObject::GetInput(1) ) );
   }
 
   /** Set/Get the initial level set model.  Equivalent to calling SetInput(..)
       */
-  virtual void SetInitialImage(InputImageType *f)
+  virtual void
+  SetInitialImage(InputImageType *f)
   {
     this->SetInput(f);
   }
 
-  virtual const typename SegmentationFunctionType::ImageType * GetSpeedImage() const
-  { return m_SegmentationFunction->GetSpeedImage(); }
+  virtual const typename SegmentationFunctionType::ImageType *
+  GetSpeedImage() const
+  {
+    return m_SegmentationFunction->GetSpeedImage();
+  }
 
-  virtual const typename SegmentationFunctionType::VectorImageType * GetAdvectionImage() const
-  { return m_SegmentationFunction->GetAdvectionImage(); }
+  virtual const typename SegmentationFunctionType::VectorImageType *
+  GetAdvectionImage() const
+  {
+    return m_SegmentationFunction->GetAdvectionImage();
+  }
 
   /** THIS METHOD IS DEPRECATED AND SHOULD NOT BE USED.  This method reverses
    * the speed function direction, effectively changing inside feature values to
    * outside feature values and vice versa. */
-  void SetUseNegativeFeaturesOn()
+  void
+  SetUseNegativeFeaturesOn()
   {
     itkWarningMacro(
       << "SetUseNegativeFeaturesOn has been deprecated.  Please use ReverseExpansionDirectionOn() instead");
     this->ReverseExpansionDirectionOn();
   }
 
-  void SetUseNegativeFeaturesOff()
+  void
+  SetUseNegativeFeaturesOff()
   {
     itkWarningMacro(
       << "SetUseNegativeFeaturesOff has been deprecated.  Please use ReverseExpansionDirectionOff() instead");
@@ -219,7 +230,8 @@ public:
 
   /** Set/Get the value of the UseNegativeFeatures flag.  This method is
    * deprecated.  Use Set/Get ReverseExpansionDirection instead. */
-  void SetUseNegativeFeatures(bool u)
+  void
+  SetUseNegativeFeatures(bool u)
   {
     itkWarningMacro(<< "SetUseNegativeFeatures has been deprecated.  Please use SetReverseExpansionDirection instead");
     if ( u == true )
@@ -232,9 +244,11 @@ public:
       }
   }
 
-  bool GetUseNegativeFeatures() const
+  bool
+  GetUseNegativeFeatures() const
   {
-    itkWarningMacro(<< "GetUseNegativeFeatures has been deprecated.  Please use GetReverseExpansionDirection() instead");
+    itkWarningMacro(<<
+      "GetUseNegativeFeatures has been deprecated.  Please use GetReverseExpansionDirection() instead");
     if ( this->GetReverseExpansionDirection() == false )
       {
       return true;
@@ -261,7 +275,8 @@ public:
       terms. You should use either this -or- Get/SetPropagationScaling and
       Get/SetAdvectionScaling (if appropriate).  See subclasses for details
       on when and whether to set these parameters. */
-  void SetFeatureScaling(ValueType v)
+  void
+  SetFeatureScaling(ValueType v)
   {
     if ( v != m_SegmentationFunction->GetPropagationWeight() )
       {
@@ -275,7 +290,8 @@ public:
 
   /** Set/Get the scaling of the propagation speed.  Setting the FeatureScaling
       parameter overrides any previous values set for PropagationScaling. */
-  void SetPropagationScaling(ValueType v)
+  void
+  SetPropagationScaling(ValueType v)
   {
     if ( v != m_SegmentationFunction->GetPropagationWeight() )
       {
@@ -283,14 +299,16 @@ public:
       }
   }
 
-  ValueType GetPropagationScaling() const
+  ValueType
+  GetPropagationScaling() const
   {
     return m_SegmentationFunction->GetPropagationWeight();
   }
 
   /** Set/Get the scaling of the advection field.  Setting the FeatureScaling
       parameter will override any existing value for AdvectionScaling. */
-  void SetAdvectionScaling(ValueType v)
+  void
+  SetAdvectionScaling(ValueType v)
   {
     if ( v != m_SegmentationFunction->GetAdvectionWeight() )
       {
@@ -298,7 +316,8 @@ public:
       }
   }
 
-  ValueType GetAdvectionScaling() const
+  ValueType
+  GetAdvectionScaling() const
   {
     return m_SegmentationFunction->GetAdvectionWeight();
   }
@@ -307,7 +326,8 @@ public:
     *  influence of curvature on the movement of the surface.  Higher
     *  values relative to Advection and Propagation values will give
     *  smoother surfaces. */
-  void SetCurvatureScaling(ValueType v)
+  void
+  SetCurvatureScaling(ValueType v)
   {
     if ( v != m_SegmentationFunction->GetCurvatureWeight() )
       {
@@ -315,7 +335,8 @@ public:
       }
   }
 
-  ValueType GetCurvatureScaling() const
+  ValueType
+  GetCurvatureScaling() const
   {
     return m_SegmentationFunction->GetCurvatureWeight();
   }
@@ -324,24 +345,30 @@ public:
    *  of this object. It is made public to allow itk::Command objects access. */
   virtual void SetSegmentationFunction(SegmentationFunctionType *s);
 
-  virtual SegmentationFunctionType * GetSegmentationFunction()
-  { return m_SegmentationFunction; }
+  virtual SegmentationFunctionType *
+  GetSegmentationFunction()
+  {
+    return m_SegmentationFunction;
+  }
 
   /** Set/Get the maximum number of iterations allowed for the solver.  This
    *  prevents infinite loops if a solution "bounces". */
-  void SetMaximumIterations(unsigned int i)
+  void
+  SetMaximumIterations(unsigned int i)
   {
     itkWarningMacro("SetMaximumIterations is deprecated.  Please use SetNumberOfIterations instead.");
     this->SetNumberOfIterations(i);
   }
 
-  unsigned int GetMaximumIterations()
+  unsigned int
+  GetMaximumIterations()
   {
     itkWarningMacro("GetMaximumIterations is deprecated. Please use GetNumberOfIterations instead.");
     return this->GetNumberOfIterations();
   }
 
-  virtual void SetMaximumRMSError(const double)
+  virtual void
+  SetMaximumRMSError(const double)
   {
     itkWarningMacro(
       "The current implmentation of this solver does not compute maximum RMS change. The maximum RMS error value will not be set or used.");
@@ -355,7 +382,8 @@ public:
 #endif
 
 protected:
-  virtual ~NarrowBandLevelSetImageFilter() {}
+  virtual
+  ~NarrowBandLevelSetImageFilter() {}
   NarrowBandLevelSetImageFilter();
   NarrowBandLevelSetImageFilter(const Self &); //purposely not implemented
 
@@ -364,12 +392,14 @@ protected:
   void operator=(const Self &); //purposely not implemented
 
   /** Overrides parent implementation */
-  virtual void InitializeIteration()
+  virtual void
+  InitializeIteration()
   {
     Superclass::InitializeIteration();
+
     // Estimate the progress of the filter
     this->UpdateProgress( (float)( (float)this->GetElapsedIterations()
-                                / (float)this->GetNumberOfIterations() ) );
+                                   / (float)this->GetNumberOfIterations() ) );
   }
 
   /** Tells the solver how to reinitialize the narrowband when the reinitialization
@@ -388,9 +418,9 @@ protected:
   /** Reinitialization filters **/
   /** Internal filter types used for reinitialization */
   typedef IsoContourDistanceImageFilter< OutputImageType, OutputImageType >
-  IsoFilterType;
+    IsoFilterType;
   typedef FastChamferDistanceImageFilter< OutputImageType, OutputImageType >
-  ChamferFilterType;
+    ChamferFilterType;
 
   typename IsoFilterType::Pointer m_IsoFilter;
 

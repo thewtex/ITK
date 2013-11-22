@@ -45,33 +45,37 @@ const unsigned int WIDTH  = (128);
 #define RADIUS (vnl_math_min(HEIGHT, WIDTH)/4)
 
 // Distance transform function for square
-float square(unsigned x, unsigned y)
+float
+square(unsigned x, unsigned y)
 {
-    float X, Y;
-    X = vcl_fabs(x - (float)WIDTH/2.0);
-    Y = vcl_fabs(y - (float)HEIGHT/2.0);
-    float dis;
-    if (!((X > RADIUS)&&(Y > RADIUS)))
-      dis = RADIUS - vnl_math_max(X, Y);
-    else
-      dis = -vcl_sqrt((X - RADIUS)*(X - RADIUS) +  (Y - RADIUS)*(Y - RADIUS));
-    return(dis);
+  float X, Y;
+
+  X = vcl_fabs(x - (float)WIDTH/2.0);
+  Y = vcl_fabs(y - (float)HEIGHT/2.0);
+  float dis;
+  if (!( (X > RADIUS)&&(Y > RADIUS) ) )
+    dis = RADIUS - vnl_math_max(X, Y);
+  else
+    dis = -vcl_sqrt( (X - RADIUS)*(X - RADIUS) +  (Y - RADIUS)*(Y - RADIUS) );
+  return(dis);
 }
 
 // Evaluates a function at each pixel in the itk image
-void evaluate_function(itk::Image<float, 2> *im,
-                       float (*f)(unsigned int, unsigned int) )
+void
+evaluate_function(itk::Image<float, 2> *im,
+                  float (*f)(unsigned int, unsigned int) )
 
 {
   itk::Image<float, 2>::IndexType idx;
+
   for (unsigned int x = 0; x < WIDTH; ++x)
     {
-      idx[0] = x;
-      for (unsigned int y = 0; y < HEIGHT; ++y)
-        {
-          idx[1] = y;
-          im->SetPixel(idx, f(x, y) );
-        }
+    idx[0] = x;
+    for (unsigned int y = 0; y < HEIGHT; ++y)
+      {
+      idx[1] = y;
+      im->SetPixel(idx, f(x, y) );
+      }
     }
 }
 
@@ -86,30 +90,31 @@ public:
   typedef IsotropicDiffusionLevelSetFilter Self;
   typedef SparseFieldFourthOrderLevelSetImageFilter <TInputImage,
                                                      TOutputImage>
-                                           Superclass;
-  typedef SmartPointer<Self>               Pointer;
-  typedef SmartPointer<const Self>         ConstPointer;
+    Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   itkTypeMacro(IsotropicDiffusionLevelSetFilter,SparseFieldFourthOrderLevelSetImageFilter);
   itkNewMacro (Self);
 
-  typedef typename Superclass::SparseImageType SparseImageType;
+  typedef typename Superclass::SparseImageType                         SparseImageType;
   typedef LevelSetFunctionWithRefitTerm <TOutputImage,SparseImageType> FunctionType;
-  typedef typename FunctionType::RadiusType RadiusType;
+  typedef typename FunctionType::RadiusType                            RadiusType;
 
 protected:
   typename FunctionType::Pointer m_Function;
   IsotropicDiffusionLevelSetFilter()
   {
     RadiusType radius;
-    for (unsigned int j=0; j<TInputImage::ImageDimension;j++)
+
+    for (unsigned int j=0; j<TInputImage::ImageDimension; j++)
       {
       radius[j] = 1;
       }
 
     m_Function=FunctionType::New();
     this->SetLevelSetFunction(m_Function);
-    this->SetNumberOfLayers(this->GetMinimumNumberOfLayers());
+    this->SetNumberOfLayers(this->GetMinimumNumberOfLayers() );
 
     this->SetMaxNormalIteration(10);
     this->SetMaxRefitIteration(40);
@@ -119,7 +124,8 @@ protected:
     m_Function->Print(std::cout);
   }
 
-  virtual bool Halt ()
+  virtual bool
+  Halt()
   {
     if (this->GetElapsedIterations() == 50)
       {
@@ -130,11 +136,13 @@ protected:
       return false;
       }
   }
+
 };
 
 } // end namespace itk
 
-int itkSparseFieldFourthOrderLevelSetImageFilterTest(int, char* [] )
+int
+itkSparseFieldFourthOrderLevelSetImageFilterTest(int, char* [] )
 {
   typedef itk::Image<float, 2> ImageType;
 
@@ -156,18 +164,18 @@ int itkSparseFieldFourthOrderLevelSetImageFilterTest(int, char* [] )
   FilterType::Pointer filter = FilterType::New();
 
   filter->SetInput(im_init);
-  std::cout<<"MaxRefitIteration = "<<(filter->GetMaxRefitIteration())<<"\n";
-  std::cout<<"MaxNormalIteration = "<<(filter->GetMaxNormalIteration())<<"\n";
+  std::cout<<"MaxRefitIteration = "<<(filter->GetMaxRefitIteration() )<<"\n";
+  std::cout<<"MaxNormalIteration = "<<(filter->GetMaxNormalIteration() )<<"\n";
   filter->SetCurvatureBandWidth (4);
-  std::cout<<"CurvatureBandWidth= "<<(filter->GetCurvatureBandWidth())<<"\n";
+  std::cout<<"CurvatureBandWidth= "<<(filter->GetCurvatureBandWidth() )<<"\n";
   filter->SetRMSChangeNormalProcessTrigger(0.001);
   std::cout<<"RMS change trigger = "
-           <<(filter->GetRMSChangeNormalProcessTrigger())<<"\n";
-  std::cout<<"Normal process type = "<<(filter->GetNormalProcessType())<<"\n";
-  std::cout<<"Conductance = "<<(filter->GetNormalProcessConductance())<<"\n";
-  std::cout<<"Unsharp flag = "<<(filter->GetNormalProcessUnsharpFlag())<<"\n";
+           <<(filter->GetRMSChangeNormalProcessTrigger() )<<"\n";
+  std::cout<<"Normal process type = "<<(filter->GetNormalProcessType() )<<"\n";
+  std::cout<<"Conductance = "<<(filter->GetNormalProcessConductance() )<<"\n";
+  std::cout<<"Unsharp flag = "<<(filter->GetNormalProcessUnsharpFlag() )<<"\n";
   std::cout<<"Unsharp weight = "
-           <<(filter->GetNormalProcessUnsharpWeight())<<"\n";
+           <<(filter->GetNormalProcessUnsharpWeight() )<<"\n";
 
   filter->Update();
   filter->Print(std::cout);

@@ -38,16 +38,17 @@
  * Testing GPU Mean Image Filter
  */
 template< unsigned int VImageDimension >
-int runGPUMeanImageFilterTest(const std::string& inFile, const std::string& outFile)
+int
+runGPUMeanImageFilterTest(const std::string& inFile, const std::string& outFile)
 {
-  typedef   unsigned char  InputPixelType;
-  typedef   unsigned char  OutputPixelType;
+  typedef   unsigned char InputPixelType;
+  typedef   unsigned char OutputPixelType;
 
-  typedef itk::GPUImage< InputPixelType,  VImageDimension >   InputImageType;
-  typedef itk::GPUImage< OutputPixelType, VImageDimension >   OutputImageType;
+  typedef itk::GPUImage< InputPixelType,  VImageDimension > InputImageType;
+  typedef itk::GPUImage< OutputPixelType, VImageDimension > OutputImageType;
 
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   typename ReaderType::Pointer reader = ReaderType::New();
   typename WriterType::Pointer writer = WriterType::New();
@@ -59,7 +60,7 @@ int runGPUMeanImageFilterTest(const std::string& inFile, const std::string& outF
   // Note: We use regular itk filter type here but factory will automatically create
   //       GPU filter for Median filter and CPU filter for threshold filter.
   //
-  typedef itk::MeanImageFilter< InputImageType, OutputImageType > MeanFilterType;
+  typedef itk::MeanImageFilter< InputImageType, OutputImageType >    MeanFilterType;
   typedef itk::GPUMeanImageFilter< InputImageType, OutputImageType > GPUMeanFilterType;
 
   // Mean filter kernel radius
@@ -67,13 +68,13 @@ int runGPUMeanImageFilterTest(const std::string& inFile, const std::string& outF
   indexRadius[0] = 2; // radius along x
   indexRadius[1] = 2; // radius along y
   if ( VImageDimension > 2 )
-  {
+    {
     indexRadius[2] = 2; // radius along z
-  }
+    }
 
   // test 1~8 threads for CPU
   for(int nThreads = 1; nThreads <= 8; nThreads++)
-  {
+    {
     typename MeanFilterType::Pointer CPUFilter = MeanFilterType::New();
 
     itk::TimeProbe cputimer;
@@ -93,7 +94,7 @@ int runGPUMeanImageFilterTest(const std::string& inFile, const std::string& outF
     // -------
 
     if( nThreads == 8 )
-    {
+      {
       typename GPUMeanFilterType::Pointer GPUFilter = GPUMeanFilterType::New();
 
       itk::TimeProbe gputimer;
@@ -107,88 +108,51 @@ int runGPUMeanImageFilterTest(const std::string& inFile, const std::string& outF
       gputimer.Stop();
       std::cout << "GPU mean filter took " << gputimer.GetMean() << " seconds.\n" << std::endl;
 
-      // ---------------
-      // RMS Error check
-      // ---------------
-
-      double diff = 0;
-      unsigned int nPix = 0;
-      itk::ImageRegionIterator<OutputImageType> cit(CPUFilter->GetOutput(), CPUFilter->GetOutput()->GetLargestPossibleRegion());
-      itk::ImageRegionIterator<OutputImageType> git(GPUFilter->GetOutput(), GPUFilter->GetOutput()->GetLargestPossibleRegion());
-
-      for(cit.GoToBegin(), git.GoToBegin(); !cit.IsAtEnd(); ++cit, ++git)
-      {
-        //std::cout << "CPU : " << (double)(cit.Get()) << ", GPU : " << (double)(git.Get()) << std::endl;
-        double err = (double)(cit.Get()) - (double)(git.Get());
-        diff += err*err;
-        nPix++;
-      }
-
       writer->SetInput( GPUFilter->GetOutput() );
       writer->Update();
 
-      if (nPix > 0)
-      {
-        double RMSError = sqrt( diff / (double)nPix );
-        std::cout << "RMS Error : " << RMSError << std::endl;
-        double RMSThreshold = 0;
-        if (vnl_math_isnan(RMSError))
-        {
-          std::cout << "RMS Error is NaN! nPix: " << nPix << std::endl;
-          return EXIT_FAILURE;
-        }
-        if (RMSError > RMSThreshold)
-        {
-          std::cout << "RMS Error exceeds threshold (" << RMSThreshold << ")" << std::endl;
-          return EXIT_FAILURE;
-        }
-      }
-      else
-      {
-        std::cout << "No pixels in output!" << std::endl;
-        return EXIT_FAILURE;
       }
     }
-  }
 
   return EXIT_SUCCESS;
 }
 
-int itkGPUMeanImageFilterTest(int argc, char *argv[])
+int
+itkGPUMeanImageFilterTest(int argc, char *argv[])
 {
-  if(!itk::IsGPUAvailable())
-  {
+  if(!itk::IsGPUAvailable() )
+    {
     std::cerr << "OpenCL-enabled GPU is not present." << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   if( argc <  3 )
-  {
+    {
     std::cerr << "Error: missing arguments" << std::endl;
     std::cerr << "inputfile outputfile [num_dimensions]" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   std::string inFile( argv[1] );
   std::string outFile( argv[2] );
 
   unsigned int dim = 3;
   if( argc >= 4 )
-  {
+    {
     dim = atoi( argv[3] );
-  }
+    }
 
   if( dim == 2 )
-  {
+    {
     return runGPUMeanImageFilterTest<2>(inFile, outFile);
-  }
+    }
   else if( dim == 3 )
-  {
+    {
     return runGPUMeanImageFilterTest<3>(inFile, outFile);
-  }
+    }
   else
-  {
+    {
     std::cerr << "Error: only 2 or 3 dimensions allowed, " << dim << " selected." << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 }

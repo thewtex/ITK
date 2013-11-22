@@ -33,7 +33,6 @@ SinRegularizedHeavisideStepFunction< TInput, TOutput >
 ::~SinRegularizedHeavisideStepFunction()
 {}
 
-
 template< typename TInput, typename TOutput >
 typename SinRegularizedHeavisideStepFunction< TInput, TOutput >::OutputType
 SinRegularizedHeavisideStepFunction< TInput, TOutput >

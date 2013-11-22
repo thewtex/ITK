@@ -49,6 +49,7 @@ public:
   FancyString( const char* s );
 
   FancyString& operator=( const std::string& str );
+
   FancyString& operator=( const char* s );
 
   /** Function to cast this type to "const char *". */
@@ -160,6 +161,7 @@ public:
 
   /** Method to test whether a string contains a user-given sub-string. */
   bool ContainSub( const std::string& s2, bool ignoreCase = true );
+
 }; // class FancyString
 
 } // namespace itk

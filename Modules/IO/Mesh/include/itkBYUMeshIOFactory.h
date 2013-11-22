@@ -28,7 +28,7 @@ namespace itk
    * \brief Create instances of BYUMeshIO objects using an object factory.
    * \ingroup ITKIOMesh
    */
-class ITKIOMesh_EXPORT BYUMeshIOFactory:public ObjectFactoryBase
+class ITKIOMesh_EXPORT BYUMeshIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -49,12 +49,13 @@ public:
   itkTypeMacro(BYUMeshIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
-    {
+  static void
+  RegisterOneFactory(void)
+  {
     BYUMeshIOFactory::Pointer byuFactory = BYUMeshIOFactory::New();
 
     ObjectFactoryBase::RegisterFactory(byuFactory);
-    }
+  }
 
 protected:
   BYUMeshIOFactory();
@@ -65,6 +66,7 @@ protected:
 private:
   BYUMeshIOFactory(const Self &); // purposely not implemented
   void operator=(const Self &);   // purposely not implemented
+
 };
 
 } // end namespace itk

@@ -32,7 +32,7 @@ namespace itk
  * \ingroup ITKImageGradient
  */
 template< typename TInputImage, typename TDataType >
-class DifferenceOfGaussiansGradientImageFilter:
+class DifferenceOfGaussiansGradientImageFilter :
   public ImageToImageFilter< TInputImage,
                              Image< CovariantVector< TDataType, TInputImage::ImageDimension >,
                                     TInputImage::ImageDimension > >
@@ -46,8 +46,9 @@ public:
 
   /** Output image typedef. The output image is always an n-dimensional
    * image of n-dimensional vectors of doubles. */
-  typedef Image< CovariantVector< TDataType, itkGetStaticConstMacro(NDimensions) >, itkGetStaticConstMacro(NDimensions) >
-  TOutputImage;
+  typedef Image< CovariantVector< TDataType,
+                                  itkGetStaticConstMacro(NDimensions) >, itkGetStaticConstMacro(NDimensions) >
+    TOutputImage;
 
   /** Standard class typedefs. */
   typedef ImageToImageFilter< TInputImage, TOutputImage > Superclass;
@@ -85,7 +86,8 @@ public:
 
 protected:
   DifferenceOfGaussiansGradientImageFilter();
-  virtual ~DifferenceOfGaussiansGradientImageFilter() {}
+  virtual
+  ~DifferenceOfGaussiansGradientImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Method for evaluating the implicit function over the image. */

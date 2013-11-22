@@ -74,10 +74,12 @@ ImageDuplicator< TInputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Input Image: " << m_InputImage << std::endl;
   os << indent << "Output Image: " << m_Output << std::endl;
   os << indent << "Internal Image Time: " << m_InternalImageTime << std::endl;
 }
+
 } // end namespace itk
 
 #endif

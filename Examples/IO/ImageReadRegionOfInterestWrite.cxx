@@ -34,7 +34,6 @@
 #include "itkImageFileWriter.h"
 // Software Guide : EndCodeSnippet
 
-
 //  Software Guide : BeginLatex
 //
 //  The \doxygen{RegionOfInterestImageFilter} is the filter used to extract a
@@ -50,8 +49,8 @@
 
 #include "itkImage.h"
 
-
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   // Verify the number of parameters in the command line
   if( argc < 7 )
@@ -62,7 +61,6 @@ int main( int argc, char ** argv )
     return EXIT_FAILURE;
     }
 
-
   //  Software Guide : BeginLatex
   //
   //  Image types are defined below.
@@ -70,14 +68,13 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef signed short        InputPixelType;
-  typedef signed short        OutputPixelType;
-  const   unsigned int        Dimension = 2;
+  typedef signed short InputPixelType;
+  typedef signed short OutputPixelType;
+  const   unsigned int Dimension = 2;
 
-  typedef itk::Image< InputPixelType,  Dimension >    InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >    OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -87,10 +84,9 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -107,7 +103,6 @@ int main( int argc, char ** argv )
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The RegionOfInterestImageFilter requires a region to be
@@ -119,20 +114,17 @@ int main( int argc, char ** argv )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   OutputImageType::IndexType start;
   start[0] = atoi( argv[3] );
   start[1] = atoi( argv[4] );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginCodeSnippet
   OutputImageType::SizeType size;
   size[0] = atoi( argv[5] );
   size[1] = atoi( argv[6] );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -147,7 +139,6 @@ int main( int argc, char ** argv )
   desiredRegion.SetIndex( start );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Then the region is passed to the filter using the
@@ -157,11 +148,9 @@ int main( int argc, char ** argv )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   filter->SetRegionOfInterest( desiredRegion );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -180,13 +169,11 @@ int main( int argc, char ** argv )
   WriterType::Pointer writer = WriterType::New();
   // Software Guide : EndCodeSnippet
 
-
   //
   // Here we recover the file names from the command line arguments
   //
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[2];
-
 
   //  Software Guide : BeginLatex
   //
@@ -205,7 +192,6 @@ int main( int argc, char ** argv )
   writer->SetFileName( outputFilename );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Below we connect the reader, filter and writer to form the data
@@ -217,7 +203,6 @@ int main( int argc, char ** argv )
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -239,7 +224,6 @@ int main( int argc, char ** argv )
     return EXIT_FAILURE;
     }
   // Software Guide : EndCodeSnippet
-
 
   return EXIT_SUCCESS;
 }

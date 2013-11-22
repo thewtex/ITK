@@ -50,23 +50,24 @@ namespace itk
  * \sa FFTWGlobalConfiguration
  * \sa RealToHalfHermitianForwardFFTImageFilter
  */
-template< typename TInputImage, typename TOutputImage=Image< std::complex<typename TInputImage::PixelType>, TInputImage::ImageDimension> >
-class FFTWRealToHalfHermitianForwardFFTImageFilter:
+template< typename TInputImage, typename TOutputImage=
+            Image< std::complex<typename TInputImage::PixelType>, TInputImage::ImageDimension> >
+class FFTWRealToHalfHermitianForwardFFTImageFilter :
   public RealToHalfHermitianForwardFFTImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
-  typedef TInputImage                          InputImageType;
-  typedef typename InputImageType::PixelType   InputPixelType;
-  typedef typename InputImageType::SizeType    InputSizeType;
-  typedef TOutputImage                         OutputImageType;
-  typedef typename OutputImageType::PixelType  OutputPixelType;
-  typedef typename OutputImageType::SizeType   OutputSizeType;
+  typedef TInputImage                         InputImageType;
+  typedef typename InputImageType::PixelType  InputPixelType;
+  typedef typename InputImageType::SizeType   InputSizeType;
+  typedef TOutputImage                        OutputImageType;
+  typedef typename OutputImageType::PixelType OutputPixelType;
+  typedef typename OutputImageType::SizeType  OutputSizeType;
 
   typedef FFTWRealToHalfHermitianForwardFFTImageFilter                          Self;
   typedef RealToHalfHermitianForwardFFTImageFilter< TInputImage, TOutputImage > Superclass;
-  typedef SmartPointer< Self >                                                Pointer;
-  typedef SmartPointer< const Self >                                          ConstPointer;
+  typedef SmartPointer< Self >                                                  Pointer;
+  typedef SmartPointer< const Self >                                            ConstPointer;
 
   /** The proxy type is a wrapper for the FFTW API. Because the proxy
    * is defined only for double and float, trying to use any other
@@ -93,16 +94,19 @@ public:
    *
    * /sa FFTWGlobalConfiguration
    */
-  virtual void SetPlanRigor( const int & value )
+  virtual void
+  SetPlanRigor( const int & value )
   {
     // Use that method to check the value
     FFTWGlobalConfiguration::GetPlanRigorName( value );
+
     if( m_PlanRigor != value )
       {
       m_PlanRigor = value;
       this->Modified();
       }
   }
+
   itkGetConstReferenceMacro( PlanRigor, int );
 
 protected:
@@ -117,7 +121,7 @@ protected:
 
 private:
   FFTWRealToHalfHermitianForwardFFTImageFilter(const Self&); // purposely not implemented
-  void operator=(const Self&);            // purposely not implemented
+  void operator=(const Self&);                               // purposely not implemented
 
   bool m_CanUseDestructiveAlgorithm;
 

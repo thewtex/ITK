@@ -24,25 +24,25 @@ namespace itk
 {
 template< typename TImage >
 ImageRegionExclusionIteratorWithIndex< TImage >
-::ImageRegionExclusionIteratorWithIndex():
+::ImageRegionExclusionIteratorWithIndex() :
   ImageRegionExclusionConstIteratorWithIndex< TImage >()
 {}
 
 template< typename TImage >
 ImageRegionExclusionIteratorWithIndex< TImage >
-::ImageRegionExclusionIteratorWithIndex(ImageType *ptr, const RegionType & region):
+::ImageRegionExclusionIteratorWithIndex(ImageType *ptr, const RegionType & region) :
   ImageRegionExclusionConstIteratorWithIndex< TImage >(ptr, region)
 {}
 
 template< typename TImage >
 ImageRegionExclusionIteratorWithIndex< TImage >
-::ImageRegionExclusionIteratorWithIndex(const ImageIteratorWithIndex< TImage > & it):
+::ImageRegionExclusionIteratorWithIndex(const ImageIteratorWithIndex< TImage > & it) :
   ImageRegionExclusionConstIteratorWithIndex< TImage >(it)
 {}
 
 template< typename TImage >
 ImageRegionExclusionIteratorWithIndex< TImage >
-::ImageRegionExclusionIteratorWithIndex(const ImageRegionExclusionConstIteratorWithIndex< TImage > & it):
+::ImageRegionExclusionIteratorWithIndex(const ImageRegionExclusionConstIteratorWithIndex< TImage > & it) :
   ImageRegionExclusionConstIteratorWithIndex< TImage >(it)
 {}
 
@@ -54,6 +54,7 @@ ImageRegionExclusionIteratorWithIndex< TImage >
   this->ImageRegionExclusionConstIteratorWithIndex< TImage >::operator=(it);
   return *this;
 }
+
 } // end namespace itk
 
 #endif

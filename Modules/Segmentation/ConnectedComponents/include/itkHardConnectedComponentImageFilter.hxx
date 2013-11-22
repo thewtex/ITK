@@ -140,11 +140,11 @@ HardConnectedComponentImageFilter< TInputImage, TOutputImage >
   for ( p = 1; p <= max_label; p++ )
     {
     for ( m = p; ( m <= max_label ) && ( eq_tab[m] != p ); m++ )
-                                                                   {}
+                                                                     {}
     if ( m > max_label )
       {
       for ( m = p; ( m <= max_label ) && ( eq_tab[m] < p ); m++ )
-                                                                    {}
+                                                                      {}
       if ( m <= max_label )
         {
         for ( i = m; i <= max_label; i++ )
@@ -190,6 +190,7 @@ HardConnectedComponentImageFilter< TInputImage, TOutputImage >
   delete[] eq_tab;
   delete[] flags;
 }
+
 } // end namespace itk
 
 #endif

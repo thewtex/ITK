@@ -19,13 +19,14 @@
 #include <iostream>
 #include "itkCropImageFilter.h"
 
-int itkCropImageFilter3DTest(int, char* [] )
+int
+itkCropImageFilter3DTest(int, char* [] )
 {
   typedef itk::Image<unsigned short,3> ImageType;
 
-  ImageType::RegionType region;
-  const unsigned int dimSize(8);
-  ImageType::RegionType::SizeType size = {{dimSize,dimSize,dimSize}};
+  ImageType::RegionType            region;
+  const unsigned int               dimSize(8);
+  ImageType::RegionType::SizeType  size = {{dimSize,dimSize,dimSize}};
   ImageType::RegionType::IndexType index = {{0,0,0}};
   region.SetSize(size);
   region.SetIndex(index);
@@ -73,17 +74,17 @@ int itkCropImageFilter3DTest(int, char* [] )
       return EXIT_FAILURE;
       }
     }
-  ImageType::RegionType subRegion;
-  ImageType::RegionType::SizeType subSize = {{ dimSize-2, dimSize-2, dimSize-2 }};
+  ImageType::RegionType            subRegion;
+  ImageType::RegionType::SizeType  subSize = {{ dimSize-2, dimSize-2, dimSize-2 }};
   ImageType::RegionType::IndexType subIndex = {{ 1,1,1 }};
   subRegion.SetSize(subSize);
   subRegion.SetIndex(subIndex);
 
   itk::ImageRegionIterator<ImageType> it1(image,subRegion);
-  itk::ImageRegionIterator<ImageType> it2(croppedImage,croppedImage->GetLargestPossibleRegion());
+  itk::ImageRegionIterator<ImageType> it2(croppedImage,croppedImage->GetLargestPossibleRegion() );
   for(; !it1.IsAtEnd() && !it2.IsAtEnd(); ++it1, ++it2)
     {
-    if(it1.Get() != it2.Get())
+    if(it1.Get() != it2.Get() )
       {
       std::cerr << "Expected Pixel " << it1.Get()
                 << " saw " << it2.Get() << " instead."

@@ -18,15 +18,15 @@
 
 #include "itkQuadEdgeMeshTopologyChecker.h"
 
-
-int itkQuadEdgeMeshAddFaceTest2(int , char *[])
+int
+itkQuadEdgeMeshAddFaceTest2(int , char *[])
 {
-  typedef itk::QuadEdgeMesh< double, 3 >            MeshType;
-  typedef MeshType::Pointer                         MeshPointer;
-  typedef MeshType::QEType                          QEType;
-  typedef MeshType::PointIdentifier                 PointIdentifier;
-  typedef MeshType::CellType                        CellType;
-  typedef itk::QuadEdgeMeshPolygonCell< CellType >  QEPolygonCellType;
+  typedef itk::QuadEdgeMesh< double, 3 >           MeshType;
+  typedef MeshType::Pointer                        MeshPointer;
+  typedef MeshType::QEType                         QEType;
+  typedef MeshType::PointIdentifier                PointIdentifier;
+  typedef MeshType::CellType                       CellType;
+  typedef itk::QuadEdgeMeshPolygonCell< CellType > QEPolygonCellType;
 
   int numPts = 7;
   int numCells = 4;
@@ -35,10 +35,10 @@ int itkQuadEdgeMeshAddFaceTest2(int , char *[])
   std::cout << "numCells= " << numCells << std::endl;
 
   int oddConnectivityCells[12] =
-  { 0, 1, 2,
-    3, 4, 5,
-    6, 4, 0,
-    0, 4, 6, };
+      { 0, 1, 2,
+      3, 4, 5,
+      6, 4, 0,
+      0, 4, 6, };
 
   // Configuration of odd_connectivity mesh:
   // numVertices=7, numEdges=9, numFaces=3, numBoundaries=1, Chi=2
@@ -54,7 +54,7 @@ int itkQuadEdgeMeshAddFaceTest2(int , char *[])
   // Then we try to add a fourth triangle, which is the third triangle
   // inverted i.e. [0 4 6]. This triangle can not be added.
 
-  MeshPointer  mesh = MeshType::New();
+  MeshPointer mesh = MeshType::New();
 
   MeshType::PointType pts[7];
 
@@ -75,7 +75,7 @@ int itkQuadEdgeMeshAddFaceTest2(int , char *[])
   std::cout << "computedNumPts= " << computedNumPts << std::endl;
 
   CellType::CellAutoPointer cellpointer;
-  QEPolygonCellType *poly;
+  QEPolygonCellType *       poly;
 
   for(int i=0; i<numCells; i++)
     {
@@ -92,7 +92,7 @@ int itkQuadEdgeMeshAddFaceTest2(int , char *[])
 
   std::cout << "Test whether the fourth face was rejected" << std::endl;
 
-  typedef itk::QuadEdgeMeshTopologyChecker< MeshType >  TopologyCheckerType;
+  typedef itk::QuadEdgeMeshTopologyChecker< MeshType > TopologyCheckerType;
   TopologyCheckerType::Pointer checker = TopologyCheckerType::New();
 
   checker->SetMesh( mesh );
@@ -101,7 +101,7 @@ int itkQuadEdgeMeshAddFaceTest2(int , char *[])
   checker->SetExpectedNumberOfFaces( 3 );
   checker->SetExpectedNumberOfBoundaries( 3 );
   checker->SetExpectedGenus( 0 ); // FIXME find the correct genus value
-  checker->GetNameOfClass( );
+  checker->GetNameOfClass();
   std::cout << "Testing PrintSelf: " << std::endl;
   std::cout << checker << std::endl;
   std::cout << "[SUCCESS]" << std::endl;

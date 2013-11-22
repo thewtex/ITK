@@ -114,6 +114,7 @@ public:
     m_SnapshotPrefix = "snapshot_";
     m_SnapshotExtension = "png";
   }
+
   /** Add an image to be rendered. */
   template<typename TImage> void AddImage(
     TImage *,
@@ -131,50 +132,56 @@ public:
    */
   void Visualize(bool interact=true);
 
-
   /** Each render window will have its own camera */
-  void ShareCameraOff()
+  void
+  ShareCameraOff()
   {
     m_ShareCamera = false;
   }
 
   /** Each render window will use the same camera */
-  void ShareCameraOn()
+  void
+  ShareCameraOn()
   {
     m_ShareCamera = true;
   }
 
   /** Each render window will take a snaphot */
-  void SnapshotOn()
+  void
+  SnapshotOn()
   {
     m_Snapshot = true;
   }
 
   /** Each render window will take a snaphot */
-  void SnapshotOff()
+  void
+  SnapshotOff()
   {
     m_Snapshot = false;
   }
 
-  void SetSnapshotPath( const std::string& iPath )
+  void
+  SetSnapshotPath( const std::string& iPath )
   {
     m_SnapshotPath = iPath;
   }
 
-  void SetSnapshotPrefix( const std::string& iPrefix )
+  void
+  SetSnapshotPrefix( const std::string& iPrefix )
   {
     m_SnapshotPrefix = iPrefix;
   }
 
   /** Provide the image format to be used when taking snapshot */
-  void SetSnapshotExtension( const std::string& iExtension )
+  void
+  SetSnapshotExtension( const std::string& iExtension )
   {
     m_SnapshotExtension = iExtension;
     std::transform(
-          m_SnapshotExtension.begin(),
-          m_SnapshotExtension.end(),
-          m_SnapshotExtension.begin(),
-          ::tolower );
+      m_SnapshotExtension.begin(),
+      m_SnapshotExtension.end(),
+      m_SnapshotExtension.begin(),
+      ::tolower );
   }
 
 private:

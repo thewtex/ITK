@@ -36,16 +36,16 @@ namespace itk
  * \endwiki
  */
 template< typename TInputMesh, typename TOutputMesh, typename TSolverTraits >
-class ParameterizationQuadEdgeMeshFilter:
+class ParameterizationQuadEdgeMeshFilter :
   public QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
   /** Basic types. */
-  typedef ParameterizationQuadEdgeMeshFilter              Self;
+  typedef ParameterizationQuadEdgeMeshFilter Self;
   typedef QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh,
                                             TOutputMesh > Superclass;
-  typedef SmartPointer< Self >                            Pointer;
-  typedef SmartPointer< const Self >                      ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Input types. */
   typedef TInputMesh                              InputMeshType;
@@ -63,18 +63,18 @@ public:
 
   itkStaticConstMacro(InputVDimension, unsigned int, InputMeshType::PointDimension);
 
-  typedef typename InputMeshType::PointsContainer               InputPointsContainer;
-  typedef typename InputMeshType::PointsContainerConstIterator  InputPointsContainerConstIterator;
+  typedef typename InputMeshType::PointsContainer              InputPointsContainer;
+  typedef typename InputMeshType::PointsContainerConstIterator InputPointsContainerConstIterator;
 
-  typedef typename InputMeshType::CellsContainerConstIterator   InputCellsContainerConstIterator;
-  typedef typename InputMeshType::EdgeCellType                  InputEdgeCellType;
-  typedef typename InputMeshType::PolygonCellType               InputPolygonCellType;
-  typedef typename InputMeshType::PointIdList                   InputPointIdList;
+  typedef typename InputMeshType::CellsContainerConstIterator InputCellsContainerConstIterator;
+  typedef typename InputMeshType::EdgeCellType                InputEdgeCellType;
+  typedef typename InputMeshType::PolygonCellType             InputPolygonCellType;
+  typedef typename InputMeshType::PointIdList                 InputPointIdList;
 
-  typedef typename InputQEType::IteratorGeom                      InputQEIterator;
+  typedef typename InputQEType::IteratorGeom InputQEIterator;
 
-  typedef std::map< InputPointIdentifier, InputPointIdentifier >  InputMapPointIdentifier;
-  typedef typename InputMapPointIdentifier::iterator              InputMapPoinIdentifierIterator;
+  typedef std::map< InputPointIdentifier, InputPointIdentifier > InputMapPointIdentifier;
+  typedef typename InputMapPointIdentifier::iterator             InputMapPoinIdentifierIterator;
 
   /** Output types. */
   typedef TOutputMesh                                      OutputMeshType;
@@ -95,14 +95,15 @@ public:
   typedef typename SolverTraits::MatrixType MatrixType;
   typedef typename SolverTraits::VectorType VectorType;
 
-  typedef BorderQuadEdgeMeshFilter< InputMeshType, InputMeshType >  MeshBorderTransform;
-  typedef typename MeshBorderTransform::Pointer                     MeshBorderTransformPointer;
+  typedef BorderQuadEdgeMeshFilter< InputMeshType, InputMeshType > MeshBorderTransform;
+  typedef typename MeshBorderTransform::Pointer                    MeshBorderTransformPointer;
 
-  typedef MatrixCoefficients< InputMeshType >                       CoefficientsComputation;
+  typedef MatrixCoefficients< InputMeshType > CoefficientsComputation;
 
 public:
 
-  void SetCoefficientsMethod(CoefficientsComputation *iMethod)
+  void
+  SetCoefficientsMethod(CoefficientsComputation *iMethod)
   {
     this->m_CoefficientsMethod = iMethod;
   }
@@ -116,7 +117,8 @@ public:
 protected:
 
   ParameterizationQuadEdgeMeshFilter();
-  virtual ~ParameterizationQuadEdgeMeshFilter() {}
+  virtual
+  ~ParameterizationQuadEdgeMeshFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   CoefficientsComputation *m_CoefficientsMethod;
@@ -176,7 +178,8 @@ protected:
 private:
 
   ParameterizationQuadEdgeMeshFilter(const Self &); // purposely not implemented
-  void operator=(const Self &);    // purposely not implemented
+  void operator=(const Self &);                     // purposely not implemented
+
 };
 } // end namespace itk
 

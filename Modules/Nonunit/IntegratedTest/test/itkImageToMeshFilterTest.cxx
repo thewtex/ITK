@@ -21,27 +21,26 @@
 #include "itkImage.h"
 #include "itkImageRegionIterator.h"
 
-int itkImageToMeshFilterTest(int , char *[] )
+int
+itkImageToMeshFilterTest(int , char *[] )
 {
-
 
   const unsigned int Dimension = 2;
 
-  typedef unsigned char  BinaryMaskPixelType;
+  typedef unsigned char BinaryMaskPixelType;
 
   typedef itk::Image<
-                        BinaryMaskPixelType,
-                        Dimension  >           BinaryMaskImageType;
-
+      BinaryMaskPixelType,
+      Dimension  >           BinaryMaskImageType;
 
   //
   //  Initialize an image with a white square in a black background
   //
   BinaryMaskImageType::Pointer binaryMask = BinaryMaskImageType::New();
 
-  BinaryMaskImageType::SizeType     size;
-  BinaryMaskImageType::IndexType    index;
-  BinaryMaskImageType::RegionType   region;
+  BinaryMaskImageType::SizeType   size;
+  BinaryMaskImageType::IndexType  index;
+  BinaryMaskImageType::RegionType region;
 
   size[0] = 100;
   size[1] = 100;
@@ -78,12 +77,12 @@ int itkImageToMeshFilterTest(int , char *[] )
   //
   //  Set up the filter
   //
-  typedef itk::Mesh< float, Dimension >    MeshType;
+  typedef itk::Mesh< float, Dimension > MeshType;
 
   typedef itk::BinaryMaskToNarrowBandPointSetFilter<
-                                BinaryMaskImageType,
-                                MeshType
-                                            >  GeneratorType;
+      BinaryMaskImageType,
+      MeshType
+      >  GeneratorType;
 
   GeneratorType::Pointer narrowBandGenerator = GeneratorType::New();
 
@@ -103,26 +102,26 @@ int itkImageToMeshFilterTest(int , char *[] )
   //
   //  Checking the output
   //
-  typedef MeshType::PointType               PointType;
+  typedef MeshType::PointType PointType;
 
-  typedef MeshType::PointsContainer         PointsContainer;
-  typedef PointsContainer::Pointer          PointsContainerPointer;
-  typedef PointsContainer::ConstIterator    PointsIterator;
+  typedef MeshType::PointsContainer      PointsContainer;
+  typedef PointsContainer::Pointer       PointsContainerPointer;
+  typedef PointsContainer::ConstIterator PointsIterator;
 
   typedef MeshType::PointDataContainer      PointDataContainer;
   typedef PointDataContainer::Pointer       PointDataContainerPointer;
   typedef PointDataContainer::ConstIterator PointDataIterator;
 
-  MeshType::Pointer                     pointSet  = narrowBandGenerator->GetOutput();
+  MeshType::Pointer pointSet  = narrowBandGenerator->GetOutput();
 
-  PointsContainerPointer      points    = pointSet->GetPoints();
-  PointDataContainerPointer   pointData = pointSet->GetPointData();
+  PointsContainerPointer    points    = pointSet->GetPoints();
+  PointDataContainerPointer pointData = pointSet->GetPointData();
 
   PointsIterator point     = points->Begin();
   PointsIterator lastPoint = points->End();
 
-  PointDataIterator  data     = pointData->Begin();
-  PointDataIterator  lastData = pointData->End();
+  PointDataIterator data     = pointData->Begin();
+  PointDataIterator lastData = pointData->End();
 
   while( point != lastPoint  && data != lastData )
     {

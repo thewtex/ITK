@@ -35,8 +35,8 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TInputImage, typename TOutputImage = TInputImage >
-class PeriodicBoundaryCondition:
-    public ImageBoundaryCondition< TInputImage, TOutputImage >
+class PeriodicBoundaryCondition :
+  public ImageBoundaryCondition< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -54,7 +54,7 @@ public:
   typedef typename Superclass::NeighborhoodType NeighborhoodType;
 
   typedef typename Superclass::NeighborhoodAccessorFunctorType
-  NeighborhoodAccessorFunctorType;
+    NeighborhoodAccessorFunctorType;
 
   /** Extract information from the image type. */
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
@@ -63,7 +63,8 @@ public:
   PeriodicBoundaryCondition() {}
 
   /** Runtime information support. */
-  virtual const char * GetNameOfClass() const
+  virtual const char *
+  GetNameOfClass() const
   {
     return "itkPeriodicBoundaryCondition";
   }

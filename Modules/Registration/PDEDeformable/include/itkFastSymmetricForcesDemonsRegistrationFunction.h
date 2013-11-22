@@ -43,7 +43,7 @@ namespace itk
  * \ingroup ITKPDEDeformableRegistration
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
-class FastSymmetricForcesDemonsRegistrationFunction:
+class FastSymmetricForcesDemonsRegistrationFunction :
   public PDEDeformableRegistrationFunction< TFixedImage,
                                             TMovingImage, TDisplacementField >
 {
@@ -52,7 +52,7 @@ public:
   typedef FastSymmetricForcesDemonsRegistrationFunction Self;
   typedef PDEDeformableRegistrationFunction< TFixedImage,
                                              TMovingImage, TDisplacementField >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -77,7 +77,7 @@ public:
   /** Deformation field type. */
   typedef typename Superclass::DisplacementFieldType DisplacementFieldType;
   typedef typename Superclass::DisplacementFieldTypePointer
-  DisplacementFieldTypePointer;
+    DisplacementFieldTypePointer;
 
 #ifdef ITKV3_COMPATIBILITY
   typedef typename Superclass::DeformationFieldType        DeformationFieldType;
@@ -103,7 +103,7 @@ public:
 
   /** Warper type */
   typedef WarpImageFilter< MovingImageType, MovingImageType, DisplacementFieldType > WarperType;
-  typedef typename WarperType::Pointer                                              WarperPointer;
+  typedef typename WarperType::Pointer                                               WarperPointer;
 
   /** Covariant vector type. */
   typedef CovariantVector< double, itkGetStaticConstMacro(ImageDimension) > CovariantVectorType;
@@ -116,26 +116,30 @@ public:
   typedef typename MovingGradientCalculatorType::Pointer    MovingGradientCalculatorPointer;
 
   /** Set the moving image interpolator. */
-  void SetMovingImageInterpolator(InterpolatorType *ptr)
+  void
+  SetMovingImageInterpolator(InterpolatorType *ptr)
   {
     m_MovingImageInterpolator = ptr; m_MovingImageWarper->SetInterpolator(ptr);
   }
 
   /** Get the moving image interpolator. */
-  InterpolatorType * GetMovingImageInterpolator(void)
+  InterpolatorType *
+  GetMovingImageInterpolator(void)
   {
     return m_MovingImageInterpolator;
   }
 
   /** This class uses a constant timestep of 1. */
-  virtual TimeStepType ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) ) const
+  virtual TimeStepType
+  ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) ) const
   {
     return m_TimeStep;
   }
 
   /** Return a pointer to a global data structure that is passed to
    * this object from the solver at each calculation.  */
-  virtual void * GetGlobalDataPointer() const
+  virtual void *
+  GetGlobalDataPointer() const
   {
     GlobalDataStruct *global = new GlobalDataStruct();
 
@@ -160,13 +164,15 @@ public:
   /** Get the metric value. The metric value is the mean square difference
    * in intensity between the fixed image and transforming moving image
    * computed over the the overlapping region between the two images. */
-  virtual double GetMetric() const
+  virtual double
+  GetMetric() const
   {
     return m_Metric;
   }
 
   /** Get the rms change in deformation field. */
-  virtual const double & GetRMSChange() const
+  virtual const double &
+  GetRMSChange() const
   {
     return m_RMSChange;
   }
@@ -193,7 +199,7 @@ protected:
     double m_SumOfSquaredDifference;
     SizeValueType m_NumberOfPixelsProcessed;
     double m_SumOfSquaredChange;
-  };
+    };
 
 private:
   FastSymmetricForcesDemonsRegistrationFunction(const Self &); //purposely not

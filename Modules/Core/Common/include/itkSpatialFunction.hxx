@@ -39,6 +39,7 @@ SpatialFunction< TFunctionValue, VImageDimension, TInput >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

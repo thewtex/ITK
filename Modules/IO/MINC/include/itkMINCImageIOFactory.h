@@ -58,7 +58,8 @@ public:
   itkTypeMacro(MINCImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory()
+  static void
+  RegisterOneFactory()
   {
     MINCImageIOFactory::Pointer MINCFactory = MINCImageIOFactory::New();
 

@@ -20,7 +20,6 @@
 
 #include "itkNumericTraits.h"
 
-
 namespace itk
 {
 namespace Functor
@@ -65,32 +64,40 @@ public:
     m_BackgroundValue=itk::NumericTraits<TOutput>::Zero;
   }
 
-  ~LogicOpBase(){};
+  ~LogicOpBase(){}
 
-
-  bool operator!=( const Self & ) const
+  bool
+  operator!=( const Self & ) const
   {
     return false;
   }
-  bool operator==( const Self & other ) const
+
+  bool
+  operator==( const Self & other ) const
   {
     return !(*this != other);
   }
 
-  void SetForegroundValue(const TOutput &FG)
+  void
+  SetForegroundValue(const TOutput &FG)
   {
     m_ForegroundValue=FG;
   }
-  void SetBackgroundValue(const TOutput &BG)
+
+  void
+  SetBackgroundValue(const TOutput &BG)
   {
     m_BackgroundValue=BG;
   }
 
-  TOutput GetForegroundValue() const
+  TOutput
+  GetForegroundValue() const
   {
     return(m_ForegroundValue);
   }
-  TOutput GetBackgroundValue() const
+
+  TOutput
+  GetBackgroundValue() const
   {
     return(m_BackgroundValue);
   }
@@ -117,19 +124,24 @@ public:
   typedef Equal Self;
 
   Equal()
-  {};
+  {}
   ~Equal()
-  {};
+  {}
 
-  bool operator!=( const Self & ) const
+  bool
+  operator!=( const Self & ) const
   {
     return false;
   }
-  bool operator==( const Self & other ) const
+
+  bool
+  operator==( const Self & other ) const
   {
     return !(*this != other);
   }
-  inline TOutput operator()( const TInput1 & A, const TInput2 & B)
+
+  inline TOutput
+  operator()( const TInput1 & A, const TInput2 & B)
   {
     if( A == static_cast<TInput1>(B) )
       {
@@ -154,17 +166,22 @@ class NotEqual : public LogicOpBase<TInput1, TInput2, TOutput>
 public:
   typedef NotEqual Self;
 
-  NotEqual() {};
-  ~NotEqual() {};
-  bool operator!=( const Self & ) const
+  NotEqual() {}
+  ~NotEqual() {}
+  bool
+  operator!=( const Self & ) const
   {
     return false;
   }
-  bool operator==( const Self & other ) const
+
+  bool
+  operator==( const Self & other ) const
   {
     return !(*this != other);
   }
-  inline TOutput operator()( const TInput1 & A, const TInput2 & B)
+
+  inline TOutput
+  operator()( const TInput1 & A, const TInput2 & B)
   {
     if( A != B )
       {
@@ -189,18 +206,23 @@ class GreaterEqual : public LogicOpBase<TInput1, TInput2, TOutput>
 {
 public:
   typedef GreaterEqual Self;
-  GreaterEqual() {};
-  ~GreaterEqual() {};
+  GreaterEqual() {}
+  ~GreaterEqual() {}
 
-  bool operator!=( const Self & ) const
+  bool
+  operator!=( const Self & ) const
   {
     return false;
   }
-  bool operator==( const Self & other ) const
+
+  bool
+  operator==( const Self & other ) const
   {
     return !(*this != other);
   }
-  inline TOutput operator()( const TInput1 & A, const TInput2 & B)
+
+  inline TOutput
+  operator()( const TInput1 & A, const TInput2 & B)
   {
     if( A >= B )
       {
@@ -224,17 +246,22 @@ class Greater : public LogicOpBase<TInput1, TInput2, TOutput>
 {
 public:
   typedef Greater Self;
-  Greater() {};
-  ~Greater() {};
-  bool operator!=( const Self & ) const
+  Greater() {}
+  ~Greater() {}
+  bool
+  operator!=( const Self & ) const
   {
     return false;
   }
-  bool operator==( const Self & other ) const
+
+  bool
+  operator==( const Self & other ) const
   {
     return !(*this != other);
   }
-  inline TOutput operator()( const TInput1 & A, const TInput2 & B)
+
+  inline TOutput
+  operator()( const TInput1 & A, const TInput2 & B)
   {
     if( A > B )
       {
@@ -242,6 +269,7 @@ public:
       }
     return this->m_BackgroundValue;
   }
+
 };
 /** \class LessEqual
  * \brief Functor for <= operation on images and constants.
@@ -258,17 +286,22 @@ class LessEqual : public LogicOpBase<TInput1, TInput2, TOutput>
 public:
   typedef LessEqual Self;
 
-  LessEqual(){};
-  ~LessEqual(){};
-  bool operator!=( const Self & ) const
+  LessEqual(){}
+  ~LessEqual(){}
+  bool
+  operator!=( const Self & ) const
   {
     return false;
   }
-  bool operator==( const Self & other ) const
+
+  bool
+  operator==( const Self & other ) const
   {
     return !(*this != other);
   }
-  inline TOutput operator()( const TInput1 & A, const TInput2 & B)
+
+  inline TOutput
+  operator()( const TInput1 & A, const TInput2 & B)
   {
     if( A <= B )
       {
@@ -292,17 +325,22 @@ class Less : public LogicOpBase<TInput1, TInput2, TOutput>
 {
 public:
   typedef Less Self;
-  Less() {};
-  ~Less() {};
-  bool operator!=( const Self  & ) const
+  Less() {}
+  ~Less() {}
+  bool
+  operator!=( const Self  & ) const
   {
     return false;
   }
-  bool operator==( const Self & other ) const
+
+  bool
+  operator==( const Self & other ) const
   {
     return !(*this != other);
   }
-  inline TOutput operator()( const TInput1 & A, const TInput2 & B)
+
+  inline TOutput
+  operator()( const TInput1 & A, const TInput2 & B)
   {
     if( A < B )
       {
@@ -312,7 +350,6 @@ public:
   }
 
 };
-
 
 }
 }

@@ -23,14 +23,14 @@
 namespace itk
 {
 template< typename TImage, typename TKernel >
-class AnchorErodeImageFilter:
+class AnchorErodeImageFilter :
   public AnchorErodeDilateImageFilter< TImage, TKernel, std::less< typename TImage::PixelType > >
 
 {
 public:
   typedef AnchorErodeImageFilter Self;
   typedef AnchorErodeDilateImageFilter< TImage, TKernel, std::less< typename TImage::PixelType > >
-                                 Superclass;
+    Superclass;
 
   /** Runtime information support. */
   itkTypeMacro(AnchorErodeImageFilter,
@@ -44,18 +44,21 @@ public:
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
-  protected:
+protected:
 
   AnchorErodeImageFilter()
   {
     this->m_Boundary = NumericTraits< PixelType >::max();
   }
-  virtual ~AnchorErodeImageFilter() {}
+
+  virtual
+  ~AnchorErodeImageFilter() {}
 
 private:
 
   AnchorErodeImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
+
 };
 } // namespace itk
 

@@ -40,8 +40,7 @@ Rigid3DPerspectiveTransform<TScalar>::Rigid3DPerspectiveTransform() : Superclass
 template <typename TScalar>
 Rigid3DPerspectiveTransform<TScalar>::
 ~Rigid3DPerspectiveTransform()
-{
-}
+{}
 
 // Print self
 template <typename TScalar>

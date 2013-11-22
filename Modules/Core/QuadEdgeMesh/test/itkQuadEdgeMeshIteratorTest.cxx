@@ -19,13 +19,14 @@
 #include "itkQuadEdgeMesh.h"
 #include <iostream>
 
-int itkQuadEdgeMeshIteratorTest( int , char* [] )
+int
+itkQuadEdgeMeshIteratorTest( int , char* [] )
 {
   typedef itk::QuadEdgeMesh< double, 3 >   MeshType;
   typedef MeshType::QEPrimal               QEPrimal;
   typedef MeshType::QEPrimal::IteratorGeom IteratorGeom;
 
-  MeshType::Pointer mesh = MeshType::New( );
+  MeshType::Pointer mesh = MeshType::New();
 
   //
   //                    p2--------------p1               //
@@ -46,16 +47,16 @@ int itkQuadEdgeMeshIteratorTest( int , char* [] )
   //                    \                 /              //
   //                    p4---------------p5              //
   //
-  #define NumPoints 6
-  #define NumEdges 6
-  MeshType::PixelType a = vcl_sqrt( 3.0 ) / 2.0;
-  MeshType::PixelType points[ NumPoints ][ 3 ] = { {  1.0, 0.0, 0.0 },
-                                                   {  0.5,   a, 0.0 },
-                                                   { -0.5,   a, 0.0 },
-                                                   { -1.0, 0.0, 0.0 },
-                                                   { -0.5,  -a, 0.0 },
-                                                   {  0.5,  -a, 0.0 } };
-  MeshType::PointType pnts[ NumPoints ];
+#define NumPoints 6
+#define NumEdges 6
+  MeshType::PixelType       a = vcl_sqrt( 3.0 ) / 2.0;
+  MeshType::PixelType       points[ NumPoints ][ 3 ] = { {  1.0, 0.0, 0.0 },
+                                                         {  0.5,   a, 0.0 },
+                                                       { -0.5,   a, 0.0 },
+                                                       { -1.0, 0.0, 0.0 },
+                                                       { -0.5,  -a, 0.0 },
+                                                         {  0.5,  -a, 0.0 } };
+  MeshType::PointType       pnts[ NumPoints ];
   MeshType::PointIdentifier pids[ NumPoints ];
   for( int i = 0; i < NumPoints; i++ )
     {
@@ -76,7 +77,7 @@ int itkQuadEdgeMeshIteratorTest( int , char* [] )
     {
     foundEdges[ i ] = mesh->FindEdge( pids[ i ] ,
                                       pids[ (i + 1 ) % NumEdges ] );
-    if( ! foundEdges[ i ] )
+    if( !foundEdges[ i ] )
       {
       std::cerr << "Unfound edge ["
                 << pids[ i ] << ", "
@@ -100,22 +101,22 @@ int itkQuadEdgeMeshIteratorTest( int , char* [] )
   //////////////////////////////////////////////////////////
   int edgeNumber = 0;
   std::cout << "Testing Lnext iterator... ";
-  for( IteratorGeom itLnext  = foundEdges[ 0 ]->BeginGeomLnext( );
-                    itLnext != foundEdges[ 0 ]->EndGeomLnext( );
-                    itLnext++, edgeNumber++ )
+  for( IteratorGeom itLnext  = foundEdges[ 0 ]->BeginGeomLnext();
+       itLnext != foundEdges[ 0 ]->EndGeomLnext();
+       itLnext++, edgeNumber++ )
     {
     MeshType::QEPrimal* expectedEdge = foundEdges[ edgeNumber ];
-    MeshType::QEPrimal* currentEdge  = itLnext.Value( );
+    MeshType::QEPrimal* currentEdge  = itLnext.Value();
     if ( currentEdge != expectedEdge )
       {
       std::cout << std::endl
                 << "Erroneous edge: was expecting ["
-                << expectedEdge->GetOrigin( )
+                << expectedEdge->GetOrigin()
                 << ", "
-                << expectedEdge->GetDestination( )
+                << expectedEdge->GetDestination()
                 << "], but got ["
-                << currentEdge->GetOrigin( ) << ", "
-                << currentEdge->GetDestination( ) << "]. Failed."
+                << currentEdge->GetOrigin() << ", "
+                << currentEdge->GetDestination() << "]. Failed."
                 << std::endl;
       return EXIT_FAILURE;
       }
@@ -125,23 +126,23 @@ int itkQuadEdgeMeshIteratorTest( int , char* [] )
   //////////////////////////////////////////////////////////
   edgeNumber = 0;
   std::cout << "Testing Rnext iterator... ";
-  for( IteratorGeom itRnext  = foundEdges[ 0 ]->BeginGeomRnext( );
-                    itRnext != foundEdges[ 0 ]->EndGeomRnext( );
-                    itRnext++, edgeNumber++ )
+  for( IteratorGeom itRnext  = foundEdges[ 0 ]->BeginGeomRnext();
+       itRnext != foundEdges[ 0 ]->EndGeomRnext();
+       itRnext++, edgeNumber++ )
     {
     // We stat with [0,1] and should get [0,5], [5,4], [4,3]...
     MeshType::QEPrimal* expectedEdge = foundEdges[ ( NumEdges - edgeNumber ) % NumEdges ];
-    MeshType::QEPrimal* currentEdge  = itRnext.Value( );
+    MeshType::QEPrimal* currentEdge  = itRnext.Value();
     if ( currentEdge != expectedEdge )
       {
       std::cout << std::endl
                 << "Erroneous edge: was expecting ["
-                << expectedEdge->GetOrigin( )
+                << expectedEdge->GetOrigin()
                 << ", "
-                << expectedEdge->GetDestination( )
+                << expectedEdge->GetDestination()
                 << "], but got ["
-                << currentEdge->GetOrigin( ) << ", "
-                << currentEdge->GetDestination( ) << "]. Failed."
+                << currentEdge->GetOrigin() << ", "
+                << currentEdge->GetDestination() << "]. Failed."
                 << std::endl;
       return EXIT_FAILURE;
       }
@@ -153,30 +154,30 @@ int itkQuadEdgeMeshIteratorTest( int , char* [] )
   // BeginGeomDnext( ) returns the edge itself to begin with
   edgeNumber = 0;
   std::cout << "Testing Dnext iterator... ";
-  for( IteratorGeom itDnext  = foundEdges[ 0 ]->BeginGeomDnext( );
-                    itDnext != foundEdges[ 0 ]->EndGeomDnext( );
-                    itDnext++, edgeNumber++ )
+  for( IteratorGeom itDnext  = foundEdges[ 0 ]->BeginGeomDnext();
+       itDnext != foundEdges[ 0 ]->EndGeomDnext();
+       itDnext++, edgeNumber++ )
     {
     MeshType::QEPrimal* expectedEdge;
     if( edgeNumber )
       {
-      expectedEdge = foundEdges[ edgeNumber ]->GetSym( );
+      expectedEdge = foundEdges[ edgeNumber ]->GetSym();
       }
     else
       {
       expectedEdge = foundEdges[ edgeNumber ];
       }
-    MeshType::QEPrimal* currentEdge  = itDnext.Value( );
+    MeshType::QEPrimal* currentEdge  = itDnext.Value();
     if ( currentEdge != expectedEdge )
       {
       std::cout << std::endl
                 << "Erroneous edge: was expecting ["
-                << expectedEdge->GetOrigin( )
+                << expectedEdge->GetOrigin()
                 << ", "
-                << expectedEdge->GetDestination( )
+                << expectedEdge->GetDestination()
                 << "], but got ["
-                << currentEdge->GetOrigin( ) << ", "
-                << currentEdge->GetDestination( ) << "]. Failed."
+                << currentEdge->GetOrigin() << ", "
+                << currentEdge->GetDestination() << "]. Failed."
                 << std::endl;
       return EXIT_FAILURE;
       }

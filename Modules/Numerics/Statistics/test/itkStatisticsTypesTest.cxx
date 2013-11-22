@@ -30,8 +30,8 @@
     std::cout << " Real type " << std::endl; \
     }
 
-
-int itkStatisticsTypesTest(int, char * [])
+int
+itkStatisticsTypesTest(int, char * [])
 {
 
   declareType( InstanceIdentifier );

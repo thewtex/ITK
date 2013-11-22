@@ -17,7 +17,7 @@
  *=========================================================================*/
 #ifndef __itkMRCImageIO_h
 #define __itkMRCImageIO_h
-
+#include "ITKIOMRCExport.h"
 #include "itkStreamingImageIOBase.h"
 #include "itkMRCHeaderObject.h"
 #include <numeric>
@@ -55,8 +55,8 @@ namespace itk
  * \sa ImageFileWriter ImageFileReader ImageIOBase
  * \ingroup ITKIOMRC
  */
-class MRCImageIO :
-  public StreamingImageIOBase
+class ITKIOMRC_EXPORT MRCImageIO :
+  public              StreamingImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -71,7 +71,8 @@ public:
   itkTypeMacro(MRCImageIO, StreamingImageIOBase);
 
   // we don't use this method
-  virtual void WriteImageInformation(void) {}
+  virtual void
+  WriteImageInformation(void) {}
 
   //-------- This part of the interface deals with reading data. ------
 

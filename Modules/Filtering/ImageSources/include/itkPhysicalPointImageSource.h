@@ -52,7 +52,6 @@ public:
   typedef typename OutputImageType::PointType     PointType;
   typedef typename OutputImageType::DirectionType DirectionType;
 
-
   typedef typename RegionType::SizeType SizeType;
 
   /** Run-time type information (and related methods). */
@@ -62,24 +61,23 @@ public:
   itkNewMacro(Self);
 
 protected:
-  PhysicalPointImageSource( ) {};
+  PhysicalPointImageSource() {}
   // virtual ~PhysicalPointImageSource() default implementation ok
 
   virtual void GenerateOutputInformation();
 
-  virtual void ThreadedGenerateData (const RegionType &outputRegionForThread, ThreadIdType threadId);
+  virtual void ThreadedGenerateData(const RegionType &outputRegionForThread, ThreadIdType threadId);
 
 private:
   PhysicalPointImageSource( const PhysicalPointImageSource &); //purposely not implemented
-  void operator=( const PhysicalPointImageSource &);  //purposely not implemented
+  void operator=( const PhysicalPointImageSource &);           //purposely not implemented
+
 };
 
 }
 
-
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkPhysicalPointImageSource.hxx"
 #endif
-
 
 #endif //__itkPhysicalPointImageSource_h

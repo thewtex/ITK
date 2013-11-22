@@ -45,7 +45,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage, typename TFunction >
-class UnaryFunctorImageFilter:public InPlaceImageFilter< TInputImage, TOutputImage >
+class UnaryFunctorImageFilter : public InPlaceImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -77,8 +77,15 @@ public:
    * (Functors do not have to derive from itk::LightObject, so they do
    * not necessarily have a reference count. So we cannot return a
    * SmartPointer.) */
-  FunctorType &       GetFunctor() { return m_Functor; }
-  const FunctorType & GetFunctor() const { return m_Functor; }
+  FunctorType &
+  GetFunctor() {
+    return m_Functor;
+  }
+
+  const FunctorType &
+  GetFunctor() const {
+    return m_Functor;
+  }
 
   /** Set the functor object.  This replaces the current Functor with a
    * copy of the specified Functor. This allows the user to specify a
@@ -86,7 +93,8 @@ public:
    * This method requires an operator!=() be defined on the functor
    * (or the compiler's default implementation of operator!=() being
    * appropriate). */
-  void SetFunctor(const FunctorType & functor)
+  void
+  SetFunctor(const FunctorType & functor)
   {
     if ( m_Functor != functor )
       {
@@ -97,7 +105,8 @@ public:
 
 protected:
   UnaryFunctorImageFilter();
-  virtual ~UnaryFunctorImageFilter() {}
+  virtual
+  ~UnaryFunctorImageFilter() {}
 
   /** UnaryFunctorImageFilter can produce an image which is a different
    * resolution than its input image.  As such, UnaryFunctorImageFilter

@@ -38,7 +38,7 @@ namespace itk
  * \brief Create instances of VTKImageIO objects using an object factory.
  * \ingroup ITKIOVTK
  */
-class ITKIOVTK_EXPORT VTKImageIOFactory:public ObjectFactoryBase
+class ITKIOVTK_EXPORT VTKImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -59,7 +59,8 @@ public:
   itkTypeMacro(VTKImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     VTKImageIOFactory::Pointer vtkFactory = VTKImageIOFactory::New();
 
@@ -73,6 +74,7 @@ protected:
 private:
   VTKImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);    //purposely not implemented
+
 };
 } // end namespace itk
 

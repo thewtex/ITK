@@ -18,10 +18,10 @@
 
 #include <iostream>
 
-
 #include "itkVectorRescaleIntensityImageFilter.h"
 
-int itkVectorRescaleIntensityImageFilterTest(int, char* [] )
+int
+itkVectorRescaleIntensityImageFilterTest(int, char* [] )
 {
   std::cout << "itkVectorRescaleIntensityImageFilterTest Start" << std::endl;
 
@@ -56,8 +56,8 @@ int itkVectorRescaleIntensityImageFilterTest(int, char* [] )
   inputImage->FillBuffer( pixelValue );
 
   typedef itk::VectorRescaleIntensityImageFilter<
-                                     InputImageType,
-                                     OutputImageType> FilterType;
+      InputImageType,
+      OutputImageType> FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
@@ -70,7 +70,7 @@ int itkVectorRescaleIntensityImageFilterTest(int, char* [] )
   try
     {
     filter->Update();
-    filter->SetFunctor(filter->GetFunctor());
+    filter->SetFunctor(filter->GetFunctor() );
     }
 
   catch (itk::ExceptionObject& e)

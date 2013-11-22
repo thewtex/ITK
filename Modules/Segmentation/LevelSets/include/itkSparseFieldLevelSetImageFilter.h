@@ -79,20 +79,35 @@ public:
   itkStaticConstMacro(Dimension, unsigned int,
                       NeighborhoodType::Dimension);
 
-  const RadiusType & GetRadius() const
-  { return m_Radius; }
+  const RadiusType &
+  GetRadius() const
+  {
+    return m_Radius;
+  }
 
-  const unsigned int & GetArrayIndex(unsigned int i) const
-  { return m_ArrayIndex[i]; }
+  const unsigned int &
+  GetArrayIndex(unsigned int i) const
+  {
+    return m_ArrayIndex[i];
+  }
 
-  const OffsetType & GetNeighborhoodOffset(unsigned int i) const
-  { return m_NeighborhoodOffset[i]; }
+  const OffsetType &
+  GetNeighborhoodOffset(unsigned int i) const
+  {
+    return m_NeighborhoodOffset[i];
+  }
 
-  const unsigned int & GetSize() const
-  { return m_Size; }
+  const unsigned int &
+  GetSize() const
+  {
+    return m_Size;
+  }
 
-  int GetStride(unsigned int i)
-  { return m_StrideTable[i]; }
+  int
+  GetStride(unsigned int i)
+  {
+    return m_StrideTable[i];
+  }
 
   SparseFieldCityBlockNeighborList();
   ~SparseFieldCityBlockNeighborList() {}
@@ -226,7 +241,7 @@ private:
  * \ingroup ITKLevelSets
  */
 template< typename TInputImage, typename TOutputImage >
-class SparseFieldLevelSetImageFilter:
+class SparseFieldLevelSetImageFilter :
   public FiniteDifferenceImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -274,7 +289,7 @@ public:
   /** The type of the image used to index status information.  Necessary for
    *  the internals of the algorithm. */
   typedef Image< StatusType, itkGetStaticConstMacro(ImageDimension) >
-  StatusImageType;
+    StatusImageType;
 
   /** Memory pre-allocator used to manage layer nodes in a multi-threaded
    *  environment. */
@@ -307,10 +322,17 @@ public:
   itkGetConstMacro(InterpolateSurfaceLocation, bool);
 
   /** See Get/SetInterpolateSurfaceLocation */
-  void InterpolateSurfaceLocationOn()
-  { this->SetInterpolateSurfaceLocation(true); }
-  void InterpolateSurfaceLocationOff()
-  { this->SetInterpolateSurfaceLocation(false); }
+  void
+  InterpolateSurfaceLocationOn()
+  {
+    this->SetInterpolateSurfaceLocation(true);
+  }
+
+  void
+  InterpolateSurfaceLocationOff()
+  {
+    this->SetInterpolateSurfaceLocation(false);
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -332,12 +354,15 @@ protected:
    * output values are applied during each iteration.  The default simply
    * follows the standard finite difference scheme of scaling the change by the
    * timestep and adding to the value of the previous iteration. */
-  inline virtual ValueType CalculateUpdateValue(
+  inline virtual ValueType
+  CalculateUpdateValue(
     const IndexType & itkNotUsed(idx),
     const TimeStepType & dt,
     const ValueType & value,
     const ValueType & change)
-  { return ( value + dt * change ); }
+  {
+    return ( value + dt * change );
+  }
 
   /**This method packages the output(s) into a consistent format.  The default
    * implementation produces a volume with the final solution values in the
@@ -492,7 +517,7 @@ protected:
   bool m_InterpolateSurfaceLocation;
 
   const InputImageType *m_InputImage;
-  OutputImageType      *m_OutputImage;
+  OutputImageType *     m_OutputImage;
 
 private:
   SparseFieldLevelSetImageFilter(const Self &); //purposely not implemented

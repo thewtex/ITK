@@ -18,25 +18,25 @@
 #include "itkMemoryUsageObserver.h"
 
 #if defined( WIN32 ) || defined( _WIN32 )
-  #include <windows.h>
-  #if defined( SUPPORT_PSAPI )
-    #include <psapi.h>
-  #endif
+#include <windows.h>
+#if defined( SUPPORT_PSAPI )
+#include <psapi.h>
+#endif
 #endif // defined(WIN32) || defined(_WIN32)
 
 #if defined( __SUNPRO_CC ) || defined ( __sun__ )
-  #include <unistd.h>
-  #include <stdio.h>
-  #include <string>
-  #include <sstream>
+#include <unistd.h>
+#include <stdio.h>
+#include <string>
+#include <sstream>
 #endif // !defined(__SUNPRO_CC) && !defined (__sun__)
 
 #if !defined( WIN32 ) && !defined( _WIN32 )
-  #include <sys/resource.h>     // getrusage()
-  #if !defined( __APPLE__ ) && !defined( __SUNPRO_CC ) && !defined ( __sun__ ) && !defined( __FreeBSD__ ) \
+#include <sys/resource.h>       // getrusage()
+#if !defined( __APPLE__ ) && !defined( __SUNPRO_CC ) && !defined ( __sun__ ) && !defined( __FreeBSD__ ) \
   && !defined( __OpenBSD__ )
-    #include <malloc.h>           // mallinfo()
-  #endif // !defined(__APPLE__) && !defined(__SUNPRO_CC) && !defined (__sun__)
+#include <malloc.h> // mallinfo()
+#endif              // !defined(__APPLE__) && !defined(__SUNPRO_CC) && !defined (__sun__)
 #endif // !defined(WIN32) && !defined(_WIN32)
 
 #if defined( __OpenBSD__ )
@@ -97,13 +97,13 @@ typedef LONG KPRIORITY;
 typedef struct _CLIENT_ID {
   DWORD UniqueProcess;
   DWORD UniqueThread;
-} CLIENT_ID;
+  } CLIENT_ID;
 
 typedef struct _UNICODE_STRING {
   USHORT Length;
   USHORT MaximumLength;
   PWSTR Buffer;
-} UNICODE_STRING;
+  } UNICODE_STRING;
 
 typedef struct _VM_COUNTERS {
 #ifdef _WIN64
@@ -132,7 +132,7 @@ typedef struct _VM_COUNTERS {
   SIZE_T PagefileUsage;
   SIZE_T PeakPagefileUsage;
 #endif
-} VM_COUNTERS;
+  } VM_COUNTERS;
 
 typedef struct _SYSTEM_THREADS {
   LARGE_INTEGER KernelTime;
@@ -146,7 +146,7 @@ typedef struct _SYSTEM_THREADS {
   ULONG ContextSwitchCount;
   LONG State;
   LONG WaitReason;
-} SYSTEM_THREADS, *PSYSTEM_THREADS;
+  } SYSTEM_THREADS, *PSYSTEM_THREADS;
 
 typedef struct _SYSTEM_PROCESSES { // Information Class 5
   ULONG NextEntryDelta;
@@ -176,7 +176,7 @@ typedef struct _SYSTEM_PROCESSES { // Information Class 5
   IO_COUNTERS IoCounters;
 #endif
   SYSTEM_THREADS Threads[1];
-} SYSTEM_PROCESSES, *PSYSTEM_PROCESSES;
+  } SYSTEM_PROCESSES, *PSYSTEM_PROCESSES;
 #endif
 
 MemoryUsageObserverBase::MemoryLoadType
@@ -201,8 +201,8 @@ WindowsMemoryUsageObserver::GetMemoryUsage()
   GetProcessMemoryInfo( hProcess, &memoryCounters, sizeof( memoryCounters ) );
 
   mem = static_cast< MemoryLoadType >(
-    static_cast< double >( memoryCounters.PagefileUsage )
-    / 1024.0 );
+      static_cast< double >( memoryCounters.PagefileUsage )
+      / 1024.0 );
 #elif defined( SUPPORT_TOOLHELP32 )
 
   /* Retrieve memory usage using Windows Native API. For more information,
@@ -244,7 +244,7 @@ WindowsMemoryUsageObserver::GetMemoryUsage()
     if ( spp->ProcessId == pid )
       {
       mem = static_cast< MemoryLoadType >(
-        static_cast< double >( spp->VmCounters.PagefileUsage - sizeof( *sp ) ) / 1024 );
+          static_cast< double >( spp->VmCounters.PagefileUsage - sizeof( *sp ) ) / 1024 );
       break;
       }
     done = ( spp->NextEntryDelta == 0 );
@@ -264,7 +264,7 @@ WindowsMemoryUsageObserver::GetMemoryUsage()
   GlobalMemoryStatusEx (&statex);
 
   mem   = static_cast< MemoryLoadType >(
-    static_cast< double >( statex.ullTotalPhys - statex.ullAvailPhys ) / 1024 );
+      static_cast< double >( statex.ullTotalPhys - statex.ullAvailPhys ) / 1024 );
 #endif
   return mem;
 }
@@ -296,12 +296,12 @@ LinuxMemoryUsageObserver::GetMemoryUsage()
   // the two fields we want
   //
   unsigned long vsize;
-  long rss;
+  long          rss;
 
   procstats >> pid >> comm >> state >> ppid >> pgrp >> session >> tty_nr
-              >> tpgid >> flags >> minflt >> cminflt >> majflt >> cmajflt
-              >> utime >> stime >> cutime >> cstime >> priority >> nice
-              >> O >> itrealvalue >> starttime >> vsize >> rss; // don't care about the rest
+  >> tpgid >> flags >> minflt >> cminflt >> majflt >> cmajflt
+  >> utime >> stime >> cutime >> cstime >> priority >> nice
+  >> O >> itrealvalue >> starttime >> vsize >> rss;             // don't care about the rest
 
   procstats.close();
 
@@ -325,12 +325,13 @@ MacOSXMemoryUsageObserver::GetMemoryUsage()
   //
   // this method comes from
   // http://stackoverflow.com/questions/5839626/how-is-top-able-to-see-memory-usage
-  task_t targetTask = mach_task_self();
+  task_t                 targetTask = mach_task_self();
   struct task_basic_info ti;
   mach_msg_type_number_t count = TASK_BASIC_INFO_64_COUNT;
-  kern_return_t kr =
+  kern_return_t          kr =
     task_info(targetTask, TASK_BASIC_INFO_64,
               (task_info_t) &ti, &count);
+
   if (kr != KERN_SUCCESS)
     {
     return 0;
@@ -444,6 +445,7 @@ SysResourceMemoryUsageObserver::GetMemoryUsage()
   rusage resourceInfo;
 
   const int who = RUSAGE_SELF;
+
   if ( getrusage(who, &resourceInfo) == 0 )
     {
     return static_cast<MemoryUsageObserverBase::MemoryLoadType> (resourceInfo.ru_ixrss);
@@ -466,7 +468,7 @@ MallinfoMemoryUsageObserver::GetMemoryUsage()
   struct mallinfo minfo = mallinfo();
 
   MemoryLoadType mem = static_cast< MemoryLoadType >(
-    static_cast< double >( minfo.uordblks ) / 1024.0 );
+      static_cast< double >( minfo.uordblks ) / 1024.0 );
 
   return mem;
 }

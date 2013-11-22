@@ -20,19 +20,20 @@
 #include "itkRegionOfInterestImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkRegionOfInterestImageFilterTest(int, char* [] )
+int
+itkRegionOfInterestImageFilterTest(int, char* [] )
 {
 
-  const unsigned int               Dimension = 3;
-  typedef itk::Index<Dimension>    PixelType;
+  const unsigned int Dimension = 3;
+
+  typedef itk::Index<Dimension> PixelType;
 
   typedef itk::Image< PixelType,
                       Dimension >   ImageType;
 
   typedef itk::RegionOfInterestImageFilter<
-                                      ImageType,
-                                      ImageType  > FilterType;
-
+      ImageType,
+      ImageType  > FilterType;
 
   typedef ImageType::RegionType    RegionType;
   typedef ImageType::SizeType      SizeType;
@@ -40,17 +41,16 @@ int itkRegionOfInterestImageFilterTest(int, char* [] )
   typedef ImageType::DirectionType DirectionType;
 
   typedef itk::ImageRegionIterator<
-                           ImageType > IteratorType;
+      ImageType > IteratorType;
 
   FilterType::Pointer filter = FilterType::New();
-
 
   ImageType::Pointer image = ImageType::New();
 
   IndexType start;
   start.Fill( 0 );
 
-  SizeType  size;
+  SizeType size;
   size[0] = 40;
   size[1] = 40;
   size[2] = 40;
@@ -81,7 +81,6 @@ int itkRegionOfInterestImageFilterTest(int, char* [] )
     ++intr;
     }
 
-
   filter->SetInput( image );
 
   SizeType roiSize;
@@ -101,10 +100,8 @@ int itkRegionOfInterestImageFilterTest(int, char* [] )
   itk::SimpleFilterWatcher watcher(filter);
   filter->SetRegionOfInterest( regionOfInterest );
 
-
   filter->Update();
   filter->GetOutput()->Print(std::cout);
-
 
   IteratorType ot( filter->GetOutput(),
                    filter->GetOutput()->GetLargestPossibleRegion() );

@@ -29,7 +29,6 @@
 #define __itkStimulateImageIO_h
 #include "ITKIOStimulateExport.h"
 
-
 #include <fstream>
 #include "itkImageIOBase.h"
 
@@ -59,7 +58,7 @@ namespace itk
  *
  * \ingroup ITKIOStimulate
  */
-class ITKIOStimulate_EXPORT StimulateImageIO:public ImageIOBase
+class ITKIOStimulate_EXPORT StimulateImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -93,7 +92,8 @@ public:
 
   /** Writes the spacing and dimensions of the image.
    * Assumes SetFileName has been called with a valid file name. */
-  virtual void WriteImageInformation() {}
+  virtual void
+  WriteImageInformation() {}
 
   /** Writes the data to disk from the memory buffer provided. Make sure
    * that the IORegion has been set properly. */
@@ -106,11 +106,14 @@ public:
    *  range are displayed with a grey value that is scaled linearly between the
    *  low_value and high_value. */
   itkGetVectorMacro(DisplayRange, const float, 2);
-  const float & GetHighDisplayValue()
+  const float &
+  GetHighDisplayValue()
   {
     return m_DisplayRange[1];
   }
-  const float & GetLowDisplayValue()
+
+  const float &
+  GetLowDisplayValue()
   {
     return m_DisplayRange[1];
   }
@@ -128,13 +131,14 @@ protected:
 
 private:
   std::string m_DataFileName;
-  char m_SdtOrient[256];
-  float m_DisplayRange[2];
-  float m_DisplayThresh;
-  char m_FidName[256];
+  char        m_SdtOrient[256];
+  float       m_DisplayRange[2];
+  float       m_DisplayThresh;
+  char        m_FidName[256];
 
   StimulateImageIO(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -18,13 +18,14 @@
 
 #include "itkMahalanobisDistanceMetric.h"
 
-int itkMahalanobisDistanceMetricTest(int, char* [] )
+int
+itkMahalanobisDistanceMetricTest(int, char* [] )
 {
   const unsigned int MeasurementVectorSize = 3;
 
-  typedef itk::Array< float  >  MeasurementVectorType;
+  typedef itk::Array< float  > MeasurementVectorType;
 
-  typedef itk::Statistics::MahalanobisDistanceMetric< MeasurementVectorType >   DistanceMetricType;
+  typedef itk::Statistics::MahalanobisDistanceMetric< MeasurementVectorType > DistanceMetricType;
 
   DistanceMetricType::Pointer distance = DistanceMetricType::New();
 
@@ -75,7 +76,7 @@ int itkMahalanobisDistanceMetricTest(int, char* [] )
     }
 
   //Test if we get the same result with identity covariance matrix set
-  DistanceMetricType::CovarianceMatrixType   covarianceMatrix;
+  DistanceMetricType::CovarianceMatrixType covarianceMatrix;
   covarianceMatrix.set_size( MeasurementVectorSize, MeasurementVectorSize );
   covarianceMatrix.set_identity();
   distance->SetCovariance( covarianceMatrix );
@@ -113,11 +114,10 @@ int itkMahalanobisDistanceMetricTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   //Test if an exception is thrown if a covariance matrix is set with different
   //size
-  DistanceMetricType::CovarianceMatrixType   covarianceMatrix2;
-  DistanceMetricType::MeasurementVectorSizeType  measurementSize2 = 4;
+  DistanceMetricType::CovarianceMatrixType      covarianceMatrix2;
+  DistanceMetricType::MeasurementVectorSizeType measurementSize2 = 4;
   covarianceMatrix2.set_size( measurementSize2, measurementSize2 );
 
   try
@@ -134,7 +134,7 @@ int itkMahalanobisDistanceMetricTest(int, char* [] )
   //Set a covariance matrix and check if the computed inverse matrix is
   //correct
   //
-  DistanceMetricType::CovarianceMatrixType   covarianceMatrix3;
+  DistanceMetricType::CovarianceMatrixType covarianceMatrix3;
   covarianceMatrix3.set_size( MeasurementVectorSize, MeasurementVectorSize );
   covarianceMatrix3[0][0] = 2.0;
   covarianceMatrix3[0][1] = 1.4;
@@ -151,7 +151,7 @@ int itkMahalanobisDistanceMetricTest(int, char* [] )
   distance->SetCovariance( covarianceMatrix3 );
 
   //establish the true inverse covariance matrix
-  DistanceMetricType::CovarianceMatrixType   trueInverseCovarianceMatrix;
+  DistanceMetricType::CovarianceMatrixType trueInverseCovarianceMatrix;
   trueInverseCovarianceMatrix.set_size( MeasurementVectorSize, MeasurementVectorSize );
 
   trueInverseCovarianceMatrix[0][0] = -2.124;
@@ -167,7 +167,7 @@ int itkMahalanobisDistanceMetricTest(int, char* [] )
   trueInverseCovarianceMatrix[2][2] = 0.059;
 
   // Get the computed inverse covariance matrix
-  DistanceMetricType::CovarianceMatrixType   computedInverseCovarianceMatrix;
+  DistanceMetricType::CovarianceMatrixType computedInverseCovarianceMatrix;
   computedInverseCovarianceMatrix = distance->GetInverseCovariance();
 
   if( vcl_fabs( trueInverseCovarianceMatrix[0][0] - computedInverseCovarianceMatrix[0][0] ) > tolerance  ||
@@ -186,7 +186,7 @@ int itkMahalanobisDistanceMetricTest(int, char* [] )
 
   //Run the distance metric with a single component measurement vector size
   DistanceMetricType::MeasurementVectorSizeType
-                    singleComponentMeasurementVectorSize = 1;
+    singleComponentMeasurementVectorSize = 1;
 
   distance->SetMeasurementVectorSize( singleComponentMeasurementVectorSize );
 
@@ -252,7 +252,6 @@ int itkMahalanobisDistanceMetricTest(int, char* [] )
     {
     std::cerr << "Exception caught: " << excpt << std::endl;
     }
-
 
   return EXIT_SUCCESS;
 }

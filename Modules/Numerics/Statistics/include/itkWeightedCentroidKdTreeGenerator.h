@@ -63,7 +63,7 @@ namespace Statistics
  */
 
 template< typename TSample >
-class WeightedCentroidKdTreeGenerator:
+class WeightedCentroidKdTreeGenerator :
   public KdTreeGenerator< TSample >
 {
 public:
@@ -92,7 +92,8 @@ protected:
   WeightedCentroidKdTreeGenerator();
 
   /** Destructor */
-  virtual ~WeightedCentroidKdTreeGenerator() {}
+  virtual
+  ~WeightedCentroidKdTreeGenerator() {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

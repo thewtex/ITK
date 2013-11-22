@@ -22,7 +22,6 @@
 #include "itkTemporalProcessObject.h"
 #include "itkTemporalDataObject.h"
 
-
 namespace itk
 {
 
@@ -33,9 +32,9 @@ namespace itk
 //
 TemporalProcessObject::TemporalProcessObject()
   : m_UnitInputNumberOfFrames(1),
-    m_UnitOutputNumberOfFrames(1),
-    m_FrameSkipPerOutput(1),
-    m_InputStencilCurrentFrameIndex(0)
+  m_UnitOutputNumberOfFrames(1),
+  m_FrameSkipPerOutput(1),
+  m_InputStencilCurrentFrameIndex(0)
 {}
 
 //
@@ -45,6 +44,7 @@ void
 TemporalProcessObject::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "TemporalProcessObject" << std::endl;
 }
 
@@ -81,11 +81,11 @@ TemporalProcessObject::EnlargeOutputRequestedTemporalRegion(TemporalDataObject* 
   // Get information on output request and current output buffer
   TemporalRegion outReqTempRegion = output->GetRequestedTemporalRegion();
   TemporalRegion outBufTempRegion = output->GetBufferedTemporalRegion();
-  SizeValueType outReqStart = outReqTempRegion.GetFrameStart();
-  SizeValueType outReqDuration = outReqTempRegion.GetFrameDuration();
-  SizeValueType outReqEnd = outReqDuration + outReqStart;
-  SizeValueType outBufStart = outBufTempRegion.GetFrameStart();
-  SizeValueType outBufEnd = outBufTempRegion.GetFrameDuration() + outBufStart;
+  SizeValueType  outReqStart = outReqTempRegion.GetFrameStart();
+  SizeValueType  outReqDuration = outReqTempRegion.GetFrameDuration();
+  SizeValueType  outReqEnd = outReqDuration + outReqStart;
+  SizeValueType  outBufStart = outBufTempRegion.GetFrameStart();
+  SizeValueType  outBufEnd = outBufTempRegion.GetFrameDuration() + outBufStart;
 
   // If the requested output region is contained in the buffered temporal
   // region, just return
@@ -136,7 +136,6 @@ TemporalProcessObject::GenerateOutputRequestedTemporalRegion(TemporalDataObject*
   // Get the current output requested region
   TemporalRegion outputRequest = output->GetRequestedTemporalRegion();
 
-
   // If the largest possible temporal region has infinite duration, we should
   // only request a single frame
   if (!outputRequest.GetFrameDuration() &&
@@ -155,10 +154,10 @@ TemporalProcessObject::GenerateOutputRequestedTemporalRegion(TemporalDataObject*
 
   // If the current region is set to no duration, use the largest possible
   // temporal region
-  else if (!outputRequest.GetFrameDuration())
+  else if (!outputRequest.GetFrameDuration() )
     {
     output->SetRequestedTemporalRegion(
-      output->GetLargestPossibleTemporalRegion());
+      output->GetLargestPossibleTemporalRegion() );
     }
 
 }
@@ -176,19 +175,19 @@ TemporalProcessObject::GenerateInputRequestedRegion()
     }
 
   // Check that output and input are a TemporalDataObjects
-  TemporalDataObject* tOutput = dynamic_cast<TemporalDataObject*>(this->GetOutput(0));
-  TemporalDataObject* tInput = dynamic_cast<TemporalDataObject*>(this->GetInput(0));
+  TemporalDataObject* tOutput = dynamic_cast<TemporalDataObject*>(this->GetOutput(0) );
+  TemporalDataObject* tInput = dynamic_cast<TemporalDataObject*>(this->GetInput(0) );
 
   if (!tOutput)
     {
     itkExceptionMacro(<< "itk::TemporalProcessObject::GenerateInputRequestedRegion() "
-                      << "cannot cast " << typeid(this->GetOutput(0)).name() << " to "
+                      << "cannot cast " << typeid(this->GetOutput(0) ).name() << " to "
                       << typeid(TemporalDataObject*).name() );
     }
   else if (!tInput)
     {
     itkExceptionMacro(<< "itk::TemporalProcessObject::GenerateInputRequestedRegion() "
-                      << "cannot cast " << typeid(this->GetInput(0)).name() << " to "
+                      << "cannot cast " << typeid(this->GetInput(0) ).name() << " to "
                       << typeid(TemporalDataObject*).name() );
     }
   else
@@ -206,28 +205,28 @@ TemporalProcessObject::GenerateInputRequestedTemporalRegion()
 {
   // This should only get called after verifying that input(0) and output(0)
   // can validly be cast to TemporalDataObjects, so don't check cast here
-  TemporalDataObject* input = dynamic_cast<TemporalDataObject*>(this->GetInput(0));
-  TemporalDataObject* output = dynamic_cast<TemporalDataObject*>(this->GetOutput(0));
+  TemporalDataObject* input = dynamic_cast<TemporalDataObject*>(this->GetInput(0) );
+  TemporalDataObject* output = dynamic_cast<TemporalDataObject*>(this->GetOutput(0) );
 
   TemporalRegion outReqTempRegion = output->GetRequestedTemporalRegion();
 
   // This should always be a whole number because of EnlargeOutputRequestedTemporalRegion
   // but do it safely in case the subclass overrides it
   SizeValueType numInputRequests =
-    Math::Ceil<SizeValueType>((double)outReqTempRegion.GetFrameDuration() /
-                              (double)m_UnitOutputNumberOfFrames);
+    Math::Ceil<SizeValueType>( (double)outReqTempRegion.GetFrameDuration() /
+                               (double)m_UnitOutputNumberOfFrames);
 
   // The number of input requests indicates the number of times the process
   // will have to request a temporal region of size m_UnitInputNumberOfFrames.
   // Each request besides the last will require m_FrameSkipPerOutput new frames
   // to be loaded.
   SizeValueType inputDuration = m_FrameSkipPerOutput * (numInputRequests - 1) +
-                                  m_UnitInputNumberOfFrames;
+    m_UnitInputNumberOfFrames;
 
   // Compute the start of the input requested temporal region based on
   // m_InputStencilCurrentFrameIndex and FrameSkipPerOutput
   OffsetValueType inputStart = outReqTempRegion.GetFrameStart() * m_FrameSkipPerOutput
-                      - m_InputStencilCurrentFrameIndex;
+    - m_InputStencilCurrentFrameIndex;
 
   // Make sure we're not requesting a negative frame (this may be replaced by
   // boundary conditions at some point)
@@ -251,9 +250,10 @@ TemporalRegion
 TemporalProcessObject::GenerateDefaultLargestPossibleTemporalRegion()
 {
   TemporalRegion out;
+
   out.SetFrameStart(0);
   out.SetFrameDuration(ITK_INFINITE_FRAME_DURATION);
-  out.SetRealStart(RealTimeStamp());
+  out.SetRealStart(RealTimeStamp() );
   out.SetRealDuration(ITK_INFINITE_REAL_DURATION);
   return out;
 }
@@ -268,8 +268,9 @@ TemporalProcessObject::UpdateOutputInformation()
   // Update using inherited system
   Superclass::UpdateOutputInformation();
 
-  TemporalDataObject* input = dynamic_cast<TemporalDataObject*>(this->GetInput(0));
-  TemporalDataObject* output = dynamic_cast<TemporalDataObject*>(this->GetOutput(0));
+  TemporalDataObject* input = dynamic_cast<TemporalDataObject*>(this->GetInput(0) );
+  TemporalDataObject* output = dynamic_cast<TemporalDataObject*>(this->GetOutput(0) );
+
   if (!output)
     {
     itkExceptionMacro(<< "itk::TemporalProcessObject::GenerateOutputRequestedTemporalRegion() "
@@ -289,13 +290,14 @@ TemporalProcessObject::UpdateOutputInformation()
     inputLargestRegion = input->GetLargestPossibleTemporalRegion();
     }
   OffsetValueType scannableDuration = inputLargestRegion.GetFrameDuration() -
-                            m_UnitInputNumberOfFrames + 1;
-  SizeValueType  outputDuration = m_UnitOutputNumberOfFrames *
-    Math::Round<SizeValueType>((double)(scannableDuration - 1) / (double)(m_FrameSkipPerOutput) + 1);
+    m_UnitInputNumberOfFrames + 1;
+  SizeValueType outputDuration = m_UnitOutputNumberOfFrames *
+    Math::Round<SizeValueType>( (double)(scannableDuration - 1) / (double)(m_FrameSkipPerOutput) + 1);
 
   // Compute the start of the output region
-  OffsetValueType outputStart = Math::Ceil<OffsetValueType>((double)inputLargestRegion.GetFrameStart() / (double)m_FrameSkipPerOutput)
-                      + m_InputStencilCurrentFrameIndex;
+  OffsetValueType outputStart = Math::Ceil<OffsetValueType>(
+      (double)inputLargestRegion.GetFrameStart() / (double)m_FrameSkipPerOutput)
+    + m_InputStencilCurrentFrameIndex;
 
   // Set up output largest possible region
   TemporalRegion largestRegion = output->GetLargestPossibleTemporalRegion();
@@ -304,14 +306,13 @@ TemporalProcessObject::UpdateOutputInformation()
   output->SetLargestPossibleTemporalRegion(largestRegion);
 }
 
-
 //-TEMPORAL STREAMING----------------------------------------------------------
 
 //
 // UpdateOutputData
 //
 void
-TemporalProcessObject::UpdateOutputData(DataObject* itkNotUsed(output))
+TemporalProcessObject::UpdateOutputData(DataObject* itkNotUsed(output) )
 {
 
   // This implementation mirrors the one in ProcessObject with the exception
@@ -370,7 +371,7 @@ TemporalProcessObject::UpdateOutputData(DataObject* itkNotUsed(output))
     }
 
   // If aborted, push progress to 1.0
-  if (this->GetAbortGenerateData())
+  if (this->GetAbortGenerateData() )
     {
     this->UpdateProgress(1.0f);
     }
@@ -410,7 +411,7 @@ TemporalProcessObject::GenerateData()
   std::vector<TemporalRegion> inputTemporalRegionRequests = this->SplitRequestedTemporalRegion();
 
   // Get the first output frame location
-  TemporalDataObject* output = dynamic_cast<TemporalDataObject*>(this->GetOutput(0));
+  TemporalDataObject* output = dynamic_cast<TemporalDataObject*>(this->GetOutput(0) );
   if (!output)
     {
     itkExceptionMacro(<< "itk::TemporalProcessObject::GenerateData() "
@@ -426,10 +427,10 @@ TemporalProcessObject::GenerateData()
   for (SizeValueType i = 0; i < inputTemporalRegionRequests.size(); ++i)
     {
     // If we have an input, set the requested region and make sure its data is ready
-    if (this->GetNumberOfInputs())
+    if (this->GetNumberOfInputs() )
       {
       // Set Input's requested region to the new request at i
-      TemporalDataObject* input = dynamic_cast<TemporalDataObject*>(this->GetInput(0));
+      TemporalDataObject* input = dynamic_cast<TemporalDataObject*>(this->GetInput(0) );
       if (!input)
         {
         itkExceptionMacro(<< "itk::TemporalProcessObject::GenerateData() "
@@ -454,8 +455,8 @@ TemporalProcessObject::GenerateData()
 
     // Update the bufferd region information
     TemporalRegion outputBufferedRegion = output->GetBufferedTemporalRegion();
-    SizeValueType bufferedStart = outputBufferedRegion.GetFrameStart();
-    SizeValueType bufferedDuration = outputBufferedRegion.GetFrameDuration();
+    SizeValueType  bufferedStart = outputBufferedRegion.GetFrameStart();
+    SizeValueType  bufferedDuration = outputBufferedRegion.GetFrameDuration();
 
     // If there is nothing buffered, set the start as well as the duration
     if (bufferedDuration == 0)
@@ -493,7 +494,6 @@ TemporalProcessObject::GenerateData()
   this->AfterTemporalStreamingGenerateData();
 }
 
-
 //
 // TemporalStreamingGenerateData
 //
@@ -504,7 +504,6 @@ TemporalProcessObject::TemporalStreamingGenerateData()
                     << "(" << this << "): Subclass should override this method!!!" );
 }
 
-
 //
 // SplitRequestedTemporalRegion
 // TODO: Handle RealTime
@@ -514,7 +513,8 @@ TemporalProcessObject::SplitRequestedTemporalRegion()
 {
 
   // Get the current output TemporalDataObject
-  TemporalDataObject* outputObject = dynamic_cast<TemporalDataObject*>(this->GetOutput(0));
+  TemporalDataObject* outputObject = dynamic_cast<TemporalDataObject*>(this->GetOutput(0) );
+
   if (!outputObject)
     {
     itkExceptionMacro(<< "itk::TemporalProcessObject::SplitRequestedTemporalRegion() "
@@ -530,8 +530,8 @@ TemporalProcessObject::SplitRequestedTemporalRegion()
 
   // Calculate the number of input requests that will be needed
   SizeValueType numRequests = Math::Ceil<SizeValueType>(
-    (double)(unbufferedRegion.GetFrameDuration() /(double)(m_UnitOutputNumberOfFrames))
-    );
+      (double)(unbufferedRegion.GetFrameDuration() /(double)(m_UnitOutputNumberOfFrames) )
+      );
 
   // Set up the requested input temporal region set (TODO: NOT PROPERLY HANDLING REAL TIME!!!!!!!!)
   std::vector<TemporalRegion> inputTemporalRegionRequests;
@@ -546,13 +546,13 @@ TemporalProcessObject::SplitRequestedTemporalRegion()
   if (this->m_FrameSkipPerOutput > 0)
     {
     regionStartFrame = unbufferedRegion.GetFrameStart() * m_FrameSkipPerOutput
-                         - m_InputStencilCurrentFrameIndex;
+      - m_InputStencilCurrentFrameIndex;
     }
   else if (this->m_FrameSkipPerOutput < 0)
     {
     regionStartFrame = unbufferedRegion.GetFrameStart() * m_FrameSkipPerOutput
-                        + unbufferedRegion.GetFrameDuration() + 1
-                        - (this->m_UnitOutputNumberOfFrames - m_InputStencilCurrentFrameIndex);
+      + unbufferedRegion.GetFrameDuration() + 1
+      - (this->m_UnitOutputNumberOfFrames - m_InputStencilCurrentFrameIndex);
     }
 
   // Make sure we're not trying to get a negative frame

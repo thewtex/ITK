@@ -25,11 +25,12 @@
 
 namespace {
 template< typename TImageType >
-int itkPhysicalPointImageSourceTest(  const std::string &fname,
-                                      typename TImageType::SizeType &size,
-                                      typename TImageType::SpacingType &spacing,
-                                      typename TImageType::PointType &origin,
-                                      typename TImageType::DirectionType &direction)
+int
+itkPhysicalPointImageSourceTest(  const std::string &fname,
+                                  typename TImageType::SizeType &size,
+                                  typename TImageType::SpacingType &spacing,
+                                  typename TImageType::PointType &origin,
+                                  typename TImageType::DirectionType &direction)
 {
 
   typedef TImageType ImageType;
@@ -45,43 +46,45 @@ int itkPhysicalPointImageSourceTest(  const std::string &fname,
   try
     {
     source->UpdateLargestPossibleRegion();
-     }
-   catch (itk::ExceptionObject & err)
-     {
-     std::cout << "Exception in filter execution!" << std::endl;
-     std::cout << err << std::endl;
-     return EXIT_FAILURE;
-     }
+    }
+  catch (itk::ExceptionObject & err)
+    {
+    std::cout << "Exception in filter execution!" << std::endl;
+    std::cout << err << std::endl;
+    return EXIT_FAILURE;
+    }
 
-  typedef itk::Image< typename itk::NumericTraits< typename ImageType::PixelType >::ValueType, ImageType::ImageDimension> ValueImageType;
+  typedef itk::Image< typename itk::NumericTraits< typename ImageType::PixelType >::ValueType,
+                      ImageType::ImageDimension> ValueImageType;
 
   typedef itk::VectorIndexSelectionCastImageFilter< ImageType, ValueImageType > ValueImageCastFilter;
   typename ValueImageCastFilter::Pointer vif = ValueImageCastFilter::New();
   vif->SetInput( source->GetOutput() );
   vif->SetIndex(0);
 
-    typedef itk::ImageFileWriter<ValueImageType> WriterType;
-   typename WriterType::Pointer writer = WriterType::New();
-   writer->SetFileName( fname );
-   writer->SetInput( vif->GetOutput() );
-   try
-     {
-     std::cout << "Writing image to " << fname << std::endl;
-     writer->Update();
-     }
-   catch (itk::ExceptionObject & err)
-     {
-     std::cout << "Exception in writing!" << std::endl;
-     std::cout << err << std::endl;
-     return EXIT_FAILURE;
-     }
-   return EXIT_SUCCESS;
+  typedef itk::ImageFileWriter<ValueImageType> WriterType;
+  typename WriterType::Pointer writer = WriterType::New();
+  writer->SetFileName( fname );
+  writer->SetInput( vif->GetOutput() );
+  try
+    {
+    std::cout << "Writing image to " << fname << std::endl;
+    writer->Update();
+    }
+  catch (itk::ExceptionObject & err)
+    {
+    std::cout << "Exception in writing!" << std::endl;
+    std::cout << err << std::endl;
+    return EXIT_FAILURE;
+    }
+  return EXIT_SUCCESS;
 }
 
 }
-int itkPhysicalPointImageSourceTest( int argc, char *argv[] )
+int
+itkPhysicalPointImageSourceTest( int argc, char *argv[] )
 {
-  double theta = 0;
+  double             theta = 0;
   const unsigned int ImageDimension = 2;
 
   if ( argc < 3 )
@@ -98,8 +101,8 @@ int itkPhysicalPointImageSourceTest( int argc, char *argv[] )
   size.Fill(64);
 
   typedef itk::Image<unsigned char,ImageDimension> ImageType;
-  ImageType::SpacingType spacing(1.0);
-  ImageType::PointType origin(0.0);
+  ImageType::SpacingType   spacing(1.0);
+  ImageType::PointType     origin(0.0);
   ImageType::DirectionType direction;
 
   direction.SetIdentity();
@@ -107,25 +110,33 @@ int itkPhysicalPointImageSourceTest( int argc, char *argv[] )
   int test;
   if ( atoi( argv[2] ) == 0 )
     {
-    test = itkPhysicalPointImageSourceTest<itk::Image<itk::Point<double, ImageDimension>, ImageDimension > >( std::string( argv[1] ), size, spacing, origin, direction );
+    test = itkPhysicalPointImageSourceTest<itk::Image<itk::Point<double, ImageDimension>, ImageDimension > >( std::string(
+                                                                                                                argv[1] ), size, spacing, origin,
+                                                                                                              direction );
     }
   else if ( atoi( argv[2] ) == 1 )
     {
-    test = itkPhysicalPointImageSourceTest<itk::VectorImage<double, ImageDimension> >( std::string( argv[1] ), size, spacing, origin, direction );
+    test = itkPhysicalPointImageSourceTest<itk::VectorImage<double, ImageDimension> >( std::string(
+                                                                                         argv[1] ), size, spacing, origin,
+                                                                                       direction );
     }
   else if ( atoi( argv[2] ) == 2 )
     {
     spacing.Fill( 1.123 );
     origin.Fill( -0.987 );
-    test = itkPhysicalPointImageSourceTest<itk::Image<itk::Point<float, ImageDimension>, ImageDimension > >( std::string( argv[1] ), size, spacing, origin, direction );
+    test = itkPhysicalPointImageSourceTest<itk::Image<itk::Point<float, ImageDimension>, ImageDimension > >( std::string(
+                                                                                                               argv[1] ), size, spacing, origin,
+                                                                                                             direction );
     }
   else
     {
     itk::SpacePrecisionType M[] = { vcl_cos( theta ), -vcl_sin( theta ),
-                    vcl_sin( theta ), vcl_cos( theta ) };
+                                    vcl_sin( theta ), vcl_cos( theta ) };
 
     direction = vnl_matrix<itk::SpacePrecisionType>( M, 2, 2);
-    test = itkPhysicalPointImageSourceTest< itk::VectorImage<float, ImageDimension> >( std::string( argv[1] ), size, spacing, origin, direction );
+    test = itkPhysicalPointImageSourceTest< itk::VectorImage<float, ImageDimension> >( std::string(
+                                                                                         argv[1] ), size, spacing, origin,
+                                                                                       direction );
     }
 
   return test;

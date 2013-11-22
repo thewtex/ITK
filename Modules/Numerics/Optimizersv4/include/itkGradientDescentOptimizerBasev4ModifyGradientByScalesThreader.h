@@ -35,15 +35,17 @@ class GradientDescentOptimizerBasev4Template;
 
 template<typename TInternalComputationValueType>
 class GradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate
-  : public DomainThreader< ThreadedIndexedContainerPartitioner, GradientDescentOptimizerBasev4Template<TInternalComputationValueType> >
+  : public DomainThreader< ThreadedIndexedContainerPartitioner,
+                           GradientDescentOptimizerBasev4Template<TInternalComputationValueType> >
 {
 public:
   /** Standard class typedefs. */
-  typedef GradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate      Self;
-  typedef DomainThreader< ThreadedIndexedContainerPartitioner, GradientDescentOptimizerBasev4Template<TInternalComputationValueType> >
-                                                                                    Superclass;
-  typedef SmartPointer< Self >                                                      Pointer;
-  typedef SmartPointer< const Self >                                                ConstPointer;
+  typedef GradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate Self;
+  typedef DomainThreader< ThreadedIndexedContainerPartitioner,
+                          GradientDescentOptimizerBasev4Template<TInternalComputationValueType> >
+    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   itkTypeMacro( GradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate, DomainThreader );
 
@@ -58,15 +60,18 @@ protected:
                                   const ThreadIdType threadId );
 
   GradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate() {}
-  virtual ~GradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate() {}
+  virtual
+  ~GradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate() {}
 
 private:
   GradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  void operator=( const Self & );                                                       // purposely not implemented
+
 };
 
 /** This helps to meet backward compatibility */
-typedef GradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate<double> GradientDescentOptimizerBasev4ModifyGradientByScalesThreader;
+typedef GradientDescentOptimizerBasev4ModifyGradientByScalesThreaderTemplate<double>
+  GradientDescentOptimizerBasev4ModifyGradientByScalesThreader;
 
 } // end namespace itk
 

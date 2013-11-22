@@ -47,7 +47,7 @@ namespace Statistics
  */
 
 template< typename TSample >
-class GaussianMixtureModelComponent:
+class GaussianMixtureModelComponent :
   public MixtureModelComponentBase< TSample >
 {
 public:
@@ -70,7 +70,7 @@ public:
 
   /** Type of the membership function. Gaussian density function */
   typedef GaussianMembershipFunction< MeasurementVectorType >
-  NativeMembershipFunctionType;
+    NativeMembershipFunctionType;
 
   /** Types of the mean and the covariance calculator that will update
    *  this component's distribution parameters */
@@ -91,7 +91,8 @@ public:
 
 protected:
   GaussianMixtureModelComponent();
-  virtual ~GaussianMixtureModelComponent() {}
+  virtual
+  ~GaussianMixtureModelComponent() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Returns the sum of squared changes in parameters between

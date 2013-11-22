@@ -22,47 +22,48 @@
 #include "itkBinaryBallStructuringElement.h"
 #include "itkSubtractImageFilter.h"
 
-
-int itkClosingByReconstructionImageFilterTest(int argc, char* argv [] )
+int
+itkClosingByReconstructionImageFilterTest(int argc, char* argv [] )
 {
- if ( argc < 5 )
-  {
+  if ( argc < 5 )
+    {
     std::cerr << "Missing arguments" << std::endl;
-    std::cerr << "Usage: " << argv[0] << " Inputimage OutputImage Radius PreserveIntensities(0,1) [Diffmage]" << std::endl;
+    std::cerr << "Usage: " << argv[0] << " Inputimage OutputImage Radius PreserveIntensities(0,1) [Diffmage]" <<
+    std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   const int Dimension = 2;
   typedef unsigned char                      PixelType;
   typedef itk::Image< PixelType, Dimension > InputImageType;
   typedef itk::Image< PixelType, Dimension > OutputImageType;
 
-  typedef itk::ImageFileReader< InputImageType >   ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   // Declare the type of the Structuring element to be used
   typedef itk::BinaryBallStructuringElement<
-                            PixelType,
-                            Dimension>                  StructuringElementType;
+      PixelType,
+      Dimension>                  StructuringElementType;
 
   // Declare the type for the Morphology Filters to be Tested
   typedef itk::ClosingByReconstructionImageFilter<
-                                InputImageType,
-                                OutputImageType,
-                                StructuringElementType >  MorphologicalFilterType;
+      InputImageType,
+      OutputImageType,
+      StructuringElementType >  MorphologicalFilterType;
 
-  ReaderType::Pointer           reader = ReaderType::New();
-  WriterType::Pointer           writer = WriterType::New();
+  ReaderType::Pointer reader = ReaderType::New();
+  WriterType::Pointer writer = WriterType::New();
 
   // Create the reader and writer
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 
   // Create the filter
-  MorphologicalFilterType::Pointer   filter = MorphologicalFilterType::New();
+  MorphologicalFilterType::Pointer filter = MorphologicalFilterType::New();
 
-  StructuringElementType   structuringElement;
-  structuringElement.SetRadius(atoi(argv[3]));
+  StructuringElementType structuringElement;
+  structuringElement.SetRadius(atoi(argv[3]) );
   structuringElement.CreateStructuringElement();
 
   filter->SetKernel( structuringElement );
@@ -76,26 +77,28 @@ int itkClosingByReconstructionImageFilterTest(int argc, char* argv [] )
     }
 
   // Connect the pipelines
-  filter->SetInput ( reader-> GetOutput() );
-  writer->SetInput ( filter-> GetOutput() );
+  filter->SetInput ( reader->GetOutput() );
+  writer->SetInput ( filter->GetOutput() );
 
   // Execute print
   filter->Print( std::cout );
 
   // Execute the filter
   try
-  {
+    {
     writer->Update();
-  }
+    }
   catch( itk::ExceptionObject & excp )
-  {
+    {
     std::cerr << "Exception caught:" << excp << std::endl;
-    return  EXIT_FAILURE;
-  }
+    return EXIT_FAILURE;
+    }
   // Create a difference image if one is requested
   if (argc == 6)
     {
-    itk::SubtractImageFilter<InputImageType, OutputImageType, OutputImageType>::Pointer subtract = itk::SubtractImageFilter<InputImageType, OutputImageType, OutputImageType>::New();
+    itk::SubtractImageFilter<InputImageType, OutputImageType,
+                             OutputImageType>::Pointer subtract =
+      itk::SubtractImageFilter<InputImageType, OutputImageType, OutputImageType>::New();
     subtract->SetInput( 1, reader->GetOutput() );
     subtract->SetInput( 0, filter->GetOutput() );
     try
@@ -107,7 +110,7 @@ int itkClosingByReconstructionImageFilterTest(int argc, char* argv [] )
     catch( itk::ExceptionObject & excp )
       {
       std::cerr << "Exception caught writing diff image:" << excp << std::endl;
-      return  EXIT_FAILURE;
+      return EXIT_FAILURE;
       }
     }
   return EXIT_SUCCESS;

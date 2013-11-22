@@ -21,14 +21,16 @@
 #include "itkBinaryBallStructuringElement.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkOpeningByReconstructionImageFilterTest2(int argc, char* argv [] )
+int
+itkOpeningByReconstructionImageFilterTest2(int argc, char* argv [] )
 {
- if ( argc < 8 )
-  {
+  if ( argc < 8 )
+    {
     std::cerr << "Missing arguments" << std::endl;
-    std::cerr << "Usage: " << argv[0] << " OutputImage Radius PreserveIntensities(0,1) OriginX OriginY SpacingX SpacingY [Diffmage]" << std::endl;
+    std::cerr << "Usage: " << argv[0] <<
+    " OutputImage Radius PreserveIntensities(0,1) OriginX OriginY SpacingX SpacingY [Diffmage]" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   const int Dimension = 2;
   typedef unsigned char                      PixelType;
@@ -44,25 +46,24 @@ int itkOpeningByReconstructionImageFilterTest2(int argc, char* argv [] )
 
   // Declare the type of the Structuring element to be used
   typedef itk::BinaryBallStructuringElement<
-                            PixelType,
-                            Dimension>                  StructuringElementType;
+      PixelType,
+      Dimension>                  StructuringElementType;
 
   // Declare the type for the Morphology Filters to be Tested
   typedef itk::OpeningByReconstructionImageFilter<
-                                InputImageType,
-                                OutputImageType,
-                                StructuringElementType >  MorphologicalFilterType;
+      InputImageType,
+      OutputImageType,
+      StructuringElementType >  MorphologicalFilterType;
 
-
-  WriterType::Pointer           writer = WriterType::New();
+  WriterType::Pointer writer = WriterType::New();
 
   //create image
   InputImageType::Pointer inputImage = InputImageType::New();
 
   // Define regions of input image
   RegionType region;
-  SizeType size;
-  size.Fill(atoi(argv[2]));
+  SizeType   size;
+  size.Fill(atoi(argv[2]) );
   IndexType index;
   index.Fill(0.0);
   region.SetSize(size);
@@ -79,22 +80,21 @@ int itkOpeningByReconstructionImageFilterTest2(int argc, char* argv [] )
   spacing[1]=atof(argv[7]);
   inputImage->SetSpacing(spacing);
 
-
   inputImage->SetRegions(region);
   inputImage->Allocate();
   // Fill with zero values
-  inputImage->FillBuffer(static_cast<PixelType>(0));
+  inputImage->FillBuffer(static_cast<PixelType>(0) );
 
   // Create writer
   writer->SetFileName( argv[1] );
 
   // Create the filter
-  MorphologicalFilterType::Pointer   filter = MorphologicalFilterType::New();
-  itk::SimpleFilterWatcher watcher(filter, "Opening"); watcher.QuietOn();
+  MorphologicalFilterType::Pointer filter = MorphologicalFilterType::New();
+  itk::SimpleFilterWatcher         watcher(filter, "Opening"); watcher.QuietOn();
 
-  StructuringElementType   structuringElement;
+  StructuringElementType structuringElement;
 
-  structuringElement.SetRadius(atoi(argv[2]));
+  structuringElement.SetRadius(atoi(argv[2]) );
   structuringElement.CreateStructuringElement();
 
   filter->SetKernel( structuringElement );
@@ -109,27 +109,28 @@ int itkOpeningByReconstructionImageFilterTest2(int argc, char* argv [] )
 
   // Connect the pipelines
   filter->SetInput ( inputImage );
-  writer->SetInput ( filter-> GetOutput() );
-
+  writer->SetInput ( filter->GetOutput() );
 
   // Execute print
   filter->Print( std::cout );
 
   // Execute the filter
   try
-  {
+    {
     writer->Update();
-  }
+    }
   catch( itk::ExceptionObject & excp )
-  {
+    {
     std::cerr << "Exception caught:" << excp << std::endl;
-    return  EXIT_FAILURE;
-  }
+    return EXIT_FAILURE;
+    }
 
   // Create a difference image if one is requested
   if (argc == 8)
     {
-    itk::SubtractImageFilter<InputImageType, OutputImageType, OutputImageType>::Pointer subtract = itk::SubtractImageFilter<InputImageType, OutputImageType, OutputImageType>::New();
+    itk::SubtractImageFilter<InputImageType, OutputImageType,
+                             OutputImageType>::Pointer subtract =
+      itk::SubtractImageFilter<InputImageType, OutputImageType, OutputImageType>::New();
     subtract->SetInput( 0, inputImage);
     subtract->SetInput( 1, filter->GetOutput() );
     try
@@ -141,7 +142,7 @@ int itkOpeningByReconstructionImageFilterTest2(int argc, char* argv [] )
     catch( itk::ExceptionObject & excp )
       {
       std::cerr << "Exception caught writing diff image:" << excp << std::endl;
-      return  EXIT_FAILURE;
+      return EXIT_FAILURE;
       }
     }
   return EXIT_SUCCESS;

@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TInputImage, typename TCoordRep = double >
-class RayCastInterpolateImageFunction:
+class RayCastInterpolateImageFunction :
   public InterpolateImageFunction< TInputImage, TCoordRep >
 {
 public:
@@ -149,17 +149,20 @@ public:
   /** Check if a point is inside the image buffer.
    * \warning For efficiency, no validity checking of
    * the input image pointer is done. */
-  inline bool IsInsideBuffer(const PointType &) const
+  inline bool
+  IsInsideBuffer(const PointType &) const
   {
     return true;
   }
 
-  bool IsInsideBuffer(const ContinuousIndexType &) const
+  bool
+  IsInsideBuffer(const ContinuousIndexType &) const
   {
     return true;
   }
 
-  bool IsInsideBuffer(const IndexType &) const
+  bool
+  IsInsideBuffer(const IndexType &) const
   {
     return true;
   }
@@ -190,6 +193,7 @@ protected:
 private:
   RayCastInterpolateImageFunction(const Self &); //purposely not implemented
   void operator=(const Self &);                  //purposely not implemented
+
 };
 } // namespace itk
 

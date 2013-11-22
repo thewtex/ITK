@@ -30,55 +30,55 @@
  *  This file tests initialization errors.
  */
 
-int itkImageRegistrationMethodTest(int, char* [] )
+int
+itkImageRegistrationMethodTest(int, char* [] )
 {
 
-  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
   bool pass;
 
   const unsigned int dimension = 3;
 
   // Fixed Image Type
-  typedef itk::Image<float,dimension>                    FixedImageType;
+  typedef itk::Image<float,dimension> FixedImageType;
 
   // Moving Image Type
-  typedef itk::Image<char,dimension>                     MovingImageType;
+  typedef itk::Image<char,dimension> MovingImageType;
 
   // Transform Type
   typedef itk::TranslationTransform< double, dimension > TransformType;
 
   // Optimizer Type
-  typedef itk::RegularStepGradientDescentOptimizer       OptimizerType;
+  typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
 
   // Metric Type
   typedef itk::MeanSquaresImageToImageMetric<
-                                    FixedImageType,
-                                    MovingImageType >    MetricType;
+      FixedImageType,
+      MovingImageType >    MetricType;
 
   // Interpolation technique
-  typedef itk:: LinearInterpolateImageFunction<
-                                    MovingImageType,
-                                    double          >    InterpolatorType;
+  typedef itk::LinearInterpolateImageFunction<
+      MovingImageType,
+      double          >    InterpolatorType;
 
   // Registration Method
   typedef itk::ImageRegistrationMethod<
-                                    FixedImageType,
-                                    MovingImageType >    RegistrationType;
+      FixedImageType,
+      MovingImageType >    RegistrationType;
 
+  MetricType::Pointer       metric        = MetricType::New();
+  TransformType::Pointer    transform     = TransformType::New();
+  OptimizerType::Pointer    optimizer     = OptimizerType::New();
+  FixedImageType::Pointer   fixedImage    = FixedImageType::New();
+  MovingImageType::Pointer  movingImage   = MovingImageType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
-  MetricType::Pointer         metric        = MetricType::New();
-  TransformType::Pointer      transform     = TransformType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  FixedImageType::Pointer     fixedImage    = FixedImageType::New();
-  MovingImageType::Pointer    movingImage   = MovingImageType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
-
-  FixedImageType::SizeType    size;
+  FixedImageType::SizeType size;
   size.Fill( 4 );  // the size of image have to be at least 4 in each dimension to
                    // compute gradient image inside the metric.
-  FixedImageType::RegionType  region( size );
+  FixedImageType::RegionType region( size );
   fixedImage->SetRegions( region );
   fixedImage->Allocate();
   fixedImage->FillBuffer( 3.0 );
@@ -150,6 +150,5 @@ int itkImageRegistrationMethodTest(int, char* [] )
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;
-
 
 }

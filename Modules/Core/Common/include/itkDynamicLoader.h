@@ -40,7 +40,7 @@ typedef itksys::DynamicLoader::LibraryHandle LibHandle;
 typedef itksys::DynamicLoader::SymbolPointer SymbolPointer;
 //ETX
 
-class ITKCommon_EXPORT DynamicLoader:public Object
+class ITKCommon_EXPORT DynamicLoader : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -83,6 +83,7 @@ protected:
 private:
   DynamicLoader(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

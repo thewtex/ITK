@@ -43,7 +43,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TImage >
-class StatisticsKeepNObjectsLabelMapFilter:
+class StatisticsKeepNObjectsLabelMapFilter :
   public ShapeKeepNObjectsLabelMapFilter< TImage >
 {
 public:
@@ -95,7 +95,8 @@ private:
   StatisticsKeepNObjectsLabelMapFilter(const Self &); //purposely not
                                                       // implemented
   void operator=(const Self &);                       //purposely not
-                                                      // implemented
+
+  // implemented
 };                                                    // end of class
 } // end namespace itk
 

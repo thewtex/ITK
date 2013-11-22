@@ -29,26 +29,28 @@
 #include "vnl/vnl_sample.h"
 #include "makeRandomImageBsplineInterpolator.h"
 
-
 /** Note:  This is the same test used for the itkBSplineResampleImageFunctionTest
   *        It is duplicated here because it excercises the itkBSplineDecompositionFilter
   *        and demonstrates its use.
   */
 
-int itkBSplineDecompositionImageFilterTest(int, char* [] )
+int
+itkBSplineDecompositionImageFilterTest(int, char* [] )
 {
   const unsigned int ImageDimension = 2;
-  typedef float                                PixelType;
-  typedef itk::Image<PixelType,ImageDimension> ImageType;
+
+  typedef float                                                          PixelType;
+  typedef itk::Image<PixelType,ImageDimension>                           ImageType;
   typedef itk::BSplineInterpolateImageFunction<ImageType,double, double> BSplineInterpolatorFunctionType;
 
-  const unsigned int SplineOrder = 3;
-  BSplineInterpolatorFunctionType::Pointer interpolator = makeRandomImageInterpolator<BSplineInterpolatorFunctionType>(SplineOrder);
+  const unsigned int                       SplineOrder = 3;
+  BSplineInterpolatorFunctionType::Pointer interpolator = makeRandomImageInterpolator<BSplineInterpolatorFunctionType>(
+      SplineOrder);
   ImageType::ConstPointer randImage = interpolator->GetInputImage();
 
   typedef itk::BSplineDecompositionImageFilter<ImageType,ImageType> FilterType;
   FilterType::Pointer filter = FilterType::New();
-  FilterWatcher watcher(filter,"filter");
+  FilterWatcher       watcher(filter,"filter");
 
   filter->SetSplineOrder( interpolator->GetSplineOrder() );
   filter->SetInput( randImage );
@@ -60,7 +62,7 @@ int itkBSplineDecompositionImageFilterTest(int, char* [] )
   typedef itk::BSplineResampleImageFunction<ImageType,double> ResampleFunctionType;
   ResampleFunctionType::Pointer resample = ResampleFunctionType::New();
 
-  resample->SetSplineOrder( interpolator->GetSplineOrder());
+  resample->SetSplineOrder( interpolator->GetSplineOrder() );
   resample->SetInputImage( filter->GetOutput() );
 
   /** Compare 10 values at random points. */
@@ -74,7 +76,7 @@ int itkBSplineDecompositionImageFilterTest(int, char* [] )
   const double minValue = randImage->GetOrigin()[0];
   const double maxValue = LastPhysicalLocation[0];
 
-  for ( unsigned int k = 0; k < 10; k ++ )
+  for ( unsigned int k = 0; k < 10; k++ )
     {
     ResampleFunctionType::PointType point;
     for ( unsigned int j = 0; j < ImageDimension; j++ )
@@ -101,7 +103,7 @@ int itkBSplineDecompositionImageFilterTest(int, char* [] )
   typedef itk::Image<ComplexPixelType,ImageDimension>                             ComplexImageType;
   typedef itk::BSplineDecompositionImageFilter<ComplexImageType,ComplexImageType> ComplexFilterType;
   ComplexFilterType::Pointer complexFilter = ComplexFilterType::New();
-  if(complexFilter.IsNull())
+  if(complexFilter.IsNull() )
     {
     return EXIT_FAILURE;
     }

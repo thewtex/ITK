@@ -27,7 +27,7 @@ namespace itk
  * \ingroup ITKSpatialObjects
  */
 template< unsigned int TDimension = 3 >
-class PolygonSpatialObject:
+class PolygonSpatialObject :
   public BlobSpatialObject< TDimension >
 {
 public:
@@ -50,12 +50,12 @@ public:
    * \brief enumerates the possible spatial orientations
    */
   typedef enum {
-        Axial = 0,
-        Coronal = 1,
-        Sagittal = 2,
-        UserPlane = 3,
-        Unknown = 4
-        } PolygonGroupOrientation;
+    Axial = 0,
+    Coronal = 1,
+    Sagittal = 2,
+    UserPlane = 3,
+    Unknown = 4
+    } PolygonGroupOrientation;
 
   /** Method returning plane alignment of strand */
   PolygonGroupOrientation Plane() const;
@@ -123,6 +123,7 @@ private:
     m_Orientation = Unknown;
     m_Thickness = 0.0;
   }
+
 };
 }
 #ifndef ITK_MANUAL_INSTANTIATION

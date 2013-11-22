@@ -42,7 +42,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 class ITKCommon_EXPORT ThreadedIndexedContainerPartitioner
-  : public ThreadedDomainPartitioner< Index<2> >
+  : public             ThreadedDomainPartitioner< Index<2> >
 {
 public:
   /** Standard class typedefs. */
@@ -58,10 +58,10 @@ public:
   itkTypeMacro(ThreadedIndexedContainerPartitioner, ThreadedDomainPartitioner);
 
   /** Type for convenience of base class methods */
-  typedef Superclass::DomainType  DomainType;
+  typedef Superclass::DomainType DomainType;
 
   /** Synonym for the domain that is more descriptive. */
-  typedef DomainType                       IndexRangeType;
+  typedef DomainType IndexRangeType;
 
   /** Split the index range \c completeIndexRange into up to \c requestedTotal
    * non-overlapping subranges, setting subrange number \c threadId as
@@ -77,17 +77,18 @@ public:
    */
   virtual
   ThreadIdType PartitionDomain(const ThreadIdType threadId,
-                           const ThreadIdType requestedTotal,
-                           const DomainType& completeIndexRange,
-                           DomainType& subIndexRange) const;
+                               const ThreadIdType requestedTotal,
+                               const DomainType& completeIndexRange,
+                               DomainType& subIndexRange) const;
 
 protected:
   ThreadedIndexedContainerPartitioner();
-  virtual ~ThreadedIndexedContainerPartitioner();
+  virtual
+  ~ThreadedIndexedContainerPartitioner();
 
 private:
   ThreadedIndexedContainerPartitioner(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                      //purposely not implemented
 
 };
 

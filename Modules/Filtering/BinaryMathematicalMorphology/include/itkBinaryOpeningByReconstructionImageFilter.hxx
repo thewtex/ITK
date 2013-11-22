@@ -43,7 +43,8 @@ BinaryOpeningByReconstructionImageFilter<TInputImage, TKernel>
   Superclass::GenerateInputRequestedRegion();
 
   // We need all the input.
-  InputImagePointer input = const_cast<InputImageType *>(this->GetInput());
+  InputImagePointer input = const_cast<InputImageType *>(this->GetInput() );
+
   if( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
@@ -60,7 +61,7 @@ BinaryOpeningByReconstructionImageFilter<TInputImage, TKernel>
 
   /** set up erosion and dilation methods */
   typename BinaryErodeImageFilter<InputImageType, OutputImageType, TKernel>::Pointer
-    erode = BinaryErodeImageFilter<InputImageType, OutputImageType, TKernel>::New();
+  erode = BinaryErodeImageFilter<InputImageType, OutputImageType, TKernel>::New();
   erode->SetErodeValue( m_ForegroundValue );
   erode->SetBackgroundValue( m_BackgroundValue );
   erode->SetKernel( this->GetKernel() );
@@ -69,7 +70,7 @@ BinaryOpeningByReconstructionImageFilter<TInputImage, TKernel>
   erode->SetNumberOfThreads( this->GetNumberOfThreads() );
 
   typename BinaryReconstructionByDilationImageFilter<OutputImageType>::Pointer
-    dilate = BinaryReconstructionByDilationImageFilter<OutputImageType>::New();
+  dilate = BinaryReconstructionByDilationImageFilter<OutputImageType>::New();
   dilate->SetForegroundValue( m_ForegroundValue );
   dilate->SetBackgroundValue( m_BackgroundValue );
   dilate->SetMarkerImage( erode->GetOutput() );
@@ -97,10 +98,12 @@ BinaryOpeningByReconstructionImageFilter<TInputImage, TKernel>
 {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "ForegroundValue: " << static_cast<typename NumericTraits<PixelType>::PrintType>(m_ForegroundValue) << std::endl;
-  os << indent << "BackgroundValue: " << static_cast<typename NumericTraits<PixelType>::PrintType>(m_BackgroundValue) << std::endl;
+  os << indent << "ForegroundValue: " << static_cast<typename NumericTraits<PixelType>::PrintType>(m_ForegroundValue) <<
+    std::endl;
+  os << indent << "BackgroundValue: " << static_cast<typename NumericTraits<PixelType>::PrintType>(m_BackgroundValue) <<
+    std::endl;
   os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

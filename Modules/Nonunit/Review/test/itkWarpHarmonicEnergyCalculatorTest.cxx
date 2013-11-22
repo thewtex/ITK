@@ -19,36 +19,35 @@
 #include "itkWarpHarmonicEnergyCalculator.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-
-int itkWarpHarmonicEnergyCalculatorTest(int, char* [] )
+int
+itkWarpHarmonicEnergyCalculatorTest(int, char* [] )
 {
 
   // Define the dimension of the images
   const unsigned int ImageDimension = 3;
 
-  typedef itk::Vector< double, ImageDimension >   DeformationPixelType;
-  typedef unsigned char                           OutputPixelType;
+  typedef itk::Vector< double, ImageDimension > DeformationPixelType;
+  typedef unsigned char                         OutputPixelType;
 
   // Declare the types of the images
-  typedef itk::Image<DeformationPixelType, ImageDimension>  DisplacementFieldType;
-  typedef itk::Image<OutputPixelType, ImageDimension>       OutputImageType;
+  typedef itk::Image<DeformationPixelType, ImageDimension> DisplacementFieldType;
+  typedef itk::Image<OutputPixelType, ImageDimension>      OutputImageType;
 
   // Declare Iterator types apropriated for each image
-  typedef itk::ImageRegionIteratorWithIndex< DisplacementFieldType >  DeformationIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex< DisplacementFieldType > DeformationIteratorType;
   typedef itk::ImageRegionIteratorWithIndex< OutputImageType >       OutputIteratorType;
 
-
   // Declare the type of the index to access images
-  typedef itk::Index<ImageDimension>         IndexType;
+  typedef itk::Index<ImageDimension> IndexType;
 
   // Declare the type of the size
-  typedef itk::Size<ImageDimension>          SizeType;
+  typedef itk::Size<ImageDimension> SizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<ImageDimension>   RegionType;
+  typedef itk::ImageRegion<ImageDimension> RegionType;
 
   // Create two images
-  DisplacementFieldType ::Pointer inputDisplacementField  = DisplacementFieldType ::New();
+  DisplacementFieldType::Pointer inputDisplacementField  = DisplacementFieldType::New();
 
   // Define their size, and start index
   SizeType size;
@@ -90,10 +89,8 @@ int itkWarpHarmonicEnergyCalculatorTest(int, char* [] )
   // Declare the type for the calculator
   typedef itk::WarpHarmonicEnergyCalculator< DisplacementFieldType > CalculatorType;
 
-
   // Create one Filter
   CalculatorType::Pointer calculator = CalculatorType::New();
-
 
   // Connect the input images
   calculator->SetImage( inputDisplacementField );
@@ -104,7 +101,7 @@ int itkWarpHarmonicEnergyCalculatorTest(int, char* [] )
   const double energy = calculator->GetHarmonicEnergy();
   std::cout << energy << std::endl;
 
-  if ( vcl_abs(energy) > 1e-8 )  return EXIT_FAILURE;
+  if ( vcl_abs(energy) > 1e-8 ) return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
 }

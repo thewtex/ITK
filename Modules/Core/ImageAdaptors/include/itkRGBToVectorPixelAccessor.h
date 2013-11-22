@@ -55,7 +55,8 @@ public:
   typedef   RGBPixel< T > InternalType;
 
   /** Write access to the RGBToVector component */
-  inline void Set(InternalType & output, const ExternalType & input) const
+  inline void
+  Set(InternalType & output, const ExternalType & input) const
   {
     output[0] = input[0];
     output[1] = input[1];
@@ -63,9 +64,11 @@ public:
   }
 
   /** Read access to the RGBToVector component */
-  inline ExternalType Get(const InternalType & input) const
+  inline ExternalType
+  Get(const InternalType & input) const
   {
     ExternalType v( input.GetDataPointer() );
+
     return v;
   }
 

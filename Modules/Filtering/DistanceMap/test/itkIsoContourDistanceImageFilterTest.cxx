@@ -25,16 +25,23 @@
 
 // For debugging
 
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 
@@ -44,6 +51,7 @@ double
 SimpleSignedDistance( const TPoint & p )
 {
   TPoint center;
+
   center.Fill( 50 );
   double radius = 19.5;
 
@@ -59,18 +67,20 @@ SimpleSignedDistance( const TPoint & p )
 
 }
 
-int itkIsoContourDistanceImageFilterTest(int, char* [] )
+int
+itkIsoContourDistanceImageFilterTest(int, char* [] )
 {
   const unsigned int ImageDimension = 2;
+
   typedef float PixelType;
 
-  typedef itk::Image<PixelType,ImageDimension>      ImageType;
-  typedef itk::Image<unsigned char,ImageDimension>  OutputImageType;
-  typedef ImageType::IndexType                      IndexType;
-  typedef itk::Point<double,ImageDimension>         PointType;
+  typedef itk::Image<PixelType,ImageDimension>     ImageType;
+  typedef itk::Image<unsigned char,ImageDimension> OutputImageType;
+  typedef ImageType::IndexType                     IndexType;
+  typedef itk::Point<double,ImageDimension>        PointType;
 
   // Fill an input image with simple signed distance function
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer  image = ImageType::New();
   ImageType::SizeType size;
   size.Fill( 128 );
   ImageType::RegionType region( size );
@@ -110,7 +120,7 @@ int itkIsoContourDistanceImageFilterTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-  ShowProgressObject progressWatch(isocontour);
+  ShowProgressObject                                    progressWatch(isocontour);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -119,10 +129,10 @@ int itkIsoContourDistanceImageFilterTest(int, char* [] )
 
   // For debugging
   typedef itk::RescaleIntensityImageFilter<
-                                ImageType,
-                                OutputImageType >   CastFilterType;
+      ImageType,
+      OutputImageType >   CastFilterType;
   CastFilterType::Pointer caster = CastFilterType::New();
-  caster->SetInput(isocontour->GetOutput());
+  caster->SetInput(isocontour->GetOutput() );
 
   try
     {
@@ -134,11 +144,11 @@ int itkIsoContourDistanceImageFilterTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
- //Create narrowband
-  typedef ImageType::IndexType            IndexType;
-  typedef ImageType::PixelType            DataType;
-  typedef IsoContourType::BandNodeType    BandNodeType;
-  typedef IsoContourType::NarrowBandType  NarrowBandType;
+  //Create narrowband
+  typedef ImageType::IndexType           IndexType;
+  typedef ImageType::PixelType           DataType;
+  typedef IsoContourType::BandNodeType   BandNodeType;
+  typedef IsoContourType::NarrowBandType NarrowBandType;
   //typedef itk::NarrowBand<BandNodeType> NarrowBandType;
 
   NarrowBandType::Pointer band = NarrowBandType::New();
@@ -146,9 +156,9 @@ int itkIsoContourDistanceImageFilterTest(int, char* [] )
   BandNodeType node;
 
   iter.GoToBegin();
-  while (!iter.IsAtEnd())
+  while (!iter.IsAtEnd() )
     {
-    if (vnl_math_abs(iter.Get()) < 5)
+    if (vnl_math_abs(iter.Get() ) < 5)
       {
       node.m_Index=iter.GetIndex();
       band->PushBack(node);
@@ -159,7 +169,7 @@ int itkIsoContourDistanceImageFilterTest(int, char* [] )
   // Run isocontour with narrowband
   isocontour->NarrowBandingOn();
   // isocontour->SetNumberOfThreads(8);
-  isocontour->SetNarrowBand(band.GetPointer());
+  isocontour->SetNarrowBand(band.GetPointer() );
 
   try
     {
@@ -205,14 +215,12 @@ int itkIsoContourDistanceImageFilterTest(int, char* [] )
   isocontour->NarrowBandingOff();
   isocontour->Update();
 
-
   std::cout << "Level set value = " << isocontour->GetLevelSetValue() << std::endl;
   std::cout << "Narrow banding = " << isocontour->GetNarrowBanding() << std::endl;
 
   // We will use the output narrowband from the last run as the input narrowband
   //isocontour->SetInputNarrowBand( nodes );
   //isocontour->Update();
-
 
   std::cout << "Test passed" << std::endl;
   return EXIT_SUCCESS;

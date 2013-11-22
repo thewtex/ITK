@@ -34,20 +34,23 @@
   *        and demonstrates its use.
   */
 
-int itkBSplineResampleImageFunctionTest(int, char* [] )
+int
+itkBSplineResampleImageFunctionTest(int, char* [] )
 {
   const unsigned int ImageDimension = 2;
-  typedef float                                PixelType;
-  typedef itk::Image<PixelType,ImageDimension> ImageType;
+
+  typedef float                                                          PixelType;
+  typedef itk::Image<PixelType,ImageDimension>                           ImageType;
   typedef itk::BSplineInterpolateImageFunction<ImageType,double, double> BSplineInterpolatorFunctionType;
 
-  const unsigned int SplineOrder = 3;
-  BSplineInterpolatorFunctionType::Pointer interpolator = makeRandomImageInterpolator<BSplineInterpolatorFunctionType>(SplineOrder);
+  const unsigned int                       SplineOrder = 3;
+  BSplineInterpolatorFunctionType::Pointer interpolator = makeRandomImageInterpolator<BSplineInterpolatorFunctionType>(
+      SplineOrder);
   ImageType::ConstPointer randImage = interpolator->GetInputImage();
 
   typedef itk::BSplineDecompositionImageFilter<ImageType,ImageType> FilterType;
   FilterType::Pointer filter = FilterType::New();
-  FilterWatcher watcher(filter,"filter");
+  FilterWatcher       watcher(filter,"filter");
 
   filter->SetSplineOrder( interpolator->GetSplineOrder() );
   filter->SetInput( randImage );
@@ -59,7 +62,7 @@ int itkBSplineResampleImageFunctionTest(int, char* [] )
   typedef itk::BSplineResampleImageFunction<ImageType,double> ResampleFunctionType;
   ResampleFunctionType::Pointer resample = ResampleFunctionType::New();
 
-  resample->SetSplineOrder( interpolator->GetSplineOrder());
+  resample->SetSplineOrder( interpolator->GetSplineOrder() );
   resample->SetInputImage( filter->GetOutput() );
 
   /** Compare 10 values at random points. */
@@ -73,7 +76,7 @@ int itkBSplineResampleImageFunctionTest(int, char* [] )
   const double minValue = randImage->GetOrigin()[0];
   const double maxValue = LastPhysicalLocation[0];
 
-  for ( unsigned int k = 0; k < 10; k ++ )
+  for ( unsigned int k = 0; k < 10; k++ )
     {
     ResampleFunctionType::PointType point;
     for ( unsigned int j = 0; j < ImageDimension; j++ )

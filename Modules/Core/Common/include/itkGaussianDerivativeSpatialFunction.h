@@ -41,7 +41,7 @@ namespace itk
 template< typename TOutput = double,
           unsigned int VImageDimension = 3,
           typename TInput = Point< double, VImageDimension > >
-class GaussianDerivativeSpatialFunction:public SpatialFunction< TOutput, VImageDimension, TInput >
+class GaussianDerivativeSpatialFunction : public SpatialFunction< TOutput, VImageDimension, TInput >
 {
 public:
   /** Standard class typedefs. */
@@ -90,7 +90,8 @@ public:
 
 protected:
   GaussianDerivativeSpatialFunction();
-  virtual ~GaussianDerivativeSpatialFunction();
+  virtual
+  ~GaussianDerivativeSpatialFunction();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

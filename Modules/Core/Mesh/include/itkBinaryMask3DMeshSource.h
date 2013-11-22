@@ -68,7 +68,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TInputImage, typename TOutputMesh >
-class BinaryMask3DMeshSource:public ImageToMeshFilter< TInputImage, TOutputMesh >
+class BinaryMask3DMeshSource : public ImageToMeshFilter< TInputImage, TOutputMesh >
 {
 public:
   /** Standard "Self" typedef. */
@@ -116,12 +116,12 @@ public:
   typedef typename InputImageType::SizeType     SizeType;
 
   /** Type definition for the classified image index type. */
-  typedef typename InputImageType::IndexType           InputImageIndexType;
+  typedef typename InputImageType::IndexType InputImageIndexType;
 
   typedef ImageRegionConstIterator< InputImageType > InputImageIterator;
 
-  typedef itk::IdentifierType                   IdentifierType;
-  typedef itk::SizeValueType                    SizeValueType;
+  typedef itk::IdentifierType IdentifierType;
+  typedef itk::SizeValueType  SizeValueType;
 
   itkSetMacro(ObjectValue, InputPixelType);
 
@@ -132,15 +132,16 @@ public:
   using Superclass::SetInput;
   virtual void SetInput(const InputImageType *inputImage);
 
-  void SetRegionOfInterest( const RegionType & iRegion )
-    {
+  void
+  SetRegionOfInterest( const RegionType & iRegion )
+  {
     if( iRegion != m_RegionOfInterest )
       {
       this->m_RegionOfInterest = iRegion;
       this->m_RegionOfInterestProvidedByUser = true;
       this->Modified();
       }
-    }
+  }
 
   itkGetConstReferenceMacro(RegionOfInterest, RegionType);
 
@@ -151,11 +152,11 @@ protected:
 
   void GenerateData();
 
-
   bool       m_RegionOfInterestProvidedByUser;
   RegionType m_RegionOfInterest;
 
-  virtual void GenerateOutputInformation(){}  // do nothing
+  virtual void
+  GenerateOutputInformation(){}               // do nothing
 
 private:
   BinaryMask3DMeshSource(const Self &); //purposely not implemented
@@ -180,7 +181,8 @@ private:
   void inverse(unsigned char *tp);
 
   void InitializeLUT(); // initialize the look up table before the mesh
-                        // construction
+
+  // construction
 
   void AddCells(unsigned char celltype, unsigned char celltran, int index);
 
@@ -237,7 +239,7 @@ private:
   /** temporary variables used in CreateMesh to avoid thousands of
    *  calls to GetInput() and GetOutput()
    */
-  OutputMeshType       *m_OutputMesh;
+  OutputMeshType *      m_OutputMesh;
   const InputImageType *m_InputImage;
 };
 } // end namespace itk

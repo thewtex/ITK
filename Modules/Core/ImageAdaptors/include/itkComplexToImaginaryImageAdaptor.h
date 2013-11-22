@@ -52,11 +52,18 @@ public:
    * representation of data. */
   typedef TInternalType InternalType;
 
-  static inline void Set(TInternalType & output, const TExternalType & input)
-  { output = (TInternalType)( input ); }
+  static inline void
+  Set(TInternalType & output, const TExternalType & input)
+  {
+    output = (TInternalType)( input );
+  }
 
-  static inline TExternalType Get(const TInternalType & input)
-  { return (TExternalType)( input.imag() ); }
+  static inline TExternalType
+  Get(const TInternalType & input)
+  {
+    return (TExternalType)( input.imag() );
+  }
+
 };
 } // end namespace Accessor
 
@@ -71,7 +78,7 @@ public:
  * \ingroup ITKImageAdaptors
  */
 template< typename TImage, typename TOutputPixelType >
-class ComplexToImaginaryImageAdaptor:public
+class ComplexToImaginaryImageAdaptor : public
   ImageAdaptor< TImage,
                 Accessor::ComplexToImaginaryPixelAccessor<
                   typename TImage::PixelType,
@@ -95,11 +102,13 @@ public:
 
 protected:
   ComplexToImaginaryImageAdaptor() {}
-  virtual ~ComplexToImaginaryImageAdaptor() {}
+  virtual
+  ~ComplexToImaginaryImageAdaptor() {}
 
 private:
   ComplexToImaginaryImageAdaptor(const Self &); //purposely not implemented
   void operator=(const Self &);                 //purposely not implemented
+
 };
 } // end namespace itk
 

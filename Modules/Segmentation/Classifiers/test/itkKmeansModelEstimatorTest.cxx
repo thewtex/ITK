@@ -38,19 +38,26 @@
 #define   NUM_BYTES_PER_PIXEL 1
 #define   ONEBAND             1
 
-
 // class to support progress feeback
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::LightProcessObject * o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::LightProcessObject::Pointer m_Process;
 };
 
-int itkKmeansModelEstimatorTest(int, char* [] )
+int
+itkKmeansModelEstimatorTest(int, char* [] )
 {
   //------------------------------------------------------
   //Create a simple test vector with 16 entries and 2 bands
@@ -154,12 +161,11 @@ int itkKmeansModelEstimatorTest(int, char* [] )
   namespace stat = itk::Statistics;
 
   typedef stat::DistanceToCentroidMembershipFunction< VecImagePixelType >
-                                          MembershipFunctionType;
+    MembershipFunctionType;
   typedef MembershipFunctionType::Pointer MembershipFunctionPointer;
 
   typedef std::vector< MembershipFunctionPointer >
     MembershipFunctionPointerVector;
-
 
   //----------------------------------------------------------------------
   //Set the image model estimator
@@ -188,11 +194,11 @@ int itkKmeansModelEstimatorTest(int, char* [] )
   vnl_vector<double> kmeansResultForClass;
   vnl_vector<double> referenceCodebookForClass;
   vnl_vector<double> errorForClass;
-  double error =0;
-  double meanCDBKvalue = 0;
+  double             error =0;
+  double             meanCDBKvalue = 0;
 
   for(unsigned int classIndex=0; classIndex < membershipFunctions.size();
-    classIndex++ )
+      classIndex++ )
     {
     kmeansResultForClass = membershipFunctions[classIndex]->GetCentroid();
     referenceCodebookForClass = inCDBK.get_row( classIndex);
@@ -239,8 +245,8 @@ int itkKmeansModelEstimatorTest(int, char* [] )
   //Testing the distance of the first pixel to the centroids; identify the class
   //closest to the fist pixel.
   unsigned int minidx = 0;
-  double mindist = 99999999;
-  double classdist;
+  double       mindist = 99999999;
+  double       classdist;
   for( unsigned int idx=0; idx < membershipFunctions.size(); idx++ )
     {
     classdist = membershipFunctions[idx]->Evaluate( outIt.Get() );

@@ -30,7 +30,7 @@ void
 QuaternionRigidTransformGradientDescentOptimizer
 ::AdvanceOneStep(void)
 {
-  const double direction = ( m_Maximize ) ? 1.0 : -1.0;
+  const double       direction = ( m_Maximize ) ? 1.0 : -1.0;
   const ScalesType & scales = this->GetScales();
 
   const unsigned int spaceDimension =  m_CostFunction->GetNumberOfParameters();
@@ -58,7 +58,7 @@ QuaternionRigidTransformGradientDescentOptimizer
   for ( unsigned int j = 0; j < 4; j++ )
     {
     newQuaternion[j] = currentPosition[j] + direction * m_LearningRate
-                       * transformedGradient[j];
+      * transformedGradient[j];
     }
 
   newQuaternion.normalize();
@@ -74,7 +74,7 @@ QuaternionRigidTransformGradientDescentOptimizer
   for ( unsigned int j = 4; j < spaceDimension; j++ )
     {
     newPosition[j] = currentPosition[j]
-                     + direction * m_LearningRate * transformedGradient[j];
+      + direction * m_LearningRate * transformedGradient[j];
     }
 
   // First invoke the event, so the current position
@@ -83,6 +83,7 @@ QuaternionRigidTransformGradientDescentOptimizer
 
   this->SetCurrentPosition(newPosition);
 }
+
 } // end namespace itk
 
 #endif

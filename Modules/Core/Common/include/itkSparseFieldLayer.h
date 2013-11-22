@@ -36,44 +36,61 @@ template< typename TNodeType >
 class ConstSparseFieldLayerIterator
 {
 public:
-  const TNodeType & operator*() const
-  { return *m_Pointer; }
+  const TNodeType &
+  operator*() const
+  {
+    return *m_Pointer;
+  }
 
-  const TNodeType * operator->() const
-  { return m_Pointer; }
+  const TNodeType *
+  operator->() const
+  {
+    return m_Pointer;
+  }
 
-  const TNodeType * GetPointer() const
-  { return m_Pointer; }
+  const TNodeType *
+  GetPointer() const
+  {
+    return m_Pointer;
+  }
 
-  bool operator==(const ConstSparseFieldLayerIterator o) const
+  bool
+  operator==(const ConstSparseFieldLayerIterator o) const
   {
     if ( m_Pointer == o.m_Pointer ) { return true; }
     else { return false; }
   }
 
-  bool operator!=(const ConstSparseFieldLayerIterator o) const
+  bool
+  operator!=(const ConstSparseFieldLayerIterator o) const
   {
     if ( m_Pointer != o.m_Pointer ) { return true; }
     else { return false; }
   }
 
-  ConstSparseFieldLayerIterator & operator++()
+  ConstSparseFieldLayerIterator &
+  operator++()
   {
     m_Pointer = m_Pointer->Next;
     return *this;
   }
 
-  ConstSparseFieldLayerIterator & operator--()
+  ConstSparseFieldLayerIterator &
+  operator--()
   {
     m_Pointer = m_Pointer->Previous;
     return *this;
   }
 
   ConstSparseFieldLayerIterator()
-  { m_Pointer = 0; }
+  {
+    m_Pointer = 0;
+  }
 
   ConstSparseFieldLayerIterator(TNodeType *p)
-  { m_Pointer = p; }
+  {
+    m_Pointer = p;
+  }
 
   ~ConstSparseFieldLayerIterator() {}
 
@@ -86,44 +103,57 @@ protected:
  * \ingroup ITKCommon
  */
 template< typename TNodeType >
-class SparseFieldLayerIterator:
+class SparseFieldLayerIterator :
   public ConstSparseFieldLayerIterator< TNodeType >
 {
 public:
   typedef ConstSparseFieldLayerIterator< TNodeType > Superclass;
 
-  SparseFieldLayerIterator():Superclass()
+  SparseFieldLayerIterator() : Superclass()
   {}
 
-  SparseFieldLayerIterator(TNodeType *p):Superclass(p)
+  SparseFieldLayerIterator(TNodeType *p) : Superclass(p)
   {}
 
-  TNodeType & operator*()
-  { return *this->m_Pointer; }
+  TNodeType &
+  operator*()
+  {
+    return *this->m_Pointer;
+  }
 
-  TNodeType * operator->()
-  { return this->m_Pointer; }
+  TNodeType *
+  operator->()
+  {
+    return this->m_Pointer;
+  }
 
-  TNodeType * GetPointer()
-  { return this->m_Pointer; }
+  TNodeType *
+  GetPointer()
+  {
+    return this->m_Pointer;
+  }
 
-  SparseFieldLayerIterator & operator++()
+  SparseFieldLayerIterator &
+  operator++()
   {
     this->m_Pointer = this->m_Pointer->Next;
     return *this;
   }
 
-  SparseFieldLayerIterator & operator--()
+  SparseFieldLayerIterator &
+  operator--()
   {
     this->m_Pointer = this->m_Pointer->Previous;
     return *this;
   }
 
-  SparseFieldLayerIterator & operator=(Superclass & sc)
+  SparseFieldLayerIterator &
+  operator=(Superclass & sc)
   {
     this->m_Pointer = const_cast< TNodeType * >( sc.GetPointer() );
     return *this;
   }
+
 };
 
 /** \class SparseFieldLayer
@@ -149,7 +179,7 @@ public:
  * \ingroup ITKCommon
  */
 template< typename TNodeType >
-class SparseFieldLayer:
+class SparseFieldLayer :
   public Object
 {
 public:
@@ -182,21 +212,28 @@ public:
   struct RegionType {
     ConstIterator first;
     ConstIterator last;  // this is one past the actual last element
-  };
+    };
 
   typedef std::vector< RegionType > RegionListType;
 
   /** Returns a pointer to the first node in the list.  Constant
    * time. */
-  NodeType * Front()
-  { return m_HeadNode->Next; }
+  NodeType *
+  Front()
+  {
+    return m_HeadNode->Next;
+  }
 
   /** Returns a const pointer to the first node in the list. Constant time. */
-  const NodeType * Front() const
-  { return m_HeadNode->Next; }
+  const NodeType *
+  Front() const
+  {
+    return m_HeadNode->Next;
+  }
 
   /** Unlinks the first node from the list. Constant time. */
-  void PopFront()
+  void
+  PopFront()
   {
     m_HeadNode->Next = m_HeadNode->Next->Next;
     m_HeadNode->Next->Previous = m_HeadNode;
@@ -204,7 +241,8 @@ public:
   }
 
   /** Links a node into the front of the list. Constant time. */
-  void PushFront(NodeType *n)
+  void
+  PushFront(NodeType *n)
   {
     n->Next = m_HeadNode->Next;
     n->Previous = m_HeadNode;
@@ -214,7 +252,8 @@ public:
   }
 
   /** Unlinks a node from the list */
-  void Unlink(NodeType *n)
+  void
+  Unlink(NodeType *n)
   {
     n->Previous->Next = n->Next;
     n->Next->Previous = n->Previous;
@@ -222,25 +261,38 @@ public:
   }
 
   /** Returns an iterator pointing to the first node in the list. */
-  Iterator Begin()
-  { return Iterator(m_HeadNode->Next); }
+  Iterator
+  Begin()
+  {
+    return Iterator(m_HeadNode->Next);
+  }
 
   /** Returns a const iterator pointing to the first node in the
    * list. */
-  ConstIterator Begin() const
-  { return ConstIterator(m_HeadNode->Next); }
+  ConstIterator
+  Begin() const
+  {
+    return ConstIterator(m_HeadNode->Next);
+  }
 
   /** Returns an iterator pointing one node past the end of the list. */
-  Iterator End()
-  { return Iterator(m_HeadNode); }
+  Iterator
+  End()
+  {
+    return Iterator(m_HeadNode);
+  }
 
   /** Returns a const iterator pointing one node past the end of the list. */
-  ConstIterator End() const
-  { return ConstIterator(m_HeadNode); }
+  ConstIterator
+  End() const
+  {
+    return ConstIterator(m_HeadNode);
+  }
 
   /** Returns TRUE if the list is empty, FALSE otherwise. Executes in constant
    *  time. */
-  bool Empty() const
+  bool
+  Empty() const
   {
     if ( m_HeadNode->Next == m_HeadNode ) { return true; }
     else { return false; }

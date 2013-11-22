@@ -23,10 +23,11 @@
 #include "itkTextOutput.h"
 #include "itkFilterWatcher.h"
 
-int itkMapRankImageFilterTest(int ac, char* av[] )
+int
+itkMapRankImageFilterTest(int ac, char* av[] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   if(ac < 4)
     {
@@ -41,11 +42,11 @@ int itkMapRankImageFilterTest(int ac, char* av[] )
   input->SetFileName(av[1]);
 
   // Create a filter
-  typedef itk::FlatStructuringElement<2>                      SEType;
-  typedef itk::RankImageFilter<ImageType,ImageType,SEType>    FilterType;
+  typedef itk::FlatStructuringElement<2>                   SEType;
+  typedef itk::RankImageFilter<ImageType,ImageType,SEType> FilterType;
 
   FilterType::Pointer filter = FilterType::New();
-  FilterWatcher filterWatch(filter);
+  FilterWatcher       filterWatch(filter);
 
   typedef FilterType::RadiusType RadiusType;
 
@@ -91,7 +92,7 @@ int itkMapRankImageFilterTest(int ac, char* av[] )
   try
     {
     int r = atoi( av[3] );
-    filter->SetInput(input->GetOutput());
+    filter->SetInput(input->GetOutput() );
     filter->SetRadius( r );
     filter->SetRank( 0.5 );
     filter->Update();

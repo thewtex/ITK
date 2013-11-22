@@ -19,7 +19,8 @@
 #include "itkWhitakerSparseLevelSetImage.h"
 #include "itkLevelSetContainer.h"
 
-int itkSparseLevelSetContainerTest( int , char* [] )
+int
+itkSparseLevelSetContainerTest( int , char* [] )
 {
   const unsigned int Dimension = 2;
 
@@ -27,10 +28,10 @@ int itkSparseLevelSetContainerTest( int , char* [] )
 
   typedef std::string NameType;
   typedef itk::LevelSetContainer< NameType, LevelSetType >
-      NamedLevelSetContainerType;
+    NamedLevelSetContainerType;
 
   NamedLevelSetContainerType::Pointer name_container =
-      NamedLevelSetContainerType::New();
+    NamedLevelSetContainerType::New();
 
   name_container->AddLevelSet( "Lung", LevelSetType::New() );
   name_container->AddLevelSet( "Heart", LevelSetType::New() );

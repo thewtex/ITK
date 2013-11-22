@@ -36,11 +36,9 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkSpatialObjectToImageFilter.h"
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -55,12 +53,10 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkEllipseSpatialObject.h"
 #include "itkCylinderSpatialObject.h"
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -75,18 +71,16 @@
 #include "itkGroupSpatialObject.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImageFileWriter.h"
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc != 2 )
     {
     std::cerr << "Usage: " << argv[0] << " outputimagefile " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -96,12 +90,11 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef signed short  PixelType;
-  const unsigned int    Dimension = 3;
+  typedef signed short PixelType;
+  const unsigned int Dimension = 3;
 
-  typedef itk::Image< PixelType, Dimension >       ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -112,11 +105,10 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::EllipseSpatialObject< Dimension >   EllipseType;
-  typedef itk::CylinderSpatialObject               CylinderType;
-  typedef itk::GroupSpatialObject< Dimension >     GroupType;
+  typedef itk::EllipseSpatialObject< Dimension > EllipseType;
+  typedef itk::CylinderSpatialObject             CylinderType;
+  typedef itk::GroupSpatialObject< Dimension >   GroupType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -127,12 +119,11 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::SpatialObjectToImageFilter<
-    GroupType, ImageType >   SpatialObjectToImageFilterType;
+      GroupType, ImageType >   SpatialObjectToImageFilterType;
 
   SpatialObjectToImageFilterType::Pointer imageFilter =
     SpatialObjectToImageFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -160,7 +151,6 @@ int main( int argc, char *argv[] )
   imageFilter->SetSpacing( spacing );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  We create the elementary shapes that are going to be composed into the
@@ -169,11 +159,10 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  EllipseType::Pointer ellipse    = EllipseType::New();
+  EllipseType::Pointer  ellipse    = EllipseType::New();
   CylinderType::Pointer cylinder1 = CylinderType::New();
   CylinderType::Pointer cylinder2 = CylinderType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -193,7 +182,6 @@ int main( int argc, char *argv[] )
   cylinder2->SetHeight( size[2] * 0.30 * spacing[2]);
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Each one of these components will be placed in a different position and
@@ -203,7 +191,7 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef GroupType::TransformType                 TransformType;
+  typedef GroupType::TransformType TransformType;
 
   TransformType::Pointer transform1 = TransformType::New();
   TransformType::Pointer transform2 = TransformType::New();
@@ -214,7 +202,6 @@ int main( int argc, char *argv[] )
   transform3->SetIdentity();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Then we set the specific values of the transform parameters, and we
@@ -223,8 +210,8 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  TransformType::OutputVectorType  translation;
-  TransformType::CenterType        center;
+  TransformType::OutputVectorType translation;
+  TransformType::CenterType       center;
 
   translation[ 0 ] =  size[0] * spacing[0] / 2.0;
   translation[ 1 ] =  size[1] * spacing[1] / 4.0;
@@ -245,7 +232,6 @@ int main( int argc, char *argv[] )
   cylinder2->SetObjectToParentTransform( transform3 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The elementary shapes are aggregated in a parent group, that in turn is
@@ -261,7 +247,6 @@ int main( int argc, char *argv[] )
 
   imageFilter->SetInput(  group  );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -292,7 +277,6 @@ int main( int argc, char *argv[] )
   imageFilter->SetOutsideValue( airHounsfieldUnits );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Finally we are ready to run the filter. We use the typical invocation of
@@ -302,7 +286,7 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileWriter< ImageType >     WriterType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
 
   writer->SetFileName( argv[1] );
@@ -319,7 +303,6 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
   // Software Guide : EndCodeSnippet
-
 
   return EXIT_SUCCESS;
 }

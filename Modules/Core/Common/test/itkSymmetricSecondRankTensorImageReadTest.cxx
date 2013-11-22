@@ -20,8 +20,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
-int itkSymmetricSecondRankTensorImageReadTest( int ac, char* av[] )
+int
+itkSymmetricSecondRankTensorImageReadTest( int ac, char* av[] )
 {
   if(ac < 1)
     {
@@ -29,11 +29,11 @@ int itkSymmetricSecondRankTensorImageReadTest( int ac, char* av[] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::SymmetricSecondRankTensor<float, 3>    TensorPixelType;
-  typedef itk::Image<TensorPixelType, 3>              TensorImageType;
+  typedef itk::SymmetricSecondRankTensor<float, 3> TensorPixelType;
+  typedef itk::Image<TensorPixelType, 3>           TensorImageType;
 
-  typedef itk::Matrix<float,3,3>                      MatrixPixelType;
-  typedef itk::Image<MatrixPixelType, 3>              MatrixImageType;
+  typedef itk::Matrix<float,3,3>         MatrixPixelType;
+  typedef itk::Image<MatrixPixelType, 3> MatrixImageType;
 
   MatrixImageType::Pointer matrixImage = MatrixImageType::New();
 
@@ -98,7 +98,6 @@ int itkSymmetricSecondRankTensorImageReadTest( int ac, char* av[] )
     return EXIT_FAILURE;
     }
 
-
   typedef itk::ImageFileReader<  TensorImageType > TensorReaderType;
 
   TensorReaderType::Pointer tensorReader = TensorReaderType::New();
@@ -148,7 +147,6 @@ int itkSymmetricSecondRankTensorImageReadTest( int ac, char* av[] )
     ++mItr;
     ++tItr;
     }
-
 
   return EXIT_SUCCESS;
 

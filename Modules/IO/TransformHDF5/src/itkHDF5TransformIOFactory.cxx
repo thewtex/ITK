@@ -22,7 +22,8 @@
 
 namespace itk
 {
-void HDF5TransformIOFactory::PrintSelf(std::ostream &, Indent) const
+void
+HDF5TransformIOFactory::PrintSelf(std::ostream &, Indent) const
 {}
 
 HDF5TransformIOFactory::HDF5TransformIOFactory()
@@ -60,12 +61,14 @@ HDF5TransformIOFactory::GetDescription() const
 // DO NOT CALL DIRECTLY.
 static bool HDF5TransformIOFactoryHasBeenRegistered;
 
-void HDF5TransformIOFactoryRegister__Private(void)
+void
+HDF5TransformIOFactoryRegister__Private(void)
 {
-  if( ! HDF5TransformIOFactoryHasBeenRegistered )
+  if( !HDF5TransformIOFactoryHasBeenRegistered )
     {
     HDF5TransformIOFactoryHasBeenRegistered = true;
     HDF5TransformIOFactory::RegisterOneFactory();
     }
 }
+
 } // end namespace itk

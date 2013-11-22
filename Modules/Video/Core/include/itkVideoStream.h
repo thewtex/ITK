@@ -43,16 +43,16 @@ class VideoStream : public TemporalDataObject
 public:
 
   /** Standard class typedefs */
-  typedef VideoStream                       Self;
-  typedef TemporalDataObject                Superclass;
-  typedef SmartPointer< Self >              Pointer;
-  typedef SmartPointer< const Self >        ConstPointer;
-  typedef WeakPointer< const Self >         ConstWeakPointer;
+  typedef VideoStream                Self;
+  typedef TemporalDataObject         Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
+  typedef WeakPointer< const Self >  ConstWeakPointer;
 
-  typedef TFrameType                        FrameType;
-  typedef typename FrameType::Pointer       FramePointer;
-  typedef typename FrameType::ConstPointer  FrameConstPointer;
-  typedef typename Superclass::BufferType   BufferType;
+  typedef TFrameType                       FrameType;
+  typedef typename FrameType::Pointer      FramePointer;
+  typedef typename FrameType::ConstPointer FrameConstPointer;
+  typedef typename Superclass::BufferType  BufferType;
 
   typedef typename FrameType::RegionType    SpatialRegionType;
   typedef typename FrameType::IndexType     IndexType;
@@ -70,7 +70,8 @@ public:
 
   /** Access the spacial dimensionality of the frames */
   itkStaticConstMacro(FrameDimension, unsigned int, FrameType::ImageDimension);
-  static unsigned int GetFrameDimension()
+  static unsigned int
+  GetFrameDimension()
   {
     return FrameType::ImageDimension;
   }
@@ -92,11 +93,14 @@ public:
   void InitializeEmptyFrames();
 
   /** Provide access to the internal frame buffer object */
-  BufferType* GetFrameBuffer()
+  BufferType*
+  GetFrameBuffer()
   {
     return reinterpret_cast<BufferType*>(m_DataObjectBuffer.GetPointer() );
   }
-  const BufferType* GetFrameBuffer() const
+
+  const BufferType*
+  GetFrameBuffer() const
   {
     return reinterpret_cast<BufferType*>(m_DataObjectBuffer.GetPointer() );
   }
@@ -105,56 +109,74 @@ public:
   void SetFrameBuffer(BufferType* buffer);
 
   /** Provide access to the internal caches for the meta data */
-  const SpatialRegionMapType & GetLargestPossibleSpatialRegionCache() const
+  const SpatialRegionMapType &
+  GetLargestPossibleSpatialRegionCache() const
   {
     return m_LargestPossibleSpatialRegionCache;
   }
-  void SetLargestPossibleSpatialRegionCache(SpatialRegionMapType map)
+
+  void
+  SetLargestPossibleSpatialRegionCache(SpatialRegionMapType map)
   {
     m_LargestPossibleSpatialRegionCache = map;
   }
 
-  const SpatialRegionMapType & GetRequestedSpatialRegionCache() const
+  const SpatialRegionMapType &
+  GetRequestedSpatialRegionCache() const
   {
     return m_RequestedSpatialRegionCache;
   }
-  void SetRequestedSpatialRegionCache(SpatialRegionMapType map)
+
+  void
+  SetRequestedSpatialRegionCache(SpatialRegionMapType map)
   {
     m_RequestedSpatialRegionCache = map;
   }
 
-  const SpatialRegionMapType & GetBufferedSpatialRegionCache() const
+  const SpatialRegionMapType &
+  GetBufferedSpatialRegionCache() const
   {
     return m_BufferedSpatialRegionCache;
   }
-  void SetBufferedSpatialRegionCache(SpatialRegionMapType map)
+
+  void
+  SetBufferedSpatialRegionCache(SpatialRegionMapType map)
   {
     m_BufferedSpatialRegionCache = map;
   }
 
-  const SpacingMapType & GetSpacingCache() const
+  const SpacingMapType &
+  GetSpacingCache() const
   {
     return m_SpacingCache;
   }
-  void SetSpacingCache(SpacingMapType map)
+
+  void
+  SetSpacingCache(SpacingMapType map)
   {
     m_SpacingCache = map;
   }
 
-  const PointMapType & GetOriginCache() const
+  const PointMapType &
+  GetOriginCache() const
   {
     return m_OriginCache;
   }
-  void SetOriginCache(PointMapType map)
+
+  void
+  SetOriginCache(PointMapType map)
   {
     m_OriginCache = map;
   }
 
-  const DirectionMapType & GetDirectionCache() const
+  const DirectionMapType &
+  GetDirectionCache() const
   {
     return m_DirectionCache;
   }
-  void SetDirectionCache(DirectionMapType map)
+
+  void
+  SetDirectionCache(DirectionMapType map)
   {
     m_DirectionCache = map;
   }
@@ -167,6 +189,7 @@ public:
    * offset. This allows all references to frames to be processed by an
    * explicit frame number rather than a potentially confusing offset. */
   FramePointer GetFrame(SizeValueType frameNumber);
+
   FrameConstPointer GetFrame(SizeValueType frameNumber) const;
 
   /** Get/Set the LargestPossibleRegion of a frame */
@@ -277,11 +300,13 @@ public:
 
 protected:
 
-  VideoStream() {
-  }
-  virtual ~VideoStream() {
-  }
-  virtual void PrintSelf(std::ostream & os, Indent indent) const
+  VideoStream() {}
+
+  virtual
+  ~VideoStream() {}
+
+  virtual void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::Print(os, indent);
   }
@@ -295,9 +320,9 @@ protected:
 
   /** These maps cache a mapping between frame number and the meta data for
    * origin, spacing, and direction */
-  SpacingMapType       m_SpacingCache;
-  DirectionMapType     m_DirectionCache;
-  PointMapType         m_OriginCache;
+  SpacingMapType   m_SpacingCache;
+  DirectionMapType m_DirectionCache;
+  PointMapType     m_OriginCache;
 
 private:
 

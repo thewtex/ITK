@@ -21,13 +21,14 @@
  */
 #include "itkCylinderSpatialObject.h"
 
-int itkCylinderSpatialObjectTest(int, char* [])
+int
+itkCylinderSpatialObjectTest(int, char* [])
 {
-  typedef itk::CylinderSpatialObject   CylinderType;
+  typedef itk::CylinderSpatialObject CylinderType;
 
   CylinderType::Pointer myCylinder = CylinderType::New();
-  double radius = 3.0;
-  double height = 12.0;
+  double                radius = 3.0;
+  double                height = 12.0;
 
   std::cout << "Testing Print after construction " << std::endl;
   myCylinder->Print( std::cout );
@@ -52,13 +53,13 @@ int itkCylinderSpatialObjectTest(int, char* [])
   itk::Point<double,3> out;
   out[0]=0;out[1]=0;out[2]=3.1;
 
-  if(!myCylinder->IsInside(in))
+  if(!myCylinder->IsInside(in) )
     {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
     }
 
-  if(myCylinder->IsInside(out))
+  if(myCylinder->IsInside(out) )
     {
     std::cout<<"OUT [FAILED]"<<std::endl;
     return EXIT_FAILURE;
@@ -70,18 +71,17 @@ int itkCylinderSpatialObjectTest(int, char* [])
   myCylinder->ComputeBoundingBox();
   CylinderType::BoundingBoxType * boundingBox = myCylinder->GetBoundingBox();
 
-
   if( (boundingBox->GetBounds()[0] != -3 )
-    || (boundingBox->GetBounds()[1] != 3 )
-    || (boundingBox->GetBounds()[2] != -6 )
-    || (boundingBox->GetBounds()[3] != 6 )
-    || (boundingBox->GetBounds()[4] != -3 )
-    || (boundingBox->GetBounds()[5] != 3 )
-    )
-   {
-   std::cout<<"[FAILED]"<<std::endl;
-   return EXIT_FAILURE;
-   }
+      || (boundingBox->GetBounds()[1] != 3 )
+      || (boundingBox->GetBounds()[2] != -6 )
+      || (boundingBox->GetBounds()[3] != 6 )
+      || (boundingBox->GetBounds()[4] != -3 )
+      || (boundingBox->GetBounds()[5] != 3 )
+      )
+    {
+    std::cout<<"[FAILED]"<<std::endl;
+    return EXIT_FAILURE;
+    }
 
   std::cout << "Testing Print after all modifications " << std::endl;
   myCylinder->Print( std::cout );

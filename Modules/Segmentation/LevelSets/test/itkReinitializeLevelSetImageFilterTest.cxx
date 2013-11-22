@@ -23,20 +23,26 @@
 #include "itkMinimumMaximumImageCalculator.h"
 #include "itkMultiplyImageFilter.h"
 
-
 // For debugging
 #include "itkImageFileWriter.h"
 
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 
@@ -46,6 +52,7 @@ double
 SimpleSignedDistance( const TPoint & p )
 {
   TPoint center;
+
   center.Fill( 50 );
   double radius = 19.5;
 
@@ -61,11 +68,12 @@ SimpleSignedDistance( const TPoint & p )
 
 }
 
-
-int itkReinitializeLevelSetImageFilterTest(int, char* [] )
+int
+itkReinitializeLevelSetImageFilterTest(int, char* [] )
 {
 
   const unsigned int ImageDimension = 2;
+
   typedef float PixelType;
 
   typedef itk::Image<PixelType,ImageDimension> ImageType;
@@ -73,7 +81,7 @@ int itkReinitializeLevelSetImageFilterTest(int, char* [] )
   typedef itk::Point<double,ImageDimension>    PointType;
 
   // Fill an input image with simple signed distance function
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer  image = ImageType::New();
   ImageType::SizeType size;
   size.Fill( 128 );
   ImageType::RegionType region( size );
@@ -105,7 +113,7 @@ int itkReinitializeLevelSetImageFilterTest(int, char* [] )
   ReinitializerType::Pointer reinitializer = ReinitializerType::New();
   reinitializer->SetInput( multiplier->GetOutput() );
 
-  ShowProgressObject progressWatch(reinitializer);
+  ShowProgressObject                                    progressWatch(reinitializer);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -142,7 +150,7 @@ int itkReinitializeLevelSetImageFilterTest(int, char* [] )
   calculator->SetImage( difference->GetOutput() );
   calculator->Compute();
 
-  double maxAbsDifference = calculator->GetMaximum();
+  double    maxAbsDifference = calculator->GetMaximum();
   IndexType maxAbsDifferenceIndex = calculator->GetIndexOfMaximum();
 
   std::cout << "Max. abs. difference = " << maxAbsDifference;
@@ -206,13 +214,13 @@ int itkReinitializeLevelSetImageFilterTest(int, char* [] )
   typedef NodeContainerType::ConstIterator        ContainerIterator;
 
   NodeContainerPointer nodes2  = reinitializer->GetOutputNarrowBand();
-  ContainerIterator nodeIter = nodes2->Begin();
-  ContainerIterator nodeEnd   = nodes2->End();
+  ContainerIterator    nodeIter = nodes2->Begin();
+  ContainerIterator    nodeEnd   = nodes2->End();
 
   while( nodeIter != nodeEnd )
     {
     ImageType::IndexType nodeIndex = nodeIter.Value().GetIndex();
-    double product = image->GetPixel( nodeIndex ) *
+    double               product = image->GetPixel( nodeIndex ) *
       reinitializer->GetOutput()->GetPixel( nodeIndex );
     if ( product < 0.0 )
       {

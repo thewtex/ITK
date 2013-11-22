@@ -31,10 +31,10 @@ OFFMeshIOFactory
 ::OFFMeshIOFactory()
 {
   this->RegisterOverride( "itkMeshIOBase",
-                         "itkOFFMeshIO",
-                         "OFF Mesh IO",
-                         1,
-                         CreateObjectFunction< OFFMeshIO >::New() );
+                          "itkOFFMeshIO",
+                          "OFF Mesh IO",
+                          1,
+                          CreateObjectFunction< OFFMeshIO >::New() );
 }
 
 OFFMeshIOFactory
@@ -54,4 +54,5 @@ OFFMeshIOFactory
 {
   return "OFF Mesh IO Factory, allows the loading of OFF mesh into insight";
 }
+
 } // end namespace itk

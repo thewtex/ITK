@@ -94,7 +94,8 @@ RegionBasedLevelSetFunction< TInput, TFeature, TSharedData >
 template< typename TInput,
           typename TFeature,
           typename TSharedData >
-void RegionBasedLevelSetFunction< TInput, TFeature, TSharedData >
+void
+RegionBasedLevelSetFunction< TInput, TFeature, TSharedData >
 ::ComputeHImage()
 {
   // The phi function
@@ -250,32 +251,32 @@ RegionBasedLevelSetFunction< TInput, TFeature, TSharedData >
       static_cast< unsigned int >( this->m_Center - this->m_xStride[i] );
 
     gd->m_dx[i] = 0.5 * ( this->m_InvSpacing[i] )
-                  * ( it.GetPixel(positionA) - it.GetPixel(positionB) );
+      * ( it.GetPixel(positionA) - it.GetPixel(positionB) );
     gd->m_dx_forward[i]  = ( this->m_InvSpacing[i] )
-                           * ( it.GetPixel(positionA) - inputValue );
+      * ( it.GetPixel(positionA) - inputValue );
     gd->m_dx_backward[i] = ( this->m_InvSpacing[i] )
-                           * ( inputValue - it.GetPixel(positionB) );
+      * ( inputValue - it.GetPixel(positionB) );
 
     gd->m_GradMagSqr += gd->m_dx[i] * gd->m_dx[i];
 
     gd->m_dxy[i][i] = ( this->m_InvSpacing[i] )
-                      * ( gd->m_dx_forward[i] - gd->m_dx_backward[i] );
+      * ( gd->m_dx_forward[i] - gd->m_dx_backward[i] );
 
     for ( j = i + 1; j < ImageDimension; j++ )
       {
       const unsigned int positionAa = static_cast< unsigned int >(
-        this->m_Center - this->m_xStride[i] - this->m_xStride[j] );
+          this->m_Center - this->m_xStride[i] - this->m_xStride[j] );
       const unsigned int positionBa = static_cast< unsigned int >(
-        this->m_Center - this->m_xStride[i] + this->m_xStride[j] );
+          this->m_Center - this->m_xStride[i] + this->m_xStride[j] );
       const unsigned int positionCa = static_cast< unsigned int >(
-        this->m_Center + this->m_xStride[i] - this->m_xStride[j] );
+          this->m_Center + this->m_xStride[i] - this->m_xStride[j] );
       const unsigned int positionDa = static_cast< unsigned int >(
-        this->m_Center + this->m_xStride[i] + this->m_xStride[j] );
+          this->m_Center + this->m_xStride[i] + this->m_xStride[j] );
 
       gd->m_dxy[i][j] = gd->m_dxy[j][i] = 0.25
-                                          * ( this->m_InvSpacing[i] ) * ( this->m_InvSpacing[j] )
-                                          * ( it.GetPixel(positionAa) - it.GetPixel(positionBa)
-                                              + it.GetPixel(positionDa) - it.GetPixel(positionCa) );
+          * ( this->m_InvSpacing[i] ) * ( this->m_InvSpacing[j] )
+          * ( it.GetPixel(positionAa) - it.GetPixel(positionBa)
+              + it.GetPixel(positionDa) - it.GetPixel(positionCa) );
       }
     }
   gd->m_GradMag = vcl_sqrt(gd->m_GradMagSqr);
@@ -313,7 +314,7 @@ RegionBasedLevelSetFunction< TInput, TFeature, TSharedData >
     {
     curvature = this->ComputeCurvature(it, offset, gd);
     curvature_term = this->m_CurvatureWeight * curvature
-                     * this->CurvatureSpeed(it, offset, gd) * dh;
+      * this->CurvatureSpeed(it, offset, gd) * dh;
 
     gd->m_MaxCurvatureChange =
       vnl_math_max( gd->m_MaxCurvatureChange, vnl_math_abs(curvature_term) );
@@ -326,7 +327,7 @@ RegionBasedLevelSetFunction< TInput, TFeature, TSharedData >
     laplacian_term = this->ComputeLaplacian(gd) - curvature;
 
     laplacian_term *= this->m_ReinitializationSmoothingWeight
-                      * this->LaplacianSmoothingSpeed(it, offset, gd);
+      * this->LaplacianSmoothingSpeed(it, offset, gd);
     }
 
   if ( ( dh != 0. ) && ( m_AdvectionWeight != NumericTraits< ScalarValueType >::Zero ) )
@@ -433,19 +434,20 @@ RegionBasedLevelSetFunction< TInput, TFeature, TSharedData >
     {
     featIndex = this->m_SharedData->m_LevelSetDataPointerVector[this->m_FunctionId]->GetFeatureIndex(inputIndex);
     overlapTerm = this->m_OverlapPenaltyWeight *
-                  ComputeOverlapParameters(featIndex, product);
+      ComputeOverlapParameters(featIndex, product);
     }
 
   ScalarValueType interim = this->m_Lambda1 * this->ComputeInternalTerm(featureVal, featIndex);
   ScalarValueType outTerm = this->m_Lambda2 * product * this->ComputeExternalTerm(featureVal, featIndex);
 
   ScalarValueType regularizationTerm = this->m_VolumeMatchingWeight *
-                                       ComputeVolumeRegularizationTerm() - this->m_AreaWeight;
+    ComputeVolumeRegularizationTerm() - this->m_AreaWeight;
 
   ScalarValueType globalTerm = +interim - outTerm + overlapTerm + regularizationTerm;
 
   return globalTerm;
 }
+
 } // end namespace
 
 #endif

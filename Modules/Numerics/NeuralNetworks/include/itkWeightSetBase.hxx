@@ -48,8 +48,7 @@ WeightSetBase<TMeasurementVector,TTargetVector>
 template<typename TMeasurementVector, typename TTargetVector>
 WeightSetBase<TMeasurementVector,TTargetVector>
 ::~WeightSetBase()
-{
-}
+{}
 
 template<typename TMeasurementVector, typename TTargetVector>
 void
@@ -176,9 +175,9 @@ WeightSetBase<TMeasurementVector,TTargetVector>
 template<typename TMeasurementVector, typename TTargetVector>
 typename WeightSetBase<TMeasurementVector,TTargetVector>::ValueType
 WeightSetBase<TMeasurementVector,TTargetVector>
-:: RandomWeightValue(ValueType low, ValueType high)
+::RandomWeightValue(ValueType low, ValueType high)
 {
-  return static_cast<ValueType>(m_RandomGenerator->GetUniformVariate(low,high));
+  return static_cast<ValueType>(m_RandomGenerator->GetUniformVariate(low,high) );
 }
 
 template<typename TMeasurementVector, typename TTargetVector>
@@ -196,9 +195,8 @@ WeightSetBase<TMeasurementVector,TTargetVector>
 template<typename TMeasurementVector, typename TTargetVector>
 void
 WeightSetBase<TMeasurementVector,TTargetVector>
-::BackwardPropagate(ValueType* itkNotUsed(inputerrorvalues))
-{
-}
+::BackwardPropagate(ValueType* itkNotUsed(inputerrorvalues) )
+{}
 
 template<typename TMeasurementVector, typename TTargetVector>
 void
@@ -401,7 +399,7 @@ WeightSetBase<TMeasurementVector,TTargetVector>
 template<typename TMeasurementVector, typename TTargetVector>
 void
 WeightSetBase<TMeasurementVector,TTargetVector>
-::UpdateWeights(ValueType itkNotUsed(LearningRate))
+::UpdateWeights(ValueType itkNotUsed(LearningRate) )
 {
   m_Del_m_2 = m_Del_m_1;    // save last weight update;
   m_Del_m_1 = m_Del_new;    // save last weight update;
@@ -431,7 +429,6 @@ WeightSetBase<TMeasurementVector,TTargetVector>
     m_SecondPass = false;
     }
 }
-
 
 /** Print the object */
 template<typename TMeasurementVector, typename TTargetVector>

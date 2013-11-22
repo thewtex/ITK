@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKPath
  */
 template< typename TInput, typename TOutput, unsigned int VDimension >
-class Path: public DataObject
+class Path : public DataObject
 {
 public:
   /** Standard class typedefs. */
@@ -78,14 +78,16 @@ public:
   /** Where does the path begin?  For most types of paths, the path will begin
    * at zero.  This value can be overridden in children, and is necessary for
    * iterators to know how to go to the beginning of a path. */
-  virtual inline InputType StartOfInput() const
+  virtual inline InputType
+  StartOfInput() const
   {
     return NumericTraits< InputType >::Zero;
   }
 
   /** Where does the path end (what is the last valid input value)?  This value
    * is sometimes used by IncrementInput() to go to the end of a path. */
-  virtual inline InputType EndOfInput() const
+  virtual inline InputType
+  EndOfInput() const
   {
     return NumericTraits< InputType >::One;
   }

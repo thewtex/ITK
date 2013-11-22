@@ -53,7 +53,7 @@ namespace itk
  * \endwiki
  */
 template< typename TImage >
-class LineIterator:public LineConstIterator< TImage >
+class LineIterator : public LineConstIterator< TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -85,7 +85,8 @@ public:
   itkTypeMacro(LineIterator, LineConstIterator);
 
   /** Set the pixel value */
-  void Set(const PixelType & value)
+  void
+  Set(const PixelType & value)
   {
     // Normally, this would just be the following:
     //   m_Image->SetPixel(m_CurrentImageIndex,value);
@@ -98,7 +99,8 @@ public:
   /** Return a reference to the pixel.
    * This method will provide the fastest access to pixel
    * data, but it will NOT support ImageAdaptors. */
-  const PixelType & Value(void)
+  const PixelType &
+  Value(void)
   {
     return ( this->m_Image->GetPixel(this->m_CurrentImageIndex) );
   }
@@ -112,7 +114,8 @@ public:
                const IndexType & lastIndex);
 
   /** Default Destructor. */
-  virtual ~LineIterator() {}
+  virtual
+  ~LineIterator() {}
 };
 } // end namespace itk
 

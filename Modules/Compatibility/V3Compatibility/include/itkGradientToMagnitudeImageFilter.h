@@ -21,7 +21,8 @@
 #include "itkVectorMagnitudeImageFilter.h"
 
 #ifndef ITKV3_COMPATIBILITY
-#error "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkDisplacementFieldJacobianDeterminantFilter.h in ITKv4"
+#error \
+  "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkDisplacementFieldJacobianDeterminantFilter.h in ITKv4"
 #endif
 
 namespace itk
@@ -48,7 +49,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class GradientToMagnitudeImageFilter:
+class GradientToMagnitudeImageFilter :
   public
   VectorMagnitudeImageFilter< TInputImage, TOutputImage>
 {
@@ -76,11 +77,13 @@ public:
 
 protected:
   GradientToMagnitudeImageFilter() {}
-  virtual ~GradientToMagnitudeImageFilter() {}
+  virtual
+  ~GradientToMagnitudeImageFilter() {}
 
 private:
   GradientToMagnitudeImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                 //purposely not implemented
+
 };
 } // end namespace itk
 

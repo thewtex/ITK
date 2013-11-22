@@ -78,7 +78,7 @@ namespace itk
  * \endwiki
  */
 template< typename TPixel, unsigned int VImageDimension = 3 >
-class VectorImage:
+class VectorImage :
   public ImageBase< VImageDimension >
 {
 public:
@@ -122,7 +122,7 @@ public:
   /** Typedef for the functor used to access a neighborhood of pixel
    * pointers. */
   typedef VectorImageNeighborhoodAccessorFunctor<
-    Self >              NeighborhoodAccessorFunctorType;
+      Self >              NeighborhoodAccessorFunctorType;
 
   /** Dimension of the image.  This constant is used by functions that are
    * templated over image type (as opposed to being templated over pixel type
@@ -138,7 +138,7 @@ public:
   typedef typename Superclass::OffsetType OffsetType;
 
   /** Size typedef support. A size is used to define region bounds. */
-  typedef typename Superclass::SizeType      SizeType;
+  typedef typename Superclass::SizeType SizeType;
 
   /** Container used to store pixels in the image. */
   typedef ImportImageContainer< SizeValueType, InternalPixelType > PixelContainer;
@@ -184,16 +184,16 @@ public:
    */
   template <typename UPixelType, unsigned int UImageDimension = VImageDimension>
   struct Rebind
-  {
-    typedef itk::VectorImage<UPixelType, UImageDimension>  Type;
-  };
+    {
+    typedef itk::VectorImage<UPixelType, UImageDimension> Type;
+    };
 
   /** \cond HIDE_SPECIALIZATION_DOCUMENTATION */
   template <typename UElementType, unsigned int UImageDimension>
   struct Rebind< VariableLengthVector< UElementType >, UImageDimension>
-  {
-    typedef itk::VectorImage<UElementType, UImageDimension>  Type;
-  };
+    {
+    typedef itk::VectorImage<UElementType, UImageDimension> Type;
+    };
   /** \endcond */
 
   /** Allocate the image memory. The size of the image must
@@ -213,7 +213,8 @@ public:
    * Allocate() needs to have been called first -- for efficiency,
    * this function does not check that the image has actually been
    * allocated yet. */
-  void SetPixel(const IndexType & index, const PixelType & value)
+  void
+  SetPixel(const IndexType & index, const PixelType & value)
   {
     OffsetValueType offset = m_VectorLength * this->ComputeOffset(index);
 
@@ -228,7 +229,8 @@ public:
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. Note that the method returns a
    * pixel on the stack. */
-  const PixelType GetPixel(const IndexType & index) const
+  const PixelType
+  GetPixel(const IndexType & index) const
   {
     OffsetValueType offset = m_VectorLength * this->ComputeOffset(index);
 
@@ -246,7 +248,8 @@ public:
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  PixelType  GetPixel(const IndexType & index)
+  PixelType
+  GetPixel(const IndexType & index)
   {
     OffsetValueType offset = m_VectorLength * this->ComputeOffset(index);
 
@@ -264,30 +267,45 @@ public:
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  PixelType operator[](const IndexType & index) { return this->GetPixel(index); }
+  PixelType
+  operator[](const IndexType & index) {
+    return this->GetPixel(index);
+  }
 
   /** \brief Access a pixel.
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  const PixelType operator[](const IndexType & index) const { return this->GetPixel(index); }
+  const PixelType
+  operator[](const IndexType & index) const {
+    return this->GetPixel(index);
+  }
 
   /** Return a pointer to the beginning of the buffer.  This is used by
    * the image iterator class. */
-  InternalPixelType * GetBufferPointer()
+  InternalPixelType *
+  GetBufferPointer()
   {
     return m_Buffer ? m_Buffer->GetBufferPointer() : 0;
   }
-  const InternalPixelType * GetBufferPointer() const
+
+  const InternalPixelType *
+  GetBufferPointer() const
   {
     return m_Buffer ? m_Buffer->GetBufferPointer() : 0;
   }
 
   /** Return a pointer to the container. */
-  PixelContainer * GetPixelContainer() { return m_Buffer.GetPointer(); }
+  PixelContainer *
+  GetPixelContainer() {
+    return m_Buffer.GetPointer();
+  }
 
   /** Return a pointer to the container. */
-  const PixelContainer * GetPixelContainer() const { return m_Buffer.GetPointer(); }
+  const PixelContainer *
+  GetPixelContainer() const {
+    return m_Buffer.GetPointer();
+  }
 
   /** Set the container to use. Note that this does not cause the
    * DataObject to be modified. */
@@ -306,19 +324,27 @@ public:
   virtual void Graft(const DataObject *data);
 
   /** Return the Pixel Accessor object */
-  AccessorType GetPixelAccessor(void) { return AccessorType(m_VectorLength); }
+  AccessorType
+  GetPixelAccessor(void) {
+    return AccessorType(m_VectorLength);
+  }
 
   /** Return the Pixel Accesor object */
-  const AccessorType GetPixelAccessor(void) const { return AccessorType(m_VectorLength); }
+  const AccessorType
+  GetPixelAccessor(void) const {
+    return AccessorType(m_VectorLength);
+  }
 
   /** Return the NeighborhoodAccessor functor */
-  NeighborhoodAccessorFunctorType GetNeighborhoodAccessor()
+  NeighborhoodAccessorFunctorType
+  GetNeighborhoodAccessor()
   {
     return NeighborhoodAccessorFunctorType(m_VectorLength);
   }
 
   /** Return the NeighborhoodAccessor functor */
-  const NeighborhoodAccessorFunctorType GetNeighborhoodAccessor() const
+  const NeighborhoodAccessorFunctorType
+  GetNeighborhoodAccessor() const
   {
     return NeighborhoodAccessorFunctorType(m_VectorLength);
   }
@@ -336,7 +362,8 @@ protected:
   VectorImage();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  virtual ~VectorImage() {}
+  virtual
+  ~VectorImage() {}
 
 private:
   VectorImage(const Self &);    // purposely not implementated

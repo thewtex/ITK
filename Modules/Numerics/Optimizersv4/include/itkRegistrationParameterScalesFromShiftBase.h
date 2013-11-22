@@ -54,19 +54,19 @@ public:
   itkTypeMacro( RegistrationParameterScalesFromShiftBase, RegistrationParameterScalesEstimator );
 
   /** Type of scales */
-  typedef typename Superclass::ScalesType                ScalesType;
+  typedef typename Superclass::ScalesType ScalesType;
   /** Type of parameters of the optimizer */
-  typedef typename Superclass::ParametersType            ParametersType;
-  typedef typename ParametersType::ValueType             ParametersValueType;
+  typedef typename Superclass::ParametersType ParametersType;
+  typedef typename ParametersType::ValueType  ParametersValueType;
   /** Type of float */
-  typedef typename Superclass::FloatType                 FloatType;
+  typedef typename Superclass::FloatType FloatType;
 
-  typedef typename Superclass::VirtualPointType          VirtualPointType;
-  typedef typename Superclass::VirtualIndexType          VirtualIndexType;
-  typedef typename Superclass::MovingTransformType       MovingTransformType;
-  typedef typename Superclass::FixedTransformType        FixedTransformType;
-  typedef typename Superclass::JacobianType              JacobianType;
-  typedef typename Superclass::VirtualImageConstPointer  VirtualImageConstPointer;
+  typedef typename Superclass::VirtualPointType         VirtualPointType;
+  typedef typename Superclass::VirtualIndexType         VirtualIndexType;
+  typedef typename Superclass::MovingTransformType      MovingTransformType;
+  typedef typename Superclass::FixedTransformType       FixedTransformType;
+  typedef typename Superclass::JacobianType             JacobianType;
+  typedef typename Superclass::VirtualImageConstPointer VirtualImageConstPointer;
 
   /** Estimate parameter scales */
   virtual void EstimateScales(ScalesType &scales);
@@ -76,7 +76,7 @@ public:
 
   /** Estimate the scales of local steps */
   virtual void EstimateLocalStepScales(const ParametersType &step,
-    ScalesType &localStepScales);
+                                       ScalesType &localStepScales);
 
   /** Set/get small parameter variation */
   itkSetMacro( SmallParameterVariation, ParametersValueType );
@@ -84,7 +84,7 @@ public:
 
 protected:
   RegistrationParameterScalesFromShiftBase();
-  ~RegistrationParameterScalesFromShiftBase(){};
+  ~RegistrationParameterScalesFromShiftBase(){}
 
   virtual void PrintSelf(std::ostream &os, Indent indent) const;
 
@@ -98,16 +98,14 @@ protected:
 
 private:
   RegistrationParameterScalesFromShiftBase(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                           //purposely not implemented
 
   //A small variation of parameters
-  ParametersValueType  m_SmallParameterVariation;
+  ParametersValueType m_SmallParameterVariation;
 
 }; //class RegistrationParameterScalesFromShiftBase
 
-
 }  // namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRegistrationParameterScalesFromShiftBase.hxx"

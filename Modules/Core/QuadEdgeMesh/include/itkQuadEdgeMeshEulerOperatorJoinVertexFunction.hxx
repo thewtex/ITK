@@ -27,7 +27,8 @@
 namespace itk
 {
 template< typename TMesh, typename TQEType >
-QuadEdgeMeshEulerOperatorJoinVertexFunction< TMesh, TQEType >::QuadEdgeMeshEulerOperatorJoinVertexFunction():Superclass(),
+QuadEdgeMeshEulerOperatorJoinVertexFunction< TMesh,
+                                             TQEType >::QuadEdgeMeshEulerOperatorJoinVertexFunction() : Superclass(),
   m_OldPointID(0), m_EdgeStatus(STANDARD_CONFIG)
 {}
 
@@ -611,6 +612,7 @@ QuadEdgeMeshEulerOperatorJoinVertexFunction< TMesh, TQEType >::IsEdgeLinkingTwoD
       }
     }
 }
+
 } // namespace itkQE
 
 #endif

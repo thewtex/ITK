@@ -50,6 +50,7 @@ MeanSquaresHistogramImageToImageMetric< TFixedImage, TMovingImage >
 
   return measure;
 }
+
 } // End namespace itk
 
 #endif // itkMeanSquaresHistogramImageToImageMetric_hxx

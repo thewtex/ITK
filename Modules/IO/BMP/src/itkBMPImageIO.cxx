@@ -54,7 +54,8 @@ BMPImageIO::BMPImageIO()
 BMPImageIO::~BMPImageIO()
 {}
 
-bool BMPImageIO::CanReadFile(const char *filename)
+bool
+BMPImageIO::CanReadFile(const char *filename)
 {
   // First check the filename extension
   std::string fname = filename;
@@ -158,7 +159,8 @@ bool BMPImageIO::CanReadFile(const char *filename)
   return true;
 }
 
-bool BMPImageIO::CanWriteFile(const char *name)
+bool
+BMPImageIO::CanWriteFile(const char *name)
 {
   std::string filename = name;
 
@@ -191,7 +193,8 @@ bool BMPImageIO::CanWriteFile(const char *name)
   return true;
 }
 
-void BMPImageIO::Read(void *buffer)
+void
+BMPImageIO::Read(void *buffer)
 {
   char *        p = static_cast< char * >( buffer );
   unsigned long l = 0;
@@ -280,8 +283,8 @@ void BMPImageIO::Read(void *buffer)
     {
     // File is not compressed
     // Read one row at a time
-    long streamRead = m_Dimensions[0] * m_Depth / 8;
-    long paddedStreamRead = streamRead;
+    long          streamRead = m_Dimensions[0] * m_Depth / 8;
+    long          paddedStreamRead = streamRead;
     unsigned long step = this->GetNumberOfComponents();
     if ( streamRead % 4 )
       {
@@ -338,7 +341,8 @@ void BMPImageIO::Read(void *buffer)
  *  Read Information about the BMP file
  *  and put the cursor of the stream just before the first data pixel
  */
-void BMPImageIO::ReadImageInformation()
+void
+BMPImageIO::ReadImageInformation()
 {
   int   xsize, ysize;
   long  tmp;
@@ -679,6 +683,7 @@ BMPImageIO
 ::Write32BitsInteger(unsigned int value)
 {
   char tmp = static_cast<char>(value % 256);
+
   m_Ofstream.write( &tmp, sizeof( char ) );
   tmp = static_cast< char >( ( value % 65536L ) / 256 );
   m_Ofstream.write( &tmp, sizeof( char ) );
@@ -693,6 +698,7 @@ BMPImageIO
 ::Write16BitsInteger(unsigned short value)
 {
   char tmp = static_cast<char>(value % 256);
+
   m_Ofstream.write( &tmp, sizeof( char ) );
   tmp = static_cast< char >( ( value % 65536L ) / 256 );
   m_Ofstream.write( &tmp, sizeof( char ) );
@@ -840,10 +846,10 @@ BMPImageIO
   this->Write32BitsInteger(bitmapHeaderSize);
 
   // image width
-  this->Write32BitsInteger(static_cast<unsigned int>(m_Dimensions[0]));
+  this->Write32BitsInteger(static_cast<unsigned int>(m_Dimensions[0]) );
 
   // image height -ve means top to bottom
-  this->Write32BitsInteger(static_cast<unsigned int>(m_Dimensions[1]));
+  this->Write32BitsInteger(static_cast<unsigned int>(m_Dimensions[1]) );
 
   // Set `planes'=1 (mandatory)
   const unsigned short numberOfColorPlanes = 1;
@@ -971,9 +977,11 @@ BMPImageIO
 }
 
 /** Print Self Method */
-void BMPImageIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+BMPImageIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Depth " << m_Depth << "\n";
   os << indent << "FileLowerLeft " << m_FileLowerLeft << "\n";
   os << indent << "BitMapOffset " << m_BitMapOffset << "\n";
@@ -988,4 +996,5 @@ void BMPImageIO::PrintSelf(std::ostream & os, Indent indent) const
   os << indent << "BMPCompression = " << m_BMPCompression << "\n";
   os << indent << "DataSize = " << m_BMPDataSize << "\n";
 }
+
 } // end namespace itk

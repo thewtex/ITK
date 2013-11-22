@@ -43,20 +43,20 @@ class VideoFileReader : public VideoSource< TOutputVideoStream >
 public:
 
   /**-TYPEDEFS---------------------------------------------------------------*/
-  typedef VideoFileReader                          Self;
-  typedef VideoSource< TOutputVideoStream >        Superclass;
-  typedef SmartPointer<Self>                       Pointer;
-  typedef TOutputVideoStream                       VideoStreamType;
-  typedef typename VideoStreamType::Pointer        VideoStreamPointer;
+  typedef VideoFileReader                   Self;
+  typedef VideoSource< TOutputVideoStream > Superclass;
+  typedef SmartPointer<Self>                Pointer;
+  typedef TOutputVideoStream                VideoStreamType;
+  typedef typename VideoStreamType::Pointer VideoStreamPointer;
 
-  typedef typename VideoStreamType::FrameType      FrameType;
-  typedef typename FrameType::PixelType            PixelType;
-  typedef typename FrameType::RegionType           RegionType;
-  typedef typename FrameType::SizeType             SizeType;
-  typedef typename FrameType::IndexType            IndexType;
-  typedef typename FrameType::PointType            PointType;
-  typedef typename FrameType::SpacingType          SpacingType;
-  typedef typename FrameType::DirectionType        DirectionType;
+  typedef typename VideoStreamType::FrameType FrameType;
+  typedef typename FrameType::PixelType       PixelType;
+  typedef typename FrameType::RegionType      RegionType;
+  typedef typename FrameType::SizeType        SizeType;
+  typedef typename FrameType::IndexType       IndexType;
+  typedef typename FrameType::PointType       PointType;
+  typedef typename FrameType::SpacingType     SpacingType;
+  typedef typename FrameType::DirectionType   DirectionType;
 
   typedef typename VideoIOBase::TemporalOffsetType TemporalOffsetType;
   typedef typename VideoIOBase::FrameOffsetType    FrameOffsetType;
@@ -108,7 +108,8 @@ protected:
 
   /**-PROTECTED METHODS------------------------------------------------------*/
   VideoFileReader();
-  virtual ~VideoFileReader();
+  virtual
+  ~VideoFileReader();
   void PrintSelf(std::ostream &os, Indent indent) const;
 
   /** Override TemporalStreamingGenerateData to generate output a single frame.

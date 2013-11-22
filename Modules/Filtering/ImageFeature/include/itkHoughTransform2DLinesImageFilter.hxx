@@ -75,8 +75,8 @@ HoughTransform2DLinesImageFilter< TInputPixelType, TOutputPixelType >
 
   size[0] =
     (SizeValueType)( vcl_sqrt(m_AngleResolution * m_AngleResolution
-                                  + input->GetLargestPossibleRegion().GetSize()[0]
-                                  * input->GetLargestPossibleRegion().GetSize()[0]) );
+                              + input->GetLargestPossibleRegion().GetSize()[0]
+                              * input->GetLargestPossibleRegion().GetSize()[0]) );
   size[1] = (SizeValueType)m_AngleResolution;
   region.SetSize(size);
   region.SetIndex( input->GetLargestPossibleRegion().GetIndex() );
@@ -90,6 +90,7 @@ HoughTransform2DLinesImageFilter< TInputPixelType, TOutputPixelType >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   if ( this->GetInput() )
     {
     InputImagePointer image =
@@ -195,7 +196,8 @@ HoughTransform2DLinesImageFilter< TInputPixelType, TOutputPixelType >
       for ( double angle = -nPI; angle < nPI; angle += nPI / m_AngleResolution )
         {
         // m_R
-        index[0] = (IndexValueType)( image_it.GetIndex()[0] * vcl_cos(angle) + image_it.GetIndex()[1] * vcl_sin(angle) );
+        index[0] =
+          (IndexValueType)( image_it.GetIndex()[0] * vcl_cos(angle) + image_it.GetIndex()[1] * vcl_sin(angle) );
         // m_Theta
         index[1] = (IndexValueType)( ( m_AngleResolution / 2 ) + m_AngleResolution * angle / ( 2 * nPI ) );
 
@@ -234,7 +236,7 @@ template< typename TInputPixelType, typename TOutputPixelType >
 typename HoughTransform2DLinesImageFilter< TInputPixelType, TOutputPixelType >::LinesListType &
 HoughTransform2DLinesImageFilter< TInputPixelType, TOutputPixelType >
 ::GetLines(unsigned int n)
-{
+  {
   // if the filter has not been updated
   if ( ( this->GetMTime() == m_OldModifiedTime ) && ( n == m_OldNumberOfLines ) )
     {
@@ -366,7 +368,7 @@ HoughTransform2DLinesImageFilter< TInputPixelType, TOutputPixelType >
   m_OldModifiedTime = this->GetMTime();
   m_OldNumberOfLines = m_LinesList.size();
   return m_LinesList;
-}
+  }
 
 /** Print Self information */
 template< typename TInputPixelType, typename TOutputPixelType >
@@ -383,6 +385,7 @@ HoughTransform2DLinesImageFilter< TInputPixelType, TOutputPixelType >
   os << "Accumulator blur variance: " << m_Variance << std::endl;
   os << "Simplify Accumulator" << m_SimplifyAccumulator << std::endl;
 }
+
 } // end namespace
 
 #endif

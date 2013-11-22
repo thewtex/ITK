@@ -50,9 +50,10 @@ FileListVideoIOFactory::GetDescription() const
 
 static bool FileListVideoIOFactoryHasBeenRegistered;
 
-void FileListVideoIOFactoryRegister__Private(void)
+void
+FileListVideoIOFactoryRegister__Private(void)
 {
-  if( ! FileListVideoIOFactoryHasBeenRegistered )
+  if( !FileListVideoIOFactoryHasBeenRegistered )
     {
     FileListVideoIOFactoryHasBeenRegistered = true;
     FileListVideoIOFactory::RegisterOneFactory();

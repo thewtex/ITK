@@ -31,23 +31,25 @@ public:
   typedef itk::Index<VDimension> IndexType;
 
   ImagePattern()
-    {
+  {
     m_Offset = 0.0;
     for( int j = 0; j < VDimension; j++ )
       {
       m_Coeff[j] = 0.0;
       }
-    }
+  }
 
-  double Evaluate( const IndexType& index )
-    {
+  double
+  Evaluate( const IndexType& index )
+  {
     double accum = m_Offset;
+
     for( int j = 0; j < VDimension; j++ )
       {
       accum += m_Coeff[j] * (double) index[j];
       }
     return accum;
-    }
+  }
 
   double m_Coeff[VDimension];
   double m_Offset;
@@ -60,14 +62,21 @@ class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 
-
-int itkExpandImageFilterTest(int, char* [] )
+int
+itkExpandImageFilterTest(int, char* [] )
 {
   typedef float PixelType;
   enum { ImageDimension = 2 };
@@ -75,12 +84,11 @@ int itkExpandImageFilterTest(int, char* [] )
 
   bool testPassed = true;
 
-
   //=============================================================
 
   std::cout << "Create the input image pattern." << std::endl;
   ImageType::RegionType region;
-  ImageType::SizeType size = {{64, 64}};
+  ImageType::SizeType   size = {{64, 64}};
   region.SetSize( size );
 
   ImageType::Pointer input = ImageType::New();
@@ -88,7 +96,7 @@ int itkExpandImageFilterTest(int, char* [] )
   input->SetBufferedRegion( region );
   input->Allocate();
 
-  int j;
+  int                          j;
   ImagePattern<ImageDimension> pattern;
   pattern.m_Offset = 64;
   for( j = 0; j < ImageDimension; j++ )
@@ -120,14 +128,13 @@ int itkExpandImageFilterTest(int, char* [] )
 
   expander->SetExpandFactors( 5 );
 
-  unsigned int factors[ImageDimension] = {2,3};
+  unsigned int         factors[ImageDimension] = {2,3};
   ImageType::PixelType padValue = 4.0;
   expander->SetInput( input );
   expander->SetExpandFactors( factors );
 //TEST_RMV20100728   expander->SetEdgePaddingValue( padValue );
 
-
-  ShowProgressObject progressWatch(expander);
+  ShowProgressObject                                    progressWatch(expander);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -141,7 +148,7 @@ int itkExpandImageFilterTest(int, char* [] )
 
   std::cout << "Checking the output against expected." << std::endl;
   Iterator outIter( expander->GetOutput(),
-    expander->GetOutput()->GetBufferedRegion() );
+                    expander->GetOutput()->GetBufferedRegion() );
 
   // compute non-padded output region
   ImageType::RegionType validRegion =
@@ -155,7 +162,7 @@ int itkExpandImageFilterTest(int, char* [] )
   while( !outIter.IsAtEnd() )
     {
     ImageType::IndexType index = outIter.GetIndex();
-    double value = outIter.Get();
+    double               value = outIter.Get();
 
     if( validRegion.IsInside( index ) )
       {
@@ -197,7 +204,6 @@ int itkExpandImageFilterTest(int, char* [] )
 
   caster->SetInput( expander->GetInput() );
 
-
   ExpanderType::Pointer expander2 = ExpanderType::New();
 
   expander2->SetInput( caster->GetOutput() );
@@ -215,7 +221,7 @@ int itkExpandImageFilterTest(int, char* [] )
   std::cout << "Compare standalone and streamed outputs" << std::endl;
 
   Iterator streamIter( streamer->GetOutput(),
-    streamer->GetOutput()->GetBufferedRegion() );
+                       streamer->GetOutput()->GetBufferedRegion() );
 
   outIter.GoToBegin();
   streamIter.GoToBegin();
@@ -229,7 +235,6 @@ int itkExpandImageFilterTest(int, char* [] )
     ++outIter;
     ++streamIter;
     }
-
 
   if ( !testPassed )
     {
@@ -259,7 +264,6 @@ int itkExpandImageFilterTest(int, char* [] )
     std::cout << "Test failed." << std::endl;
     return EXIT_FAILURE;
     }
-
 
   try
     {

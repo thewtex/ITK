@@ -42,7 +42,7 @@ namespace itk
  */
 template< typename TPixel, unsigned int VDimension = 2,
           typename TAllocator = NeighborhoodAllocator< TPixel > >
-class ForwardDifferenceOperator:
+class ForwardDifferenceOperator :
   public NeighborhoodOperator< TPixel, VDimension, TAllocator >
 {
 public:
@@ -56,13 +56,15 @@ public:
   ForwardDifferenceOperator() {}
 
   /** Copy constructor */
-  ForwardDifferenceOperator(const Self & other):
+  ForwardDifferenceOperator(const Self & other) :
     NeighborhoodOperator< TPixel, VDimension, TAllocator >(other) {}
 
   /** Assignment operator */
-  Self & operator=(const Self & other)
+  Self &
+  operator=(const Self & other)
   {
     Superclass::operator=(other);
+
     return *this;
   }
 
@@ -74,9 +76,13 @@ protected:
   CoefficientVector GenerateCoefficients();
 
   /** Arranges coefficients spatially in the memory buffer. */
-  void Fill(const CoefficientVector & coeff)
+  void
+  Fill(const CoefficientVector & coeff)
 
-  { this->FillCenteredDirectional(coeff); }
+  {
+    this->FillCenteredDirectional(coeff);
+  }
+
 };
 } // namespace itk
 

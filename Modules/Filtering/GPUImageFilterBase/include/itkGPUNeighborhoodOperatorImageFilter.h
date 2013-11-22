@@ -45,7 +45,8 @@ itkGPUKernelClassMacro(GPUNeighborhoodOperatorImageFilterKernel);
 
 template< typename TInputImage, typename TOutputImage,
           typename TOperatorValueType = typename TOutputImage::PixelType,
-          typename TParentImageFilter = NeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueType> >
+          typename TParentImageFilter =
+            NeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueType> >
 class GPUNeighborhoodOperatorImageFilter :
   public GPUImageToImageFilter< TInputImage, TOutputImage, TParentImageFilter >
 {
@@ -88,7 +89,7 @@ public:
 
   /** Typedef for generic boundary condition pointer. */
   typedef ImageBoundaryCondition< InputImageType > *
-  ImageBoundaryConditionPointerType;
+    ImageBoundaryConditionPointerType;
 
   /** Typedef for the default boundary condition */
   typedef ZeroFluxNeumannBoundaryCondition< InputImageType > DefaultBoundaryCondition;
@@ -151,8 +152,8 @@ public:
 
 protected:
   GPUNeighborhoodOperatorImageFilter();
-  virtual ~GPUNeighborhoodOperatorImageFilter() {
-  }
+  virtual
+  ~GPUNeighborhoodOperatorImageFilter() {}
 
   /** NeighborhoodOperatorImageFilter can be implemented as a
    * multithreaded filter.  Therefore, this implementation provides a
@@ -170,7 +171,8 @@ protected:
 
   void GPUGenerateData();
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     GPUSuperclass::PrintSelf(os, indent);
   }

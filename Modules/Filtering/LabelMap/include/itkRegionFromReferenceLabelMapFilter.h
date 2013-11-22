@@ -51,7 +51,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TInputImage >
-class RegionFromReferenceLabelMapFilter:public ChangeRegionLabelMapFilter< TInputImage >
+class RegionFromReferenceLabelMapFilter : public ChangeRegionLabelMapFilter< TInputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -100,13 +100,15 @@ public:
   const ReferenceImageType * GetReferenceImage() const;
 
   /** Set the input image */
-  void SetInput1(const TInputImage *input)
+  void
+  SetInput1(const TInputImage *input)
   {
     this->SetInput(input);
   }
 
   /** Set the reference image */
-  void SetInput2(const ReferenceImageType *input)
+  void
+  SetInput2(const ReferenceImageType *input)
   {
     this->SetReferenceImage(input);
   }
@@ -126,6 +128,7 @@ protected:
 private:
   RegionFromReferenceLabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                    //purposely not implemented
+
 };
 } // end namespace itk
 

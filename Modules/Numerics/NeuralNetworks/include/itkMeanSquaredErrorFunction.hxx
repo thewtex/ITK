@@ -29,15 +29,13 @@ namespace Statistics
 template<typename TMeasurementVector, typename ScalarType>
 MeanSquaredErrorFunction<TMeasurementVector,ScalarType>
 ::MeanSquaredErrorFunction()
-{
-}
+{}
 
 /** Destructor */
 template<typename TMeasurementVector, typename ScalarType>
 MeanSquaredErrorFunction <TMeasurementVector,ScalarType>
 ::~MeanSquaredErrorFunction()
-{
-}
+{}
 
 /** Evaluate */
 template<typename TMeasurementVector, typename ScalarType>
@@ -45,12 +43,12 @@ ScalarType
 MeanSquaredErrorFunction <TMeasurementVector,ScalarType>
 ::Evaluate(const TMeasurementVector& errors)  const
 {
-  vnl_vector <ScalarType> temp(errors.Size());
+  vnl_vector <ScalarType> temp(errors.Size() );
   for(unsigned int i=0; i<errors.Size(); i++)
     {
     temp[i]=errors[i];
     }
-  return (temp.squared_magnitude() / temp.size());
+  return (temp.squared_magnitude() / temp.size() );
 }
 
 /** Evaluate derivatives */
@@ -60,12 +58,13 @@ typename MeanSquaredErrorFunction <TMeasurementVector,ScalarType>
 MeanSquaredErrorFunction <TMeasurementVector,ScalarType>
 ::EvaluateDerivative(const TMeasurementVector& errors)  const
 {
-  ScalarType m = static_cast<ScalarType>(2) / errors.Size();
-  InternalVectorType temp(errors.Size());
+  ScalarType         m = static_cast<ScalarType>(2) / errors.Size();
+  InternalVectorType temp(errors.Size() );
+
   for(unsigned int i=0; i<errors.Size(); i++)
-  {
-     temp[i]=errors[i]*m;
-  }
+    {
+    temp[i]=errors[i]*m;
+    }
   return temp;
 }
 

@@ -55,7 +55,8 @@ public:
   /**
    * Default destructor
    */
-  virtual ~OctreeNode(void);
+  virtual
+  ~OctreeNode(void);
 
   /**
    * Returns the value of the specified Child for this OctreeNode
@@ -67,6 +68,7 @@ public:
   OctreeNode & GetChild(const enum LeafIdentifier ChildID) const;
 
   OctreeNode & GetChild(const enum LeafIdentifier ChildID);
+
   /** @}
   */
 
@@ -99,7 +101,8 @@ public:
    */
   bool IsNodeColored(void) const;
 
-  inline void SetParentOctree(OctreeBase *parent)
+  inline void
+  SetParentOctree(OctreeBase *parent)
   {
     m_Parent = parent;
   }
@@ -131,7 +134,8 @@ public:
       }
   }
 
-  inline OctreeNode * GetLeaf(enum LeafIdentifier LeafID)
+  inline OctreeNode *
+  GetLeaf(enum LeafIdentifier LeafID)
   {
     return &m_Leaves[LeafID];
   }

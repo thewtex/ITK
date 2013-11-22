@@ -31,7 +31,6 @@ template< typename TLevelSetContainer >
 LevelSetEvolutionNumberOfIterationsStoppingCriterion< TLevelSetContainer >::
 ~LevelSetEvolutionNumberOfIterationsStoppingCriterion() {}
 
-
 template< typename TLevelSetContainer >
 bool
 LevelSetEvolutionNumberOfIterationsStoppingCriterion< TLevelSetContainer >::
@@ -49,4 +48,4 @@ GetDescription() const
 }
 
 }
- #endif
+#endif

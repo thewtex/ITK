@@ -20,7 +20,8 @@
 #include "itkImageRegionConstIteratorWithIndex.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkConnectedComponentImageFilterBackgroundTest( int argc, char* argv[] )
+int
+itkConnectedComponentImageFilterBackgroundTest( int argc, char* argv[] )
 {
 
   if ( argc < 2 )
@@ -29,15 +30,15 @@ int itkConnectedComponentImageFilterBackgroundTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef   int                               PixelType;
-  const     unsigned int                      Dimension = 2;
-  typedef itk::Image< PixelType, Dimension >  ImageType;
+  typedef   int PixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< PixelType, Dimension > ImageType;
 
   PixelType background = static_cast< PixelType >( atoi( argv[ 1 ] ) );
 
   // Create an image with an arbitrary background value and a number
   // of islands with pixel values above and below the background value
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer  image = ImageType::New();
   ImageType::SizeType size;
   size.Fill( 512 );
   image->SetRegions( size );
@@ -65,7 +66,7 @@ int itkConnectedComponentImageFilterBackgroundTest( int argc, char* argv[] )
   try
     {
     filter->Update();
-     }
+    }
   catch( itk::ExceptionObject & excep )
     {
     std::cerr << "exception caught:" << std::endl;
@@ -86,7 +87,7 @@ int itkConnectedComponentImageFilterBackgroundTest( int argc, char* argv[] )
   IteratorType iterator( output, output->GetLargestPossibleRegion() );
   while ( !iterator.IsAtEnd() )
     {
-    PixelType value = iterator.Get();
+    PixelType            value = iterator.Get();
     ImageType::IndexType index = iterator.GetIndex();
     if ( index == index1 || index == index2 )
       {

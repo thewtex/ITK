@@ -22,6 +22,7 @@ int
 TestDegenerateHeaderFiles()
 {
   std::string AugmentName("DegenerateHeaderTest");
+
   if(WriteAnalyzeTestFiles(AugmentName) == -1)
     {
     return EXIT_FAILURE;
@@ -30,15 +31,15 @@ TestDegenerateHeaderFiles()
   fname += "LittleEndian.hdr";
   typedef itk::Image<unsigned short,3> ImageType;
   ImageType::Pointer img;
-  std::fstream header(fname.c_str(),std::ios::binary | std::ios::in | std::ios::out);
-  if(!header.is_open())
+  std::fstream       header(fname.c_str(),std::ios::binary | std::ios::in | std::ios::out);
+  if(!header.is_open() )
     {
     return EXIT_FAILURE;
     }
   header.seekg(40,std::ios::beg); // go to location of first element of dim array.
   short int zero[8];
   zero[0] = zero[1] = zero[2] = zero[3] = zero[4] = zero[5] = zero[6] = zero[7] = 0;
-  header.write(reinterpret_cast<const char *>(zero),sizeof(zero));
+  header.write(reinterpret_cast<const char *>(zero),sizeof(zero) );
   header.close();
   int error(0);
   try
@@ -54,8 +55,8 @@ TestDegenerateHeaderFiles()
   return error ? 0 : 1;
 }
 
-
-int itkAnalyzeImageIOBadHeader(int ac, char* av[])
+int
+itkAnalyzeImageIOBadHeader(int ac, char* av[])
 {
   //
   // first argument is passing in the writable directory to do all testing

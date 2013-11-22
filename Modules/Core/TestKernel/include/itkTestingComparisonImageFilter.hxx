@@ -113,8 +113,8 @@ ComparisonImageFilter< TInputImage, TOutputImage >
   m_ThreadNumberOfPixels.SetSize(numberOfThreads);
 
   // Initialize the temporaries
-  m_ThreadMinimumDifference.Fill(NumericTraits< OutputPixelType >::max());
-  m_ThreadMaximumDifference.Fill(NumericTraits< OutputPixelType >::NonpositiveMin());
+  m_ThreadMinimumDifference.Fill(NumericTraits< OutputPixelType >::max() );
+  m_ThreadMaximumDifference.Fill(NumericTraits< OutputPixelType >::NonpositiveMin() );
   m_ThreadDifferenceSum.Fill(NumericTraits< AccumulateType >::Zero);
   m_ThreadNumberOfPixels.Fill(0);
 }
@@ -147,7 +147,7 @@ ComparisonImageFilter< TInputImage, TOutputImage >
     }
 
   // Create a radius of pixels.
-  RadiusType radius;
+  RadiusType         radius;
   const unsigned int minVoxelsNeeded = m_ToleranceRadius*2+1;
   const typename TInputImage::SizeType imageSize = validImage->GetBufferedRegion().GetSize();
   for( unsigned int d=0; d < TInputImage::ImageDimension; ++d )
@@ -158,7 +158,7 @@ ComparisonImageFilter< TInputImage, TOutputImage >
       }
     else
       {
-        radius[d] = ( (imageSize[d]-1)/2 );
+      radius[d] = ( (imageSize[d]-1)/2 );
       }
     }
 
@@ -332,9 +332,8 @@ ComparisonImageFilter< TInputImage, TOutputImage >
 ::GetInput(unsigned int idx) const
 {
   return itkDynamicCastInDebugMode< const TInputImage * >
-    ( this->ProcessObject::GetInput(idx) );
+           ( this->ProcessObject::GetInput(idx) );
 }
-
 
 } // end namespace Testing
 } // end namespace itk

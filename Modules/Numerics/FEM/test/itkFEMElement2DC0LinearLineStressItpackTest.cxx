@@ -21,7 +21,8 @@
 #include <iostream>
 
 //  Example taken from 'Fundamentals of the Finite ELement Method' - Grandin
-int itkFEMElement2DC0LinearQuadrilateralStrainItpackTest(int argc, char *argv[])
+int
+itkFEMElement2DC0LinearQuadrilateralStrainItpackTest(int argc, char *argv[])
 {
   //Need to register default FEM object types,
   //and setup SpatialReader to recognize FEM types

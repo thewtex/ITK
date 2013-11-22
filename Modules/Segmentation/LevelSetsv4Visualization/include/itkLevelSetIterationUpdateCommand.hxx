@@ -25,16 +25,14 @@ namespace itk
 
 template< typename TIteratingFilter, typename TFilterToUpdate >
 LevelSetIterationUpdateCommand< TIteratingFilter, TFilterToUpdate >
-::LevelSetIterationUpdateCommand():
+::LevelSetIterationUpdateCommand() :
   m_UpdatePeriod( 1 )
-{
-}
+{}
 
 template< typename TIteratingFilter, typename TFilterToUpdate >
 LevelSetIterationUpdateCommand< TIteratingFilter, TFilterToUpdate >
 ::~LevelSetIterationUpdateCommand()
-{
-}
+{}
 
 template< typename TIteratingFilter, typename TFilterToUpdate >
 void

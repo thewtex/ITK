@@ -21,13 +21,13 @@
 #include "itkTestingMacros.h"
 #include <iostream>
 
-int itkImageRegionSplitterMultidimensionalTest(int, char*[])
+int
+itkImageRegionSplitterMultidimensionalTest(int, char*[])
 {
 
   itk::ImageRegionSplitterMultidimensional::Pointer splitter = itk::ImageRegionSplitterMultidimensional::New();
 
   EXERCISE_BASIC_OBJECT_METHODS( splitter,ImageRegionSplitterMultidimensional );
-
 
   itk::ImageRegion<2> region;
   region.SetSize(0, 10);
@@ -47,7 +47,6 @@ int itkImageRegionSplitterMultidimensionalTest(int, char*[])
   TEST_EXPECT_EQUAL( splitter->GetNumberOfSplits( lpRegion, 12 ), 12 );
   TEST_EXPECT_EQUAL( splitter->GetNumberOfSplits( lpRegion, 99 ), 90 );
 
-
   region = lpRegion;
   splitter->GetSplit(0, 2, region);
   TEST_EXPECT_EQUAL(region.GetSize(0), 10);
@@ -57,7 +56,6 @@ int itkImageRegionSplitterMultidimensionalTest(int, char*[])
   splitter->GetSplit(1, 2, region);
   TEST_EXPECT_EQUAL(region.GetSize(0), 10);
   TEST_EXPECT_EQUAL(region.GetSize(1), 6);
-
 
   region = lpRegion;
   splitter->GetSplit(0, 4, region);

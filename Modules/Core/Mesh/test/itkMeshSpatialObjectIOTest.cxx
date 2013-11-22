@@ -21,8 +21,8 @@
 #include "itkDefaultDynamicMeshTraits.h"
 #include <iostream>
 
-
-int itkMeshSpatialObjectIOTest(int argc, char* argv[])
+int
+itkMeshSpatialObjectIOTest(int argc, char* argv[])
 {
   typedef itk::DefaultDynamicMeshTraits< float , 3, 3 > MeshTrait;
   typedef itk::Mesh<float,3,MeshTrait>                  MeshType;
@@ -42,7 +42,6 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
   MeshType::CoordRepType testPointCoords[8][3]
     = { {0,1,2}, {1,2,3}, {2,3,4}, {3,4,5}, {4,5,6}, {5,6,7}, {6,7,8}, {7,8,9}};
 
-
   MeshType::PointIdentifier tetraPoints[4] = {0,1,2,3};
   MeshType::PointIdentifier hexaPoints[8] = {0,1,2,3,4,5,6,7};
 
@@ -50,7 +49,7 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
   unsigned int j;
   for(i=0; i < 8; ++i)
     {
-    mesh->SetPoint(i, PointType(testPointCoords[i]));
+    mesh->SetPoint(i, PointType(testPointCoords[i]) );
     }
 
   mesh->SetCellsAllocationMethod( MeshType::CellsAllocatedDynamicallyCellByCell );
@@ -65,14 +64,14 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
   mesh->SetCell(0, testCell1 );
   mesh->SetCell(1, testCell2 );
 
-   // Add cell links
+  // Add cell links
   typedef MeshType::CellLinksContainer CellLinksContainerType;
-  CellLinksContainerType::Pointer linkContainer = CellLinksContainerType::New();
+  CellLinksContainerType::Pointer   linkContainer = CellLinksContainerType::New();
   MeshType::PointCellLinksContainer pcl;
 
-  for(j=0;j<3;j++)
+  for(j=0; j<3; j++)
     {
-    for(i=0;i<5;i++)
+    for(i=0; i<5; i++)
       {
       pcl.insert(j+i);
       }
@@ -80,13 +79,12 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
     }
   mesh->SetCellLinks(linkContainer);
 
-
   // Add point data
   typedef MeshType::PointDataContainer PointDataContainer;
   PointDataContainer::Pointer pointData = PointDataContainer::New();
 
   float data = 0.1;
-  for(j=0;j<2;j++)
+  for(j=0; j<2; j++)
     {
     pointData->SetElement(j, data);
     data += (float)0.1;
@@ -98,7 +96,7 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
   CellDataContainer::Pointer cellData = CellDataContainer::New();
 
   data = 0.9;
-  for(j=0;j<3;j++)
+  for(j=0; j<3; j++)
     {
     cellData->SetElement(j, data);
     data -= (float)0.2;
@@ -116,7 +114,7 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
   typedef itk::SpatialObjectWriter<3,float,MeshTrait> WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetInput(meshSO);
-  if((argc > 2) && (!strcmp(argv[2],"binary")))
+  if( (argc > 2) && (!strcmp(argv[2],"binary") ) )
     {
     std::cout << "Writing binary points" << std::endl;
     writer->SetBinaryPoints(true);
@@ -129,7 +127,7 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
   std::cout<<"Testing Reading MeshSpatialObject: ";
   typedef itk::SpatialObjectReader<3,float,MeshTrait> ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
-  if((argc > 2) && (strcmp(argv[2],"binary")))
+  if( (argc > 2) && (strcmp(argv[2],"binary") ) )
     {
     reader->SetFileName(argv[2]);
     }
@@ -140,21 +138,22 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
   reader->Update();
   ReaderType::ScenePointer myScene = reader->GetScene();
   if(!myScene)
-  {
+    {
     std::cout<<"No Scene : [FAILED]"<<std::endl;
     return EXIT_FAILURE;
-  }
+    }
   std::cout<<" [PASSED]"<<std::endl;
 
   // Testing the mesh validity
   MeshSpatialObjectType::ChildrenListType* children = reader->GetGroup()->GetChildren();
-  if(strcmp((*(children->begin()))->GetTypeName(),"MeshSpatialObject"))
+  if(strcmp( (*(children->begin() ) )->GetTypeName(),"MeshSpatialObject") )
     {
     std::cout<<" [FAILED]"<<std::endl;
     return EXIT_FAILURE;
     }
 
-  MeshSpatialObjectType::Pointer meshSO2 = dynamic_cast<MeshSpatialObjectType*>((*(children->begin())).GetPointer());
+  MeshSpatialObjectType::Pointer meshSO2 =
+    dynamic_cast<MeshSpatialObjectType*>( (*(children->begin() ) ).GetPointer() );
 
   std::cout << "Testing ID : ";
   if(meshSO2->GetId() != 3)
@@ -167,21 +166,21 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
   std::cout<<"Testing Points: ";
   MeshType::Pointer mesh2 = meshSO2->GetMesh();
   // Testing points
-  const MeshType::PointsContainer* points = mesh2->GetPoints();
+  const MeshType::PointsContainer*         points = mesh2->GetPoints();
   MeshType::PointsContainer::ConstIterator it_points = points->Begin();
 
   j=0;
-  while(it_points != points->End())
+  while(it_points != points->End() )
     {
-    if((*it_points)->Index() != j)
+    if( (*it_points)->Index() != j)
       {
       std::cout<<" [FAILED]"<<std::endl;
       std::cout << "Index = " << (*it_points)->Index() << " v.s. " << j << std::endl;
       return EXIT_FAILURE;
       }
-    for(i=0;i<3;i++)
+    for(i=0; i<3; i++)
       {
-      if(((*it_points)->Value())[i] != j+i)
+      if( ( (*it_points)->Value() )[i] != j+i)
         {
         std::cout<<" [FAILED]"<<std::endl;
         std::cout << "Value = " << (*it_points)->Value() << std::endl;
@@ -193,17 +192,16 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
     }
   std::cout<<" [PASSED]"<<std::endl;
 
-
   // Testing cells
   std::cout<<"Testing Cells : ";
-  const MeshType::CellsContainer* cells = mesh2->GetCells();
+  const MeshType::CellsContainer*         cells = mesh2->GetCells();
   MeshType::CellsContainer::ConstIterator it_cells = cells->Begin();
 
   j=0;
-  while(it_cells != cells->End())
+  while(it_cells != cells->End() )
     {
     MeshType::CellTraits::PointIdConstIterator itptids = (*it_cells)->Value()->GetPointIds();
-    if((*it_cells)->Index() != j)
+    if( (*it_cells)->Index() != j)
       {
       std::cout<<" [FAILED]"<<std::endl;
       std::cout << (*it_cells)->Index() << " v.s " << j << std::endl;
@@ -211,7 +209,7 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
       }
 
     unsigned int ii=0;
-    while(itptids != (*it_cells)->Value()->PointIdsEnd())
+    while(itptids != (*it_cells)->Value()->PointIdsEnd() )
       {
       if(*itptids != ii)
         {
@@ -231,13 +229,13 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
   // Testing celllinks
   std::cout<<"Testing CellLinks : ";
   j=0;
-  typedef MeshType::CellLinksContainer  CellLinksContainer;
-  const CellLinksContainer* links = mesh2->GetCellLinks();
+  typedef MeshType::CellLinksContainer CellLinksContainer;
+  const CellLinksContainer*                   links = mesh2->GetCellLinks();
   MeshType::CellLinksContainer::ConstIterator it_celllinks = links->Begin();
 
-  while(it_celllinks != links->End())
+  while(it_celllinks != links->End() )
     {
-    if((*it_celllinks)->Index() != j)
+    if( (*it_celllinks)->Index() != j)
       {
       std::cout<<" [FAILED]"<<std::endl;
       std::cout << "Index = " << (*it_celllinks)->Index() << " v.s " << j << std::endl;
@@ -246,7 +244,7 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
 
     i =0;
     MeshType::PointCellLinksContainer::const_iterator it = (*it_celllinks)->Value().begin();
-    while(it != (*it_celllinks)->Value().end())
+    while(it != (*it_celllinks)->Value().end() )
       {
       if( (*it) != i)
         {
@@ -273,15 +271,15 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
     {
     MeshType::PointDataContainer::ConstIterator it_pd = pd->Begin();
 
-    while(it_pd != pd->End())
+    while(it_pd != pd->End() )
       {
-      if((*it_pd)->Index() != j)
+      if( (*it_pd)->Index() != j)
         {
         std::cout<<" [FAILED]"<<std::endl;
         std::cout << "Index = " << (*it_pd)->Index() << " v.s " << j << std::endl;
         return EXIT_FAILURE;
         }
-      if(vcl_fabs((*it_pd)->Value()-data)>0.001)
+      if(vcl_fabs( (*it_pd)->Value()-data)>0.001)
         {
         std::cout<<" [FAILED]"<<std::endl;
         std::cout << "value = " << (*it_pd)->Value() << " v.s " << data << std::endl;
@@ -300,8 +298,7 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
     }
   std::cout<<" [PASSED]"<<std::endl;
 
-
- // Testing celldata
+  // Testing celldata
   std::cout<<"Testing Celldata : ";
   j=0;
   data = 0.9;
@@ -311,15 +308,15 @@ int itkMeshSpatialObjectIOTest(int argc, char* argv[])
     {
     MeshType::CellDataContainer::ConstIterator it_pc = pc->Begin();
 
-    while(it_pc != pc->End())
+    while(it_pc != pc->End() )
       {
-      if((*it_pc)->Index() != j)
+      if( (*it_pc)->Index() != j)
         {
         std::cout<<" [FAILED]"<<std::endl;
         std::cout << "Index = " << (*it_pc)->Index() << " v.s " << j << std::endl;
         return EXIT_FAILURE;
         }
-      if(vcl_fabs((*it_pc)->Value()-data)>0.001)
+      if(vcl_fabs( (*it_pc)->Value()-data)>0.001)
         {
         std::cout<<" [FAILED]"<<std::endl;
         std::cout << "value = " << (*it_pc)->Value() << " v.s " << data << std::endl;

@@ -21,20 +21,21 @@
 #include "itkFileOutputWindow.h"
 #include "itkFilterWatcher.h"
 
-int itkCropImageFilterTest(int, char* [] )
+int
+itkCropImageFilterTest(int, char* [] )
 {
   itk::FileOutputWindow::Pointer fow = itk::FileOutputWindow::New();
+
   fow->SetInstance(fow);
 
-
   // typedefs to simplify the syntax
-  typedef itk::Image<short, 2>   SimpleImage;
+  typedef itk::Image<short, 2> SimpleImage;
   SimpleImage::Pointer simpleImage = SimpleImage::New();
   std::cout << "Simple image spacing: " << simpleImage->GetSpacing()[0] << ", "
             << simpleImage->GetSpacing()[1] << std::endl;
 
   // typedefs to simplify the syntax
-  typedef itk::Image<short, 2>   ShortImage;
+  typedef itk::Image<short, 2> ShortImage;
 
   // Test the creation of an image with native type
   ShortImage::Pointer if2 = ShortImage::New();
@@ -55,7 +56,7 @@ int itkCropImageFilterTest(int, char* [] )
   short i=0;
   for (; !iterator.IsAtEnd(); ++iterator, ++i)
     {
-      iterator.Set( i );
+    iterator.Set( i );
     }
 
   std::cout << "Input Image: " << if2 << std::endl;
@@ -69,7 +70,7 @@ int itkCropImageFilterTest(int, char* [] )
 
   ShortImage::RegionType requestedRegion;
 
-  ShortImage::SizeType   extractSize = {{8, 12}};
+  ShortImage::SizeType extractSize = {{8, 12}};
   extractSize[0] = 1; extractSize[1] = 1;
   extract->SetBoundaryCropSize(extractSize);
   extract->SetUpperBoundaryCropSize(extractSize);
@@ -80,13 +81,13 @@ int itkCropImageFilterTest(int, char* [] )
   if (extract->GetOutput()->GetLargestPossibleRegion().GetSize()[0] != 6
       || extract->GetOutput()->GetLargestPossibleRegion().GetSize()[1] != 10)
     {
-      return EXIT_FAILURE;
+    return EXIT_FAILURE;
     }
 
   if (extract->GetOutput()->GetLargestPossibleRegion().GetIndex()[0] != 1
       || extract->GetOutput()->GetLargestPossibleRegion().GetIndex()[1] != 1)
     {
-      return EXIT_FAILURE;
+    return EXIT_FAILURE;
     }
 
   return EXIT_SUCCESS;

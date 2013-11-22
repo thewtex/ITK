@@ -78,14 +78,14 @@ namespace itk
  * \ingroup ITKPDEDeformableRegistration
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField, typename TRealType = float >
-class MultiResolutionPDEDeformableRegistration:
+class MultiResolutionPDEDeformableRegistration :
   public ImageToImageFilter< TDisplacementField, TDisplacementField >
 {
 public:
   /** Standard class typedefs */
   typedef MultiResolutionPDEDeformableRegistration Self;
   typedef ImageToImageFilter< TDisplacementField, TDisplacementField >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -110,8 +110,8 @@ public:
   typedef TDisplacementField                      DisplacementFieldType;
   typedef typename DisplacementFieldType::Pointer DisplacementFieldPointer;
 #ifdef ITKV3_COMPATIBILITY
-  typedef TDisplacementField                      DeformationFieldType;
-  typedef typename DeformationFieldType::Pointer  DeformationFieldPointer;
+  typedef TDisplacementField                     DeformationFieldType;
+  typedef typename DeformationFieldType::Pointer DeformationFieldPointer;
 #endif
   /** ImageDimension. */
   itkStaticConstMacro(ImageDimension, unsigned int, FixedImageType::ImageDimension);
@@ -121,7 +121,7 @@ public:
 
   /** The internal registration type. */
   typedef PDEDeformableRegistrationFilter< FloatImageType, FloatImageType, DisplacementFieldType > RegistrationType;
-  typedef typename RegistrationType::Pointer                                                      RegistrationPointer;
+  typedef typename RegistrationType::Pointer                                                       RegistrationPointer;
 
   /** The default registration type. */
   typedef DemonsRegistrationFilter< FloatImageType, FloatImageType, DisplacementFieldType > DefaultRegistrationType;
@@ -136,7 +136,7 @@ public:
 
   /** The deformation field expander type. */
   typedef VectorResampleImageFilter< DisplacementFieldType, DisplacementFieldType > FieldExpanderType;
-  typedef typename FieldExpanderType::Pointer                                     FieldExpanderPointer;
+  typedef typename FieldExpanderType::Pointer                                       FieldExpanderPointer;
 
   typedef Array< unsigned int > NumberOfIterationsType;
 
@@ -154,7 +154,8 @@ public:
 
   /** Set initial deformation field to be used as is (no smoothing, no
    *  subsampling at the coarsest level of the pyramid. */
-  virtual void SetInitialDisplacementField(DisplacementFieldType *ptr)
+  virtual void
+  SetInitialDisplacementField(DisplacementFieldType *ptr)
   {
     this->m_InitialDisplacementField = ptr;
   }
@@ -162,31 +163,39 @@ public:
   /** Set initial deformation field. No assumption is made on the
    *  input. It will therefore be smoothed and resampled to match the
    *  images characteristics at the coarsest level of the pyramid. */
-  virtual void SetArbitraryInitialDisplacementField(DisplacementFieldType *ptr)
+  virtual void
+  SetArbitraryInitialDisplacementField(DisplacementFieldType *ptr)
   {
     this->SetInput(ptr);
   }
 
   /** Get output deformation field. */
-  const DisplacementFieldType * GetDisplacementField(void)
-  { return this->GetOutput(); }
+  const DisplacementFieldType *
+  GetDisplacementField(void)
+  {
+    return this->GetOutput();
+  }
 
 #ifdef ITKV3_COMPATIBILITY
-  virtual void SetInitialDeformationField(DisplacementFieldType *ptr)
+  virtual void
+  SetInitialDeformationField(DisplacementFieldType *ptr)
   {
     this->SetInitialDisplacementField(ptr);
   }
 
-  virtual void SetArbitraryInitialDeformationField(DisplacementFieldType *ptr)
+  virtual void
+  SetArbitraryInitialDeformationField(DisplacementFieldType *ptr)
   {
     this->SetArbitraryInitialDisplacementField(ptr);
   }
 
   /** Get output deformation field. */
-  const DeformationFieldType * GetDeformationField(void)
+  const DeformationFieldType *
+  GetDeformationField(void)
   {
-    return itkDynamicCastInDebugMode<DeformationFieldType *> (this->GetDisplacementField());
+    return itkDynamicCastInDebugMode<DeformationFieldType *> (this->GetDisplacementField() );
   }
+
 #endif
 
   /** Get the number of valid inputs.  For
@@ -269,7 +278,8 @@ protected:
    *
    * \sa ProcessObject::VerifyInputInformation
    */
-  virtual void VerifyInputInformation() {}
+  virtual void
+  VerifyInputInformation() {}
 
 private:
   MultiResolutionPDEDeformableRegistration(const Self &); //purposely not
@@ -284,9 +294,9 @@ private:
   FieldExpanderPointer      m_FieldExpander;
   DisplacementFieldPointer  m_InitialDisplacementField;
 
-  unsigned int                m_NumberOfLevels;
-  unsigned int                m_CurrentLevel;
-  NumberOfIterationsType      m_NumberOfIterations;
+  unsigned int           m_NumberOfLevels;
+  unsigned int           m_CurrentLevel;
+  NumberOfIterationsType m_NumberOfIterations;
 
   /** Flag to indicate user stop registration request. */
   bool m_StopRegistrationFlag;

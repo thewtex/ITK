@@ -43,24 +43,23 @@ class RSGCostFunction : public itk::SingleValuedCostFunction
 {
 public:
 
-  typedef RSGCostFunction                 Self;
-  typedef itk::SingleValuedCostFunction   Superclass;
-  typedef itk::SmartPointer<Self>         Pointer;
-  typedef itk::SmartPointer<const Self>   ConstPointer;
+  typedef RSGCostFunction               Self;
+  typedef itk::SingleValuedCostFunction Superclass;
+  typedef itk::SmartPointer<Self>       Pointer;
+  typedef itk::SmartPointer<const Self> ConstPointer;
   itkNewMacro( Self );
 
   enum { SpaceDimension=2 };
 
-  typedef Superclass::ParametersType      ParametersType;
-  typedef Superclass::DerivativeType      DerivativeType;
-  typedef Superclass::MeasureType         MeasureType;
+  typedef Superclass::ParametersType ParametersType;
+  typedef Superclass::DerivativeType DerivativeType;
+  typedef Superclass::MeasureType    MeasureType;
 
   RSGCostFunction()
-  {
-  }
+  {}
 
-
-  MeasureType  GetValue( const ParametersType & parameters ) const
+  MeasureType
+  GetValue( const ParametersType & parameters ) const
   {
 
     double x = parameters[0];
@@ -78,8 +77,9 @@ public:
 
   }
 
-  void GetDerivative( const ParametersType & parameters,
-                            DerivativeType  & derivative ) const
+  void
+  GetDerivative( const ParametersType & parameters,
+                 DerivativeType  & derivative ) const
   {
 
     double x = parameters[0];
@@ -95,11 +95,12 @@ public:
 
   }
 
-
-  unsigned int GetNumberOfParameters(void) const
-    {
+  unsigned int
+  GetNumberOfParameters(void) const
+  {
     return SpaceDimension;
-    }
+  }
+
 };
 
 class IndexObserver : public itk::Command
@@ -111,26 +112,28 @@ public:
 
   itkNewMacro ( IndexObserver );
 
-  virtual void  Execute ( const itk::Object *caller, const itk::EventObject &)
+  virtual void
+  Execute( const itk::Object *caller, const itk::EventObject &)
   {
     typedef itk::ExhaustiveOptimizer OptimizerType;
     const OptimizerType *optimizer = dynamic_cast < const OptimizerType * > ( caller );
 
     if ( 0 != optimizer )
-    {
+      {
       OptimizerType::ParametersType currentIndex = optimizer->GetCurrentIndex ();
 
       if ( currentIndex.GetSize () == 2 )
-      {
+        {
         std::cout << " @ index = " << currentIndex << std::endl;
         // Casting is safe here since the indices are always integer values (but there are stored in doubles):
         unsigned long idx = static_cast < unsigned long > ( currentIndex [ 0 ] + 21 * currentIndex [ 1 ] );
         m_VisitedIndices.push_back ( idx );
+        }
       }
-    }
   }
 
-  virtual void  Execute (itk::Object *caller, const itk::EventObject &event)
+  virtual void
+  Execute(itk::Object *caller, const itk::EventObject &event)
   {
     Execute ( static_cast < const itk::Object * > ( caller ), event );
   }
@@ -138,19 +141,18 @@ public:
   std::vector < unsigned long > m_VisitedIndices;
 };
 
-int itkExhaustiveOptimizerTest(int, char* [] )
+int
+itkExhaustiveOptimizerTest(int, char* [] )
 {
   std::cout << "ExhaustiveOptimizer Test ";
   std::cout << std::endl << std::endl;
 
-  typedef  itk::ExhaustiveOptimizer  OptimizerType;
+  typedef  itk::ExhaustiveOptimizer OptimizerType;
 
-  typedef  OptimizerType::ScalesType            ScalesType;
-
+  typedef  OptimizerType::ScalesType ScalesType;
 
   // Declaration of a itkOptimizer
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
-
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
 
   // Index observer (enables us to check if all positions were indeed visisted):
   IndexObserver::Pointer idxObserver = IndexObserver::New ();
@@ -160,38 +162,32 @@ int itkExhaustiveOptimizerTest(int, char* [] )
   RSGCostFunction::Pointer costFunction = RSGCostFunction::New();
   itkOptimizer->SetCostFunction( costFunction.GetPointer() );
 
-
-  typedef RSGCostFunction::ParametersType    ParametersType;
-
+  typedef RSGCostFunction::ParametersType ParametersType;
 
   const unsigned int spaceDimension =
-                      costFunction->GetNumberOfParameters();
+    costFunction->GetNumberOfParameters();
 
   // We start not so far from  | 2 -2 |
-  ParametersType  initialPosition( spaceDimension );
+  ParametersType initialPosition( spaceDimension );
   initialPosition[0] =  0.0;
   initialPosition[1] = -4.0;
 
   itkOptimizer->SetInitialPosition( initialPosition );
 
-
-  ScalesType    parametersScale( spaceDimension );
+  ScalesType parametersScale( spaceDimension );
   parametersScale[0] = 1.0;
   parametersScale[1] = 1.0;
 
   itkOptimizer->SetScales( parametersScale );
 
-
   itkOptimizer->SetStepLength( 1.0 );
 
-
-  typedef OptimizerType::StepsType  StepsType;
+  typedef OptimizerType::StepsType StepsType;
   StepsType steps( 2 );
   steps[0] = 10;
   steps[1] = 10;
 
   itkOptimizer->SetNumberOfSteps( steps );
-
 
   try
     {
@@ -205,7 +201,6 @@ int itkExhaustiveOptimizerTest(int, char* [] )
     std::cout << "Description = " << e.GetDescription() << std::endl;
     return EXIT_FAILURE;
     }
-
 
   bool minimumValuePass = vnl_math_abs ( itkOptimizer->GetMinimumMetricValue() - -10 ) < 1E-3;
 
@@ -221,14 +216,14 @@ int itkExhaustiveOptimizerTest(int, char* [] )
   std::cout << finalPosition[0] << ",";
   std::cout << finalPosition[1] << ")" << std::endl;
 
-  bool visitedIndicesPass = true;
+  bool                          visitedIndicesPass = true;
   std::vector < unsigned long > visitedIndices = idxObserver->m_VisitedIndices;
 
   size_t requiredNumberOfSteps = ( 2 * steps [ 0 ] + 1 ) * ( 2 * steps [ 1 ] + 1 );
   if ( visitedIndices.size () != requiredNumberOfSteps )
-  {
+    {
     visitedIndicesPass = false;
-  }
+    }
 
   std::sort ( visitedIndices.begin (), visitedIndices.end () );
 
@@ -245,7 +240,7 @@ int itkExhaustiveOptimizerTest(int, char* [] )
   //
   // check results to see if it is within range
   //
-  bool trueParamsPass = true;
+  bool   trueParamsPass = true;
   double trueParameters[2] = { 2, -2 };
   for( unsigned int j = 0; j < 2; j++ )
     {
@@ -265,12 +260,10 @@ int itkExhaustiveOptimizerTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   std::cout << "Testing PrintSelf " << std::endl;
   itkOptimizer->Print( std::cout );
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;
-
 
 }

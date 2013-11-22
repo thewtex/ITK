@@ -24,7 +24,8 @@
  * NearestNeighborExtrapolateImageFunction class.
  *
  */
-int itkNearestNeighborExtrapolateImageFunctionTest( int, char *[])
+int
+itkNearestNeighborExtrapolateImageFunctionTest( int, char *[])
 {
   typedef double CoordRep;
   const unsigned int ImageDimension = 2;
@@ -81,8 +82,8 @@ int itkNearestNeighborExtrapolateImageFunctionTest( int, char *[])
 
   vectorfunction->SetInputImage( vectorimage );
 
-  FunctionType::IndexType index;
-  FunctionType::PointType point;
+  FunctionType::IndexType  index;
+  FunctionType::PointType  point;
   FunctionType::OutputType value;
   FunctionType::OutputType trueValue;
 
@@ -147,7 +148,6 @@ int itkNearestNeighborExtrapolateImageFunctionTest( int, char *[])
     std::cout << "Test failed. " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // evaluate at index outside the image
   index[0] = 8;

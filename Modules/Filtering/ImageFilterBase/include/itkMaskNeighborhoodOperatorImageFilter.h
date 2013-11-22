@@ -49,14 +49,14 @@ namespace itk
  */
 template< typename TInputImage, typename TMaskImage, typename TOutputImage, typename TOperatorValueType =
             typename TOutputImage::PixelType >
-class MaskNeighborhoodOperatorImageFilter:
+class MaskNeighborhoodOperatorImageFilter :
   public NeighborhoodOperatorImageFilter< TInputImage, TOutputImage, TOperatorValueType >
 {
 public:
   /** Standard "Self" & Superclass typedef. */
   typedef MaskNeighborhoodOperatorImageFilter Self;
   typedef NeighborhoodOperatorImageFilter<
-    TInputImage, TOutputImage, TOperatorValueType > Superclass;
+      TInputImage, TOutputImage, TOperatorValueType > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -94,7 +94,7 @@ public:
 
   /** Typedef for generic boundary condition pointer. */
   typedef ImageBoundaryCondition< OutputImageType > *
-  ImageBoundaryConditionPointerType;
+    ImageBoundaryConditionPointerType;
 
   /** Superclass typedefs. */
   typedef typename Superclass::OutputImageRegionType OutputImageRegionType;
@@ -151,9 +151,10 @@ public:
 #endif
 
 protected:
-  MaskNeighborhoodOperatorImageFilter():m_DefaultValue(NumericTraits< OutputPixelType >::Zero),
+  MaskNeighborhoodOperatorImageFilter() : m_DefaultValue(NumericTraits< OutputPixelType >::Zero),
     m_UseDefaultValue(true) {}
-  virtual ~MaskNeighborhoodOperatorImageFilter() {}
+  virtual
+  ~MaskNeighborhoodOperatorImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** MaskNeighborhoodOperatorImageFilter needs to request enough of an

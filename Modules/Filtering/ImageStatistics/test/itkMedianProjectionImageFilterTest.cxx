@@ -21,8 +21,8 @@
 
 #include "itkMedianProjectionImageFilter.h"
 
-
-int itkMedianProjectionImageFilterTest(int argc, char * argv[])
+int
+itkMedianProjectionImageFilterTest(int argc, char * argv[])
 {
   if( argc < 3 )
     {
@@ -34,8 +34,8 @@ int itkMedianProjectionImageFilterTest(int argc, char * argv[])
 
   const int dim = 3;
 
-  typedef unsigned char                     PixelType;
-  typedef itk::Image< PixelType, dim >      ImageType;
+  typedef unsigned char                PixelType;
+  typedef itk::Image< PixelType, dim > ImageType;
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();

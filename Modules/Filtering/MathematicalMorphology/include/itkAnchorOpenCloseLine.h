@@ -40,8 +40,7 @@ public:
   typedef TInputPix InputImagePixelType;
   AnchorOpenCloseLine();
   ~AnchorOpenCloseLine()
-  {
-  }
+  {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -49,7 +48,8 @@ public:
    * to GrayscaleGeodesicErodeImageFilter. */
   void DoLine(std::vector<InputImagePixelType> & buffer, unsigned bufflength);
 
-  void SetSize(unsigned int size)
+  void
+  SetSize(unsigned int size)
   {
     m_Size = size;
   }
@@ -69,17 +69,21 @@ private:
                   unsigned & outLeftP,
                   unsigned & outRightP);
 
-  inline bool Compare1( const InputImagePixelType & a, const InputImagePixelType & b )
-    {
+  inline bool
+  Compare1( const InputImagePixelType & a, const InputImagePixelType & b )
+  {
     TCompare compare;
-    return ! compare( a, b );
-    }
 
-  inline bool Compare2( const InputImagePixelType & a, const InputImagePixelType & b )
-    {
+    return !compare( a, b );
+  }
+
+  inline bool
+  Compare2( const InputImagePixelType & a, const InputImagePixelType & b )
+  {
     TCompare compare;
+
     return compare( a, b ) || a == b;
-    }
+  }
 
 }; // end of class
 } // end namespace itk

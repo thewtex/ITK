@@ -23,39 +23,39 @@
 
 int
 itkVectorNeighborhoodOperatorImageFilterTest(
-int itkNotUsed(argc),
-char * itkNotUsed(argv) [] )
+  int itkNotUsed(argc),
+  char * itkNotUsed(argv) [] )
 {
   try
     {
-      typedef  itk::Vector<double, 2>    VectorType;
-      typedef  VectorType::ValueType     ScalarValueType;
-      typedef  itk::Image<VectorType, 3> ImageType;
-      // Set up operator
-      itk::DerivativeOperator<ScalarValueType, 3> oper;
-      oper.SetOrder(2);
-      oper.SetDirection(2);
-      oper.CreateDirectional();
+    typedef  itk::Vector<double, 2>    VectorType;
+    typedef  VectorType::ValueType     ScalarValueType;
+    typedef  itk::Image<VectorType, 3> ImageType;
+    // Set up operator
+    itk::DerivativeOperator<ScalarValueType, 3> oper;
+    oper.SetOrder(2);
+    oper.SetDirection(2);
+    oper.CreateDirectional();
 
-      // Set up filter
-      itk::VectorNeighborhoodOperatorImageFilter<ImageType, ImageType>::Pointer filter
-        = itk::VectorNeighborhoodOperatorImageFilter<ImageType, ImageType>::New();
-      filter->SetOperator(oper);
+    // Set up filter
+    itk::VectorNeighborhoodOperatorImageFilter<ImageType, ImageType>::Pointer filter
+      = itk::VectorNeighborhoodOperatorImageFilter<ImageType, ImageType>::New();
+    filter->SetOperator(oper);
 
-      // Run Test
-      itk::Size<3> sz;
-      sz[0]=128;
-      sz[1]=128;
-      sz[2]=2;
-      itk::NullImageToImageFilterDriver< ImageType, ImageType >  test1;
-      test1.SetImageSize(sz);
-      test1.SetFilter(filter.GetPointer());
-      test1.Execute();
+    // Run Test
+    itk::Size<3> sz;
+    sz[0]=128;
+    sz[1]=128;
+    sz[2]=2;
+    itk::NullImageToImageFilterDriver< ImageType, ImageType > test1;
+    test1.SetImageSize(sz);
+    test1.SetFilter(filter.GetPointer() );
+    test1.Execute();
     }
   catch(itk::ExceptionObject &err)
     {
-      (&err)->Print(std::cerr);
-      return EXIT_FAILURE;
+    (&err)->Print(std::cerr);
+    return EXIT_FAILURE;
     }
   return EXIT_SUCCESS;
 }

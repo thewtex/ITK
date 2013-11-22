@@ -29,7 +29,8 @@ namespace itk
  * and the calls are forwarded to the callback functions of DOMNodeXMLReader.
  */
 
-static void itkXMLParserStartElement( void* parser, const char* name, const char** atts )
+static void
+itkXMLParserStartElement( void* parser, const char* name, const char** atts )
 {
   // Begin element handler that is registered with the XML_Parser.
   // This just casts the user data to a itkXMLParser and calls
@@ -37,14 +38,16 @@ static void itkXMLParserStartElement( void* parser, const char* name, const char
   static_cast<DOMNodeXMLReader*>(parser)->StartElement( name, atts );
 }
 
-static void itkXMLParserEndElement( void* parser, const char* name )
+static void
+itkXMLParserEndElement( void* parser, const char* name )
 {
   // End element handler that is registered with the XML_Parser.  This
   // just casts the user data to a itkXMLParser and calls EndElement.
   static_cast<DOMNodeXMLReader*>(parser)->EndElement( name );
 }
 
-static void itkXMLParserCharacterDataHandler( void* parser, const char* data, int length )
+static void
+itkXMLParserCharacterDataHandler( void* parser, const char* data, int length )
 {
   // Character data handler that is registered with the XML_Parser.
   // This just casts the user data to a itkXMLParser and calls
@@ -53,8 +56,7 @@ static void itkXMLParserCharacterDataHandler( void* parser, const char* data, in
 }
 
 DOMNodeXMLReader::DOMNodeXMLReader() : m_Context(NULL)
-{
-}
+{}
 
 /**
  * Function called by Update() or end-users to generate the output DOM object
@@ -93,7 +95,7 @@ DOMNodeXMLReader::Update( std::istream& is )
   if ( !ok )
     {
     ExceptionObject e( __FILE__, __LINE__ );
-    std::string message( XML_ErrorString(XML_GetErrorCode(parser)) );
+    std::string     message( XML_ErrorString(XML_GetErrorCode(parser) ) );
     e.SetDescription( message.c_str() );
     throw e;
     }
@@ -108,6 +110,7 @@ void
 DOMNodeXMLReader::Update()
 {
   std::ifstream is( this->m_FileName.c_str() );
+
   if ( !is.is_open() )
     {
     itkExceptionMacro( "failed openning the input XML file" );
@@ -125,6 +128,7 @@ void
 DOMNodeXMLReader::StartElement( const char* name, const char** atts )
 {
   OutputType* node = NULL;
+
   if ( this->m_Context )
     {
     OutputPointer node1 = OutputType::New();
@@ -179,6 +183,7 @@ DOMNodeXMLReader::CharacterDataHandler( const char* text, int len )
   std::string s( text, len );
 
   StringTools::Trim( s );
+
   if ( s.size() == 0 )
     {
     return;

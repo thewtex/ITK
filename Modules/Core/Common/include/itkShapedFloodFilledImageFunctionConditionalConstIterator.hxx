@@ -29,6 +29,7 @@ ShapedFloodFilledImageFunctionConditionalConstIterator< TImage, TFunction >
 {
   return this->m_Function->EvaluateAtIndex(index);
 }
+
 } // end namespace itk
 
 #endif

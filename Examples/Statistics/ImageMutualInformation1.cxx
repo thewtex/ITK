@@ -57,7 +57,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginLatex
 //
 // In this particular example we make use of classes from the Statistics
@@ -84,8 +83,8 @@
 #include "itkImageToHistogramFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
 
   if( argc < 3 )
@@ -95,7 +94,6 @@ int main( int argc, char * argv [] )
     return -1;
     }
 
-
   // Software Guide : BeginLatex
   //
   // We define the pixel type and dimension of the images to be read.
@@ -103,12 +101,11 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char                                 PixelComponentType;
-  const unsigned int                                    Dimension = 2;
+  typedef unsigned char PixelComponentType;
+  const unsigned int Dimension = 2;
 
-  typedef itk::Image< PixelComponentType, Dimension >   ImageType;
+  typedef itk::Image< PixelComponentType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -118,7 +115,7 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< ImageType >             ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
 
   ReaderType::Pointer reader1 = ReaderType::New();
   ReaderType::Pointer reader2 = ReaderType::New();
@@ -126,7 +123,6 @@ int main( int argc, char * argv [] )
   reader1->SetFileName( argv[1] );
   reader2->SetFileName( argv[2] );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -136,14 +132,13 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::JoinImageFilter< ImageType, ImageType >  JoinFilterType;
+  typedef itk::JoinImageFilter< ImageType, ImageType > JoinFilterType;
 
   JoinFilterType::Pointer joinFilter = JoinFilterType::New();
 
   joinFilter->SetInput1( reader1->GetOutput() );
   joinFilter->SetInput2( reader2->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -166,7 +161,6 @@ int main( int argc, char * argv [] )
     }
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We prepare now the types to be used for the computation of the Joint
@@ -178,14 +172,13 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef JoinFilterType::OutputImageType               VectorImageType;
+  typedef JoinFilterType::OutputImageType VectorImageType;
 
   typedef itk::Statistics::ImageToHistogramFilter<
-                                       VectorImageType >  HistogramFilterType;
+      VectorImageType >  HistogramFilterType;
 
   HistogramFilterType::Pointer histogramFilter = HistogramFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -201,7 +194,6 @@ int main( int argc, char * argv [] )
   histogramFilter->SetMarginalScale( 10.0 );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We must now define the number of bins to use for each one of the components
@@ -211,7 +203,7 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef HistogramFilterType::HistogramSizeType   HistogramSizeType;
+  typedef HistogramFilterType::HistogramSizeType HistogramSizeType;
 
   HistogramSizeType size( 2 );
 
@@ -220,7 +212,6 @@ int main( int argc, char * argv [] )
 
   histogramFilter->SetHistogramSize( size );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -252,7 +243,6 @@ int main( int argc, char * argv [] )
   histogramFilter->Update();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The histogram can be recovered from the filter by creating a variable
@@ -261,11 +251,10 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef HistogramFilterType::HistogramType  HistogramType;
+  typedef HistogramFilterType::HistogramType HistogramType;
 
   const HistogramType * histogram = histogramFilter->GetOutput();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -284,7 +273,6 @@ int main( int argc, char * argv [] )
 
   const double Sum = histogram->GetTotalFrequency();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -306,15 +294,14 @@ int main( int argc, char * argv [] )
     const double count = itr.GetFrequency();
     if( count > 0.0 )
       {
-      const double probability = count / Sum;
-      JointEntropy += - probability * vcl_log( probability ) / vcl_log( 2.0 );
+      const double                   probability = count / Sum;
+      JointEntropy += -probability * vcl_log( probability ) / vcl_log( 2.0 );
       }
     ++itr;
     }
   // Software Guide : EndCodeSnippet
 
   std::cout << "Joint Entropy      = " << JointEntropy << " bits " << std::endl;
-
 
   // Software Guide : BeginLatex
   //
@@ -331,7 +318,6 @@ int main( int argc, char * argv [] )
   histogramFilter->SetHistogramSize( size );
   histogramFilter->Update();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -351,15 +337,14 @@ int main( int argc, char * argv [] )
     const double count = itr.GetFrequency();
     if( count > 0.0 )
       {
-      const double probability = count / Sum;
-      Entropy1 += - probability * vcl_log( probability ) / vcl_log( 2.0 );
+      const double               probability = count / Sum;
+      Entropy1 += -probability * vcl_log( probability ) / vcl_log( 2.0 );
       }
     ++itr;
     }
   // Software Guide : EndCodeSnippet
 
   std::cout << "Image1 Entropy   = " << Entropy1 << " bits " << std::endl;
-
 
   // Software Guide : BeginLatex
   //
@@ -375,7 +360,6 @@ int main( int argc, char * argv [] )
   histogramFilter->SetHistogramSize( size );
   histogramFilter->Update();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -396,15 +380,14 @@ int main( int argc, char * argv [] )
     const double count = itr.GetFrequency();
     if( count > 0.0 )
       {
-      const double probability = count / Sum;
-      Entropy2 += - probability * vcl_log( probability ) / vcl_log( 2.0 );
+      const double               probability = count / Sum;
+      Entropy2 += -probability * vcl_log( probability ) / vcl_log( 2.0 );
       }
     ++itr;
     }
   // Software Guide : EndCodeSnippet
 
   std::cout << "Image2 Entropy   = " << Entropy2 << " bits " << std::endl;
-
 
   // Software Guide : BeginLatex
   //
@@ -419,7 +402,6 @@ int main( int argc, char * argv [] )
 
   std::cout << "Mutual Information = " << MutualInformation << " bits " << std::endl;
 
-
   // Software Guide : BeginLatex
   //
   // or Normalized Mutual Information, where the value of Mutual Information gets
@@ -429,11 +411,10 @@ int main( int argc, char * argv [] )
 
   // Software Guide : BeginCodeSnippet
   double NormalizedMutualInformation1 =
-                     2.0 * MutualInformation / ( Entropy1 + Entropy2 );
+    2.0 * MutualInformation / ( Entropy1 + Entropy2 );
   // Software Guide : EndCodeSnippet
 
   std::cout << "Normalized Mutual Information 1 = " << NormalizedMutualInformation1 <<  std::endl;
-
 
   // Software Guide : BeginLatex
   //
@@ -446,9 +427,7 @@ int main( int argc, char * argv [] )
   double NormalizedMutualInformation2 = ( Entropy1 + Entropy2 ) / JointEntropy;
   // Software Guide : EndCodeSnippet
 
-
   std::cout << "Normalized Mutual Information 2 = " << NormalizedMutualInformation2 <<  std::endl;
-
 
   // Software Guide : BeginLatex
   //
@@ -457,7 +436,6 @@ int main( int argc, char * argv [] )
   // defined.
   //
   // Software Guide : EndLatex
-
 
   return 0;
 

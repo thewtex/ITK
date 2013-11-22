@@ -34,7 +34,7 @@ namespace Statistics
  * \ingroup ITKStatistics
  */
 
-class MinimumDecisionRule:public DecisionRule
+class MinimumDecisionRule : public DecisionRule
 {
 public:
   /** Standard class typedefs */
@@ -64,7 +64,8 @@ public:
 
 protected:
   MinimumDecisionRule() {}
-  virtual ~MinimumDecisionRule() {}
+  virtual
+  ~MinimumDecisionRule() {}
 
 };  // end of class
 } // end of namespace Statistics

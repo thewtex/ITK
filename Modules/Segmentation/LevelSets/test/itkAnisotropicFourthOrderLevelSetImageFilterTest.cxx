@@ -19,7 +19,8 @@
 #include "itkAnisotropicFourthOrderLevelSetImageFilter.h"
 #include <iostream>
 
-int itkAnisotropicFourthOrderLevelSetImageFilterTest(int, char* [] )
+int
+itkAnisotropicFourthOrderLevelSetImageFilterTest(int, char* [] )
 {
   typedef itk::Image<float, 2> ImageType;
   typedef ImageType::IndexType IndexType;
@@ -45,17 +46,17 @@ int itkAnisotropicFourthOrderLevelSetImageFilterTest(int, char* [] )
       if ( (index[0]>=32) && (index[0]<=96) &&
            (index[1]>=32) && (index[1]<=96) )
         {
-        im_init->SetPixel (index, static_cast<float>(-1));
+        im_init->SetPixel (index, static_cast<float>(-1) );
 
         }
       else
         {
-        im_init->SetPixel (index, static_cast<float>(1));
+        im_init->SetPixel (index, static_cast<float>(1) );
         }
       }
 
   typedef itk::AnisotropicFourthOrderLevelSetImageFilter<ImageType,
-    ImageType> FilterType;
+                                                         ImageType> FilterType;
   FilterType::Pointer filter = FilterType::New();
   filter->SetMaxFilterIteration (2);
   filter->SetMaxNormalIteration(5);
@@ -63,7 +64,7 @@ int itkAnisotropicFourthOrderLevelSetImageFilterTest(int, char* [] )
 
   filter->SetInput(im_init);
   filter->SetRMSChangeNormalProcessTrigger(0.1);
-  std::cout<<"max iteration = "<<(filter->GetMaxFilterIteration())<<"\n";
+  std::cout<<"max iteration = "<<(filter->GetMaxFilterIteration() )<<"\n";
   std::cout<<"Starting processing.\n";
   filter->Update();
   filter->Print(std::cout);

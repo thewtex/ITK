@@ -21,8 +21,8 @@
 #include "itkLabelImageToLabelMapFilter.h"
 #include "itkTestingMacros.h"
 
-
-int itkAttributeLabelObjectAccessorsTest1(int argc, char * argv[])
+int
+itkAttributeLabelObjectAccessorsTest1(int argc, char * argv[])
 {
 
   if( argc != 3 )
@@ -76,12 +76,12 @@ int itkAttributeLabelObjectAccessorsTest1(int argc, char * argv[])
     LabelObjectType * labelObject = it.GetLabelObject();
 
     // init the vars
-    double mean = 0;
+    double        mean = 0;
     unsigned long size = 0;
 
     // the iterator for the indexes
     LabelObjectType::ConstIndexIterator it2( labelObject );
-    while( ! it2.IsAtEnd() )
+    while( !it2.IsAtEnd() )
       {
       mean += reader2Output->GetPixel( it2.GetIndex() );
       size++;

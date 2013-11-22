@@ -35,7 +35,7 @@ namespace itk
  * \ingroup ITKPath
  */
 template< typename TInputPath, typename TInputImage, typename TOutputPath >
-class PathAndImageToPathFilter:
+class PathAndImageToPathFilter :
   public PathToPathFilter< TInputPath, TOutputPath >
 {
 public:
@@ -86,7 +86,8 @@ public:
 
 protected:
   PathAndImageToPathFilter();
-  virtual ~PathAndImageToPathFilter() {}
+  virtual
+  ~PathAndImageToPathFilter() {}
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -102,6 +103,7 @@ protected:
 private:
   PathAndImageToPathFilter(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 } // end namespace itk
 

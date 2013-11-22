@@ -72,6 +72,7 @@ SpatialFunctionImageEvaluatorFilter< TSpatialFunction, TInputImage, TOutputImage
 
   itkDebugMacro(<< "SpatialFunctionImageEvaluatorFilter::GenerateData() finished");
 }
+
 } // end namespace
 
 #endif

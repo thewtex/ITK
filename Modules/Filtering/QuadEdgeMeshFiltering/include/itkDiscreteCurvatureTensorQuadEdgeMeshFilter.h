@@ -30,15 +30,15 @@ namespace itk
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh, typename TOutputMesh=TInputMesh >
-class DiscreteCurvatureTensorQuadEdgeMeshFilter:
+class DiscreteCurvatureTensorQuadEdgeMeshFilter :
   public QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
-  typedef DiscreteCurvatureTensorQuadEdgeMeshFilter     Self;
-  typedef SmartPointer< Self >                          Pointer;
-  typedef SmartPointer< const Self >                    ConstPointer;
+  typedef DiscreteCurvatureTensorQuadEdgeMeshFilter Self;
+  typedef SmartPointer< Self >                      Pointer;
+  typedef SmartPointer< const Self >                ConstPointer;
   typedef QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
-                                                        Superclass;
+    Superclass;
 
   /** Run-time type information (and related methods).   */
   itkTypeMacro(DiscreteCurvatureTensorQuadEdgeMeshFilter, QuadEdgeMeshToQuadEdgeMeshFilter);
@@ -50,7 +50,7 @@ public:
   // Begin concept checking
 //  itkConceptMacro( OutputIsFloatingPointCheck,
 //                   ( Concept::IsFloatingPoint< OutputCurvatureType > ) );
-  // End concept checking
+// End concept checking
 #endif
 
 protected:
@@ -58,14 +58,16 @@ protected:
   ~DiscreteCurvatureTensorQuadEdgeMeshFilter() {}
 
   ///TODO to be implemented
-  virtual void GenerateData()
+  virtual void
+  GenerateData()
   {}
 
 private:
   DiscreteCurvatureTensorQuadEdgeMeshFilter(const Self &); // purposely not
-                                                              // implemented
-  void operator=(const Self &);                               // purposely not
-                                                              // implemented
+                                                           // implemented
+  void operator=(const Self &);                            // purposely not
+
+  // implemented
 };
 }
 

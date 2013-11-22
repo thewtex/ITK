@@ -54,7 +54,6 @@ public:
   typedef typename OutputImageType::PointType     PointType;
   typedef typename OutputImageType::DirectionType DirectionType;
 
-
   typedef typename TOutputImage::SizeType      SizeType;
   typedef typename TOutputImage::SizeValueType SizeValueType;
 
@@ -78,7 +77,6 @@ public:
   itkGetConstReferenceMacro(Spacing, SpacingType);
   itkSetVectorMacro(Spacing, const float, NDimensions);
 
-
   /**
    * Set/Get the output image origin. This parameter defaults to all zeros.
    **/
@@ -94,7 +92,7 @@ public:
   itkGetConstReferenceMacro(Direction, DirectionType);
 
 protected:
-  GenerateImageSource( );
+  GenerateImageSource();
   // virtual ~GenerateImageSource() default implementation ok
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -102,7 +100,7 @@ protected:
 
 private:
   GenerateImageSource( const GenerateImageSource &); //purposely not implemented
-  void operator=( const GenerateImageSource &);  //purposely not implemented
+  void operator=( const GenerateImageSource &);      //purposely not implemented
 
   SizeType      m_Size;            //size of the output image
   SpacingType   m_Spacing;         //spacing
@@ -113,10 +111,8 @@ private:
 
 }
 
-
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkGenerateImageSource.hxx"
 #endif
-
 
 #endif //__itkGenerateImageSource_h

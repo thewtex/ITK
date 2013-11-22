@@ -41,7 +41,7 @@ namespace itk
  */
 
 // The superclass that all commands should be subclasses of
-class ITKCommon_EXPORT Command:public Object
+class ITKCommon_EXPORT Command : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -68,6 +68,7 @@ protected:
 private:
   Command(const Self &);        //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 
 // some implementations for several callback types
@@ -82,7 +83,7 @@ private:
  * \ingroup ITKCommon
  */
 template< typename T >
-class MemberCommand:public Command
+class MemberCommand : public Command
 {
 public:
   /** pointer to a member function that takes a Object* and the event */
@@ -102,22 +103,25 @@ public:
 
   /**  Set the callback function along with the object that it will
    *  be invoked on. */
-  void SetCallbackFunction(T *object,
-                           TMemberFunctionPointer memberFunction)
+  void
+  SetCallbackFunction(T *object,
+                      TMemberFunctionPointer memberFunction)
   {
     m_This = object;
     m_MemberFunction = memberFunction;
   }
 
-  void SetCallbackFunction(T *object,
-                           TConstMemberFunctionPointer memberFunction)
+  void
+  SetCallbackFunction(T *object,
+                      TConstMemberFunctionPointer memberFunction)
   {
     m_This = object;
     m_ConstMemberFunction = memberFunction;
   }
 
   /**  Invoke the member function. */
-  virtual void Execute(Object *caller, const EventObject & event)
+  virtual void
+  Execute(Object *caller, const EventObject & event)
   {
     if ( m_MemberFunction )
       {
@@ -126,7 +130,8 @@ public:
   }
 
   /**  Invoke the member function with a const object. */
-  virtual void Execute(const Object *caller, const EventObject & event)
+  virtual void
+  Execute(const Object *caller, const EventObject & event)
   {
     if ( m_ConstMemberFunction )
       {
@@ -139,16 +144,18 @@ protected:
   T *                         m_This;
   TMemberFunctionPointer      m_MemberFunction;
   TConstMemberFunctionPointer m_ConstMemberFunction;
-  MemberCommand():
+  MemberCommand() :
     m_This( NULL ),
     m_MemberFunction( NULL ),
     m_ConstMemberFunction( NULL )
   {}
-  virtual ~MemberCommand(){}
+  virtual
+  ~MemberCommand(){}
 
 private:
   MemberCommand(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 
 /** \class ReceptorMemberCommand
@@ -161,7 +168,7 @@ private:
  * \ingroup ITKCommon
  */
 template< typename T >
-class ReceptorMemberCommand:public Command
+class ReceptorMemberCommand : public Command
 {
 public:
   /** pointer to a member function that takes a Object* and the event */
@@ -179,15 +186,17 @@ public:
 
   /**  Set the callback function along with the object that it will
    *  be invoked on. */
-  void SetCallbackFunction(T *object,
-                           TMemberFunctionPointer memberFunction)
+  void
+  SetCallbackFunction(T *object,
+                      TMemberFunctionPointer memberFunction)
   {
     m_This = object;
     m_MemberFunction = memberFunction;
   }
 
   /**  Invoke the member function. */
-  virtual void Execute(Object *, const EventObject & event)
+  virtual void
+  Execute(Object *, const EventObject & event)
   {
     if ( m_MemberFunction )
       {
@@ -196,7 +205,8 @@ public:
   }
 
   /**  Invoke the member function with a const object */
-  virtual void Execute(const Object *, const EventObject & event)
+  virtual void
+  Execute(const Object *, const EventObject & event)
   {
     if ( m_MemberFunction )
       {
@@ -207,12 +217,14 @@ public:
 protected:
   T *                    m_This;
   TMemberFunctionPointer m_MemberFunction;
-  ReceptorMemberCommand():m_MemberFunction(0) {}
-  virtual ~ReceptorMemberCommand() {}
+  ReceptorMemberCommand() : m_MemberFunction(0) {}
+  virtual
+  ~ReceptorMemberCommand() {}
 
 private:
   ReceptorMemberCommand(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
+
 };
 
 /** \class SimpleMemberCommand
@@ -225,7 +237,7 @@ private:
  * \ingroup ITKCommon
  */
 template< typename T >
-class SimpleMemberCommand:public Command
+class SimpleMemberCommand : public Command
 {
 public:
   /** A method callback. */
@@ -242,42 +254,47 @@ public:
   itkNewMacro(Self);
 
   /** Specify the callback function. */
-  void SetCallbackFunction(T *object,
-                           TMemberFunctionPointer memberFunction)
+  void
+  SetCallbackFunction(T *object,
+                      TMemberFunctionPointer memberFunction)
   {
     m_This = object;
     m_MemberFunction = memberFunction;
   }
 
   /** Invoke the callback function. */
-  virtual void Execute(Object *, const EventObject &)
+  virtual void
+  Execute(Object *, const EventObject &)
   {
     if ( m_MemberFunction )
       {
-      ( ( *m_This ).*( m_MemberFunction ) )( );
+      ( ( *m_This ).*( m_MemberFunction ) )();
       }
   }
 
-  virtual void Execute(const Object *, const EventObject &)
+  virtual void
+  Execute(const Object *, const EventObject &)
   {
     if ( m_MemberFunction )
       {
-      ( ( *m_This ).*( m_MemberFunction ) )( );
+      ( ( *m_This ).*( m_MemberFunction ) )();
       }
   }
 
 protected:
   T *                    m_This;
   TMemberFunctionPointer m_MemberFunction;
-  SimpleMemberCommand():
+  SimpleMemberCommand() :
     m_This( NULL ),
     m_MemberFunction( NULL )
   {}
-  virtual ~SimpleMemberCommand() {}
+  virtual
+  ~SimpleMemberCommand() {}
 
 private:
   SimpleMemberCommand(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
+
 };
 
 /** \class SimpleConstMemberCommand
@@ -290,7 +307,7 @@ private:
  * \ingroup ITKCommon
  */
 template< typename T >
-class SimpleConstMemberCommand:public Command
+class SimpleConstMemberCommand : public Command
 {
 public:
   /** A const member method callback. */
@@ -307,42 +324,47 @@ public:
   itkNewMacro(Self);
 
   /** Specify the const member method callback. */
-  void SetCallbackFunction(const T *object,
-                           TMemberFunctionPointer memberFunction)
+  void
+  SetCallbackFunction(const T *object,
+                      TMemberFunctionPointer memberFunction)
   {
     m_This = object;
     m_MemberFunction = memberFunction;
   }
 
   /** Invoke the const member method callback. */
-  virtual void Execute(Object *, const EventObject &)
+  virtual void
+  Execute(Object *, const EventObject &)
   {
     if ( m_MemberFunction )
       {
-      ( ( *m_This ).*( m_MemberFunction ) )( );
+      ( ( *m_This ).*( m_MemberFunction ) )();
       }
   }
 
-  virtual void Execute(const Object *, const EventObject &)
+  virtual void
+  Execute(const Object *, const EventObject &)
   {
     if ( m_MemberFunction )
       {
-      ( ( *m_This ).*( m_MemberFunction ) )( );
+      ( ( *m_This ).*( m_MemberFunction ) )();
       }
   }
 
 protected:
   const T *              m_This;
   TMemberFunctionPointer m_MemberFunction;
-  SimpleConstMemberCommand():
+  SimpleConstMemberCommand() :
     m_This( NULL ),
     m_MemberFunction( NULL )
   {}
-  virtual ~SimpleConstMemberCommand() {}
+  virtual
+  ~SimpleConstMemberCommand() {}
 
 private:
   SimpleConstMemberCommand(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 
 /** \class CStyleCommand
@@ -357,7 +379,7 @@ private:
  * \ingroup ITKCommon
  */
 
-class CStyleCommand:public Command
+class CStyleCommand : public Command
 {
 public:
   /** Typedefs for C-style callbacks. */
@@ -378,20 +400,34 @@ public:
 
   /** Set the client data that will be passed into the C function when
    * it is called. */
-  void SetClientData(void *cd) { m_ClientData = cd; }
+  void
+  SetClientData(void *cd) {
+    m_ClientData = cd;
+  }
 
   /** Set the C callback function pointer to be called at Execute time. */
-  void SetCallback(FunctionPointer f)
-  { m_Callback = f; }
-  void SetConstCallback(ConstFunctionPointer f)
-  { m_ConstCallback = f; }
+  void
+  SetCallback(FunctionPointer f)
+  {
+    m_Callback = f;
+  }
+
+  void
+  SetConstCallback(ConstFunctionPointer f)
+  {
+    m_ConstCallback = f;
+  }
 
   /** Set the callback to delete the client data. */
-  void SetClientDataDeleteCallback(DeleteDataFunctionPointer f)
-  { m_ClientDataDeleteCallback = f; }
+  void
+  SetClientDataDeleteCallback(DeleteDataFunctionPointer f)
+  {
+    m_ClientDataDeleteCallback = f;
+  }
 
   /** Execute the callback function. */
-  void Execute(Object *caller, const EventObject & event)
+  void
+  Execute(Object *caller, const EventObject & event)
   {
     if ( m_Callback )
       {
@@ -400,7 +436,8 @@ public:
   }
 
   /** Execute the callback function with a const Object */
-  void Execute(const Object *caller, const EventObject & event)
+  void
+  Execute(const Object *caller, const EventObject & event)
   {
     if ( m_ConstCallback )
       {
@@ -409,7 +446,7 @@ public:
   }
 
 protected:
-  CStyleCommand():m_ClientData(0), m_Callback(0), m_ConstCallback(0),
+  CStyleCommand() : m_ClientData(0), m_Callback(0), m_ConstCallback(0),
     m_ClientDataDeleteCallback(0)
   {
     // not implemented

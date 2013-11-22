@@ -46,11 +46,11 @@ class ITKCommon_EXPORT RealTimeInterval
 {
 public:
 
-  typedef RealTimeInterval    Self;
+  typedef RealTimeInterval Self;
 
   /** Internal types used to represent seconds and microseconds. */
-  typedef   int64_t   SecondsDifferenceType;
-  typedef   int64_t   MicroSecondsDifferenceType;
+  typedef   int64_t SecondsDifferenceType;
+  typedef   int64_t MicroSecondsDifferenceType;
 
   /** Constructor */
   RealTimeInterval();
@@ -62,28 +62,41 @@ public:
   ~RealTimeInterval();
 
   /** Native type used to represent the time in different time units. */
-  typedef   double    TimeRepresentationType;
+  typedef   double TimeRepresentationType;
 
   /** Return time in multiple units. */
   TimeRepresentationType GetTimeInMicroSeconds() const;
+
   TimeRepresentationType GetTimeInMilliSeconds() const;
+
   TimeRepresentationType GetTimeInSeconds() const;
+
   TimeRepresentationType GetTimeInMinutes() const;
+
   TimeRepresentationType GetTimeInHours() const;
+
   TimeRepresentationType GetTimeInDays() const;
 
   /** Arithmetic operations between RealTimeInterval and RealTimeInterval. */
   Self operator-( const Self & ) const;
+
   Self operator+( const Self & ) const;
+
   const Self & operator-=( const Self & );
+
   const Self & operator+=( const Self & );
 
   /** Comparison operations. */
   bool operator>( const Self & ) const;
+
   bool operator<( const Self & ) const;
+
   bool operator==( const Self & ) const;
+
   bool operator!=( const Self & ) const;
+
   bool operator<=( const Self & ) const;
+
   bool operator>=( const Self & ) const;
 
   /** Set with values. The units and signs of the seconds and microseconds will
@@ -98,13 +111,13 @@ private:
   friend class RealTimeStamp;
 
   /** Number of Seconds and Microseconds since... */
-  SecondsDifferenceType        m_Seconds;
+  SecondsDifferenceType m_Seconds;
 
   /** Number of Microseconds since the second.
    *  Should be in the range -999,999 to 999,999
    *  and it must always have the same sign as
    *  the m_Seconds member variable. */
-  MicroSecondsDifferenceType   m_MicroSeconds;
+  MicroSecondsDifferenceType m_MicroSeconds;
 
 };
 

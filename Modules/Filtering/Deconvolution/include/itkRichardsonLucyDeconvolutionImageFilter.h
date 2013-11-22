@@ -55,19 +55,20 @@ namespace itk
  * \sa ProjectedLandweberDeconvolutionImageFilter
  *
  */
-template< typename TInputImage, typename TKernelImage=TInputImage, typename TOutputImage=TInputImage, typename TInternalPrecision=double >
+template< typename TInputImage, typename TKernelImage=TInputImage, typename TOutputImage=TInputImage,
+          typename TInternalPrecision=double >
 class RichardsonLucyDeconvolutionImageFilter :
-    public IterativeDeconvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPrecision >
+  public IterativeDeconvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPrecision >
 {
 public:
   /** Standard typedefs. */
-  typedef RichardsonLucyDeconvolutionImageFilter                  Self;
+  typedef RichardsonLucyDeconvolutionImageFilter Self;
   typedef IterativeDeconvolutionImageFilter< TInputImage,
                                              TKernelImage,
                                              TOutputImage,
                                              TInternalPrecision > Superclass;
-  typedef SmartPointer< Self >                                    Pointer;
-  typedef SmartPointer< const Self >                              ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Other useful typedefs. */
   typedef TInputImage  InputImageType;
@@ -90,7 +91,8 @@ public:
 
 protected:
   RichardsonLucyDeconvolutionImageFilter();
-  virtual ~RichardsonLucyDeconvolutionImageFilter();
+  virtual
+  ~RichardsonLucyDeconvolutionImageFilter();
 
   virtual void Initialize(ProgressAccumulator * progress,
                           float progressWeight,

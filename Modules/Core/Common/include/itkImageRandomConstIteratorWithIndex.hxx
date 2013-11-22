@@ -25,7 +25,7 @@ namespace itk
 /** Default constructor. Needed since we provide a cast constructor. */
 template< typename TImage >
 ImageRandomConstIteratorWithIndex< TImage >
-::ImageRandomConstIteratorWithIndex():ImageConstIteratorWithIndex< TImage >()
+::ImageRandomConstIteratorWithIndex() : ImageConstIteratorWithIndex< TImage >()
 {
   m_NumberOfPixelsInRegion    = 0L;
   m_NumberOfSamplesRequested  = 0L;
@@ -37,7 +37,7 @@ ImageRandomConstIteratorWithIndex< TImage >
  * particular region of that image. */
 template< typename TImage >
 ImageRandomConstIteratorWithIndex< TImage >
-::ImageRandomConstIteratorWithIndex(const ImageType *ptr, const RegionType & region):
+::ImageRandomConstIteratorWithIndex(const ImageType *ptr, const RegionType & region) :
   ImageConstIteratorWithIndex< TImage >(ptr, region)
 {
   m_NumberOfPixelsInRegion   = region.GetNumberOfPixels();
@@ -91,8 +91,9 @@ ImageRandomConstIteratorWithIndex< TImage >
   typedef IndexValueType PositionValueType;
 
   const PositionValueType randomPosition =
-    static_cast< PositionValueType >( m_Generator->GetVariateWithOpenRange (static_cast< double >( m_NumberOfPixelsInRegion )
-                                                                        - 0.5) );
+    static_cast< PositionValueType >( m_Generator->GetVariateWithOpenRange (static_cast< double >(
+                                                                              m_NumberOfPixelsInRegion )
+                                                                            - 0.5) );
   /*
       vnl_sample_uniform(0.0f,
       static_cast<double>(m_NumberOfPixelsInRegion)-0.5) );
@@ -112,6 +113,7 @@ ImageRandomConstIteratorWithIndex< TImage >
 
   this->m_Position = this->m_Image->GetBufferPointer() + this->m_Image->ComputeOffset(this->m_PositionIndex);
 }
+
 } // end namespace itk
 
 #endif

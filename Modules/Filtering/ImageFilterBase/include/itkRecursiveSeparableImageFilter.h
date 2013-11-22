@@ -48,7 +48,7 @@ namespace itk
  * \ingroup ITKImageFilterBase
  */
 template< typename TInputImage, typename TOutputImage = TInputImage >
-class RecursiveSeparableImageFilter:
+class RecursiveSeparableImageFilter :
   public InPlaceImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -96,14 +96,14 @@ public:
 
 protected:
   RecursiveSeparableImageFilter();
-  virtual ~RecursiveSeparableImageFilter() {}
+  virtual
+  ~RecursiveSeparableImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** GenerateData (apply) the filter. */
   void BeforeThreadedGenerateData();
 
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId);
-
 
   virtual const ImageRegionSplitterBase* GetImageRegionSplitter(void) const;
 

@@ -70,29 +70,30 @@ public:
   typedef typename ImageToImageMetricv4Type::MovingImagePixelType    MovingImagePixelType;
   typedef typename ImageToImageMetricv4Type::MovingImageGradientType MovingImageGradientType;
 
-  typedef typename ImageToImageMetricv4Type::FixedTransformType      FixedTransformType;
-  typedef typename FixedTransformType::OutputPointType               FixedOutputPointType;
-  typedef typename ImageToImageMetricv4Type::MovingTransformType     MovingTransformType;
-  typedef typename MovingTransformType::OutputPointType              MovingOutputPointType;
+  typedef typename ImageToImageMetricv4Type::FixedTransformType  FixedTransformType;
+  typedef typename FixedTransformType::OutputPointType           FixedOutputPointType;
+  typedef typename ImageToImageMetricv4Type::MovingTransformType MovingTransformType;
+  typedef typename MovingTransformType::OutputPointType          MovingOutputPointType;
 
-  typedef typename ImageToImageMetricv4Type::MeasureType             MeasureType;
-  typedef typename ImageToImageMetricv4Type::DerivativeType          DerivativeType;
-  typedef typename ImageToImageMetricv4Type::DerivativeValueType     DerivativeValueType;
-  typedef typename ImageToImageMetricv4Type::JacobianType            JacobianType;
-  typedef typename ImageToImageMetricv4Type::ImageDimensionType      ImageDimensionType;
+  typedef typename ImageToImageMetricv4Type::MeasureType         MeasureType;
+  typedef typename ImageToImageMetricv4Type::DerivativeType      DerivativeType;
+  typedef typename ImageToImageMetricv4Type::DerivativeValueType DerivativeValueType;
+  typedef typename ImageToImageMetricv4Type::JacobianType        JacobianType;
+  typedef typename ImageToImageMetricv4Type::ImageDimensionType  ImageDimensionType;
 
   typedef typename ImageToImageMetricv4Type::InternalComputationValueType InternalComputationValueType;
   typedef typename ImageToImageMetricv4Type::NumberOfParametersType       NumberOfParametersType;
 
-  typedef CompensatedSummation<DerivativeValueType>                   CompensatedDerivativeValueType;
-  typedef std::vector<CompensatedDerivativeValueType>                 CompensatedDerivativeType;
+  typedef CompensatedSummation<DerivativeValueType>   CompensatedDerivativeValueType;
+  typedef std::vector<CompensatedDerivativeValueType> CompensatedDerivativeType;
 
   /** Access the GetValueAndDerivative() accesor in image metric base. */
   virtual bool GetComputeDerivative() const;
 
 protected:
   ImageToImageMetricv4GetValueAndDerivativeThreaderBase();
-  virtual ~ImageToImageMetricv4GetValueAndDerivativeThreaderBase();
+  virtual
+  ~ImageToImageMetricv4GetValueAndDerivativeThreaderBase();
 
   /** Resize and initialize per thread objects. */
   virtual void BeforeThreadedExecution();
@@ -143,18 +144,17 @@ protected:
    * \warning  This is called from the threader, and thus must be thread-safe.
    */
   virtual bool ProcessPoint(
-        const VirtualIndexType &          virtualIndex,
-        const VirtualPointType &          virtualPoint,
-        const FixedImagePointType &       mappedFixedPoint,
-        const FixedImagePixelType &       mappedFixedPixelValue,
-        const FixedImageGradientType &    mappedFixedImageGradient,
-        const MovingImagePointType &      mappedMovingPoint,
-        const MovingImagePixelType &      mappedMovingPixelValue,
-        const MovingImageGradientType &   mappedMovingImageGradient,
-        MeasureType &                     metricValueReturn,
-        DerivativeType &                  localDerivativeReturn,
-        const ThreadIdType                threadID ) const = 0;
-
+    const VirtualIndexType &          virtualIndex,
+    const VirtualPointType &          virtualPoint,
+    const FixedImagePointType &       mappedFixedPoint,
+    const FixedImagePixelType &       mappedFixedPixelValue,
+    const FixedImageGradientType &    mappedFixedImageGradient,
+    const MovingImagePointType &      mappedMovingPoint,
+    const MovingImagePixelType &      mappedMovingPixelValue,
+    const MovingImageGradientType &   mappedMovingImageGradient,
+    MeasureType &                     metricValueReturn,
+    DerivativeType &                  localDerivativeReturn,
+    const ThreadIdType                threadID ) const = 0;
 
   /** Store derivative result from a single point calculation.
    * \warning If this method is overridden or otherwise not used
@@ -167,31 +167,32 @@ protected:
     /** Intermediary threaded metric value storage. */
     InternalComputationValueType Measure;
     /** Intermediary threaded metric value storage. */
-    DerivativeType               Derivatives;
+    DerivativeType Derivatives;
     /** Intermediary threaded metric value storage. This is used only with global transforms. */
-    CompensatedDerivativeType    CompensatedDerivatives;
+    CompensatedDerivativeType CompensatedDerivatives;
     /** Intermediary threaded metric value storage. */
-    DerivativeType               LocalDerivatives;
+    DerivativeType LocalDerivatives;
     /** Intermediary threaded metric value storage. */
-    SizeValueType                NumberOfValidPoints;
+    SizeValueType NumberOfValidPoints;
     /** Pre-allocated transform jacobian objects, for use as needed by dervied
      * classes for efficiency. */
-    JacobianType                 MovingTransformJacobian;
+    JacobianType MovingTransformJacobian;
     };
   itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, GetValueAndDerivativePerThreadStruct,
-                                            PaddedGetValueAndDerivativePerThreadStruct);
+                PaddedGetValueAndDerivativePerThreadStruct);
   itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedGetValueAndDerivativePerThreadStruct,
-                                               AlignedGetValueAndDerivativePerThreadStruct );
+                     AlignedGetValueAndDerivativePerThreadStruct );
   mutable AlignedGetValueAndDerivativePerThreadStruct * m_GetValueAndDerivativePerThreadVariables;
 
   /** Cached values to avoid call overhead.
    *  These will only be set once threading has been started. */
-  mutable NumberOfParametersType                      m_CachedNumberOfParameters;
-  mutable NumberOfParametersType                      m_CachedNumberOfLocalParameters;
+  mutable NumberOfParametersType m_CachedNumberOfParameters;
+  mutable NumberOfParametersType m_CachedNumberOfLocalParameters;
 
 private:
   ImageToImageMetricv4GetValueAndDerivativeThreaderBase( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  void operator=( const Self & );                                        // purposely not implemented
+
 };
 
 } // end namespace itk

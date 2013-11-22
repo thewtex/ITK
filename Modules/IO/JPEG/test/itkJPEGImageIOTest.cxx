@@ -20,17 +20,17 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkJPEGImageIOTest( int ac, char* av[] )
+int
+itkJPEGImageIOTest( int ac, char* av[] )
 {
 
- if(ac < 3)
- {
+  if(ac < 3)
+    {
     std::cerr << "Usage: " << av[0] << " Input Output\n";
     return EXIT_FAILURE;
- }
+    }
 
   // ATTENTION THIS IS THE PIXEL TYPE FOR
   // THE RESULTING IMAGE
@@ -39,7 +39,7 @@ int itkJPEGImageIOTest( int ac, char* av[] )
   typedef itk::Image<PixelType, 2> myImage;
 
   itk::ImageFileReader<myImage>::Pointer reader
-                                  = itk::ImageFileReader<myImage>::New();
+    = itk::ImageFileReader<myImage>::New();
 
   reader->SetFileName(av[1]);
 

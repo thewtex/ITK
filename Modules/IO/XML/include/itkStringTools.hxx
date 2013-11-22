@@ -44,6 +44,7 @@ std::string&
 StringTools::ToData( std::string& s, std::vector<T>& data, int count )
 {
   std::istringstream iss( s, std::istringstream::in );
+
   iss.exceptions( iss.failbit | iss.badbit );
 
   if ( count < 0 )
@@ -105,6 +106,7 @@ std::string&
 StringTools::FromData( std::string& s, const std::vector<T>& data )
 {
   std::ostringstream oss( std::ostringstream::out );
+
   oss.exceptions( oss.badbit );
   for ( size_t i = 0; i < data.size(); i++ )
     {
@@ -133,6 +135,7 @@ std::string&
 StringTools::ToData( std::string& s, Array<T>& data, int count )
 {
   std::istringstream iss( s, std::istringstream::in );
+
   iss.exceptions( iss.failbit | iss.badbit );
 
   if ( count < 0 )
@@ -201,8 +204,9 @@ std::string&
 StringTools::FromData( std::string& s, const Array<T>& data )
 {
   std::ostringstream oss( std::ostringstream::out );
+
   oss.exceptions( oss.badbit );
-  for ( size_t i = 0; i < static_cast<size_t>(data.GetSize()); i++ )
+  for ( size_t i = 0; i < static_cast<size_t>(data.GetSize() ); i++ )
     {
     oss << " " << data[i];
     }
@@ -224,6 +228,7 @@ std::string&
 StringTools::ToData( std::string& s, T& data )
 {
   std::istringstream iss( s, std::istringstream::in );
+
   iss.exceptions( iss.failbit | iss.badbit );
   iss >> data;
 
@@ -247,6 +252,7 @@ std::string&
 StringTools::FromData( std::string& s, const T& data )
 {
   std::ostringstream oss( std::ostringstream::out );
+
   oss.exceptions( oss.badbit );
   oss << data;
 

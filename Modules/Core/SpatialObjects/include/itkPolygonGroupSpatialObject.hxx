@@ -23,22 +23,25 @@
 namespace itk
 {
 template< unsigned int TDimension >
-bool PolygonGroupSpatialObject< TDimension >::AddStrand(PolygonSpatialObject< TDimension > *toAdd)
+bool
+PolygonGroupSpatialObject< TDimension >::AddStrand(PolygonSpatialObject< TDimension > *toAdd)
 {
   this->AddSpatialObject(toAdd);
   return true;
 }
 
 template< unsigned int TDimension >
-bool PolygonGroupSpatialObject< TDimension >::DeleteStrand(PolygonSpatialObject< TDimension > *toDelete)
+bool
+PolygonGroupSpatialObject< TDimension >::DeleteStrand(PolygonSpatialObject< TDimension > *toDelete)
 {
   this->RemoveSpatialObject(toDelete);
   return true;
 }
 
 template< unsigned int TDimension >
-bool PolygonGroupSpatialObject< TDimension >::ReplaceStrand(PolygonSpatialObject< TDimension > *toReplace,
-                                                            PolygonSpatialObject< TDimension > *replacement)
+bool
+PolygonGroupSpatialObject< TDimension >::ReplaceStrand(PolygonSpatialObject< TDimension > *toReplace,
+                                                       PolygonSpatialObject< TDimension > *replacement)
 {
   TreeNodeChildrenListType & children = this->GetModifiableTreeNode()->GetChildrenList();
 
@@ -60,7 +63,8 @@ bool PolygonGroupSpatialObject< TDimension >::ReplaceStrand(PolygonSpatialObject
 }
 
 template< unsigned int TDimension >
-bool PolygonGroupSpatialObject< TDimension >::IsClosed()
+bool
+PolygonGroupSpatialObject< TDimension >::IsClosed()
 {
   TreeNodeChildrenListType & children = this->GetModifiableTreeNode()->GetChildrenList();
 
@@ -83,13 +87,15 @@ bool PolygonGroupSpatialObject< TDimension >::IsClosed()
 }
 
 template< unsigned int TDimension >
-unsigned PolygonGroupSpatialObject< TDimension >::NumberOfStrands()
+unsigned
+PolygonGroupSpatialObject< TDimension >::NumberOfStrands()
 {
   return this->GetTreeNode()->GetNumberOfChildren();
 }
 
 template< unsigned int TDimension >
-double PolygonGroupSpatialObject< TDimension >::Volume()
+double
+PolygonGroupSpatialObject< TDimension >::Volume()
 {
   double            volume = 0;
   ChildrenListType *children = this->GetChildren();
@@ -108,13 +114,15 @@ double PolygonGroupSpatialObject< TDimension >::Volume()
 }
 
 template< unsigned int TDimension >
-double PolygonGroupSpatialObject< TDimension >::MeasureVolume()
+double
+PolygonGroupSpatialObject< TDimension >::MeasureVolume()
 {
   return this->Volume();
 }
 
 template< unsigned int TDimension >
-bool PolygonGroupSpatialObject< TDimension >::IsInside(const PointType & point, unsigned int, char *name) const
+bool
+PolygonGroupSpatialObject< TDimension >::IsInside(const PointType & point, unsigned int, char *name) const
 {
   // want to encompass all children, at least 2 levels, but to be
   // safe say 4;
@@ -128,5 +136,6 @@ bool PolygonGroupSpatialObject< TDimension >::IsInside(const PointType & point, 
     }
   return this->SpatialObject< TDimension >::IsInside(point, 4, name);
 }
+
 }
 #endif

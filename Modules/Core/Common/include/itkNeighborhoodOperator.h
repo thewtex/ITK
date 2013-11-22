@@ -63,7 +63,7 @@ namespace itk
  */
 template< typename TPixel, unsigned int VDimension,
           typename TAllocator = NeighborhoodAllocator< TPixel > >
-class NeighborhoodOperator:
+class NeighborhoodOperator :
   public Neighborhood< TPixel, VDimension, TAllocator >
 {
 public:
@@ -72,7 +72,7 @@ public:
   typedef Neighborhood< TPixel, VDimension, TAllocator > Superclass;
 
   /** Size object typedef support */
-  typedef typename Superclass::SizeType      SizeType;
+  typedef typename Superclass::SizeType SizeType;
 
   /** External support for pixel type */
   typedef TPixel PixelType;
@@ -82,28 +82,40 @@ public:
 
   /** Constructor. */
   NeighborhoodOperator()
-  {  m_Direction = 0;  }
+  {
+    m_Direction = 0;
+  }
 
   /** Copy constructor */
-  NeighborhoodOperator(const Self & orig):
+  NeighborhoodOperator(const Self & orig) :
     Neighborhood< TPixel, VDimension, TAllocator >(orig)
-  {   m_Direction = orig.m_Direction;   }
+  {
+    m_Direction = orig.m_Direction;
+  }
 
   /** Assignment operator. */
-  Self & operator=(const Self & orig)
+  Self &
+  operator=(const Self & orig)
   {
     Superclass::operator=(orig);
+
     m_Direction = orig.m_Direction;
     return *this;
   }
 
   /** Sets the dimensional direction of a directional operator. */
-  void SetDirection(const unsigned long & direction)
-  {  m_Direction = direction;   }
+  void
+  SetDirection(const unsigned long & direction)
+  {
+    m_Direction = direction;
+  }
 
   /** Returns the direction (dimension number) of a directional operator. */
-  unsigned long GetDirection() const
-  {  return m_Direction;  }
+  unsigned long
+  GetDirection() const
+  {
+    return m_Direction;
+  }
 
   /** Creates the operator with length only in the specified direction.
    * The radius of the operator will be 0 except along the axis on which
@@ -128,7 +140,8 @@ public:
   virtual void FlipAxes();
 
   /** Prints some debugging information. */
-  virtual void PrintSelf(std::ostream & os, Indent i) const
+  virtual void
+  PrintSelf(std::ostream & os, Indent i) const
   {
     os << i << "NeighborhoodOperator { this=" << this
        << " Direction = " << m_Direction << " }" << std::endl;
@@ -162,11 +175,13 @@ protected:
   virtual void FillCenteredDirectional(const CoefficientVector &);
 
   /** Initializes all the coefficients in the neighborhood to zero values */
-  void InitializeToZero()
+  void
+  InitializeToZero()
   {
     for ( unsigned int i = 0; i < this->Size(); ++i )
       {
       this->operator[](i) = NumericTraits< PixelType >::Zero;
+
       }
   }
 

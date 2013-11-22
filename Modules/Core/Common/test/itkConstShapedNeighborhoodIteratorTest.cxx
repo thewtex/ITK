@@ -19,19 +19,23 @@
 #include "itkNeighborhoodIteratorTestCommon.hxx"
 #include "itkConstShapedNeighborhoodIterator.h"
 
-void PrintShapedNeighborhood(const itk::ConstShapedNeighborhoodIterator<TestImageType> &n)
+void
+PrintShapedNeighborhood(const itk::ConstShapedNeighborhoodIterator<TestImageType> &n)
 {
   itk::ConstShapedNeighborhoodIterator<TestImageType>::ConstIterator it;
   std::cout << n.GetIndex() <<  "->[";
-  for (it = n.Begin(); ! it.IsAtEnd(); ++it)
-    {      std::cout << it.Get();    }
+
+  for (it = n.Begin(); !it.IsAtEnd(); ++it)
+                  {      std::cout << it.Get();    }
   std::cout << "]" << std::endl;
 }
 
-int itkConstShapedNeighborhoodIteratorTest(int, char* [] )
+int
+itkConstShapedNeighborhoodIteratorTest(int, char* [] )
 {
-  TestImageType::Pointer img = GetTestImage(10, 10, 5, 3);
+  TestImageType::Pointer                                         img = GetTestImage(10, 10, 5, 3);
   itk::ConstShapedNeighborhoodIterator<TestImageType>::IndexType loc;
+
   loc[0] = 4; loc[1] = 4; loc[2] = 2; loc[3] = 1;
 
   // radius of the iterator
@@ -40,8 +44,8 @@ int itkConstShapedNeighborhoodIteratorTest(int, char* [] )
 
   // region over which the iterator is defined
   itk::ConstShapedNeighborhoodIterator<TestImageType>::RegionType reg;
-  itk::ConstShapedNeighborhoodIterator<TestImageType>::SizeType sz;
-  itk::ConstShapedNeighborhoodIterator<TestImageType>::IndexType idx;
+  itk::ConstShapedNeighborhoodIterator<TestImageType>::SizeType   sz;
+  itk::ConstShapedNeighborhoodIterator<TestImageType>::IndexType  idx;
   idx[0] = idx[1] = idx[2] = 0;  idx[3] = 1;
   sz[0] = sz[1] = 10; sz[2] = 5; sz[3] = 1;
   reg.SetIndex(idx); reg.SetSize(sz);
@@ -49,7 +53,7 @@ int itkConstShapedNeighborhoodIteratorTest(int, char* [] )
   // initialize an iterator
   println("Creating ConstShapedNeighborhoodIterator");
   itk::ConstShapedNeighborhoodIterator<TestImageType>
-    it(radius, img, reg);
+  it(radius, img, reg);
   it.Print(std::cout);
 
   println("Moving iterator using SetLocation()");
@@ -75,18 +79,18 @@ int itkConstShapedNeighborhoodIteratorTest(int, char* [] )
   itk::ConstShapedNeighborhoodIterator<TestImageType>::OffsetType off;
   off[0] = 0; off[1] = 0; off[2] = 0; off[3] = 0;
   it.ActivateOffset(off);
-  while (! it.IsAtEnd())
+  while (!it.IsAtEnd() )
     {
-      PrintShapedNeighborhood(it);
-      ++it;
+    PrintShapedNeighborhood(it);
+    ++it;
     }
 
   println("Testing reverse iteration");
   it.GoToEnd();
-  while (! it.IsAtBegin())
+  while (!it.IsAtBegin() )
     {
-      PrintShapedNeighborhood(it);
-      --it;
+    PrintShapedNeighborhood(it);
+    --it;
     }
 
   println ("Moving iterator: it.GoToBegin(); it += (1, 1, 1, 1)");
@@ -111,86 +115,86 @@ int itkConstShapedNeighborhoodIteratorTest(int, char* [] )
 
   for (unsigned int r = 0; r < 1; r++)
     {
-      println("...turn on [1,0,0,0]");
-      off[0] = 1; off[1] = 0; off[2] = 0; off[3] = 0;
-      it.ActivateOffset(off);
-      it.Print(std::cout);
+    println("...turn on [1,0,0,0]");
+    off[0] = 1; off[1] = 0; off[2] = 0; off[3] = 0;
+    it.ActivateOffset(off);
+    it.Print(std::cout);
 
-      println("...turn on [1,0,0,0] again");
-      off[0] = 1; off[1] = 0; off[2] = 0; off[3] = 0;
-      it.ActivateOffset(off);
-      it.Print(std::cout);
+    println("...turn on [1,0,0,0] again");
+    off[0] = 1; off[1] = 0; off[2] = 0; off[3] = 0;
+    it.ActivateOffset(off);
+    it.Print(std::cout);
 
-      println("...turn on [-1,0,0,0]");
-      off[0] = -1; off[1] = 0; off[2] = 0; off[3] = 0;
-      it.ActivateOffset(off);
-      it.Print(std::cout);
+    println("...turn on [-1,0,0,0]");
+    off[0] = -1; off[1] = 0; off[2] = 0; off[3] = 0;
+    it.ActivateOffset(off);
+    it.Print(std::cout);
 
-      println("...turn on [0,-1,0,0]");
-      off[0] = 0; off[1] = -1; off[2] = 0; off[3] = 0;
-      it.ActivateOffset(off);
-      it.Print(std::cout);
+    println("...turn on [0,-1,0,0]");
+    off[0] = 0; off[1] = -1; off[2] = 0; off[3] = 0;
+    it.ActivateOffset(off);
+    it.Print(std::cout);
 
-      println("...turn on [0,1,0,0]");
-      off[0] = 0; off[1] = 1; off[2] = 0; off[3] = 0;
-      it.ActivateOffset(off);
-      it.Print(std::cout);
+    println("...turn on [0,1,0,0]");
+    off[0] = 0; off[1] = 1; off[2] = 0; off[3] = 0;
+    it.ActivateOffset(off);
+    it.Print(std::cout);
 
-      println("...turn off [-1,0,0,0]");
-      off[0] = -1; off[1] = 0; off[2] = 0; off[3] = 0;
-      it.DeactivateOffset(off);
-      it.Print(std::cout);
+    println("...turn off [-1,0,0,0]");
+    off[0] = -1; off[1] = 0; off[2] = 0; off[3] = 0;
+    it.DeactivateOffset(off);
+    it.Print(std::cout);
 
-      println("...turn off [1,0,0,0]");
-      off[0] = 1; off[1] = 0; off[2] = 0; off[3] = 0;
-      it.DeactivateOffset(off);
-      it.Print(std::cout);
+    println("...turn off [1,0,0,0]");
+    off[0] = 1; off[1] = 0; off[2] = 0; off[3] = 0;
+    it.DeactivateOffset(off);
+    it.Print(std::cout);
 
-      println("...turn off [0,1,0,0]");
-      off[0] = 0; off[1] = 1; off[2] = 0; off[3] = 0;
-      it.DeactivateOffset(off);
-      it.Print(std::cout);
+    println("...turn off [0,1,0,0]");
+    off[0] = 0; off[1] = 1; off[2] = 0; off[3] = 0;
+    it.DeactivateOffset(off);
+    it.Print(std::cout);
 
-      println("...turn off [0,-1,0,0]");
-      off[0] = 0; off[1] = -1; off[2] = 0; off[3] = 0;
-      it.DeactivateOffset(off);
-      it.Print(std::cout);
+    println("...turn off [0,-1,0,0]");
+    off[0] = 0; off[1] = -1; off[2] = 0; off[3] = 0;
+    it.DeactivateOffset(off);
+    it.Print(std::cout);
 
-      println("...turn off [0,-1,0,0] again");
-      off[0] = 0; off[1] = -1; off[2] = 0; off[3] = 0;
-      it.DeactivateOffset(off);
-      it.Print(std::cout);
+    println("...turn off [0,-1,0,0] again");
+    off[0] = 0; off[1] = -1; off[2] = 0; off[3] = 0;
+    it.DeactivateOffset(off);
+    it.Print(std::cout);
 
-      println("...turn off [0,0 ,0,0]");
-      off[0] = 0; off[1] = 0; off[2] = 0; off[3] = 0;
-      it.DeactivateOffset(off);
-      it.Print(std::cout);
+    println("...turn off [0,0 ,0,0]");
+    off[0] = 0; off[1] = 0; off[2] = 0; off[3] = 0;
+    it.DeactivateOffset(off);
+    it.Print(std::cout);
 
-      println("...turn on [1,0,0,0]");
-      off[0] = 1; off[1] = 0; off[2] = 0; off[3] = 0;
-      it.ActivateOffset(off);
-      it.Print(std::cout);
+    println("...turn on [1,0,0,0]");
+    off[0] = 1; off[1] = 0; off[2] = 0; off[3] = 0;
+    it.ActivateOffset(off);
+    it.Print(std::cout);
 
-      println("...turn on [1,0,0,0] again");
-      off[0] = 1; off[1] = 0; off[2] = 0; off[3] = 0;
-      it.ActivateOffset(off);
-      it.Print(std::cout);
+    println("...turn on [1,0,0,0] again");
+    off[0] = 1; off[1] = 0; off[2] = 0; off[3] = 0;
+    it.ActivateOffset(off);
+    it.Print(std::cout);
 
-      println("...turn on [-1,0,0,0]");
-      off[0] = -1; off[1] = 0; off[2] = 0; off[3] = 0;
-      it.ActivateOffset(off);
-      it.Print(std::cout);
+    println("...turn on [-1,0,0,0]");
+    off[0] = -1; off[1] = 0; off[2] = 0; off[3] = 0;
+    it.ActivateOffset(off);
+    it.Print(std::cout);
 
-      println("...turn on [0,-1,0,0]");
-      off[0] = 0; off[1] = -1; off[2] = 0; off[3] = 0;
-      it.ActivateOffset(off);
-      it.Print(std::cout);
+    println("...turn on [0,-1,0,0]");
+    off[0] = 0; off[1] = -1; off[2] = 0; off[3] = 0;
+    it.ActivateOffset(off);
+    it.Print(std::cout);
 
-      println(" Testing it.ClearActiveList() ");
-      it.ClearActiveList();
-      it.Print(std::cout);
+    println(" Testing it.ClearActiveList() ");
+    it.ClearActiveList();
+    it.Print(std::cout);
 
-      println(" NOW REPEAT " );
+    println(" NOW REPEAT " );
     }
 
   println("...turn on [1,0,0,0]");
@@ -225,11 +229,11 @@ int itkConstShapedNeighborhoodIteratorTest(int, char* [] )
   itk::ConstShapedNeighborhoodIterator<TestImageType>::IndexListType l
     = it.GetActiveIndexList();
   itk::ConstShapedNeighborhoodIterator<TestImageType>::IndexListType
-    ::const_iterator ali = l.begin();
-  while (ali != l.end())
+  ::const_iterator ali = l.begin();
+  while (ali != l.end() )
     {
-      std::cout << *ali << " ";
-      ++ali;
+    std::cout << *ali << " ";
+    ++ali;
     }
   std::cout << std::endl;
 
@@ -238,29 +242,28 @@ int itkConstShapedNeighborhoodIteratorTest(int, char* [] )
     ci = it.Begin();
 
   println("Testing using IsAtEnd()");
-  while (! ci.IsAtEnd())
+  while (!ci.IsAtEnd() )
     {
-      std::cout << ci.GetNeighborhoodIndex() << " -> "
-                << ci.GetNeighborhoodOffset() << " = " << ci.Get() << std::endl;
-      ci++;
+    std::cout << ci.GetNeighborhoodIndex() << " -> "
+              << ci.GetNeighborhoodOffset() << " = " << ci.Get() << std::endl;
+    ci++;
     }
-
 
   println("Testing using != it.End()");
   for (ci = it.Begin(); ci != it.End(); ++ci)
     {
-      std::cout << ci.GetNeighborhoodIndex() << " -> "
-                << ci.GetNeighborhoodOffset() << " = " << ci.Get() << std::endl;
+    std::cout << ci.GetNeighborhoodIndex() << " -> "
+              << ci.GetNeighborhoodOffset() << " = " << ci.Get() << std::endl;
     }
 
   println("Testing reverse iteration using != it.Begin()");
   ci = it.End();
   --ci;
-  while (ci != it.Begin())
+  while (ci != it.Begin() )
     {
-      std::cout << ci.GetNeighborhoodIndex() << " -> "
-                << ci.GetNeighborhoodOffset() << " = " << ci.Get() << std::endl;
-      ci--;
+    std::cout << ci.GetNeighborhoodIndex() << " -> "
+              << ci.GetNeighborhoodOffset() << " = " << ci.Get() << std::endl;
+    ci--;
     }
   std::cout << ci.GetNeighborhoodIndex() << " -> "
             << ci.GetNeighborhoodOffset() << " = " << ci.Get() << std::endl;
@@ -322,7 +325,7 @@ int itkConstShapedNeighborhoodIteratorTest(int, char* [] )
   int result = EXIT_SUCCESS;
 
   // Iterate over a region, then change the region and iterate over the new region
-  {
+    {
     // Create an image
     typedef itk::Image<int, 2> ChangeRegionTestImageType;
     ChangeRegionTestImageType::IndexType imageCorner;
@@ -340,7 +343,7 @@ int itkConstShapedNeighborhoodIteratorTest(int, char* [] )
     itk::ImageRegionIterator<ChangeRegionTestImageType> createImageIterator(image, imageRegion);
 
     // Set all pixels with first index == 0 to 0, and set the rest of the image to 255
-    while(!createImageIterator.IsAtEnd())
+    while(!createImageIterator.IsAtEnd() )
       {
       if(createImageIterator.GetIndex()[0] == 0)
         {
@@ -368,7 +371,7 @@ int itkConstShapedNeighborhoodIteratorTest(int, char* [] )
     neighborhoodRadius.Fill(1);
 
     // Use the first two offsets
-    std::vector<itk::Offset<2> > offsets;
+    std::vector<itk::Offset<2> >          offsets;
     ChangeRegionTestImageType::OffsetType offset = {{-1,-1}};
     offsets.push_back(offset);
     offset[0] = 0;
@@ -380,9 +383,9 @@ int itkConstShapedNeighborhoodIteratorTest(int, char* [] )
 
     // Activate all of the offsets
     for(size_t i = 0; i < offsets.size(); ++i)
-    {
+      {
       shapedNeighborhoodIterator.ActivateOffset(offsets[i]);
-    }
+      }
 
     std::vector<int> expectedValuesRegion1(2);
     expectedValuesRegion1[0] = 0;
@@ -390,21 +393,21 @@ int itkConstShapedNeighborhoodIteratorTest(int, char* [] )
 
     unsigned int counter = 0;
     //while(!shapedNeighborhoodIterator.IsAtEnd()) // no need for this loop as we are only iterating over a 1x1 region
-      //{
-      ShapedNeighborhoodIteratorType::ConstIterator pixelIterator = shapedNeighborhoodIterator.Begin();
+    //{
+    ShapedNeighborhoodIteratorType::ConstIterator pixelIterator = shapedNeighborhoodIterator.Begin();
 
-      while (!pixelIterator.IsAtEnd())
+    while (!pixelIterator.IsAtEnd() )
+      {
+      if(pixelIterator.Get() != expectedValuesRegion1[counter])
         {
-        if(pixelIterator.Get() != expectedValuesRegion1[counter])
-          {
-          result = EXIT_FAILURE;
-          }
-        counter++;
-        ++pixelIterator;
+        result = EXIT_FAILURE;
         }
+      counter++;
+      ++pixelIterator;
+      }
 
-      //++imageIterator;
-      //}
+    //++imageIterator;
+    //}
 
     // Change iteration region
     ChangeRegionTestImageType::IndexType region2start;
@@ -421,9 +424,9 @@ int itkConstShapedNeighborhoodIteratorTest(int, char* [] )
 
     counter = 0;
     //while(!shapedNeighborhoodIterator.IsAtEnd()) // no need for this loop as we are only iterating over a 1x1 region
-      //{
+    //{
     pixelIterator = shapedNeighborhoodIterator.Begin();
-    while (!pixelIterator.IsAtEnd())
+    while (!pixelIterator.IsAtEnd() )
       {
       if(pixelIterator.Get() != expectedValuesRegion2[counter])
         {
@@ -432,10 +435,10 @@ int itkConstShapedNeighborhoodIteratorTest(int, char* [] )
       counter++;
       ++pixelIterator;
       }
-      //++imageIterator;
-      //}
+    //++imageIterator;
+    //}
 
-  } // end "Change Region" test
+    } // end "Change Region" test
 
   return result;
 }
@@ -455,12 +458,13 @@ public:
   typedef typename Superclass::RegionType                          RegionType;
 
   void TestNewExposedProtectedMembers();
+
   MyDerivedCSNI(const SizeType & radius,
                 const ImageType *ptr,
-                const RegionType & region):
+                const RegionType & region) :
     Superclass (radius, const_cast< ImageType * >( ptr ), region)
-    {
-    }
+  {}
+
 };
 
 template <typename ImageType>
@@ -468,7 +472,8 @@ void
 MyDerivedCSNI<ImageType>
 ::TestNewExposedProtectedMembers()
 {
-  bool needToUseBoundaryCondition(this->GetNeedToUseBoundaryCondition());
+  bool needToUseBoundaryCondition(this->GetNeedToUseBoundaryCondition() );
+
   this->NeedToUseBoundaryConditionOn();
   this->NeedToUseBoundaryConditionOff();
   this->SetNeedToUseBoundaryCondition(needToUseBoundaryCondition);

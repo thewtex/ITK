@@ -73,7 +73,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -81,8 +80,8 @@
 #include "itkAffineTransform.h"
 #include "itkNearestNeighborInterpolateImageFunction.h"
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -99,16 +98,15 @@ int main( int argc, char * argv[] )
     exampleAction = atoi( argv[3] );
     }
 
-  const     unsigned int   Dimension = 2;
-  typedef   unsigned char  InputPixelType;
-  typedef   unsigned char  OutputPixelType;
+  const     unsigned int Dimension = 2;
+  typedef   unsigned char InputPixelType;
+  typedef   unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
-
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -117,16 +115,15 @@ int main( int argc, char * argv[] )
   writer->SetFileName( argv[2] );
 
   typedef itk::ResampleImageFilter<
-                  InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
   FilterType::Pointer filter = FilterType::New();
-  typedef itk::AffineTransform< double, Dimension >  TransformType;
+  typedef itk::AffineTransform< double, Dimension > TransformType;
   TransformType::Pointer transform = TransformType::New();
 
   typedef itk::NearestNeighborInterpolateImageFunction<
-                       InputImageType, double >  InterpolatorType;
+      InputImageType, double >  InterpolatorType;
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
   filter->SetInterpolator( interpolator );
-
 
   //  Software Guide : BeginLatex
   //
@@ -140,7 +137,6 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   filter->SetDefaultPixelValue( 100 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -158,7 +154,6 @@ int main( int argc, char * argv[] )
   filter->SetOutputSpacing( spacing );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  We will preserve the orientation of the input image by using the following call.
@@ -170,7 +165,6 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   filter->SetOutputDirection( reader->GetOutput()->GetDirection() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -189,7 +183,6 @@ int main( int argc, char * argv[] )
   filter->SetOutputOrigin( origin );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The output image size is defined to be $40$ times the one illustrated
@@ -200,16 +193,14 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  InputImageType::SizeType   size;
+  InputImageType::SizeType size;
   size[0] = 5 * 40;  // number of pixels along X
   size[1] = 4 * 40;  // number of pixels along Y
   filter->SetSize( size );
   // Software Guide : EndCodeSnippet
 
-
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
-
 
   //  Software Guide : BeginLatex
   //
@@ -232,7 +223,6 @@ int main( int argc, char * argv[] )
   transform->Translate( translation1 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  In a second step, a rotation of $30$ degrees is performed. In the
@@ -253,7 +243,6 @@ int main( int argc, char * argv[] )
   transform->Rotate2D( -30.0 * degreesToRadians, false );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The third and final step implies translating the image origin back to
@@ -272,7 +261,6 @@ int main( int argc, char * argv[] )
   filter->SetTransform( transform );
   // Software Guide : EndCodeSnippet
 
-
   if( exampleAction == 0 )
     {
     try
@@ -286,7 +274,6 @@ int main( int argc, char * argv[] )
       }
     }
 
-
   //  Software Guide : BeginLatex
   //
   //  Figure \ref{fig:ResampleImageFilterOutput9} presents the actual input
@@ -298,7 +285,6 @@ int main( int argc, char * argv[] )
   //  \ref{fig:ResampleImageFilterOutput9}.
   //
   //  Software Guide : EndLatex
-
 
   //  Software Guide : BeginLatex
   //

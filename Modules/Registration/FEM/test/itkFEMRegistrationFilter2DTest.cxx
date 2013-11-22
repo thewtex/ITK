@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include <fstream>
 #include "itkFEMRegistrationFilter.h"
 
@@ -82,21 +81,21 @@ FillWithCircle(
 
 }
 
-
-int itkFEMRegistrationFilter2DTest(int argc, char *argv[] )
+int
+itkFEMRegistrationFilter2DTest(int argc, char *argv[] )
 {
-  typedef itk::Vector<float, ImageDimension>                VectorType;
-  typedef itk::Image<VectorType, ImageDimension>            FieldType;
-  typedef ImageType::IndexType                              IndexType;
-  typedef ImageType::SizeType                               SizeType;
-  typedef ImageType::RegionType                             RegionType;
+  typedef itk::Vector<float, ImageDimension>     VectorType;
+  typedef itk::Image<VectorType, ImageDimension> FieldType;
+  typedef ImageType::IndexType                   IndexType;
+  typedef ImageType::SizeType                    SizeType;
+  typedef ImageType::RegionType                  RegionType;
 
   // --------------------------------------------------------
   std::cout << "Generate input images and initial deformation field";
   std::cout << std::endl;
 
   ImageType::SizeValueType sizeArray[ImageDimension];
-  for (unsigned int i=0;i<ImageDimension;i++)
+  for (unsigned int i=0; i<ImageDimension; i++)
     {
     sizeArray[i] = 32;
     }
@@ -113,7 +112,7 @@ int itkFEMRegistrationFilter2DTest(int argc, char *argv[] )
 
   ImageType::Pointer moving = ImageType::New();
   ImageType::Pointer fixed = ImageType::New();
-  FieldType::Pointer     initField = FieldType::New();
+  FieldType::Pointer initField = FieldType::New();
 
   moving->SetLargestPossibleRegion( region );
   moving->SetBufferedRegion( region );
@@ -133,7 +132,7 @@ int itkFEMRegistrationFilter2DTest(int argc, char *argv[] )
   PixelType bgnd = 15;
 
   // Set the Cricle Center
-  for (unsigned int i=0;i<ImageDimension;i++)
+  for (unsigned int i=0; i<ImageDimension; i++)
     {
     center[i] = 16;
     }
@@ -240,12 +239,12 @@ int itkFEMRegistrationFilter2DTest(int argc, char *argv[] )
     if (argc > 1)
       {
       std::cout << "Write out deformation field" << argv[1] << std::endl;
-      std::string outFileName = argv[1];
+      std::string       outFileName = argv[1];
       std::stringstream ss;
       ss << met;
       outFileName += ss.str();
       outFileName += ".mhd";
-      typedef itk::ImageFileWriter<RegistrationType::FieldType>  ImageWriterType;
+      typedef itk::ImageFileWriter<RegistrationType::FieldType> ImageWriterType;
       ImageWriterType::Pointer writer = ImageWriterType::New();
       writer->SetFileName( outFileName );
       writer->SetInput( registrator->GetDisplacementField() );
@@ -255,12 +254,12 @@ int itkFEMRegistrationFilter2DTest(int argc, char *argv[] )
     if (argc > 2)
       {
       std::cout << "Write out deformed image" << argv[2] << std::endl;
-      std::string outFileName = argv[2];
+      std::string       outFileName = argv[2];
       std::stringstream ss;
       ss << met;
       outFileName += ss.str();
       outFileName += ".mhd";
-      typedef itk::ImageFileWriter<ImageType>  ImageWriterType;
+      typedef itk::ImageFileWriter<ImageType> ImageWriterType;
       ImageWriterType::Pointer writer = ImageWriterType::New();
       writer->SetFileName( outFileName );
       writer->SetInput( registrator->GetWarpedImage() );

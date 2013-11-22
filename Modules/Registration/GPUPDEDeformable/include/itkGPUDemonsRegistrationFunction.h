@@ -88,7 +88,7 @@ public:
   /** Deformation field type. */
   typedef typename Superclass::DisplacementFieldType DisplacementFieldType;
   typedef typename Superclass::DisplacementFieldTypePointer
-  DisplacementFieldTypePointer;
+    DisplacementFieldTypePointer;
 
   /** Inherit some enums from the superclass. */
   itkStaticConstMacro(ImageDimension, unsigned
@@ -117,9 +117,9 @@ public:
 
   /** Moving image gradient calculator type. */
   typedef CentralDifferenceImageFunction< MovingImageType, CoordRepType >
-  MovingImageGradientCalculatorType;
+    MovingImageGradientCalculatorType;
   typedef typename MovingImageGradientCalculatorType::Pointer
-  MovingImageGradientCalculatorPointer;
+    MovingImageGradientCalculatorPointer;
 
   /** GPU data pointer type. */
   typedef GPUDataManager::Pointer GPUDataPointer;
@@ -128,19 +128,22 @@ public:
   itkGetOpenCLSourceFromKernelMacro(GPUDemonsRegistrationFunctionKernel);
 
   /** Set the moving image interpolator. */
-  void SetMovingImageInterpolator(InterpolatorType *ptr)
+  void
+  SetMovingImageInterpolator(InterpolatorType *ptr)
   {
     m_MovingImageInterpolator = ptr;
   }
 
   /** Get the moving image interpolator. */
-  InterpolatorType * GetMovingImageInterpolator(void)
+  InterpolatorType *
+  GetMovingImageInterpolator(void)
   {
     return m_MovingImageInterpolator;
   }
 
   /** This class uses a constant timestep of 1. */
-  virtual TimeStepType ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) )
+  virtual TimeStepType
+  ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) )
   const
   {
     return m_TimeStep;
@@ -148,7 +151,8 @@ public:
 
   /** Return a pointer to a global data structure that is passed to
    * this object from the solver at each calculation.  */
-  virtual void * GetGlobalDataPointer() const
+  virtual void *
+  GetGlobalDataPointer() const
   {
     GlobalDataStruct *global = new GlobalDataStruct();
 
@@ -186,13 +190,15 @@ public:
   /** Get the metric value. The metric value is the mean square difference
    * in intensity between the fixed image and transforming moving image
    * computed over the the overlapping region between the two images. */
-  virtual double GetMetric() const
+  virtual double
+  GetMetric() const
   {
     return m_Metric;
   }
 
   /** Get the rms change in deformation field. */
-  virtual double GetRMSChange() const
+  virtual double
+  GetRMSChange() const
   {
     return m_RMSChange;
   }
@@ -200,11 +206,14 @@ public:
   /** Select if the fixed image or moving image gradient is used for
    * the computating the demon forces. The fixed image gradient is used
    * by default. */
-  virtual void SetUseMovingImageGradient(bool flag)
+  virtual void
+  SetUseMovingImageGradient(bool flag)
   {
     m_UseMovingImageGradient = flag;
   }
-  virtual bool GetUseMovingImageGradient() const
+
+  virtual bool
+  GetUseMovingImageGradient() const
   {
     return m_UseMovingImageGradient;
   }
@@ -219,13 +228,13 @@ public:
 
 protected:
   GPUDemonsRegistrationFunction();
-  ~GPUDemonsRegistrationFunction() {
-  }
+  ~GPUDemonsRegistrationFunction() {}
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** FixedImage image neighborhood iterator type. */
   typedef ConstNeighborhoodIterator< FixedImageType >
-  FixedImageNeighborhoodIteratorType;
+    FixedImageNeighborhoodIteratorType;
 
   /** A global data type for this class of equation. Used to store
    * information for computing the metric. */

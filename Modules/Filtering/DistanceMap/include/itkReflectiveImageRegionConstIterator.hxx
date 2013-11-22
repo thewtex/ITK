@@ -24,7 +24,7 @@ namespace itk
 {
 template< typename TImage >
 ReflectiveImageRegionConstIterator< TImage >
-::ReflectiveImageRegionConstIterator():ImageConstIteratorWithIndex< TImage >()
+::ReflectiveImageRegionConstIterator() : ImageConstIteratorWithIndex< TImage >()
 {
   for( unsigned int dim = 0; dim < TImage::ImageDimension; dim++ )
     {
@@ -36,7 +36,7 @@ ReflectiveImageRegionConstIterator< TImage >
 
 template< typename TImage >
 ReflectiveImageRegionConstIterator< TImage >
-::ReflectiveImageRegionConstIterator(TImage *ptr, const RegionType & region):
+::ReflectiveImageRegionConstIterator(TImage *ptr, const RegionType & region) :
   ImageConstIteratorWithIndex< TImage >(ptr, region)
 {
   for( unsigned int dim = 0; dim < TImage::ImageDimension; dim++ )
@@ -95,7 +95,7 @@ ReflectiveImageRegionConstIterator< TImage >
 {
   this->m_PositionIndex = this->m_BeginIndex + this->m_BeginOffset;
   this->m_Position = this->m_Image->GetBufferPointer()
-                     + this->m_Image->ComputeOffset(this->m_PositionIndex);
+    + this->m_Image->ComputeOffset(this->m_PositionIndex);
 
   this->m_Remaining = false;
   SizeType size = this->m_Region.GetSize();
@@ -185,6 +185,7 @@ ReflectiveImageRegionConstIterator< TImage >
 
   return *this;
 }
+
 } // end namespace itk
 
 #endif

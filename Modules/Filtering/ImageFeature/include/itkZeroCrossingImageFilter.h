@@ -60,7 +60,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class ZeroCrossingImageFilter:
+class ZeroCrossingImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -156,7 +156,7 @@ protected:
 
 private:
   ZeroCrossingImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);          //purposely not implemented
 
 };
 } //end of namespace itk

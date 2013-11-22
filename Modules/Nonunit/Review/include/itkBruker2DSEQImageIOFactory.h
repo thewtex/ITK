@@ -34,7 +34,7 @@ namespace itk
  *
  * \ingroup ITKReview
  */
-class Bruker2DSEQImageIOFactory:public ObjectFactoryBase
+class Bruker2DSEQImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -55,7 +55,8 @@ public:
   itkTypeMacro(Bruker2DSEQImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     Bruker2DSEQImageIOFactory::Pointer factory =
       Bruker2DSEQImageIOFactory::New();
@@ -65,11 +66,13 @@ public:
 
 protected:
   Bruker2DSEQImageIOFactory();
-  virtual ~Bruker2DSEQImageIOFactory();
+  virtual
+  ~Bruker2DSEQImageIOFactory();
 
 private:
   Bruker2DSEQImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);            //purposely not implemented
+
 };
 } // end namespace itk
 

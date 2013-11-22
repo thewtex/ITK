@@ -41,7 +41,7 @@ public:
   typedef SmartPointer< Self >                            Pointer;
   typedef SmartPointer< const Self >                      ConstPointer;
 
-    /** Run-time type information ( and related methods ) */
+  /** Run-time type information ( and related methods ) */
   itkTypeMacro(FFTConvolutionImageFilter, ImageToImageFilter);
 
   /** Dimensionality of input and output data is assumed to be the same. */
@@ -85,10 +85,10 @@ public:
   itkBooleanMacro(Normalize);
 
   typedef enum
-  {
+    {
     SAME = 0,
     VALID
-  } OutputRegionModeType;
+    } OutputRegionModeType;
 
   /** Sets the output region mode. If set to SAME, the output region
    * will be the same as the input region, and regions of the image
@@ -102,6 +102,7 @@ public:
   itkSetEnumMacro(OutputRegionMode, OutputRegionModeType);
   itkGetEnumMacro(OutputRegionMode, OutputRegionModeType);
   virtual void SetOutputRegionModeToSame();
+
   virtual void SetOutputRegionModeToValid();
 
 protected:
@@ -119,7 +120,8 @@ protected:
 
   /** Default superclass implementation ensures that input images
    * occupy same physical space. This is not needed for this filter. */
-  virtual void VerifyInputInformation() {};
+  virtual void
+  VerifyInputInformation() {}
 
 private:
   ConvolutionImageFilterBase(const Self &); //purposely not implemented

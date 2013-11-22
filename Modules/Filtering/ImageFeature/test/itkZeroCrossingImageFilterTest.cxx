@@ -20,38 +20,40 @@
 #include "itkZeroCrossingImageFilter.h"
 #include "itkNullImageToImageFilterDriver.hxx"
 
-inline std::ostream& operator<<(std::ostream &o, const itk::Vector<float, 3> &v)
+inline std::ostream&
+operator<<(std::ostream &o, const itk::Vector<float, 3> &v)
 {
   o << "["<< v[0] << " " << v[1] << " " << v[2] << "]";
   return o;
 }
 
-int itkZeroCrossingImageFilterTest(int, char * [] )
+int
+itkZeroCrossingImageFilterTest(int, char * [] )
 {
   try
     {
-      typedef itk::Image<float, 2> ImageType;
+    typedef itk::Image<float, 2> ImageType;
 
-      // Set up filter
-      itk::ZeroCrossingImageFilter<ImageType, ImageType>::Pointer
-        filter =
-        itk::ZeroCrossingImageFilter<ImageType, ImageType>::New();
+    // Set up filter
+    itk::ZeroCrossingImageFilter<ImageType, ImageType>::Pointer
+      filter =
+      itk::ZeroCrossingImageFilter<ImageType, ImageType>::New();
 
-      std::cout << "filter: " << filter;
-      // Run Test
-      itk::Size<2> sz;
-      sz[0] = 100;
-      sz[1] = 100;
+    std::cout << "filter: " << filter;
+    // Run Test
+    itk::Size<2> sz;
+    sz[0] = 100;
+    sz[1] = 100;
 
-      itk::NullImageToImageFilterDriver< ImageType, ImageType > test1;
-      test1.SetImageSize(sz);
-      test1.SetFilter(filter.GetPointer());
-      test1.Execute();
+    itk::NullImageToImageFilterDriver< ImageType, ImageType > test1;
+    test1.SetImageSize(sz);
+    test1.SetFilter(filter.GetPointer() );
+    test1.Execute();
     }
   catch(itk::ExceptionObject &err)
     {
-      (&err)->Print(std::cerr);
-      return EXIT_FAILURE;
+    (&err)->Print(std::cerr);
+    return EXIT_FAILURE;
     }
   return EXIT_SUCCESS;
 }

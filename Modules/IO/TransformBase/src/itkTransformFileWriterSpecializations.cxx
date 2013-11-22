@@ -23,9 +23,10 @@ namespace
 {
 /* Changes the precision type of input transform to the requested precision type */
 template<typename TOutputScalar, typename TInputScalar>
-inline void AddToTransformList(typename TransformBaseTemplate<TInputScalar>::ConstPointer &transform,
-                               std::list< typename TransformBaseTemplate<TOutputScalar>::ConstPointer > & transformList)
-  {
+inline void
+AddToTransformList(typename TransformBaseTemplate<TInputScalar>::ConstPointer &transform,
+                   std::list< typename TransformBaseTemplate<TOutputScalar>::ConstPointer > & transformList)
+{
   /* Pushes the converted transform to the input transform list */
   typedef TransformBaseTemplate<TInputScalar>        InputTransformType;
   typedef typename InputTransformType::ConstPointer  InputTransformConstPointer;
@@ -36,7 +37,7 @@ inline void AddToTransformList(typename TransformBaseTemplate<TInputScalar>::Con
   typedef std::list< OutputTransformPointer >        OutputTransformListType;
   typedef std::list< OutputTransformConstPointer >   OutputConstTransformListType;
 
-  const std::string transformName = transform->GetTransformTypeAsString();
+  const std::string      transformName = transform->GetTransformTypeAsString();
   OutputTransformPointer convertedTransform;
 
   typedef TransformIOHelper<TOutputScalar, TInputScalar> IOhelper;
@@ -56,7 +57,7 @@ inline void AddToTransformList(typename TransformBaseTemplate<TInputScalar>::Con
      3) Use a composite IO Helper agian to set the output transform list into the converted composite transform.
     */
     CompositeTransformIOHelperTemplate<TInputScalar> inputHelper;
-    InputConstTransformListType inputTransformList = inputHelper.GetTransformList( transform );
+    InputConstTransformListType                      inputTransformList = inputHelper.GetTransformList( transform );
 
     // create output transform list
     OutputTransformListType compositeTransformList;
@@ -72,16 +73,16 @@ inline void AddToTransformList(typename TransformBaseTemplate<TInputScalar>::Con
     // composite transform is the first transform of the input transform list
     ++it; // skip the composite transform
     for(; it != inputTransformList.end(); ++it)
-       {
-       // get the input sub transform
-       const InputTransformType *inSub = dynamic_cast< const InputTransformType *>( (*it).GetPointer() );
-       // convert each sub transform and push them to the output transform list
-       std::string inSubName = inSub->GetTransformTypeAsString();
-       OutputTransformPointer convertedSub = IOhelper::CreateNewTypeTransform( inSubName );
-       IOhelper::SetAllParameters( inSub, convertedSub );
-       // push back the converted sub transform to the composite transform list
-       compositeTransformList.push_back( convertedSub.GetPointer() );
-       }
+      {
+      // get the input sub transform
+      const InputTransformType *inSub = dynamic_cast< const InputTransformType *>( (*it).GetPointer() );
+      // convert each sub transform and push them to the output transform list
+      std::string            inSubName = inSub->GetTransformTypeAsString();
+      OutputTransformPointer convertedSub = IOhelper::CreateNewTypeTransform( inSubName );
+      IOhelper::SetAllParameters( inSub, convertedSub );
+      // push back the converted sub transform to the composite transform list
+      compositeTransformList.push_back( convertedSub.GetPointer() );
+      }
 
     convertedTransform = IOhelper::CreateNewTypeTransform( transformName ); // new composite transform
     CompositeTransformIOHelperTemplate<TOutputScalar> outputHelper;
@@ -89,19 +90,21 @@ inline void AddToTransformList(typename TransformBaseTemplate<TInputScalar>::Con
     outputHelper.SetTransformList(convertedTransform.GetPointer(), compositeTransformList);
     }
 
-  transformList.push_back( OutputTransformConstPointer(convertedTransform.GetPointer()) );
+  transformList.push_back( OutputTransformConstPointer(convertedTransform.GetPointer() ) );
 }
 
 template<>
-void AddToTransformList<double,double>(TransformBaseTemplate<double>::ConstPointer &transform,
-                                        std::list< TransformBaseTemplate<double>::ConstPointer > & transformList)
+void AddToTransformList<double,double
+                        >(TransformBaseTemplate<double>::ConstPointer &transform,
+                          std::list< TransformBaseTemplate<double>::ConstPointer > & transformList)
 {
   transformList.push_back( TransformBaseTemplate<double>::ConstPointer(transform) );
 }
 
 template<>
-void AddToTransformList<float,float>(TransformBaseTemplate<float>::ConstPointer &transform,
-                                      std::list< TransformBaseTemplate<float>::ConstPointer > & transformList)
+void AddToTransformList<float,float
+                        >(TransformBaseTemplate<float>::ConstPointer &transform,
+                          std::list< TransformBaseTemplate<float>::ConstPointer > & transformList)
 {
   transformList.push_back( TransformBaseTemplate<float>::ConstPointer(transform) );
 }
@@ -109,7 +112,8 @@ void AddToTransformList<float,float>(TransformBaseTemplate<float>::ConstPointer 
 }
 
 template<>
-void TransformFileWriterTemplate<double>
+void
+TransformFileWriterTemplate<double>
 ::PushBackTransformList(const Object *transObj)
 {
   TransformBaseTemplate<double>::ConstPointer dblptr = dynamic_cast<const TransformBaseTemplate<double> *>( transObj );
@@ -133,7 +137,8 @@ void TransformFileWriterTemplate<double>
 }
 
 template<>
-void TransformFileWriterTemplate<float>
+void
+TransformFileWriterTemplate<float>
 ::PushBackTransformList(const Object *transObj)
 {
   TransformBaseTemplate<double>::ConstPointer dblptr = dynamic_cast<const TransformBaseTemplate<double> *>( transObj );

@@ -167,6 +167,7 @@ EuclideanDistancePointMetric< TFixedPointSet, TMovingPointSet, TDistanceMap >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "DistanceMap: " << m_DistanceMap << std::endl;
   if ( m_ComputeSquaredDistance )
     {
@@ -177,6 +178,7 @@ EuclideanDistancePointMetric< TFixedPointSet, TMovingPointSet, TDistanceMap >
     os << indent << "m_ComputeSquaredDistance: False" << std::endl;
     }
 }
+
 } // end namespace itk
 
 #endif

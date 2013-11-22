@@ -37,7 +37,7 @@ namespace itk
  */
 template< typename T >
 DataObjectDecorator< T >
-::DataObjectDecorator():m_Component()
+::DataObjectDecorator() : m_Component()
 {}
 
 /**
@@ -86,6 +86,7 @@ DataObjectDecorator< T >
 
   os << indent << "Component: " << m_Component << std::endl;
 }
+
 } // end namespace itk
 
 #endif

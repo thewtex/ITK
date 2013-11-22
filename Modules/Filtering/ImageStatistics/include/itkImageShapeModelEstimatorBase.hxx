@@ -56,6 +56,7 @@ ImageShapeModelEstimatorBase< TInputImage, TOutputImage >
   os << indent << "InputImage: ";
   os << m_InputImage.GetPointer() << std::endl;
 } // end PrintSelf
+
 } // namespace itk
 
 #endif

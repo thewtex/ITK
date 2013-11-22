@@ -57,7 +57,7 @@ namespace itk
  */
 template< typename TInputImage, typename TKernelSource, typename TOutputImage=TInputImage >
 class ParametricBlindLeastSquaresDeconvolutionImageFilter :
-    public IterativeDeconvolutionImageFilter< TInputImage, typename TKernelSource::OutputImageType, TOutputImage >
+  public IterativeDeconvolutionImageFilter< TInputImage, typename TKernelSource::OutputImageType, TOutputImage >
 {
 public:
   /** Standard typedefs. */
@@ -65,12 +65,12 @@ public:
   typedef IterativeDeconvolutionImageFilter< TInputImage,
                                              typename TKernelSource::OutputImageType,
                                              TOutputImage >   Superclass;
-  typedef SmartPointer< Self >                                Pointer;
-  typedef SmartPointer< const Self >                          ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Other useful typedefs. */
-  typedef TInputImage   InputImageType;
-  typedef TOutputImage  OutputImageType;
+  typedef TInputImage  InputImageType;
+  typedef TOutputImage OutputImageType;
 
   /** Internal types used by the FFT filters. */
   typedef typename Superclass::InternalImageType               InternalImageType;
@@ -92,6 +92,7 @@ public:
 
   /** Set/get the parametric kernel source. */
   void SetKernelSource(KernelSourceType * kernelSource);
+
   itkGetModifiableObjectMacro(KernelSource, KernelSourceType);
 
   /** Set/get the scale factor (also known as learning rate) for the
@@ -106,7 +107,8 @@ public:
 
 protected:
   ParametricBlindLeastSquaresDeconvolutionImageFilter();
-  virtual ~ParametricBlindLeastSquaresDeconvolutionImageFilter();
+  virtual
+  ~ParametricBlindLeastSquaresDeconvolutionImageFilter();
 
   virtual void Initialize(ProgressAccumulator * progress,
                           float progressWeight,
@@ -121,73 +123,83 @@ protected:
 
 private:
   ParametricBlindLeastSquaresDeconvolutionImageFilter(const Self &); // purposely not implemented
-  void operator=(const Self &); // purposely not implemented
+  void operator=(const Self &);                                      // purposely not implemented
 
   template< typename TPixel >
-    class ParametricBlindLeastSquaresDeconvolutionDifference
+  class ParametricBlindLeastSquaresDeconvolutionDifference
   {
-  public:
+public:
     ParametricBlindLeastSquaresDeconvolutionDifference() {}
     ~ParametricBlindLeastSquaresDeconvolutionDifference() {}
 
-    bool operator!=(const ParametricBlindLeastSquaresDeconvolutionDifference &) const
+    bool
+    operator!=(const ParametricBlindLeastSquaresDeconvolutionDifference &) const
     {
       return false;
     }
 
-    bool operator==(const ParametricBlindLeastSquaresDeconvolutionDifference & other) const
+    bool
+    operator==(const ParametricBlindLeastSquaresDeconvolutionDifference & other) const
     {
       return !( *this != other );
     }
 
-    inline TPixel operator()(const TPixel & estimateFT,
-                             const TPixel & kernelEstimateFT,
-                             const TPixel & inputFT)
+    inline TPixel
+    operator()(const TPixel & estimateFT,
+               const TPixel & kernelEstimateFT,
+               const TPixel & inputFT)
     {
       return estimateFT * kernelEstimateFT - inputFT;
     }
+
   };
 
   template< typename TPixel >
-    class ParametricBlindLeastSquaresDeconvolutionImageUpdate
+  class ParametricBlindLeastSquaresDeconvolutionImageUpdate
   {
-  public:
+public:
     ParametricBlindLeastSquaresDeconvolutionImageUpdate() : m_Alpha(0.01) {}
     ~ParametricBlindLeastSquaresDeconvolutionImageUpdate() {}
 
-    bool operator!=(const ParametricBlindLeastSquaresDeconvolutionImageUpdate &) const
+    bool
+    operator!=(const ParametricBlindLeastSquaresDeconvolutionImageUpdate &) const
     {
       return false;
     }
 
-    bool operator==(const ParametricBlindLeastSquaresDeconvolutionImageUpdate & other) const
+    bool
+    operator==(const ParametricBlindLeastSquaresDeconvolutionImageUpdate & other) const
     {
       return !( *this != other );
     }
 
-    inline TPixel operator()(const TPixel & estimateFT,
-                             const TPixel & differenceFT,
-                             const TPixel & kernelFT)
+    inline TPixel
+    operator()(const TPixel & estimateFT,
+               const TPixel & differenceFT,
+               const TPixel & kernelFT)
     {
       // Because of the linearity of the Fourier transform, we can
       // perform the update step in the Fourier domain
       return estimateFT - m_Alpha * ( differenceFT * std::conj( kernelFT ) );
     }
 
-    void SetAlpha(double alpha)
+    void
+    SetAlpha(double alpha)
     {
       m_Alpha = alpha;
     }
-    double GetAlpha() const
+
+    double
+    GetAlpha() const
     {
       return m_Alpha;
     }
 
-  private:
+private:
     double m_Alpha;
   };
 
-  KernelSourcePointer             m_KernelSource;
+  KernelSourcePointer m_KernelSource;
 
   /** Step sizes for the gradient descent of the image and the
    * kernel parameters. These are very different spaces, so they
@@ -204,20 +216,20 @@ private:
   typedef ParametricBlindLeastSquaresDeconvolutionDifference< InternalComplexType >
     DifferenceFunctorType;
   typedef TernaryFunctorImageFilter< InternalComplexImageType,
-    InternalComplexImageType,
-    InternalComplexImageType,
-    InternalComplexImageType,
-    DifferenceFunctorType >
+                                     InternalComplexImageType,
+                                     InternalComplexImageType,
+                                     InternalComplexImageType,
+                                     DifferenceFunctorType >
     DifferenceFilterType;
   typename DifferenceFilterType::Pointer m_DifferenceFilter;
 
   typedef ParametricBlindLeastSquaresDeconvolutionImageUpdate< InternalComplexType >
     ImageUpdateFunctorType;
   typedef TernaryFunctorImageFilter< InternalComplexImageType,
-    InternalComplexImageType,
-    InternalComplexImageType,
-    InternalComplexImageType,
-    ImageUpdateFunctorType >
+                                     InternalComplexImageType,
+                                     InternalComplexImageType,
+                                     InternalComplexImageType,
+                                     ImageUpdateFunctorType >
     ImageUpdateFilterType;
   typename ImageUpdateFilterType::Pointer m_ImageUpdateFilter;
 
@@ -228,6 +240,5 @@ private:
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkParametricBlindLeastSquaresDeconvolutionImageFilter.hxx"
 #endif
-
 
 #endif

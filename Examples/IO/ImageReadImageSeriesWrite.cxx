@@ -27,13 +27,13 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageSeriesWriter.h"
 #include "itkNumericSeriesFileNames.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if (argc < 4 )
     {
@@ -49,8 +49,8 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< unsigned char, 3 >      ImageType;
-  typedef itk::ImageFileReader< ImageType >   ReaderType;
+  typedef itk::Image< unsigned char, 3 >    ImageType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -76,7 +76,7 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Image< unsigned char, 2 >     Image2DType;
+  typedef itk::Image< unsigned char, 2 > Image2DType;
 
   typedef itk::ImageSeriesWriter< ImageType, Image2DType > WriterType;
 
@@ -94,7 +94,7 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::NumericSeriesFileNames    NameGeneratorType;
+  typedef itk::NumericSeriesFileNames NameGeneratorType;
 
   NameGeneratorType::Pointer nameGenerator = NameGeneratorType::New();
   // Software Guide : EndCodeSnippet

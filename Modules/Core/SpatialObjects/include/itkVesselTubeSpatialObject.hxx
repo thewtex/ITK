@@ -18,7 +18,6 @@
 #ifndef __itkVesselTubeSpatialObject_hxx
 #define __itkVesselTubeSpatialObject_hxx
 
-
 #include "itkVesselTubeSpatialObject.h"
 
 namespace itk
@@ -26,7 +25,7 @@ namespace itk
 /** Constructor */
 template< unsigned int TDimension >
 VesselTubeSpatialObject< TDimension >
-::VesselTubeSpatialObject():Superclass()
+::VesselTubeSpatialObject() : Superclass()
 {
   this->m_ParentPoint = -1;
   this->SetDimension(TDimension);
@@ -48,6 +47,7 @@ VesselTubeSpatialObject< TDimension >
   os << indent << "VesselTubeSpatialObject(" << this << ")" << std::endl;
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif // end __itkVesselTubeSpatialObject_hxx

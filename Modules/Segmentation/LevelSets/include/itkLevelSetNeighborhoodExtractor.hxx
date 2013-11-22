@@ -60,6 +60,7 @@ LevelSetNeighborhoodExtractor< TLevelSet >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Input level set: " << m_InputLevelSet.GetPointer();
   os << std::endl;
   os << indent << "Level set value: " << m_LevelSetValue << std::endl;
@@ -336,6 +337,7 @@ LevelSetNeighborhoodExtractor< TLevelSet >
 
   return distance;
 }
+
 } // namespace itk
 
 #endif

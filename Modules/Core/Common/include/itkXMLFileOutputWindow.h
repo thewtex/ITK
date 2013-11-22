@@ -46,7 +46,7 @@ namespace itk
  * \ingroup OSSystemObjects
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT XMLFileOutputWindow:public FileOutputWindow
+class ITKCommon_EXPORT XMLFileOutputWindow : public FileOutputWindow
 {
 public:
   /** Standard class typedefs. */
@@ -81,7 +81,8 @@ public:
 
 protected:
   XMLFileOutputWindow();
-  virtual ~XMLFileOutputWindow();
+  virtual
+  ~XMLFileOutputWindow();
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void Initialize();
@@ -91,6 +92,7 @@ protected:
 private:
   XMLFileOutputWindow(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
+
 };
 } // end namespace itk
 

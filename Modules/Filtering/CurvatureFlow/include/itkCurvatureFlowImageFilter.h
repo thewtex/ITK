@@ -87,7 +87,7 @@ namespace itk
   * \ingroup ITKCurvatureFlow
   */
 template< typename TInputImage, typename TOutputImage >
-class CurvatureFlowImageFilter:
+class CurvatureFlowImageFilter :
   public DenseFiniteDifferenceImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -113,11 +113,11 @@ public:
 
   /** FiniteDifferenceFunction type. */
   typedef typename Superclass::FiniteDifferenceFunctionType
-  FiniteDifferenceFunctionType;
+    FiniteDifferenceFunctionType;
 
   /** CurvatureFlowFunction type. */
   typedef CurvatureFlowFunction< OutputImageType >
-  CurvatureFlowFunctionType;
+    CurvatureFlowFunctionType;
 
   /** Dimensionality of input and output data is assumed to be the same.
    * It is inherited from the superclass. */
@@ -162,7 +162,8 @@ protected:
 
   /** Supplies the halting criteria for this class of filters.  The
    * algorithm will stop after a user-specified number of iterations. */
-  virtual bool Halt()
+  virtual bool
+  Halt()
   {
     if ( this->GetElapsedIterations() == this->GetNumberOfIterations() )
       {

@@ -45,9 +45,11 @@ SparseImage< TNode, VImageDimension >
 ::Initialize()
 {
   Superclass::Initialize();
+
   m_NodeList     = NodeListType::New();
   m_NodeStore    = NodeStoreType::New();
 }
+
 } // end namespace itk
 
 #endif

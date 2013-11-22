@@ -72,9 +72,9 @@ template< unsigned int TPointDimension >
 const typename SurfaceSpatialObjectPoint< TPointDimension >::VectorType &
 SurfaceSpatialObjectPoint< TPointDimension >
 ::GetNormal(void) const
-{
+  {
   return m_Normal;
-}
+  }
 
 /** Print the object */
 template< unsigned int TPointDimension >
@@ -83,6 +83,7 @@ SurfaceSpatialObjectPoint< TPointDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "SurfaceSpatialObjectPoint(" << this << ")" << std::endl;
   os << indent << "Normal definition: ";
   os << indent <<  m_Normal << std::endl;
@@ -98,6 +99,7 @@ SurfaceSpatialObjectPoint< TPointDimension >
   this->m_X = rhs.m_X;
   return *this;
 }
+
 } // end namespace itk
 
 #endif

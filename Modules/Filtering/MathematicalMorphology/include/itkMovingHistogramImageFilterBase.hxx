@@ -225,5 +225,6 @@ MovingHistogramImageFilterBase< TInputImage, TOutputImage, TKernel >
 
   os << indent << "PixelsPerTranslation: " << m_PixelsPerTranslation << std::endl;
 }
+
 } // end namespace itk
 #endif

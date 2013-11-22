@@ -26,12 +26,10 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkResampleImageFilter.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -45,8 +43,8 @@
 #include "itkSimilarity2DTransform.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 5 )
     {
@@ -55,15 +53,15 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const     unsigned int   Dimension = 2;
-  typedef   unsigned char  InputPixelType;
-  typedef   unsigned char  OutputPixelType;
+  const     unsigned int Dimension = 2;
+  typedef   unsigned char InputPixelType;
+  typedef   unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -75,10 +73,9 @@ int main( int argc, char * argv[] )
   const double scale          = atof( argv[4] );
 
   typedef itk::ResampleImageFilter<
-                  InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
-
 
   //  Software Guide : BeginLatex
   //
@@ -90,9 +87,8 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Similarity2DTransform< double >  TransformType;
+  typedef itk::Similarity2DTransform< double > TransformType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -108,15 +104,13 @@ int main( int argc, char * argv[] )
   TransformType::Pointer transform = TransformType::New();
   // Software Guide : EndCodeSnippet
 
-
   typedef itk::LinearInterpolateImageFunction<
-                       InputImageType, double >  InterpolatorType;
+      InputImageType, double >  InterpolatorType;
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
 
   filter->SetInterpolator( interpolator );
 
   filter->SetDefaultPixelValue( 100 );
-
 
   //  Software Guide : BeginLatex
   //
@@ -126,23 +120,21 @@ int main( int argc, char * argv[] )
 
   reader->Update();
   const InputImageType::SpacingType&
-    spacing = reader->GetOutput()->GetSpacing();
+  spacing = reader->GetOutput()->GetSpacing();
   const InputImageType::PointType&
-    origin  = reader->GetOutput()->GetOrigin();
+  origin  = reader->GetOutput()->GetOrigin();
   const InputImageType::DirectionType&
-    direction  = reader->GetOutput()->GetDirection();
+                           direction  = reader->GetOutput()->GetDirection();
   InputImageType::SizeType size =
-      reader->GetOutput()->GetLargestPossibleRegion().GetSize();
+    reader->GetOutput()->GetLargestPossibleRegion().GetSize();
 
   filter->SetOutputOrigin( origin );
   filter->SetOutputSpacing( spacing );
   filter->SetOutputDirection( direction );
   filter->SetSize( size );
 
-
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
-
 
   //  Software Guide : BeginLatex
   //
@@ -161,7 +153,6 @@ int main( int argc, char * argv[] )
   transform->SetCenter( rotationCenter );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The rotation is specified with the method \code{SetAngle()}.
@@ -176,7 +167,6 @@ int main( int argc, char * argv[] )
   transform->SetAngle( angle );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The scale change is defined using the method \code{SetScale()}.
@@ -187,7 +177,6 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   transform->SetScale( scale );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -209,7 +198,6 @@ int main( int argc, char * argv[] )
   filter->SetTransform( transform );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Note that the order in which rotation, scaling and translation are
@@ -222,7 +210,6 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   try
     {
     writer->Update();
@@ -232,7 +219,6 @@ int main( int argc, char * argv[] )
     std::cerr << "Exception catched !" << std::endl;
     std::cerr << excep << std::endl;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -251,7 +237,6 @@ int main( int argc, char * argv[] )
   //  $10^{\circ}$.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

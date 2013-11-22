@@ -20,7 +20,8 @@
 
 #include "itkIdentityTransform.h"
 
-int itkIdentityTransformTest(int, char *[] )
+int
+itkIdentityTransformTest(int, char *[] )
 {
 
   std::cout << "==================================" << std::endl;

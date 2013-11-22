@@ -49,7 +49,8 @@ CompositeValleyFunction
   this->Initialize();
 }
 
-void CompositeValleyFunction
+void
+CompositeValleyFunction
 ::Initialize()
 {
   SizeValueType i, low, high;
@@ -79,4 +80,5 @@ void CompositeValleyFunction
 
   CreateCache(m_LowerBound, m_UpperBound, 1000000);
 }
+
 } // end of namespace itk

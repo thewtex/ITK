@@ -22,13 +22,14 @@
 #include "itkGaussianMembershipFunction.h"
 #include "itkNormalVariateGenerator.h"
 
-
 //Test if the SampleClassifier filter labels observations correctly
-int itkSampleClassifierFilterTest2( int, char * [] )
+int
+itkSampleClassifierFilterTest2( int, char * [] )
 {
 
   const unsigned int numberOfComponents = 1;
-  typedef float      MeasurementType;
+
+  typedef float MeasurementType;
 
   const unsigned int numberOfClasses = 2;
 
@@ -49,30 +50,30 @@ int itkSampleClassifierFilterTest2( int, char * [] )
     return EXIT_FAILURE;
     }
 
-  typedef FilterType::ClassLabelVectorObjectType               ClassLabelVectorObjectType;
-  typedef FilterType::ClassLabelVectorType                     ClassLabelVectorType;
-  typedef FilterType::MembershipFunctionVectorObjectType       MembershipFunctionVectorObjectType;
-  typedef FilterType::MembershipFunctionVectorType             MembershipFunctionVectorType;
+  typedef FilterType::ClassLabelVectorObjectType         ClassLabelVectorObjectType;
+  typedef FilterType::ClassLabelVectorType               ClassLabelVectorType;
+  typedef FilterType::MembershipFunctionVectorObjectType MembershipFunctionVectorObjectType;
+  typedef FilterType::MembershipFunctionVectorType       MembershipFunctionVectorType;
 
   typedef itk::Statistics::GaussianMembershipFunction< MeasurementVectorType >
-                                                       MembershipFunctionType;
+    MembershipFunctionType;
   typedef MembershipFunctionType::MeanVectorType       MeanVectorType;
   typedef MembershipFunctionType::CovarianceMatrixType CovarianceMatrixType;
 
-  typedef MembershipFunctionType::Pointer              MembershipFunctionPointer;
+  typedef MembershipFunctionType::Pointer MembershipFunctionPointer;
 
-  ClassLabelVectorObjectType::Pointer  classLabelsObject = ClassLabelVectorObjectType::New();
+  ClassLabelVectorObjectType::Pointer classLabelsObject = ClassLabelVectorObjectType::New();
   filter->SetClassLabels( classLabelsObject );
 
   MembershipFunctionVectorObjectType::Pointer membershipFunctionsObject =
-                                        MembershipFunctionVectorObjectType::New();
+    MembershipFunctionVectorObjectType::New();
   filter->SetMembershipFunctions( membershipFunctionsObject );
   // Add three membership functions and rerun the filter
-  MembershipFunctionVectorType &  membershipFunctionsVector = membershipFunctionsObject->Get();
+  MembershipFunctionVectorType & membershipFunctionsVector = membershipFunctionsObject->Get();
 
   MembershipFunctionPointer membershipFunction1 = MembershipFunctionType::New();
   membershipFunction1->SetMeasurementVectorSize( numberOfComponents );
-  MeanVectorType  mean1;
+  MeanVectorType mean1;
   itk::NumericTraits<MeanVectorType>::SetLength( mean1, numberOfComponents );
   mean1[0] = 10.5;
 
@@ -87,7 +88,7 @@ int itkSampleClassifierFilterTest2( int, char * [] )
   MembershipFunctionPointer membershipFunction2 = MembershipFunctionType::New();
   membershipFunction1->SetMeasurementVectorSize( numberOfComponents );
 
-  MeanVectorType  mean2;
+  MeanVectorType mean2;
   itk::NumericTraits<MeanVectorType>::SetLength( mean2, numberOfComponents );
   mean2[0] = 200.5;
   membershipFunction2->SetMean( mean2 );
@@ -102,18 +103,18 @@ int itkSampleClassifierFilterTest2( int, char * [] )
   // Add class labels
   ClassLabelVectorType & classLabelVector  = classLabelsObject->Get();
 
-  typedef FilterType::ClassLabelType        ClassLabelType;
+  typedef FilterType::ClassLabelType ClassLabelType;
 
-  ClassLabelType  class1 = 0;
+  ClassLabelType class1 = 0;
   classLabelVector.push_back( class1 );
 
-  ClassLabelType  class2 = 1;
+  ClassLabelType class2 = 1;
   classLabelVector.push_back( class2 );
 
   //Set a decision rule type
-  typedef itk::Statistics::MaximumDecisionRule  DecisionRuleType;
+  typedef itk::Statistics::MaximumDecisionRule DecisionRuleType;
 
-  DecisionRuleType::Pointer    decisionRule = DecisionRuleType::New();
+  DecisionRuleType::Pointer decisionRule = DecisionRuleType::New();
   filter->SetDecisionRule( decisionRule );
 
   //Generate samples from a Gaussian distribution with mean and
@@ -128,8 +129,8 @@ int itkSampleClassifierFilterTest2( int, char * [] )
 
   MeasurementVectorType mv;
   itk::NumericTraits<MeasurementVectorType>::SetLength( mv, numberOfComponents );
-  double mean = mean1[0];
-  double standardDeviation = vcl_sqrt(covariance1[0][0]);
+  double       mean = mean1[0];
+  double       standardDeviation = vcl_sqrt(covariance1[0][0]);
   unsigned int numberOfSampleEachClass = 10;
   for ( unsigned int i = 0; i < numberOfSampleEachClass; ++i )
     {
@@ -159,7 +160,7 @@ int itkSampleClassifierFilterTest2( int, char * [] )
     }
 
   //Check if the measurement vectors are correctly labelled.
-  const FilterType::MembershipSampleType* membershipSample = filter->GetOutput();
+  const FilterType::MembershipSampleType*         membershipSample = filter->GetOutput();
   FilterType::MembershipSampleType::ConstIterator iter = membershipSample->Begin();
 
   unsigned int sampleCounter = 0;

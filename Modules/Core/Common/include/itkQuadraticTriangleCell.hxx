@@ -309,6 +309,7 @@ QuadraticTriangleCell< TCellInterface >
   weights[4] = 4.0 * L1 * L2;
   weights[5] = 4.0 * L2 * L3;
 }
+
 } // end namespace itk
 
 #endif

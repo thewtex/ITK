@@ -38,7 +38,7 @@ HeavisideStepFunction< TInput, TOutput >
 ::Evaluate(const InputType & input) const
 {
   return ( input >= NumericTraits< InputType >::Zero ) ?
-          NumericTraits< OutputType >::One : NumericTraits< OutputType >::Zero;
+         NumericTraits< OutputType >::One : NumericTraits< OutputType >::Zero;
 }
 
 template< typename TInput, typename TOutput >
@@ -47,7 +47,7 @@ HeavisideStepFunction< TInput, TOutput >
 ::EvaluateDerivative(const InputType & input) const
 {
   return ( input == NumericTraits< InputType >::Zero ) ?
-    NumericTraits< OutputType >::One : NumericTraits< OutputType >::Zero;
+         NumericTraits< OutputType >::One : NumericTraits< OutputType >::Zero;
 }
 
 }

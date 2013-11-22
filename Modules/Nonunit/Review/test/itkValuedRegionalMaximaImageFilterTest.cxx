@@ -24,7 +24,8 @@
 #include "itkAndImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkValuedRegionalMaximaImageFilterTest(int argc, char * argv[])
+int
+itkValuedRegionalMaximaImageFilterTest(int argc, char * argv[])
 {
   const int dim = 2;
 
@@ -45,7 +46,7 @@ int itkValuedRegionalMaximaImageFilterTest(int argc, char * argv[])
   reader->SetFileName( argv[2] );
 
   typedef itk::ValuedRegionalMaximaImageFilter< ImageType, ImageType >
-                                                               FilterType;
+    FilterType;
   FilterType::Pointer filter = FilterType::New();
   filter->SetInput( reader->GetOutput() );
   filter->SetFullyConnected( atoi(argv[1]) );
@@ -56,7 +57,6 @@ int itkValuedRegionalMaximaImageFilterTest(int argc, char * argv[])
   writer->SetInput( filter->GetOutput() );
   writer->SetFileName( argv[3] );
   writer->Update();
-
 
   // produce the same output with other filters
   typedef itk::HConvexImageFilter< ImageType, ImageType > ConvexType;

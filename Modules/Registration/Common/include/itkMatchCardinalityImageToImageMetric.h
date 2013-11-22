@@ -64,7 +64,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingImage >
-class MatchCardinalityImageToImageMetric:
+class MatchCardinalityImageToImageMetric :
   public ImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
@@ -98,8 +98,9 @@ public:
   typedef typename Superclass::FixedImageRegionType    FixedImageRegionType;
 
   /** Get the derivatives of the match measure. */
-  void GetDerivative(const TransformParametersType &,
-                     DerivativeType & derivative) const
+  void
+  GetDerivative(const TransformParametersType &,
+                DerivativeType & derivative) const
   {
     itkWarningMacro(<< "This metric does not provide metric derivatives.");
     derivative.Fill(NumericTraits< typename DerivativeType::ValueType >::Zero);
@@ -124,12 +125,16 @@ public:
   itkGetConstMacro(MeasureMatches, bool);
 
   /** Return the multithreader used by this class. */
-  MultiThreader * GetMultiThreader()
-  { return m_Threader; }
+  MultiThreader *
+  GetMultiThreader()
+  {
+    return m_Threader;
+  }
 
 protected:
   MatchCardinalityImageToImageMetric();
-  virtual ~MatchCardinalityImageToImageMetric() {}
+  virtual
+  ~MatchCardinalityImageToImageMetric() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
@@ -164,7 +169,7 @@ protected:
     */
   struct ThreadStruct {
     Pointer Metric;
-  };
+    };
 
 private:
   MatchCardinalityImageToImageMetric(const Self &); //purposely not implemented

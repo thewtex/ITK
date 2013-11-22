@@ -96,6 +96,7 @@ PathToChainCodePathFilter< TInputPath, TOutputChainCodePath >
 
   os << indent << "MaximallyConnected: " << m_MaximallyConnected << std::endl;
 }
+
 } // end namespace itk
 
 #endif

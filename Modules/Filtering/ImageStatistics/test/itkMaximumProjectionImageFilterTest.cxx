@@ -21,8 +21,8 @@
 
 #include "itkMaximumProjectionImageFilter.h"
 
-
-int itkMaximumProjectionImageFilterTest(int argc, char * argv[])
+int
+itkMaximumProjectionImageFilterTest(int argc, char * argv[])
 {
   if( argc < 3 )
     {

@@ -16,33 +16,39 @@
  *
  *=========================================================================*/
 
-
 #include "itkFastMarchingImageFilterBase.h"
 #include "itkFastMarchingThresholdStoppingCriterion.h"
 #include "itkTextOutput.h"
 #include "itkCommand.h"
 
-
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 class ShowProgressObject
 {
 public:
   ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
+    std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+  }
+
   itk::ProcessObject::Pointer m_Process;
 };
 }
 
-int itkFastMarchingImageFilterRealTest1(int argc, char* argv[] )
+int
+itkFastMarchingImageFilterRealTest1(int argc, char* argv[] )
 {
   (void) argc;
   (void) argv;
 
-  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New().GetPointer() );
 
   // create a fastmarching object
   typedef float PixelType;
@@ -51,7 +57,7 @@ int itkFastMarchingImageFilterRealTest1(int argc, char* argv[] )
   typedef itk::Image< PixelType, Dimension > FloatImageType;
 
   typedef itk::FastMarchingThresholdStoppingCriterion< FloatImageType, FloatImageType >
-      CriterionType;
+    CriterionType;
 
   typedef itk::FastMarchingImageFilterBase< FloatImageType, FloatImageType >
     FastMarchingType;
@@ -62,15 +68,15 @@ int itkFastMarchingImageFilterRealTest1(int argc, char* argv[] )
   FastMarchingType::Pointer marcher = FastMarchingType::New();
   marcher->SetStoppingCriterion( criterion );
 
-  ShowProgressObject progressWatch(marcher);
+  ShowProgressObject                                    progressWatch(marcher);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
                                &ShowProgressObject::ShowProgress);
   marcher->AddObserver( itk::ProgressEvent(), command);
 
-  typedef FastMarchingType::NodeType      NodeType;
-  typedef FastMarchingType::NodePairType  NodePairType;
+  typedef FastMarchingType::NodeType     NodeType;
+  typedef FastMarchingType::NodePairType NodePairType;
 //  typedef FastMarchingType::NodeContainerType NodeContainerType;
   typedef FastMarchingType::NodePairContainerType NodePairContainerType;
 
@@ -134,7 +140,7 @@ int itkFastMarchingImageFilterRealTest1(int argc, char* argv[] )
   marcher->SetOutputSize( size );
 
   // setup a speed image of ones
-  FloatImageType::Pointer speedImage = FloatImageType::New();
+  FloatImageType::Pointer    speedImage = FloatImageType::New();
   FloatImageType::RegionType region;
   region.SetSize( size );
   speedImage->SetLargestPossibleRegion( region );
@@ -142,7 +148,7 @@ int itkFastMarchingImageFilterRealTest1(int argc, char* argv[] )
   speedImage->Allocate();
 
   itk::ImageRegionIterator<FloatImageType>
-    speedIter( speedImage, speedImage->GetBufferedRegion() );
+  speedIter( speedImage, speedImage->GetBufferedRegion() );
   while ( !speedIter.IsAtEnd() )
     {
     speedIter.Set( 1.0 );
@@ -162,7 +168,7 @@ int itkFastMarchingImageFilterRealTest1(int argc, char* argv[] )
   FloatImageType::Pointer output = marcher->GetOutput();
 
   itk::ImageRegionIterator<FloatImageType>
-    iterator( output, output->GetBufferedRegion() );
+  iterator( output, output->GetBufferedRegion() );
 
   bool passed = true;
 

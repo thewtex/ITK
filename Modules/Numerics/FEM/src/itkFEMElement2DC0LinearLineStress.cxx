@@ -23,7 +23,8 @@ namespace itk
 namespace fem
 {
 // Overload the CreateAnother() method.
-::itk::LightObject::Pointer Element2DC0LinearLineStress::CreateAnother(void) const
+::itk::LightObject::Pointer
+Element2DC0LinearLineStress::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
   Pointer copyPtr = Self::New();
@@ -40,8 +41,7 @@ namespace fem
 
 Element2DC0LinearLineStress
 ::Element2DC0LinearLineStress() : Superclass()
-{
-}
+{}
 
 Element2DC0LinearLineStress
 ::Element2DC0LinearLineStress(NodeIDType n1_, NodeIDType n2_, Material::ConstPointer m_) : Superclass()
@@ -84,7 +84,8 @@ Element2DC0LinearLineStress
   Me = Me * ( l * m_mat->GetDensityHeatProduct() * m_mat->GetCrossSectionalArea() / 6.0 );
 }
 
-void Element2DC0LinearLineStress::PrintSelf(std::ostream& os, Indent indent) const
+void
+Element2DC0LinearLineStress::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }

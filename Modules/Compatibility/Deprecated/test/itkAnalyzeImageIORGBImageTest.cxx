@@ -18,7 +18,8 @@
 
 #include "itkAnalyzeImageIOTest.h"
 
-int itkAnalyzeImageIORGBImageTest(int ac, char* av[])
+int
+itkAnalyzeImageIORGBImageTest(int ac, char* av[])
 {
   //
   // first argument is passing in the writable directory to do all testing
@@ -32,20 +33,20 @@ int itkAnalyzeImageIORGBImageTest(int ac, char* av[])
   typedef itk::RGBPixel<unsigned char>        RGBPixelType;
   typedef itk::Image<RGBPixelType, Dimension> RGBImageType;
 
-  RGBImageType::Pointer im(NewRGBImage<RGBImageType>());
-  itk::ImageRegionIterator<RGBImageType> it(im,im->GetLargestPossibleRegion());
-  RGBImageType::DirectionType dir(CORDirCosines<RGBImageType>());
+  RGBImageType::Pointer                  im(NewRGBImage<RGBImageType>() );
+  itk::ImageRegionIterator<RGBImageType> it(im,im->GetLargestPossibleRegion() );
+  RGBImageType::DirectionType            dir(CORDirCosines<RGBImageType>() );
   im->SetDirection(dir);
   vnl_random randgen(8775070);
   for(it.GoToBegin(); !it.IsAtEnd(); ++it)
     {
     RGBPixelType pixel;
-    pixel[0] = static_cast<RGBPixelType::ValueType>(randgen.lrand32(0,255));
-    pixel[1] = static_cast<RGBPixelType::ValueType>(randgen.lrand32(0,255));
-    pixel[2] = static_cast<RGBPixelType::ValueType>(randgen.lrand32(0,255));
+    pixel[0] = static_cast<RGBPixelType::ValueType>(randgen.lrand32(0,255) );
+    pixel[1] = static_cast<RGBPixelType::ValueType>(randgen.lrand32(0,255) );
+    pixel[2] = static_cast<RGBPixelType::ValueType>(randgen.lrand32(0,255) );
     it.Set(pixel);
     }
-  int status(EXIT_SUCCESS);
+  int               status(EXIT_SUCCESS);
   const std::string filename("RGBImageTest.hdr");
   try
     {
@@ -53,15 +54,15 @@ int itkAnalyzeImageIORGBImageTest(int ac, char* av[])
     }
   catch ( itk::ExceptionObject & ex )
     {
-      std::string message;
-      message = "Problem found while writing ";
-      message += filename;
-      message += "\n";
-      message += ex.GetLocation();
-      message += "\n";
-      message += ex.GetDescription();
-      std::cerr << message << std::endl;
-      status = EXIT_FAILURE;
+    std::string message;
+    message = "Problem found while writing ";
+    message += filename;
+    message += "\n";
+    message += ex.GetLocation();
+    message += "\n";
+    message += ex.GetDescription();
+    std::cerr << message << std::endl;
+    status = EXIT_FAILURE;
     }
   if(status == EXIT_SUCCESS)
     {
@@ -84,12 +85,12 @@ int itkAnalyzeImageIORGBImageTest(int ac, char* av[])
       }
     if(status == EXIT_SUCCESS)
       {
-      itk::ImageRegionIterator<RGBImageType> it2(im2,im2->GetLargestPossibleRegion());
+      itk::ImageRegionIterator<RGBImageType> it2(im2,im2->GetLargestPossibleRegion() );
       for(it.GoToBegin(),it2.GoToBegin();
           !it.IsAtEnd() && !it2.IsAtEnd();
           ++it,++it2)
         {
-        if(it.Value() != it2.Value())
+        if(it.Value() != it2.Value() )
           {
           std::cout << "Pixel "
                     << it2.Value() << " (from disk) != "
@@ -100,6 +101,6 @@ int itkAnalyzeImageIORGBImageTest(int ac, char* av[])
         }
       }
     }
-  itk::IOTestHelper::Remove(filename.c_str());
+  itk::IOTestHelper::Remove(filename.c_str() );
   return status;
 }

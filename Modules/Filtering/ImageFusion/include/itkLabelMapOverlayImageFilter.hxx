@@ -42,9 +42,10 @@ LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
   Superclass::GenerateInputRequestedRegion();
 
   // We need all the input.
-  LabelMapPointer input = const_cast<LabelMapType *>(this->GetInput());
+  LabelMapPointer input = const_cast<LabelMapType *>(this->GetInput() );
+
   if ( !input )
-    { return; }
+        { return; }
   input->SetRequestedRegion( input->GetLargestPossibleRegion() );
 }
 
@@ -54,9 +55,8 @@ LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
-    ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
+  ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
 }
-
 
 template<typename TLabelMap, typename TFeatureImage, typename TOutputImage>
 void
@@ -64,6 +64,7 @@ LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
 ::BeforeThreadedGenerateData()
 {
   ThreadIdType nbOfThreads = this->GetNumberOfThreads();
+
   if( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() != 0 )
     {
     nbOfThreads = std::min( this->GetNumberOfThreads(), itk::MultiThreader::GetGlobalMaximumNumberOfThreads() );
@@ -81,22 +82,22 @@ LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
 
 }
 
-
 template<typename TLabelMap, typename TFeatureImage, typename TOutputImage>
 void
 LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
 ::ThreadedGenerateData( const OutputImageRegionType& outputRegionForThread, ThreadIdType threadId )
 {
-  OutputImageType * output = this->GetOutput();
-  LabelMapType * input = const_cast<LabelMapType *>(this->GetInput());
+  OutputImageType *        output = this->GetOutput();
+  LabelMapType *           input = const_cast<LabelMapType *>(this->GetInput() );
   const FeatureImageType * input2 = this->GetFeatureImage();
 
   FunctorType function;
+
   function.SetBackgroundValue( input->GetBackgroundValue() );
   function.SetOpacity( m_Opacity );
 
   ImageScanlineConstIterator< FeatureImageType > featureIt( input2, outputRegionForThread );
-  ImageScanlineIterator< OutputImageType > outputIt( output, outputRegionForThread );
+  ImageScanlineIterator< OutputImageType >       outputIt( output, outputRegionForThread );
 
   while ( !featureIt.IsAtEnd() )
     {
@@ -117,17 +118,17 @@ LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
   Superclass::ThreadedGenerateData( outputRegionForThread, threadId );
 }
 
-
 template<typename TLabelMap, typename TFeatureImage, typename TOutputImage>
 void
 LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
 ::ThreadedProcessLabelObject( LabelObjectType * labelObject )
 {
-  OutputImageType * output = this->GetOutput();
-  LabelMapType * input = const_cast<LabelMapType *>(this->GetInput());
+  OutputImageType *        output = this->GetOutput();
+  LabelMapType *           input = const_cast<LabelMapType *>(this->GetInput() );
   const FeatureImageType * input2 = this->GetFeatureImage();
 
   FunctorType function;
+
   function.SetBackgroundValue( input->GetBackgroundValue() );
   function.SetOpacity( m_Opacity );
 
@@ -135,7 +136,7 @@ LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
 
   // the user want the mask to be the background of the label collection image
   typename LabelObjectType::ConstIndexIterator it( labelObject );
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
     const IndexType idx = it.GetIndex();
     output->SetPixel( idx, function( input2->GetPixel(idx), label ) );
@@ -175,6 +176,5 @@ LabelMapOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
   os << indent << "Opacity: " << m_Opacity << std::endl;
 }
 
-
-}// end namespace itk
+} // end namespace itk
 #endif

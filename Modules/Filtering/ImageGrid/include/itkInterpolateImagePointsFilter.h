@@ -77,7 +77,7 @@ template< typename TInputImage,
           typename TOutputImage,
           typename TCoordType = typename TInputImage::PixelType,
           typename InterpolatorType = BSplineInterpolateImageFunction< TInputImage, TCoordType > >
-class InterpolateImagePointsFilter:
+class InterpolateImagePointsFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -137,8 +137,11 @@ public:
   itkGetConstMacro(DefaultPixelValue, PixelType);
 
   /** Returns a pointer to the  interpolator. */
-  InterpolatorPointer GetInterpolator()
-  { return m_Interpolator; }
+  InterpolatorPointer
+  GetInterpolator()
+  {
+    return m_Interpolator;
+  }
 
   /** Overloaded to ensure that output is sized the same as the coordinate inputs
     * and not the size of the input image. */
@@ -175,7 +178,8 @@ protected:
    *
    * \sa ProcessObject::VerifyInputInformation
    */
-  virtual void VerifyInputInformation() {}
+  virtual void
+  VerifyInputInformation() {}
 
 private:
 

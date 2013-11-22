@@ -66,6 +66,7 @@ FancyString&
 FancyString::ToData( std::vector<T>& outputData, int count )
 {
   StringTools::ToData( *this, outputData, count );
+
   return *this;
 }
 
@@ -78,6 +79,7 @@ FancyString&
 FancyString::FromData( const std::vector<T>& inputData )
 {
   StringTools::FromData( *this, inputData );
+
   return *this;
 }
 
@@ -99,6 +101,7 @@ FancyString&
 FancyString::ToData( Array<T>& outputData, int count )
 {
   StringTools::ToData( *this, outputData, count );
+
   return *this;
 }
 
@@ -111,6 +114,7 @@ FancyString&
 FancyString::FromData( const Array<T>& inputData )
 {
   StringTools::FromData( *this, inputData );
+
   return *this;
 }
 
@@ -127,6 +131,7 @@ FancyString&
 FancyString::ToData( T& outputData )
 {
   StringTools::ToData( *this, outputData );
+
   return *this;
 }
 
@@ -139,6 +144,7 @@ FancyString&
 FancyString::FromData( const T& inputData )
 {
   StringTools::FromData( *this, inputData );
+
   return *this;
 }
 
@@ -157,7 +163,8 @@ namespace itk
  * An exception will be thrown if errors were encountered during the conversion.
  */
 template < typename T >
-FancyString& operator>>( FancyString& s, std::vector<T>& data )
+FancyString&
+operator>>( FancyString& s, std::vector<T>& data )
 {
   return s.ToData( data, 0 );
 }
@@ -167,7 +174,8 @@ FancyString& operator>>( FancyString& s, std::vector<T>& data )
  * An exception will be thrown if errors were encountered during the conversion.
  */
 template < typename T >
-FancyString& operator<<( FancyString& s, const std::vector<T>& data )
+FancyString&
+operator<<( FancyString& s, const std::vector<T>& data )
 {
   return s.FromData( data );
 }
@@ -182,7 +190,8 @@ FancyString& operator<<( FancyString& s, const std::vector<T>& data )
  * An exception will be thrown if errors were encountered during the conversion.
  */
 template < typename T >
-FancyString& operator>>( FancyString& s, Array<T>& data )
+FancyString&
+operator>>( FancyString& s, Array<T>& data )
 {
   return s.ToData( data, 0 );
 }
@@ -192,7 +201,8 @@ FancyString& operator>>( FancyString& s, Array<T>& data )
  * An exception will be thrown if errors were encountered during the conversion.
  */
 template < typename T >
-FancyString& operator<<( FancyString& s, const Array<T>& data )
+FancyString&
+operator<<( FancyString& s, const Array<T>& data )
 {
   return s.FromData( data );
 }
@@ -206,7 +216,8 @@ FancyString& operator<<( FancyString& s, const Array<T>& data )
  * An exception will be thrown if errors were encountered during the conversion.
  */
 template < typename T >
-FancyString& operator>>( FancyString& s, T& data )
+FancyString&
+operator>>( FancyString& s, T& data )
 {
   return s.ToData( data );
 }
@@ -216,7 +227,8 @@ FancyString& operator>>( FancyString& s, T& data )
  * An exception will be thrown if errors were encountered during the conversion.
  */
 template < typename T >
-FancyString& operator<<( FancyString& s, const T& data )
+FancyString&
+operator<<( FancyString& s, const T& data )
 {
   return s.FromData( data );
 }

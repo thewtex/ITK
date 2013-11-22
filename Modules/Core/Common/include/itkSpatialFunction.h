@@ -44,7 +44,7 @@ namespace itk
 template< typename TOutput,
           unsigned int VImageDimension = 3,
           typename TInput = Point< double, VImageDimension > >
-class SpatialFunction:public FunctionBase< TInput, TOutput >
+class SpatialFunction : public FunctionBase< TInput, TOutput >
 {
 public:
   /** Standard class typedefs. */
@@ -71,12 +71,14 @@ public:
 
 protected:
   SpatialFunction();
-  virtual ~SpatialFunction();
+  virtual
+  ~SpatialFunction();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   SpatialFunction(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
 };
 } // end namespace itk
 

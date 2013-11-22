@@ -22,7 +22,6 @@
 #include "itkAttributeLabelObject.h"
 #include <set>
 
-
 namespace itk {
 /** \class AttributeSelectionLabelMapFilter
  * \brief remove the objects according to the value of their attribute
@@ -45,9 +44,9 @@ namespace itk {
  * \ingroup ITKLabelMap
  */
 template<typename TImage, typename TAttributeAccessor=
-    typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
+           typename Functor::AttributeLabelObjectAccessor< typename TImage::LabelObjectType > >
 class AttributeSelectionLabelMapFilter :
-    public InPlaceLabelMapFilter<TImage>
+  public InPlaceLabelMapFilter<TImage>
 {
 public:
   /** Standard class typedefs. */
@@ -88,21 +87,24 @@ public:
     (Concept::Convertible<int, InputImagePixelType>));
   itkConceptMacro(InputOStreamWritableCheck,
     (Concept::OStreamWritable<InputImagePixelType>));*/
-  // End concept checking
+// End concept checking
 #endif
 
   /**
    * Set/Get the threshold used to keep or remove the objects.
    */
-  const AttributeSetType & GetAttributeSet() const
-    {
+  const AttributeSetType &
+  GetAttributeSet() const
+  {
     return m_AttributeSet;
-    }
-  void SetAttributeSet( const AttributeSetType & set )
-    {
+  }
+
+  void
+  SetAttributeSet( const AttributeSetType & set )
+  {
     m_AttributeSet = set;
     this->Modified();
-    }
+  }
 
   /**
    * Set/Get whether the objects with the specified attribute values should be kept
@@ -113,34 +115,37 @@ public:
   itkBooleanMacro( Exclude );
 
   /** Clear the attribute set, and add the attribute passed in parameter */
-  void SetAttribute( const AttributeValueType & attr )
-    {
+  void
+  SetAttribute( const AttributeValueType & attr )
+  {
     this->ClearAttributeSet();
     this->AddAttribute( attr );
-    }
+  }
 
-  void ClearAttributeSet()
-    {
-    if( ! m_AttributeSet.empty() )
+  void
+  ClearAttributeSet()
+  {
+    if( !m_AttributeSet.empty() )
       {
       m_AttributeSet.clear();
       this->Modified();
       }
-    }
+  }
 
-  void AddAttribute(  const AttributeValueType & attr )
-    {
+  void
+  AddAttribute(  const AttributeValueType & attr )
+  {
     const typename AttributeSetType::size_type size = m_AttributeSet.size();
     m_AttributeSet.insert( attr );
     if( size != m_AttributeSet.size() )
       {
       this->Modified();
       }
-    }
+  }
 
 protected:
   AttributeSelectionLabelMapFilter();
-  ~AttributeSelectionLabelMapFilter() {};
+  ~AttributeSelectionLabelMapFilter() {}
 
   void GenerateData();
 
@@ -148,7 +153,7 @@ protected:
 
 private:
   AttributeSelectionLabelMapFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                   //purposely not implemented
 
   AttributeSetType m_AttributeSet;
   bool             m_Exclude;

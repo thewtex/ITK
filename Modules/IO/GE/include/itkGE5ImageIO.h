@@ -33,7 +33,6 @@
 #define __itkGE5ImageIO_h
 #include "ITKIOGEExport.h"
 
-
 #include "itkIPLCommonImageIO.h"
 #include "Ge5xHdr.h"
 
@@ -48,7 +47,7 @@ namespace itk
  *
  * \ingroup ITKIOGE
  */
-class ITKIOGE_EXPORT GE5ImageIO:public IPLCommonImageIO
+class ITKIOGE_EXPORT GE5ImageIO : public IPLCommonImageIO
 {
 public:
   /** Standard class typedefs. */
@@ -126,6 +125,7 @@ private:
 
   GE5ImageIO(const Self &);     //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

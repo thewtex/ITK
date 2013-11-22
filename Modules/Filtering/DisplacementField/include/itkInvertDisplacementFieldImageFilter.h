@@ -51,17 +51,17 @@ public:
   /** Extract dimension from input image. */
   itkStaticConstMacro( ImageDimension, unsigned int, TInputImage::ImageDimension );
 
-  typedef TInputImage                          InputFieldType;
-  typedef TOutputImage                         OutputFieldType;
+  typedef TInputImage  InputFieldType;
+  typedef TOutputImage OutputFieldType;
 
-  typedef InputFieldType                       DisplacementFieldType;
-  typedef OutputFieldType                      InverseDisplacementFieldType;
+  typedef InputFieldType  DisplacementFieldType;
+  typedef OutputFieldType InverseDisplacementFieldType;
 
   /** Image typedef support. */
-  typedef typename OutputFieldType::PixelType     PixelType;
-  typedef typename OutputFieldType::PixelType     VectorType;
-  typedef typename OutputFieldType::RegionType    RegionType;
-  typedef typename OutputFieldType::IndexType     IndexType;
+  typedef typename OutputFieldType::PixelType  PixelType;
+  typedef typename OutputFieldType::PixelType  VectorType;
+  typedef typename OutputFieldType::RegionType RegionType;
+  typedef typename OutputFieldType::IndexType  IndexType;
 
   typedef typename OutputFieldType::PointType     PointType;
   typedef typename OutputFieldType::SpacingType   SpacingType;
@@ -70,35 +70,37 @@ public:
   typedef typename OutputFieldType::DirectionType DirectionType;
 
   /** Other typedef */
-  typedef typename VectorType::ComponentType                        RealType;
-  typedef Image<RealType, ImageDimension>                           RealImageType;
-  typedef VectorInterpolateImageFunction<InputFieldType, RealType>  InterpolatorType;
+  typedef typename VectorType::ComponentType                       RealType;
+  typedef Image<RealType, ImageDimension>                          RealImageType;
+  typedef VectorInterpolateImageFunction<InputFieldType, RealType> InterpolatorType;
 
   /** Get the interpolator. */
   itkGetModifiableObjectMacro( Interpolator, InterpolatorType );
 
   /** Set the deformation field */
-  void SetDisplacementField( const InputFieldType *field )
-    {
+  void
+  SetDisplacementField( const InputFieldType *field )
+  {
     itkDebugMacro( "setting deformation field to " << field );
     if ( field != this->GetInput( 0 ) )
       {
       this->SetInput( 0, field );
       this->Modified();
-      if( ! this->m_Interpolator.IsNull() )
+      if( !this->m_Interpolator.IsNull() )
         {
         this->m_Interpolator->SetInputImage( field );
         }
       }
-    }
+  }
 
   /**
    * Get the deformation field.
    */
-  const InputFieldType* GetDisplacementField() const
-    {
+  const InputFieldType*
+  GetDisplacementField() const
+  {
     return this->GetInput( 0 );
-    }
+  }
 
   /** Set/get the initial estimate for the inverse field (optional). */
   itkSetInputMacro( InverseFieldInitialEstimate, InverseDisplacementFieldType );
@@ -135,7 +137,8 @@ protected:
   InvertDisplacementFieldImageFilter();
 
   /** Deconstructor */
-  virtual ~InvertDisplacementFieldImageFilter();
+  virtual
+  ~InvertDisplacementFieldImageFilter();
 
   /** Standard print self function **/
   void PrintSelf( std::ostream& os, Indent indent ) const;
@@ -148,27 +151,27 @@ protected:
 
 private:
   InvertDisplacementFieldImageFilter( const Self& ); //purposely not implemented
-  void operator=( const Self& );                 //purposely not implemented
+  void operator=( const Self& );                     //purposely not implemented
 
   /** The interpolator. */
   typename InterpolatorType::Pointer                m_Interpolator;
 
-  unsigned int                                      m_MaximumNumberOfIterations;
+  unsigned int m_MaximumNumberOfIterations;
 
-  RealType                                          m_MaxErrorToleranceThreshold;
-  RealType                                          m_MeanErrorToleranceThreshold;
+  RealType m_MaxErrorToleranceThreshold;
+  RealType m_MeanErrorToleranceThreshold;
 
   // internal ivars necessary for multithreading basic operations
 
   typename DisplacementFieldType::Pointer           m_ComposedField;
   typename RealImageType::Pointer                   m_ScaledNormImage;
 
-  RealType                                          m_MaxErrorNorm;
-  RealType                                          m_MeanErrorNorm;
-  RealType                                          m_Epsilon;
-  SpacingType                                       m_DisplacementFieldSpacing;
-  bool                                              m_DoThreadedEstimateInverse;
-  bool                                              m_EnforceBoundaryCondition;
+  RealType    m_MaxErrorNorm;
+  RealType    m_MeanErrorNorm;
+  RealType    m_Epsilon;
+  SpacingType m_DisplacementFieldSpacing;
+  bool        m_DoThreadedEstimateInverse;
+  bool        m_EnforceBoundaryCondition;
 
 };
 

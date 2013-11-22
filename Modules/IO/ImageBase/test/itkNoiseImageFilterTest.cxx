@@ -24,10 +24,11 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkFilterWatcher.h"
 
-int itkNoiseImageFilterTest(int ac, char* av[] )
+int
+itkNoiseImageFilterTest(int ac, char* av[] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   if(ac < 3)
     {
@@ -47,7 +48,7 @@ int itkNoiseImageFilterTest(int ac, char* av[] )
   typedef itk::NoiseImageFilter<myImageIn,myImageOut> FilterType;
 
   FilterType::Pointer filter = FilterType::New();
-  FilterWatcher filterWatch(filter);
+  FilterWatcher       filterWatch(filter);
 
   typedef itk::RescaleIntensityImageFilter<myImageOut,myImageChar> RescaleFilterType;
 
@@ -59,7 +60,7 @@ int itkNoiseImageFilterTest(int ac, char* av[] )
   try
     {
     radius.Fill(5);
-    filter->SetInput (input->GetOutput());
+    filter->SetInput (input->GetOutput() );
     filter->SetRadius (radius);
     filter->Update();
     }
@@ -71,10 +72,10 @@ int itkNoiseImageFilterTest(int ac, char* av[] )
 
   // Generate test image
   itk::ImageFileWriter<myImageChar>::Pointer writer;
-    writer = itk::ImageFileWriter<myImageChar>::New();
-    writer->SetInput( rescale->GetOutput() );
-    writer->SetFileName( av[2] );
-    writer->Update();
+  writer = itk::ImageFileWriter<myImageChar>::New();
+  writer->SetInput( rescale->GetOutput() );
+  writer->SetFileName( av[2] );
+  writer->Update();
 
-    return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }

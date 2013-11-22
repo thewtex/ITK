@@ -93,6 +93,7 @@ PathConstIterator< TImage, TPath >
 {
   // We need to modify m_CurrentPathPosition, m_CurrentImageIndex, m_IsAtEnd
   const OffsetType offset = m_Path->IncrementInput(m_CurrentPathPosition);
+
   if ( m_ZeroOffset == offset )
     {
     // We tried to go past the end (and we are still there)
@@ -110,6 +111,7 @@ PathConstIterator< TImage, TPath >
     m_CurrentImageIndex += offset;
     }
 }
+
 } // end namespace itk
 
 #endif

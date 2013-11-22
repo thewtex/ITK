@@ -56,10 +56,10 @@ class TimeVaryingVelocityFieldTransform :
 {
 public:
   /** Standard class typedefs. */
-  typedef TimeVaryingVelocityFieldTransform                 Self;
-  typedef VelocityFieldTransform<TScalar, NDimensions>      Superclass;
-  typedef SmartPointer<Self>                                Pointer;
-  typedef SmartPointer<const Self>                          ConstPointer;
+  typedef TimeVaryingVelocityFieldTransform            Self;
+  typedef VelocityFieldTransform<TScalar, NDimensions> Superclass;
+  typedef SmartPointer<Self>                           Pointer;
+  typedef SmartPointer<const Self>                     ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( TimeVaryingVelocityFieldTransform, VelocityFieldTransform );
@@ -71,50 +71,56 @@ public:
   typedef typename Superclass::InverseTransformBasePointer InverseTransformBasePointer;
 
   /** Interpolator types.*/
-  typedef typename Superclass::InterpolatorType                     InterpolatorType;
-  typedef typename Superclass::VelocityFieldInterpolatorType        VelocityFieldIntegratorType;
+  typedef typename Superclass::InterpolatorType              InterpolatorType;
+  typedef typename Superclass::VelocityFieldInterpolatorType VelocityFieldIntegratorType;
 
   /** Field types. */
-  typedef typename Superclass::DisplacementFieldType                DisplacementFieldType;
-  typedef typename Superclass::VelocityFieldType                    VelocityFieldType;
+  typedef typename Superclass::DisplacementFieldType DisplacementFieldType;
+  typedef typename Superclass::VelocityFieldType     VelocityFieldType;
 
-  typedef VelocityFieldType                                         TimeVaryingVelocityFieldType;
-  typedef typename VelocityFieldType::Pointer                       TimeVaryingVelocityFieldPointer;
+  typedef VelocityFieldType                   TimeVaryingVelocityFieldType;
+  typedef typename VelocityFieldType::Pointer TimeVaryingVelocityFieldPointer;
 
   /** Scalar type. */
-  typedef typename Superclass::ScalarType          ScalarType;
+  typedef typename Superclass::ScalarType ScalarType;
 
   /** Type of the input parameters. */
-  typedef typename Superclass::ParametersType          ParametersType;
-  typedef typename ParametersType::ValueType           ParametersValueType;
-  typedef typename Superclass::NumberOfParametersType  NumberOfParametersType;
+  typedef typename Superclass::ParametersType         ParametersType;
+  typedef typename ParametersType::ValueType          ParametersValueType;
+  typedef typename Superclass::NumberOfParametersType NumberOfParametersType;
 
   /** Derivative type */
-  typedef typename Superclass::DerivativeType       DerivativeType;
+  typedef typename Superclass::DerivativeType DerivativeType;
 
   typedef typename Transform<TScalar,NDimensions,NDimensions>::Pointer TransformPointer;
 
   /** Get the time-varying velocity field. */
-#if ! defined ( ITK_FUTURE_LEGACY_REMOVE )
-  typename VelocityFieldType::Pointer GetTimeVaryingVelocityField()
-    {
+#if !defined ( ITK_FUTURE_LEGACY_REMOVE )
+  typename VelocityFieldType::Pointer
+  GetTimeVaryingVelocityField()
+  {
     return this->GetModifiableVelocityField();
-    }
+  }
+
 #endif
-  typename VelocityFieldType::Pointer GetModifiableTimeVaryingVelocityField()
-    {
+  typename VelocityFieldType::Pointer
+  GetModifiableTimeVaryingVelocityField()
+  {
     return this->GetModifiableVelocityField();
-    }
-  typename VelocityFieldType::ConstPointer GetTimeVaryingVelocityField() const
-    {
+  }
+
+  typename VelocityFieldType::ConstPointer
+  GetTimeVaryingVelocityField() const
+  {
     return this->GetVelocityField();
-    }
+  }
 
   /** Set the time-varying velocity field.  */
-  virtual void SetTimeVaryingVelocityField( VelocityFieldType * field )
-    {
+  virtual void
+  SetTimeVaryingVelocityField( VelocityFieldType * field )
+  {
     this->SetVelocityField( field );
-    }
+  }
 
   /** Trigger the computation of the displacement field by integrating
    * the time-varying velocity field. */
@@ -122,11 +128,13 @@ public:
 
 protected:
   TimeVaryingVelocityFieldTransform();
-  virtual ~TimeVaryingVelocityFieldTransform();
+  virtual
+  ~TimeVaryingVelocityFieldTransform();
 
 private:
   TimeVaryingVelocityFieldTransform( const Self& ); //purposely not implemented
-  void operator=( const Self& ); //purposely not implemented
+  void operator=( const Self& );                    //purposely not implemented
+
 };
 
 } // end namespace itk

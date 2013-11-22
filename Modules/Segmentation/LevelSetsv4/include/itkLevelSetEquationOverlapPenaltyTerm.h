@@ -45,7 +45,7 @@ namespace itk
 template< typename TInput, // Input image or mesh
           typename TLevelSetContainer >
 class LevelSetEquationOverlapPenaltyTerm :
-    public LevelSetEquationTermBase< TInput, TLevelSetContainer >
+  public LevelSetEquationTermBase< TInput, TLevelSetContainer >
 {
 public:
   typedef LevelSetEquationOverlapPenaltyTerm                     Self;
@@ -64,31 +64,30 @@ public:
   typedef typename Superclass::InputPixelType     InputPixelType;
   typedef typename Superclass::InputPixelRealType InputPixelRealType;
 
-  typedef typename Superclass::LevelSetContainerType      LevelSetContainerType;
-  typedef typename Superclass::LevelSetContainerPointer   LevelSetContainerPointer;
-  typedef typename Superclass::LevelSetType               LevelSetType;
-  typedef typename Superclass::LevelSetPointer            LevelSetPointer;
-  typedef typename Superclass::LevelSetOutputPixelType    LevelSetOutputPixelType;
-  typedef typename Superclass::LevelSetOutputRealType     LevelSetOutputRealType;
-  typedef typename Superclass::LevelSetInputIndexType     LevelSetInputIndexType;
-  typedef typename Superclass::LevelSetGradientType       LevelSetGradientType;
-  typedef typename Superclass::LevelSetHessianType        LevelSetHessianType;
-  typedef typename Superclass::LevelSetIdentifierType     LevelSetIdentifierType;
+  typedef typename Superclass::LevelSetContainerType    LevelSetContainerType;
+  typedef typename Superclass::LevelSetContainerPointer LevelSetContainerPointer;
+  typedef typename Superclass::LevelSetType             LevelSetType;
+  typedef typename Superclass::LevelSetPointer          LevelSetPointer;
+  typedef typename Superclass::LevelSetOutputPixelType  LevelSetOutputPixelType;
+  typedef typename Superclass::LevelSetOutputRealType   LevelSetOutputRealType;
+  typedef typename Superclass::LevelSetInputIndexType   LevelSetInputIndexType;
+  typedef typename Superclass::LevelSetGradientType     LevelSetGradientType;
+  typedef typename Superclass::LevelSetHessianType      LevelSetHessianType;
+  typedef typename Superclass::LevelSetIdentifierType   LevelSetIdentifierType;
 
-  typedef typename Superclass::HeavisideType              HeavisideType;
-  typedef typename Superclass::HeavisideConstPointer      HeavisideConstPointer;
+  typedef typename Superclass::HeavisideType         HeavisideType;
+  typedef typename Superclass::HeavisideConstPointer HeavisideConstPointer;
 
   typedef typename Superclass::LevelSetDataType LevelSetDataType;
 
-  typedef typename Superclass::DomainMapImageFilterType   DomainMapImageFilterType;
-  typedef typename Superclass::CacheImageType             CacheImageType;
+  typedef typename Superclass::DomainMapImageFilterType DomainMapImageFilterType;
+  typedef typename Superclass::CacheImageType           CacheImageType;
 
   typedef typename LevelSetContainerType::IdListType          IdListType;
   typedef typename LevelSetContainerType::IdListIterator      IdListIterator;
   typedef typename LevelSetContainerType::IdListConstIterator IdListConstIterator;
 
   typedef CompensatedSummation<LevelSetOutputRealType> CompensatedSummationType;
-
 
   /** Update the term parameter values at end of iteration */
   virtual void Update();
@@ -102,18 +101,18 @@ public:
   /** Compute the sum of Heaviside functions in the multi-levelset cases
    *  except the current levelset */
   virtual void ComputeSumTerm( const LevelSetInputIndexType& index,
-                                  LevelSetOutputRealType& sum );
+                               LevelSetOutputRealType& sum );
 
   /** Supply updates at pixels to keep the term parameters always updated */
   virtual void UpdatePixel( const LevelSetInputIndexType& index,
                             const LevelSetOutputRealType& oldValue,
                             const LevelSetOutputRealType& newValue );
 
-
 protected:
   LevelSetEquationOverlapPenaltyTerm();
 
-  virtual ~LevelSetEquationOverlapPenaltyTerm();
+  virtual
+  ~LevelSetEquationOverlapPenaltyTerm();
 
   /** Returns the term contribution for a given location index */
   virtual LevelSetOutputRealType Value( const LevelSetInputIndexType& index );
@@ -124,10 +123,10 @@ protected:
 
 private:
   LevelSetEquationOverlapPenaltyTerm( const Self& ); // purposely not implemented
-  void operator = ( const Self& ); // purposely not implemented
+  void operator =( const Self& );                    // purposely not implemented
 
   DomainMapImageFilterType *m_DomainMapImageFilter;
-  CacheImageType           *m_CacheImage;
+  CacheImageType *          m_CacheImage;
 };
 
 }

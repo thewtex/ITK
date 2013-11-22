@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TValueType >
-class TreeNode:public Object
+class TreeNode : public Object
 {
 public:
 
@@ -50,7 +50,7 @@ public:
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
   typedef std::vector< Pointer >     ChildrenListType;
-  typedef ::itk::OffsetValueType     ChildIdentifier;
+  typedef::itk::OffsetValueType      ChildIdentifier;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -111,7 +111,11 @@ public:
 
   /** Get the internal list of children */
 #if !defined( CABLE_CONFIGURATION )
-  virtual ChildrenListType & GetChildrenList() { return m_Children; }
+  virtual ChildrenListType &
+  GetChildrenList() {
+    return m_Children;
+  }
+
 #endif
 
   /** Set the data of the node */
@@ -120,7 +124,8 @@ public:
 protected:
 
   TreeNode();
-  virtual ~TreeNode();
+  virtual
+  ~TreeNode();
   TValueType m_Data;
 
   Self *m_Parent;
@@ -130,6 +135,7 @@ protected:
 private:
   TreeNode(const Self &);       //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

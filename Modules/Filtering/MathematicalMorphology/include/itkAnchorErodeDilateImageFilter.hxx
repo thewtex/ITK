@@ -20,16 +20,14 @@
 
 #include "itkAnchorErodeDilateImageFilter.h"
 
-
 #include "itkAnchorUtilities.h"
 namespace itk
 {
 template< typename TImage, typename TKernel, typename TFunction1 >
 AnchorErodeDilateImageFilter< TImage, TKernel, TFunction1 >
-::AnchorErodeDilateImageFilter():
+::AnchorErodeDilateImageFilter() :
   m_Boundary( NumericTraits< InputImagePixelType >::Zero )
-{
-}
+{}
 
 template< typename TImage, typename TKernel, typename TFunction1 >
 void
@@ -140,6 +138,7 @@ AnchorErodeDilateImageFilter< TImage, TKernel, TFunction1 >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Boundary: " << m_Boundary << std::endl;
 }
 

@@ -64,7 +64,7 @@ namespace itk
  */
 
 template< typename TNode, unsigned int VImageDimension = 2 >
-class SparseImage:public Image< TNode *, VImageDimension >
+class SparseImage : public Image< TNode *, VImageDimension >
 {
 public:
   /** Standard typedefs. */
@@ -93,7 +93,7 @@ public:
   /** Tyepdef for the functor used to access a neighborhood of pixel
    * pointers. */
   typedef NeighborhoodAccessorFunctor< Self >
-  NeighborhoodAccessorFunctorType;
+    NeighborhoodAccessorFunctorType;
 
   typedef typename Superclass::IOPixelType IOPixelType;
 
@@ -103,17 +103,24 @@ public:
 
   /** Return the NeighborhoodAccessor functor. This method is called by the
    * neighborhood iterators. */
-  NeighborhoodAccessorFunctorType GetNeighborhoodAccessor()
-  { return NeighborhoodAccessorFunctorType(); }
+  NeighborhoodAccessorFunctorType
+  GetNeighborhoodAccessor()
+  {
+    return NeighborhoodAccessorFunctorType();
+  }
 
   /** Return the NeighborhoodAccessor functor. This method is called by the
    * neighborhood iterators. */
-  const NeighborhoodAccessorFunctorType GetNeighborhoodAccessor() const
-  { return NeighborhoodAccessorFunctorType(); }
+  const NeighborhoodAccessorFunctorType
+  GetNeighborhoodAccessor() const
+  {
+    return NeighborhoodAccessorFunctorType();
+  }
 
   /** This function should be used to allocate memory for a variable at the
       desired pixel location. */
-  NodeType * AddNode(const IndexType & index)
+  NodeType *
+  AddNode(const IndexType & index)
   {
     m_NodeList->PushFront( m_NodeStore->Borrow() );
     NodeType *node = m_NodeList->Front();
@@ -124,7 +131,8 @@ public:
 
   /** This function returns the allocated node list which can be used to
       iterate through the valid nodes. */
-  NodeListType * GetNodeList()
+  NodeListType *
+  GetNodeList()
   {
     return m_NodeList;
   }
@@ -147,6 +155,7 @@ private:
 
   SparseImage(const Self &);    //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

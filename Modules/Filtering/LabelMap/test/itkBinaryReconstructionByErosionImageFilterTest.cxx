@@ -22,7 +22,8 @@
 #include "itkBinaryReconstructionByErosionImageFilter.h"
 #include "itkTestingMacros.h"
 
-int itkBinaryReconstructionByErosionImageFilterTest(int argc, char * argv[])
+int
+itkBinaryReconstructionByErosionImageFilterTest(int argc, char * argv[])
 {
   if( argc != 6 )
     {

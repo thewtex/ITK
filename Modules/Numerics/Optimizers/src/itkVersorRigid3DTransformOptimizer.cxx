@@ -84,6 +84,7 @@ VersorRigid3DTransformOptimizer
 
   this->SetCurrentPosition(newParameters);
 }
+
 } // end namespace itk
 
 #endif

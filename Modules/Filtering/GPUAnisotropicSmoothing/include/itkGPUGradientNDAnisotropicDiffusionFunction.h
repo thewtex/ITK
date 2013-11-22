@@ -95,7 +95,8 @@ public:
                                  void *globalData );
 
   /** This method is called prior to each iteration of the solver. */
-  virtual void InitializeIteration()
+  virtual void
+  InitializeIteration()
   {
     m_K = static_cast< PixelType >( this->GetAverageGradientMagnitudeSquared()
                                     * this->GetConductanceParameter() * this->GetConductanceParameter() * -2.0f );
@@ -103,8 +104,7 @@ public:
 
 protected:
   GPUGradientNDAnisotropicDiffusionFunction();
-  ~GPUGradientNDAnisotropicDiffusionFunction() {
-  }
+  ~GPUGradientNDAnisotropicDiffusionFunction() {}
 
   /** Inner product function. */
   NeighborhoodInnerProduct< ImageType > m_InnerProduct;

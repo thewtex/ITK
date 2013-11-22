@@ -23,7 +23,8 @@
 #include "itkTextOutput.h"
 #include "itkVectorImage.h"
 
-int itkVectorConnectedComponentImageFilterTest(int argc, char* argv[] )
+int
+itkVectorConnectedComponentImageFilterTest(int argc, char* argv[] )
 {
   if( argc < 1 )
     {
@@ -34,7 +35,7 @@ int itkVectorConnectedComponentImageFilterTest(int argc, char* argv[] )
     }
 
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   const unsigned int Dimension = 2;
   typedef itk::Vector<float,Dimension> PixelType;
@@ -46,10 +47,10 @@ int itkVectorConnectedComponentImageFilterTest(int argc, char* argv[] )
   typedef itk::Image<LabelPixelType, Dimension>  LabelImageType;
 
   // create an image of vectors
-  ImageType::Pointer image = ImageType::New();
+  ImageType::Pointer    image = ImageType::New();
   ImageType::RegionType region;
-  ImageType::SizeType size; size.Fill(100);
-  ImageType::IndexType index; index.Fill(0);
+  ImageType::SizeType   size; size.Fill(100);
+  ImageType::IndexType  index; index.Fill(0);
 
   region.SetSize(size);
   region.SetIndex(index);
@@ -66,73 +67,73 @@ int itkVectorConnectedComponentImageFilterTest(int argc, char* argv[] )
   index[1] = 0;
   region.SetSize(size);
   region.SetIndex(index);
-  {
-  PixelType pixel;
-  pixel[0] = 1; pixel[1] = 0;
-  std::cout << "pixel: " << pixel << std::endl;
-  itk::ImageRegionIterator<ImageType> it(image, region);
-  std::cout << region;
-  it.GoToBegin();
-  while (!it.IsAtEnd())
     {
-    it.Set(pixel);
-    ++it;
+    PixelType pixel;
+    pixel[0] = 1; pixel[1] = 0;
+    std::cout << "pixel: " << pixel << std::endl;
+    itk::ImageRegionIterator<ImageType> it(image, region);
+    std::cout << region;
+    it.GoToBegin();
+    while (!it.IsAtEnd() )
+      {
+      it.Set(pixel);
+      ++it;
+      }
     }
-  }
 
   index[0] = width/2;
   index[1] = 0;
   region.SetSize(size);
   region.SetIndex(index);
-  {
-  PixelType pixel;
-  pixel[0] = 0; pixel[1] = -1;
-  std::cout << "pixel: " << pixel << std::endl;
-  std::cout << region;
-  itk::ImageRegionIterator<ImageType> it(image, region);
-  it.GoToBegin();
-  while (!it.IsAtEnd())
     {
-    it.Set(pixel);
-    ++it;
+    PixelType pixel;
+    pixel[0] = 0; pixel[1] = -1;
+    std::cout << "pixel: " << pixel << std::endl;
+    std::cout << region;
+    itk::ImageRegionIterator<ImageType> it(image, region);
+    it.GoToBegin();
+    while (!it.IsAtEnd() )
+      {
+      it.Set(pixel);
+      ++it;
+      }
     }
-  }
 
   index[0] = 0;
   index[1] = width/2;
   region.SetSize(size);
   region.SetIndex(index);
-  {
-  PixelType pixel;
-  pixel[0] = -1; pixel[1] = 0;
-  std::cout << "pixel: " << pixel << std::endl;
-  std::cout << region;
-  itk::ImageRegionIterator<ImageType> it(image, region);
-  it.GoToBegin();
-  while (!it.IsAtEnd())
     {
-    it.Set(pixel);
-    ++it;
+    PixelType pixel;
+    pixel[0] = -1; pixel[1] = 0;
+    std::cout << "pixel: " << pixel << std::endl;
+    std::cout << region;
+    itk::ImageRegionIterator<ImageType> it(image, region);
+    it.GoToBegin();
+    while (!it.IsAtEnd() )
+      {
+      it.Set(pixel);
+      ++it;
+      }
     }
-  }
 
   index[0] = width/2;
   index[1] = width/2;
   region.SetSize(size);
   region.SetIndex(index);
-  {
-  PixelType pixel;
-  pixel[0] = 0; pixel[1] = 1;
-  std::cout << "pixel: " << pixel << std::endl;
-  std::cout << region;
-  itk::ImageRegionIterator<ImageType> it(image, region);
-  it.GoToBegin();
-  while (!it.IsAtEnd())
     {
-    it.Set(pixel);
-    ++it;
+    PixelType pixel;
+    pixel[0] = 0; pixel[1] = 1;
+    std::cout << "pixel: " << pixel << std::endl;
+    std::cout << region;
+    itk::ImageRegionIterator<ImageType> it(image, region);
+    it.GoToBegin();
+    while (!it.IsAtEnd() )
+      {
+      it.Set(pixel);
+      ++it;
+      }
     }
-  }
 
   index[0] = width/4;
   index[1] = width/4;
@@ -140,24 +141,24 @@ int itkVectorConnectedComponentImageFilterTest(int argc, char* argv[] )
   size[1] = width/2;
   region.SetSize(size);
   region.SetIndex(index);
-  {
-  PixelType pixel;
-  pixel[0] = 1; pixel[1] = 1;
-  pixel.Normalize();
-  std::cout << "pixel: " << pixel << std::endl;
-  std::cout << region;
-  itk::ImageRegionIterator<ImageType> it(image, region);
-  it.GoToBegin();
-  while (!it.IsAtEnd())
     {
-    it.Set(pixel);
-    ++it;
+    PixelType pixel;
+    pixel[0] = 1; pixel[1] = 1;
+    pixel.Normalize();
+    std::cout << "pixel: " << pixel << std::endl;
+    std::cout << region;
+    itk::ImageRegionIterator<ImageType> it(image, region);
+    it.GoToBegin();
+    while (!it.IsAtEnd() )
+      {
+      it.Set(pixel);
+      ++it;
+      }
     }
-  }
 
   typedef itk::VectorConnectedComponentImageFilter<
-                            ImageType,
-                            OutputImageType >  VectorFilterType;
+      ImageType,
+      OutputImageType >  VectorFilterType;
 
   VectorFilterType::Pointer filter = VectorFilterType::New();
   filter->SetInput( image );
@@ -171,10 +172,10 @@ int itkVectorConnectedComponentImageFilterTest(int argc, char* argv[] )
 
   try
     {
-    writer->SetInput (relabel->GetOutput());
+    writer->SetInput (relabel->GetOutput() );
     writer->SetFileName( argv[1] );
     writer->Update();
-    filter->SetFunctor(filter->GetFunctor());
+    filter->SetFunctor(filter->GetFunctor() );
     }
   catch( itk::ExceptionObject & excep )
     {
@@ -187,8 +188,8 @@ int itkVectorConnectedComponentImageFilterTest(int argc, char* argv[] )
   // with VectorImages
   typedef itk::VectorImage<float, 2> VectorImageType;
   typedef itk::VectorConnectedComponentImageFilter< VectorImageType,
-                                                     OutputImageType,
-                                                     LabelImageType> VectorImageFilterType;
+                                                    OutputImageType,
+                                                    LabelImageType> VectorImageFilterType;
   VectorImageFilterType::Pointer vfilter = VectorImageFilterType::New();
 
   return EXIT_SUCCESS;

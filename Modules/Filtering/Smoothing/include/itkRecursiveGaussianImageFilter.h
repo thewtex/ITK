@@ -59,7 +59,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage = TInputImage >
-class RecursiveGaussianImageFilter:
+class RecursiveGaussianImageFilter :
   public RecursiveSeparableImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -155,7 +155,8 @@ public:
 
 protected:
   RecursiveGaussianImageFilter();
-  virtual ~RecursiveGaussianImageFilter() {}
+  virtual
+  ~RecursiveGaussianImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Set up the coefficients of the filter to approximate a specific kernel.

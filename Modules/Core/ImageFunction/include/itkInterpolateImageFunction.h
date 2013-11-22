@@ -41,7 +41,7 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TInputImage, typename TCoordRep = double >
-class InterpolateImageFunction:
+class InterpolateImageFunction :
   public ImageFunction< TInputImage,
                         typename NumericTraits< typename TInputImage::PixelType >::RealType, TCoordRep >
 {
@@ -89,7 +89,8 @@ public:
    *
    * ImageFunction::IsInsideBuffer() can be used to check bounds before
    * calling the method. */
-  virtual OutputType Evaluate(const PointType & point) const
+  virtual OutputType
+  Evaluate(const PointType & point) const
   {
     ContinuousIndexType index;
 
@@ -118,7 +119,8 @@ public:
    *
    * ImageFunction::IsInsideBuffer() can be used to check bounds before
    * calling the method. */
-  virtual OutputType EvaluateAtIndex(const IndexType & index) const
+  virtual OutputType
+  EvaluateAtIndex(const IndexType & index) const
   {
     return ( static_cast< RealType >( this->GetInputImage()->GetPixel(index) ) );
   }
@@ -126,12 +128,16 @@ public:
 protected:
   InterpolateImageFunction(){}
   ~InterpolateImageFunction(){}
-  void PrintSelf(std::ostream & os, Indent indent) const
-  { Superclass::PrintSelf(os, indent); }
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+  }
 
 private:
   InterpolateImageFunction(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 } // end namespace itk
 

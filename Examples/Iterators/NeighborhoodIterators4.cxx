@@ -63,7 +63,8 @@
 #include "itkGaussianOperator.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   if ( argc < 4 )
     {
@@ -96,7 +97,7 @@ int main( int argc, char ** argv )
     }
 
   ImageType::Pointer output = ImageType::New();
-  output->SetRegions(reader->GetOutput()->GetRequestedRegion());
+  output->SetRegions(reader->GetOutput()->GetRequestedRegion() );
   output->Allocate();
 
   itk::NeighborhoodInnerProduct<ImageType> innerProduct;
@@ -104,13 +105,12 @@ int main( int argc, char ** argv )
   typedef itk::NeighborhoodAlgorithm
     ::ImageBoundaryFacesCalculator< ImageType > FaceCalculatorType;
 
-  FaceCalculatorType faceCalculator;
-  FaceCalculatorType::FaceListType faceList;
+  FaceCalculatorType                         faceCalculator;
+  FaceCalculatorType::FaceListType           faceList;
   FaceCalculatorType::FaceListType::iterator fit;
 
-  IteratorType out;
+  IteratorType             out;
   NeighborhoodIteratorType it;
-
 
 // Software Guide : BeginLatex
 // The Gaussian operator, like the Sobel operator, is instantiated with a pixel
@@ -148,7 +148,7 @@ int main( int argc, char ** argv )
     gaussianOperator.CreateDirectional();
 
     faceList = faceCalculator(input, output->GetRequestedRegion(),
-                              gaussianOperator.GetRadius());
+                              gaussianOperator.GetRadius() );
 
     for ( fit=faceList.begin(); fit != faceList.end(); ++fit )
       {
@@ -157,7 +157,7 @@ int main( int argc, char ** argv )
 
       out = IteratorType( output, *fit );
 
-      for (it.GoToBegin(), out.GoToBegin(); ! it.IsAtEnd(); ++it, ++out)
+      for (it.GoToBegin(), out.GoToBegin(); !it.IsAtEnd(); ++it, ++out)
         {
         out.Set( innerProduct(it, gaussianOperator) );
         }
@@ -172,7 +172,6 @@ int main( int argc, char ** argv )
       }
     }
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -203,7 +202,7 @@ int main( int argc, char ** argv )
   typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   typedef itk::RescaleIntensityImageFilter<
-    ImageType, WriteImageType > RescaleFilterType;
+      ImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 

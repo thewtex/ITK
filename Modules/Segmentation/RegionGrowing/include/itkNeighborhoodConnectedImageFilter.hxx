@@ -95,6 +95,7 @@ NeighborhoodConnectedImageFilter< TInputImage, TOutputImage >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   if ( this->GetInput() )
     {
     InputImagePointer image =
@@ -109,6 +110,7 @@ NeighborhoodConnectedImageFilter< TInputImage, TOutputImage >
 ::EnlargeOutputRequestedRegion(DataObject *output)
 {
   Superclass::EnlargeOutputRequestedRegion(output);
+
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -143,6 +145,7 @@ NeighborhoodConnectedImageFilter< TInputImage, TOutputImage >
     progress.CompletedPixel();
     }
 }
+
 } // end namespace itk
 
 #endif

@@ -37,30 +37,32 @@
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef  CommandIterationUpdate   Self;
-  typedef  itk::Command             Superclass;
-  typedef itk::SmartPointer<Self>   Pointer;
+  typedef  CommandIterationUpdate Self;
+  typedef  itk::Command           Superclass;
+  typedef itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {}
 
 public:
 
-  typedef itk::LevenbergMarquardtOptimizer     OptimizerType;
-  typedef const OptimizerType *                OptimizerPointer;
+  typedef itk::LevenbergMarquardtOptimizer OptimizerType;
+  typedef const OptimizerType *            OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     OptimizerPointer optimizer =
-                         dynamic_cast< OptimizerPointer >( object );
+      dynamic_cast< OptimizerPointer >( object );
 
-    if( ! itk::IterationEvent().CheckEvent( &event ) )
+    if( !itk::IterationEvent().CheckEvent( &event ) )
       {
       return;
       }
@@ -69,12 +71,12 @@ public:
     std::cout << "Position = "  << optimizer->GetCachedCurrentPosition();
     std::cout << std::endl << std::endl;
 
-    }
+  }
 
 };
 
-
-int main(int argc, char * argv[] )
+int
+main(int argc, char * argv[] )
 {
 
   if( argc < 3 )
@@ -89,14 +91,14 @@ int main(int argc, char * argv[] )
 // Software Guide : BeginCodeSnippet
   const unsigned int Dimension = 2;
 
-  typedef itk::PointSet< float, Dimension >   PointSetType;
+  typedef itk::PointSet< float, Dimension > PointSetType;
 
   PointSetType::Pointer fixedPointSet  = PointSetType::New();
   PointSetType::Pointer movingPointSet = PointSetType::New();
 
-  typedef PointSetType::PointType     PointType;
+  typedef PointSetType::PointType PointType;
 
-  typedef PointSetType::PointsContainer  PointsContainer;
+  typedef PointSetType::PointsContainer PointsContainer;
 
   PointsContainer::Pointer fixedPointContainer  = PointsContainer::New();
   PointsContainer::Pointer movingPointContainer = PointsContainer::New();
@@ -104,9 +106,8 @@ int main(int argc, char * argv[] )
   PointType fixedPoint;
   PointType movingPoint;
 
-
   // Read the file containing coordinates of fixed points.
-  std::ifstream   fixedFile;
+  std::ifstream fixedFile;
   fixedFile.open( argv[1] );
   if( fixedFile.fail() )
     {
@@ -129,7 +130,7 @@ int main(int argc, char * argv[] )
     fixedPointSet->GetNumberOfPoints() << std::endl;
 
   // Read the file containing coordinates of moving points.
-  std::ifstream   movingFile;
+  std::ifstream movingFile;
   movingFile.open( argv[2] );
   if( movingFile.fail() )
     {
@@ -148,58 +149,52 @@ int main(int argc, char * argv[] )
     }
   movingPointSet->SetPoints( movingPointContainer );
   std::cout << "Number of moving Points = "
-    << movingPointSet->GetNumberOfPoints() << std::endl;
-
+            << movingPointSet->GetNumberOfPoints() << std::endl;
 
 //-----------------------------------------------------------
 // Set up  the Metric
 //-----------------------------------------------------------
   typedef itk::EuclideanDistancePointMetric<
-                                    PointSetType,
-                                    PointSetType>
-                                                    MetricType;
+      PointSetType,
+      PointSetType>
+    MetricType;
 
-  typedef MetricType::TransformType                 TransformBaseType;
-  typedef TransformBaseType::ParametersType         ParametersType;
-  typedef TransformBaseType::JacobianType           JacobianType;
+  typedef MetricType::TransformType         TransformBaseType;
+  typedef TransformBaseType::ParametersType ParametersType;
+  typedef TransformBaseType::JacobianType   JacobianType;
 
-  MetricType::Pointer  metric = MetricType::New();
-
+  MetricType::Pointer metric = MetricType::New();
 
 //-----------------------------------------------------------
 // Set up a Transform
 //-----------------------------------------------------------
 
-  typedef itk::TranslationTransform< double, Dimension >      TransformType;
+  typedef itk::TranslationTransform< double, Dimension > TransformType;
 
   TransformType::Pointer transform = TransformType::New();
-
 
   // Optimizer Type
   typedef itk::LevenbergMarquardtOptimizer OptimizerType;
 
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
+  OptimizerType::Pointer optimizer     = OptimizerType::New();
   optimizer->SetUseCostFunctionGradient(false);
 
   // Registration Method
   typedef itk::PointSetToPointSetRegistrationMethod<
-                                            PointSetType,
-                                            PointSetType >
-                                                    RegistrationType;
+      PointSetType,
+      PointSetType >
+    RegistrationType;
 
-
-  RegistrationType::Pointer   registration  = RegistrationType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
   // Scale the translation components of the Transform in the Optimizer
   OptimizerType::ScalesType scales( transform->GetNumberOfParameters() );
   scales.Fill( 0.01 );
 
-
-  unsigned long   numberOfIterations =  100;
-  double          gradientTolerance  =  1e-5;    // convergence criterion
-  double          valueTolerance     =  1e-5;    // convergence criterion
-  double          epsilonFunction    =  1e-6;   // convergence criterion
-
+  unsigned long numberOfIterations =  100;
+  double        gradientTolerance  =  1e-5;     // convergence criterion
+  double        valueTolerance     =  1e-5;     // convergence criterion
+  double        epsilonFunction    =  1e-6;     // convergence criterion
 
   optimizer->SetScales( scales );
   optimizer->SetNumberOfIterations( numberOfIterations );
@@ -239,7 +234,6 @@ int main(int argc, char * argv[] )
   std::cout << "Solution = " << transform->GetParameters() << std::endl;
 
 // Software Guide : EndCodeSnippet
-
 
   return EXIT_SUCCESS;
 

@@ -20,26 +20,27 @@
 #include "itkHistogram.h"
 #include "itkMahalanobisDistanceMetric.h"
 
-int itkMeanSampleFilterTest3(int, char* [] )
+int
+itkMeanSampleFilterTest3(int, char* [] )
 {
   std::cout << "CovarianceSampleFilter test \n \n";
 
-  typedef double                      MeasurementType;
-  const unsigned int                  MeasurementVectorSize = 3;
+  typedef double MeasurementType;
+  const unsigned int MeasurementVectorSize = 3;
 
   typedef itk::FixedArray<
-    MeasurementType, MeasurementVectorSize >   MeasurementVectorType;
+      MeasurementType, MeasurementVectorSize >   MeasurementVectorType;
 
   typedef itk::Statistics::Histogram< MeasurementType,
-          itk::Statistics::DenseFrequencyContainer2 > HistogramType;
+                                      itk::Statistics::DenseFrequencyContainer2 > HistogramType;
 
-  typedef HistogramType    SampleType;
+  typedef HistogramType SampleType;
 
   HistogramType::Pointer histogram = HistogramType::New();
 
-  HistogramType::SizeType                 size( MeasurementVectorSize );
-  HistogramType::MeasurementVectorType    lowerBound( MeasurementVectorSize );
-  HistogramType::MeasurementVectorType    upperBound( MeasurementVectorSize );
+  HistogramType::SizeType              size( MeasurementVectorSize );
+  HistogramType::MeasurementVectorType lowerBound( MeasurementVectorSize );
+  HistogramType::MeasurementVectorType upperBound( MeasurementVectorSize );
 
   size.Fill(50);
   lowerBound.Fill(-350);
@@ -50,15 +51,14 @@ int itkMeanSampleFilterTest3(int, char* [] )
   histogram->SetToZero();
 
   typedef itk::Statistics::MahalanobisDistanceMetric<
-    HistogramType::MeasurementVectorType >                    MembershipFunctionType;
+      HistogramType::MeasurementVectorType >                    MembershipFunctionType;
 
   MembershipFunctionType::Pointer memberFunction = MembershipFunctionType::New();
 
+  typedef MembershipFunctionType::MeanVectorType       MeanVectorType;
+  typedef MembershipFunctionType::CovarianceMatrixType CovarianceMatrixType;
 
-  typedef MembershipFunctionType::MeanVectorType            MeanVectorType;
-  typedef MembershipFunctionType::CovarianceMatrixType      CovarianceMatrixType;
-
-  MeanVectorType mean( MeasurementVectorSize );
+  MeanVectorType       mean( MeasurementVectorSize );
   CovarianceMatrixType covariance( MeasurementVectorSize, MeasurementVectorSize );
 
   mean[0] = 50;
@@ -69,7 +69,6 @@ int itkMeanSampleFilterTest3(int, char* [] )
   covariance[0][0] = 10000.0;
   covariance[1][1] = 8000.0;
   covariance[2][2] = 6000.0;
-
 
   for( unsigned int i=0; i < MeasurementVectorSize; i++ )
     {
@@ -88,7 +87,7 @@ int itkMeanSampleFilterTest3(int, char* [] )
   HistogramType::Iterator itr = histogram->Begin();
   HistogramType::Iterator end = histogram->End();
 
-  typedef HistogramType::AbsoluteFrequencyType  AbsoluteFrequencyType;
+  typedef HistogramType::AbsoluteFrequencyType AbsoluteFrequencyType;
 
   while( itr != end )
     {
@@ -102,7 +101,6 @@ int itkMeanSampleFilterTest3(int, char* [] )
     itr.SetFrequency( frequency );
     ++itr;
     }
-
 
   typedef itk::Statistics::MeanSampleFilter< SampleType > FilterType;
 

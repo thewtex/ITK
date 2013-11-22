@@ -26,38 +26,38 @@
  * is unclear whether this is done intentionally to indicate that nothing can
  * be inside the contour or whether this is a bug that needs fixing.
  */
-int itkContourSpatialObjectTest(int, char* [])
+int
+itkContourSpatialObjectTest(int, char* [])
 {
 
   //
   // Set up data
   //
   const unsigned int NumDimensions = 2;
+
   typedef itk::ContourSpatialObject<NumDimensions> SpatialObjectType;
 
   // contour is a unit square
   SpatialObjectType::ControlPointType pt1;
   pt1.SetPickedPoint(0,0);
-  SpatialObjectType::ControlPointType  pt2;
+  SpatialObjectType::ControlPointType pt2;
   pt2.SetPickedPoint(1,0);
-  SpatialObjectType::ControlPointType  pt3;
+  SpatialObjectType::ControlPointType pt3;
   pt3.SetPickedPoint(1,1);
-  SpatialObjectType::ControlPointType  pt4;
+  SpatialObjectType::ControlPointType pt4;
   pt4.SetPickedPoint(0,1);
 
   SpatialObjectType::Pointer contour = SpatialObjectType::New();
 
-
   //
   // Test ComputeBoundingBox before data added
   //
-  if (contour->ComputeLocalBoundingBox())
+  if (contour->ComputeLocalBoundingBox() )
     {
     std::cout << "[FAILED] computed bounding box without data " << std::endl;
     return EXIT_FAILURE;
     }
   std::cout << "[PASSED] ComputeLocalBoundingBox before data" << std::endl;
-
 
   //
   // Test Control Points (SetControlPoints, GetControlPoints, GetNumberOfControlPoints,
@@ -103,14 +103,13 @@ int itkContourSpatialObjectTest(int, char* [])
     }
   std::cout << "[PASSED] GetControlPoint" << std::endl;
 
-
   //
   // Test Set/Get Closed
   //
 
   // first set to not closed and test
   contour->SetClosed(false);
-  if (contour->GetClosed())
+  if (contour->GetClosed() )
     {
     std::cout << "[FAILED] Did not set/retrieve closed property correctly" << std::endl;
     return EXIT_FAILURE;
@@ -118,13 +117,12 @@ int itkContourSpatialObjectTest(int, char* [])
 
   // then set it to closed and test
   contour->SetClosed(true);
-  if (!contour->GetClosed())
+  if (!contour->GetClosed() )
     {
     std::cout << "[FAILED] Did not set/retrieve closed property correctly" << std::endl;
     return EXIT_FAILURE;
     }
   std::cout << "[PASSED] Set/GetClosed" << std::endl;
-
 
   //
   // Test Set/Get DisplayOrientation
@@ -136,7 +134,6 @@ int itkContourSpatialObjectTest(int, char* [])
     return EXIT_FAILURE;
     }
   std::cout << "[PASSED] Set/GetDisplayOrientation" << std::endl;
-
 
   //
   // Test Set/Get AttachedToSlice
@@ -158,7 +155,6 @@ int itkContourSpatialObjectTest(int, char* [])
     }
   std::cout << "[PASSED] Set/GetAttachedToSlice" << std::endl;
 
-
   //
   // Test Set/Get InterpolationType
   //
@@ -170,14 +166,13 @@ int itkContourSpatialObjectTest(int, char* [])
     }
   std::cout << "[PASSED] Set/GetInterpolationType" << std::endl;
 
-
   //
   // Test Interpolation Points (SetInterpolationPoints, GetInterpolationPoints,
   // GetNumberOfInterpolationPoints, GetInterpolationPoint)
   //
   SpatialObjectType::InterpolatedPointType intPt1;
   intPt1.SetPosition(0,0.5);
-  SpatialObjectType::InterpolatedPointType  intPt2;
+  SpatialObjectType::InterpolatedPointType intPt2;
   intPt2.SetPosition(0.5,0);
 
   SpatialObjectType::InterpolatedPointListType interpPointList;
@@ -214,17 +209,15 @@ int itkContourSpatialObjectTest(int, char* [])
     }
   std::cout << "[PASSED] GetInterpolatedPoint" << std::endl;
 
-
   //
   // Test ComputeLocalBoundingBox
   //
-  if (!contour->ComputeLocalBoundingBox())
+  if (!contour->ComputeLocalBoundingBox() )
     {
     std::cout << "[FAILED] faild bounding box computation" << std::endl;
     return EXIT_FAILURE;
     }
   std::cout << "[PASSED] ComputeLocalBoundingBox" << std::endl;
-
 
   //
   // Test IsInside (at this point, this should always return false)
@@ -232,44 +225,40 @@ int itkContourSpatialObjectTest(int, char* [])
   SpatialObjectType::PointType testPoint;
   testPoint[0] = 0;
   testPoint[1] = 0;
-  if (contour->IsInside(testPoint))
+  if (contour->IsInside(testPoint) )
     {
     std::cout << "[FAILED] Somehow returned true for IsInside" << std::endl;
     return EXIT_FAILURE;
     }
   std::cout << "[PASSED] IsInside" << std::endl;
 
-
   //
   // Test IsEvaluableAt (should always return false since IsInside always returns false)
   //
-  if (contour->IsEvaluableAt(testPoint))
+  if (contour->IsEvaluableAt(testPoint) )
     {
     std::cout << "[FAILED] Somehow returned true for IsEvaluableAt" << std::endl;
     return EXIT_FAILURE;
     }
   std::cout << "[PASSED] IsEvaluableAt" << std::endl;
 
-
   //
   // Test ValueAt (should always return false and val=0 since IsInside always returns false)
   //
-  double val = -1;
+  double  val = -1;
   double* valPtr = &val;
-  if (contour->ValueAt(testPoint, *valPtr) || val != contour->GetDefaultOutsideValue())
+  if (contour->ValueAt(testPoint, *valPtr) || val != contour->GetDefaultOutsideValue() )
     {
     std::cout << "[FAILED] Somehow returned true for ValueAt" << std::endl;
     return EXIT_FAILURE;
     }
   std::cout << "[PASSED] ValueAt" << std::endl;
 
-
   //
   // Run PrintSelf for the sake of coverage (and to make sure no segfault/exceptions arise)
   //
   itk::Indent idt;
   contour->Print(std::cout, idt);
-
 
   //
   // All tests executed successfully

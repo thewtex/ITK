@@ -41,7 +41,8 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 }
 
 template< typename TInputMesh, typename TOutputMesh >
-void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
+void
+TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 ::GenerateData()
 {
   this->Initialize();
@@ -52,7 +53,8 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 }
 
 template< typename TInputMesh, typename TOutputMesh >
-void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
+void
+TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 ::Initialize()
 {
 
@@ -101,14 +103,15 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 }
 
 template< typename TInputMesh, typename TOutputMesh >
-void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
+void
+TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 ::CreateSimplexPoints()
 {
   //create the points of the simplex mesh
   typename IndexSetType::iterator faceIterator = m_FaceSet->begin();
 
   const InputMeshType *input = this->GetInput(0);
-  TOutputMesh         *output = this->GetOutput();
+  TOutputMesh *        output = this->GetOutput();
 
   while ( faceIterator != m_FaceSet->end() )
     {
@@ -149,7 +152,8 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 }
 
 template< typename TInputMesh, typename TOutputMesh >
-void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
+void
+TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 ::CreateSimplexNeighbors()
 {
   TOutputMesh *output = this->GetOutput(0);
@@ -164,7 +168,7 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 
   while ( points != outputPointsContainer->End() )
     {
-    PointIdentifier idx = points.Index();
+    PointIdentifier                    idx = points.Index();
     InputBoundnaryAssignmentIdentifier key0(idx, 0);
     InputBoundnaryAssignmentIdentifier key1(idx, 1);
     InputBoundnaryAssignmentIdentifier key2(idx, 2);
@@ -182,7 +186,8 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 }
 
 template< typename TInputMesh, typename TOutputMesh >
-void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
+void
+TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 ::CreateNewEdge(CellIdentifier currentCellId, CellFeatureIdentifier featureId,
                 PointIdentifier startPointId, PointIdentifier endPointId, const InputMeshType *input)
 {
@@ -220,7 +225,7 @@ void TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
   if ( !m_EdgeNeighborList->IndexExists(boundaryId) )
     {
     EdgeIdentifierType neighboringCells = std::make_pair(
-      currentCellId, (CellIdentifier)NumericTraits< CellIdentifier >::max() );
+        currentCellId, (CellIdentifier)NumericTraits< CellIdentifier >::max() );
     m_EdgeNeighborList->InsertElement(boundaryId, neighboringCells);
     }
   else
@@ -268,6 +273,7 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "ToDo: implement PrinSelf!!!";
 }
 
@@ -279,7 +285,7 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
   const InputPointsContainer *      pointsContainer =  this->GetInput(0)->GetPoints();
   InputPointsContainerConstIterator points =  pointsContainer->Begin();
   TOutputMesh *                     outputMesh = this->GetOutput();
-  PointIdentifier idx;
+  PointIdentifier                   idx;
 
   typedef itk::MapContainer< CellIdentifier, CellIdentifier > MapType;
 
@@ -292,8 +298,8 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 
     typename MapType::Pointer tmpMap = MapType::New();
     CellIdentifier startIdx = NumericTraits< CellIdentifier >::max(),
-              lastIdx = 0,
-              wrongIdx = 0;
+      lastIdx = 0,
+      wrongIdx = 0;
 
     while ( lastIdx != startIdx )
       {
@@ -334,8 +340,8 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 
     // create a new cell
     m_NewSimplexCellPointer.TakeOwnership(new OutputPolygonType);
-    PointIdentifier vertexIdx = NumericTraits<PointIdentifier>::Zero;
-    CellIdentifier nextIdx = startIdx;
+    PointIdentifier       vertexIdx = NumericTraits<PointIdentifier>::Zero;
+    CellIdentifier        nextIdx = startIdx;
     CellFeatureIdentifier featureId = 0;
 
     CellIdentifier faceIndex = outputMesh->AddFace(m_NewSimplexCellPointer);
@@ -383,7 +389,7 @@ typename TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >::InputPointT
 TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 ::ComputeFaceCenter(CellIdentifier faceId, const InputMeshType *inputMesh)
 {
-  InputPointType       v1, v2, v3;
+  InputPointType v1, v2, v3;
 
   CellAutoPointer cellPointer;
 
@@ -412,6 +418,7 @@ TriangleMeshToSimplexMeshFilter< TInputMesh, TOutputMesh >
 
   return result;
 }
+
 } // end of namspace itk
 
 #endif //_TRIANGLE_MESH_TO_SIMPLEX_MESH_FILTER_TXX

@@ -42,15 +42,15 @@ class ImageVectorOptimizerParametersHelper
 public:
 
   /** The element type stored at each location in the Array. */
-  typedef TValueType                                ValueType;
-  typedef ImageVectorOptimizerParametersHelper      Self;
-  typedef OptimizerParametersHelper< TValueType >   Superclass;
+  typedef TValueType                              ValueType;
+  typedef ImageVectorOptimizerParametersHelper    Self;
+  typedef OptimizerParametersHelper< TValueType > Superclass;
 
   /** Image type that this class expects. */
   typedef Image< Vector<TValueType, NVectorDimension>,
                  VImageDimension >
-                                                ParameterImageType;
-  typedef typename ParameterImageType::Pointer  ParameterImagePointer;
+    ParameterImageType;
+  typedef typename ParameterImageType::Pointer ParameterImagePointer;
 
   /** Type of the common data object used in OptimizerParameters */
   typedef typename Superclass::CommonContainerType CommonContainerType;
@@ -76,15 +76,16 @@ public:
   virtual void SetParametersObject(CommonContainerType * container,
                                    LightObject * );
 
-  virtual ~ImageVectorOptimizerParametersHelper(){}
+  virtual
+  ~ImageVectorOptimizerParametersHelper(){}
 
 private:
   /** The parameter image used by the class */
-  ParameterImagePointer           m_ParameterImage;
+  ParameterImagePointer m_ParameterImage;
 
 };
 
-}//namespace itk
+} //namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkImageVectorOptimizerParametersHelper.hxx"

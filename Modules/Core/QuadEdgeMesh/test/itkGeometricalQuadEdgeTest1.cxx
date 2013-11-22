@@ -27,19 +27,18 @@ public:
   typedef std::string  FaceData;
 
   typedef itk::GeometricalQuadEdge<
-     PointIdentifier, FaceIdentifier,
-     PointData, FaceData, true >        PrimalQuadEdgeType;
+      PointIdentifier, FaceIdentifier,
+      PointData, FaceData, true >        PrimalQuadEdgeType;
 
+  typedef PrimalQuadEdgeType::DualType DualQuadEdgeType;
 
-  typedef PrimalQuadEdgeType::DualType  DualQuadEdgeType;
-
-
-  static PrimalQuadEdgeType * MakeQuadEdges()
-    {
+  static PrimalQuadEdgeType *
+  MakeQuadEdges()
+  {
     PrimalQuadEdgeType * e1 = new PrimalQuadEdgeType();
-    DualQuadEdgeType   * e2 = new DualQuadEdgeType();
+    DualQuadEdgeType *   e2 = new DualQuadEdgeType();
     PrimalQuadEdgeType * e3 = new PrimalQuadEdgeType();
-    DualQuadEdgeType   * e4 = new DualQuadEdgeType();
+    DualQuadEdgeType *   e4 = new DualQuadEdgeType();
 
     e1->SetRot( e2 );
     e2->SetRot( e3 );
@@ -52,23 +51,23 @@ public:
     e4->SetOnext( e4 );
 
     return e1;
-    }
+  }
+
 };
 
-
-int itkGeometricalQuadEdgeTest1( int , char* [] )
+int
+itkGeometricalQuadEdgeTest1( int , char* [] )
 {
 
-  typedef itkGeometricalQuadEdgeTest1Helper  HelperType;
+  typedef itkGeometricalQuadEdgeTest1Helper HelperType;
 
-  typedef HelperType::PrimalQuadEdgeType     PrimalQuadEdgeType;
-  typedef HelperType::DualQuadEdgeType       DualQuadEdgeType;
-
+  typedef HelperType::PrimalQuadEdgeType PrimalQuadEdgeType;
+  typedef HelperType::DualQuadEdgeType   DualQuadEdgeType;
 
     { // Define a local scope for testing constructors
 
-    DualQuadEdgeType     dummyQuadEdge1;  // test constructor
-    PrimalQuadEdgeType   dummyQuadEdge2;  // test constructor
+    DualQuadEdgeType   dummyQuadEdge1;    // test constructor
+    PrimalQuadEdgeType dummyQuadEdge2;    // test constructor
 
     dummyQuadEdge1.SetRot( &dummyQuadEdge2 );  // Test SetRot()
     }

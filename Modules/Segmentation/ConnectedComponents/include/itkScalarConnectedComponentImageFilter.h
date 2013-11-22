@@ -61,7 +61,8 @@ public:
   ~SimilarPixelsFunctor()
   {}
 
-  bool operator!=(const SimilarPixelsFunctor & other) const
+  bool
+  operator!=(const SimilarPixelsFunctor & other) const
   {
     if ( m_Threshold != other.m_Threshold )
       {
@@ -70,22 +71,26 @@ public:
     return false;
   }
 
-  bool operator==(const SimilarPixelsFunctor & other) const
+  bool
+  operator==(const SimilarPixelsFunctor & other) const
   {
     return !( *this != other );
   }
 
-  void SetDistanceThreshold(const TInput & thresh)
+  void
+  SetDistanceThreshold(const TInput & thresh)
   {
     m_Threshold = thresh;
   }
 
-  TInput GetDistanceThreshold()
+  TInput
+  GetDistanceThreshold()
   {
     return ( m_Threshold );
   }
 
-  bool operator()(const TInput & a, const TInput & b) const
+  bool
+  operator()(const TInput & a, const TInput & b) const
   {
     typedef typename NumericTraits< TInput >::RealType InputRealType;
     TInput absDifference = static_cast< TInput >( vnl_math_abs(
@@ -107,7 +112,7 @@ protected:
 } // end namespace Functor
 
 template< typename TInputImage, typename TOutputImage, typename TMaskImage = TInputImage >
-class ScalarConnectedComponentImageFilter:
+class ScalarConnectedComponentImageFilter :
   public ConnectedComponentFunctorImageFilter< TInputImage, TOutputImage,
                                                Functor::SimilarPixelsFunctor< typename TInputImage::ValueType >,
                                                TMaskImage >
@@ -116,9 +121,9 @@ public:
   /** Standard class typedefs. */
   typedef ScalarConnectedComponentImageFilter Self;
   typedef ConnectedComponentFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::SimilarPixelsFunctor< typename TInputImage::ValueType >,
-    TMaskImage >                               Superclass;
+      TInputImage, TOutputImage,
+      Functor::SimilarPixelsFunctor< typename TInputImage::ValueType >,
+      TMaskImage >                               Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -131,11 +136,17 @@ public:
 
   typedef typename TInputImage::PixelType InputPixelType;
 
-  virtual void SetDistanceThreshold(const InputPixelType & thresh)
-  { this->GetFunctor().SetDistanceThreshold(thresh); }
+  virtual void
+  SetDistanceThreshold(const InputPixelType & thresh)
+  {
+    this->GetFunctor().SetDistanceThreshold(thresh);
+  }
 
-  virtual InputPixelType GetDistanceThreshold()
-  { return ( this->GetFunctor().GetDistanceThreshold() ); }
+  virtual InputPixelType
+  GetDistanceThreshold()
+  {
+    return ( this->GetFunctor().GetDistanceThreshold() );
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -152,11 +163,13 @@ public:
 
 protected:
   ScalarConnectedComponentImageFilter() {}
-  virtual ~ScalarConnectedComponentImageFilter() {}
+  virtual
+  ~ScalarConnectedComponentImageFilter() {}
 
 private:
   ScalarConnectedComponentImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                      //purposely not implemented
+
 };
 } // end namespace itk
 

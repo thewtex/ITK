@@ -18,24 +18,22 @@
 
 #include "itkSparseFrequencyContainer2.h"
 
-
-int itkSparseFrequencyContainer2Test(int, char* [] )
+int
+itkSparseFrequencyContainer2Test(int, char* [] )
 {
   std::cout << "SparseFrequencyContainer2 Test \n \n";
 
   typedef  itk::Statistics::SparseFrequencyContainer2
-                                            SparseFrequencyContainer2Type;
-
+    SparseFrequencyContainer2Type;
 
   SparseFrequencyContainer2Type::Pointer container =
-                                            SparseFrequencyContainer2Type::New();
+    SparseFrequencyContainer2Type::New();
 
-  typedef SparseFrequencyContainer2Type::AbsoluteFrequencyType  AbsoluteFrequencyType;
+  typedef SparseFrequencyContainer2Type::AbsoluteFrequencyType AbsoluteFrequencyType;
 
   const unsigned int numberOfBins = 1250;
 
   container->Initialize( numberOfBins );
-
 
   // Test the SetFrequency() / GetFrequency() methods
     {
@@ -95,7 +93,6 @@ int itkSparseFrequencyContainer2Test(int, char* [] )
       const AbsoluteFrequencyType frequency = static_cast<AbsoluteFrequencyType>( bin );
       container->IncreaseFrequency( bin, frequency );
       }
-
 
     // Test if the values can be read back
     for( unsigned int bin=0; bin < numberOfBins; bin++ )

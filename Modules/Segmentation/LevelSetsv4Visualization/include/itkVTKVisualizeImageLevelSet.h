@@ -41,7 +41,7 @@ namespace itk
  * \ingroup ITKLevelSetsv4Visualization
  */
 template< typename TInputImage, typename TInputImageConverter >
-class VTKVisualizeImageLevelSet: public LightObject
+class VTKVisualizeImageLevelSet : public LightObject
 {
 public:
   typedef VTKVisualizeImageLevelSet  Self;
@@ -53,7 +53,7 @@ public:
   itkTypeMacro( VTKVisualizeImageLevelSet, LightObject );
 
   /** Type of the input image the level set evolves on. */
-  typedef TInputImage     InputImageType;
+  typedef TInputImage InputImageType;
 
   /** Type of the ITK filter to convert the input image to a VTK object. */
   typedef TInputImageConverter InputImageConverterType;
@@ -63,6 +63,7 @@ public:
 
   /** Do a screen capture at every iteration. */
   void SetScreenCapture( const bool iCapture );
+
   bool GetScreenCapture() const;
 
   /** Set up the VTK pipeline and render.  Do a screen capture if the option is
@@ -74,11 +75,13 @@ public:
 
   /** Set/Get the render window. */
   vtkRenderWindow * GetRenderWindow();
+
   void SetRenderWindow( vtkRenderWindow * renderWindow );
 
   /** Set/Get the current iteration.  Used for the filename during screen
    * capture. */
   void SetCurrentIteration( const IdentifierType iteration );
+
   IdentifierType GetCurrentIteration() const;
 
   /** Set the filename prefix for screen captures. */
@@ -86,25 +89,26 @@ public:
 
 protected:
   VTKVisualizeImageLevelSet();
-  virtual ~VTKVisualizeImageLevelSet();
+  virtual
+  ~VTKVisualizeImageLevelSet();
 
   /** Setup the VTK pipeline for a Render() call. */
   virtual void PrepareVTKPipeline() = 0;
 
   typename InputImageConverterType::Pointer m_InputImageConverter;
 
-  vtkSmartPointer< vtkRenderer >          m_Renderer;
+  vtkSmartPointer< vtkRenderer > m_Renderer;
 
 private:
   VTKVisualizeImageLevelSet( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  void operator=( const Self & );            // purposely not implemented
 
-  bool                               m_ScreenCapture;
-  IdentifierType                     m_CurrentIteration;
-  std::string                        m_ScreenCapturePrefix;
+  bool           m_ScreenCapture;
+  IdentifierType m_CurrentIteration;
+  std::string    m_ScreenCapturePrefix;
 
-  vtkSmartPointer< vtkRenderWindow >      m_RenderWindow;
-  vtkSmartPointer< vtkCornerAnnotation >  m_Annotation;
+  vtkSmartPointer< vtkRenderWindow >     m_RenderWindow;
+  vtkSmartPointer< vtkCornerAnnotation > m_Annotation;
 };
 
 } // end namespace itk

@@ -33,7 +33,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class SingleValuedVnlCostFunctionAdaptor:
+class SingleValuedVnlCostFunctionAdaptor :
   public vnl_cost_function
 {
 public:
@@ -63,12 +63,18 @@ public:
   SingleValuedVnlCostFunctionAdaptor(unsigned int spaceDimension);
 
   /** Set the CostFunction deriving from SingleValuedCostFunction */
-  void SetCostFunction(SingleValuedCostFunction *costFunction)
-  { m_CostFunction = costFunction; }
+  void
+  SetCostFunction(SingleValuedCostFunction *costFunction)
+  {
+    m_CostFunction = costFunction;
+  }
 
   /** Get the CostFunction deriving from SingleValuedCostFunction */
-  const SingleValuedCostFunction * GetCostFunction(void) const
-  { return m_CostFunction; }
+  const SingleValuedCostFunction *
+  GetCostFunction(void) const
+  {
+    return m_CostFunction;
+  }
 
   /**  Delegate computation of the value to the CostFunction. */
   virtual InternalMeasureType f(const InternalParametersType & inparameters);
@@ -102,8 +108,15 @@ public:
 
   bool GetNegateCostFunction() const;
 
-  void NegateCostFunctionOn() { m_NegateCostFunction = true; }
-  void NegateCostFunctionOff() { m_NegateCostFunction = false; }
+  void
+  NegateCostFunctionOn() {
+    m_NegateCostFunction = true;
+  }
+
+  void
+  NegateCostFunctionOff() {
+    m_NegateCostFunction = false;
+  }
 
   /** This AddObserver method allows to simulate that this class derives from
    * an itkObject for the purpose of reporting iteration events. The goal of

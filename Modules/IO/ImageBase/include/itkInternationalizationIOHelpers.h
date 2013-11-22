@@ -69,7 +69,8 @@ namespace i18n
 {
 // Check if the string is correctly encoded
 #if LOCAL_USE_WIN32_WOPEN
-inline bool IsStringEncodingValid(const std::string & str)
+inline bool
+IsStringEncodingValid(const std::string & str)
 {
   // Check if the string is really encoded in utf-8 using windows API
   // MultiByteToWideChar returns 0 if there was a problem during conversion
@@ -81,7 +82,8 @@ inline bool IsStringEncodingValid(const std::string & str)
 }
 
 #else
-inline bool IsStringEncodingValid( const std::string & itkNotUsed(str) )
+inline bool
+IsStringEncodingValid( const std::string & itkNotUsed(str) )
 {
   return true;
 }
@@ -90,7 +92,8 @@ inline bool IsStringEncodingValid( const std::string & itkNotUsed(str) )
 
 #if LOCAL_USE_WIN32_WOPEN
 // Convert a utf8 encoded std::string to a utf16 encoded wstring on windows
-inline std::wstring Utf8StringToWString(const std::string & str)
+inline std::wstring
+Utf8StringToWString(const std::string & str)
 {
   // We do not set the MB_ERR_INVALID_CHARS to do an approximate conversion when
   // non
@@ -114,7 +117,8 @@ inline std::wstring Utf8StringToWString(const std::string & str)
 
 // Get a file descriptor from a filename (using utf8 to wstring
 // on windows if requested) without specifying any specific permissions
-inline int I18nOpen(const std::string & str, const int & flags)
+inline int
+I18nOpen(const std::string & str, const int & flags)
 {
 #if LOCAL_USE_WIN32_WOPEN
   // mingw has _wopen
@@ -128,7 +132,8 @@ inline int I18nOpen(const std::string & str, const int & flags)
 
 // Get a file descriptor from a filename (using utf8 to wstring
 // on windows if requested)
-inline int I18nOpen(const std::string & str, const int & flags, const int & mode)
+inline int
+I18nOpen(const std::string & str, const int & flags, const int & mode)
 {
 #if LOCAL_USE_WIN32_WOPEN
   // mingw has _wopen
@@ -141,7 +146,8 @@ inline int I18nOpen(const std::string & str, const int & flags, const int & mode
 }
 
 // Reading wrapper around I18nOpen to avoid explicitely specifying the flags
-inline int I18nOpenForReading(const std::string & str)
+inline int
+I18nOpenForReading(const std::string & str)
 {
 #if LOCAL_USE_WIN32_WOPEN
   return I18nOpen(str, _O_RDONLY | _O_BINARY);
@@ -151,7 +157,8 @@ inline int I18nOpenForReading(const std::string & str)
 }
 
 // Writing wrapper around I18nOpen to avoid explicitely specifying the flags
-inline int I18nOpenForWriting(const std::string & str, const bool append = false)
+inline int
+I18nOpenForWriting(const std::string & str, const bool append = false)
 {
 #if LOCAL_USE_WIN32_WOPEN
   if ( !append ) { return I18nOpen(str, _O_WRONLY | _O_CREAT | _O_BINARY, _S_IREAD | _S_IWRITE); }
@@ -164,7 +171,8 @@ inline int I18nOpenForWriting(const std::string & str, const bool append = false
 
 // Get a FILE * pointer from a filename (using utf8 to wstring
 // on windows if requested)
-inline FILE * I18nFopen(const std::string & str, const std::string & mode)
+inline FILE *
+I18nFopen(const std::string & str, const std::string & mode)
 {
 #if LOCAL_USE_WIN32_WOPEN
   // Convert to utf16
@@ -177,24 +185,30 @@ inline FILE * I18nFopen(const std::string & str, const std::string & mode)
 }
 
 #if LOCAL_USE_FDSTREAM
-class I18nOfstream:public std::ostream
+class I18nOfstream : public std::ostream
 {
 public:
   I18nOfstream(const char *str,
-               std::ios_base::openmode mode = std::ios_base::out):
+               std::ios_base::openmode mode = std::ios_base::out) :
     std::ostream(0),
-    m_fd( I18nOpenForWriting(str, ( mode & std::ios::app ) ? true:false) ),
+    m_fd( I18nOpenForWriting(str, ( mode & std::ios::app ) ? true : false) ),
     m_buf(m_fd)
   {
     ///\todo better handle mode flag
     this->rdbuf(&m_buf);
   }
 
-  ~I18nOfstream() { this->close(); }
+  ~I18nOfstream() {
+    this->close();
+  }
 
-  bool is_open() { return ( m_fd != -1 ); }
+  bool
+  is_open() {
+    return ( m_fd != -1 );
+  }
 
-  void close()
+  void
+  close()
   {
     if ( m_fd != -1 ) { ::close(m_fd); }
     m_fd = -1;
@@ -205,11 +219,11 @@ private:
   itk::fdoutbuf m_buf;
 };
 
-class I18nIfstream:public std::istream
+class I18nIfstream : public std::istream
 {
 public:
   I18nIfstream(const char *str,
-               std::ios_base::openmode mode = std::ios_base::in):
+               std::ios_base::openmode mode = std::ios_base::in) :
     std::istream(0),
     m_fd( I18nOpenForReading(str) ),
     m_buf(m_fd)
@@ -219,11 +233,17 @@ public:
     this->rdbuf(&m_buf);
   }
 
-  ~I18nIfstream() { this->close(); }
+  ~I18nIfstream() {
+    this->close();
+  }
 
-  bool is_open() { return ( m_fd != -1 ); }
+  bool
+  is_open() {
+    return ( m_fd != -1 );
+  }
 
-  void close()
+  void
+  close()
   {
     if ( m_fd != -1 ) { ::close(m_fd); }
     m_fd = -1;
@@ -234,18 +254,18 @@ private:
   itk::fdinbuf m_buf;
 };
 #elif LOCAL_USE_WIN32_WOPEN
-class I18nOfstream:public std::ofstream
+class I18nOfstream : public std::ofstream
 {
 public:
-  I18nOfstream(const char *str, std::ios_base::openmode mode = std::ios_base::out):
+  I18nOfstream(const char *str, std::ios_base::openmode mode = std::ios_base::out) :
     std::ofstream(Utf8StringToWString(str).c_str(), mode)
   {}
 };
 
-class I18nIfstream:public std::ifstream
+class I18nIfstream : public std::ifstream
 {
 public:
-  I18nIfstream(const char *str, std::ios_base::openmode mode = std::ios_base::in):
+  I18nIfstream(const char *str, std::ios_base::openmode mode = std::ios_base::in) :
     std::ifstream(Utf8StringToWString(str).c_str(), mode)
   {}
 };

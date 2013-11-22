@@ -22,7 +22,8 @@
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkNrrdDiffusionTensor3DImageReadTest( int ac, char* av[] )
+int
+itkNrrdDiffusionTensor3DImageReadTest( int ac, char* av[] )
 {
   if(ac < 1)
     {
@@ -33,7 +34,7 @@ int itkNrrdDiffusionTensor3DImageReadTest( int ac, char* av[] )
   typedef itk::DiffusionTensor3D<float> PixelType;
   typedef itk::Image<PixelType, 3>      myImage;
 
-  typedef itk::ImageFileReader<myImage>  ReaderType;
+  typedef itk::ImageFileReader<myImage> ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
@@ -60,9 +61,9 @@ int itkNrrdDiffusionTensor3DImageReadTest( int ac, char* av[] )
   // volume is being read.  I/O errors will generate more than tiny
   // differences near representational precision.
 
-  float err = 0;
+  float              err = 0;
   myImage::IndexType coord;
-  PixelType sample;
+  PixelType          sample;
   coord[0] = 0;
   coord[1] = 0;
   coord[2] = 0;

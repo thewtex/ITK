@@ -64,12 +64,12 @@ template< typename TImage >
 const typename ScalarImageToCooccurrenceListSampleFilter< TImage >::SampleType *
 ScalarImageToCooccurrenceListSampleFilter< TImage >
 ::GetOutput() const
-{
+  {
   const SampleType *output =
     static_cast< const SampleType * >( this->ProcessObject::GetOutput(0) );
 
   return output;
-}
+  }
 
 template< typename TImage >
 typename ScalarImageToCooccurrenceListSampleFilter< TImage >::DataObjectPointer
@@ -88,7 +88,7 @@ ScalarImageToCooccurrenceListSampleFilter< TImage >
   radius.Fill(1);
 
   typedef itk::NeighborhoodAlgorithm::ImageBoundaryFacesCalculator<
-    ImageType > FaceCalculatorType;
+      ImageType > FaceCalculatorType;
 
   FaceCalculatorType faceCalculator;
   typename FaceCalculatorType::FaceListType faceList;
@@ -185,6 +185,7 @@ ScalarImageToCooccurrenceListSampleFilter< TImage >
     m_OffsetTable.push_back(offset);
     }
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

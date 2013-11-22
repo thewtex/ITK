@@ -47,14 +47,14 @@ template< typename TInput, // Input image or mesh
           typename TLevelSetContainer,
           typename TCurvatureImage = TInput >
 class LevelSetEquationCurvatureTerm :
-    public LevelSetEquationTermBase< TInput, TLevelSetContainer >
+  public LevelSetEquationTermBase< TInput, TLevelSetContainer >
 {
 public:
-  typedef LevelSetEquationCurvatureTerm         Self;
-  typedef SmartPointer< Self >                  Pointer;
-  typedef SmartPointer< const Self >            ConstPointer;
+  typedef LevelSetEquationCurvatureTerm Self;
+  typedef SmartPointer< Self >          Pointer;
+  typedef SmartPointer< const Self >    ConstPointer;
   typedef LevelSetEquationTermBase< TInput, TLevelSetContainer >
-                                                Superclass;
+    Superclass;
 
   /** Method for creation through object factory */
   itkNewMacro( Self );
@@ -68,16 +68,16 @@ public:
   typedef typename Superclass::InputPixelType     InputPixelType;
   typedef typename Superclass::InputPixelRealType InputPixelRealType;
 
-  typedef typename Superclass::LevelSetContainerType      LevelSetContainerType;
-  typedef typename Superclass::LevelSetContainerPointer   LevelSetContainerPointer;
-  typedef typename Superclass::LevelSetType               LevelSetType;
-  typedef typename Superclass::LevelSetPointer            LevelSetPointer;
-  typedef typename Superclass::LevelSetOutputPixelType    LevelSetOutputPixelType;
-  typedef typename Superclass::LevelSetOutputRealType     LevelSetOutputRealType;
-  typedef typename Superclass::LevelSetInputIndexType     LevelSetInputIndexType;
-  typedef typename Superclass::LevelSetGradientType       LevelSetGradientType;
-  typedef typename Superclass::LevelSetHessianType        LevelSetHessianType;
-  typedef typename Superclass::LevelSetIdentifierType     LevelSetIdentifierType;
+  typedef typename Superclass::LevelSetContainerType    LevelSetContainerType;
+  typedef typename Superclass::LevelSetContainerPointer LevelSetContainerPointer;
+  typedef typename Superclass::LevelSetType             LevelSetType;
+  typedef typename Superclass::LevelSetPointer          LevelSetPointer;
+  typedef typename Superclass::LevelSetOutputPixelType  LevelSetOutputPixelType;
+  typedef typename Superclass::LevelSetOutputRealType   LevelSetOutputRealType;
+  typedef typename Superclass::LevelSetInputIndexType   LevelSetInputIndexType;
+  typedef typename Superclass::LevelSetGradientType     LevelSetGradientType;
+  typedef typename Superclass::LevelSetHessianType      LevelSetHessianType;
+  typedef typename Superclass::LevelSetIdentifierType   LevelSetIdentifierType;
 
   typedef typename Superclass::HeavisideType         HeavisideType;
   typedef typename Superclass::HeavisideConstPointer HeavisideConstPointer;
@@ -86,13 +86,14 @@ public:
 
   itkStaticConstMacro(ImageDimension, unsigned int, InputImageType::ImageDimension);
 
-  typedef TCurvatureImage                       CurvatureImageType;
-  typedef typename CurvatureImageType::Pointer  CurvatureImagePointer;
+  typedef TCurvatureImage                      CurvatureImageType;
+  typedef typename CurvatureImageType::Pointer CurvatureImagePointer;
 
   /** Set/Get the propagation image. By default, if no PropagationImage has
   been set, it casts the input image and uses it in the term contribution
   calculation. */
   void SetCurvatureImage( CurvatureImageType* CurvatureImage );
+
   itkGetModifiableObjectMacro(CurvatureImage, CurvatureImageType );
 
   itkSetMacro( UseCurvatureImage, bool );
@@ -100,8 +101,8 @@ public:
   itkBooleanMacro( UseCurvatureImage );
 
   /** Neighborhood radius type */
-  typedef ZeroFluxNeumannBoundaryCondition< InputImageType > DefaultBoundaryConditionType;
-  typedef typename ConstNeighborhoodIterator< InputImageType >::RadiusType RadiusType;
+  typedef ZeroFluxNeumannBoundaryCondition< InputImageType >                        DefaultBoundaryConditionType;
+  typedef typename ConstNeighborhoodIterator< InputImageType >::RadiusType          RadiusType;
   typedef ConstNeighborhoodIterator< InputImageType, DefaultBoundaryConditionType > NeighborhoodType;
 
   typedef Vector< LevelSetOutputRealType, itkGetStaticConstMacro(ImageDimension) > NeighborhoodScalesType;
@@ -123,7 +124,8 @@ public:
 protected:
   LevelSetEquationCurvatureTerm();
 
-  virtual ~LevelSetEquationCurvatureTerm();
+  virtual
+  ~LevelSetEquationCurvatureTerm();
 
   /** Returns the term contribution for a given location iP, i.e.
    *  \f$ \omega_i( p ) \f$. */
@@ -133,7 +135,7 @@ protected:
    *  \f$ \omega_i( p ) \f$. */
   virtual LevelSetOutputRealType Value( const LevelSetInputIndexType& iP, const LevelSetDataType& iData );
 
-  LevelSetOutputRealType  m_NeighborhoodScales[ImageDimension];
+  LevelSetOutputRealType m_NeighborhoodScales[ImageDimension];
 
   CurvatureImagePointer m_CurvatureImage;
 
@@ -141,7 +143,8 @@ protected:
 
 private:
   LevelSetEquationCurvatureTerm( const Self& ); // purposely not implemented
-  void operator = ( const Self& ); // purposely not implemented
+  void operator =( const Self& );               // purposely not implemented
+
 };
 
 }

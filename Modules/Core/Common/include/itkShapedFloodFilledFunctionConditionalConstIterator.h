@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TImage, typename TFunction >
-class ShapedFloodFilledFunctionConditionalConstIterator:
+class ShapedFloodFilledFunctionConditionalConstIterator :
   public ConditionalConstIterator< TImage >
 {
 public:
@@ -119,14 +119,16 @@ public:
   void InitializeIterator();
 
   /** Default Destructor. */
-  virtual ~ShapedFloodFilledFunctionConditionalConstIterator() {}
+  virtual
+  ~ShapedFloodFilledFunctionConditionalConstIterator() {}
 
   /** Compute whether the index of interest should be included in the flood */
   virtual bool IsPixelIncluded(const IndexType & index) const = 0;
 
   /** operator= is provided to make sure the handle to the image is properly
    * reference counted. */
-  Self & operator=(const Self & it)
+  Self &
+  operator=(const Self & it)
   {
     this->m_Image = it.m_Image;     // copy the smart pointer
     this->m_Region = it.m_Region;
@@ -134,39 +136,54 @@ public:
   }
 
   /** Get the dimension (size) of the index. */
-  static unsigned int GetIteratorDimension()
-  { return TImage::ImageDimension; }
+  static unsigned int
+  GetIteratorDimension()
+  {
+    return TImage::ImageDimension;
+  }
 
   /** Get the index. This provides a read only reference to the index.
    * This causes the index to be calculated from pointer arithmetic and is
    * therefore an expensive operation.
    * \sa SetIndex */
-  const IndexType GetIndex()
-  { return m_IndexStack.front(); }
+  const IndexType
+  GetIndex()
+  {
+    return m_IndexStack.front();
+  }
 
   /** Get the pixel value */
-  const PixelType Get(void) const
-  { return this->m_Image->GetPixel( m_IndexStack.front() ); }
+  const PixelType
+  Get(void) const
+  {
+    return this->m_Image->GetPixel( m_IndexStack.front() );
+  }
 
   /** Is the iterator at the end of the region? */
-  bool IsAtEnd()
-  { return this->m_IsAtEnd; }
+  bool
+  IsAtEnd()
+  {
+    return this->m_IsAtEnd;
+  }
 
   /** Put more seeds on the list */
-  void AddSeed(const IndexType seed)
+  void
+  AddSeed(const IndexType seed)
   {
     m_Seeds.push_back (seed);
   }
 
   /** Clear all the seeds */
-  void ClearSeeds()
+  void
+  ClearSeeds()
   {
     m_Seeds.clear();
   }
 
   /** Move an iterator to the beginning of the region. "Begin" is
    * defined as the first pixel in the region. */
-  void GoToBegin()
+  void
+  GoToBegin()
   {
     // Clear the queue
     while ( !m_IndexStack.empty() )
@@ -199,8 +216,11 @@ public:
   }
 
   /** Walk forward one index */
-  void operator++()
-  { this->DoFloodStep(); }
+  void
+  operator++()
+  {
+    this->DoFloodStep();
+  }
 
   void DoFloodStep();
 
@@ -219,7 +239,8 @@ public:
 
   itkBooleanMacro(FullyConnected);
 
-  virtual const SeedsContainerType &GetSeeds() const
+  virtual const SeedsContainerType &
+  GetSeeds() const
   {
     return m_Seeds;
   }

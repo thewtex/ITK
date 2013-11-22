@@ -19,12 +19,14 @@
 
 namespace itk
 {
-bool OneWayEquivalencyTable::Add(unsigned long a, unsigned long b)
+bool
+OneWayEquivalencyTable::Add(unsigned long a, unsigned long b)
 {
   //
   // Unlike EquivalencyTable, the order of the equivalence is important.
   //
   std::pair< Iterator, bool > result;
+
   if ( a == b ) { return false; }
   result = m_HashMap.insert( ValueType(a, b) );
 
@@ -41,7 +43,8 @@ bool OneWayEquivalencyTable::Add(unsigned long a, unsigned long b)
 //    }
 //}
 
-void OneWayEquivalencyTable::Flatten()
+void
+OneWayEquivalencyTable::Flatten()
 {
   Iterator it = this->Begin();
 
@@ -52,7 +55,8 @@ void OneWayEquivalencyTable::Flatten()
     }
 }
 
-unsigned long OneWayEquivalencyTable::RecursiveLookup(const unsigned long a) const
+unsigned long
+OneWayEquivalencyTable::RecursiveLookup(const unsigned long a) const
 {
   unsigned long ans = a;
   unsigned long last_ans = a;
@@ -79,4 +83,5 @@ OneWayEquivalencyTable
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk

@@ -208,6 +208,7 @@ CenteredTransformInitializer< TTransform, TFixedImage, TMovingImage >
     os << indent << "None" << std::endl;
     }
 }
+
 }  // namespace itk
 
 #endif /* __itkCenteredTransformInitializer_hxx */

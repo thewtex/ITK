@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #ifndef __itkLevelSetEvolution_hxx
 #define __itkLevelSetEvolution_hxx
 
@@ -81,12 +80,15 @@ LevelSetEvolution< TEquationContainer, LevelSetDenseImage< TImage > >
     typename DomainMapType::const_iterator mapIt   = domainMap.begin();
     typename DomainMapType::const_iterator mapEnd  = domainMap.end();
 
-    const ThreadIdType maximumNumberOfThreads = this->m_SplitDomainMapComputeIterationThreader->GetMaximumNumberOfThreads();
+    const ThreadIdType maximumNumberOfThreads =
+      this->m_SplitDomainMapComputeIterationThreader->GetMaximumNumberOfThreads();
     typedef typename SplitDomainMapComputeIterationThreaderType::DomainType DomainMapDomainType;
     DomainMapDomainType subdomain;
     DomainMapDomainType completeDomain( mapIt, mapEnd );
-    const typename SplitDomainMapComputeIterationThreaderType::DomainPartitionerType * domainParitioner = this->m_SplitDomainMapComputeIterationThreader->GetDomainPartitioner();
-    const ThreadIdType numberOfThreadsThatWillBeUsed = domainParitioner->PartitionDomain( 0, maximumNumberOfThreads, completeDomain, subdomain );
+    const typename SplitDomainMapComputeIterationThreaderType::DomainPartitionerType * domainParitioner =
+      this->m_SplitDomainMapComputeIterationThreader->GetDomainPartitioner();
+    const ThreadIdType numberOfThreadsThatWillBeUsed = domainParitioner->PartitionDomain( 0, maximumNumberOfThreads,
+                                                                                          completeDomain, subdomain );
     // If we do not have enough domains to process one per thread.
     if( numberOfThreadsThatWillBeUsed < maximumNumberOfThreads )
       {
@@ -97,7 +99,7 @@ LevelSetEvolution< TEquationContainer, LevelSetDenseImage< TImage > >
         const LevelSetListImageDomainType & levelSetListImageDomain = mapIt->second;
         this->m_IdListToProcessWhenThreading = levelSetListImageDomain.GetIdList();
 
-        this->m_SplitLevelSetComputeIterationThreader->Execute( this, *(levelSetListImageDomain.GetRegion()) );
+        this->m_SplitLevelSetComputeIterationThreader->Execute( this, *(levelSetListImageDomain.GetRegion() ) );
         ++mapIt;
         }
       }
@@ -212,7 +214,6 @@ LevelSetEvolution< TEquationContainer, LevelSetDenseImage< TImage > >
     }
 }
 
-
 // Whitaker --------------------------------------------------------------------
 template< typename TEquationContainer, typename TOutput, unsigned int VDimension >
 LevelSetEvolution< TEquationContainer, WhitakerSparseLevelSetImage< TOutput, VDimension > >
@@ -287,7 +288,8 @@ LevelSetEvolution< TEquationContainer, WhitakerSparseLevelSetImage< TOutput, VDi
 
   while( this->m_LevelSetContainerIteratorToProcessWhenThreading != this->m_LevelSetContainer->End() )
     {
-    typename LevelSetType::ConstPointer levelSet = this->m_LevelSetContainerIteratorToProcessWhenThreading->GetLevelSet();
+    typename LevelSetType::ConstPointer levelSet =
+      this->m_LevelSetContainerIteratorToProcessWhenThreading->GetLevelSet();
     const LevelSetLayerType zeroLayer = levelSet->GetLayer( 0 );
     typename LevelSetType::LayerConstIterator layerBegin = zeroLayer.begin();
     typename LevelSetType::LayerConstIterator layerEnd = zeroLayer.end();
@@ -330,7 +332,7 @@ LevelSetEvolution< TEquationContainer, WhitakerSparseLevelSetImage< TOutput, VDi
       {
       itkGenericExceptionMacro( <<"m_Alpha should be in ]0,1[" );
       }
-  }
+    }
 }
 
 template< typename TEquationContainer, typename TOutput, unsigned int VDimension >
@@ -345,7 +347,7 @@ LevelSetEvolution< TEquationContainer, WhitakerSparseLevelSetImage< TOutput, VDi
 
     UpdateLevelSetFilterPointer updateLevelSet = UpdateLevelSetFilterType::New();
     updateLevelSet->SetInputLevelSet( levelSet );
-    updateLevelSet->SetUpdate( * this->m_UpdateBuffer[it->GetIdentifier()] );
+    updateLevelSet->SetUpdate( *this->m_UpdateBuffer[it->GetIdentifier()] );
     updateLevelSet->SetEquationContainer( this->m_EquationContainer );
     updateLevelSet->SetTimeStep( this->m_Dt );
     updateLevelSet->SetCurrentLevelSetId( it->GetIdentifier() );
@@ -372,8 +374,7 @@ LevelSetEvolution< TEquationContainer, WhitakerSparseLevelSetImage< TOutput, VDi
 template< typename TEquationContainer, unsigned int VDimension >
 LevelSetEvolution< TEquationContainer, ShiSparseLevelSetImage< VDimension > >
 ::LevelSetEvolution()
-{
-}
+{}
 
 template< typename TEquationContainer, unsigned int VDimension >
 LevelSetEvolution< TEquationContainer, ShiSparseLevelSetImage< VDimension > >
@@ -381,7 +382,8 @@ LevelSetEvolution< TEquationContainer, ShiSparseLevelSetImage< VDimension > >
 {}
 
 template< typename TEquationContainer, unsigned int VDimension >
-void LevelSetEvolution< TEquationContainer, ShiSparseLevelSetImage< VDimension > >
+void
+LevelSetEvolution< TEquationContainer, ShiSparseLevelSetImage< VDimension > >
 ::UpdateLevelSets()
 {
   typename LevelSetContainerType::Iterator it = this->m_LevelSetContainer->Begin();
@@ -405,7 +407,8 @@ void LevelSetEvolution< TEquationContainer, ShiSparseLevelSetImage< VDimension >
 }
 
 template< typename TEquationContainer, unsigned int VDimension >
-void LevelSetEvolution< TEquationContainer, ShiSparseLevelSetImage< VDimension > >
+void
+LevelSetEvolution< TEquationContainer, ShiSparseLevelSetImage< VDimension > >
 ::UpdateEquations()
 {
   this->m_EquationContainer->UpdateInternalEquationTerms();
@@ -415,8 +418,7 @@ void LevelSetEvolution< TEquationContainer, ShiSparseLevelSetImage< VDimension >
 template< typename TEquationContainer, unsigned int VDimension >
 LevelSetEvolution< TEquationContainer, MalcolmSparseLevelSetImage< VDimension > >
 ::LevelSetEvolution()
-{
-}
+{}
 
 template< typename TEquationContainer, unsigned int VDimension >
 LevelSetEvolution< TEquationContainer, MalcolmSparseLevelSetImage< VDimension > >
@@ -424,7 +426,8 @@ LevelSetEvolution< TEquationContainer, MalcolmSparseLevelSetImage< VDimension > 
 {}
 
 template< typename TEquationContainer, unsigned int VDimension >
-void LevelSetEvolution< TEquationContainer, MalcolmSparseLevelSetImage< VDimension > >
+void
+LevelSetEvolution< TEquationContainer, MalcolmSparseLevelSetImage< VDimension > >
 ::UpdateLevelSets()
 {
   typename LevelSetContainerType::Iterator it = this->m_LevelSetContainer->Begin();
@@ -432,7 +435,7 @@ void LevelSetEvolution< TEquationContainer, MalcolmSparseLevelSetImage< VDimensi
   while( it != this->m_LevelSetContainer->End() )
     {
     typename LevelSetType::Pointer levelSet = it->GetLevelSet();
-    LevelSetIdentifierType       levelSetId = it->GetIdentifier();
+    LevelSetIdentifierType levelSetId = it->GetIdentifier();
 
     UpdateLevelSetFilterPointer updateLevelSet = UpdateLevelSetFilterType::New();
     updateLevelSet->SetInputLevelSet( levelSet );
@@ -449,10 +452,12 @@ void LevelSetEvolution< TEquationContainer, MalcolmSparseLevelSetImage< VDimensi
 }
 
 template< typename TEquationContainer, unsigned int VDimension >
-void LevelSetEvolution< TEquationContainer, MalcolmSparseLevelSetImage< VDimension > >
+void
+LevelSetEvolution< TEquationContainer, MalcolmSparseLevelSetImage< VDimension > >
 ::UpdateEquations()
 {
   this->m_EquationContainer->UpdateInternalEquationTerms();
 }
+
 }
 #endif // __itkLevelSetEvolution_hxx

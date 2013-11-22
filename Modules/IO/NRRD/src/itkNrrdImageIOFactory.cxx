@@ -50,9 +50,10 @@ NrrdImageIOFactory::GetDescription() const
 
 static bool NrrdImageIOFactoryHasBeenRegistered;
 
-void NrrdImageIOFactoryRegister__Private(void)
+void
+NrrdImageIOFactoryRegister__Private(void)
 {
-  if( ! NrrdImageIOFactoryHasBeenRegistered )
+  if( !NrrdImageIOFactoryHasBeenRegistered )
     {
     NrrdImageIOFactoryHasBeenRegistered = true;
     NrrdImageIOFactory::RegisterOneFactory();

@@ -28,14 +28,12 @@ namespace Statistics
 template<typename ScalarType>
 HardLimitTransferFunction< ScalarType>
 ::HardLimitTransferFunction()
-{
-}
+{}
 
 template<typename ScalarType>
 HardLimitTransferFunction<ScalarType>
 ::~HardLimitTransferFunction()
-{
-}
+{}
 
 template<typename ScalarType>
 ScalarType
@@ -65,6 +63,5 @@ HardLimitTransferFunction<ScalarType>
 
 } // end namespace Statistics
 } // end namespace itk
-
 
 #endif

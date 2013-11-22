@@ -49,14 +49,12 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkImageRegistrationMethod.h"
 #include "itkTranslationTransform.h"
 #include "itkMattesMutualInformationImageToImageMetric.h"
 #include "itkRegularStepGradientDescentOptimizer.h"
 // Software Guide : EndCodeSnippet
-
 
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -65,7 +63,6 @@
 #include "itkCastImageFilter.h"
 #include "itkCheckerBoardImageFilter.h"
 
-
 //  The following section of code implements a Command observer
 //  used to monitor the evolution of the registration process.
 //
@@ -73,38 +70,43 @@
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef  CommandIterationUpdate   Self;
-  typedef  itk::Command             Superclass;
-  typedef itk::SmartPointer<Self>   Pointer;
+  typedef  CommandIterationUpdate Self;
+  typedef  itk::Command           Superclass;
+  typedef itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {}
 
 public:
   typedef itk::RegularStepGradientDescentOptimizer OptimizerType;
   typedef   const OptimizerType *                  OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     OptimizerPointer optimizer =
       dynamic_cast< OptimizerPointer >( object );
-    if( ! itk::IterationEvent().CheckEvent( &event ) )
+
+    if( !itk::IterationEvent().CheckEvent( &event ) )
       {
       return;
       }
     std::cout << optimizer->GetCurrentIteration() << "   ";
     std::cout << optimizer->GetValue() << "   ";
     std::cout << optimizer->GetCurrentPosition() << std::endl;
-    }
+  }
+
 };
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 4 )
     {
@@ -118,20 +120,20 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  const    unsigned int    Dimension = 2;
-  typedef  unsigned short  PixelType;
+  const    unsigned int Dimension = 2;
+  typedef  unsigned short PixelType;
 
-  typedef itk::Image< PixelType, Dimension >  FixedImageType;
-  typedef itk::Image< PixelType, Dimension >  MovingImageType;
+  typedef itk::Image< PixelType, Dimension > FixedImageType;
+  typedef itk::Image< PixelType, Dimension > MovingImageType;
 
   typedef itk::TranslationTransform< double, Dimension > TransformType;
   typedef itk::RegularStepGradientDescentOptimizer       OptimizerType;
   typedef itk::LinearInterpolateImageFunction<
-                                    MovingImageType,
-                                    double             > InterpolatorType;
+      MovingImageType,
+      double             > InterpolatorType;
   typedef itk::ImageRegistrationMethod<
-                                    FixedImageType,
-                                    MovingImageType    > RegistrationType;
+      FixedImageType,
+      MovingImageType    > RegistrationType;
 
   //  Software Guide : BeginLatex
   //
@@ -145,19 +147,18 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::MattesMutualInformationImageToImageMetric<
-                                          FixedImageType,
-                                          MovingImageType >    MetricType;
+      FixedImageType,
+      MovingImageType >    MetricType;
   // Software Guide : EndCodeSnippet
 
-  TransformType::Pointer      transform     = TransformType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
+  TransformType::Pointer    transform     = TransformType::New();
+  OptimizerType::Pointer    optimizer     = OptimizerType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
   registration->SetOptimizer(     optimizer     );
   registration->SetTransform(     transform     );
   registration->SetInterpolator(  interpolator  );
-
 
   //  Software Guide : BeginLatex
   //
@@ -170,7 +171,6 @@ int main( int argc, char *argv[] )
   MetricType::Pointer metric = MetricType::New();
   registration->SetMetric( metric  );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -204,12 +204,10 @@ int main( int argc, char *argv[] )
     numberOfSamples = atoi( argv[8] );
     }
 
-
   // Software Guide : BeginCodeSnippet
   metric->SetNumberOfHistogramBins( numberOfBins );
   metric->SetNumberOfSpatialSamples( numberOfSamples );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -222,7 +220,6 @@ int main( int argc, char *argv[] )
   //  \index{itk::Mattes\-Mutual\-Information\-Image\-To\-Image\-Metric!UseAllPixelsOn()}
   //
   // Software Guide : EndLatex
-
 
   if( argc > 9 )
     {
@@ -248,8 +245,7 @@ int main( int argc, char *argv[] )
   fixedImageReader->Update();
 
   registration->SetFixedImageRegion(
-       fixedImageReader->GetOutput()->GetBufferedRegion() );
-
+    fixedImageReader->GetOutput()->GetBufferedRegion() );
 
   typedef RegistrationType::ParametersType ParametersType;
   ParametersType initialParameters( transform->GetNumberOfParameters() );
@@ -258,7 +254,6 @@ int main( int argc, char *argv[] )
   initialParameters[1] = 0.0;  // Initial offset in mm along Y
 
   registration->SetInitialTransformParameters( initialParameters );
-
 
   //  Software Guide : BeginLatex
   //
@@ -303,7 +298,6 @@ int main( int argc, char *argv[] )
   CommandIterationUpdate::Pointer observer = CommandIterationUpdate::New();
   optimizer->AddObserver( itk::IterationEvent(), observer );
 
-
   try
     {
     registration->Update();
@@ -329,7 +323,6 @@ int main( int argc, char *argv[] )
 
   double bestValue = optimizer->GetValue();
 
-
   // Print out results
   //
   std::cout << std::endl;
@@ -339,7 +332,6 @@ int main( int argc, char *argv[] )
   std::cout << " Iterations    = " << numberOfIterations << std::endl;
   std::cout << " Metric value  = " << bestValue          << std::endl;
   std::cout << " Stop Condition  = " << optimizer->GetStopCondition() << std::endl;
-
 
   //  Software Guide : BeginLatex
   //
@@ -357,10 +349,9 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-
   typedef itk::ResampleImageFilter<
-                            MovingImageType,
-                            FixedImageType >    ResampleFilterType;
+      MovingImageType,
+      FixedImageType >    ResampleFilterType;
 
   TransformType::Pointer finalTransform = TransformType::New();
 
@@ -387,26 +378,24 @@ int main( int argc, char *argv[] )
   resample->SetOutputDirection( fixedImage->GetDirection() );
   resample->SetDefaultPixelValue( defaultPixelValue );
 
-
-  typedef  unsigned char  OutputPixelType;
+  typedef  unsigned char OutputPixelType;
 
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
   typedef itk::CastImageFilter<
-                        FixedImageType,
-                        OutputImageType > CastFilterType;
+      FixedImageType,
+      OutputImageType > CastFilterType;
 
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
-  WriterType::Pointer      writer =  WriterType::New();
-  CastFilterType::Pointer  caster =  CastFilterType::New();
+  WriterType::Pointer     writer =  WriterType::New();
+  CastFilterType::Pointer caster =  CastFilterType::New();
 
   writer->SetFileName( argv[3] );
 
   caster->SetInput( resample->GetOutput() );
   writer->SetInput( caster->GetOutput()   );
   writer->Update();
-
 
   //  Software Guide : BeginLatex
   //
@@ -427,7 +416,6 @@ int main( int argc, char *argv[] )
   //  images before and after registration respectively.
   //
   //  Software Guide : EndLatex
-
 
   //
   // Generate checkerboards before and after registration
@@ -455,7 +443,6 @@ int main( int argc, char *argv[] )
     writer->Update();
     }
 
-
   // After registration
   resample->SetTransform( finalTransform );
   if( argc > 6 )
@@ -463,7 +450,6 @@ int main( int argc, char *argv[] )
     writer->SetFileName( argv[6] );
     writer->Update();
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -532,7 +518,6 @@ int main( int argc, char *argv[] )
   //
   // Software Guide : EndLatex
 
-
   // Software Guide : BeginLatex
   //
   //  The plots in Figures~\ref{fig:ImageRegistration4TraceTranslations}
@@ -546,7 +531,6 @@ int main( int argc, char *argv[] )
   //  section~\ref{sec:MultiModalityRegistrationViolaWells}.
   //
   // Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

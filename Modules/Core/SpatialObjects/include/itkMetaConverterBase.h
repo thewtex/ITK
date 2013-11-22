@@ -64,19 +64,21 @@ public:
   virtual SpatialObjectPointer MetaObjectToSpatialObject(const MetaObjectType *mo) = 0;
 
   /** Convert the SpatialObject to MetaObject */
-  virtual MetaObjectType *SpatialObjectToMetaObject(const SpatialObjectType *spatialObject) = 0;
+  virtual MetaObjectType * SpatialObjectToMetaObject(const SpatialObjectType *spatialObject) = 0;
 
   /** Set/Get flag for writing images to separate files in metaImage
    * instances
    */
   void SetWriteImagesInSeparateFile(bool writeImagesInSeparateFile);
+
   bool GetWriteImagesInSeparateFile();
 
 protected:
   /** Creator for specific metaObject, defined in subclass */
-  virtual MetaObjectType *CreateMetaObject() = 0;
+  virtual MetaObjectType * CreateMetaObject() = 0;
+
   MetaConverterBase() : m_WriteImagesInSeparateFile(false)
-    {}
+  {}
 
 private:
   bool m_WriteImagesInSeparateFile;
@@ -85,7 +87,7 @@ private:
 }
 
 #ifndef ITK_MANUAL_INSTATIATION
-  #include "itkMetaConverterBase.hxx"
+#include "itkMetaConverterBase.hxx"
 #endif
 
 #endif // __itkMetaConverterBase_h

@@ -40,6 +40,7 @@ InverseDeconvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInter
   // Create a process accumulator for tracking the progress of this
   // minipipeline
   ProgressAccumulator::Pointer progress = ProgressAccumulator::New();
+
   progress->SetMiniPipelineFilter( this );
 
   typename InputImageType::Pointer localInput = InputImageType::New();

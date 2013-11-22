@@ -52,8 +52,9 @@ CellInterface< TPixelType, TCellTraits >
 ::GetPointIdsContainer() const
 {
   PointIdentifierContainerType res;
+
   res.SetSize( this->GetNumberOfPoints() );
-  int i = 0;
+  int                  i = 0;
   PointIdConstIterator it = this->PointIdsBegin();
   PointIdConstIterator end = this->PointIdsEnd();
   while( it != end )

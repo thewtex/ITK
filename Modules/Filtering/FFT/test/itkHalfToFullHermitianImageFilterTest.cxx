@@ -23,7 +23,8 @@
 #include "itkRandomImageSource.h"
 #include "itkRealToHalfHermitianForwardFFTImageFilter.h"
 
-int itkHalfToFullHermitianImageFilterTest(int argc, char *argv[])
+int
+itkHalfToFullHermitianImageFilterTest(int argc, char *argv[])
 {
   // Print usage information.
   if ( argc < 3 )
@@ -38,7 +39,7 @@ int itkHalfToFullHermitianImageFilterTest(int argc, char *argv[])
   typedef itk::Image< std::complex< float >, 2 > ComplexImageType;
   typedef itk::RandomImageSource< ImageType >    RandomSourceType;
 
-  RandomSourceType::Pointer source = RandomSourceType::New();
+  RandomSourceType::Pointer  source = RandomSourceType::New();
   RandomSourceType::SizeType size;
   size[0] = atoi( argv[1] );
   size[1] = atoi( argv[2] );
@@ -67,7 +68,7 @@ int itkHalfToFullHermitianImageFilterTest(int argc, char *argv[])
   // Expand the non-redundant half to the full complex image.
   typedef itk::HalfToFullHermitianImageFilter< ComplexImageType > HalfToFullFilterType;
   HalfToFullFilterType::Pointer halfToFullFilter = HalfToFullFilterType::New();
-  bool xDimensionIsOdd = size[0] % 2 == 1;
+  bool                          xDimensionIsOdd = size[0] % 2 == 1;
   halfToFullFilter->SetActualXDimensionIsOdd( xDimensionIsOdd  );
   halfToFullFilter->SetInput( fft->GetOutput() );
   halfToFullFilter->Update();

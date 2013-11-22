@@ -49,17 +49,18 @@ namespace itk
  * \sa ForwardFFTImageFilter, HalfHermitianToRealInverseFFTImageFilter
  * \ingroup ITKFFT
  */
-template< typename TInputImage, typename TOutputImage=Image< typename TInputImage::PixelType::value_type, TInputImage::ImageDimension> >
-class HalfHermitianToRealInverseFFTImageFilter:
+template< typename TInputImage, typename TOutputImage=
+            Image< typename TInputImage::PixelType::value_type, TInputImage::ImageDimension> >
+class HalfHermitianToRealInverseFFTImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 
 {
 public:
   /** Standard class typedefs. */
-  typedef TInputImage                          InputImageType;
-  typedef typename InputImageType::PixelType   InputPixelType;
-  typedef TOutputImage                         OutputImageType;
-  typedef typename OutputImageType::PixelType  OutputPixelType;
+  typedef TInputImage                         InputImageType;
+  typedef typename InputImageType::PixelType  InputPixelType;
+  typedef TOutputImage                        OutputImageType;
+  typedef typename OutputImageType::PixelType OutputPixelType;
 
   typedef HalfHermitianToRealInverseFFTImageFilter              Self;
   typedef ImageToImageFilter< InputImageType, OutputImageType > Superclass;
@@ -76,26 +77,34 @@ public:
   static Pointer New(void);
 
   /** Was the original truncated dimension size odd? */
-  void SetActualXDimensionIsOdd(bool isodd)
+  void
+  SetActualXDimensionIsOdd(bool isodd)
   {
     m_ActualXDimensionIsOdd = isodd;
   }
-  void SetActualXDimensionIsOddOn()
+
+  void
+  SetActualXDimensionIsOddOn()
   {
     this->SetActualXDimensionIsOdd(true);
   }
-  void SetActualXDimensionIsOddOff()
+
+  void
+  SetActualXDimensionIsOddOff()
   {
     this->SetActualXDimensionIsOdd(false);
   }
-  bool GetActualXDimensionIsOdd()
+
+  bool
+  GetActualXDimensionIsOdd()
   {
     return m_ActualXDimensionIsOdd;
   }
 
 protected:
-  HalfHermitianToRealInverseFFTImageFilter():m_ActualXDimensionIsOdd(false) {}
-  virtual ~HalfHermitianToRealInverseFFTImageFilter(){}
+  HalfHermitianToRealInverseFFTImageFilter() : m_ActualXDimensionIsOdd(false) {}
+  virtual
+  ~HalfHermitianToRealInverseFFTImageFilter(){}
 
   /** The output may be a different size from the input if complex conjugate
    * symmetry is implicit. */
@@ -110,7 +119,7 @@ protected:
 
 private:
   HalfHermitianToRealInverseFFTImageFilter(const Self &); // purposely not implemented
-  void operator=(const Self &);        // purposely not implemented
+  void operator=(const Self &);                           // purposely not implemented
 
   bool m_ActualXDimensionIsOdd;
 };

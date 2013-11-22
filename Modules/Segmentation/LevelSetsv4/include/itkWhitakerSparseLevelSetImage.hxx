@@ -36,8 +36,7 @@ WhitakerSparseLevelSetImage< TOutput, VDimension >
 template< typename TOutput, unsigned int VDimension >
 WhitakerSparseLevelSetImage< TOutput, VDimension >
 ::~WhitakerSparseLevelSetImage()
-{
-}
+{}
 
 // ----------------------------------------------------------------------------
 template< typename TOutput, unsigned int VDimension >
@@ -45,7 +44,7 @@ typename WhitakerSparseLevelSetImage< TOutput, VDimension >::OutputType
 WhitakerSparseLevelSetImage< TOutput, VDimension >
 ::Evaluate( const InputType& inputIndex ) const
 {
-  InputType mapIndex = inputIndex - this->m_DomainOffset;
+  InputType             mapIndex = inputIndex - this->m_DomainOffset;
   LayerMapConstIterator layerIt = this->m_Layers.begin();
 
   while( layerIt != this->m_Layers.end() )
@@ -114,6 +113,7 @@ WhitakerSparseLevelSetImage< TOutput, VDimension >
   this->m_InternalLabelList.push_back( MinusOneLayer() );
   this->m_InternalLabelList.push_back( ZeroLayer() );
 }
+
 }
 
 #endif // __itkWhitakerSparseLevelSetImage_hxx

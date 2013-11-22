@@ -26,7 +26,7 @@ namespace itk
 {
 template< typename TInputPixel, typename TLevelSet >
 VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 2 >, TLevelSet >
-::VTKVisualizeImageLevelSetIsoValues():
+::VTKVisualizeImageLevelSetIsoValues() :
   m_NumberOfLevels( 1 ),
   m_LevelLimit( 0. )
 {
@@ -47,7 +47,7 @@ VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 2 >, TLevelSet >
   this->m_ScalarBar->SetLookupTable( this->m_Lut );
   this->m_ScalarBar->SetTitle( "Level Set Values" );
   this->m_ScalarBar->SetNumberOfLabels( this->m_NumberOfLevels );
-  this->m_ContourMapper->SetScalarRange( - m_LevelLimit, m_LevelLimit );
+  this->m_ContourMapper->SetScalarRange( -m_LevelLimit, m_LevelLimit );
 
   this->m_Renderer->AddActor2D( this->m_ScalarBar );
 
@@ -60,8 +60,7 @@ VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 2 >, TLevelSet >
 template< typename TInputPixel, typename TLevelSet >
 VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 2 >, TLevelSet >
 ::~VTKVisualizeImageLevelSetIsoValues()
-{
-}
+{}
 
 template< typename TInputPixel, typename TLevelSet >
 void
@@ -99,7 +98,7 @@ VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 2 >, TLevelSet >
   if( levelLimit > 0. )
     {
     this->m_LevelLimit = levelLimit;
-    this->m_ContourMapper->SetScalarRange( - m_LevelLimit, m_LevelLimit );
+    this->m_ContourMapper->SetScalarRange( -m_LevelLimit, m_LevelLimit );
     }
 }
 
@@ -124,7 +123,7 @@ VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 2 >, TLevelSet >
   this->m_LevelSetConverter->Update();
   this->m_MarchingSquare->SetInputData( this->m_LevelSetConverter->GetOutput() );
 #endif
-  this->m_MarchingSquare->GenerateValues( m_NumberOfLevels, - m_LevelLimit, m_LevelLimit );
+  this->m_MarchingSquare->GenerateValues( m_NumberOfLevels, -m_LevelLimit, m_LevelLimit );
   this->m_MarchingSquare->Modified();
   this->m_MarchingSquare->Update();
 
@@ -134,7 +133,7 @@ VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 2 >, TLevelSet >
   this->m_Renderer->AddActor( this->m_ContourActor );
 
   vtkScalarsToColors * lookupTable = this->m_ContourMapper->GetLookupTable();
-  lookupTable->SetRange( - m_LevelLimit, m_LevelLimit );
+  lookupTable->SetRange( -m_LevelLimit, m_LevelLimit );
   lookupTable->Build();
 
   this->m_ScalarBar->SetLookupTable( lookupTable );
@@ -144,7 +143,7 @@ VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 2 >, TLevelSet >
 // --------------------- 3D ---------------------------------------------------
 template< typename TInputPixel, typename TLevelSet >
 VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 3 >, TLevelSet >
-::VTKVisualizeImageLevelSetIsoValues():
+::VTKVisualizeImageLevelSetIsoValues() :
   m_NumberOfLevels( 1 ),
   m_LevelLimit( 0. )
 {
@@ -165,7 +164,7 @@ VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 3 >, TLevelSet >
   this->m_ScalarBar->SetLookupTable( this->m_Lut );
   this->m_ScalarBar->SetTitle( "Level Set Values" );
   this->m_ScalarBar->SetNumberOfLabels( this->m_NumberOfLevels );
-  this->m_ContourMapper->SetScalarRange( - m_LevelLimit, m_LevelLimit );
+  this->m_ContourMapper->SetScalarRange( -m_LevelLimit, m_LevelLimit );
 
   this->m_Renderer->AddActor2D( this->m_ScalarBar );
 
@@ -178,8 +177,7 @@ VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 3 >, TLevelSet >
 template< typename TInputPixel, typename TLevelSet >
 VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 3 >, TLevelSet >
 ::~VTKVisualizeImageLevelSetIsoValues()
-{
-}
+{}
 
 template< typename TInputPixel, typename TLevelSet >
 void
@@ -260,7 +258,7 @@ VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 3 >, TLevelSet >
   if( levelLimit > 0. )
     {
     this->m_LevelLimit = levelLimit;
-    this->m_ContourMapper->SetScalarRange( - m_LevelLimit, m_LevelLimit );
+    this->m_ContourMapper->SetScalarRange( -m_LevelLimit, m_LevelLimit );
     }
 }
 
@@ -285,7 +283,7 @@ VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 3 >, TLevelSet >
   this->m_LevelSetConverter->Update();
   this->m_MarchingCubes->SetInputData( this->m_LevelSetConverter->GetOutput() );
 #endif
-  this->m_MarchingCubes->GenerateValues( m_NumberOfLevels, - m_LevelLimit, m_LevelLimit );
+  this->m_MarchingCubes->GenerateValues( m_NumberOfLevels, -m_LevelLimit, m_LevelLimit );
   this->m_MarchingCubes->ComputeNormalsOff();
   this->m_MarchingCubes->Modified();
   this->m_MarchingCubes->Update();
@@ -296,12 +294,13 @@ VTKVisualizeImageLevelSetIsoValues< Image< TInputPixel, 3 >, TLevelSet >
   this->m_Renderer->AddActor( this->m_ContourActor );
 
   vtkScalarsToColors * lookupTable = this->m_ContourMapper->GetLookupTable();
-  lookupTable->SetRange( - m_LevelLimit, m_LevelLimit );
+  lookupTable->SetRange( -m_LevelLimit, m_LevelLimit );
   lookupTable->Build();
 
   this->m_ScalarBar->SetLookupTable( lookupTable );
   this->m_ScalarBar->Modified();
 }
+
 } // end namespace itk
 
 #endif

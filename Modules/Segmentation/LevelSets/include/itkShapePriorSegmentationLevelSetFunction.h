@@ -52,14 +52,14 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TImageType, typename TFeatureImageType = TImageType >
-class ShapePriorSegmentationLevelSetFunction:
+class ShapePriorSegmentationLevelSetFunction :
   public SegmentationLevelSetFunction< TImageType, TFeatureImageType >
 {
 public:
   /** Standard class typedefs. */
   typedef ShapePriorSegmentationLevelSetFunction Self;
   typedef SegmentationLevelSetFunction< TImageType, TFeatureImageType >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
   typedef TFeatureImageType          FeatureImageType;
@@ -93,17 +93,31 @@ public:
   typedef typename ShapeFunctionType::ConstPointer ShapeFunctionPointer;
 
   /** Zeta. The ShapePriorWeight scales the shape prior term values. */
-  void SetShapePriorWeight(const ScalarValueType p)
-  { m_ShapePriorWeight = p; }
-  ScalarValueType GetShapePriorWeight() const
-  { return m_ShapePriorWeight; }
+  void
+  SetShapePriorWeight(const ScalarValueType p)
+  {
+    m_ShapePriorWeight = p;
+  }
+
+  ScalarValueType
+  GetShapePriorWeight() const
+  {
+    return m_ShapePriorWeight;
+  }
 
   /** The ShapeFunction encapsulates the signed distance to the shape used to
    * influence the evolution of the level set. */
-  void SetShapeFunction(const ShapeFunctionType *ptr)
-  { m_ShapeFunction = ptr; }
-  const ShapeFunctionType * GetShapeFunction() const
-  { return m_ShapeFunction; }
+  void
+  SetShapeFunction(const ShapeFunctionType *ptr)
+  {
+    m_ShapeFunction = ptr;
+  }
+
+  const ShapeFunctionType *
+  GetShapeFunction() const
+  {
+    return m_ShapeFunction;
+  }
 
   /** Compute the equation value with the additional shape prior term. */
   virtual PixelType ComputeUpdate( const NeighborhoodType & neighborhood,
@@ -116,12 +130,13 @@ public:
   /** A global data type used to store values needed to compute the time step.
     */
   typedef typename Superclass::GlobalDataStruct GlobalDataStruct;
-  struct ShapePriorGlobalDataStruct:public GlobalDataStruct {
+  struct ShapePriorGlobalDataStruct : public GlobalDataStruct {
     ScalarValueType m_MaxShapePriorChange;
-  };
+    };
 
   /** Returns a pointer to a global data structure for computing time step. */
-  virtual void * GetGlobalDataPointer() const
+  virtual void *
+  GetGlobalDataPointer() const
   {
     ShapePriorGlobalDataStruct *ans = new ShapePriorGlobalDataStruct();
 
@@ -133,17 +148,22 @@ public:
   }
 
   /** Release the global data structure. */
-  virtual void ReleaseGlobalDataPointer(void *GlobalData) const
-  { delete (ShapePriorGlobalDataStruct *)GlobalData; }
+  virtual void
+  ReleaseGlobalDataPointer(void *GlobalData) const
+  {
+    delete (ShapePriorGlobalDataStruct *)GlobalData;
+  }
 
 protected:
   ShapePriorSegmentationLevelSetFunction();
-  virtual ~ShapePriorSegmentationLevelSetFunction() {}
+  virtual
+  ~ShapePriorSegmentationLevelSetFunction() {}
 
   ShapePriorSegmentationLevelSetFunction(const Self &); //purposely not
                                                         // implemented
   void operator=(const Self &);                         //purposely not
-                                                        // implemented
+
+  // implemented
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

@@ -19,17 +19,16 @@
 // Insight classes
 #include "itkImageRegionIterator.h"
 
-
 #include "itkScalarImageToCooccurrenceMatrixFilter.h"
 
-int itkScalarImageToCooccurrenceMatrixFilterTest(int, char* [] )
+int
+itkScalarImageToCooccurrenceMatrixFilterTest(int, char* [] )
 {
 
   //Data definitions
-  const unsigned int  IMGWIDTH         =  5;
-  const unsigned int  IMGHEIGHT        =  5;
-  const unsigned int  NDIMENSION       =  2;
-
+  const unsigned int IMGWIDTH         =  5;
+  const unsigned int IMGHEIGHT        =  5;
+  const unsigned int NDIMENSION       =  2;
 
   //------------------------------------------------------
   //Create a simple test images
@@ -37,7 +36,6 @@ int itkScalarImageToCooccurrenceMatrixFilterTest(int, char* [] )
   typedef itk::Image<unsigned char, NDIMENSION> InputImageType;
 
   typedef itk::ImageRegionIterator< InputImageType > InputImageIterator;
-
 
   InputImageType::Pointer image = InputImageType::New();
 
@@ -74,7 +72,6 @@ int itkScalarImageToCooccurrenceMatrixFilterTest(int, char* [] )
       imageIt.Set(j % 2 + 1);
       }
     }
-
 
   //--------------------------------------------------------------------------
   // Generate the histogram. The un-normalized histogram should look like this:
@@ -129,7 +126,6 @@ int itkScalarImageToCooccurrenceMatrixFilterTest(int, char* [] )
       passed = false;
       }
 
-
     //Invoke update with a NULL input. An exception should be
     //thrown.
     filter->SetInput( NULL );
@@ -152,21 +148,18 @@ int itkScalarImageToCooccurrenceMatrixFilterTest(int, char* [] )
       passed = false;
       }
 
-
     filter->SetInput(image);
 
-    InputImageType::OffsetType offset1 = {{0, 1}};
-    InputImageType::OffsetType offset2 = {{1, 0}};
+    InputImageType::OffsetType      offset1 = {{0, 1}};
+    InputImageType::OffsetType      offset2 = {{1, 0}};
     FilterType::OffsetVectorPointer offsetV =
-    FilterType::OffsetVector::New();
+      FilterType::OffsetVector::New();
     offsetV->push_back(offset1);
     offsetV->push_back(offset2);
 
     filter->SetOffsets(offsetV);
 
-
     filter->Update();
-
 
     const FilterType::HistogramType * hist = filter->GetOutput();
 
@@ -218,14 +211,13 @@ int itkScalarImageToCooccurrenceMatrixFilterTest(int, char* [] )
       std::cerr << "Error:" << std::endl;
       std::cerr << "The histogram was calculated incorrectly" << std::endl;
       std::cerr << "Expected 24, 16, 20, 20, 80 got " << ooF << ", " << ttF  << ", " <<
-      otF  << ", " << toF  << ", " << totalF << std::endl << std::endl;
+        otF  << ", " << toF  << ", " << totalF << std::endl << std::endl;
       passed = false;
       }
 
     //--------------------------------------------------------------------------
     // Test the histogram with normalization
     //--------------------------------------------------------------------------
-
 
     FilterType::Pointer filter0 = FilterType::New();
 
@@ -253,10 +245,9 @@ int itkScalarImageToCooccurrenceMatrixFilterTest(int, char* [] )
       std::cerr << "Error:" << std::endl;
       std::cerr << "The histogram was calculated incorrectly" << std::endl;
       std::cerr << "Expected 0.3, 0.2, 0.25, 0.25 got " << ooF << ", " << ttF  << ", " <<
-      otF  << ", " << toF << std::endl << std::endl;
+        otF  << ", " << toF << std::endl << std::endl;
       passed = false;
       }
-
 
     //--------------------------------------------------------------------------
     // Generate some variant histograms and test them
@@ -296,7 +287,6 @@ int itkScalarImageToCooccurrenceMatrixFilterTest(int, char* [] )
       passed = false;
       }
 
-
     // Next a histogram with a smaller range.
     FilterType::Pointer filter3 = FilterType::New();
 
@@ -320,7 +310,6 @@ int itkScalarImageToCooccurrenceMatrixFilterTest(int, char* [] )
       std::cerr << "GetMin() is not returning the value that is expected: 2" << std::endl;
       passed = false;
       }
-
 
     filter3->SetNumberOfBinsPerAxis( 2 );
 
@@ -348,7 +337,7 @@ int itkScalarImageToCooccurrenceMatrixFilterTest(int, char* [] )
       std::cerr << "Error:" << std::endl;
       std::cerr << "The small size histogram was calculated incorrectly" << std::endl;
       std::cerr << "Expected 0, 16, 16, 0, 32 got " << zzF << ", " << zoF  << ", " <<
-      ozF  << ", " << ooF  << ", " << totalF << std::endl << std::endl;
+        ozF  << ", " << ooF  << ", " << totalF << std::endl << std::endl;
       passed = false;
       }
 
@@ -382,10 +371,9 @@ int itkScalarImageToCooccurrenceMatrixFilterTest(int, char* [] )
       std::cerr << "Error:" << std::endl;
       std::cerr << "The truncated range histogram was calculated incorrectly" << std::endl;
       std::cerr << "Expected 0, 0, 0, 24, 24 got " << zzF << ", " << zoF  << ", " <<
-      ozF  << ", " << ooF  << ", " << totalF << std::endl << std::endl;
+        ozF  << ", " << ooF  << ", " << totalF << std::endl << std::endl;
       passed = false;
       }
-
 
     if (!passed)
       {

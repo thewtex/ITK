@@ -24,7 +24,8 @@
 #include "itkLevelSetEvolution.h"
 #include "itkLevelSetEvolutionNumberOfIterationsStoppingCriterion.h"
 
-int itkMultiLevelSetEvolutionTest( int , char* [] )
+int
+itkMultiLevelSetEvolutionTest( int , char* [] )
 {
   const unsigned int Dimension = 2;
 
@@ -42,18 +43,18 @@ int itkMultiLevelSetEvolutionTest( int , char* [] )
   typedef itk::Image< IdListType, Dimension >            IdListImageType;
   typedef itk::Image< short, Dimension >                 CacheImageType;
   typedef itk::LevelSetDomainMapImageFilter< IdListImageType, CacheImageType >
-                                                         DomainMapImageFilterType;
+    DomainMapImageFilterType;
 
   typedef itk::LevelSetContainer< IdentifierType, LevelSetType >
-      LevelSetContainerType;
+    LevelSetContainerType;
   typedef itk::LevelSetEquationChanAndVeseInternalTerm< InputImageType, LevelSetContainerType >
-      ChanAndVeseInternalTermType;
+    ChanAndVeseInternalTermType;
   typedef itk::LevelSetEquationChanAndVeseExternalTerm< InputImageType, LevelSetContainerType >
-      ChanAndVeseExternalTermType;
+    ChanAndVeseExternalTermType;
   typedef itk::LevelSetEquationTermContainer< InputImageType, LevelSetContainerType >
-      TermContainerType;
+    TermContainerType;
 
-  typedef itk::LevelSetEquationContainer< TermContainerType >     EquationContainerType;
+  typedef itk::LevelSetEquationContainer< TermContainerType > EquationContainerType;
 
   typedef itk::LevelSetEvolution< EquationContainerType, LevelSetType > LevelSetEvolutionType;
 
@@ -90,7 +91,7 @@ int itkMultiLevelSetEvolutionTest( int , char* [] )
   input2->FillBuffer( value );
 
   ImageType::IndexType idx;
-  IdListType list_ids;
+  IdListType           list_ids;
 
   IdListImageType::Pointer id_image = IdListImageType::New();
   id_image->SetRegions( region );
@@ -122,12 +123,12 @@ int itkMultiLevelSetEvolutionTest( int , char* [] )
     input->SetPixel( idx, idx[0] );
 
     it1.Set( vcl_sqrt(
-             static_cast< float> ( ( idx[0] - 2 ) * ( idx[0] - 2 ) +
-                                   ( idx[1] - 2 ) * ( idx[1] - 2 ) ) ) - 1.5);
+               static_cast< float> ( ( idx[0] - 2 ) * ( idx[0] - 2 ) +
+                                     ( idx[1] - 2 ) * ( idx[1] - 2 ) ) ) - 1.5);
 
     it2.Set( vcl_sqrt(
-             static_cast< float> ( ( idx[0] - 5 ) * ( idx[0] - 5 ) +
-                                   ( idx[1] - 5 ) * ( idx[1] - 5 ) ) ) - 2.5 );
+               static_cast< float> ( ( idx[0] - 5 ) * ( idx[0] - 5 ) +
+                                     ( idx[1] - 5 ) * ( idx[1] - 5 ) ) ) - 2.5 );
     ++it1;
     ++it2;
     }
@@ -220,7 +221,7 @@ int itkMultiLevelSetEvolutionTest( int , char* [] )
   std::cout << "Term container 1 created" << std::endl;
 
   typedef itk::LevelSetEvolutionNumberOfIterationsStoppingCriterion< LevelSetContainerType >
-      StoppingCriterionType;
+    StoppingCriterionType;
   StoppingCriterionType::Pointer criterion = StoppingCriterionType::New();
   criterion->SetNumberOfIterations( 2 );
 

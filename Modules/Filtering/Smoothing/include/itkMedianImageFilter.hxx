@@ -94,6 +94,7 @@ MedianImageFilter< TInputImage, TOutputImage >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

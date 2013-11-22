@@ -35,38 +35,42 @@ class GradientDescentOptimizerBasev4Template;
 
 template<typename TInternalComputationValueType>
 class GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate
-  : public DomainThreader< ThreadedIndexedContainerPartitioner, GradientDescentOptimizerBasev4Template<TInternalComputationValueType> >
+  : public DomainThreader< ThreadedIndexedContainerPartitioner,
+                           GradientDescentOptimizerBasev4Template<TInternalComputationValueType> >
 {
 public:
   /** Standard class typedefs. */
-  typedef GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate              Self;
+  typedef GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate Self;
   typedef DomainThreader< ThreadedIndexedContainerPartitioner,
                           GradientDescentOptimizerBasev4Template<TInternalComputationValueType> >  Superclass;
-  typedef SmartPointer< Self >                                                                    Pointer;
-  typedef SmartPointer< const Self >                                                              ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   itkTypeMacro( GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate, DomainThreader );
 
   itkNewMacro( Self );
 
-  typedef typename Superclass::DomainType             DomainType;
-  typedef typename Superclass::AssociateType          AssociateType;
-  typedef DomainType                                  IndexRangeType;
+  typedef typename Superclass::DomainType    DomainType;
+  typedef typename Superclass::AssociateType AssociateType;
+  typedef DomainType                         IndexRangeType;
 
 protected:
   virtual void ThreadedExecution( const IndexRangeType & subrange,
                                   const ThreadIdType threadId );
 
   GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate() {}
-  virtual ~GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate() {}
+  virtual
+  ~GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate() {}
 
 private:
   GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  void operator=( const Self & );                                                             // purposely not implemented
+
 };
 
 /** This helps to meet backward compatibility */
-typedef GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate<double> GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreader;
+typedef GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreaderTemplate<double>
+  GradientDescentOptimizerBasev4ModifyGradientByLearningRateThreader;
 
 } // end namespace itk
 

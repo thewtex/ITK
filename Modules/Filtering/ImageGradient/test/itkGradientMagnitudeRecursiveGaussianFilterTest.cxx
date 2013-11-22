@@ -23,45 +23,47 @@ template<typename TImage1Type,typename TImage2Type>
 class ImageInformationIsEqual
 {
 public:
-static bool Check(const TImage1Type * image1, const TImage2Type * image2)
-{
-  if (image1->GetSpacing() != image2->GetSpacing())
-    {
-    return false;
-    }
-  if (image1->GetOrigin() != image2->GetOrigin())
-    {
-    return false;
-    }
-  if (image1->GetDirection() != image2->GetDirection())
-    {
-    return false;
-    }
-  return true;
-}
+  static bool
+  Check(const TImage1Type * image1, const TImage2Type * image2)
+  {
+    if (image1->GetSpacing() != image2->GetSpacing() )
+      {
+      return false;
+      }
+    if (image1->GetOrigin() != image2->GetOrigin() )
+      {
+      return false;
+      }
+    if (image1->GetDirection() != image2->GetDirection() )
+      {
+      return false;
+      }
+    return true;
+  }
+
 };
 
-int itkGradientMagnitudeRecursiveGaussianFilterTest(int, char* [] )
+int
+itkGradientMagnitudeRecursiveGaussianFilterTest(int, char* [] )
 {
 
   // Define the dimension of the images
   const unsigned int myDimension = 3;
 
   // Declare the types of the images
-  typedef itk::Image<float, myDimension>           myImageType;
+  typedef itk::Image<float, myDimension> myImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>             myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>              mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>        myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Create the image
   myImageType::Pointer inputImage  = myImageType::New();
-
 
   // Define their size, and start index
   mySizeType size;
@@ -83,8 +85,8 @@ int itkGradientMagnitudeRecursiveGaussianFilterTest(int, char* [] )
   inputImage->Allocate();
 
   // Set the metadata for the image
-  myImageType::PointType origin;
-  myImageType::SpacingType spacing;
+  myImageType::PointType     origin;
+  myImageType::SpacingType   spacing;
   myImageType::DirectionType direction;
 
   origin[0] = 1.0; origin[1] = 2.0; origin[2] = 3.0;
@@ -97,17 +99,17 @@ int itkGradientMagnitudeRecursiveGaussianFilterTest(int, char* [] )
   inputImage->SetDirection(direction);
 
   // Declare Iterator type for the input image
-  typedef itk::ImageRegionIteratorWithIndex<myImageType>  myIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex<myImageType> myIteratorType;
 
   // Create one iterator for the Input Image A (this is a light object)
   myIteratorType it( inputImage, inputImage->GetRequestedRegion() );
 
   // Initialize the content of Image A
   while( !it.IsAtEnd() )
-  {
+    {
     it.Set( 0.0 );
     ++it;
-  }
+    }
 
   size[0] = 4;
   size[1] = 4;
@@ -124,29 +126,26 @@ int itkGradientMagnitudeRecursiveGaussianFilterTest(int, char* [] )
 
   // Initialize the content the internal region
   while( !itb.IsAtEnd() )
-  {
+    {
     itb.Set( 100.0 );
     ++itb;
-  }
+    }
 
   // Declare the type for the
   typedef itk::GradientMagnitudeRecursiveGaussianImageFilter<
-                                            myImageType >  myFilterType;
+      myImageType >  myFilterType;
 
   typedef myFilterType::OutputImageType myGradientImageType;
 
-
   // Create a  Filter
-  myFilterType::Pointer filter = myFilterType::New();
+  myFilterType::Pointer    filter = myFilterType::New();
   itk::SimpleFilterWatcher watcher(filter);
-
 
   // Connect the input images
   filter->SetInput( inputImage );
 
   // Select the value of Sigma
   filter->SetSigma( 2.5 );
-
 
   // Execute the filter
   try
@@ -159,7 +158,6 @@ int itkGradientMagnitudeRecursiveGaussianFilterTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   // Get the Smart Pointer to the Filter Output
   // It is important to do it AFTER the filter is Updated
   // Because the object connected to the output may be changed
@@ -168,7 +166,7 @@ int itkGradientMagnitudeRecursiveGaussianFilterTest(int, char* [] )
 
   // Declare Iterator type for the output image
   typedef itk::ImageRegionIteratorWithIndex<
-                                 myGradientImageType>  myOutputIteratorType;
+      myGradientImageType>  myOutputIteratorType;
 
   // Create an iterator for going through the output image
   myOutputIteratorType itg( outputImage,
@@ -178,12 +176,12 @@ int itkGradientMagnitudeRecursiveGaussianFilterTest(int, char* [] )
   std::cout << " Result " << std::endl;
   itg.GoToBegin();
   while( !itg.IsAtEnd() )
-  {
+    {
     std::cout << itg.Get() << std::endl;
     ++itg;
-  }
+    }
 
-  if (!ImageInformationIsEqual<myImageType,myImageType>::Check(inputImage, outputImage))
+  if (!ImageInformationIsEqual<myImageType,myImageType>::Check(inputImage, outputImage) )
     {
     std::cout << "ImageInformation mismatch!" << std::endl;
     std::cout << "inputImage Origin:  " << inputImage->GetOrigin() << std::endl;
@@ -207,12 +205,12 @@ int itkGradientMagnitudeRecursiveGaussianFilterTest(int, char* [] )
   try
     {
     filter->UpdateLargestPossibleRegion();
-     }
-   catch(...)
-     {
-     std::cerr << "Exception thrown during Update() " << std::endl;
-     return EXIT_FAILURE;
-     }
+    }
+  catch(...)
+    {
+    std::cerr << "Exception thrown during Update() " << std::endl;
+    return EXIT_FAILURE;
+    }
 
   // All objects should be automatically destroyed at this point
   std::cout << std::endl << "Test PASSED ! " << std::endl;

@@ -118,10 +118,10 @@ void
 ConformalFlatteningMeshFilter< TInputMesh, TOutputMesh >
 ::GenerateData(void)
 {
-  typedef typename TInputMesh::PointsContainer              InputPointsContainer;
-  typedef typename TOutputMesh::PointsContainer             OutputPointsContainer;
-  typedef typename TInputMesh::PointsContainerConstPointer  InputPointsContainerConstPointer;
-  typedef typename TOutputMesh::PointsContainerPointer      OutputPointsContainerPointer;
+  typedef typename TInputMesh::PointsContainer             InputPointsContainer;
+  typedef typename TOutputMesh::PointsContainer            OutputPointsContainer;
+  typedef typename TInputMesh::PointsContainerConstPointer InputPointsContainerConstPointer;
+  typedef typename TOutputMesh::PointsContainerPointer     OutputPointsContainerPointer;
 
   InputMeshConstPointer inputMesh      =  this->GetInput();
   OutputMeshPointer     outputMesh     =  this->GetOutput();
@@ -164,8 +164,8 @@ ConformalFlatteningMeshFilter< TInputMesh, TOutputMesh >
     {
     itkExceptionMacro(
       "Polar cell has " << cellNumberOfPoints << " points"
-                                                 "\nThis filter can only process triangle meshes. "
-                                                 "Use vtkTriangleFilter to convert your mesh to a triangle mesh.");
+      "\nThis filter can only process triangle meshes. "
+      "Use vtkTriangleFilter to convert your mesh to a triangle mesh.");
     return;
     }
 
@@ -294,7 +294,7 @@ ConformalFlatteningMeshFilter< TInputMesh, TOutputMesh >
     if ( aCellNumberOfPoints > 3 )
       {
       itkExceptionMacro("cell has " << aCellNumberOfPoints << " points\n"
-                                                              "This filter can only process triangle meshes.");
+                        "This filter can only process triangle meshes.");
       return;
       }
 
@@ -623,6 +623,7 @@ ConformalFlatteningMeshFilter< TInputMesh, TOutputMesh >
                                         inputMesh->GetBoundaryAssignments(dim) );
     }
 }
+
 } // end namespace itk
 
 #endif

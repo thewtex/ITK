@@ -20,17 +20,18 @@
 
 #include <iostream>
 
-int itkRegularSphereMeshSourceTest(int, char* [] )
+int
+itkRegularSphereMeshSourceTest(int, char* [] )
 {
 
-  typedef itk::Mesh<float, 3>   MeshType;
+  typedef itk::Mesh<float, 3> MeshType;
 
-  typedef itk::RegularSphereMeshSource< MeshType >  SphereMeshSourceType;
+  typedef itk::RegularSphereMeshSource< MeshType > SphereMeshSourceType;
 
-  SphereMeshSourceType::Pointer  mySphereMeshSource = SphereMeshSourceType::New();
+  SphereMeshSourceType::Pointer mySphereMeshSource = SphereMeshSourceType::New();
 
-  typedef SphereMeshSourceType::PointType   PointType;
-  typedef SphereMeshSourceType::VectorType  VectorType;
+  typedef SphereMeshSourceType::PointType  PointType;
+  typedef SphereMeshSourceType::VectorType VectorType;
 
   PointType center;
   center.Fill( 7.4 );
@@ -61,7 +62,7 @@ int itkRegularSphereMeshSourceTest(int, char* [] )
 
   MeshType::Pointer myMesh = mySphereMeshSource->GetOutput();
 
-  PointType  pt;
+  PointType pt;
   pt.Fill(0);
 
   bool testPassed = true;
@@ -92,7 +93,6 @@ int itkRegularSphereMeshSourceTest(int, char* [] )
   unsigned faceId = 0;
 
   MeshType::CellsContainerIterator cellsItr = cells->Begin();
-
 
   while( cellsItr != cells->End() )
     {

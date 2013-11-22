@@ -31,7 +31,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class MultipleValuedCostFunction:
+class MultipleValuedCostFunction :
   public CostFunction
 {
 public:
@@ -74,11 +74,13 @@ public:
 
 protected:
   MultipleValuedCostFunction() {}
-  virtual ~MultipleValuedCostFunction() {}
+  virtual
+  ~MultipleValuedCostFunction() {}
 
 private:
   MultipleValuedCostFunction(const Self &); //purposely not implemented
   void operator=(const Self &);             //purposely not implemented
+
 };
 } // end namespace itk
 

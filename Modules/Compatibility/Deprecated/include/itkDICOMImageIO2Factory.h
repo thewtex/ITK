@@ -19,7 +19,6 @@
 #define __itkDICOMImageIO2Factory_h
 #if !defined( ITK_LEGACY_REMOVE )
 
-
 #include "itkObjectFactoryBase.h"
 #include "itkImageIOBase.h"
 
@@ -30,7 +29,7 @@ namespace itk
  * \deprecated
  * \ingroup ITKDeprecated
  */
-class DICOMImageIO2Factory:public ObjectFactoryBase
+class DICOMImageIO2Factory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -51,7 +50,8 @@ public:
   itkTypeMacro(DICOMImageIO2Factory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     DICOMImageIO2Factory::Pointer DicomFactory = DICOMImageIO2Factory::New();
 
@@ -65,6 +65,7 @@ protected:
 private:
   DICOMImageIO2Factory(const Self &); //purposely not implemented
   void operator=(const Self &);       //purposely not implemented
+
 };
 } // end namespace itk
 

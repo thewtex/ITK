@@ -45,10 +45,10 @@ class PointsLocator : public Object
 {
 public:
   /** Standard class typedefs. */
-  typedef PointsLocator               Self;
-  typedef Object                      Superclass;
-  typedef SmartPointer<Self>          Pointer;
-  typedef SmartPointer<const Self>    ConstPointer;
+  typedef PointsLocator            Self;
+  typedef Object                   Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self );
@@ -73,14 +73,14 @@ public:
   /** Type of the PointsContainer to List Adaptor. */
   typedef Statistics::VectorContainerToListSampleAdaptor
     <PointsContainer>                                   SampleAdaptorType;
-  typedef typename SampleAdaptorType::Pointer           SampleAdaptorPointer;
+  typedef typename SampleAdaptorType::Pointer SampleAdaptorPointer;
 
   /** Types fo the KdTreeGenerator */
-  typedef Statistics::KdTreeGenerator<SampleAdaptorType>    TreeGeneratorType;
-  typedef typename TreeGeneratorType::Pointer               TreeGeneratorPointer;
-  typedef typename TreeGeneratorType::KdTreeType            TreeType;
-  typedef typename TreeType::ConstPointer                   TreeConstPointer;
-  typedef typename TreeType::InstanceIdentifierVectorType   NeighborsIdentifierType;
+  typedef Statistics::KdTreeGenerator<SampleAdaptorType>  TreeGeneratorType;
+  typedef typename TreeGeneratorType::Pointer             TreeGeneratorPointer;
+  typedef typename TreeGeneratorType::KdTreeType          TreeType;
+  typedef typename TreeType::ConstPointer                 TreeConstPointer;
+  typedef typename TreeType::InstanceIdentifierVectorType NeighborsIdentifierType;
 
   /** Set/Get the points from which the bounding box should be computed. */
   itkSetObjectMacro( Points, PointsContainer );
@@ -96,18 +96,18 @@ public:
 
   /** Find the k-nearest neighbors.  Returns the point ids. */
   void Search( const PointType &, unsigned int, NeighborsIdentifierType & )
-    const;
+  const;
 
   /** Find the closest N points.  Returns the point ids. */
   void FindClosestNPoints( const PointType &, unsigned int,
-    NeighborsIdentifierType & ) const;
+                           NeighborsIdentifierType & ) const;
 
   /** Find all the points within a specified radius.  Returns the point ids. */
   void Search( const PointType &, double, NeighborsIdentifierType & ) const;
 
   /** Find all the points within a specified radius.  Returns the point ids. */
   void FindPointsWithinRadius( const PointType &, double,
-    NeighborsIdentifierType & ) const;
+                               NeighborsIdentifierType & ) const;
 
 protected:
   PointsLocator();
@@ -115,13 +115,13 @@ protected:
   virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
 private:
-  PointsLocator( const Self& ); //purposely not implemented
+  PointsLocator( const Self& );  //purposely not implemented
   void operator=( const Self& ); //purposely not implemented
 
-  PointsContainerPointer   m_Points;
-  SampleAdaptorPointer     m_SampleAdaptor;
-  TreeGeneratorPointer     m_KdTreeGenerator;
-  TreeConstPointer         m_Tree;
+  PointsContainerPointer m_Points;
+  SampleAdaptorPointer   m_SampleAdaptor;
+  TreeGeneratorPointer   m_KdTreeGenerator;
+  TreeConstPointer       m_Tree;
 };
 
 } // end namespace itk

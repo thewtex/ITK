@@ -16,13 +16,13 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSolver.h"
 #include "itkFEMSpatialObjectReader.h"
 #include "itkFEMSpatialObjectWriter.h"
 #include "itkFEMLinearSystemWrapperItpack.h"
 
-int itkFEMElement2DC0LinearQuadrilateralStrainItpackTest(int argc, char *argv[])
+int
+itkFEMElement2DC0LinearQuadrilateralStrainItpackTest(int argc, char *argv[])
 {
   if(argc < 1)
     {
@@ -41,7 +41,7 @@ int itkFEMElement2DC0LinearQuadrilateralStrainItpackTest(int argc, char *argv[])
   typedef itk::SpatialObject<2>      SpatialObjectType;
   typedef SpatialObjectType::Pointer SpatialObjectPointer;
   SpatialObjectPointer Spatial = SpatialObjectType::New();
-  if(Spatial.IsNull())
+  if(Spatial.IsNull() )
     {
     return EXIT_FAILURE;
     }

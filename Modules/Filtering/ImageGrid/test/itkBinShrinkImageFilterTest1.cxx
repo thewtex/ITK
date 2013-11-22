@@ -22,7 +22,8 @@
 #include "itkImageRegionConstIteratorWithIndex.h"
 #include "itkTestingMacros.h"
 
-int itkBinShrinkImageFilterTest1( int , char *[] )
+int
+itkBinShrinkImageFilterTest1( int , char *[] )
 {
 
   // typedefs to simplify the syntax
@@ -66,7 +67,7 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
   // test no change
   bin->SetShrinkFactors(1);
   TEST_EXPECT_EQUAL(bin->GetShrinkFactors()[0], 1 );
-  TEST_EXPECT_EQUAL(t,  bin->GetMTime());
+  TEST_EXPECT_EQUAL(t,  bin->GetMTime() );
 
   // test zero value
   bin->SetShrinkFactors(0);
@@ -77,18 +78,16 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
   // no change
   bin->SetShrinkFactor(0,1);
   TEST_EXPECT_EQUAL(bin->GetShrinkFactors()[0], 1 );
-  TEST_EXPECT_EQUAL(t,  bin->GetMTime());
+  TEST_EXPECT_EQUAL(t,  bin->GetMTime() );
 
   bin->SetShrinkFactor(0,2);
   TEST_EXPECT_EQUAL(bin->GetShrinkFactors()[0], 2 );
   TEST_EXPECT_TRUE( t != bin->GetMTime() );
 
-
   MonitorFilter::Pointer monitor2 = MonitorFilter::New();
-  monitor2->SetInput(bin->GetOutput());
+  monitor2->SetInput(bin->GetOutput() );
 
   bool failed = false;
-
 
   try
     {
@@ -311,7 +310,7 @@ int itkBinShrinkImageFilterTest1( int , char *[] )
                 std::cout << "--Resolution " << x << " " << y << "--" << std::endl;
                 }
               std::cout << "Wrong pixel value at " << inIt.GetIndex() << " of " << inIt.Get() << ", expected: " <<
-              expectedValue << std::endl;
+                expectedValue << std::endl;
               lfailed = failed = true;
               }
             }

@@ -36,20 +36,24 @@ class Exp
 public:
   Exp() {}
   ~Exp() {}
-  bool operator!=(const Exp &) const
+  bool
+  operator!=(const Exp &) const
   {
     return false;
   }
 
-  bool operator==(const Exp & other) const
+  bool
+  operator==(const Exp & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return (TOutput)vcl_exp( (double)A );
   }
+
 };
 }
 /** \class ExpImageFilter
@@ -63,7 +67,7 @@ public:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage, typename TOutputImage >
-class ExpImageFilter:
+class ExpImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::Exp<
@@ -74,9 +78,9 @@ public:
   /** Standard class typedefs. */
   typedef ExpImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::Exp< typename TInputImage::PixelType,
-                   typename TOutputImage::PixelType > >  Superclass;
+      TInputImage, TOutputImage,
+      Functor::Exp< typename TInputImage::PixelType,
+                    typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -99,11 +103,13 @@ public:
 
 protected:
   ExpImageFilter() {}
-  virtual ~ExpImageFilter() {}
+  virtual
+  ~ExpImageFilter() {}
 
 private:
   ExpImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

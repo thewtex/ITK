@@ -57,6 +57,7 @@ HoughTransform2DCirclesImageFilter< TInputPixelType, TOutputPixelType >
 ::EnlargeOutputRequestedRegion(DataObject *output)
 {
   Superclass::EnlargeOutputRequestedRegion(output);
+
   output->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -66,6 +67,7 @@ HoughTransform2DCirclesImageFilter< TInputPixelType, TOutputPixelType >
 ::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
+
   if ( this->GetInput() )
     {
     InputImagePointer image =
@@ -175,7 +177,7 @@ template< typename TInputPixelType, typename TOutputPixelType >
 typename HoughTransform2DCirclesImageFilter< TInputPixelType, TOutputPixelType >::CirclesListType &
 HoughTransform2DCirclesImageFilter< TInputPixelType, TOutputPixelType >
 ::GetCircles(unsigned int n)
-{
+  {
   if ( ( this->GetMTime() == m_OldModifiedTime ) && ( n == m_OldNumberOfCircles ) )
     {
     // if the filter has not been updated
@@ -226,7 +228,7 @@ HoughTransform2DCirclesImageFilter< TInputPixelType, TOutputPixelType >
   Index< 2 > index;
 
   CirclesListSizeType circles = 0;
-  bool         found;
+  bool                found;
 
   const double nPI = 4.0 * vcl_atan(1.0);
 
@@ -283,7 +285,7 @@ HoughTransform2DCirclesImageFilter< TInputPixelType, TOutputPixelType >
   m_OldModifiedTime = this->GetMTime();
   m_OldNumberOfCircles = m_CirclesList.size();
   return m_CirclesList;
-}
+  }
 
 /** Print Self information */
 template< typename TInputPixelType, typename TOutputPixelType >
@@ -303,6 +305,7 @@ HoughTransform2DCirclesImageFilter< TInputPixelType, TOutputPixelType >
   os << "Accumulator blur variance: " << m_Variance << std::endl;
   os << "Sweep angle : " << m_SweepAngle << std::endl;
 }
+
 } // end namespace
 
 #endif

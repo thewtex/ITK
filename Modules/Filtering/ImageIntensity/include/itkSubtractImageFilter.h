@@ -35,18 +35,24 @@ class Sub2
 public:
   Sub2() {}
   ~Sub2() {}
-  bool operator!=(const Sub2 &) const
+  bool
+  operator!=(const Sub2 &) const
   {
     return false;
   }
 
-  bool operator==(const Sub2 & other) const
+  bool
+  operator==(const Sub2 & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput1 & A, const TInput2 & B) const
-  { return (TOutput)( A - B ); }
+  inline TOutput
+  operator()(const TInput1 & A, const TInput2 & B) const
+  {
+    return (TOutput)( A - B );
+  }
+
 };
 }
 /** \class SubtractImageFilter
@@ -90,7 +96,7 @@ public:
  * \endwiki
  */
 template< typename TInputImage1, typename TInputImage2 = TInputImage1, typename TOutputImage = TInputImage1 >
-class SubtractImageFilter:
+class SubtractImageFilter :
   public
   BinaryFunctorImageFilter< TInputImage1, TInputImage2, TOutputImage,
                             Functor::Sub2<
@@ -102,10 +108,10 @@ public:
   /** Standard class typedefs. */
   typedef SubtractImageFilter Self;
   typedef BinaryFunctorImageFilter<
-    TInputImage1, TInputImage2, TOutputImage,
-    Functor::Sub2< typename TInputImage1::PixelType,
-                   typename TInputImage2::PixelType,
-                   typename TOutputImage::PixelType > >  Superclass;
+      TInputImage1, TInputImage2, TOutputImage,
+      Functor::Sub2< typename TInputImage1::PixelType,
+                     typename TInputImage2::PixelType,
+                     typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -128,11 +134,13 @@ public:
 
 protected:
   SubtractImageFilter() {}
-  virtual ~SubtractImageFilter() {}
+  virtual
+  ~SubtractImageFilter() {}
 
 private:
   SubtractImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
+
 };
 } // end namespace itk
 

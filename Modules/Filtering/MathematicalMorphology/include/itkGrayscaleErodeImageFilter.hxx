@@ -44,6 +44,7 @@ GrayscaleErodeImageFilter< TInputImage, TOutputImage, TKernel >
 ::SetNumberOfThreads(ThreadIdType nb)
 {
   Superclass::SetNumberOfThreads(nb);
+
   m_HistogramFilter->SetNumberOfThreads(nb);
   m_AnchorFilter->SetNumberOfThreads(nb);
   m_VHGWFilter->SetNumberOfThreads(nb);
@@ -62,7 +63,7 @@ GrayscaleErodeImageFilter< TInputImage, TOutputImage, TKernel >
     flatKernel = dynamic_cast< const FlatKernelType * >( &kernel );
     }
   catch ( ... )
-                  {}
+                    {}
 
   if ( flatKernel != NULL && flatKernel->GetDecomposable() )
     {
@@ -126,7 +127,7 @@ GrayscaleErodeImageFilter< TInputImage, TOutputImage, TKernel >
     flatKernel = dynamic_cast< const FlatKernelType * >( &this->GetKernel() );
     }
   catch ( ... )
-                  {}
+                    {}
 
   if ( m_Algorithm != algo )
     {
@@ -226,6 +227,7 @@ GrayscaleErodeImageFilter< TInputImage, TOutputImage, TKernel >
 ::Modified() const
 {
   Superclass::Modified();
+
   m_BasicFilter->Modified();
   m_HistogramFilter->Modified();
   m_AnchorFilter->Modified();
@@ -243,5 +245,6 @@ GrayscaleErodeImageFilter< TInputImage, TOutputImage, TKernel >
      << std::endl;
   os << indent << "Algorithm: " << m_Algorithm << std::endl;
 }
+
 } // end namespace itk
 #endif

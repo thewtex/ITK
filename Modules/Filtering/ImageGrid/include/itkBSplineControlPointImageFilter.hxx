@@ -73,8 +73,7 @@ BSplineControlPointImageFilter<InputImage, TOutputImage>
 template<typename InputImage, typename TOutputImage>
 BSplineControlPointImageFilter<InputImage, TOutputImage>
 ::~BSplineControlPointImageFilter()
-{
-}
+{}
 
 template<typename TInputPointImage, typename TOutputImage>
 void
@@ -98,7 +97,7 @@ BSplineControlPointImageFilter<TInputPointImage, TOutputImage>
 
   itkDebugMacro( "Setting m_NumberOfLevels to " <<  this->m_NumberOfLevels );
   itkDebugMacro( "Setting m_MaximumNumberOfLevels to " << this->
-    m_MaximumNumberOfLevels );
+                 m_MaximumNumberOfLevels );
 
   if( this->m_MaximumNumberOfLevels > 1 )
     {
@@ -208,7 +207,7 @@ BSplineControlPointImageFilter<InputImage, TOutputImage>
     }
   this->m_BSplineEpsilon = 100 * vcl_numeric_limits<RealType>::epsilon();
   while( static_cast<RealType>( maximumNumberOfSpans ) ==
-    static_cast<RealType>( maximumNumberOfSpans ) - this->m_BSplineEpsilon )
+         static_cast<RealType>( maximumNumberOfSpans ) - this->m_BSplineEpsilon )
     {
     this->m_BSplineEpsilon *= 10;
     }
@@ -224,7 +223,7 @@ template<typename InputImage, typename TOutputImage>
 void
 BSplineControlPointImageFilter<InputImage, TOutputImage>
 ::ThreadedGenerateData( const OutputImageRegionType & region,
-  ThreadIdType itkNotUsed( threadId ) )
+                        ThreadIdType itkNotUsed( threadId ) )
 {
   typename PointDataImageType::Pointer collapsedPhiLattices[ImageDimension + 1];
   for( unsigned int i = 0; i < ImageDimension; i++ )
@@ -282,7 +281,7 @@ BSplineControlPointImageFilter<InputImage, TOutputImage>
         static_cast<RealType>( idx[i] - startIndex[i] ) /
         static_cast<RealType>( this->m_Size[i] - 1 );
       if( vnl_math_abs( U[i] - static_cast<RealType>( totalNumberOfSpans[i] ) )
-        <= this->m_BSplineEpsilon )
+          <= this->m_BSplineEpsilon )
         {
         U[i] = static_cast<RealType>( totalNumberOfSpans[i] ) -
           this->m_BSplineEpsilon;
@@ -290,8 +289,8 @@ BSplineControlPointImageFilter<InputImage, TOutputImage>
       if( U[i] >= static_cast<RealType>( totalNumberOfSpans[i] ) )
         {
         itkExceptionMacro( "The collapse point component " << U[i]
-          << " is outside the corresponding parametric domain of [0, "
-          << totalNumberOfSpans[i] << "]." );
+                                                           << " is outside the corresponding parametric domain of [0, "
+                                                           << totalNumberOfSpans[i] << "]." );
         }
       }
     for( int i = ImageDimension - 1; i >= 0; i-- )
@@ -301,7 +300,7 @@ BSplineControlPointImageFilter<InputImage, TOutputImage>
         for( int j = i; j >= 0; j-- )
           {
           this->CollapsePhiLattice( collapsedPhiLattices[j + 1],
-            collapsedPhiLattices[j], U[j], j );
+                                    collapsedPhiLattices[j], U[j], j );
           currentU[j] = U[j];
           }
         break;
@@ -315,8 +314,8 @@ template<typename InputImage, typename TOutputImage>
 void
 BSplineControlPointImageFilter<InputImage, TOutputImage>
 ::CollapsePhiLattice( PointDataImageType *lattice,
-  PointDataImageType *collapsedLattice, const RealType u,
-  const unsigned int dimension )
+                      PointDataImageType *collapsedLattice, const RealType u,
+                      const unsigned int dimension )
 {
   ImageRegionIteratorWithIndex< PointDataImageType > It(
     collapsedLattice, collapsedLattice->GetLargestPossibleRegion() );
@@ -330,7 +329,7 @@ BSplineControlPointImageFilter<InputImage, TOutputImage>
       {
       idx[dimension] = static_cast<unsigned int>( u ) + i;
       RealType v = u - idx[dimension] + 0.5 * static_cast<RealType>(
-        this->m_SplineOrder[dimension] - 1 );
+          this->m_SplineOrder[dimension] - 1 );
 
       RealType B = 0.0;
       switch( this->m_SplineOrder[dimension] )
@@ -384,6 +383,7 @@ BSplineControlPointImageFilter<TInputImage, TOutputImage>
     outputPtr->GetRequestedRegion().GetSize();
 
   int splitAxis;
+
   typename TOutputImage::IndexType splitIndex;
   typename TOutputImage::SizeType splitSize;
 
@@ -398,9 +398,9 @@ BSplineControlPointImageFilter<TInputImage, TOutputImage>
   // determine the actual number of pieces that will be generated
   typename SizeType::SizeValueType range = requestedRegionSize[splitAxis];
   unsigned int valuesPerThread = static_cast<unsigned int>( vcl_ceil(
-    range / static_cast<double>( num ) ) );
+                                                              range / static_cast<double>( num ) ) );
   unsigned int maxThreadIdUsed = static_cast<unsigned int>( vcl_ceil(
-    range / static_cast<double>( valuesPerThread ) ) - 1 );
+                                                              range / static_cast<double>( valuesPerThread ) ) - 1 );
 
   // Split the region
   if ( i < maxThreadIdUsed )
@@ -550,8 +550,8 @@ BSplineControlPointImageFilter<TInputPointImage, TOutputImage>
             {
             tmpPsi[k] = idxPsi[k] + offPsi[k];
             if( tmpPsi[k] >= static_cast<int>(
-              input->GetLargestPossibleRegion().GetSize()[k] ) &&
-              !this->m_CloseDimension[k] )
+                  input->GetLargestPossibleRegion().GetSize()[k] ) &&
+                !this->m_CloseDimension[k] )
               {
               outOfBoundary2 = true;
               break;
@@ -608,7 +608,7 @@ BSplineControlPointImageFilter<TInputPointImage, TOutputImage>
   for( unsigned int i = 0; i < ImageDimension; i++ )
     {
     RealType domain = this->m_Spacing[i] * static_cast<RealType>(
-      this->m_Size[i] - 1 );
+        this->m_Size[i] - 1 );
 
     unsigned int totalNumberOfSpans =
       psiLattice->GetLargestPossibleRegion().GetSize()[i];
@@ -636,6 +636,7 @@ BSplineControlPointImageFilter<InputImage, TOutputImage>
 ::PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
+
   for( unsigned int i = 0; i < ImageDimension; i++ )
     {
     this->m_Kernel[i]->Print( os, indent );

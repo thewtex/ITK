@@ -28,8 +28,7 @@ namespace fem
 template <typename TBaseClass>
 Element3DMembrane<TBaseClass>
 ::Element3DMembrane() : Superclass(), m_mat(0)
-{
-}
+{}
 
 // ////////////////////////////////////////////////////////////////////////
 /**
@@ -132,6 +131,7 @@ Element3DMembrane<TBaseClass>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Materials: " << this->m_mat << std::endl;
 }
 

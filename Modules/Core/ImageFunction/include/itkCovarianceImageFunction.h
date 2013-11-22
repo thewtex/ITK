@@ -42,7 +42,7 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TInputImage, typename TCoordRep = float >
-class CovarianceImageFunction:
+class CovarianceImageFunction :
   public ImageFunction< TInputImage,
                         vnl_matrix<
                           typename NumericTraits< typename TInputImage::PixelType::ValueType >::RealType >,
@@ -86,14 +86,15 @@ public:
 
   /** Datatype used for the covariance matrix */
   typedef vnl_matrix<
-    typename NumericTraits< typename InputImageType::PixelType::ValueType >::RealType >
-  RealType;
+      typename NumericTraits< typename InputImageType::PixelType::ValueType >::RealType >
+    RealType;
 
   /** Evalulate the function at specified index */
   virtual RealType EvaluateAtIndex(const IndexType & index) const;
 
   /** Evaluate the function at non-integer positions */
-  virtual RealType Evaluate(const PointType & point) const
+  virtual RealType
+  Evaluate(const PointType & point) const
   {
     IndexType index;
 
@@ -101,7 +102,8 @@ public:
     return this->EvaluateAtIndex(index);
   }
 
-  virtual RealType EvaluateAtContinuousIndex(
+  virtual RealType
+  EvaluateAtContinuousIndex(
     const ContinuousIndexType & cindex) const
   {
     IndexType index;

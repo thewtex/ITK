@@ -104,13 +104,15 @@ public:
   itkGetConstReferenceMacro(RMSChange, double);
 
   /** Set the state of the filter to INITIALIZED */
-  void SetStateToInitialized()
+  void
+  SetStateToInitialized()
   {
     this->SetState(INITIALIZED);
   }
 
   /** Set the state of the filter to UNINITIALIZED */
-  void SetStateToUninitialized()
+  void
+  SetStateToUninitialized()
   {
     this->SetState(UNINITIALIZED);
   }
@@ -197,7 +199,8 @@ protected:
    * Notice that ThreadedHalt is only called by the multithreaded filters, so you
    * still should implement Halt, just in case a non-threaded filter is used.
    */
-  virtual bool ThreadedHalt( void *itkNotUsed(threadInfo) ) {
+  virtual bool
+  ThreadedHalt( void *itkNotUsed(threadInfo) ) {
     return this->Halt();
   }
 
@@ -206,8 +209,8 @@ protected:
    * initialization, i.e. in the SparseFieldLevelSetImageFilter, initialize
    * the list of layers.
    * */
-  virtual void Initialize() {
-  }
+  virtual void
+  Initialize() {}
 
   /** This method is optionally defined by a subclass and is called immediately
    * prior to each iterative CalculateChange-ApplyUpdate cycle.  It can be
@@ -215,7 +218,8 @@ protected:
    * gradient magnitude of the image in anisotropic diffusion functions), or
    * otherwise prepare for the next iteration.
    * */
-  virtual void InitializeIteration()
+  virtual void
+  InitializeIteration()
   {
     m_DifferenceFunction->InitializeIteration();
   }
@@ -232,13 +236,13 @@ protected:
    *  valid
    *
    * The default is to return the minimum value in the list. */
-virtual TimeStepType ResolveTimeStep(const std::vector<TimeStepType >& timeStepList,
-                                     const std::vector< bool >& valid) const;
+  virtual TimeStepType ResolveTimeStep(const std::vector<TimeStepType >& timeStepList,
+                                       const std::vector< bool >& valid) const;
 
   /** This method is called after the solution has been generated to allow
    * subclasses to apply some further processing to the output. */
-  virtual void PostProcessOutput() {
-  }
+  virtual void
+  PostProcessOutput() {}
 
   /** Set the number of elapsed iterations of the filter. */
   itkSetMacro(ElapsedIterations, IdentifierType);

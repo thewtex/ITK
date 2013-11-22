@@ -32,7 +32,7 @@ namespace itk
  */
 template< unsigned int NDimensions = 3 >
 class MetaGaussianConverter :
-    public MetaConverterBase< NDimensions >
+  public MetaConverterBase< NDimensions >
 {
 public:
   /** Standard class typedefs */
@@ -61,24 +61,24 @@ public:
   virtual SpatialObjectPointer MetaObjectToSpatialObject(const MetaObjectType *mo);
 
   /** Convert the SpatialObject to MetaObject */
-  virtual MetaObjectType *SpatialObjectToMetaObject(const SpatialObjectType *spatialObject);
+  virtual MetaObjectType * SpatialObjectToMetaObject(const SpatialObjectType *spatialObject);
 
 protected:
   /** Create the specific MetaObject for this class */
-  virtual MetaObjectType *CreateMetaObject();
+  virtual MetaObjectType * CreateMetaObject();
 
   MetaGaussianConverter();
   ~MetaGaussianConverter() {}
 
 private:
-  MetaGaussianConverter(const Self &);   //purposely not implemented
-  void operator=(const Self &);       //purposely not implemented
+  MetaGaussianConverter(const Self &); //purposely not implemented
+  void operator=(const Self &);        //purposely not implemented
 
 };
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkMetaGaussianConverter.hxx"
+#include "itkMetaGaussianConverter.hxx"
 #endif
 
 #endif

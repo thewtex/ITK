@@ -49,8 +49,8 @@ namespace itk
  */
 
 template< typename TImage, typename TLabelImage =
-            Image< typename TImage::PixelType,  TImage ::ImageDimension > >
-class ShapeLabelMapFilter:
+            Image< typename TImage::PixelType,  TImage::ImageDimension > >
+class ShapeLabelMapFilter :
   public
   InPlaceLabelMapFilter< TImage >
 {
@@ -116,7 +116,8 @@ public:
   itkBooleanMacro(ComputePerimeter);
 
   /** Set the label image */
-  void SetLabelImage(const TLabelImage *input)
+  void
+  SetLabelImage(const TLabelImage *input)
   {
     m_LabelImage = input;
   }
@@ -142,6 +143,7 @@ private:
   LabelImageConstPointer m_LabelImage;
 
   void ComputeFeretDiameter(LabelObjectType *labelObject);
+
   void ComputePerimeter(LabelObjectType *labelObject);
 
   typedef itk::Offset<2>                                                          Offset2Type;
@@ -153,13 +155,16 @@ private:
 
   // it seems impossible to specialize a method without specializing the whole class, but we
   // can use simple overloading
-  template<typename TMapIntercept, typename TSpacing> double PerimeterFromInterceptCount( TMapIntercept & intercepts, const TSpacing & spacing );
-#if ! defined(ITK_DO_NOT_USE_PERIMETER_SPECIALIZATION)
+  template<typename TMapIntercept, typename TSpacing> double PerimeterFromInterceptCount( TMapIntercept & intercepts,
+                                                                                          const TSpacing & spacing );
+
+#if !defined(ITK_DO_NOT_USE_PERIMETER_SPECIALIZATION)
   double PerimeterFromInterceptCount( MapIntercept2Type & intercepts, const Spacing2Type spacing );
+
   double PerimeterFromInterceptCount( MapIntercept3Type & intercepts, const Spacing3Type spacing );
+
 #endif
 };
-
 
 } // end namespace itk
 

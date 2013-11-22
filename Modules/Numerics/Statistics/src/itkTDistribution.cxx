@@ -85,7 +85,7 @@ TDistribution
   double pdf;
 
   pdf = ( dgamma_(&dofplusoneon2) / dgamma_(&dofon2) )
-        / ( vcl_sqrt(dof * vnl_math::pi) * vcl_pow(1.0 + ( ( x * x ) / dof ), dofplusoneon2) );
+    / ( vcl_sqrt(dof * vnl_math::pi) * vcl_pow(1.0 + ( ( x * x ) / dof ), dofplusoneon2) );
 
   return pdf;
 }
@@ -195,14 +195,14 @@ TDistribution
   gaussX9 = vcl_pow(gaussX, 9.0);
 
   x = gaussX
-      + ( gaussX3 + gaussX ) / ( 4.0 * dof )
-      + ( 5.0 * gaussX5 + 16.0 * gaussX3 + 3 * gaussX ) / ( 96.0 * dof2 )
-      + ( 3.0 * gaussX7 + 19.0 * gaussX5 + 17.0 * gaussX3 - 15.0 * gaussX ) / ( 384.0 * dof3 )
-      + ( 79.0 * gaussX9
-          + 776.0 * gaussX7
-          + 1482.0 * gaussX5
-          - 1920.0 * gaussX3
-          - 945.0 * gaussX ) / ( 92160.0 * dof4 );
+    + ( gaussX3 + gaussX ) / ( 4.0 * dof )
+    + ( 5.0 * gaussX5 + 16.0 * gaussX3 + 3 * gaussX ) / ( 96.0 * dof2 )
+    + ( 3.0 * gaussX7 + 19.0 * gaussX5 + 17.0 * gaussX3 - 15.0 * gaussX ) / ( 384.0 * dof3 )
+    + ( 79.0 * gaussX9
+        + 776.0 * gaussX7
+        + 1482.0 * gaussX5
+        - 1920.0 * gaussX3
+        - 945.0 * gaussX ) / ( 92160.0 * dof4 );
 
   // The polynomial approximation above is only accurate for large degrees
   // of freedom.  We'll improve the approximation by a few Newton
@@ -232,7 +232,7 @@ TDistribution
   for ( unsigned int newt = 0; newt < 3; ++newt )
     {
     delta = ( p - TDistribution::CDF(x, degreesOfFreedom) )
-            / TDistribution::PDF(x, degreesOfFreedom);
+      / TDistribution::PDF(x, degreesOfFreedom);
     x += delta;
     }
 
@@ -432,5 +432,6 @@ TDistribution
        << std::endl;
     }
 }
+
 } // end of namespace Statistics
 } // end namespace itk

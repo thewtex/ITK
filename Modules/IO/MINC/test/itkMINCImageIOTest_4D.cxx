@@ -23,7 +23,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int itkMINCImageIOTest_4D( int argc, char * argv [] )
+int
+itkMINCImageIOTest_4D( int argc, char * argv [] )
 {
 
   if ( argc < 3 )

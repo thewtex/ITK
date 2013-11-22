@@ -19,15 +19,16 @@
 #include "itkQuadEdge.h"
 #include <iostream>
 
-int itkQuadEdgeTest1( int , char* [] )
+int
+itkQuadEdgeTest1( int , char* [] )
 {
-  typedef itk::QuadEdge        QuadEdgeType;
+  typedef itk::QuadEdge QuadEdgeType;
 
   // Tests for the GetRot() SetRot() methods
     { // create a local scope for these tests
-    QuadEdgeType * quadEdge1 = new QuadEdgeType;
-    QuadEdgeType * quadEdge2 = new QuadEdgeType;
-    QuadEdgeType * quadEdge3 = new QuadEdgeType;
+    QuadEdgeType *       quadEdge1 = new QuadEdgeType;
+    QuadEdgeType *       quadEdge2 = new QuadEdgeType;
+    QuadEdgeType *       quadEdge3 = new QuadEdgeType;
     const QuadEdgeType * quadEdge1c = quadEdge1;
 
     quadEdge1->GetRot(); // testing null case
@@ -67,7 +68,7 @@ int itkQuadEdgeTest1( int , char* [] )
     delete quadEdge3;
     } // end of local scope for tests
 
-    // Tests for the GetOnext() SetOnext() methods
+  // Tests for the GetOnext() SetOnext() methods
     { // create a local scope for these tests
     QuadEdgeType * quadEdge1 = new QuadEdgeType;
     QuadEdgeType * quadEdge2 = new QuadEdgeType;
@@ -125,12 +126,12 @@ int itkQuadEdgeTest1( int , char* [] )
     delete quadEdge3;
     } // end of local scope for tests
 
-    // Tests for the GetSym() methods
+  // Tests for the GetSym() methods
     { // create a local scope for these tests
-    QuadEdgeType * quadEdge1 = new QuadEdgeType;
-    QuadEdgeType * quadEdge2 = new QuadEdgeType;
-    QuadEdgeType * quadEdge3 = new QuadEdgeType;
-    QuadEdgeType * quadEdge4 = new QuadEdgeType;
+    QuadEdgeType *       quadEdge1 = new QuadEdgeType;
+    QuadEdgeType *       quadEdge2 = new QuadEdgeType;
+    QuadEdgeType *       quadEdge3 = new QuadEdgeType;
+    QuadEdgeType *       quadEdge4 = new QuadEdgeType;
     const QuadEdgeType * quadEdge1c = quadEdge1;
     const QuadEdgeType * quadEdge2c = quadEdge2;
     const QuadEdgeType * quadEdge3c = quadEdge3;
@@ -211,16 +212,15 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "GetSym()   Test passed ! " << std::endl;
     }
 
-
-    // Tests for the GetLnext() methods
-    // returns the next edge with same left face
+  // Tests for the GetLnext() methods
+  // returns the next edge with same left face
     { // create a local scope for these tests
-    QuadEdgeType * quadEdge1 = new QuadEdgeType;
-    QuadEdgeType * quadEdge2 = new QuadEdgeType;
-    QuadEdgeType * quadEdge3 = new QuadEdgeType;
-    QuadEdgeType * quadEdge4 = new QuadEdgeType;
-    QuadEdgeType * quadEdgeA = new QuadEdgeType;
-    QuadEdgeType * quadEdgeB = new QuadEdgeType;
+    QuadEdgeType *       quadEdge1 = new QuadEdgeType;
+    QuadEdgeType *       quadEdge2 = new QuadEdgeType;
+    QuadEdgeType *       quadEdge3 = new QuadEdgeType;
+    QuadEdgeType *       quadEdge4 = new QuadEdgeType;
+    QuadEdgeType *       quadEdgeA = new QuadEdgeType;
+    QuadEdgeType *       quadEdgeB = new QuadEdgeType;
     const QuadEdgeType * quadEdge1c = quadEdge1;
 
 #ifndef NDEBUG
@@ -290,22 +290,22 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "GetLnext() Test passed ! " << std::endl;
     }
 
-    // Tests for the GetRnext() methods
-    // returns the next edge with same right face
+  // Tests for the GetRnext() methods
+  // returns the next edge with same right face
     { // create a local scope for these tests
-    QuadEdgeType * quadEdge1 = new QuadEdgeType;
-    QuadEdgeType * quadEdge2 = new QuadEdgeType;
-    QuadEdgeType * quadEdge3 = new QuadEdgeType;
-    QuadEdgeType * quadEdge4 = new QuadEdgeType;
-    QuadEdgeType * quadEdgeA = new QuadEdgeType;
-    QuadEdgeType * quadEdgeB = new QuadEdgeType;
+    QuadEdgeType *       quadEdge1 = new QuadEdgeType;
+    QuadEdgeType *       quadEdge2 = new QuadEdgeType;
+    QuadEdgeType *       quadEdge3 = new QuadEdgeType;
+    QuadEdgeType *       quadEdge4 = new QuadEdgeType;
+    QuadEdgeType *       quadEdgeA = new QuadEdgeType;
+    QuadEdgeType *       quadEdgeB = new QuadEdgeType;
     const QuadEdgeType * quadEdgeAc = quadEdgeA;
 
 #ifndef NDEBUG
     const QuadEdgeType * quadEdge1c = quadEdge1;
 
     // testing first fail case
-    if( quadEdge1->GetRnext() || quadEdge1c->GetRnext( ) )
+    if( quadEdge1->GetRnext() || quadEdge1c->GetRnext() )
       {
       std::cerr << "Error in GetRnext()" << std::endl;
       return EXIT_FAILURE;
@@ -327,10 +327,9 @@ int itkQuadEdgeTest1( int , char* [] )
     quadEdge3->SetRot( quadEdge4 );
     quadEdge4->SetRot( quadEdge1 );
 
-
 #ifndef NDEBUG
     quadEdge2->SetOnext( NULL );
-    if( quadEdge1->GetRnext() || quadEdge1c->GetRnext( ) )
+    if( quadEdge1->GetRnext() || quadEdge1c->GetRnext() )
       {
       std::cerr << "Error in GetRnext()" << std::endl;
       delete quadEdge1;
@@ -346,7 +345,7 @@ int itkQuadEdgeTest1( int , char* [] )
     quadEdge2->SetOnext( quadEdgeB );
     quadEdgeB->SetOnext( quadEdge2 );
 #ifndef NDEBUG
-    if( quadEdge1->GetRnext() || quadEdge1c->GetRnext( ) )
+    if( quadEdge1->GetRnext() || quadEdge1c->GetRnext() )
       {
       std::cerr << "Error in GetRnext()" << std::endl;
       delete quadEdge1;
@@ -382,15 +381,15 @@ int itkQuadEdgeTest1( int , char* [] )
 
     if( quadEdgeError )
       {
-        return EXIT_FAILURE;
+      return EXIT_FAILURE;
       }
 
     std::cout << "GetRnext() Test passed ! " << std::endl;
     }
 
-    // Tests for the GetDnext() methods
-    // returns the next edge with same right face
-    // and same destination
+  // Tests for the GetDnext() methods
+  // returns the next edge with same right face
+  // and same destination
     { // create a local scope for these tests
     QuadEdgeType * quadEdge1 = new QuadEdgeType;
     QuadEdgeType * quadEdge2 = new QuadEdgeType;
@@ -405,7 +404,7 @@ int itkQuadEdgeTest1( int , char* [] )
     const QuadEdgeType * quadEdge1c = quadEdge1;
 
 #ifndef NDEBUG
-    if( quadEdge1->GetDnext() || quadEdge1c->GetDnext( ) )
+    if( quadEdge1->GetDnext() || quadEdge1c->GetDnext() )
       {
       std::cerr << "Error 1 in GetDnext()" << std::endl;
       return EXIT_FAILURE;
@@ -429,7 +428,7 @@ int itkQuadEdgeTest1( int , char* [] )
 
 #ifndef NDEBUG
     quadEdge3->SetOnext( NULL );
-    if( quadEdge1->GetDnext() || quadEdge1c->GetDnext( ) )
+    if( quadEdge1->GetDnext() || quadEdge1c->GetDnext() )
       {
       std::cerr << "Error 2 in GetDnext()" << std::endl;
       return EXIT_FAILURE;
@@ -438,7 +437,7 @@ int itkQuadEdgeTest1( int , char* [] )
 
     quadEdge3->SetOnext( quadEdgeA );
 #ifndef NDEBUG
-    if( quadEdge1->GetDnext() || quadEdge1c->GetDnext( ) )
+    if( quadEdge1->GetDnext() || quadEdge1c->GetDnext() )
       {
       std::cerr << "Error 3 in GetDnext()" << std::endl;
       return EXIT_FAILURE;
@@ -475,10 +474,9 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "GetDnext() Test passed ! " << std::endl;
     }
 
-
-    // Tests for the GetOprev() methods
-    // returns the previous edge with same origin
-    // and same destination
+  // Tests for the GetOprev() methods
+  // returns the previous edge with same origin
+  // and same destination
     { // create a local scope for these tests
     QuadEdgeType * quadEdge1 = new QuadEdgeType;
     QuadEdgeType * quadEdge2 = new QuadEdgeType;
@@ -493,7 +491,7 @@ int itkQuadEdgeTest1( int , char* [] )
     const QuadEdgeType * quadEdge1c = quadEdge1;
 
 #ifndef NDEBUG
-    if( quadEdge1->GetOprev() || quadEdge1c->GetOprev( ) )
+    if( quadEdge1->GetOprev() || quadEdge1c->GetOprev() )
       {
       std::cerr << "Error in GetOprev()" << std::endl;
       return EXIT_FAILURE;
@@ -518,7 +516,7 @@ int itkQuadEdgeTest1( int , char* [] )
 
 #ifndef NDEBUG
     quadEdge2->SetOnext( NULL );
-    if( quadEdge1->GetOprev() || quadEdge1c->GetOprev( ) )
+    if( quadEdge1->GetOprev() || quadEdge1c->GetOprev() )
       {
       std::cerr << "Error in GetOprev()" << std::endl;
       return EXIT_FAILURE;
@@ -527,7 +525,7 @@ int itkQuadEdgeTest1( int , char* [] )
 
     quadEdge2->SetOnext( quadEdgeD );
 #ifndef NDEBUG
-    if( quadEdge1->GetOprev() || quadEdge1c->GetOprev( ) )
+    if( quadEdge1->GetOprev() || quadEdge1c->GetOprev() )
       {
       std::cerr << "Error in GetOprev()" << std::endl;
       return EXIT_FAILURE;
@@ -564,7 +562,6 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "GetOprev() Test passed ! " << std::endl;
     }
 
-
   // Tests for the GetLprev() methods
   // returns the previous edge with same left face
     { // create a local scope for these tests
@@ -582,7 +579,7 @@ int itkQuadEdgeTest1( int , char* [] )
 
 #ifndef NDEBUG
     quadEdge1->SetOnext( NULL );
-    if( quadEdge1->GetLprev() || quadEdge1c->GetLprev( ) )
+    if( quadEdge1->GetLprev() || quadEdge1c->GetLprev() )
       {
       std::cerr << "Error in GetLprev()" << std::endl;
       return EXIT_FAILURE;
@@ -602,7 +599,7 @@ int itkQuadEdgeTest1( int , char* [] )
 
     quadEdge1->SetOnext( quadEdgeC );
 #ifndef NDEBUG
-    if( quadEdge1->GetLprev() || quadEdge1c->GetLprev( ) )
+    if( quadEdge1->GetLprev() || quadEdge1c->GetLprev() )
       {
       std::cerr << "Error in GetLprev()" << std::endl;
       return EXIT_FAILURE;
@@ -644,9 +641,8 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "GetLprev() Test passed ! " << std::endl;
     }
 
-
-    // Tests for the GetRprev() methods
-    // returns the previous edge with same right face
+  // Tests for the GetRprev() methods
+  // returns the previous edge with same right face
     { // create a local scope for these tests
     QuadEdgeType * quadEdge1 = new QuadEdgeType;
     QuadEdgeType * quadEdge2 = new QuadEdgeType;
@@ -661,7 +657,7 @@ int itkQuadEdgeTest1( int , char* [] )
     const QuadEdgeType * quadEdge1c = quadEdge1;
 
 #ifndef NDEBUG
-    if( quadEdge1->GetRprev() || quadEdge1c->GetRprev( ) )
+    if( quadEdge1->GetRprev() || quadEdge1c->GetRprev() )
       {
       std::cerr << "Error in GetRprev()" << std::endl;
       return EXIT_FAILURE;
@@ -686,7 +682,7 @@ int itkQuadEdgeTest1( int , char* [] )
 
 #ifndef NDEBUG
     quadEdge3->SetOnext( NULL );
-    if( quadEdge1->GetRprev() || quadEdge1c->GetRprev( ) )
+    if( quadEdge1->GetRprev() || quadEdge1c->GetRprev() )
       {
       std::cerr << "Error in GetRprev()" << std::endl;
       return EXIT_FAILURE;
@@ -725,10 +721,9 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "GetRprev() Test passed ! " << std::endl;
     }
 
-
-    // Tests for the GetDprev() methods
-    // returns the previous edge with same right face
-    // and same destination
+  // Tests for the GetDprev() methods
+  // returns the previous edge with same right face
+  // and same destination
     { // create a local scope for these tests
     QuadEdgeType * quadEdge1 = new QuadEdgeType;
     QuadEdgeType * quadEdge2 = new QuadEdgeType;
@@ -743,7 +738,7 @@ int itkQuadEdgeTest1( int , char* [] )
     const QuadEdgeType * quadEdge1c = quadEdge1;
 
 #ifndef NDEBUG
-    if( quadEdge1->GetDprev() || quadEdge1c->GetDprev( ) )
+    if( quadEdge1->GetDprev() || quadEdge1c->GetDprev() )
       {
       std::cerr << "Error in GetDprev()" << std::endl;
       return EXIT_FAILURE;
@@ -768,7 +763,7 @@ int itkQuadEdgeTest1( int , char* [] )
 
 #ifndef NDEBUG
     quadEdge4->SetOnext( NULL );
-    if( quadEdge1->GetDprev() || quadEdge1c->GetDprev( ) )
+    if( quadEdge1->GetDprev() || quadEdge1c->GetDprev() )
       {
       std::cerr << "Error in GetDprev()" << std::endl;
       return EXIT_FAILURE;
@@ -777,7 +772,7 @@ int itkQuadEdgeTest1( int , char* [] )
 
     quadEdge4->SetOnext( quadEdgeB );
 #ifndef NDEBUG
-    if( quadEdge1->GetDprev() || quadEdge1c->GetDprev( ) )
+    if( quadEdge1->GetDprev() || quadEdge1c->GetDprev() )
       {
       std::cerr << "Error in GetDprev()" << std::endl;
       return EXIT_FAILURE;
@@ -814,7 +809,7 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "GetDprev() Test passed ! " << std::endl;
     }
 
-    // Tests for the GetInvRot() methods
+  // Tests for the GetInvRot() methods
     { // create a local scope for these tests
     QuadEdgeType * quadEdge1 = new QuadEdgeType;
     QuadEdgeType * quadEdge2 = new QuadEdgeType;
@@ -825,7 +820,7 @@ int itkQuadEdgeTest1( int , char* [] )
 
 #ifndef NDEBUG
     // Testing incomplete connections.
-    if( quadEdge1->GetInvRot() || quadEdge1c->GetInvRot( ) )
+    if( quadEdge1->GetInvRot() || quadEdge1c->GetInvRot() )
       {
       std::cerr << "Error in GetInvRot()" << std::endl;
       return EXIT_FAILURE;
@@ -834,7 +829,7 @@ int itkQuadEdgeTest1( int , char* [] )
 
     quadEdge1->SetRot( quadEdge2 );
 #ifndef NDEBUG
-    if( quadEdge1->GetInvRot() || quadEdge1c->GetInvRot( ) )
+    if( quadEdge1->GetInvRot() || quadEdge1c->GetInvRot() )
       {
       std::cerr << "Error in GetInvRot()" << std::endl;
       return EXIT_FAILURE;
@@ -843,7 +838,7 @@ int itkQuadEdgeTest1( int , char* [] )
 
     quadEdge2->SetRot( quadEdge3 );
 #ifndef NDEBUG
-    if( quadEdge1->GetInvRot() || quadEdge1c->GetInvRot( ) )
+    if( quadEdge1->GetInvRot() || quadEdge1c->GetInvRot() )
       {
       std::cerr << "Error in GetInvRot()" << std::endl;
       return EXIT_FAILURE;
@@ -878,9 +873,9 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "GetInvRot() Test passed ! " << std::endl;
     }
 
-    // Tests for the GetInvOnext() methods
-    // returns the previous edge with same origin
-    // and same destination
+  // Tests for the GetInvOnext() methods
+  // returns the previous edge with same origin
+  // and same destination
     { // create a local scope for these tests
     QuadEdgeType * quadEdge1 = new QuadEdgeType;
     QuadEdgeType * quadEdge2 = new QuadEdgeType;
@@ -947,8 +942,8 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "GetInvOnext() Test passed ! " << std::endl;
     }
 
-    // Tests for the GetInvLnext() methods
-    // returns the previous edge with same left face
+  // Tests for the GetInvLnext() methods
+  // returns the previous edge with same left face
     { // create a local scope for these tests
     QuadEdgeType * quadEdge1 = new QuadEdgeType;
     QuadEdgeType * quadEdge2 = new QuadEdgeType;
@@ -1014,8 +1009,8 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "GetInvLnext() Test passed ! " << std::endl;
     }
 
-    // Tests for the GetInvRnext() methods
-    // returns the previous edge with same right face
+  // Tests for the GetInvRnext() methods
+  // returns the previous edge with same right face
     { // create a local scope for these tests
     QuadEdgeType * quadEdge1 = new QuadEdgeType;
     QuadEdgeType * quadEdge2 = new QuadEdgeType;
@@ -1081,9 +1076,9 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "GetInvRnext() Test passed ! " << std::endl;
     }
 
-    // Tests for the GetInvDnext() methods
-    // returns the previous edge with same right face
-    // and same destination
+  // Tests for the GetInvDnext() methods
+  // returns the previous edge with same right face
+  // and same destination
     { // create a local scope for these tests
     QuadEdgeType * quadEdge1 = new QuadEdgeType;
     QuadEdgeType * quadEdge2 = new QuadEdgeType;
@@ -1149,8 +1144,7 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "GetInvDnext() Test passed ! " << std::endl;
     }
 
-
-    // Tests for the IsHalfEdge() method
+  // Tests for the IsHalfEdge() method
     { // create a local scope for these tests
     QuadEdgeType * quadEdge1 = new QuadEdgeType;
     QuadEdgeType * quadEdge2 = new QuadEdgeType;
@@ -1195,9 +1189,9 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "IsHalfEdge() Test passed ! " << std::endl;
     }
 
-    // Tests for the IsIsolated() method
+  // Tests for the IsIsolated() method
     { // create a local scope for these tests
-    QuadEdgeType * quadEdge1 = new QuadEdgeType;
+    QuadEdgeType *       quadEdge1 = new QuadEdgeType;
     const QuadEdgeType * quadEdge1c = quadEdge1;
 
     if( quadEdge1c->IsIsolated() != true )
@@ -1234,7 +1228,7 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "IsIsolated() Test passed ! " << std::endl;
     }
 
-    // Tests for the IsEdgeInOnextRing() method
+  // Tests for the IsEdgeInOnextRing() method
     { // create a local scope for these tests
     QuadEdgeType * quadEdge1 = new QuadEdgeType;
     QuadEdgeType * quadEdge2 = new QuadEdgeType;
@@ -1287,27 +1281,27 @@ int itkQuadEdgeTest1( int , char* [] )
     std::cout << "IsEdgeInOnextRing() Test passed ! " << std::endl;
     } // end of local scope for tests
 
-    // Tests for the IsLnextGivenSizeCyclic() method
+  // Tests for the IsLnextGivenSizeCyclic() method
     { // create a local scope for these tests
-    //                                           //
-    //                                           //
-    // Create quad-edges on the three physical   //
-    // edges (A,B,C) of a triangular face        //
-    //                                           //
-    //                                           //
-    //                   /\                      //
-    //                  /  \                     //
-    //                 /    \                    //
-    //                /      \                   //
-    //           B   /        \  A               //
-    //              /          \                 //
-    //             /            \                //
-    //            /              \               //
-    //           /                \              //
-    //           ------------------              //
-    //                   C   quadEdgeC1-->       //
-    //                                           //
-    //                                           //
+      //                                           //
+      //                                           //
+      // Create quad-edges on the three physical   //
+      // edges (A,B,C) of a triangular face        //
+      //                                           //
+      //                                           //
+      //                   /\                      //
+      //                  /  \                     //
+      //                 /    \                    //
+      //                /      \                   //
+      //           B   /        \  A               //
+      //              /          \                 //
+      //             /            \                //
+      //            /              \               //
+      //           /                \              //
+      //           ------------------              //
+      //                   C   quadEdgeC1-->       //
+      //                                           //
+      //                                           //
     QuadEdgeType * quadEdgeA1 = new QuadEdgeType;
     QuadEdgeType * quadEdgeA2 = new QuadEdgeType;
     QuadEdgeType * quadEdgeA3 = new QuadEdgeType;
@@ -1337,7 +1331,6 @@ int itkQuadEdgeTest1( int , char* [] )
       return EXIT_FAILURE;
       }
 #endif
-
 
     // Connect quad-edges inside physical edge A
     quadEdgeA1->SetRot( quadEdgeA2 );

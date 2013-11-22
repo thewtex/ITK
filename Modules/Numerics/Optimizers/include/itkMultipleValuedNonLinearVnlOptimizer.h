@@ -33,7 +33,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class MultipleValuedNonLinearVnlOptimizer:
+class MultipleValuedNonLinearVnlOptimizer :
   public MultipleValuedNonLinearOptimizer
 {
 public:
@@ -64,12 +64,14 @@ public:
        using a default approach  */
   void SetUseCostFunctionGradient(bool);
 
-  void UseCostFunctionGradientOn()
+  void
+  UseCostFunctionGradientOn()
   {
     this->SetUseCostFunctionGradient(true);
   }
 
-  void UseCostFunctionGradientOff()
+  void
+  UseCostFunctionGradientOff()
   {
     this->SetUseCostFunctionGradient(false);
   }
@@ -88,7 +90,8 @@ public:
 
 protected:
   MultipleValuedNonLinearVnlOptimizer();
-  virtual ~MultipleValuedNonLinearVnlOptimizer();
+  virtual
+  ~MultipleValuedNonLinearVnlOptimizer();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

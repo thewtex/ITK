@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKVoronoi
  */
 template< typename TInputImage, typename TOutputImage, typename TBinaryPriorImage = Image< unsigned char, 2 > >
-class VoronoiSegmentationImageFilter:
+class VoronoiSegmentationImageFilter :
   public VoronoiSegmentationImageFilterBase< TInputImage, TOutputImage, TBinaryPriorImage >
 {
 public:
@@ -140,6 +140,7 @@ private:
 private:
   VoronoiSegmentationImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                 //purposely not implemented
+
 };
 } //end namespace
 

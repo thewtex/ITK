@@ -19,56 +19,61 @@
 #include "itkNeighborhoodIteratorTestCommon.hxx"
 #include "itkConstNeighborhoodIterator.h"
 
-void println(const char *s)
+void
+println(const char *s)
 {
   std::cout << s << std::endl;
 }
 
-TestImageType::Pointer GetTestImage(int d1, int d2, int d3, int d4)
+TestImageType::Pointer
+GetTestImage(int d1, int d2, int d3, int d4)
 {
-  itk::Size<4>  sizeND;
-   sizeND[0] = d1;
-   sizeND[1] = d2;
-   sizeND[2] = d3;
-   sizeND[3] = d4;
+  itk::Size<4> sizeND;
+
+  sizeND[0] = d1;
+  sizeND[1] = d2;
+  sizeND[2] = d3;
+  sizeND[3] = d4;
 
   itk::Index<4> origND;
-   origND.Fill(0);
+  origND.Fill(0);
 
   itk::ImageRegion<4> RegionND;
-   RegionND.SetSize(sizeND);
-   RegionND.SetIndex(origND);
+  RegionND.SetSize(sizeND);
+  RegionND.SetIndex(origND);
 
   TestImageType::Pointer imageND = TestImageType::New();
-   imageND->SetLargestPossibleRegion(RegionND);
-   imageND->SetBufferedRegion(RegionND);
-   imageND->SetRequestedRegion(RegionND);
-   imageND->Allocate();
+  imageND->SetLargestPossibleRegion(RegionND);
+  imageND->SetBufferedRegion(RegionND);
+  imageND->SetRequestedRegion(RegionND);
+  imageND->Allocate();
 
-  FillImage<4>(imageND.GetPointer());
+  FillImage<4>(imageND.GetPointer() );
 
-  return  imageND;
+  return imageND;
 }
 
-int itkConstNeighborhoodIteratorTest(int, char* [] )
+int
+itkConstNeighborhoodIteratorTest(int, char* [] )
 {
-  TestImageType::Pointer img = GetTestImage(10, 10, 5, 3);
+  TestImageType::Pointer                                   img = GetTestImage(10, 10, 5, 3);
   itk::ConstNeighborhoodIterator<TestImageType>::IndexType loc;
+
   loc[0] = 4; loc[1] = 4; loc[2] = 2; loc[3] = 1;
 
   itk::ConstNeighborhoodIterator<TestImageType>::RadiusType radius;
   radius[0] = radius[1] = radius[2] = radius[3] = 1;
 
   itk::ConstNeighborhoodIterator<TestImageType>::RegionType reg;
-  itk::ConstNeighborhoodIterator<TestImageType>::SizeType sz;
-  itk::ConstNeighborhoodIterator<TestImageType>::IndexType idx;
+  itk::ConstNeighborhoodIterator<TestImageType>::SizeType   sz;
+  itk::ConstNeighborhoodIterator<TestImageType>::IndexType  idx;
   idx[0] = idx[1] = idx[2] = 0;  idx[3] = 1;
   sz[0] = sz[1] = 10; sz[2] = 5; sz[3] = 1;
   reg.SetIndex(idx); reg.SetSize(sz);
 
   println("Creating ConstNeighborhoodIterator");
   itk::ConstNeighborhoodIterator<TestImageType>
-     it(radius, img, reg);
+  it(radius, img, reg);
 
   println("Moving iterator using SetLocation()");
   it.SetLocation(loc);
@@ -90,18 +95,18 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
 
   println("Testing forward iteration");
   it.GoToBegin();
-  while (! it.IsAtEnd())
+  while (!it.IsAtEnd() )
     {
-      printnb<itk::ConstNeighborhoodIterator<TestImageType> >(it, false);
-      ++it;
+    printnb<itk::ConstNeighborhoodIterator<TestImageType> >(it, false);
+    ++it;
     }
 
   println("Testing reverse iteration");
   it.GoToEnd();
-  while (! it.IsAtBegin())
+  while (!it.IsAtBegin() )
     {
-      --it;
-      printnb<itk::ConstNeighborhoodIterator<TestImageType> >(it, false);
+    --it;
+    printnb<itk::ConstNeighborhoodIterator<TestImageType> >(it, false);
     }
 
   println("Moving iterator using SetLocation()");
@@ -114,12 +119,12 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
   println("Printing neighborhood using GetPixel(i), GetPixel(offset) and GetIndex(i), and GetIndex(offset).");
   for (unsigned int j = 0; j < it.Size(); ++j)
     {
-      std::cout << "GetOffset(" << j << ")=" << it.GetOffset(j);
-      std::cout << " GetPixel(" << j << ")=" << it.GetPixel(j);
-      std::cout << " GetPixel(" << it.GetOffset(j) << ")=" << it.GetPixel(it.GetOffset(j));
-      std::cout << " GetIndex(" << j << ")=" << it.GetIndex(j);
-      std::cout << " GetIndex(" << it.GetOffset(j) << ")=" << it.GetIndex(it.GetOffset(j));
-      std::cout << std::endl;
+    std::cout << "GetOffset(" << j << ")=" << it.GetOffset(j);
+    std::cout << " GetPixel(" << j << ")=" << it.GetPixel(j);
+    std::cout << " GetPixel(" << it.GetOffset(j) << ")=" << it.GetPixel(it.GetOffset(j) );
+    std::cout << " GetIndex(" << j << ")=" << it.GetIndex(j);
+    std::cout << " GetIndex(" << it.GetOffset(j) << ")=" << it.GetIndex(it.GetOffset(j) );
+    std::cout << std::endl;
     }
 
   println("Testing GetCenterPixel()");
@@ -127,7 +132,7 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
 
   println("Testing GetCenterPointer()");
   std::cout << it.GetCenterPointer() << " = "
-            << *(it.GetCenterPointer()) << std::endl;
+            << *(it.GetCenterPointer() ) << std::endl;
 
   println("Testing GetIndex()");
   std::cout << it.GetIndex() << std::endl;
@@ -180,7 +185,7 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
 
   println("Creating ConstNeighborhoodIterator");
   itk::ConstNeighborhoodIterator<TestImageType>
-     ra_it(radius, ra_img, ra_img->GetRequestedRegion());
+  ra_it(radius, ra_img, ra_img->GetRequestedRegion() );
 
   println("Testing random access");
   ra_it.Begin();
@@ -220,7 +225,7 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
   // Test IndexInBounds
   //
   println("Testing IndexInBounds");
-  int dims[4] = {13,11,9,7};
+  int                    dims[4] = {13,11,9,7};
   TestImageType::Pointer iib_img = GetTestImage(dims[0], dims[1], dims[2], dims[3]);
   radius[0] = 4;
   radius[1] = 3;
@@ -229,7 +234,7 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
 
   println("Creating ConstNeighborhoodIterator");
   typedef itk::ConstNeighborhoodIterator<TestImageType> IteratorType;
-  IteratorType iib_it(radius, iib_img, iib_img->GetRequestedRegion());
+  IteratorType             iib_it(radius, iib_img, iib_img->GetRequestedRegion() );
   IteratorType::OffsetType resultOffset;
   IteratorType::OffsetType internalIndex;
 
@@ -250,12 +255,13 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
     {
     if( resultOffset[n] != static_cast<itk::OffsetValueType>( radius[n] ) )
       {
-      std::cerr << "IndexInBounds failed. Expected resultOffset of " << radius << ", but got " << resultOffset << std::endl;
+      std::cerr << "IndexInBounds failed. Expected resultOffset of " << radius << ", but got " << resultOffset <<
+      std::endl;
       return EXIT_FAILURE;
       }
     }
   inside = iib_it.IndexInBounds( iib_it.Size()-1, internalIndex, resultOffset );
-  if( ! inside )
+  if( !inside )
     {
     std::cerr << "IndexInBounds failed for index size-1, expected true." << std::endl;
     return EXIT_FAILURE;
@@ -278,7 +284,8 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
     iib_it.SetLocation( boundaryLoc );
     if( iib_it.IndexInBounds( 0, internalIndex, resultOffset ) )
       {
-      std::cerr << "IndexInBounds failed for min boundaryLoc: " << boundaryLoc << " and dimension: " << n << ". Expected false."
+      std::cerr << "IndexInBounds failed for min boundaryLoc: " << boundaryLoc << " and dimension: " << n <<
+      ". Expected false."
                 << std::endl;
       result = EXIT_FAILURE;
       }
@@ -292,7 +299,8 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
     iib_it.SetLocation( boundaryLoc );
     if( iib_it.IndexInBounds( iib_it.Size()-1, internalIndex, resultOffset ) )
       {
-      std::cerr << "IndexInBounds failed for max boundaryLoc: " << boundaryLoc << " and dimension: " << n << ". Expected false."
+      std::cerr << "IndexInBounds failed for max boundaryLoc: " << boundaryLoc << " and dimension: " << n <<
+      ". Expected false."
                 << std::endl;
       result = EXIT_FAILURE;
       }
@@ -301,14 +309,14 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
   // Test center
   iib_it.SetLocation( centerLoc );
   inside = iib_it.IndexInBounds( 0, internalIndex, resultOffset );
-  if( ! inside )
+  if( !inside )
     {
     std::cerr << "IndexInBounds failed for index 0, expected true." << std::endl;
     result = EXIT_FAILURE;
     }
 
   // Iterate over a region, then change the region and iterate over the new region
-  {
+    {
     // Create an image
     typedef itk::Image<int, 2> ChangeRegionTestImageType;
     ChangeRegionTestImageType::IndexType imageCorner;
@@ -326,7 +334,7 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
     itk::ImageRegionIterator<ChangeRegionTestImageType> createImageIterator(image, imageRegion);
 
     // Set all pixels with first index == 0 to 0, and set the rest of the image to 255
-    while(!createImageIterator.IsAtEnd())
+    while(!createImageIterator.IsAtEnd() )
       {
       if(createImageIterator.GetIndex()[0] == 0)
         {
@@ -368,7 +376,7 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
     expectedValuesRegion1[8] = 255;
     unsigned int counter = 0;
     //while(!neighborhoodIterator.IsAtEnd()) // no need for this loop as we are only iterating over a 1x1 region
-      //{
+    //{
     NeighborhoodIteratorType::ConstIterator pixelIterator = neighborhoodIterator.Begin();
     for(pixelIterator = neighborhoodIterator.Begin(); pixelIterator < neighborhoodIterator.End(); ++pixelIterator)
       {
@@ -378,8 +386,8 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
         }
       counter++;
       }
-      //++imageIterator;
-      //}
+    //++imageIterator;
+    //}
 
     // Change iteration region
     ChangeRegionTestImageType::IndexType region2start;
@@ -402,7 +410,7 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
     expectedValuesRegion2[8] = 255;
     counter = 0;
     //while(!neighborhoodIterator.IsAtEnd()) // no need for this loop as we are only iterating over a 1x1 region
-      //{
+    //{
     pixelIterator = neighborhoodIterator.Begin();
     for(pixelIterator = neighborhoodIterator.Begin(); pixelIterator < neighborhoodIterator.End(); ++pixelIterator)
       {
@@ -412,10 +420,10 @@ int itkConstNeighborhoodIteratorTest(int, char* [] )
         }
       counter++;
       }
-      //++imageIterator;
-      //}
+    //++imageIterator;
+    //}
 
-  } // end "Change Region" test
+    } // end "Change Region" test
 
   return result;
 

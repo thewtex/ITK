@@ -59,7 +59,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class DiscreteGaussianImageFilter:
+class DiscreteGaussianImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -87,7 +87,7 @@ public:
   typedef typename TInputImage::InternalPixelType  InputInternalPixelType;
 
   /** Pixel value type for Vector pixel types **/
-  typedef typename NumericTraits<InputPixelType>::ValueType InputPixelValueType;
+  typedef typename NumericTraits<InputPixelType>::ValueType  InputPixelValueType;
   typedef typename NumericTraits<OutputPixelType>::ValueType OutputPixelValueType;
 
   /** Extract some information from the image types.  Dimensionality
@@ -128,19 +128,22 @@ public:
 
   /** Convenience Set methods for setting all dimensional parameters
    *  to the same values. */
-  void SetVariance(const typename ArrayType::ValueType v)
+  void
+  SetVariance(const typename ArrayType::ValueType v)
   {
     m_Variance.Fill(v);
     this->Modified();
   }
 
-  void SetMaximumError(const typename ArrayType::ValueType v)
+  void
+  SetMaximumError(const typename ArrayType::ValueType v)
   {
     m_MaximumError.Fill(v);
     this->Modified();
   }
 
-  void SetVariance(const double *v)
+  void
+  SetVariance(const double *v)
   {
     ArrayType dv;
 
@@ -151,7 +154,8 @@ public:
     this->SetVariance(dv);
   }
 
-  void SetVariance(const float *v)
+  void
+  SetVariance(const float *v)
   {
     ArrayType dv;
 
@@ -162,7 +166,8 @@ public:
     this->SetVariance(dv);
   }
 
-  void SetMaximumError(const double *v)
+  void
+  SetMaximumError(const double *v)
   {
     ArrayType dv;
 
@@ -173,7 +178,8 @@ public:
     this->SetMaximumError(dv);
   }
 
-  void SetMaximumError(const float *v)
+  void
+  SetMaximumError(const float *v)
   {
     ArrayType dv;
 
@@ -187,13 +193,19 @@ public:
   /** Use the image spacing information in calculations. Use this option if you
    *  want to specify Gaussian variance in real world units.  Default is
    *   ImageSpacingOn. */
-  void SetUseImageSpacingOn()
-  { this->SetUseImageSpacing(true); }
+  void
+  SetUseImageSpacingOn()
+  {
+    this->SetUseImageSpacing(true);
+  }
 
   /** Ignore the image spacing. Use this option if you want to specify Gaussian
       variance in pixels.  Default is ImageSpacingOn. */
-  void SetUseImageSpacingOff()
-  { this->SetUseImageSpacing(false); }
+  void
+  SetUseImageSpacingOff()
+  {
+    this->SetUseImageSpacing(false);
+  }
 
   /** Set/Get whether or not the filter will use the spacing of the input
       image in its calculations */
@@ -241,7 +253,8 @@ protected:
     m_InternalNumberOfStreamDivisions = ImageDimension * ImageDimension;
   }
 
-  virtual ~DiscreteGaussianImageFilter() {}
+  virtual
+  ~DiscreteGaussianImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Standard pipeline method. While this class does not implement a

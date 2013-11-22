@@ -24,25 +24,25 @@ namespace itk
 {
 template< typename TImage >
 ImageRandomIteratorWithIndex< TImage >
-::ImageRandomIteratorWithIndex():
+::ImageRandomIteratorWithIndex() :
   ImageRandomConstIteratorWithIndex< TImage >()
 {}
 
 template< typename TImage >
 ImageRandomIteratorWithIndex< TImage >
-::ImageRandomIteratorWithIndex(ImageType *ptr, const RegionType & region):
+::ImageRandomIteratorWithIndex(ImageType *ptr, const RegionType & region) :
   ImageRandomConstIteratorWithIndex< TImage >(ptr, region)
 {}
 
 template< typename TImage >
 ImageRandomIteratorWithIndex< TImage >
-::ImageRandomIteratorWithIndex(const ImageIteratorWithIndex< TImage > & it):
+::ImageRandomIteratorWithIndex(const ImageIteratorWithIndex< TImage > & it) :
   ImageRandomConstIteratorWithIndex< TImage >(it)
 {}
 
 template< typename TImage >
 ImageRandomIteratorWithIndex< TImage >
-::ImageRandomIteratorWithIndex(const ImageRandomConstIteratorWithIndex< TImage > & it):
+::ImageRandomIteratorWithIndex(const ImageRandomConstIteratorWithIndex< TImage > & it) :
   ImageRandomConstIteratorWithIndex< TImage >(it)
 {}
 
@@ -54,6 +54,7 @@ ImageRandomIteratorWithIndex< TImage >
   this->ImageRandomConstIteratorWithIndex< TImage >::operator=(it);
   return *this;
 }
+
 } // end namespace itk
 
 #endif

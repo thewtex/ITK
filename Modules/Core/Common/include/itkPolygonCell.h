@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TCellInterface >
-class PolygonCell:public TCellInterface
+class PolygonCell : public TCellInterface
 {
 public:
   /** Standard class typedefs. */
@@ -78,8 +78,12 @@ public:
   itkCellVisitMacro(Superclass::POLYGON_CELL);
 
   /** Implement the standard CellInterface. */
-  virtual CellGeometry GetType(void) const
-  { return Superclass::POLYGON_CELL; }
+  virtual CellGeometry
+  GetType(void) const
+  {
+    return Superclass::POLYGON_CELL;
+  }
+
   virtual void MakeCopy(CellAutoPointer &) const;
 
   virtual unsigned int GetDimension(void) const;
@@ -140,6 +144,7 @@ protected:
 private:
   PolygonCell(const Self &);    //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } //end namespace
 

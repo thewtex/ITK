@@ -43,7 +43,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TInputImage, typename TFeatureImage >
-class LabelStatisticsKeepNObjectsImageFilter:
+class LabelStatisticsKeepNObjectsImageFilter :
   public ImageToImageFilter< TInputImage, TInputImage >
 {
 public:
@@ -132,32 +132,37 @@ public:
    */
   itkGetConstMacro(Attribute, AttributeType);
   itkSetMacro(Attribute, AttributeType);
-  void SetAttribute(const std::string & s)
+  void
+  SetAttribute(const std::string & s)
   {
     this->SetAttribute( LabelObjectType::GetAttributeFromName(s) );
   }
 
   /** Set the feature image */
-  void SetFeatureImage(const TFeatureImage *input)
+  void
+  SetFeatureImage(const TFeatureImage *input)
   {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast< TFeatureImage * >( input ) );
   }
 
   /** Get the feature image */
-  const FeatureImageType * GetFeatureImage()
+  const FeatureImageType *
+  GetFeatureImage()
   {
     return static_cast< const FeatureImageType * >( this->ProcessObject::GetInput(1) );
   }
 
   /** Set the input image */
-  void SetInput1(const InputImageType *input)
+  void
+  SetInput1(const InputImageType *input)
   {
     this->SetInput(input);
   }
 
   /** Set the feature image */
-  void SetInput2(const FeatureImageType *input)
+  void
+  SetInput2(const FeatureImageType *input)
   {
     this->SetFeatureImage(input);
   }
@@ -183,7 +188,8 @@ private:
   LabelStatisticsKeepNObjectsImageFilter(const Self &); //purposely not
                                                         // implemented
   void operator=(const Self &);                         //purposely not
-                                                        // implemented
+
+  // implemented
 
   OutputImagePixelType m_BackgroundValue;
   SizeValueType        m_NumberOfObjects;

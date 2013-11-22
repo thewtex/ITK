@@ -39,13 +39,16 @@
  */
 
 template<unsigned int Dimension, typename TImage, typename TMetric>
-int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, int numberOfIterations, typename TImage::PixelType maximumStepSize, bool doSampling, bool doGradientFilter )
+int
+ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, int numberOfIterations,
+                                         typename TImage::PixelType maximumStepSize, bool doSampling,
+                                         bool doGradientFilter )
 {
-  typedef typename TImage::PixelType  PixelType;
-  typedef PixelType                   CoordinateRepresentationType;
+  typedef typename TImage::PixelType PixelType;
+  typedef PixelType                  CoordinateRepresentationType;
 
   // Create two simple images
-  itk::SizeValueType ImageSize = 100;
+  itk::SizeValueType   ImageSize = 100;
   itk::OffsetValueType boundary = 6;
   if( Dimension == 3 )
     {
@@ -53,7 +56,7 @@ int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, i
     boundary = 4;
     }
 
-   // Declare Gaussian Sources
+  // Declare Gaussian Sources
   typedef itk::GaussianImageSource< TImage >        GaussianImageSourceType;
   typedef typename GaussianImageSourceType::Pointer GaussianImageSourcePointer;
 
@@ -81,7 +84,7 @@ int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, i
 
   // zero-out the boundary
   itk::ImageRegionIteratorWithIndex<TImage> it( fixedImage, fixedImage->GetLargestPossibleRegion() );
-  for( it.GoToBegin(); ! it.IsAtEnd(); ++it )
+  for( it.GoToBegin(); !it.IsAtEnd(); ++it )
     {
     for( itk::SizeValueType n=0; n < Dimension; n++ )
       {
@@ -120,7 +123,7 @@ int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, i
   std::cout << "Use image gradient filter: " << doGradientFilter << std::endl;
 
   // sampling
-  if( ! doSampling )
+  if( !doSampling )
     {
     std::cout << "Dense sampling." << std::endl;
     metric->SetUseFixedSampledPointSet( false );
@@ -129,8 +132,8 @@ int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, i
     {
     typedef typename TMetric::FixedSampledPointSetType PointSetType;
     typedef typename PointSetType::PointType           PointType;
-    typename PointSetType::Pointer                     pset(PointSetType::New());
-    itk::SizeValueType ind=0,ct=0;
+    typename PointSetType::Pointer            pset(PointSetType::New() );
+    itk::SizeValueType                        ind=0,ct=0;
     itk::ImageRegionIteratorWithIndex<TImage> itS(fixedImage, fixedImage->GetLargestPossibleRegion() );
     for( itS.GoToBegin(); !itS.IsAtEnd(); ++itS )
       {
@@ -139,12 +142,12 @@ int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, i
       // with similar settings
       if ( ct % 2 == 0 )
         {
-          PointType pt;
-          fixedImage->TransformIndexToPhysicalPoint( itS.GetIndex(), pt);
-          pset->SetPoint(ind, pt);
-          ind++;
+        PointType pt;
+        fixedImage->TransformIndexToPhysicalPoint( itS.GetIndex(), pt);
+        pset->SetPoint(ind, pt);
+        ind++;
         }
-        ct++;
+      ct++;
       }
     std::cout << "Setting point set with " << ind << " points of "
               << fixedImage->GetLargestPossibleRegion().GetNumberOfPixels() << " total " << std::endl;
@@ -161,13 +164,14 @@ int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, i
 
   // scales estimator
   typedef itk::RegistrationParameterScalesFromPhysicalShift< TMetric > RegistrationParameterScalesFromPhysicalShiftType;
-  typename RegistrationParameterScalesFromPhysicalShiftType::Pointer shiftScaleEstimator = RegistrationParameterScalesFromPhysicalShiftType::New();
+  typename RegistrationParameterScalesFromPhysicalShiftType::Pointer shiftScaleEstimator =
+    RegistrationParameterScalesFromPhysicalShiftType::New();
   shiftScaleEstimator->SetMetric(metric);
 
   //
   // optimizer
   //
-  typedef itk::GradientDescentOptimizerv4  OptimizerType;
+  typedef itk::GradientDescentOptimizerv4 OptimizerType;
   typename OptimizerType::Pointer  optimizer = OptimizerType::New();
   optimizer->SetMetric( metric );
   optimizer->SetNumberOfIterations( numberOfIterations );
@@ -192,7 +196,8 @@ int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, i
   double tolerance = static_cast<double>(0.11);
   for( itk::SizeValueType n=0; n < Dimension; n++ )
     {
-    if( vcl_fabs( 1.0 - ( static_cast<double>(imageShift[n]) / translationTransform->GetParameters()[n] ) ) > tolerance )
+    if( vcl_fabs( 1.0 - ( static_cast<double>(imageShift[n]) / translationTransform->GetParameters()[n] ) ) >
+        tolerance )
       {
       std::cerr << "XXX Failed. Final transform parameters are not within tolerance of image shift. XXX" << std::endl;
       return EXIT_FAILURE;
@@ -210,7 +215,8 @@ int ImageToImageMetricv4RegistrationTestRun( typename TMetric::Pointer metric, i
 
 //////////////////////////////////////////////////////////////
 template<unsigned int Dimension>
-int itkImageToImageMetricv4RegistrationTestRunAll (int argc, char *argv[])
+int
+itkImageToImageMetricv4RegistrationTestRunAll(int argc, char *argv[])
 {
   typedef itk::Image< double, Dimension > ImageType;
 
@@ -256,59 +262,69 @@ int itkImageToImageMetricv4RegistrationTestRunAll (int argc, char *argv[])
   // ANTS Neighborhood Correlation
   // This metric does not support sampling
   if( !doSampling )
-  {
-  typedef itk::ANTSNeighborhoodCorrelationImageToImageMetricv4<ImageType, ImageType> MetricType;
-  typename MetricType::Pointer metric = MetricType::New();
-  std::cout << std::endl << "*** ANTSNeighborhoodCorrelation metric: " << std::endl;
-  if( ImageToImageMetricv4RegistrationTestRun<Dimension, ImageType, MetricType>( metric, numberOfIterations1, maximumStepSize1, doSampling, doGradientFilter ) != EXIT_SUCCESS )
     {
-    passed = false;
+    typedef itk::ANTSNeighborhoodCorrelationImageToImageMetricv4<ImageType, ImageType> MetricType;
+    typename MetricType::Pointer metric = MetricType::New();
+    std::cout << std::endl << "*** ANTSNeighborhoodCorrelation metric: " << std::endl;
+    if( ImageToImageMetricv4RegistrationTestRun<Dimension, ImageType, MetricType>( metric, numberOfIterations1,
+                                                                                   maximumStepSize1, doSampling,
+                                                                                   doGradientFilter ) != EXIT_SUCCESS )
+      {
+      passed = false;
+      }
     }
-  }
 
   // Correlation
-  {
-  typedef itk::CorrelationImageToImageMetricv4<ImageType, ImageType> MetricType;
-  typename MetricType::Pointer metric = MetricType::New();
-  std::cout << std::endl << "*** Correlation metric: " << std::endl;
-  if( ImageToImageMetricv4RegistrationTestRun<Dimension, ImageType, MetricType>( metric, numberOfIterations1, maximumStepSize1, doSampling, doGradientFilter ) != EXIT_SUCCESS )
     {
-    passed = false;
+    typedef itk::CorrelationImageToImageMetricv4<ImageType, ImageType> MetricType;
+    typename MetricType::Pointer metric = MetricType::New();
+    std::cout << std::endl << "*** Correlation metric: " << std::endl;
+    if( ImageToImageMetricv4RegistrationTestRun<Dimension, ImageType, MetricType>( metric, numberOfIterations1,
+                                                                                   maximumStepSize1, doSampling,
+                                                                                   doGradientFilter ) != EXIT_SUCCESS )
+      {
+      passed = false;
+      }
     }
-  }
 
   // Joint Histogram
-  {
-  typedef itk::JointHistogramMutualInformationImageToImageMetricv4<ImageType, ImageType> MetricType;
-  typename MetricType::Pointer metric = MetricType::New();
-  std::cout << std::endl << "*** JointHistogramMutualInformation metric: " << std::endl;
-  if( ImageToImageMetricv4RegistrationTestRun<Dimension, ImageType, MetricType>( metric, numberOfIterations1, maximumStepSize1, doSampling, doGradientFilter ) != EXIT_SUCCESS )
     {
-    passed = false;
+    typedef itk::JointHistogramMutualInformationImageToImageMetricv4<ImageType, ImageType> MetricType;
+    typename MetricType::Pointer metric = MetricType::New();
+    std::cout << std::endl << "*** JointHistogramMutualInformation metric: " << std::endl;
+    if( ImageToImageMetricv4RegistrationTestRun<Dimension, ImageType, MetricType>( metric, numberOfIterations1,
+                                                                                   maximumStepSize1, doSampling,
+                                                                                   doGradientFilter ) != EXIT_SUCCESS )
+      {
+      passed = false;
+      }
     }
-  }
 
   // Mattes
-  {
-  typedef itk::MattesMutualInformationImageToImageMetricv4<ImageType, ImageType> MetricType;
-  typename MetricType::Pointer metric = MetricType::New();
-  std::cout << std::endl << "*** MattesMutualInformation metric: " << std::endl;
-  if( ImageToImageMetricv4RegistrationTestRun<Dimension, ImageType, MetricType>( metric, numberOfIterations2, maximumStepSize2, doSampling, doGradientFilter ) != EXIT_SUCCESS )
     {
-    passed = false;
+    typedef itk::MattesMutualInformationImageToImageMetricv4<ImageType, ImageType> MetricType;
+    typename MetricType::Pointer metric = MetricType::New();
+    std::cout << std::endl << "*** MattesMutualInformation metric: " << std::endl;
+    if( ImageToImageMetricv4RegistrationTestRun<Dimension, ImageType, MetricType>( metric, numberOfIterations2,
+                                                                                   maximumStepSize2, doSampling,
+                                                                                   doGradientFilter ) != EXIT_SUCCESS )
+      {
+      passed = false;
+      }
     }
-  }
 
   // MeanSquares
-  {
-  typedef itk::MeanSquaresImageToImageMetricv4<ImageType, ImageType> MetricType;
-  typename MetricType::Pointer metric = MetricType::New();
-  std::cout << std::endl << "*** MeanSquares metric: " << std::endl;
-  if( ImageToImageMetricv4RegistrationTestRun<Dimension, ImageType, MetricType>( metric, numberOfIterations1, maximumStepSize1, doSampling, doGradientFilter ) != EXIT_SUCCESS )
     {
-    passed = false;
+    typedef itk::MeanSquaresImageToImageMetricv4<ImageType, ImageType> MetricType;
+    typename MetricType::Pointer metric = MetricType::New();
+    std::cout << std::endl << "*** MeanSquares metric: " << std::endl;
+    if( ImageToImageMetricv4RegistrationTestRun<Dimension, ImageType, MetricType>( metric, numberOfIterations1,
+                                                                                   maximumStepSize1, doSampling,
+                                                                                   doGradientFilter ) != EXIT_SUCCESS )
+      {
+      passed = false;
+      }
     }
-  }
 
   if( passed )
     {
@@ -321,7 +337,8 @@ int itkImageToImageMetricv4RegistrationTestRunAll (int argc, char *argv[])
 }
 
 //////////////////////////////////////////////////////////////
-int itkImageToImageMetricv4RegistrationTest (int argc, char *argv[])
+int
+itkImageToImageMetricv4RegistrationTest(int argc, char *argv[])
 {
   int result = EXIT_SUCCESS;
 

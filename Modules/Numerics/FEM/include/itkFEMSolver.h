@@ -192,7 +192,8 @@ public:
    *
    * \sa SetLinearSystemWrapper
    */
-  LinearSystemWrapper::Pointer GetLinearSystemWrapper()
+  LinearSystemWrapper::Pointer
+  GetLinearSystemWrapper()
   {
     return m_ls;
   }
@@ -215,7 +216,8 @@ public:
                                    const InterpolationGridPointType & bb2);
 
   /** Same as InitializeInterpolationGrid(size, {0,0...}, size); */
-  void InitializeInterpolationGrid(const InterpolationGridSizeType & size)
+  void
+  InitializeInterpolationGrid(const InterpolationGridSizeType & size)
   {
     InterpolationGridPointType bb1;
 
@@ -223,9 +225,9 @@ public:
 
     InterpolationGridPointType bb2;
     for( unsigned int i = 0; i < FEMDimension; i++ )
-    {
+      {
       bb2[i] = size[i] - 1.0;
-    }
+      }
     InitializeInterpolationGrid(size, bb1, bb2);
   }
 
@@ -247,11 +249,11 @@ public:
    * \note Physical coordinates in an image correspond to the global
    *       coordinate system in which the mesh (nodes) are.
    */
-  const InterpolationGridType * GetInterpolationGrid(void) const
+  const InterpolationGridType *
+  GetInterpolationGrid(void) const
   {
     return m_InterpolationGrid.GetPointer();
   }
-
 
   /** Make a DataObject of the correct type to be used as the specified
    * output. */
@@ -278,13 +280,13 @@ public:
 
 protected:
   Solver();
-  virtual ~Solver();
+  virtual
+  ~Solver();
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   /** Method invoked by the pipeline in order to trigger the computation of
    * the registration. */
   void  GenerateData();
-
 
   /**
    * System solver functions. Call all six functions below (in listed order) to solve system.
@@ -314,7 +316,8 @@ protected:
    * In this class it is only used to apply the BCs. You may however
    * use it to perform other stuff in derived solver classes.
    */
-  virtual void FinalizeMatrixAfterAssembly(void)
+  virtual void
+  FinalizeMatrixAfterAssembly(void)
   {
     // Apply the boundary conditions to the K matrix
     this->ApplyBC();
@@ -423,10 +426,10 @@ private:
   /*
    * Properties of the Interpolation Grid
    */
-  InterpolationGridRegionType       m_Region;
-  InterpolationGridPointType        m_Origin;
-  InterpolationGridSpacingType      m_Spacing;
-  InterpolationGridDirectionType    m_Direction;
+  InterpolationGridRegionType    m_Region;
+  InterpolationGridPointType     m_Origin;
+  InterpolationGridSpacingType   m_Spacing;
+  InterpolationGridDirectionType m_Direction;
 
 };
 }  // end namespace fem

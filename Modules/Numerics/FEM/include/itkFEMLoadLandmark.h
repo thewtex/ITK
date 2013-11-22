@@ -57,15 +57,20 @@ public:
   /**
    * Methods to access the most recent solution vector
    */
-  void SetSolution(Solution::ConstPointer ptr)
+  void
+  SetSolution(Solution::ConstPointer ptr)
   {
     m_Solution = ptr;
   }
-  Solution::ConstPointer GetSolution()
+
+  Solution::ConstPointer
+  GetSolution()
   {
     return m_Solution;
   }
-  Float GetSolution(unsigned int i, unsigned int v = 0)
+
+  Float
+  GetSolution(unsigned int i, unsigned int v = 0)
   {
     return m_Solution->GetSolutionValue(i, v);
   }
@@ -73,7 +78,8 @@ public:
   /**
    * Access the location of the point load
    */
-  Element::VectorType & GetPoint()
+  Element::VectorType &
+  GetPoint()
   {
     return m_Point;
   }
@@ -81,7 +87,8 @@ public:
   /**
    * Set the force vector
    */
-  void SetPoint(const vnl_vector<Float> & pt)
+  void
+  SetPoint(const vnl_vector<Float> & pt)
   {
     m_Point = pt;
   }
@@ -89,12 +96,14 @@ public:
   /**
    * Access the location of the point load
    */
-  Element::VectorType & GetSource()
+  Element::VectorType &
+  GetSource()
   {
     return m_Source;
   }
 
-  const Element::VectorType & GetSource() const
+  const Element::VectorType &
+  GetSource() const
   {
     return m_Source;
   }
@@ -102,12 +111,14 @@ public:
   /**
    * Get the force vector
    */
-  Element::VectorType & GetForce()
+  Element::VectorType &
+  GetForce()
   {
     return m_Force;
   }
 
-  const Element::VectorType & GetForce() const
+  const Element::VectorType &
+  GetForce() const
   {
     return m_Force;
   }
@@ -115,7 +126,8 @@ public:
   /**
    * Set the force vector
    */
-  void SetForce(const vnl_vector<Float> & force)
+  void
+  SetForce(const vnl_vector<Float> & force)
   {
     if( m_Force.size() != force.size() )
       {
@@ -130,7 +142,8 @@ public:
   /**
    * Set the force vector
    */
-  void SetSource(const vnl_vector<Float> & source)
+  void
+  SetSource(const vnl_vector<Float> & source)
   {
     if( m_Source.size() != source.size() )
       {
@@ -145,11 +158,14 @@ public:
   /**
    * Access the location of the point load
    */
-  Element::VectorType & GetTarget()
+  Element::VectorType &
+  GetTarget()
   {
     return m_Target;
   }
-  const Element::VectorType & GetTarget() const
+
+  const Element::VectorType &
+  GetTarget() const
   {
     return m_Target;
   }
@@ -157,7 +173,8 @@ public:
   /**
    * Set the force vector
    */
-  void SetTarget(const vnl_vector<Float> & target)
+  void
+  SetTarget(const vnl_vector<Float> & target)
   {
     if( m_Target.size() != target.size() )
       {
@@ -169,7 +186,8 @@ public:
       }
   }
 
-  void ScalePointAndForce(double *spacing, double fwt)
+  void
+  ScalePointAndForce(double *spacing, double fwt)
   {
     for( unsigned int i = 0; i < m_Target.size(); i++ )
       {
@@ -182,7 +200,8 @@ public:
   /**
    * Set the element containing the landmark
    */
-  void SetContainedElement(const Element * e)
+  void
+  SetContainedElement(const Element * e)
   {
     this->m_Element[0] = e;
   }
@@ -190,7 +209,8 @@ public:
   /**
    * Get the element containing the landmark
    */
-  const Element * GetContainedElement() const
+  const Element *
+  GetContainedElement() const
   {
     return this->m_Element[0];
   }
@@ -207,14 +227,13 @@ public:
   /**
    * Default constructors
    */
-  LoadLandmark():
+  LoadLandmark() :
     m_Eta(0),
     m_Target(0),
     m_Source(0),
     m_Force(0),
     m_Solution(0)
-  {
-  }
+  {}
 
   /** Get/Set the eta parameter, square root of the variance, for the load */
   void SetEta(double e);

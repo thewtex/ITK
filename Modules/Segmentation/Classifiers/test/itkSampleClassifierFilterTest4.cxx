@@ -23,22 +23,23 @@
 #include "itkKdTreeBasedKmeansEstimator.h"
 #include "itkWeightedCentroidKdTreeGenerator.h"
 
-
 //run sample classifer using itk::FixedArray type measurment vector
-int itkSampleClassifierFilterTest4( int, char * [] )
+int
+itkSampleClassifierFilterTest4( int, char * [] )
 {
 
   const unsigned int numberOfComponents = 1;
-  typedef float      MeasurementType;
+
+  typedef float MeasurementType;
 
   const unsigned int numberOfClasses = 2;
 
   typedef itk::FixedArray< MeasurementType, numberOfComponents > MeasurementVectorType;
-  typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
+  typedef itk::Statistics::ListSample< MeasurementVectorType >   SampleType;
 
   typedef itk::Statistics::SampleClassifierFilter< SampleType > FilterType;
 
-  typedef itk::Statistics::WeightedCentroidKdTreeGenerator< SampleType > GeneratorType;
+  typedef itk::Statistics::WeightedCentroidKdTreeGenerator< SampleType >           GeneratorType;
   typedef itk::Statistics::KdTreeBasedKmeansEstimator< GeneratorType::KdTreeType > EstimatorType;
 
   //Generate a sample list
@@ -50,22 +51,22 @@ int itkSampleClassifierFilterTest4( int, char * [] )
 
   //Populate the list with samples from two normal distributions
 
-  EstimatorType::DistanceToCentroidMembershipFunctionType::CentroidType  mean1;
+  EstimatorType::DistanceToCentroidMembershipFunctionType::CentroidType mean1;
   itk::NumericTraits<
     EstimatorType::DistanceToCentroidMembershipFunctionType::CentroidType>::SetLength(
     mean1, numberOfComponents );
   mean1[0] = 10.5;
 
-  EstimatorType::DistanceToCentroidMembershipFunctionType::CentroidType  mean2;
+  EstimatorType::DistanceToCentroidMembershipFunctionType::CentroidType mean2;
   itk::NumericTraits<
     EstimatorType::DistanceToCentroidMembershipFunctionType::CentroidType>::SetLength(
     mean2, numberOfComponents );
   mean2[0] = 200.5;
 
   MeasurementVectorType mv;
-  double mean = mean1[0];
-  double standardDeviation = 0.1;
-  unsigned int numberOfSampleEachClass = 10;
+  double                mean = mean1[0];
+  double                standardDeviation = 0.1;
+  unsigned int          numberOfSampleEachClass = 10;
 
   //Add sample from the first gaussian
   for ( unsigned int i = 0; i < numberOfSampleEachClass; ++i )
@@ -83,15 +84,14 @@ int itkSampleClassifierFilterTest4( int, char * [] )
     sample->PushBack( mv );
     }
 
+  typedef FilterType::ClassLabelVectorObjectType ClassLabelVectorObjectType;
+  typedef FilterType::ClassLabelVectorType       ClassLabelVectorType;
 
-  typedef FilterType::ClassLabelVectorObjectType               ClassLabelVectorObjectType;
-  typedef FilterType::ClassLabelVectorType                     ClassLabelVectorType;
-
-  ClassLabelVectorObjectType::Pointer  classLabelsObject = ClassLabelVectorObjectType::New();
+  ClassLabelVectorObjectType::Pointer classLabelsObject = ClassLabelVectorObjectType::New();
 
   /* Creating k-d tree */
   GeneratorType::Pointer generator = GeneratorType::New();
-  generator->SetSample(sample.GetPointer());
+  generator->SetSample(sample.GetPointer() );
   unsigned int bucketSize = 1;
   generator->SetBucketSize(bucketSize);
   generator->GenerateData();
@@ -105,7 +105,7 @@ int itkSampleClassifierFilterTest4( int, char * [] )
   estimator->SetParameters(initialMeans);
   unsigned int maximumIteration = 100;
   estimator->SetMaximumIteration(maximumIteration);
-  estimator->SetKdTree(generator->GetOutput());
+  estimator->SetKdTree(generator->GetOutput() );
   estimator->SetCentroidPositionChangesThreshold(0.0);
   estimator->StartOptimization();
   //EstimatorType::ParametersType estimatedMeans = estimator->GetParameters();
@@ -113,45 +113,44 @@ int itkSampleClassifierFilterTest4( int, char * [] )
   // Add class labels
   ClassLabelVectorType & classLabelVector  = classLabelsObject->Get();
 
-  typedef FilterType::ClassLabelType        ClassLabelType;
+  typedef FilterType::ClassLabelType ClassLabelType;
 
-  ClassLabelType  class1 = 0;
+  ClassLabelType class1 = 0;
   classLabelVector.push_back( class1 );
 
-  ClassLabelType  class2 = 1;
+  ClassLabelType class2 = 1;
   classLabelVector.push_back( class2 );
 
   //Set a decision rule type
-  typedef itk::Statistics::MinimumDecisionRule  DecisionRuleType;
+  typedef itk::Statistics::MinimumDecisionRule DecisionRuleType;
 
-  DecisionRuleType::Pointer    decisionRule = DecisionRuleType::New();
+  DecisionRuleType::Pointer decisionRule = DecisionRuleType::New();
 
   const FilterType::MembershipFunctionVectorObjectType *
-                membershipFunctionsObject = estimator->GetOutput();
+  membershipFunctionsObject = estimator->GetOutput();
 
   /* Print out estimated parameters of the membership function */
 
   const FilterType::MembershipFunctionVectorType
-            membershipFunctions = membershipFunctionsObject->Get();
+    membershipFunctions = membershipFunctionsObject->Get();
 
   FilterType::MembershipFunctionVectorType::const_iterator
-                    begin = membershipFunctions.begin();
+    begin = membershipFunctions.begin();
 
   FilterType::MembershipFunctionVectorType::const_iterator
-                    end = membershipFunctions.end();
+    end = membershipFunctions.end();
 
   FilterType::MembershipFunctionVectorType::const_iterator functionIter;
 
   functionIter=begin;
-
 
   unsigned int counter=1;
   while( functionIter != end )
     {
     FilterType::MembershipFunctionPointer membershipFunction = *functionIter;
     const EstimatorType::DistanceToCentroidMembershipFunctionType *
-          distanceMemberShpFunction =
-        dynamic_cast<const EstimatorType::DistanceToCentroidMembershipFunctionType*>(membershipFunction.GetPointer());
+    distanceMemberShpFunction =
+      dynamic_cast<const EstimatorType::DistanceToCentroidMembershipFunctionType*>(membershipFunction.GetPointer() );
     std::cout << "Centroid of the " << counter << " membership function "
               << distanceMemberShpFunction->GetCentroid() << std::endl;
     functionIter++;
@@ -178,7 +177,7 @@ int itkSampleClassifierFilterTest4( int, char * [] )
     }
 
   //Check if the measurement vectors are correctly labelled.
-  const FilterType::MembershipSampleType* membershipSample = filter->GetOutput();
+  const FilterType::MembershipSampleType*         membershipSample = filter->GetOutput();
   FilterType::MembershipSampleType::ConstIterator iter = membershipSample->Begin();
 
   unsigned int sampleCounter = 0;

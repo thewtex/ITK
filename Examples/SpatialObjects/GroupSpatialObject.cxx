@@ -34,14 +34,15 @@
 // Software Guide : EndCodeSnippet
 #include "itkEllipseSpatialObject.h"
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 // Software Guide : BeginLatex
 // The \doxygen{GroupSpatialObject} is templated
 // over the dimensionality of the object.
 // Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet
-  typedef itk::GroupSpatialObject<3>   GroupType;
+  typedef itk::GroupSpatialObject<3> GroupType;
   GroupType::Pointer myGroup = GroupType::New();
 // Software Guide : EndCodeSnippet
 
@@ -50,7 +51,7 @@ int main( int , char *[] )
 // the group.
 // Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet
-  typedef itk::EllipseSpatialObject<3>   EllipseType;
+  typedef itk::EllipseSpatialObject<3> EllipseType;
   EllipseType::Pointer myEllipse = EllipseType::New();
   myEllipse->SetRadius(2);
 
@@ -77,7 +78,7 @@ int main( int , char *[] )
   GroupType::PointType point;
   point.Fill(10);
   std::cout << "Is my point " << point << " inside?: "
-    <<  myGroup->IsInside(point,2) << std::endl;
+            <<  myGroup->IsInside(point,2) << std::endl;
 // Software Guide : EndCodeSnippet
 
 // Software Guide : BeginLatex

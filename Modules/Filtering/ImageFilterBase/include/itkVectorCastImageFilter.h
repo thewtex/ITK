@@ -47,17 +47,20 @@ class VectorCast
 public:
   VectorCast() {}
   ~VectorCast() {}
-  bool operator!=(const VectorCast &) const
+  bool
+  operator!=(const VectorCast &) const
   {
     return false;
   }
 
-  bool operator==(const VectorCast & other) const
+  bool
+  operator==(const VectorCast & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     typedef typename TOutput::ValueType OutputValueType;
 
@@ -68,11 +71,12 @@ public:
       }
     return value;
   }
+
 };
 }
 
 template< typename TInputImage, typename TOutputImage >
-class VectorCastImageFilter:
+class VectorCastImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::VectorCast< typename TInputImage::PixelType,
@@ -82,9 +86,9 @@ public:
   /** Standard class typedefs. */
   typedef VectorCastImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::VectorCast< typename TInputImage::PixelType,
-                         typename TOutputImage::PixelType > >  Superclass;
+      TInputImage, TOutputImage,
+      Functor::VectorCast< typename TInputImage::PixelType,
+                           typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -110,11 +114,13 @@ public:
 
 protected:
   VectorCastImageFilter() {}
-  virtual ~VectorCastImageFilter() {}
+  virtual
+  ~VectorCastImageFilter() {}
 
 private:
   VectorCastImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
+
 };
 } // end namespace itk
 

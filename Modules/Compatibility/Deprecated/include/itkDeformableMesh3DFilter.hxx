@@ -64,6 +64,7 @@ DeformableMesh3DFilter< TInputMesh, TOutputMesh >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Stiffness = " << m_Stiffness;
   os << indent << "PotentialMagnitude = "
      << static_cast< typename NumericTraits< PixelType >::PrintType >( m_PotentialMagnitude )
@@ -183,8 +184,8 @@ DeformableMesh3DFilter< TInputMesh, TOutputMesh >
     }
 
   const typename InputMeshType::PointIdentifier *tp;
-  PixelType            x = 0.0;
-  PixelType *          x_pt;
+  PixelType   x = 0.0;
+  PixelType * x_pt;
   x_pt = &x;
   while ( cells != myCells->End() )
     {
@@ -308,7 +309,7 @@ DeformableMesh3DFilter< TInputMesh, TOutputMesh >
 
   double p = 1.0;
 
-  int i = 0;
+  int            i = 0;
   InputPointType v1, v2, v3;
   v1.Fill(0.);
   v2.Fill(0.);
@@ -450,7 +451,7 @@ DeformableMesh3DFilter< TInputMesh, TOutputMesh >
   typename TriCell::CellAutoPointer insertCell;
   typename OutputMeshType::PointIdentifier      tripoints[3];
   const typename InputMeshType::PointIdentifier *tp;
-  double               x;
+  double x;
 
   OutputMeshType *output = this->GetOutput();
 
@@ -716,11 +717,11 @@ DeformableMesh3DFilter< TInputMesh, TOutputMesh >
       tmp_vec_3[2] = m_Gradient->GetPixel(tmp_co_3)[2] - m_Gradient->GetPixel(coord)[2];
 
       vec_for[0] = vec_for[0] + ( vec_loc[0] - coord[0] ) * tmp_vec_1[0]
-                   + ( vec_loc[1] - coord[1] ) * tmp_vec_2[0] + ( vec_loc[2] - coord[2] ) * tmp_vec_3[0];
+        + ( vec_loc[1] - coord[1] ) * tmp_vec_2[0] + ( vec_loc[2] - coord[2] ) * tmp_vec_3[0];
       vec_for[1] = vec_for[1] + ( vec_loc[1] - coord[1] ) * tmp_vec_2[1]
-                   + ( vec_loc[0] - coord[0] ) * tmp_vec_1[1] + ( vec_loc[2] - coord[2] ) * tmp_vec_3[1];
+        + ( vec_loc[0] - coord[0] ) * tmp_vec_1[1] + ( vec_loc[2] - coord[2] ) * tmp_vec_3[1];
       vec_for[2] = vec_for[2] + ( vec_loc[2] - coord[2] ) * tmp_vec_3[2]
-                   + ( vec_loc[1] - coord[1] ) * tmp_vec_2[2] + ( vec_loc[0] - coord[0] ) * tmp_vec_1[2];
+        + ( vec_loc[1] - coord[1] ) * tmp_vec_2[2] + ( vec_loc[0] - coord[0] ) * tmp_vec_1[2];
       }
     else
       {
@@ -759,7 +760,7 @@ DeformableMesh3DFilter< TInputMesh, TOutputMesh >
 ::ComputeNormals()
 {
   const typename InputMeshType::PointIdentifier *tp;
-  InputPointType       v1, v2, v3, v4, d;
+  InputPointType v1, v2, v3, v4, d;
 
   v1.Fill(0.);
   v2.Fill(0.);
@@ -844,6 +845,7 @@ DeformableMesh3DFilter< TInputMesh, TOutputMesh >
     ++normals;
     }
 }
+
 } /* end namespace itk. */
 
 #endif //#if !defined( ITK_LEGACY_REMOVE )

@@ -131,7 +131,8 @@ public:
    * Method to split a string into a sequence of sub-strings with user-defined delimiters,
    * then each sub-string is further splitted into a <key,value> pair with separators "=:".
    */
-  static void Split( const std::string& s, std::map<std::string,std::string>& result, const std::string& delims = ";|" );
+  static void Split( const std::string& s,
+                     std::map<std::string,std::string>& result, const std::string& delims = ";|" );
 
   /** Method to test whether one string matches with another. */
   static bool MatchWith( const std::string& s1, const std::string& s2, bool ignoreCase = true );
@@ -144,6 +145,7 @@ public:
 
   /** Method to test whether a string contains a user-given sub-string. */
   static bool ContainSub( const std::string& s1, const std::string& s2, bool ignoreCase = true );
+
 }; // class StringTools
 
 } // namespace itk

@@ -94,10 +94,10 @@ CurvatureNDAnisotropicDiffusionFunction< TImage >
     {
     // ``Half'' derivatives
     dx_forward[i] = it.GetPixel(m_Center + m_Stride[i])
-                    - it.GetPixel(m_Center);
+      - it.GetPixel(m_Center);
     dx_forward[i] *= this->m_ScaleCoefficients[i];
     dx_backward[i] = it.GetPixel(m_Center)
-                     - it.GetPixel(m_Center - m_Stride[i]);
+      - it.GetPixel(m_Center - m_Stride[i]);
     dx_backward[i] *= this->m_ScaleCoefficients[i];
 
     // Centralized differences
@@ -166,6 +166,7 @@ CurvatureNDAnisotropicDiffusionFunction< TImage >
     }
   return static_cast< PixelType >( vcl_sqrt(propagation_gradient) * speed );
 }
+
 } // end namespace itk
 
 #endif

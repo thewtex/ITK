@@ -61,8 +61,7 @@ PatchBasedDenoisingBaseImageFilter<TInputImage, TOutputImage>
 template <typename TInputImage, typename TOutputImage>
 PatchBasedDenoisingBaseImageFilter<TInputImage, TOutputImage>
 ::~PatchBasedDenoisingBaseImageFilter()
-{
-}
+{}
 
 template <typename TInputImage, typename TOutputImage>
 void

@@ -19,7 +19,6 @@
 #define __itkSiemensVisionImageIOFactory_h
 #include "ITKIOSiemensExport.h"
 
-
 #include "itkObjectFactoryBase.h"
 #include "itkImageIOBase.h"
 
@@ -29,7 +28,7 @@ namespace itk
    * \brief Create instances of SiemensVisionImageIO objects using an object factory.
    * \ingroup ITKIOSiemens
    */
-class ITKIOSiemens_EXPORT SiemensVisionImageIOFactory:public ObjectFactoryBase
+class ITKIOSiemens_EXPORT SiemensVisionImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -50,7 +49,8 @@ public:
   itkTypeMacro(SiemensVisionImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     SiemensVisionImageIOFactory::Pointer metaFactory = SiemensVisionImageIOFactory::New();
 
@@ -65,6 +65,7 @@ protected:
 private:
   SiemensVisionImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);              //purposely not implemented
+
 };
 } // end namespace itk
 

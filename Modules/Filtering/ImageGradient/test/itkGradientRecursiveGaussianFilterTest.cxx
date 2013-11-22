@@ -19,27 +19,27 @@
 #include "itkGradientRecursiveGaussianImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkGradientRecursiveGaussianFilterTest(int, char* [] )
+int
+itkGradientRecursiveGaussianFilterTest(int, char* [] )
 {
 
   // Define the dimension of the images
   const unsigned int myDimension = 3;
 
   // Declare the types of the images
-  typedef itk::Image<float, myDimension>           myImageType;
+  typedef itk::Image<float, myDimension> myImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>             myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>              mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>        myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Create the image
   myImageType::Pointer inputImage  = myImageType::New();
-
 
   // Define their size, and start index
   mySizeType size;
@@ -61,7 +61,7 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
   inputImage->Allocate();
 
   // Declare Iterator type for the input image
-  typedef itk::ImageRegionIteratorWithIndex<myImageType>  myIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex<myImageType> myIteratorType;
 
   // Create one iterator for the Input Image A (this is a light object)
   myIteratorType it( inputImage, inputImage->GetRequestedRegion() );
@@ -95,13 +95,12 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
     }
 
   // Declare the type for the
-  typedef itk::GradientRecursiveGaussianImageFilter< myImageType >  myFilterType;
+  typedef itk::GradientRecursiveGaussianImageFilter< myImageType > myFilterType;
 
   typedef myFilterType::OutputImageType myGradientImageType;
 
-
   // Create a  Filter
-  myFilterType::Pointer filter = myFilterType::New();
+  myFilterType::Pointer    filter = myFilterType::New();
   itk::SimpleFilterWatcher watcher(filter);
 
   // Connect the input images
@@ -109,7 +108,6 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
 
   // Select the value of Sigma
   filter->SetSigma( 2.5 );
-
 
   // Execute the filter
   filter->Update();
@@ -121,7 +119,7 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
   myGradientImageType::Pointer outputImage = filter->GetOutput();
 
   // Declare Iterator type for the output image
-  typedef itk::ImageRegionIteratorWithIndex<myGradientImageType>  myOutputIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex<myGradientImageType> myOutputIteratorType;
 
   // Create an iterator for going through the output image
   myOutputIteratorType itg( outputImage, outputImage->GetRequestedRegion() );
@@ -173,7 +171,7 @@ int itkGradientRecursiveGaussianFilterTest(int, char* [] )
     ++itf;
     }
   std::cout << std::endl;
-  if( ! passed )
+  if( !passed )
     {
     std::cerr << "Flipped image gradient does not match regular image as expected." << std::endl;
     return EXIT_FAILURE;

@@ -42,6 +42,7 @@ ShapeDetectionLevelSetImageFilter< TInputImage, TFeatureImage, TOutputType >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "ShapeDetectionFunction: " << std::endl;
   m_ShapeDetectionFunction.GetPointer()->Print( os, indent.GetNextIndent() );
 }
@@ -64,6 +65,7 @@ ShapeDetectionLevelSetImageFilter< TInputImage, TFeatureImage, TOutputType >
   // Continue with Superclass implementation
   Superclass::GenerateData();
 }
+
 } // end namespace itk
 
 #endif

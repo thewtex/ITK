@@ -20,14 +20,14 @@
 
 #include "itkMaximumDecisionRule.h"
 
-
-int itkMaximumDecisionRuleTest(int,char *[] )
+int
+itkMaximumDecisionRuleTest(int,char *[] )
 {
 
   std::cout << "==================================" << std::endl;
   std::cout << "Testing MaximumDecionRule " << std::endl << std::endl;
 
-  typedef itk::Statistics::MaximumDecisionRule  DecisionRuleType;
+  typedef itk::Statistics::MaximumDecisionRule DecisionRuleType;
   DecisionRuleType::Pointer decisionRule = DecisionRuleType::New();
 
   DecisionRuleType::MembershipVectorType discriminantScores;

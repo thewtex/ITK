@@ -49,7 +49,7 @@ namespace Statistics
  */
 
 template< typename TSample >
-class CovarianceSampleFilter:
+class CovarianceSampleFilter :
   public ProcessObject
 {
 public:
@@ -71,11 +71,11 @@ public:
   typedef typename TSample::MeasurementVectorType MeasurementVectorType;
 
   /** Type of vector elements */
-  typedef typename TSample::MeasurementType                           MeasurementType;
-  typedef typename NumericTraits< MeasurementType >::RealType         MeasurementRealType;
+  typedef typename TSample::MeasurementType                   MeasurementType;
+  typedef typename NumericTraits< MeasurementType >::RealType MeasurementRealType;
 
   /** Type of the measurement vector type */
-  typedef typename NumericTraits< MeasurementVectorType >::RealType   MeasurementVectorRealType;
+  typedef typename NumericTraits< MeasurementVectorType >::RealType MeasurementVectorRealType;
 
   /** Typedef for Covariance output */
   typedef VariableSizeMatrix< double > MatrixType;
@@ -110,7 +110,8 @@ public:
 
 protected:
   CovarianceSampleFilter();
-  virtual ~CovarianceSampleFilter();
+  virtual
+  ~CovarianceSampleFilter();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** DataObject pointer */

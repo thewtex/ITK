@@ -89,16 +89,16 @@ class Array1DToData;
  * \ingroup ITKRegistrationMethodsv4
  */
 template<typename TFixedImage, typename TMovingImage, typename TOutputTransform =
-  GaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform<double, TFixedImage::ImageDimension> >
+           GaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform<double, TFixedImage::ImageDimension> >
 class TimeVaryingVelocityFieldImageRegistrationMethodv4
-: public ImageRegistrationMethodv4<TFixedImage, TMovingImage, TOutputTransform>
+  : public ImageRegistrationMethodv4<TFixedImage, TMovingImage, TOutputTransform>
 {
 public:
   /** Standard class typedefs. */
-  typedef TimeVaryingVelocityFieldImageRegistrationMethodv4                       Self;
-  typedef ImageRegistrationMethodv4<TFixedImage, TMovingImage, TOutputTransform>        Superclass;
-  typedef SmartPointer<Self>                                                      Pointer;
-  typedef SmartPointer<const Self>                                                ConstPointer;
+  typedef TimeVaryingVelocityFieldImageRegistrationMethodv4                      Self;
+  typedef ImageRegistrationMethodv4<TFixedImage, TMovingImage, TOutputTransform> Superclass;
+  typedef SmartPointer<Self>                                                     Pointer;
+  typedef SmartPointer<const Self>                                               ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro( Self );
@@ -110,43 +110,43 @@ public:
   itkTypeMacro( TimeVaryingVelocityFieldImageRegistrationMethodv4, ImageRegistrationMethodv4 );
 
   /** Input typedefs for the images and transforms. */
-  typedef TFixedImage                                                 FixedImageType;
-  typedef typename FixedImageType::Pointer                            FixedImagePointer;
-  typedef TMovingImage                                                MovingImageType;
-  typedef typename MovingImageType::Pointer                           MovingImagePointer;
+  typedef TFixedImage                       FixedImageType;
+  typedef typename FixedImageType::Pointer  FixedImagePointer;
+  typedef TMovingImage                      MovingImageType;
+  typedef typename MovingImageType::Pointer MovingImagePointer;
 
-  typedef typename MovingImageType::RegionType                        RegionType;
+  typedef typename MovingImageType::RegionType RegionType;
 
   /** Metric and transform typedefs */
-  typedef typename Superclass::ImageMetricType                        ImageMetricType;
-  typedef typename ImageMetricType::Pointer                           ImageMetricPointer;
-  typedef typename ImageMetricType::VirtualImageType                  VirtualImageType;
-  typedef typename ImageMetricType::MeasureType                       MeasureType;
-  typedef typename Superclass::MultiMetricType                        MultiMetricType;
+  typedef typename Superclass::ImageMetricType       ImageMetricType;
+  typedef typename ImageMetricType::Pointer          ImageMetricPointer;
+  typedef typename ImageMetricType::VirtualImageType VirtualImageType;
+  typedef typename ImageMetricType::MeasureType      MeasureType;
+  typedef typename Superclass::MultiMetricType       MultiMetricType;
 
-  typedef TOutputTransform                                            OutputTransformType;
-  typedef typename OutputTransformType::Pointer                       OutputTransformPointer;
-  typedef typename OutputTransformType::ScalarType                    RealType;
-  typedef typename OutputTransformType::DerivativeType                DerivativeType;
-  typedef typename DerivativeType::ValueType                          DerivativeValueType;
-  typedef typename OutputTransformType::TimeVaryingVelocityFieldType  TimeVaryingVelocityFieldType;
-  typedef typename TimeVaryingVelocityFieldType::Pointer              TimeVaryingVelocityFieldPointer;
-  typedef typename OutputTransformType::DisplacementFieldType         DisplacementFieldType;
-  typedef typename DisplacementFieldType::Pointer                     DisplacementFieldPointer;
-  typedef typename TimeVaryingVelocityFieldType::PixelType            DisplacementVectorType;
+  typedef TOutputTransform                                           OutputTransformType;
+  typedef typename OutputTransformType::Pointer                      OutputTransformPointer;
+  typedef typename OutputTransformType::ScalarType                   RealType;
+  typedef typename OutputTransformType::DerivativeType               DerivativeType;
+  typedef typename DerivativeType::ValueType                         DerivativeValueType;
+  typedef typename OutputTransformType::TimeVaryingVelocityFieldType TimeVaryingVelocityFieldType;
+  typedef typename TimeVaryingVelocityFieldType::Pointer             TimeVaryingVelocityFieldPointer;
+  typedef typename OutputTransformType::DisplacementFieldType        DisplacementFieldType;
+  typedef typename DisplacementFieldType::Pointer                    DisplacementFieldPointer;
+  typedef typename TimeVaryingVelocityFieldType::PixelType           DisplacementVectorType;
 
-  typedef typename Superclass::CompositeTransformType                 CompositeTransformType;
+  typedef typename Superclass::CompositeTransformType CompositeTransformType;
 
-  typedef typename Superclass::DecoratedOutputTransformType           DecoratedOutputTransformType;
-  typedef typename DecoratedOutputTransformType::Pointer              DecoratedOutputTransformPointer;
+  typedef typename Superclass::DecoratedOutputTransformType DecoratedOutputTransformType;
+  typedef typename DecoratedOutputTransformType::Pointer    DecoratedOutputTransformPointer;
 
-  typedef Array<SizeValueType>                                        NumberOfIterationsArrayType;
+  typedef Array<SizeValueType> NumberOfIterationsArrayType;
 
   /** Set/Get the learning rate. */
   itkSetMacro( LearningRate, RealType );
   itkGetConstMacro( LearningRate, RealType );
 
- /** Set/Get the number of iterations per level. */
+  /** Set/Get the number of iterations per level. */
   itkSetMacro( NumberOfIterationsPerLevel, NumberOfIterationsArrayType );
   itkGetConstMacro( NumberOfIterationsPerLevel, NumberOfIterationsArrayType );
 
@@ -160,7 +160,8 @@ public:
 
 protected:
   TimeVaryingVelocityFieldImageRegistrationMethodv4();
-  virtual ~TimeVaryingVelocityFieldImageRegistrationMethodv4();
+  virtual
+  ~TimeVaryingVelocityFieldImageRegistrationMethodv4();
   virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
   /** Perform the registration. */
@@ -174,15 +175,15 @@ protected:
 
 private:
   TimeVaryingVelocityFieldImageRegistrationMethodv4( const Self & );   //purposely not
-                                                             // implemented
+  // implemented
   void operator=( const Self & );                            //purposely not
 
-  RealType                                                        m_LearningRate;
+  RealType m_LearningRate;
 
-  RealType                                                        m_ConvergenceThreshold;
-  unsigned int                                                    m_ConvergenceWindowSize;
+  RealType     m_ConvergenceThreshold;
+  unsigned int m_ConvergenceWindowSize;
 
-  NumberOfIterationsArrayType                                     m_NumberOfIterationsPerLevel;
+  NumberOfIterationsArrayType m_NumberOfIterationsPerLevel;
 };
 } // end namespace itk
 

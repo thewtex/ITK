@@ -20,7 +20,8 @@
 
 #include "itkSize.h"
 
-int itkSizeTest(int, char* [] )
+int
+itkSizeTest(int, char* [] )
 {
 
   typedef itk::Size<4> SizeType;

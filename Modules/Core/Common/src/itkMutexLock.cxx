@@ -38,13 +38,16 @@
 namespace itk
 {
 // New for the SimpleMutex
-SimpleMutexLock * SimpleMutexLock::New()
+SimpleMutexLock *
+SimpleMutexLock::New()
 {
   return new SimpleMutexLock;
 }
 
-void MutexLock::PrintSelf(std::ostream & os, Indent indent) const
+void
+MutexLock::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } //end namespace itk

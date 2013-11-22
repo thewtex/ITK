@@ -18,7 +18,6 @@
 #ifndef __itkArrowSpatialObject_h
 #define __itkArrowSpatialObject_h
 
-
 #include "itkSpatialObject.h"
 
 namespace itk
@@ -35,7 +34,7 @@ namespace itk
  */
 
 template< unsigned int TDimension = 3 >
-class ArrowSpatialObject:
+class ArrowSpatialObject :
   public SpatialObject< TDimension >
 {
 public:
@@ -57,7 +56,8 @@ public:
   itkTypeMacro(ArrowSpatialObject, SpatialObject);
 
   /** Set the position of the arrow */
-  void SetPosition(const PointType & p)
+  void
+  SetPosition(const PointType & p)
   {
     m_Position = p;
     this->UpdateTransform();
@@ -65,14 +65,16 @@ public:
 
   itkGetConstMacro(Position, PointType);
 
-  void SetPosition(float x, float y)
+  void
+  SetPosition(float x, float y)
   {
     m_Position[0] = x;
     m_Position[1] = y;
     this->UpdateTransform();
   }
 
-  void SetPosition(float x, float y, float z)
+  void
+  SetPosition(float x, float y, float z)
   {
     m_Position[0] = x;
     m_Position[1] = y;
@@ -81,7 +83,8 @@ public:
   }
 
   /** Set the direction of the arrow */
-  void SetDirection(const VectorType & d)
+  void
+  SetDirection(const VectorType & d)
   {
     m_Direction = d;
     this->UpdateTransform();
@@ -89,14 +92,16 @@ public:
 
   itkGetConstMacro(Direction, VectorType);
 
-  void SetDirection(float x, float y)
+  void
+  SetDirection(float x, float y)
   {
     m_Direction[0] = x;
     m_Direction[1] = y;
     this->UpdateTransform();
   }
 
-  void SetDirection(float x, float y, float z)
+  void
+  SetDirection(float x, float y, float z)
   {
     m_Direction[0] = x;
     m_Direction[1] = y;
@@ -125,7 +130,8 @@ public:
 protected:
 
   ArrowSpatialObject();
-  virtual ~ArrowSpatialObject();
+  virtual
+  ~ArrowSpatialObject();
 
   /** Update the transformation given the position and the direction */
   void UpdateTransform();

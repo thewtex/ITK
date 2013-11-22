@@ -40,10 +40,10 @@ class ParticleSwarmOptimizerSAXReader : public XMLReader<ParticleSwarmOptimizer>
 {
 public:
   /** Standard class typedefs */
-  typedef ParticleSwarmOptimizerSAXReader     Self;
-  typedef XMLReader<ParticleSwarmOptimizer>   Superclass;
-  typedef SmartPointer< Self >                Pointer;
-  typedef SmartPointer< const Self >          ConstPointer;
+  typedef ParticleSwarmOptimizerSAXReader   Self;
+  typedef XMLReader<ParticleSwarmOptimizer> Superclass;
+  typedef SmartPointer< Self >              Pointer;
+  typedef SmartPointer< const Self >        ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -105,7 +105,8 @@ protected:
 
 private:
   ParticleSwarmOptimizerSAXReader(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);                  //purposely not implemented
+
 };
 
 } // namespace itk

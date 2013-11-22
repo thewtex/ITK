@@ -42,60 +42,68 @@
 
 #include "itkImageToVTKImageFilter.h"
 
+typedef itk::Image<itk::RGBPixel<unsigned char>, 2> UnsignedCharRGBImageType;
+typedef itk::Image<itk::RGBPixel<float>, 2>         FloatRGBImageType;
 
-typedef itk::Image<itk::RGBPixel<unsigned char>, 2>  UnsignedCharRGBImageType;
-typedef itk::Image<itk::RGBPixel<float>, 2>          FloatRGBImageType;
-
-typedef itk::Image<unsigned char, 2>   UnsignedCharImageType;
-typedef itk::Image<char, 2>            CharImageType;
-typedef itk::Image<unsigned short, 2>  UnsignedShortImageType;
-typedef itk::Image<short, 2>           ShortImageType;
-typedef itk::Image<unsigned int, 2>    UnsignedIntImageType;
-typedef itk::Image<int, 2>             IntImageType;
-typedef itk::Image<unsigned long, 2>   UnsignedLongImageType;
-typedef itk::Image<long, 2>            LongImageType;
-typedef itk::Image<float, 2>           FloatImageType;
-typedef itk::Image<double, 2>          DoubleImageType;
+typedef itk::Image<unsigned char, 2>  UnsignedCharImageType;
+typedef itk::Image<char, 2>           CharImageType;
+typedef itk::Image<unsigned short, 2> UnsignedShortImageType;
+typedef itk::Image<short, 2>          ShortImageType;
+typedef itk::Image<unsigned int, 2>   UnsignedIntImageType;
+typedef itk::Image<int, 2>            IntImageType;
+typedef itk::Image<unsigned long, 2>  UnsignedLongImageType;
+typedef itk::Image<long, 2>           LongImageType;
+typedef itk::Image<float, 2>          FloatImageType;
+typedef itk::Image<double, 2>         DoubleImageType;
 
 template void QuickView::AddImage<CharImageType>(
   CharImageType *image,
   bool FlipVertical,
   std::string Description);
+
 template void QuickView::AddImage<UnsignedShortImageType>(
   UnsignedShortImageType *image,
   bool FlipVertical,
   std::string Description);
+
 template void QuickView::AddImage<ShortImageType>(
   ShortImageType *image,
   bool FlipVertical,
   std::string Description);
+
 template void QuickView::AddImage<UnsignedIntImageType>(
   UnsignedIntImageType *image,
   bool FlipVertical,
   std::string Description);
+
 template void QuickView::AddImage<IntImageType>(
   IntImageType *image,
   bool FlipVertical,
   std::string Description);
+
 template void QuickView::AddImage<UnsignedLongImageType>(
   UnsignedLongImageType *image,
   bool FlipVertical,
   std::string Description);
+
 template void QuickView::AddImage<LongImageType>(
   LongImageType *image,
   bool FlipVertical,
   std::string Description);
+
 template void QuickView::AddImage<FloatImageType>(
   FloatImageType *image,
   bool FlipVertical,
   std::string Description);
+
 template void QuickView::AddImage<DoubleImageType>(
   DoubleImageType *image,
   bool FlipVertical,
   std::string Description);
 
 template< >
-void QuickView::AddImage<UnsignedCharImageType>(
+void QuickView::AddImage<UnsignedCharImageType
+                         >(
   UnsignedCharImageType *image,
   bool FlipVertical,
   std::string Description)
@@ -104,7 +112,7 @@ void QuickView::AddImage<UnsignedCharImageType>(
     {
     typedef itk::FlipImageFilter< UnsignedCharImageType> FlipFilterType;
     FlipFilterType::Pointer flipper = FlipFilterType::New();
-    bool flipAxes[3] = { false, true, false };
+    bool                    flipAxes[3] = { false, true, false };
     flipper = FlipFilterType::New();
     flipper->SetFlipAxes(flipAxes);
     flipper->SetInput(image);
@@ -120,7 +128,8 @@ void QuickView::AddImage<UnsignedCharImageType>(
 }
 
 template<typename TImage>
-void QuickView::AddImage(
+void
+QuickView::AddImage(
   TImage *image,
   bool FlipVertical,
   std::string Description)
@@ -138,7 +147,8 @@ void QuickView::AddImage(
 }
 
 template< >
-void QuickView::AddImage<UnsignedCharRGBImageType>(
+void QuickView::AddImage<UnsignedCharRGBImageType
+                         >(
   UnsignedCharRGBImageType *image,
   bool FlipVertical,
   std::string Description)
@@ -147,7 +157,7 @@ void QuickView::AddImage<UnsignedCharRGBImageType>(
     {
     typedef itk::FlipImageFilter< UnsignedCharRGBImageType> FlipFilterType;
     FlipFilterType::Pointer flipper = FlipFilterType::New();
-    bool flipAxes[3] = { false, true, false };
+    bool                    flipAxes[3] = { false, true, false };
     flipper = FlipFilterType::New();
     flipper->SetFlipAxes(flipAxes);
     flipper->SetInput(image);
@@ -163,7 +173,8 @@ void QuickView::AddImage<UnsignedCharRGBImageType>(
 }
 
 template< >
-void QuickView::AddRGBImage<UnsignedCharRGBImageType>(
+void QuickView::AddRGBImage<UnsignedCharRGBImageType
+                            >(
   UnsignedCharRGBImageType *image,
   bool FlipVertical,
   std::string Description)
@@ -172,7 +183,7 @@ void QuickView::AddRGBImage<UnsignedCharRGBImageType>(
     {
     typedef itk::FlipImageFilter< UnsignedCharRGBImageType> FlipFilterType;
     FlipFilterType::Pointer flipper = FlipFilterType::New();
-    bool flipAxes[3] = { false, true, false };
+    bool                    flipAxes[3] = { false, true, false };
     flipper = FlipFilterType::New();
     flipper->SetFlipAxes(flipAxes);
     flipper->SetInput(image);
@@ -188,7 +199,8 @@ void QuickView::AddRGBImage<UnsignedCharRGBImageType>(
 }
 
 template< >
-void QuickView::AddRGBImage<FloatRGBImageType>(
+void QuickView::AddRGBImage<FloatRGBImageType
+                            >(
   FloatRGBImageType *image,
   bool FlipVertical,
   std::string Description)
@@ -206,7 +218,8 @@ void QuickView::AddRGBImage<FloatRGBImageType>(
 }
 
 template< >
-void QuickView::AddImage<FloatRGBImageType>(
+void QuickView::AddImage<FloatRGBImageType
+                         >(
   FloatRGBImageType *image,
   bool FlipVertical,
   std::string Description)
@@ -223,7 +236,8 @@ void QuickView::AddImage<FloatRGBImageType>(
   this->AddRGBImage(rescaler->GetOutput(), FlipVertical, Description);
 }
 
-void QuickView::Visualize(bool interact)
+void
+QuickView::Visualize(bool interact)
 {
   unsigned int rendererSize = 300;
   unsigned int numberOfImages = this->Images.size() + this->RGBImages.size();
@@ -238,14 +252,15 @@ void QuickView::Visualize(bool interact)
   interactor->SetRenderWindow(renderWindow);
 
   // Render all of the images
-  double step = 1./(static_cast<double>(numberOfImages));
+  double               step = 1./(static_cast<double>(numberOfImages) );
   std::vector<double*> viewports;
 
   typedef itk::ImageToVTKImageFilter<itk::Image<unsigned char, 2> >
     ConnectorType;
   typedef itk::ImageToVTKImageFilter<itk::Image<itk::RGBPixel<unsigned char>, 2> >
     RGBConnectorType;
-  std::vector<ConnectorType::Pointer>    connectors; // Force the connectors to persist (not lose scope) after each iteration of the loop
+  std::vector<ConnectorType::Pointer>    connectors;    // Force the connectors to persist (not lose scope) after each iteration of
+                                                        // the loop
   std::vector<RGBConnectorType::Pointer> RGBconnectors; // Force the connectors to persist after each iteration of the loop
 
   double background[6] = {.4, .5, .6, .6, .5, .4};
@@ -261,15 +276,15 @@ void QuickView::Visualize(bool interact)
 
     // (xmin, ymin, xmax, ymax)
     double viewport[4] =
-      {static_cast<double>(i)*step, 0.0, static_cast<double>(i+1)*step, 1.0};
+        {static_cast<double>(i)*step, 0.0, static_cast<double>(i+1)*step, 1.0};
     viewports.push_back(viewport);
     vtkSmartPointer<vtkImageActor> actor =
       vtkSmartPointer<vtkImageActor>::New();
 #if VTK_MAJOR_VERSION <= 5
-    actor->SetInput(connector->GetOutput());
+    actor->SetInput(connector->GetOutput() );
 #else
     connector->Update();
-    actor->GetMapper()->SetInputData(connector->GetOutput());
+    actor->GetMapper()->SetInputData(connector->GetOutput() );
 #endif
 
     // Setup renderer
@@ -301,7 +316,7 @@ void QuickView::Visualize(bool interact)
       vtkSmartPointer<vtkTextMapper> textMapper =
         vtkSmartPointer<vtkTextMapper>::New();
       textMapper->SetTextProperty(textProperty);
-      textMapper->SetInput(this->Images[i].m_Description.c_str());
+      textMapper->SetInput(this->Images[i].m_Description.c_str() );
 
       vtkSmartPointer<vtkActor2D> textActor =
         vtkSmartPointer<vtkActor2D>::New();
@@ -325,15 +340,15 @@ void QuickView::Visualize(bool interact)
 
     // (xmin, ymin, xmax, ymax)
     double viewport[4] =
-      {static_cast<double>(i)*step, 0.0, static_cast<double>(i+1)*step, 1.0};
+        {static_cast<double>(i)*step, 0.0, static_cast<double>(i+1)*step, 1.0};
     viewports.push_back(viewport);
     vtkSmartPointer<vtkImageActor> actor =
       vtkSmartPointer<vtkImageActor>::New();
 #if VTK_MAJOR_VERSION <= 5
-    actor->SetInput(connector->GetOutput());
+    actor->SetInput(connector->GetOutput() );
 #else
     connector->Update();
-    actor->GetMapper()->SetInputData(connector->GetOutput());
+    actor->GetMapper()->SetInputData(connector->GetOutput() );
 #endif
 
     // Setup renderer
@@ -365,7 +380,7 @@ void QuickView::Visualize(bool interact)
       vtkSmartPointer<vtkTextMapper> textMapper =
         vtkSmartPointer<vtkTextMapper>::New();
       textMapper->SetTextProperty(textProperty);
-      textMapper->SetInput(this->RGBImages[j].m_Description.c_str());
+      textMapper->SetInput(this->RGBImages[j].m_Description.c_str() );
 
       vtkSmartPointer<vtkActor2D> textActor =
         vtkSmartPointer<vtkActor2D>::New();
@@ -382,7 +397,7 @@ void QuickView::Visualize(bool interact)
 
   if( m_Snapshot )
     {
-    std::string filename;
+    std::string       filename;
     std::stringstream temp;
     temp << m_SnapshotPath << m_SnapshotPrefix << m_Counter << ".";
     filename = temp.str();

@@ -36,8 +36,7 @@ LevelSetImage< TInput, VDimension, TOutput >
 template< typename TInput, unsigned int VDimension, typename TOutput >
 LevelSetImage< TInput, VDimension, TOutput >
 ::~LevelSetImage()
-{
-}
+{}
 
 }
 #endif // __itkLevelSetImage_hxx

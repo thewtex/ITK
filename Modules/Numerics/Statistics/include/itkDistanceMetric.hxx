@@ -74,9 +74,11 @@ DistanceMetric< TVector >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Origin: " << this->GetOrigin() << std::endl;
   os << indent << "MeasurementVectorSize: " << this->GetMeasurementVectorSize() << std::endl;
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

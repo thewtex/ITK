@@ -37,16 +37,16 @@ namespace itk
  */
 template< typename TImage, typename TKernel,
           typename TFunction1 >
-class AnchorErodeDilateImageFilter:
+class AnchorErodeDilateImageFilter :
   public KernelImageFilter< TImage, TImage, TKernel >
 {
 public:
   /** Standard class typedefs. */
-  typedef AnchorErodeDilateImageFilter         Self;
+  typedef AnchorErodeDilateImageFilter Self;
   typedef KernelImageFilter< TImage, TImage, TKernel >
-                                               Superclass;
-  typedef SmartPointer< Self >                 Pointer;
-  typedef SmartPointer< const Self >           ConstPointer;
+    Superclass;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Some convenient typedefs. */
   /** Kernel typedef. */

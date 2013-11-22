@@ -57,9 +57,10 @@ RBFNetwork<TMeasurementVector,TTargetVector>
 ::InitializeWeights()
 {
   Superclass::InitializeWeights();
+
   vnl_matrix<ValueType> rbf_weights(m_NumOfFirstHiddenNodes,m_NumOfInputNodes+1);
   rbf_weights.fill(0.0);
-  this->m_Weights[0]->SetWeightValues(rbf_weights.data_block());
+  this->m_Weights[0]->SetWeightValues(rbf_weights.data_block() );
 
   std::cout << "Setting rbf weights to zero" << std::endl;
 }
@@ -227,7 +228,7 @@ RBFNetwork<TMeasurementVector,TTargetVector>
 
 template<typename TMeasurementVector, typename TTargetVector>
 void
-  RBFNetwork<TMeasurementVector,TTargetVector>
+RBFNetwork<TMeasurementVector,TTargetVector>
 ::SetRadius(ValueType r)
 {
   m_Radii.push_back(r);
@@ -251,6 +252,5 @@ RBFNetwork<TMeasurementVector,TTargetVector>
 
 } // end namespace Statistics
 } // end namespace itk
-
 
 #endif

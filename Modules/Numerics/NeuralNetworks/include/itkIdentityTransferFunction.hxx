@@ -29,15 +29,13 @@ namespace Statistics
 template<typename ScalarType>
 IdentityTransferFunction<ScalarType>
 ::IdentityTransferFunction()
-{
-}
+{}
 
 /** Destructor */
 template<typename ScalarType>
 IdentityTransferFunction<ScalarType>
 ::~IdentityTransferFunction()
-{
-}
+{}
 
 template<typename ScalarType>
 ScalarType
@@ -50,7 +48,7 @@ IdentityTransferFunction<ScalarType>
 template<typename ScalarType>
 ScalarType
 IdentityTransferFunction<ScalarType>
-::EvaluateDerivative(const ScalarType & itkNotUsed(input))  const
+::EvaluateDerivative(const ScalarType & itkNotUsed(input) )  const
 {
   return 1;
 }

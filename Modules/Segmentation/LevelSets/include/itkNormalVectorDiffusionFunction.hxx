@@ -48,6 +48,7 @@ NormalVectorDiffusionFunction< TSparseImageType >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "NormalProcessType: " << m_NormalProcessType << std::endl;
   os << indent << "ConductanceParameter: " << m_ConductanceParameter << std::endl;
   os << indent << "FluxStopConstant: " << m_FluxStopConstant << std::endl;
@@ -70,8 +71,8 @@ NormalVectorDiffusionFunction< TSparseImageType >
   Vector< NodeValueType, ImageDimension > gradient[ImageDimension];
   NormalVectorType                        PositiveSidePixel[2], NegativeSidePixel[2], flux;
 
-  SizeValueType                           stride[ImageDimension];
-  SizeValueType                           center;
+  SizeValueType stride[ImageDimension];
+  SizeValueType center;
 
   const NeighborhoodScalesType neighborhoodScales = this->ComputeNeighborhoodScales();
 
@@ -140,7 +141,7 @@ NormalVectorDiffusionFunction< TSparseImageType >
 
           gradient[j] = ( ( PositiveSidePixel[0] + PositiveSidePixel[1] )
                           - ( NegativeSidePixel[0] + NegativeSidePixel[1] ) )
-                        * static_cast< NodeValueType >( 0.25 ) * neighborhoodScales[j];
+            * static_cast< NodeValueType >( 0.25 ) * neighborhoodScales[j];
           }
         else // compute derivative on a line
           {
@@ -208,6 +209,7 @@ NormalVectorDiffusionFunction< TSparseImageType >
 
   return change;
 }
+
 } // end namespace itk
 
 #endif

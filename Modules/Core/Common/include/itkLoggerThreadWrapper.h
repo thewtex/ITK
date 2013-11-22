@@ -37,7 +37,7 @@ namespace itk
  */
 
 template< typename SimpleLoggerType >
-class LoggerThreadWrapper:public SimpleLoggerType
+class LoggerThreadWrapper : public SimpleLoggerType
 {
 public:
 
@@ -102,7 +102,8 @@ protected:
   LoggerThreadWrapper();
 
   /** Destructor */
-  virtual ~LoggerThreadWrapper();
+  virtual
+  ~LoggerThreadWrapper();
 
   /** Print contents of a LoggerThreadWrapper */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;

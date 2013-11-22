@@ -44,7 +44,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TCoordRep = float >
-class MedianImageFunction:
+class MedianImageFunction :
   public ImageFunction< TInputImage, typename TInputImage::PixelType,
                         TCoordRep >
 {
@@ -87,7 +87,8 @@ public:
   virtual OutputType EvaluateAtIndex(const IndexType & index) const;
 
   /** Evaluate the function at non-integer positions */
-  virtual OutputType Evaluate(const PointType & point) const
+  virtual OutputType
+  Evaluate(const PointType & point) const
   {
     IndexType index;
 
@@ -95,7 +96,8 @@ public:
     return this->EvaluateAtIndex(index);
   }
 
-  virtual OutputType EvaluateAtContinuousIndex(
+  virtual OutputType
+  EvaluateAtContinuousIndex(
     const ContinuousIndexType & cindex) const
   {
     IndexType index;

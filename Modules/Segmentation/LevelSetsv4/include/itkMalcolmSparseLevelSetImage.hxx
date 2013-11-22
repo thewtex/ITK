@@ -36,8 +36,7 @@ MalcolmSparseLevelSetImage< VDimension >
 template< unsigned int VDimension >
 MalcolmSparseLevelSetImage< VDimension >
 ::~MalcolmSparseLevelSetImage()
-{
-}
+{}
 
 // ----------------------------------------------------------------------------
 
@@ -46,7 +45,7 @@ template< unsigned int VDimension >
 typename MalcolmSparseLevelSetImage< VDimension >::OutputType
 MalcolmSparseLevelSetImage< VDimension >::Evaluate( const InputType& inputPixel ) const
 {
-  InputType mapIndex = inputPixel - this->m_DomainOffset;
+  InputType             mapIndex = inputPixel - this->m_DomainOffset;
   LayerMapConstIterator layerIt = this->m_Layers.begin();
 
   while( layerIt != this->m_Layers.end() )
@@ -97,6 +96,7 @@ MalcolmSparseLevelSetImage< VDimension >
   oHessian.Fill( NumericTraits< OutputRealType >::Zero );
   return oHessian;
 }
+
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------
@@ -115,6 +115,7 @@ MalcolmSparseLevelSetImage< VDimension >
   oLaplacian = NumericTraits< OutputRealType >::Zero;
   return oLaplacian;
 }
+
 // ----------------------------------------------------------------------------
 
 // ----------------------------------------------------------------------------

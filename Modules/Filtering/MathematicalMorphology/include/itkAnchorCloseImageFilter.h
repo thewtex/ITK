@@ -24,7 +24,7 @@
 namespace itk
 {
 template< typename TImage, typename TKernel >
-class AnchorCloseImageFilter:
+class AnchorCloseImageFilter :
   public AnchorOpenCloseImageFilter< TImage, TKernel, std::greater< typename TImage::PixelType >,
                                      std::less< typename TImage::PixelType > >
 
@@ -46,12 +46,15 @@ protected:
     this->m_Boundary1 = NumericTraits< typename TImage::PixelType >::NonpositiveMin();
     this->m_Boundary2 = NumericTraits< typename TImage::PixelType >::max();
   }
-  virtual ~AnchorCloseImageFilter() {}
+
+  virtual
+  ~AnchorCloseImageFilter() {}
 
 private:
 
   AnchorCloseImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
+
 };
 } // namespace itk
 

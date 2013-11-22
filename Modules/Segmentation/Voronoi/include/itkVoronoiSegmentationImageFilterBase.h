@@ -56,7 +56,7 @@ namespace itk
  * \ingroup ITKVoronoi
  */
 template< typename TInputImage, typename TOutputImage, typename TBinaryPriorImage = Image< unsigned char, 2 > >
-class VoronoiSegmentationImageFilterBase:
+class VoronoiSegmentationImageFilterBase :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -153,7 +153,8 @@ public:
 
   /** Take a prior from other segmentation node. This should be a
    * binary object. */
-  virtual void TakeAPrior(const BinaryObjectImage *){}
+  virtual void
+  TakeAPrior(const BinaryObjectImage *){}
 
   /** Perform the segmentation. */
   void RunSegment(void);
@@ -167,15 +168,19 @@ public:
   virtual void MakeSegmentObject(void);
 
   /** Return the Voroni Diagram structure. */
-  VoronoiPointer GetVoronoiDiagram(void)
-  { return m_WorkingVD; }
+  VoronoiPointer
+  GetVoronoiDiagram(void)
+  {
+    return m_WorkingVD;
+  }
 
 #if !defined( CABLE_CONFIGURATION )  // generates invalid iterator instantiation
                                      // with msvc
   /** Seeds positions are randomly set.
    * If you need to set seeds position then use the SetSeeds method
    * after the InitializeSegment method .  */
-  void SetSeeds(int num, SeedsIterator begin)
+  void
+  SetSeeds(int num, SeedsIterator begin)
   {
     m_NumberOfSeeds = num;
     m_WorkingVD->SetSeeds(num, begin);
@@ -186,7 +191,8 @@ public:
   /** Seeds positions are randomly set.
    * If you need to set seeds position then use the SetSeeds method
    * after the InitializeSegment method .  */
-  void SetSeeds(SeedsType & seeds)
+  void
+  SetSeeds(SeedsType & seeds)
   {
     m_NumberOfSeeds = seeds.size();
     typename SeedsType::iterator it = seeds.begin();
@@ -194,8 +200,11 @@ public:
   }
 
   /** Get the point specified by the ID given. */
-  PointType GetSeed(int SeedID)
-  { return m_WorkingVD->GetSeed(SeedID); }
+  PointType
+  GetSeed(int SeedID)
+  {
+    return m_WorkingVD->GetSeed(SeedID);
+  }
 
   /** Draw the Voronoi Diagram structure. */
   void DrawDiagram(VDImagePointer result, unsigned char incolor,
@@ -251,8 +260,11 @@ protected:
   // Compute the statistics of the pixels inside the cell.
   void GetPixelIndexFromPolygon(PointTypeDeque VertList, IndexList *PixelPool);
 
-  virtual bool TestHomogeneity(IndexList &)
-  { return 1; }
+  virtual bool
+  TestHomogeneity(IndexList &)
+  {
+    return 1;
+  }
 
   void FillPolygon(PointTypeDeque vertlist, OutputPixelType color = 1);
 
@@ -265,6 +277,7 @@ protected:
 private:
   VoronoiSegmentationImageFilterBase(const Self &); //purposely not implemented
   void operator=(const Self &);                     //purposely not implemented
+
 };
 } //end namespace
 

@@ -49,15 +49,15 @@ namespace itk {
 
 template<typename TInputImage, typename TOutputImage, typename TMaskImage=TOutputImage>
 class MaximumEntropyThresholdImageFilter :
-    public HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
+  public HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
 {
 public:
   /** Standard Self typedef */
-  typedef MaximumEntropyThresholdImageFilter                          Self;
+  typedef MaximumEntropyThresholdImageFilter Self;
   typedef HistogramThresholdImageFilter<TInputImage,TOutputImage,
                                         TMaskImage>                   Superclass;
-  typedef SmartPointer<Self>                                          Pointer;
-  typedef SmartPointer<const Self>                                    ConstPointer;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -65,14 +65,14 @@ public:
   /** Runtime information support. */
   itkTypeMacro(MaximumEntropyThresholdImageFilter, HistogramThresholdImageFilter);
 
-  typedef TInputImage                       InputImageType;
-  typedef TOutputImage                      OutputImageType;
-  typedef TMaskImage                        MaskImageType;
+  typedef TInputImage  InputImageType;
+  typedef TOutputImage OutputImageType;
+  typedef TMaskImage   MaskImageType;
 
   /** Image pixel value typedef. */
-  typedef typename InputImageType::PixelType   InputPixelType;
-  typedef typename OutputImageType::PixelType  OutputPixelType;
-  typedef typename MaskImageType::PixelType    MaskPixelType;
+  typedef typename InputImageType::PixelType  InputPixelType;
+  typedef typename OutputImageType::PixelType OutputPixelType;
+  typedef typename MaskImageType::PixelType   MaskPixelType;
 
   /** Image related typedefs. */
   typedef typename InputImageType::Pointer  InputImagePointer;
@@ -88,7 +88,7 @@ public:
   typedef typename MaskImageType::IndexType    MaskIndexType;
   typedef typename MaskImageType::RegionType   MaskImageRegionType;
 
-  typedef typename Superclass::HistogramType                        HistogramType;
+  typedef typename Superclass::HistogramType                                 HistogramType;
   typedef MaximumEntropyThresholdCalculator< HistogramType, InputPixelType > CalculatorType;
 
   /** Image related typedefs. */
@@ -99,14 +99,16 @@ public:
 
 protected:
   MaximumEntropyThresholdImageFilter()
-    {
+  {
     this->SetCalculator( CalculatorType::New() );
-    }
-  ~MaximumEntropyThresholdImageFilter(){};
+  }
+
+  ~MaximumEntropyThresholdImageFilter(){}
 
 private:
   MaximumEntropyThresholdImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                     //purposely not implemented
+
 }; // end of class
 
 } // end namespace itk

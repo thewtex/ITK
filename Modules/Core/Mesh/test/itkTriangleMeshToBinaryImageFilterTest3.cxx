@@ -20,7 +20,8 @@
 #include "itkImageFileWriter.h"
 #include "itkMeshFileReader.h"
 
-int itkTriangleMeshToBinaryImageFilterTest3( int argc, char * argv [] )
+int
+itkTriangleMeshToBinaryImageFilterTest3( int argc, char * argv [] )
 {
 
   if( argc != 12 )
@@ -36,10 +37,10 @@ int itkTriangleMeshToBinaryImageFilterTest3( int argc, char * argv [] )
 
   const unsigned int Dimension = 3;
 
-  typedef itk::Mesh<float, Dimension>           MeshType;
-  typedef itk::MeshFileReader< MeshType >       ReaderType;
+  typedef itk::Mesh<float, Dimension>     MeshType;
+  typedef itk::MeshFileReader< MeshType > ReaderType;
 
-  ReaderType::Pointer  polyDataReader = ReaderType::New();
+  ReaderType::Pointer polyDataReader = ReaderType::New();
 
   polyDataReader->SetFileName(argv[1]);
 
@@ -56,7 +57,7 @@ int itkTriangleMeshToBinaryImageFilterTest3( int argc, char * argv [] )
 
   typedef itk::Image<unsigned char, 3> ImageType;
 
-  typedef itk::TriangleMeshToBinaryImageFilter< MeshType, ImageType >  TriangleImageType;
+  typedef itk::TriangleMeshToBinaryImageFilter< MeshType, ImageType > TriangleImageType;
 
   TriangleImageType::Pointer imageFilter = TriangleImageType::New();
 

@@ -54,7 +54,7 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TLevelSet >
-class LevelSetNeighborhoodExtractor:
+class LevelSetNeighborhoodExtractor :
   public LightProcessObject
 {
 public:
@@ -114,17 +114,24 @@ public:
   /** Set/Get the input narrowband. A narrowband is represented as
    * a VectorContainer of LevelSetNodes. */
   void SetInputNarrowBand(NodeContainer *ptr);
+
   itkGetModifiableObjectMacro(InputNarrowBand, NodeContainer);
 
   /** Get the container of inside points. The inside points are
    * stored in a VectorContainer of LevelSetNodes. */
-  NodeContainerPointer GetInsidePoints()
-  { return m_InsidePoints; }
+  NodeContainerPointer
+  GetInsidePoints()
+  {
+    return m_InsidePoints;
+  }
 
   /** Get the container of outside points. The outside points are
    * stored in a VectorContainer of LevelSetNodes. */
-  NodeContainerPointer GetOutsidePoints(void)
-  { return m_OutsidePoints; }
+  NodeContainerPointer
+  GetOutsidePoints(void)
+  {
+    return m_OutsidePoints;
+  }
 
   /** Locate the level set. This method evokes the level set
    * location algorithm. */
@@ -135,11 +142,17 @@ protected:
   ~LevelSetNeighborhoodExtractor(){}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  typename LevelSetImageType::PixelType GetLargeValue() const
-  { return m_LargeValue; }
+  typename LevelSetImageType::PixelType
+  GetLargeValue() const
+  {
+    return m_LargeValue;
+  }
 
-  const NodeType & GetNodeUsedInCalculation(unsigned int idx) const
-  { return m_NodesUsed[idx]; }
+  const NodeType &
+  GetNodeUsedInCalculation(unsigned int idx) const
+  {
+    return m_NodesUsed[idx];
+  }
 
   virtual void Initialize();
 
@@ -147,8 +160,11 @@ protected:
 
   void GenerateData();
 
-  bool GetLastPointIsInside() const
-  { return m_LastPointIsInside; }
+  bool
+  GetLastPointIsInside() const
+  {
+    return m_LastPointIsInside;
+  }
 
 private:
   LevelSetNeighborhoodExtractor(const Self &); //purposely not implemented

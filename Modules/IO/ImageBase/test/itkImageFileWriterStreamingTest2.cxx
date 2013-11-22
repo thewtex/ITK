@@ -22,44 +22,44 @@
 #include "itkPipelineMonitorImageFilter.h"
 #include "itkTestingComparisonImageFilter.h"
 
+typedef unsigned char           PixelType;
+typedef itk::Image<PixelType,3> ImageType;
 
-typedef unsigned char            PixelType;
-typedef itk::Image<PixelType,3>  ImageType;
+typedef itk::ImageFileReader<ImageType>   ReaderType;
+typedef itk::ImageFileWriter< ImageType > WriterType;
 
-typedef itk::ImageFileReader<ImageType>         ReaderType;
-typedef itk::ImageFileWriter< ImageType >       WriterType;
+bool
+SameImage(std::string output, std::string baseline) {
 
-
-bool SameImage(std::string output, std::string baseline) {
-
-  PixelType intensityTolerance = 0;
+  PixelType    intensityTolerance = 0;
   unsigned int radiusTolerance = 0;
   unsigned int numberOfPixelTolerance = 0;
 
   ReaderType::Pointer testReader = ReaderType::New();
   ReaderType::Pointer baselineReader = ReaderType::New();
+
   testReader->SetFileName(output);
   baselineReader->SetFileName(baseline);
 
   typedef itk::Testing::ComparisonImageFilter<ImageType,ImageType> DiffType;
   DiffType::Pointer diff = DiffType::New();
-  diff->SetValidInput(baselineReader->GetOutput());
-  diff->SetTestInput(testReader->GetOutput());
+  diff->SetValidInput(baselineReader->GetOutput() );
+  diff->SetTestInput(testReader->GetOutput() );
   diff->SetDifferenceThreshold( intensityTolerance );
   diff->SetToleranceRadius( radiusTolerance );
   diff->UpdateLargestPossibleRegion();
 
-   unsigned long status = diff->GetNumberOfPixelsWithDifferences();
+  unsigned long status = diff->GetNumberOfPixelsWithDifferences();
 
-   if (status > numberOfPixelTolerance)
-     return false;
-   return true;
+  if (status > numberOfPixelTolerance)
+    return false;
+  return true;
 }
 
 // This test is designed to improve coverage and test boundary cases
-int itkImageFileWriterStreamingTest2(int argc, char* argv[])
+int
+itkImageFileWriterStreamingTest2(int argc, char* argv[])
 {
-
 
   if( argc < 3 )
     {
@@ -72,7 +72,6 @@ int itkImageFileWriterStreamingTest2(int argc, char* argv[])
 
   //
 
-
   unsigned int numberOfDataPieces = 4;
 
   ReaderType::Pointer reader = ReaderType::New();
@@ -81,17 +80,17 @@ int itkImageFileWriterStreamingTest2(int argc, char* argv[])
 
   typedef itk::PipelineMonitorImageFilter<ImageType> MonitorFilter;
   MonitorFilter::Pointer monitor = MonitorFilter::New();
-  monitor->SetInput(reader->GetOutput());
+  monitor->SetInput(reader->GetOutput() );
 
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName(argv[2]);
-  writer->SetInput(monitor->GetOutput());
+  writer->SetInput(monitor->GetOutput() );
   writer->SetNumberOfStreamDivisions(numberOfDataPieces);
 
-  if (std::string(argv[2]) != writer->GetFileName())
+  if (std::string(argv[2]) != writer->GetFileName() )
     return EXIT_FAILURE;
 
-  if (numberOfDataPieces != writer->GetNumberOfStreamDivisions())
+  if (numberOfDataPieces != writer->GetNumberOfStreamDivisions() )
     return EXIT_FAILURE;
 
   // write the whole image
@@ -107,13 +106,13 @@ int itkImageFileWriterStreamingTest2(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-  if (!monitor->VerifyAllInputCanStream(4))
+  if (!monitor->VerifyAllInputCanStream(4) )
     {
     std::cout << monitor;
     return EXIT_FAILURE;
     }
 
-  if (!SameImage( argv[1], argv[2]))
+  if (!SameImage( argv[1], argv[2]) )
     {
     return EXIT_FAILURE;
     }
@@ -123,8 +122,7 @@ int itkImageFileWriterStreamingTest2(int argc, char* argv[])
   reader->GenerateOutputInformation();
   ImageType::RegionType largestRegion;
   largestRegion = reader->GetOutput()->GetLargestPossibleRegion().GetSize();
-  itk::ImageIORegion  ioregion(3);
-
+  itk::ImageIORegion ioregion(3);
 
   ////////////////////////////////////////////////
   // test 1x1 size
@@ -149,14 +147,13 @@ int itkImageFileWriterStreamingTest2(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-
-  if (!monitor->VerifyAllInputCanStream(1))
+  if (!monitor->VerifyAllInputCanStream(1) )
     {
     std::cout << monitor;
     return EXIT_FAILURE;
     }
 
-  if (!SameImage( argv[1], argv[2]))
+  if (!SameImage( argv[1], argv[2]) )
     return EXIT_FAILURE;
 
   reader->Modified();
@@ -183,16 +180,14 @@ int itkImageFileWriterStreamingTest2(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-
-  if (!monitor->VerifyAllInputCanStream(-1))
+  if (!monitor->VerifyAllInputCanStream(-1) )
     {
     std::cout << monitor;
     return EXIT_FAILURE;
     }
 
-  if (!SameImage( argv[1], argv[2]))
+  if (!SameImage( argv[1], argv[2]) )
     return EXIT_FAILURE;
-
 
   reader->Modified();
   ////////////////////////////////////////////////
@@ -218,15 +213,14 @@ int itkImageFileWriterStreamingTest2(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-  if (!monitor->VerifyAllInputCanStream(-1))
+  if (!monitor->VerifyAllInputCanStream(-1) )
     {
     std::cout << monitor;
     return EXIT_FAILURE;
     }
 
-  if (!SameImage( argv[1], argv[2]))
+  if (!SameImage( argv[1], argv[2]) )
     return EXIT_FAILURE;
-
 
   reader->Modified();
   ////////////////////////////////////////////////
@@ -252,13 +246,13 @@ int itkImageFileWriterStreamingTest2(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-  if (!monitor->VerifyAllInputCanStream(-1))
+  if (!monitor->VerifyAllInputCanStream(-1) )
     {
     std::cout << monitor;
     return EXIT_FAILURE;
     }
 
-  if (!SameImage( argv[1], argv[2]))
+  if (!SameImage( argv[1], argv[2]) )
     {
     return EXIT_FAILURE;
     }
@@ -287,13 +281,13 @@ int itkImageFileWriterStreamingTest2(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-  if (!monitor->VerifyAllInputCanStream(4))
+  if (!monitor->VerifyAllInputCanStream(4) )
     {
     std::cout << monitor;
     return EXIT_FAILURE;
     }
 
-  if (!SameImage( argv[1], argv[2]))
+  if (!SameImage( argv[1], argv[2]) )
     {
     return EXIT_FAILURE;
     }
@@ -325,7 +319,6 @@ int itkImageFileWriterStreamingTest2(int argc, char* argv[])
 
   if (!thrownException)
     return EXIT_FAILURE;
-
 
   reader->Modified();
   thrownException = false;
@@ -361,11 +354,10 @@ int itkImageFileWriterStreamingTest2(int argc, char* argv[])
   ////////////////////////////////////////////////
   // test when regions aren't matching
   ImageType::RegionType halfLargestRegion;
-  halfLargestRegion.SetIndex(largestRegion.GetIndex());
+  halfLargestRegion.SetIndex(largestRegion.GetIndex() );
   halfLargestRegion.SetSize(0, largestRegion.GetSize()[0]/2);
   halfLargestRegion.SetSize(1, largestRegion.GetSize()[1]/2);
   halfLargestRegion.SetSize(2, largestRegion.GetSize()[2]/2);
-
 
   monitor->GetOutput()->SetRequestedRegion(halfLargestRegion);
 
@@ -375,7 +367,6 @@ int itkImageFileWriterStreamingTest2(int argc, char* argv[])
   ioregion.SetSize(0, largestRegion.GetSize()[0]/3);
   ioregion.SetSize(1, largestRegion.GetSize()[1]/3);
   ioregion.SetSize(2, largestRegion.GetSize()[2]/3);
-
 
   writer->SetIORegion(ioregion);
 
@@ -394,16 +385,14 @@ int itkImageFileWriterStreamingTest2(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-   if (!monitor->VerifyAllNoUpdate())
-     {
-     std::cout << monitor;
-     return EXIT_FAILURE;
-     }
+  if (!monitor->VerifyAllNoUpdate() )
+    {
+    std::cout << monitor;
+    return EXIT_FAILURE;
+    }
 
-
-   if (!SameImage( argv[1], argv[2]))
-     return EXIT_FAILURE;
-
+  if (!SameImage( argv[1], argv[2]) )
+    return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
 }

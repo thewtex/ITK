@@ -38,8 +38,7 @@ DisplacementFieldTransformParametersAdaptor<TTransform>
 template<typename TTransform>
 DisplacementFieldTransformParametersAdaptor<TTransform>
 ::~DisplacementFieldTransformParametersAdaptor()
-{
-}
+{}
 
 template<typename TTransform>
 void
@@ -47,6 +46,7 @@ DisplacementFieldTransformParametersAdaptor<TTransform>
 ::SetRequiredSize( const SizeType & size )
 {
   bool isModified = false;
+
   for( SizeValueType d = 0; d < SpaceDimension; d++ )
     {
     if( this->m_RequiredFixedParameters[d] != size[d] )
@@ -69,6 +69,7 @@ DisplacementFieldTransformParametersAdaptor<TTransform>
 ::GetRequiredSize() const
 {
   SizeType size;
+
   for( SizeValueType d = 0; d < SpaceDimension; d++ )
     {
     size[d] = static_cast<SizeValueType>( this->m_RequiredFixedParameters[d] );
@@ -82,6 +83,7 @@ DisplacementFieldTransformParametersAdaptor<TTransform>
 ::SetRequiredOrigin( const PointType & origin )
 {
   bool isModified = false;
+
   for( SizeValueType d = 0; d < SpaceDimension; d++ )
     {
     if( this->m_RequiredFixedParameters[SpaceDimension + d] != origin[d] )
@@ -104,6 +106,7 @@ DisplacementFieldTransformParametersAdaptor<TTransform>
 ::GetRequiredOrigin() const
 {
   PointType origin;
+
   for( SizeValueType d = 0; d < SpaceDimension; d++ )
     {
     origin[d] = this->m_RequiredFixedParameters[SpaceDimension + d];
@@ -117,6 +120,7 @@ DisplacementFieldTransformParametersAdaptor<TTransform>
 ::SetRequiredSpacing( const SpacingType & spacing )
 {
   bool isModified = false;
+
   for( SizeValueType d = 0; d < SpaceDimension; d++ )
     {
     if( this->m_RequiredFixedParameters[2*SpaceDimension + d] != spacing[d] )
@@ -139,6 +143,7 @@ DisplacementFieldTransformParametersAdaptor<TTransform>
 ::GetRequiredSpacing() const
 {
   SpacingType spacing;
+
   for( SizeValueType d = 0; d < SpaceDimension; d++ )
     {
     spacing[d] = this->m_RequiredFixedParameters[2*SpaceDimension + d];
@@ -152,6 +157,7 @@ DisplacementFieldTransformParametersAdaptor<TTransform>
 ::SetRequiredDirection( const DirectionType & direction )
 {
   bool isModified = false;
+
   for( SizeValueType di = 0; di < SpaceDimension; di++ )
     {
     for( SizeValueType dj = 0; dj < SpaceDimension; dj++ )
@@ -177,6 +183,7 @@ DisplacementFieldTransformParametersAdaptor<TTransform>
 ::GetRequiredDirection() const
 {
   DirectionType direction;
+
   for( SizeValueType di = 0; di < SpaceDimension; di++ )
     {
     for( SizeValueType dj = 0; dj < SpaceDimension; dj++ )
@@ -203,9 +210,9 @@ DisplacementFieldTransformParametersAdaptor<TTransform>
     return;
     }
 
-  const SizeType newFieldSize = this->GetRequiredSize();
-  const PointType newFieldOrigin = this->GetRequiredOrigin();
-  const SpacingType newFieldSpacing = this->GetRequiredSpacing();
+  const SizeType      newFieldSize = this->GetRequiredSize();
+  const PointType     newFieldOrigin = this->GetRequiredOrigin();
+  const SpacingType   newFieldSpacing = this->GetRequiredSpacing();
   const DirectionType newFieldDirection = this->GetRequiredDirection();
 
   typedef IdentityTransform<ParametersValueType, SpaceDimension> IdentityTransformType;

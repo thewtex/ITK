@@ -132,7 +132,7 @@ template< typename TImage >
 const typename JointDomainImageToListSampleAdaptor< TImage >::MeasurementVectorType &
 JointDomainImageToListSampleAdaptor< TImage >
 ::GetMeasurementVector(InstanceIdentifier id) const
-{
+  {
   m_TempIndex = this->GetImage()->ComputeIndex(id);
 
   this->GetImage()->TransformIndexToPhysicalPoint(m_TempIndex, m_TempPoint);
@@ -156,11 +156,11 @@ JointDomainImageToListSampleAdaptor< TImage >
   for ( unsigned int i = TImage::ImageDimension; i < MeasurementVectorType::Length; ++i )
     {
     m_TempVector[i] = m_TempRangeVector[i - TImage::ImageDimension]
-                      / m_NormalizationFactors[i];
+      / m_NormalizationFactors[i];
     }
 
   return m_TempVector;
-}
+  }
 } // end of namespace Statistics
 } // end of namespace itk
 

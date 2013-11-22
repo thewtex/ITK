@@ -47,9 +47,10 @@ RegularizedHeavisideStepFunction< TInput, TOutput >
   else
     {
     itkGenericExceptionMacro("ERROR: Epsilon needs to be greater than "
-                               << NumericTraits< RealType >::epsilon() );
+                             << NumericTraits< RealType >::epsilon() );
     }
 }
+
 }
 
 #endif

@@ -47,6 +47,7 @@ GaussianInterpolateImageFunction<TImageType, TCoordRep>
 ::PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
+
   os << indent << "Alpha: " << this->m_Alpha << std::endl;
   os << indent << "Sigma: " << this->m_Sigma << std::endl;
 }
@@ -92,11 +93,11 @@ GaussianInterpolateImageFunction<TImageType, TCoordRep>
       evaluateGradient = true;
       }
     this->ComputeErrorFunctionArray( d, cindex[d], erfArray[d],
-      gerfArray[d], evaluateGradient );
+                                     gerfArray[d], evaluateGradient );
     }
 
-  RealType sum_me = 0.0;
-  RealType sum_m = 0.0;
+  RealType  sum_me = 0.0;
+  RealType  sum_m = 0.0;
   ArrayType dsum_me;
   ArrayType dsum_m;
   ArrayType dw;
@@ -110,11 +111,13 @@ GaussianInterpolateImageFunction<TImageType, TCoordRep>
   for( unsigned int d = 0; d < ImageDimension; d++ )
     {
     int boundingBoxSize = static_cast<int>(
-      this->m_BoundingBoxEnd[d] - this->m_BoundingBoxStart[d] + 0.5 );
+        this->m_BoundingBoxEnd[d] - this->m_BoundingBoxStart[d] + 0.5 );
     int begin = vnl_math_max( 0, static_cast<int>( vcl_floor( cindex[d] -
-      this->m_BoundingBoxStart[d] - this->m_CutoffDistance[d] ) ) );
+                                                              this->m_BoundingBoxStart[d] -
+                                                              this->m_CutoffDistance[d] ) ) );
     int end = vnl_math_min( boundingBoxSize, static_cast<int>( vcl_ceil(
-      cindex[d] - this->m_BoundingBoxStart[d] + this->m_CutoffDistance[d] ) ) );
+                                                                 cindex[d] - this->m_BoundingBoxStart[d] +
+                                                                 this->m_CutoffDistance[d] ) ) );
     region.SetIndex( d, begin );
     region.SetSize( d, end - begin );
     }
@@ -124,7 +127,7 @@ GaussianInterpolateImageFunction<TImageType, TCoordRep>
   for( It.GoToBegin(); !It.IsAtEnd(); ++It )
     {
     unsigned int j = It.GetIndex()[0];
-    RealType w = erfArray[0][j];
+    RealType     w = erfArray[0][j];
     if( grad )
       {
       dw[0] = gerfArray[0][j];
@@ -182,26 +185,26 @@ template<typename TImageType, typename TCoordRep>
 void
 GaussianInterpolateImageFunction<TImageType, TCoordRep>
 ::ComputeErrorFunctionArray( unsigned int dimension, RealType cindex,
-  vnl_vector<RealType> &erfArray, vnl_vector<RealType> &gerfArray,
-  bool evaluateGradient ) const
+                             vnl_vector<RealType> &erfArray, vnl_vector<RealType> &gerfArray,
+                             bool evaluateGradient ) const
 {
   // Determine the range of voxels along the line where to evaluate erf
   int boundingBoxSize = static_cast<int>(
-    this->m_BoundingBoxEnd[dimension] - this->m_BoundingBoxStart[dimension] +
-    0.5 );
+      this->m_BoundingBoxEnd[dimension] - this->m_BoundingBoxStart[dimension] +
+      0.5 );
   int begin = vnl_math_max( 0, static_cast<int>( vcl_floor( cindex -
-    this->m_BoundingBoxStart[dimension] -
-    this->m_CutoffDistance[dimension] ) ) );
+                                                            this->m_BoundingBoxStart[dimension] -
+                                                            this->m_CutoffDistance[dimension] ) ) );
   int end = vnl_math_min( boundingBoxSize, static_cast<int>( vcl_ceil( cindex -
-    this->m_BoundingBoxStart[dimension] +
-    this->m_CutoffDistance[dimension] ) ) );
+                                                                       this->m_BoundingBoxStart[dimension] +
+                                                                       this->m_CutoffDistance[dimension] ) ) );
 
   erfArray.set_size( boundingBoxSize );
   gerfArray.set_size( boundingBoxSize );
 
   // Start at the first voxel
   RealType t = ( this->m_BoundingBoxStart[dimension] - cindex +
-    static_cast<RealType>( begin ) ) * this->m_ScalingFactor[dimension];
+                 static_cast<RealType>( begin ) ) * this->m_ScalingFactor[dimension];
   RealType e_last = vnl_erf( t );
   RealType g_last = 0.0;
   if( evaluateGradient )

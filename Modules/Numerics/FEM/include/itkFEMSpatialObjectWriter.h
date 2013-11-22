@@ -48,12 +48,13 @@ public:
 
 protected:
   FEMSpatialObjectWriter(const Self &); //purposely not implemented
-  void operator=(const Self &);      //purposely not implemented
+  void operator=(const Self &);         //purposely not implemented
 
   std::string m_FileName;
 
   FEMSpatialObjectWriter();
-  virtual ~FEMSpatialObjectWriter() {}
+  virtual
+  ~FEMSpatialObjectWriter() {}
 
 };
 
@@ -64,7 +65,7 @@ FEMSpatialObjectWriter< NDimensions, PixelType, TMeshTraits >
 ::FEMSpatialObjectWriter()
 {
   this->RegisterMetaConverter("FEMObject","FEMObjectSpatialObject",
-                              MetaFEMObjectConverter<NDimensions>::New());
+                              MetaFEMObjectConverter<NDimensions>::New() );
 }
 
 }

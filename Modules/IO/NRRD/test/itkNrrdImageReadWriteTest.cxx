@@ -23,7 +23,8 @@
 
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkNrrdImageReadWriteTest( int ac, char* av[] )
+int
+itkNrrdImageReadWriteTest( int ac, char* av[] )
 {
   if(ac < 2)
     {
@@ -34,7 +35,7 @@ int itkNrrdImageReadWriteTest( int ac, char* av[] )
   typedef float                    PixelType;
   typedef itk::Image<PixelType, 3> myImage;
 
-  typedef itk::ImageFileReader<myImage>  ReaderType;
+  typedef itk::ImageFileReader<myImage> ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 

@@ -16,7 +16,8 @@
  *
  *=========================================================================*/
 
-int itkNeuralNetworksPrintTest(int , char* [])
+int
+itkNeuralNetworksPrintTest(int , char* [])
 {
 
 // itk::BlobSpatialObject<3>::Pointer BlobSpatialObjectObj =

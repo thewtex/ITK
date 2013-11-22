@@ -53,7 +53,6 @@ public:
   typedef typename ImageType::AccessorType      PixelAccessorType;
   typedef unsigned int                          VectorLengthType;
 
-
   /**
    * example usage:
    *  todo
@@ -62,16 +61,17 @@ public:
   template <typename UImageType>
   struct Rebind
     {
-      typedef DefaultVectorPixelAccessorFunctor<UImageType>  Type;
+    typedef DefaultVectorPixelAccessorFunctor<UImageType> Type;
     };
 
-
-  static void SetVectorLength(ImageType *image, VectorLengthType length)
+  static void
+  SetVectorLength(ImageType *image, VectorLengthType length)
   {
     image->SetVectorLength(length);
   }
 
-  static VectorLengthType GetVectorLength(const ImageType *image)
+  static VectorLengthType
+  GetVectorLength(const ImageType *image)
   {
     return image->GetVectorLength();
   }
@@ -80,23 +80,29 @@ public:
    * The type PixelAccessorType is obtained from the ImageType over which the iterators
    * are templated.
    * */
-  inline void SetPixelAccessor(PixelAccessorType & accessor)
+  inline void
+  SetPixelAccessor(PixelAccessorType & accessor)
   {
     m_PixelAccessor = accessor;
   }
 
   /** Set the pointer index to the start of the buffer. */
-  inline void SetBegin(const InternalPixelType *begin)
-  { this->m_Begin = const_cast< InternalPixelType * >( begin ); }
+  inline void
+  SetBegin(const InternalPixelType *begin)
+  {
+    this->m_Begin = const_cast< InternalPixelType * >( begin );
+  }
 
   /** Set output using the value in input */
-  inline void Set(InternalPixelType & output, const ExternalPixelType & input) const
+  inline void
+  Set(InternalPixelType & output, const ExternalPixelType & input) const
   {
     m_PixelAccessor.Set(output, input, ( &output ) - m_Begin);
   }
 
   /** Get the value from input */
-  inline ExternalPixelType Get(const InternalPixelType & input) const
+  inline ExternalPixelType
+  Get(const InternalPixelType & input) const
   {
     return m_PixelAccessor.Get(input, &input  - m_Begin);
   }

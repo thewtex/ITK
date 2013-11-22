@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingImage >
-class HistogramImageToImageMetric:
+class HistogramImageToImageMetric :
   public ImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
@@ -65,9 +65,9 @@ public:
   typedef typename Superclass::MovingImageType            MovingImageType;
   typedef typename Superclass::MovingImageType::PixelType MovingImagePixelType;
   typedef typename Superclass::FixedImageConstPointer
-  FixedImageConstPointerType;
+    FixedImageConstPointerType;
   typedef typename Superclass::MovingImageConstPointer
-  MovingImageConstPointerType;
+    MovingImageConstPointerType;
 
   /** Typedefs for histogram. This should have been defined as
       Histogram<RealType,2> but a bug in VC++7 produced an internal compiler
@@ -162,7 +162,8 @@ protected:
   /** Constructor is protected to ensure that \c New() function is used to
       create instances. */
   HistogramImageToImageMetric();
-  virtual ~HistogramImageToImageMetric() {}
+  virtual
+  ~HistogramImageToImageMetric() {}
 
   /** The histogram size. */
   HistogramSizeType m_HistogramSize;

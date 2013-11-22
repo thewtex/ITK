@@ -50,13 +50,13 @@ namespace itk
 template< typename TInput, // Input image or mesh
           typename TLevelSetContainer >
 class LevelSetEquationAdvectionTerm :
-    public LevelSetEquationTermBase< TInput, TLevelSetContainer >
+  public LevelSetEquationTermBase< TInput, TLevelSetContainer >
 {
 public:
-  typedef LevelSetEquationAdvectionTerm                           Self;
-  typedef SmartPointer< Self >                                    Pointer;
-  typedef SmartPointer< const Self >                              ConstPointer;
-  typedef LevelSetEquationTermBase< TInput, TLevelSetContainer >  Superclass;
+  typedef LevelSetEquationAdvectionTerm                          Self;
+  typedef SmartPointer< Self >                                   Pointer;
+  typedef SmartPointer< const Self >                             ConstPointer;
+  typedef LevelSetEquationTermBase< TInput, TLevelSetContainer > Superclass;
 
   /** Method for creation through object factory */
   itkNewMacro( Self );
@@ -70,38 +70,38 @@ public:
   typedef typename Superclass::InputPixelType     InputPixelType;
   typedef typename Superclass::InputPixelRealType InputPixelRealType;
 
-  typedef typename Superclass::LevelSetContainerType      LevelSetContainerType;
-  typedef typename Superclass::LevelSetContainerPointer   LevelSetContainerPointer;
-  typedef typename Superclass::LevelSetType               LevelSetType;
-  typedef typename Superclass::LevelSetPointer            LevelSetPointer;
-  typedef typename Superclass::LevelSetOutputPixelType    LevelSetOutputPixelType;
-  typedef typename Superclass::LevelSetOutputRealType     LevelSetOutputRealType;
-  typedef typename Superclass::LevelSetInputIndexType     LevelSetInputIndexType;
-  typedef typename Superclass::LevelSetGradientType       LevelSetGradientType;
-  typedef typename Superclass::LevelSetHessianType        LevelSetHessianType;
-  typedef typename Superclass::LevelSetIdentifierType     LevelSetIdentifierType;
-  typedef typename Superclass::LevelSetDataType           LevelSetDataType;
+  typedef typename Superclass::LevelSetContainerType    LevelSetContainerType;
+  typedef typename Superclass::LevelSetContainerPointer LevelSetContainerPointer;
+  typedef typename Superclass::LevelSetType             LevelSetType;
+  typedef typename Superclass::LevelSetPointer          LevelSetPointer;
+  typedef typename Superclass::LevelSetOutputPixelType  LevelSetOutputPixelType;
+  typedef typename Superclass::LevelSetOutputRealType   LevelSetOutputRealType;
+  typedef typename Superclass::LevelSetInputIndexType   LevelSetInputIndexType;
+  typedef typename Superclass::LevelSetGradientType     LevelSetGradientType;
+  typedef typename Superclass::LevelSetHessianType      LevelSetHessianType;
+  typedef typename Superclass::LevelSetIdentifierType   LevelSetIdentifierType;
+  typedef typename Superclass::LevelSetDataType         LevelSetDataType;
 
   typedef typename Superclass::HeavisideType         HeavisideType;
   typedef typename Superclass::HeavisideConstPointer HeavisideConstPointer;
 
   itkStaticConstMacro(ImageDimension, unsigned int, InputImageType::ImageDimension);
 
-  typedef LevelSetGradientType  VectorType;
+  typedef LevelSetGradientType VectorType;
 
   typedef Image< VectorType, itkGetStaticConstMacro(ImageDimension) > AdvectionImageType;
   typedef typename AdvectionImageType::Pointer                        AdvectionImagePointer;
 
-
   void SetAdvectionImage( AdvectionImageType* iImage );
+
   itkGetModifiableObjectMacro(AdvectionImage, AdvectionImageType );
 
   itkSetMacro( DerivativeSigma, LevelSetOutputRealType );
   itkGetMacro( DerivativeSigma, LevelSetOutputRealType );
 
   /** Neighborhood radius type */
-  typedef ZeroFluxNeumannBoundaryCondition< InputImageType > DefaultBoundaryConditionType;
-  typedef typename ConstNeighborhoodIterator< InputImageType >::RadiusType RadiusType;
+  typedef ZeroFluxNeumannBoundaryCondition< InputImageType >                        DefaultBoundaryConditionType;
+  typedef typename ConstNeighborhoodIterator< InputImageType >::RadiusType          RadiusType;
   typedef ConstNeighborhoodIterator< InputImageType, DefaultBoundaryConditionType > NeighborhoodType;
 
   typedef Vector< LevelSetOutputRealType, itkGetStaticConstMacro(ImageDimension) > NeighborhoodScalesType;
@@ -123,7 +123,8 @@ public:
 protected:
   LevelSetEquationAdvectionTerm();
 
-  virtual ~LevelSetEquationAdvectionTerm();
+  virtual
+  ~LevelSetEquationAdvectionTerm();
 
   AdvectionImagePointer m_AdvectionImage;
 
@@ -134,6 +135,7 @@ protected:
   /** Returns the term contribution for a given location iP, i.e.
    *  \f$ \omega_i( p ) \f$. */
   virtual LevelSetOutputRealType Value( const LevelSetInputIndexType& iP );
+
   virtual LevelSetOutputRealType Value( const LevelSetInputIndexType& iP,
                                         const LevelSetDataType& iData );
 
@@ -141,13 +143,14 @@ protected:
 
 private:
   LevelSetEquationAdvectionTerm( const Self& ); // purposely not implemented
-  void operator = ( const Self& ); // purposely not implemented
+  void operator =( const Self& );               // purposely not implemented
 
   LevelSetOutputRealType m_DerivativeSigma;
 
   bool m_AutoGenerateAdvectionImage;
 
   void GenerateAdvectionImage();
+
 };
 
 }

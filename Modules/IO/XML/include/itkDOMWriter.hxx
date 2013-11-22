@@ -38,7 +38,7 @@ DOMWriter<TInput>::DOMWriter() : m_Input( NULL )
   this->m_Logger->AddLogOutput( defout );
   // settings that may be important
   this->m_Logger->SetName( this->GetNameOfClass() );
-  this->m_Logger->SetPriorityLevel( Logger::NOTSET ); // log everything
+  this->m_Logger->SetPriorityLevel( Logger::NOTSET );       // log everything
   this->m_Logger->SetLevelForFlushing( Logger::MUSTFLUSH ); // never flush (MUSTFLUSH actually leads to no flush, a bug in Logger)
   // some other settings
   this->m_Logger->SetTimeStampFormat( Logger::HUMANREADABLE );
@@ -59,9 +59,9 @@ DOMWriter<TInput>::SetInput( const InputType* input )
 template< typename TInput >
 const typename DOMWriter<TInput>::InputType *
 DOMWriter<TInput>::GetInput() const
-{
+  {
   return this->m_Input;
-}
+  }
 
 /**
  * Function called by Update() or end-users to write the input object to a DOM object.

@@ -29,6 +29,7 @@ CostFunctionTemplate<ValueType>
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

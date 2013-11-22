@@ -74,7 +74,7 @@ namespace itk
 
 template< typename TInputImage, typename TOutputImage,
           typename TFunction1, typename TFunction2 >
-class ValuedRegionalExtremaImageFilter:
+class ValuedRegionalExtremaImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -82,7 +82,7 @@ public:
   typedef ValuedRegionalExtremaImageFilter Self;
 
   typedef ImageToImageFilter< TInputImage, TOutputImage >
-  Superclass;
+    Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;

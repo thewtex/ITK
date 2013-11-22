@@ -19,7 +19,6 @@
 #define __itkDicomImageIO_h
 #if !defined( ITK_LEGACY_REMOVE )
 
-
 #include "itkGDCMImageIO.h"
 
 namespace itk
@@ -33,7 +32,7 @@ namespace itk
  * \ingroup ITKDeprecated
  * \ingroup IOFilters
  */
-class DicomImageIO:public GDCMImageIO
+class DicomImageIO : public GDCMImageIO
 {
 public:
   /** Standard class typedefs. */
@@ -58,6 +57,7 @@ protected:
 private:
   DicomImageIO(const Self &);   //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

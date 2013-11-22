@@ -57,7 +57,7 @@ FFTWInverseFFTImageFilter< TInputImage, TOutputImage >
   outputPtr->SetBufferedRegion( outputPtr->GetRequestedRegion() );
   outputPtr->Allocate();
 
-  const InputSizeType inputSize = inputPtr->GetLargestPossibleRegion().GetSize();
+  const InputSizeType  inputSize = inputPtr->GetLargestPossibleRegion().GetSize();
   const OutputSizeType outputSize = outputPtr->GetLargestPossibleRegion().GetSize();
 
   // Figure out sizes.
@@ -81,7 +81,7 @@ FFTWInverseFFTImageFilter< TInputImage, TOutputImage >
   fullToHalfFilter->UpdateLargestPossibleRegion();
 
   typename FFTWProxyType::ComplexType * in =
-    (typename FFTWProxyType::ComplexType *) fullToHalfFilter->GetOutput()->GetBufferPointer();
+    (typename FFTWProxyType::ComplexType *)fullToHalfFilter->GetOutput()->GetBufferPointer();
 
   OutputPixelType * out = outputPtr->GetBufferPointer();
   typename FFTWProxyType::PlanType plan;
@@ -107,7 +107,7 @@ FFTWInverseFFTImageFilter< TInputImage, TOutputImage >
 {
   typedef ImageRegionIterator< OutputImageType > IteratorType;
   unsigned long totalOutputSize = this->GetOutput()->GetRequestedRegion().GetNumberOfPixels();
-  IteratorType it( this->GetOutput(), outputRegionForThread );
+  IteratorType  it( this->GetOutput(), outputRegionForThread );
   while( !it.IsAtEnd() )
     {
     it.Set( it.Value() / totalOutputSize );

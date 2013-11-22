@@ -24,25 +24,25 @@ namespace itk
 {
 template< typename TImage >
 ImageLinearIteratorWithIndex< TImage >
-::ImageLinearIteratorWithIndex():
+::ImageLinearIteratorWithIndex() :
   ImageLinearConstIteratorWithIndex< TImage >()
 {}
 
 template< typename TImage >
 ImageLinearIteratorWithIndex< TImage >
-::ImageLinearIteratorWithIndex(ImageType *ptr, const RegionType & region):
+::ImageLinearIteratorWithIndex(ImageType *ptr, const RegionType & region) :
   ImageLinearConstIteratorWithIndex< TImage >(ptr, region)
 {}
 
 template< typename TImage >
 ImageLinearIteratorWithIndex< TImage >
-::ImageLinearIteratorWithIndex(const ImageIteratorWithIndex< TImage > & it):
+::ImageLinearIteratorWithIndex(const ImageIteratorWithIndex< TImage > & it) :
   ImageLinearConstIteratorWithIndex< TImage >(it)
 {}
 
 template< typename TImage >
 ImageLinearIteratorWithIndex< TImage >
-::ImageLinearIteratorWithIndex(const ImageLinearConstIteratorWithIndex< TImage > & it):
+::ImageLinearIteratorWithIndex(const ImageLinearConstIteratorWithIndex< TImage > & it) :
   ImageLinearConstIteratorWithIndex< TImage >(it)
 {}
 
@@ -54,6 +54,7 @@ ImageLinearIteratorWithIndex< TImage >
   this->ImageLinearConstIteratorWithIndex< TImage >::operator=(it);
   return *this;
 }
+
 } // end namespace itk
 
 #endif

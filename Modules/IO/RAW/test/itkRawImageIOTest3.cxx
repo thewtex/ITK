@@ -21,23 +21,22 @@
 #include "itkImageFileReader.h"
 #include "itkRawImageIO.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkRawImageIOTest3(int argc, char*argv[])
+int
+itkRawImageIOTest3(int argc, char*argv[])
 {
-  typedef itk::Image<unsigned short,2>    ImageType;
-  typedef ImageType::PixelType            PixelType;
+  typedef itk::Image<unsigned short,2> ImageType;
+  typedef ImageType::PixelType         PixelType;
 
   typedef itk::ImageRegionIterator<
-                                  ImageType > ImageIteratorType;
+      ImageType > ImageIteratorType;
 
   typedef itk::ImageRegionConstIterator<
-                                  ImageType > ImageConstIteratorType;
+      ImageType > ImageConstIteratorType;
 
   typedef itk::RawImageIO<PixelType,
                           ImageType::ImageDimension> RawImageIOType;
-
 
   if(argc < 3)
     {
@@ -94,7 +93,6 @@ int itkRawImageIOTest3(int argc, char*argv[])
 
   // Compare pixel by pixel in memory
 
-
   ImageConstIteratorType it( reader->GetOutput(),
                              reader->GetOutput()->GetBufferedRegion() );
 
@@ -119,9 +117,9 @@ int itkRawImageIOTest3(int argc, char*argv[])
     ++ot;
     }
 
-  writer->SetInput(reader->GetOutput());
+  writer->SetInput(reader->GetOutput() );
   writer->SetFileName(argv[2]);
-  writer->SetInput(reader->GetOutput());
+  writer->SetInput(reader->GetOutput() );
   writer->Write();
 
   std::cerr << "Test PASSED ! " << std::endl;

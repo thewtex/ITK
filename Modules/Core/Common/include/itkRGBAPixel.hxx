@@ -31,6 +31,7 @@ RGBAPixel< T >
 ::operator=(const Self & r)
 {
   BaseArray::operator=(r);
+
   return *this;
 }
 
@@ -43,6 +44,7 @@ RGBAPixel< T >
 ::operator=(const ComponentType r[4])
 {
   BaseArray::operator=(r);
+
   return *this;
 }
 
@@ -194,6 +196,7 @@ operator>>(std::istream & is, RGBAPixel< TComponent > & c)
   c.SetAlpha(alpha);
   return is;
 }
+
 } // end namespace itk
 
 #endif

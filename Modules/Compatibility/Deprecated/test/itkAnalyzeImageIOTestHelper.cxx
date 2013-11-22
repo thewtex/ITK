@@ -18,68 +18,69 @@
 
 #include "itkAnalyzeImageIOTest.h"
 
-int WriteAnalyzeTestFiles(const std::string & AugmentName)
+int
+WriteAnalyzeTestFiles(const std::string & AugmentName)
 {
 #include "LittleEndian_hdr.h"
 #include "LittleEndian_img.h"
 #include "BigEndian_hdr.h"
 #include "BigEndian_img.h"
-  std::string LittleEndianHdrName=AugmentName+"LittleEndian.hdr";
+  std::string   LittleEndianHdrName=AugmentName+"LittleEndian.hdr";
   std::ofstream little_hdr(LittleEndianHdrName.c_str(), std::ios::binary | std::ios::out);
-  if(!little_hdr.is_open())
+  if(!little_hdr.is_open() )
     {
     return EXIT_FAILURE;
     }
   //std::cout << LittleEndianHdrName << " written" << std::endl;
-  little_hdr.write(reinterpret_cast<const char *>(LittleEndian_hdr),sizeof(LittleEndian_hdr));
+  little_hdr.write(reinterpret_cast<const char *>(LittleEndian_hdr),sizeof(LittleEndian_hdr) );
   little_hdr.close();
 
   std::string LittleEndianZName(AugmentName);
   LittleEndianZName += "LittleEndianZ.hdr";
-  std::ofstream  littlez_hdr(LittleEndianZName.c_str(), std::ios::binary | std::ios::out);
-  if(!littlez_hdr.is_open())
+  std::ofstream littlez_hdr(LittleEndianZName.c_str(), std::ios::binary | std::ios::out);
+  if(!littlez_hdr.is_open() )
     {
     return EXIT_FAILURE;
     }
-  littlez_hdr.write(reinterpret_cast<const char *>(LittleEndian_hdr),sizeof(LittleEndian_hdr));
+  littlez_hdr.write(reinterpret_cast<const char *>(LittleEndian_hdr),sizeof(LittleEndian_hdr) );
 
-  std::string LittleEndianImgName=AugmentName+"LittleEndian.img";
+  std::string   LittleEndianImgName=AugmentName+"LittleEndian.img";
   std::ofstream little_img(LittleEndianImgName.c_str(), std::ios::binary | std::ios::out);
-  if(!little_img.is_open())
+  if(!little_img.is_open() )
     {
     return EXIT_FAILURE;
     }
   // write out compressed.
-  little_img.write(reinterpret_cast<const char *>(LittleEndian_img),sizeof(LittleEndian_img));
+  little_img.write(reinterpret_cast<const char *>(LittleEndian_img),sizeof(LittleEndian_img) );
   little_img.close();
 
   // write out compressed image
   std::string ImageZFilename(AugmentName);
   ImageZFilename += "LittleEndianZ.img.gz";
-  gzFile  file_p = ::gzopen( ImageZFilename.c_str(), "wb" );
+  gzFile file_p = ::gzopen( ImageZFilename.c_str(), "wb" );
   if( file_p==NULL )
     {
     return EXIT_FAILURE;
     }
   ::gzwrite(file_p,reinterpret_cast<const char *>(LittleEndian_img),
-            sizeof(LittleEndian_img));
+            sizeof(LittleEndian_img) );
   ::gzclose(file_p);
 
-  std::string BigEndianHdrName=AugmentName+"BigEndian.hdr";
+  std::string   BigEndianHdrName=AugmentName+"BigEndian.hdr";
   std::ofstream big_hdr(BigEndianHdrName.c_str(), std::ios::binary | std::ios::out);
-  if(!big_hdr.is_open())
+  if(!big_hdr.is_open() )
     {
     return EXIT_FAILURE;
     }
-  big_hdr.write(reinterpret_cast<const char *>(BigEndian_hdr),sizeof(BigEndian_hdr));
+  big_hdr.write(reinterpret_cast<const char *>(BigEndian_hdr),sizeof(BigEndian_hdr) );
   big_hdr.close();
-  std::string BigEndianImgName=AugmentName+"BigEndian.img";
+  std::string   BigEndianImgName=AugmentName+"BigEndian.img";
   std::ofstream big_img(BigEndianImgName.c_str(), std::ios::binary | std::ios::out);
-  if(!big_img.is_open())
+  if(!big_img.is_open() )
     {
     return EXIT_FAILURE;
     }
-  big_img.write(reinterpret_cast<const char *>(BigEndian_img),sizeof(BigEndian_img));
+  big_img.write(reinterpret_cast<const char *>(BigEndian_img),sizeof(BigEndian_img) );
   big_img.close();
   return EXIT_SUCCESS;
 }

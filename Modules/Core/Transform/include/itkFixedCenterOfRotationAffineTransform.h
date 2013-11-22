@@ -34,7 +34,7 @@ template<
   typename TScalar = double,   // Data type for scalars (e.g. float or double)
   unsigned int NDimensions = 3 >
 // Number of dimensions in the input space
-class FixedCenterOfRotationAffineTransform:
+class FixedCenterOfRotationAffineTransform :
   public ScalableAffineTransform< TScalar, NDimensions >
 {
 public:
@@ -76,26 +76,46 @@ public:
   typedef typename Superclass::OffsetType                OffsetType;
 
   /** Set and Get the center of rotation */
-  void SetCenterOfRotationComponent(const InputPointType & cor)
-  { this->SetCenter(cor); }
-  InputPointType GetCenterOfRotationComponent(void) const
-  { return this->GetCenter(); }
+  void
+  SetCenterOfRotationComponent(const InputPointType & cor)
+  {
+    this->SetCenter(cor);
+  }
+
+  InputPointType
+  GetCenterOfRotationComponent(void) const
+  {
+    return this->GetCenter();
+  }
 
   /** Set the matrix of the transform. The matrix should not include
    *  scale */
-  void SetMatrixComponent(const MatrixType & matrix)
-  { this->SetMatrix(matrix); }
+  void
+  SetMatrixComponent(const MatrixType & matrix)
+  {
+    this->SetMatrix(matrix);
+  }
+
   /** Get matrix of the transform  */
-  const MatrixType & GetMatrixComponent() const
-  { return this->GetMatrix(); }
+  const MatrixType &
+  GetMatrixComponent() const
+  {
+    return this->GetMatrix();
+  }
 
   /** Set offset (origin) of the Transform. */
-  void SetOffsetComponent(const OffsetType & offset)
-  { this->SetTranslation(offset); }
+  void
+  SetOffsetComponent(const OffsetType & offset)
+  {
+    this->SetTranslation(offset);
+  }
 
   /** Get offset of the transform. */
-  const OffsetType & GetOffsetComponent(void) const
-  { return this->GetTranslation(); }
+  const OffsetType &
+  GetOffsetComponent(void) const
+  {
+    return this->GetTranslation();
+  }
 
 protected:
   /** Construct an FixedCenterOfRotationAffineTransform object */
@@ -106,11 +126,13 @@ protected:
   FixedCenterOfRotationAffineTransform();
 
   /** Destroy an FixedCenterOfRotationAffineTransform object   */
-  virtual ~FixedCenterOfRotationAffineTransform();
+  virtual
+  ~FixedCenterOfRotationAffineTransform();
 
 private:
   FixedCenterOfRotationAffineTransform(const Self & other);
   const Self & operator=(const Self &);
+
 }; //class FixedCenterOfRotationAffineTransform
 }  // namespace itk
 

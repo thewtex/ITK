@@ -28,7 +28,7 @@ class MyMembershipFunctionBase : public MembershipFunctionBase< TMeasurementVect
 {
 public:
   /** Standard class typedef. */
-  typedef MyMembershipFunctionBase  Self;
+  typedef MyMembershipFunctionBase Self;
 
   typedef MembershipFunctionBase< TMeasurementVector > Superclass;
 
@@ -43,28 +43,31 @@ public:
   itkNewMacro(Self);
 
   /** Evaluate membership score */
-  double Evaluate(const TMeasurementVector & ) const
-    {
+  double
+  Evaluate(const TMeasurementVector & ) const
+  {
     double score;
+
     score = 1;
     return score;
-    }
+  }
 
 };
 
 }
 }
 }
-int itkMembershipFunctionBaseTest(int, char* [] )
+int
+itkMembershipFunctionBaseTest(int, char* [] )
 {
 
   const unsigned int MeasurementVectorSize = 17;
 
   typedef itk::FixedArray<
-    float, MeasurementVectorSize >  MeasurementVectorType;
+      float, MeasurementVectorSize >  MeasurementVectorType;
 
   typedef itk::Statistics::MembershipFunctionBaseTest::MyMembershipFunctionBase<
-    MeasurementVectorType >   MembershipFunctionBaseType;
+      MeasurementVectorType >   MembershipFunctionBaseType;
 
   MembershipFunctionBaseType::Pointer function = MembershipFunctionBaseType::New();
 
@@ -86,8 +89,10 @@ int itkMembershipFunctionBaseTest(int, char* [] )
   try
     {
     function->SetMeasurementVectorSize( MeasurementVectorSize + 1 );
-    std::cerr << "Exception should have been thrown since we are trying to resize\
-                  non-resizeable measurement vector type " << std::endl;
+    std::cerr <<
+    "Exception should have been thrown since we are trying to resize\
+                  non-resizeable measurement vector type "
+              << std::endl;
     return EXIT_FAILURE;
     }
   catch( itk::ExceptionObject & excp )

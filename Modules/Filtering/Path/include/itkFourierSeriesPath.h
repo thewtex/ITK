@@ -55,7 +55,7 @@ namespace itk
  * \ingroup ITKPath
  */
 template< unsigned int VDimension >
-class FourierSeriesPath:public
+class FourierSeriesPath : public
   ParametricPath< VDimension >
 {
 public:
@@ -94,7 +94,8 @@ public:
                    const VectorType & SinCoefficients);
 
   /** Clear all frequency coefficients (including the "DC" coefficients). */
-  void Clear()
+  void
+  Clear()
   {
     m_CosCoefficients->Initialize();
     m_SinCoefficients->Initialize();
@@ -105,7 +106,8 @@ public:
   itkNewMacro(Self);
 
   /** Needed for Pipelining */
-  virtual void Initialize(void)
+  virtual void
+  Initialize(void)
   {
     this->Clear();
   }

@@ -21,7 +21,6 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
 template <typename TPixel>
@@ -38,7 +37,7 @@ public:
 public:
 
   RawImageReaderAndWriter()
-    {
+  {
     m_Image = ImageType::New();
 
     typename ImageType::RegionType     region;
@@ -72,12 +71,13 @@ public:
 
     m_Error = false;
 
-    }
+  }
 
-  void Write()
-    {
-    typedef itk::ImageFileWriter< ImageType >  WriterType;
-    WriterType::Pointer  writer  = WriterType::New();
+  void
+  Write()
+  {
+    typedef itk::ImageFileWriter< ImageType > WriterType;
+    WriterType::Pointer writer  = WriterType::New();
 
     writer->SetFileName( m_FileName.c_str() );
     writer->SetInput( m_Image );
@@ -86,20 +86,21 @@ public:
     writer->SetImageIO( rawImageIO );
 
     writer->Update();
-    }
+  }
 
-  void Read()
-    {
-    typedef itk::ImageFileReader< ImageType >  ReaderType;
-    ReaderType::Pointer  reader  = ReaderType::New();
+  void
+  Read()
+  {
+    typedef itk::ImageFileReader< ImageType > ReaderType;
+    ReaderType::Pointer reader  = ReaderType::New();
     reader->SetFileName( m_FileName.c_str() );
 
     RawImageIOType::Pointer rawImageIO = RawImageIOType::New();
     reader->SetImageIO( rawImageIO );
 
     unsigned int dim[2] = {16,16};
-    double spacing[2] = {1.0, 1.0};
-    double origin[2] = {0.0,0.0};
+    double       spacing[2] = {1.0, 1.0};
+    double       origin[2] = {0.0,0.0};
 
     for(unsigned int i=0; i<2; i++)
       {
@@ -115,7 +116,6 @@ public:
     reader->Update();
 
     ImageType::ConstPointer image = reader->GetOutput();
-
 
     //
     // Verify the content of the image.
@@ -141,18 +141,19 @@ public:
       ++it2;
       }
 
+  }
 
-    }
-
-  void SetFileName( const std::string & filename )
-    {
+  void
+  SetFileName( const std::string & filename )
+  {
     m_FileName = filename;
-    }
+  }
 
-  bool GetError() const
-    {
+  bool
+  GetError() const
+  {
     return m_Error;
-    }
+  }
 
 private:
 
@@ -164,7 +165,8 @@ private:
 
 };
 
-int itkRawImageIOTest5(int argc, char*argv[])
+int
+itkRawImageIOTest5(int argc, char*argv[])
 {
 
   if(argc < 2)
@@ -174,23 +176,18 @@ int itkRawImageIOTest5(int argc, char*argv[])
     return EXIT_FAILURE;
     }
 
-
   std::string directory = argv[1];
-
 
   //
   // Test the pixel type = "char"
   //
   std::cout << "Testing for pixel type = char " << std::endl;
 
-
-  RawImageReaderAndWriter< char >   tester1;
-
+  RawImageReaderAndWriter< char > tester1;
 
   std::string filename = directory + "/RawImageIOTest5a.raw";
 
   tester1.SetFileName( filename );
-
 
   try
     {
@@ -202,7 +199,6 @@ int itkRawImageIOTest5(int argc, char*argv[])
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
     }
-
 
   try
     {
@@ -226,12 +222,11 @@ int itkRawImageIOTest5(int argc, char*argv[])
   //
   std::cout << "Testing for pixel type = signed char " << std::endl;
 
-  RawImageReaderAndWriter< signed char >   tester2;
+  RawImageReaderAndWriter< signed char > tester2;
 
   filename = directory + "/RawImageIOTest5b.raw";
 
   tester2.SetFileName( filename );
-
 
   try
     {
@@ -243,7 +238,6 @@ int itkRawImageIOTest5(int argc, char*argv[])
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
     }
-
 
   try
     {
@@ -267,13 +261,11 @@ int itkRawImageIOTest5(int argc, char*argv[])
   //
   std::cout << "Testing for pixel type = unsigned char " << std::endl;
 
-  RawImageReaderAndWriter< unsigned char >   tester3;
-
+  RawImageReaderAndWriter< unsigned char > tester3;
 
   filename = directory + "/RawImageIOTest5c.raw";
 
   tester3.SetFileName( filename );
-
 
   try
     {
@@ -285,7 +277,6 @@ int itkRawImageIOTest5(int argc, char*argv[])
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
     }
-
 
   try
     {

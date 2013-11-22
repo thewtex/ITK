@@ -31,10 +31,10 @@ FreeSurferAsciiMeshIOFactory
 ::FreeSurferAsciiMeshIOFactory()
 {
   this->RegisterOverride( "itkMeshIOBase",
-                         "itkFreeSurferAsciiMeshIO",
-                         "Freesurfer Mesh IO",
-                         1,
-                         CreateObjectFunction< FreeSurferAsciiMeshIO >::New() );
+                          "itkFreeSurferAsciiMeshIO",
+                          "Freesurfer Mesh IO",
+                          1,
+                          CreateObjectFunction< FreeSurferAsciiMeshIO >::New() );
 }
 
 FreeSurferAsciiMeshIOFactory
@@ -54,4 +54,5 @@ FreeSurferAsciiMeshIOFactory
 {
   return "FreeSurfer ASCII Mesh IO Factory, allows the loading of FreeSurfer Ascii mesh into insight";
 }
+
 } // end namespace itk

@@ -45,7 +45,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TInputMesh, typename TOutputMesh, typename TSpatialFunction >
-class InteriorExteriorMeshFilter:
+class InteriorExteriorMeshFilter :
   public MeshToMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
@@ -77,9 +77,9 @@ public:
   itkGetModifiableObjectMacro(SpatialFunction, SpatialFunctionType);
 
   typedef DataObjectDecorator< SpatialFunctionType >
-  SpatialFunctionDataObjectType;
+    SpatialFunctionDataObjectType;
   typedef typename SpatialFunctionDataObjectType::Pointer
-  SpatialFunctionDataObjectPointer;
+    SpatialFunctionDataObjectPointer;
 
 protected:
   InteriorExteriorMeshFilter();

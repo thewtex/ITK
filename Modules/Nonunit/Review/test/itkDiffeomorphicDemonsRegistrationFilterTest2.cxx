@@ -22,8 +22,7 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
-namespace{
+namespace {
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 template<typename TRegistration>
@@ -31,23 +30,29 @@ class ShowProgressObject
 {
 public:
   ShowProgressObject(TRegistration* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {
+  {
+    m_Process = o;
+  }
+
+  void
+  ShowProgress()
+  {
     std::cout << "Progress: " << m_Process->GetProgress() << "  ";
     std::cout << "Iter: " << m_Process->GetElapsedIterations() << "  ";
     std::cout << "Metric: "   << m_Process->GetMetric()   << "  ";
     std::cout << "RMSChange: " << m_Process->GetRMSChange() << "  ";
     std::cout << std::endl;
+
     if ( m_Process->GetElapsedIterations() == 150 )
-      { m_Process->StopRegistration(); }
-    }
+          { m_Process->StopRegistration(); }
+  }
+
   typename TRegistration::Pointer m_Process;
 };
 }
 
-
-int itkDiffeomorphicDemonsRegistrationFilterTest2(int argc, char * argv [] )
+int
+itkDiffeomorphicDemonsRegistrationFilterTest2(int argc, char * argv [] )
 {
 
   if( argc < 8 )
@@ -63,23 +68,23 @@ int itkDiffeomorphicDemonsRegistrationFilterTest2(int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-  typedef float                                     PixelType;
-  const unsigned int                                ImageDimension = 2;
+  typedef float PixelType;
+  const unsigned int ImageDimension = 2;
 
-  typedef itk::Image<PixelType,ImageDimension>      ImageType;
-  typedef itk::Vector<float,ImageDimension>         VectorType;
-  typedef itk::Image<VectorType,ImageDimension>     FieldType;
+  typedef itk::Image<PixelType,ImageDimension>  ImageType;
+  typedef itk::Vector<float,ImageDimension>     VectorType;
+  typedef itk::Image<VectorType,ImageDimension> FieldType;
 
-  typedef itk::ImageFileReader< ImageType >         ReaderType;
-  typedef itk::ImageFileWriter< ImageType >         WriterType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
+  typedef itk::ImageFileWriter< ImageType > WriterType;
 
-  ReaderType::Pointer  fixedReader  = ReaderType::New();
-  ReaderType::Pointer  movingReader = ReaderType::New();
+  ReaderType::Pointer fixedReader  = ReaderType::New();
+  ReaderType::Pointer movingReader = ReaderType::New();
 
   fixedReader->SetFileName( argv[1] );
   movingReader->SetFileName( argv[2] );
 
-  WriterType::Pointer  writer       = WriterType::New();
+  WriterType::Pointer writer       = WriterType::New();
 
   writer->SetFileName( argv[3] );
 
@@ -98,7 +103,7 @@ int itkDiffeomorphicDemonsRegistrationFilterTest2(int argc, char * argv [] )
   std::cout << "Run registration and warp moving" << std::endl;
 
   typedef itk::DiffeomorphicDemonsRegistrationFilter<
-    ImageType,ImageType,FieldType>                      RegistrationType;
+      ImageType,ImageType,FieldType>                      RegistrationType;
 
   RegistrationType::Pointer registrator = RegistrationType::New();
 
@@ -109,7 +114,6 @@ int itkDiffeomorphicDemonsRegistrationFilterTest2(int argc, char * argv [] )
   registrator->SetMaximumError( 0.08 );
   registrator->SetMaximumKernelWidth( 10 );
 
-
   const double intensityDifferenceThreshold = atof( argv[3] );
 
   registrator->SetIntensityDifferenceThreshold( intensityDifferenceThreshold );
@@ -117,7 +121,6 @@ int itkDiffeomorphicDemonsRegistrationFilterTest2(int argc, char * argv [] )
   const double maximumUpdateStepLength = atof( argv[4] );
 
   registrator->SetMaximumUpdateStepLength( maximumUpdateStepLength );
-
 
   const int gradientType = atoi( argv[1] );
 
@@ -152,14 +155,12 @@ int itkDiffeomorphicDemonsRegistrationFilterTest2(int argc, char * argv [] )
     registrator->SetUseFirstOrderExp( true );
     }
 
-
   // turn on inplace execution
   registrator->InPlaceOn();
 
-
   FunctionType * fptr;
   fptr = dynamic_cast<FunctionType *>(
-    registrator->GetDifferenceFunction().GetPointer() );
+      registrator->GetDifferenceFunction().GetPointer() );
   fptr->Print( std::cout );
 
   // exercise other member variables
@@ -175,7 +176,7 @@ int itkDiffeomorphicDemonsRegistrationFilterTest2(int argc, char * argv [] )
   registrator->SetStandardDeviations( v );
 
   typedef ShowProgressObject<RegistrationType> ProgressType;
-  ProgressType progressWatch(registrator);
+  ProgressType                                    progressWatch(registrator);
   itk::SimpleMemberCommand<ProgressType>::Pointer command;
   command = itk::SimpleMemberCommand<ProgressType>::New();
   command->SetCallbackFunction(&progressWatch,
@@ -220,6 +221,5 @@ int itkDiffeomorphicDemonsRegistrationFilterTest2(int argc, char * argv [] )
 
   std::cout << "Test passed" << std::endl;
   return EXIT_SUCCESS;
-
 
 }

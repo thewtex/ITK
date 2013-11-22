@@ -34,7 +34,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TMesh >
-class QuadEdgeMeshBoundaryEdgesMeshFunction:
+class QuadEdgeMeshBoundaryEdgesMeshFunction :
   public FunctionBase< TMesh, typename TMesh::EdgeListPointerType >
 {
 public:
@@ -67,7 +67,8 @@ private:
   QuadEdgeMeshBoundaryEdgesMeshFunction(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 };
 }
 

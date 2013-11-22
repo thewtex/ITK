@@ -60,16 +60,16 @@ namespace itk
  * \ingroup ITKPDEDeformableRegistration
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
-class DemonsRegistrationFilter:
+class DemonsRegistrationFilter :
   public PDEDeformableRegistrationFilter< TFixedImage, TMovingImage,
                                           TDisplacementField >
 {
 public:
   /** Standard class typedefs. */
-  typedef DemonsRegistrationFilter                                                        Self;
+  typedef DemonsRegistrationFilter                                                         Self;
   typedef PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField > Superclass;
-  typedef SmartPointer< Self >                                                            Pointer;
-  typedef SmartPointer< const Self >                                                      ConstPointer;
+  typedef SmartPointer< Self >                                                             Pointer;
+  typedef SmartPointer< const Self >                                                       ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -100,7 +100,7 @@ public:
 
   /** FiniteDifferenceFunction type. */
   typedef typename Superclass::FiniteDifferenceFunctionType
-  FiniteDifferenceFunctionType;
+    FiniteDifferenceFunctionType;
 
   /** DemonsRegistrationFilterFunction type. */
   typedef DemonsRegistrationFunction< FixedImageType, MovingImageType,
@@ -143,7 +143,8 @@ protected:
    *
    * \sa ProcessObject::VerifyInputInformation
    */
-  virtual void VerifyInputInformation() {}
+  virtual void
+  VerifyInputInformation() {}
 
 private:
   DemonsRegistrationFilter(const Self &); //purposely not implemented

@@ -46,22 +46,25 @@ public:
   //Intensity function returns pixels of SizeValueType.
   typedef TOutput OutputPixelType;
 
-  HistogramIntensityFunction():
+  HistogramIntensityFunction() :
     m_TotalFrequency(1) {}
 
   ~HistogramIntensityFunction() {}
 
-  inline OutputPixelType operator()(const TInput & A) const
+  inline OutputPixelType
+  operator()(const TInput & A) const
   {
     return static_cast< OutputPixelType >( A );
   }
 
-  void SetTotalFrequency(SizeValueType n)
+  void
+  SetTotalFrequency(SizeValueType n)
   {
     m_TotalFrequency = n;
   }
 
-  SizeValueType GetTotalFrequency() const
+  SizeValueType
+  GetTotalFrequency() const
   {
     return m_TotalFrequency;
   }
@@ -72,7 +75,7 @@ private:
 }
 
 template< typename THistogram, typename TImage=Image< SizeValueType, 3 > >
-class HistogramToIntensityImageFilter:
+class HistogramToIntensityImageFilter :
   public HistogramToImageFilter< THistogram, TImage,
                                  Function::HistogramIntensityFunction< SizeValueType, typename TImage::PixelType > >
 {
@@ -83,8 +86,8 @@ public:
 
   /** Standard "Superclass" typedef. */
   typedef HistogramToImageFilter< THistogram, TImage,
-                                 Function::HistogramIntensityFunction< SizeValueType, typename TImage::PixelType > >
-  Superclass;
+                                  Function::HistogramIntensityFunction< SizeValueType, typename TImage::PixelType > >
+    Superclass;
 
   //typedef typename Function::HistogramIntensityFunction  FunctorType;
   typedef SmartPointer< Self >       Pointer;
@@ -98,11 +101,13 @@ public:
 
 protected:
   HistogramToIntensityImageFilter() {}
-  virtual ~HistogramToIntensityImageFilter() {}
+  virtual
+  ~HistogramToIntensityImageFilter() {}
 
 private:
   HistogramToIntensityImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                  //purposely not implemented
+
 };
 } // end namespace itk
 

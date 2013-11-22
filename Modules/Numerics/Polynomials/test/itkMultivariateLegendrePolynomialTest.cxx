@@ -26,8 +26,8 @@
  *
  */
 
-
-int itkMultivariateLegendrePolynomialTest(int , char* [] )
+int
+itkMultivariateLegendrePolynomialTest(int , char* [] )
 {
 
   typedef itk::MultivariateLegendrePolynomial PolynomialType;
@@ -66,7 +66,7 @@ int itkMultivariateLegendrePolynomialTest(int , char* [] )
     return EXIT_FAILURE;
     }
 
-  PolynomialType::CoefficientArrayType  coefficients(20);
+  PolynomialType::CoefficientArrayType coefficients(20);
 
   std::fill(coefficients.begin(), coefficients.end(), 0.1);
 
@@ -75,12 +75,11 @@ int itkMultivariateLegendrePolynomialTest(int , char* [] )
     polynomial.SetCoefficients( coefficients );
     }
   catch ( ... )
-    {
-    }
+      {}
 
   PolynomialType::SimpleForwardIterator bIter( &polynomial );
   bIter.Begin();
-  while (!bIter.IsAtEnd())
+  while (!bIter.IsAtEnd() )
     {
     bIter.Get();
     ++bIter;

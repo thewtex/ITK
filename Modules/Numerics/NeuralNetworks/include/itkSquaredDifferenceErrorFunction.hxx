@@ -29,15 +29,13 @@ namespace Statistics
 template<typename TMeasurementVector, typename ScalarType>
 SquaredDifferenceErrorFunction<TMeasurementVector,ScalarType>
 ::SquaredDifferenceErrorFunction()
-{
-}
+{}
 
 /** Destructor */
 template<typename TMeasurementVector, typename ScalarType>
 SquaredDifferenceErrorFunction <TMeasurementVector,ScalarType>
 ::~SquaredDifferenceErrorFunction()
-{
-}
+{}
 
 /** Evaluate */
 template<typename TMeasurementVector, typename ScalarType>
@@ -46,7 +44,7 @@ SquaredDifferenceErrorFunction <TMeasurementVector,ScalarType>
 ::Evaluate(const TMeasurementVector& errors)  const
 {
   vnl_vector <ScalarType> temp;
-  temp.set_size(errors.Size());
+  temp.set_size(errors.Size() );
   for(unsigned int i=0; i<errors.Size(); i++)
     temp[i]=errors[i];
 
@@ -64,10 +62,11 @@ SquaredDifferenceErrorFunction <TMeasurementVector,ScalarType>
 {
   //TMeasurementVector diff;
   InternalVectorType diff;
-  diff.SetSize(errors.Size());
+
+  diff.SetSize(errors.Size() );
   for(unsigned int i=0; i<errors.Size(); i++)
     {
-    if ((-0.1 < errors[i]) && (errors[i] < 0.1))
+    if ( (-0.1 < errors[i]) && (errors[i] < 0.1) )
       {
       diff[i]=0;
       }

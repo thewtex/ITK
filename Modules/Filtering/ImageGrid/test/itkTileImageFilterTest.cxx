@@ -20,7 +20,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageSeriesWriter.h"
 
-int itkTileImageFilterTest(int argc, char *argv[] )
+int
+itkTileImageFilterTest(int argc, char *argv[] )
 {
 
   typedef itk::RGBPixel<unsigned char> PixelType;
@@ -47,16 +48,16 @@ int itkTileImageFilterTest(int argc, char *argv[] )
 
   // Tile the input images
   TilerType::Pointer tiler = TilerType::New();
-  int f = 0;
+  int                f = 0;
   for (int i=4; i < argc - 1; i++)
     {
     ImageReaderType::Pointer reader = ImageReaderType::New();
     reader->SetFileName (argv[i]);
     reader->Update();
-    tiler->SetInput(f++,reader->GetOutput());
+    tiler->SetInput(f++,reader->GetOutput() );
     }
   tiler->SetLayout(layout);
-  unsigned char yellow[3] = {255, 255, 127};
+  unsigned char                yellow[3] = {255, 255, 127};
   itk::RGBPixel<unsigned char> fillPixel = yellow;
   tiler->SetDefaultPixelValue(fillPixel);
   tiler->Update();
@@ -70,7 +71,7 @@ int itkTileImageFilterTest(int argc, char *argv[] )
 
   try
     {
-    writer->SetInput(tiler->GetOutput());
+    writer->SetInput(tiler->GetOutput() );
     writer->Update();
     }
   catch( itk::ExceptionObject & excp )

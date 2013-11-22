@@ -56,7 +56,7 @@ namespace itk
  */
 
 class ITKCommon_EXPORT ImageRegionSplitterBase
-  :public Object
+  : public             Object
 {
 public:
   /** Standard class typedefs. */
@@ -75,23 +75,25 @@ public:
    * method returns a number less than or equal to the requested number
    * of pieces. */
   template <unsigned int VImageDimension>
-    unsigned int GetNumberOfSplits(const ImageRegion<VImageDimension> & region,
-                                   unsigned int requestedNumber) const
+  unsigned int
+  GetNumberOfSplits(const ImageRegion<VImageDimension> & region,
+                    unsigned int requestedNumber) const
   {
     return this->GetNumberOfSplitsInternal( VImageDimension,
                                             region.GetIndex().m_Index,
                                             region.GetSize().m_Size,
                                             requestedNumber);
   }
-  inline unsigned int GetNumberOfSplits(const ImageIORegion &region,
-                                        unsigned int requestedNumber) const
+
+  inline unsigned int
+  GetNumberOfSplits(const ImageIORegion &region,
+                    unsigned int requestedNumber) const
   {
     return this->GetNumberOfSplitsInternal( region.GetImageDimension(),
                                             &region.GetIndex()[0],
                                             &region.GetSize()[0],
                                             requestedNumber);
   }
-
 
   /** \brief Get a region definition that represents the ith piece a
    * specified region.
@@ -102,9 +104,10 @@ public:
    * the value of the region is undefined.
    */
   template <unsigned int VImageDimension>
-    unsigned int GetSplit( unsigned int i,
-                           unsigned int numberOfPieces,
-                           ImageRegion<VImageDimension> & region ) const
+  unsigned int
+  GetSplit( unsigned int i,
+            unsigned int numberOfPieces,
+            ImageRegion<VImageDimension> & region ) const
   {
     return this->GetSplitInternal( VImageDimension,
                                    i,
@@ -112,9 +115,11 @@ public:
                                    region.GetModifiableIndex().m_Index,
                                    region.GetModifiableSize().m_Size );
   }
-  unsigned int GetSplit( unsigned int i,
-                         unsigned int numberOfPieces,
-                         ImageIORegion & region ) const
+
+  unsigned int
+  GetSplit( unsigned int i,
+            unsigned int numberOfPieces,
+            ImageIORegion & region ) const
   {
     return this->GetSplitInternal( region.GetImageDimension(),
                                    i,
@@ -147,7 +152,8 @@ protected:
 
 private:
   ImageRegionSplitterBase(const ImageRegionSplitterBase &); //purposely not implemented
-  void operator=(const ImageRegionSplitterBase &);      //purposely not implemented
+  void operator=(const ImageRegionSplitterBase &);          //purposely not implemented
+
 };
 } // end namespace itk
 

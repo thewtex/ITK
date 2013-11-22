@@ -88,8 +88,8 @@ BSplineDeformableTransformInitializer< TTransform, TImage >
     const unsigned int numberOfImagePixels = fixedImageSize[r];
 
     gridSpacing[r] = imageSpacing[r]
-                     * static_cast< double >( numberOfImagePixels )
-                     / static_cast< double >( numberOfGridCells );
+      * static_cast< double >( numberOfImagePixels )
+      / static_cast< double >( numberOfGridCells );
 
     // Shift half image pixel to cover the image support
     const double imageSupportShift = -imageSpacing[r] / 2.0;
@@ -143,6 +143,7 @@ BSplineDeformableTransformInitializer< TTransform, TImage >
   os << "Grid size inside the image " << this->m_GridSizeInsideTheImage << std::endl;
   os << "Number of grid nodes inside the image " << this->m_NumberOfGridNodesInsideTheImage << std::endl;
 }
+
 }  // namespace itk
 
 #endif

@@ -26,8 +26,7 @@ namespace itk
 template< typename TMetric >
 RegistrationParameterScalesFromJacobian< TMetric >
 ::RegistrationParameterScalesFromJacobian()
-{
-}
+{}
 
 /** Compute parameter scales from average jacobian norms.
  *  For each parameter, compute the squared norm of its transform Jacobian,
@@ -90,7 +89,7 @@ RegistrationParameterScalesFromJacobian< TMetric >
   this->ComputeSampleStepScales(step, sampleScales);
 
   const SizeValueType numSamples = this->m_SamplePoints.size();
-  FloatType scaleSum = NumericTraits< FloatType >::Zero;
+  FloatType           scaleSum = NumericTraits< FloatType >::Zero;
 
   // checking each sample point
   for (SizeValueType c=0; c<numSamples; c++)
@@ -110,7 +109,7 @@ template< typename TMetric >
 void
 RegistrationParameterScalesFromJacobian< TMetric >
 ::EstimateLocalStepScales(const ParametersType &step,
-    ScalesType &localStepScales)
+                          ScalesType &localStepScales)
 {
   if ( !this->IsDisplacementFieldTransform() )
     {
@@ -136,7 +135,8 @@ RegistrationParameterScalesFromJacobian< TMetric >
   for (SizeValueType c=0; c<numSamples; c++)
     {
     VirtualPointType &point = this->m_SamplePoints[c];
-    IndexValueType localId = this->m_Metric->ComputeParameterOffsetFromVirtualPoint( point, NumericTraits<SizeValueType>::One);
+    IndexValueType    localId =
+      this->m_Metric->ComputeParameterOffsetFromVirtualPoint( point, NumericTraits<SizeValueType>::One);
     localStepScales[localId] = sampleScales[c];
     }
 
@@ -165,7 +165,7 @@ RegistrationParameterScalesFromJacobian< TMetric >
     const VirtualPointType &point = this->m_SamplePoints[c];
 
     JacobianType jacobian;
-    if (this->GetTransformForward())
+    if (this->GetTransformForward() )
       {
       this->m_Metric->GetMovingTransform()->ComputeJacobianWithRespectToParameters(point, jacobian);
       }

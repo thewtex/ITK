@@ -170,9 +170,11 @@ PlaneSpatialObject< TDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "LowerPoint: " << m_LowerPoint << std::endl;
   os << indent << "UpperPoint: " << m_UpperPoint << std::endl;
 }
+
 } // end namespace itk
 
 #endif

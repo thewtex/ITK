@@ -96,6 +96,7 @@ QuadEdgeMeshEulerOperatorCreateCenterVertexFunction< TMesh, TQEType >::Evaluate(
 
   return ( e->GetLnext() );
 }
+
 } // namespace itk
 
 #endif

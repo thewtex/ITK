@@ -37,25 +37,29 @@ class ComplexToPhase
 public:
   ComplexToPhase() {}
   ~ComplexToPhase() {}
-  bool operator!=(const ComplexToPhase &) const
+  bool
+  operator!=(const ComplexToPhase &) const
   {
     return false;
   }
 
-  bool operator==(const ComplexToPhase & other) const
+  bool
+  operator==(const ComplexToPhase & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return (TOutput)( vcl_atan2( A.imag(), A.real() ) );
   }
+
 };
 }
 
 template< typename TInputImage, typename TOutputImage >
-class ComplexToPhaseImageFilter:
+class ComplexToPhaseImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::ComplexToPhase<
@@ -66,9 +70,9 @@ public:
   /** Standard class typedefs. */
   typedef ComplexToPhaseImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::ComplexToPhase< typename TInputImage::PixelType,
-                              typename TOutputImage::PixelType > > Superclass;
+      TInputImage, TOutputImage,
+      Functor::ComplexToPhase< typename TInputImage::PixelType,
+                               typename TOutputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -93,11 +97,13 @@ public:
 
 protected:
   ComplexToPhaseImageFilter() {}
-  virtual ~ComplexToPhaseImageFilter() {}
+  virtual
+  ~ComplexToPhaseImageFilter() {}
 
 private:
   ComplexToPhaseImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);            //purposely not implemented
+
 };
 } // end namespace itk
 

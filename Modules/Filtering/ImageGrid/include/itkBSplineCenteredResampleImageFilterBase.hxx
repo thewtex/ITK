@@ -54,7 +54,8 @@ BSplineCenteredResampleImageFilterBase< TInputImage, TOutputImage >
 }
 
 template< typename TInputImage, typename TOutputImage >
-void BSplineCenteredResampleImageFilterBase< TInputImage, TOutputImage >
+void
+BSplineCenteredResampleImageFilterBase< TInputImage, TOutputImage >
 ::InitializePyramidSplineFilter(int SplineOrder)
 {
   switch ( SplineOrder )
@@ -235,7 +236,8 @@ void BSplineCenteredResampleImageFilterBase< TInputImage, TOutputImage >
  *     by the Iterator (out).  inTraverseSize is the size of the in vector.
  */
 template< typename TInputImage, typename TOutputImage >
-void BSplineCenteredResampleImageFilterBase< TInputImage, TOutputImage >
+void
+BSplineCenteredResampleImageFilterBase< TInputImage, TOutputImage >
 ::Reduce1DImage(const std::vector< double > & in, OutputImageIterator & out,
                 unsigned int inTraverseSize, ProgressReporter & progress)
 {
@@ -245,7 +247,7 @@ void BSplineCenteredResampleImageFilterBase< TInputImage, TOutputImage >
   SizeValueType outTraverseSize = inTraverseSize / 2;
 
   inTraverseSize = outTraverseSize * 2; // ensures that an even number is used.
-  SizeValueType inModK;  // number for modulus math of in
+  SizeValueType inModK;                 // number for modulus math of in
   inModK = 2L * inTraverseSize;
 
   // TODO:  Need to allocate this once as a scratch variable instead of each
@@ -272,7 +274,7 @@ void BSplineCenteredResampleImageFilterBase< TInputImage, TOutputImage >
           }
         }
       if ( i2 >= (IndexValueType)inTraverseSize ) // originally (i2 > (inTraverseSize - 1)
-                                        // )
+      // )
         {
         i2 = i2 % inModK;
         if ( i2 >= (IndexValueType)inTraverseSize )
@@ -299,14 +301,15 @@ void BSplineCenteredResampleImageFilterBase< TInputImage, TOutputImage >
  *     by the Iterator (out).  inTraverseSize is the size of the in vector.
  */
 template< typename TInputImage, typename TOutputImage >
-void BSplineCenteredResampleImageFilterBase< TInputImage, TOutputImage >
+void
+BSplineCenteredResampleImageFilterBase< TInputImage, TOutputImage >
 ::Expand1DImage(const std::vector< double > & in, OutputImageIterator & out,
                 unsigned int inTraverseSize, ProgressReporter & progress)
 {
   IndexValueType i1, i2;
 
-  IndexValueType          inK;
-  SizeValueType outTraverseSize = inTraverseSize * 2;
+  IndexValueType inK;
+  SizeValueType  outTraverseSize = inTraverseSize * 2;
   //inTraverseSize = outTraverseSize/2;  // ensures that an even number is used.
   IndexValueType inModK; // number for modulus math of in
 
@@ -324,11 +327,11 @@ void BSplineCenteredResampleImageFilterBase< TInputImage, TOutputImage >
       i1 = inK - k / 2L;
       i2 = inK + k / 2L;
       if ( i1 < 0 )
-        {                                                      // provide
-                                                               // correct border
-                                                               // condition
+        {                                                                // provide
+                                                                         // correct border
+                                                                         // condition
         i1 = ( 2L * (IndexValueType)inTraverseSize - 1L - i1 ) % inModK; // pseudo mirror
-                                                               // image
+        // image
         if ( i1 >= (IndexValueType)inTraverseSize )
           {
           i1 = outTraverseSize - i1 - 1L;
@@ -394,6 +397,7 @@ void BSplineCenteredResampleImageFilterBase< TInputImage, TOutputImage >
   // setting m_Position correctly
   out.GoToEndOfLine();
 }
+
 } // namespace itk
 
 #endif

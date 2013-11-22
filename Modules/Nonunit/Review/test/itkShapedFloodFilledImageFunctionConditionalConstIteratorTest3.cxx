@@ -24,7 +24,8 @@
 
 #include "itkShapedFloodFilledImageFunctionConditionalConstIterator.h"
 
-int itkShapedFloodFilledImageFunctionConditionalConstIteratorTest3(int, char * [] )
+int
+itkShapedFloodFilledImageFunctionConditionalConstIteratorTest3(int, char * [] )
 {
   try
     {
@@ -37,9 +38,9 @@ int itkShapedFloodFilledImageFunctionConditionalConstIteratorTest3(int, char * [
 
     typedef itk::BinaryThresholdImageFunction<ImageType> FunctionType;
     typedef itk::FloodFilledImageFunctionConditionalConstIterator<
-      ImageType, FunctionType> FloodFilledIteratorType;
+        ImageType, FunctionType> FloodFilledIteratorType;
     typedef itk::ShapedFloodFilledImageFunctionConditionalConstIterator<
-      ImageType, FunctionType> ShapedFloodFilledIteratorType;
+        ImageType, FunctionType> ShapedFloodFilledIteratorType;
 
     std::vector<IndexType> seedList;
 
@@ -63,14 +64,14 @@ int itkShapedFloodFilledImageFunctionConditionalConstIteratorTest3(int, char * [
       {
       it.SetDirection(dir);
       it.GoToBegin();
-      while (!it.IsAtEnd())
+      while (!it.IsAtEnd() )
         {
-        while (!it.IsAtEndOfLine())
+        while (!it.IsAtEndOfLine() )
           {
           // add a seed
-          if (seedList.empty())
+          if (seedList.empty() )
             {
-            seedList.push_back(it.GetIndex());
+            seedList.push_back(it.GetIndex() );
             }
 
           it.Set(255);
@@ -79,11 +80,11 @@ int itkShapedFloodFilledImageFunctionConditionalConstIteratorTest3(int, char * [
 
         // and jump over every
         it.NextLine();
-        if (!it.IsAtEnd())
+        if (!it.IsAtEnd() )
           {
           it.NextLine();
           }
-        if (!it.IsAtEnd())
+        if (!it.IsAtEnd() )
           {
           it.NextLine();
           }
@@ -95,22 +96,22 @@ int itkShapedFloodFilledImageFunctionConditionalConstIteratorTest3(int, char * [
     function->SetInputImage ( inputImage );
     function->ThresholdAbove ( 1 ); // >= 1
 
-    FloodFilledIteratorType floodIt(inputImage, function, seedList);
+    FloodFilledIteratorType       floodIt(inputImage, function, seedList);
     ShapedFloodFilledIteratorType shapedFloodIt(inputImage, function, seedList);
 
     shapedFloodIt.SetFullyConnected(false); // 4-connected, default
 
     for (unsigned short i = 1; !floodIt.IsAtEnd(); ++floodIt,
-                                                   ++shapedFloodIt,
-                                                   ++i)
+         ++shapedFloodIt,
+         ++i)
       {
-      if (floodIt.GetIndex() != shapedFloodIt.GetIndex())
+      if (floodIt.GetIndex() != shapedFloodIt.GetIndex() )
         {
         return EXIT_FAILURE;
         }
       }
 
-    if (!floodIt.IsAtEnd() || !shapedFloodIt.IsAtEnd())
+    if (!floodIt.IsAtEnd() || !shapedFloodIt.IsAtEnd() )
       {
       return EXIT_FAILURE;
       }

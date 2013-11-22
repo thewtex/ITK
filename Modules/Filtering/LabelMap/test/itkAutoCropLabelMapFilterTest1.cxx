@@ -35,7 +35,8 @@
 
 #include "itkTestingMacros.h"
 
-int itkAutoCropLabelMapFilterTest1( int argc, char * argv [] )
+int
+itkAutoCropLabelMapFilterTest1( int argc, char * argv [] )
 {
 
   if( argc != 6 )
@@ -46,7 +47,7 @@ int itkAutoCropLabelMapFilterTest1( int argc, char * argv [] )
     }
 
   const unsigned int dim = 2;
-  typedef unsigned char   PixelType;
+  typedef unsigned char PixelType;
 
   typedef itk::Image< PixelType, dim > ImageType;
 
@@ -89,13 +90,12 @@ int itkAutoCropLabelMapFilterTest1( int argc, char * argv [] )
 
   TRY_EXPECT_NO_EXCEPTION( writer->Update() );
 
-  typedef ChangeType::IndexType             IndexType;
-  typedef ChangeType::InputImageRegionType  InputImageRegionType;
-
+  typedef ChangeType::IndexType            IndexType;
+  typedef ChangeType::InputImageRegionType InputImageRegionType;
 
   const InputImageRegionType & cropRegion = change->GetRegion();
-  const IndexType & minIndex = cropRegion.GetIndex();
-  const IndexType & maxIndex = cropRegion.GetUpperIndex();
+  const IndexType &            minIndex = cropRegion.GetIndex();
+  const IndexType &            maxIndex = cropRegion.GetUpperIndex();
 
   std::cout << "GetMinIndex() = " << minIndex << std::endl;
   std::cout << "GetMaxIndex() = " << maxIndex << std::endl;

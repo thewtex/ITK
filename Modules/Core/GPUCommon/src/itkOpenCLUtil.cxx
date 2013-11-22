@@ -25,7 +25,8 @@ namespace itk
 //
 // Get the block size based on the desired image dimension
 //
-int OpenCLGetLocalBlockSize(unsigned int ImageDim)
+int
+OpenCLGetLocalBlockSize(unsigned int ImageDim)
 {
   /**
    * OpenCL workgroup (block) size for 1/2/3D - needs to be tuned based on the GPU architecture
@@ -35,18 +36,18 @@ int OpenCLGetLocalBlockSize(unsigned int ImageDim)
    */
   int OPENCL_BLOCK_SIZE[3] = { 256, 16, 4 /*8*/ };
 
-
   if (ImageDim > 3)
-  {
+    {
     itkGenericExceptionMacro("Only ImageDimensions up to 3 are supported");
-  }
+    }
   return OPENCL_BLOCK_SIZE[ImageDim-1];
 }
 
 //
 // Get the devices that are available.
 //
-cl_device_id* OpenCLGetAvailableDevices(cl_platform_id platform, cl_device_type devType, cl_uint* numAvailableDevices)
+cl_device_id*
+OpenCLGetAvailableDevices(cl_platform_id platform, cl_device_type devType, cl_uint* numAvailableDevices)
 {
   cl_device_id* availableDevices = NULL;
   cl_uint       totalNumDevices;
@@ -97,7 +98,8 @@ cl_device_id* OpenCLGetAvailableDevices(cl_platform_id platform, cl_device_type 
 //
 // Get the device that has the maximum FLOPS in the current context
 //
-cl_device_id OpenCLGetMaxFlopsDev(cl_context cxGPUContext)
+cl_device_id
+OpenCLGetMaxFlopsDev(cl_context cxGPUContext)
 {
   size_t        szParmDataBytes;
   cl_device_id* cdDevices;
@@ -129,7 +131,8 @@ cl_device_id OpenCLGetMaxFlopsDev(cl_context cxGPUContext)
     {
     // CL_DEVICE_MAX_COMPUTE_UNITS
     //cl_uint compute_units;
-    clGetDeviceInfo(cdDevices[current_device], CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(compute_units), &compute_units, NULL);
+    clGetDeviceInfo(cdDevices[current_device], CL_DEVICE_MAX_COMPUTE_UNITS, sizeof(compute_units), &compute_units,
+                    NULL);
 
     // CL_DEVICE_MAX_CLOCK_FREQUENCY
     //cl_uint clock_frequency;
@@ -153,7 +156,8 @@ cl_device_id OpenCLGetMaxFlopsDev(cl_context cxGPUContext)
 //
 // Print device name & info
 //
-void OpenCLPrintDeviceInfo(cl_device_id device, bool verbose)
+void
+OpenCLPrintDeviceInfo(cl_device_id device, bool verbose)
 {
   char device_string[1024];
 
@@ -162,14 +166,15 @@ void OpenCLPrintDeviceInfo(cl_device_id device, bool verbose)
 
   size_t worksize[3];
   clGetDeviceInfo(device,CL_DEVICE_MAX_WORK_ITEM_SIZES,sizeof(worksize),&worksize,NULL);
-  std::cout << "Maximum Work Item Sizes : { " << worksize[0] << ", " << worksize[1] << ", " << worksize[2] << " }" << std::endl;
+  std::cout << "Maximum Work Item Sizes : { " << worksize[0] << ", " << worksize[1] << ", " << worksize[2] << " }" <<
+    std::endl;
 
   size_t maxWorkgroupSize;
   clGetDeviceInfo(device,CL_DEVICE_MAX_WORK_GROUP_SIZE,sizeof(maxWorkgroupSize),&maxWorkgroupSize,NULL);
   std::cout << "Maximum Work Group Size : " << maxWorkgroupSize << std::endl;
 
   if (verbose)
-  {
+    {
     cl_uint mem_align;
     clGetDeviceInfo(device, CL_DEVICE_MEM_BASE_ADDR_ALIGN, sizeof(mem_align), &mem_align, NULL);
     std::cout << "Alignment in bits of the base address : " << mem_align << std::endl;
@@ -182,13 +187,14 @@ void OpenCLPrintDeviceInfo(cl_device_id device, bool verbose)
     clGetDeviceInfo(device, CL_DEVICE_EXTENSIONS, sizeof(device_extensions), &device_extensions, NULL);
     printf("%s\n", device_extensions);
 
-  }
+    }
 }
 
 //
 // Find the OpenCL platform that matches the "name"
 //
-cl_platform_id OpenCLSelectPlatform(const char* name)
+cl_platform_id
+OpenCLSelectPlatform(const char* name)
 {
   char            chBuffer[1024];
   cl_uint         num_platforms;
@@ -222,10 +228,10 @@ cl_platform_id OpenCLSelectPlatform(const char* name)
           {
           clSelectedPlatformID = clPlatformIDs[0];         // default
 
-  // debug
-  ciErrNum = clGetPlatformInfo (clPlatformIDs[0], CL_PLATFORM_NAME, 1024, &chBuffer, NULL);
-  std::cout << "Platform " << " : " << chBuffer << std::endl;
-  //
+          // debug
+          ciErrNum = clGetPlatformInfo (clPlatformIDs[0], CL_PLATFORM_NAME, 1024, &chBuffer, NULL);
+          std::cout << "Platform " << " : " << chBuffer << std::endl;
+          //
           }
 
         if(num_platforms > 1)
@@ -257,7 +263,8 @@ cl_platform_id OpenCLSelectPlatform(const char* name)
   return clSelectedPlatformID;
 }
 
-void OpenCLCheckError(cl_int error, const char* filename, int lineno, const char* location)
+void
+OpenCLCheckError(cl_int error, const char* filename, int lineno, const char* location)
 {
   if(error != CL_SUCCESS)
     {
@@ -326,27 +333,28 @@ void OpenCLCheckError(cl_int error, const char* filename, int lineno, const char
       "CL_INVALID_BUFFER_SIZE",
       "CL_INVALID_MIP_LEVEL",
       "CL_INVALID_GLOBAL_WORK_SIZE",
-    };
+      };
     // print error message
-    const int errorCount = sizeof(errorString) / sizeof(errorString[0]);
-    const int index = -error;
+    const int          errorCount = sizeof(errorString) / sizeof(errorString[0]);
+    const int          index = -error;
     std::ostringstream errorMsg;
 
     if(index >= 0 && index < errorCount)
-    {
+      {
       errorMsg << "OpenCL Error : " << errorString[index] << std::endl;
-    }
+      }
     else
-    {
+      {
       errorMsg << "OpenCL Error : Unspecified Error" << std::endl;
-    }
+      }
     ::itk::ExceptionObject e_(filename, lineno, errorMsg.str().c_str(), location);
     throw e_;
     }
 }
 
 /** Check if OpenCL-enabled GPU is present. */
-bool IsGPUAvailable()
+bool
+IsGPUAvailable()
 {
   cl_platform_id platformId = OpenCLSelectPlatform("NVIDIA");
 
@@ -363,9 +371,11 @@ bool IsGPUAvailable()
   return true;
 }
 
-std::string GetTypename(const std::type_info& intype)
+std::string
+GetTypename(const std::type_info& intype)
 {
   std::string typestr;
+
   if ( intype == typeid ( unsigned char ) ||
        intype == typeid ( itk::Vector< unsigned char, 2 > ) ||
        intype == typeid ( itk::Vector< unsigned char, 3 > ) )
@@ -428,39 +438,45 @@ std::string GetTypename(const std::type_info& intype)
     }
   else
     {
-      itkGenericExceptionMacro("Unknown type: " << intype.name());
+    itkGenericExceptionMacro("Unknown type: " << intype.name() );
     }
   return typestr;
 }
 
 /** Get Typename in String if a valid type */
-bool GetValidTypename(const std::type_info& intype, const std::vector<std::string>& validtypes, std::string& retTypeName)
+bool
+GetValidTypename(const std::type_info& intype, const std::vector<std::string>& validtypes, std::string& retTypeName)
 {
-  std::string typestr = GetTypename(intype);
-  bool isValid = false;
+  std::string                              typestr = GetTypename(intype);
+  bool                                     isValid = false;
   std::vector<std::string>::const_iterator validPos;
+
   validPos = std::find(validtypes.begin(), validtypes.end(), typestr);
-  if (validPos != validtypes.end())
+  if (validPos != validtypes.end() )
     {
-      isValid = true;
-      retTypeName = *validPos;
+    isValid = true;
+    retTypeName = *validPos;
     }
 
   return isValid;
 }
 
 /** Get 64-bit pragma */
-std::string Get64BitPragma()
+std::string
+Get64BitPragma()
 {
   std::ostringstream msg;
+
   msg << "#pragma OPENCL EXTENSION cl_khr_fp64 : enable\n";
   msg << "#pragma OPENCL EXTENSION cl_amd_fp64 : enable\n";
   return msg.str();
 }
 
-void GetTypenameInString( const std::type_info& intype, std::ostringstream& ret )
+void
+GetTypenameInString( const std::type_info& intype, std::ostringstream& ret )
 {
   std::string typestr = GetTypename(intype);
+
   ret << typestr << "\n";
   if ( typestr == "double" )
     {
@@ -469,7 +485,8 @@ void GetTypenameInString( const std::type_info& intype, std::ostringstream& ret 
     }
 }
 
-int GetPixelDimension( const std::type_info& intype )
+int
+GetPixelDimension( const std::type_info& intype )
 {
   if ( intype == typeid ( unsigned char ) ||
        intype == typeid ( char ) ||

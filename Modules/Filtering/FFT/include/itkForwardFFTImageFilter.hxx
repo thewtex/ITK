@@ -30,36 +30,42 @@ namespace itk
 
 template< typename TSelfPointer, typename TInputImage, typename TOutputImage, typename TPixel >
 struct DispatchFFTW_Forward_New
-{
-  static TSelfPointer Apply()
-    {
-      return VnlForwardFFTImageFilter< TInputImage, TOutputImage >
-        ::New().GetPointer();
-    }
-};
+  {
+  static TSelfPointer
+  Apply()
+  {
+    return VnlForwardFFTImageFilter< TInputImage, TOutputImage >
+           ::New().GetPointer();
+  }
+
+  };
 
 #ifdef ITK_USE_FFTWD
 template< typename TSelfPointer, typename TInputImage, typename TOutputImage >
 struct DispatchFFTW_Forward_New< TSelfPointer, TInputImage, TOutputImage, double >
-{
-  static TSelfPointer Apply()
-    {
-      return FFTWForwardFFTImageFilter< TInputImage, TOutputImage >
-        ::New().GetPointer();
-    }
-};
+  {
+  static TSelfPointer
+  Apply()
+  {
+    return FFTWForwardFFTImageFilter< TInputImage, TOutputImage >
+           ::New().GetPointer();
+  }
+
+  };
 #endif
 
 #ifdef ITK_USE_FFTWF
 template< typename TSelfPointer, typename TInputImage, typename TOutputImage >
 struct DispatchFFTW_Forward_New< TSelfPointer, TInputImage, TOutputImage, float >
-{
-  static TSelfPointer Apply()
-    {
-      return FFTWForwardFFTImageFilter< TInputImage, TOutputImage >
-        ::New().GetPointer();
-    }
-};
+  {
+  static TSelfPointer
+  Apply()
+  {
+    return FFTWForwardFFTImageFilter< TInputImage, TOutputImage >
+           ::New().GetPointer();
+  }
+
+  };
 #endif
 
 template< typename TInputImage, typename TOutputImage >
@@ -105,7 +111,9 @@ ForwardFFTImageFilter< TInputImage, TOutputImage >
 ::EnlargeOutputRequestedRegion(DataObject *output)
 {
   Superclass::EnlargeOutputRequestedRegion(output);
+
   output->SetRequestedRegionToLargestPossibleRegion();
 }
+
 }
 #endif

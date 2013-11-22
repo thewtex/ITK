@@ -40,11 +40,28 @@ public:
   }
 
   ~IntensityLinearTransform() {}
-  void SetFactor(RealType a) { m_Factor = a; }
-  void SetOffset(RealType b) { m_Offset = b; }
-  void SetMinimum(TOutput min) { m_Minimum = min; }
-  void SetMaximum(TOutput max) { m_Maximum = max; }
-  bool operator!=(const IntensityLinearTransform & other) const
+  void
+  SetFactor(RealType a) {
+    m_Factor = a;
+  }
+
+  void
+  SetOffset(RealType b) {
+    m_Offset = b;
+  }
+
+  void
+  SetMinimum(TOutput min) {
+    m_Minimum = min;
+  }
+
+  void
+  SetMaximum(TOutput max) {
+    m_Maximum = max;
+  }
+
+  bool
+  operator!=(const IntensityLinearTransform & other) const
   {
     if ( m_Factor != other.m_Factor
          || m_Offset != other.m_Offset
@@ -56,12 +73,14 @@ public:
     return false;
   }
 
-  bool operator==(const IntensityLinearTransform & other) const
+  bool
+  operator==(const IntensityLinearTransform & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & x) const
+  inline TOutput
+  operator()(const TInput & x) const
   {
     RealType value  = static_cast< RealType >( x ) * m_Factor + m_Offset;
     TOutput  result = static_cast< TOutput >( value );
@@ -118,7 +137,7 @@ private:
  * \endwiki
  */
 template< typename  TInputImage, typename  TOutputImage = TInputImage >
-class RescaleIntensityImageFilter:
+class RescaleIntensityImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::IntensityLinearTransform<
@@ -129,10 +148,10 @@ public:
   /** Standard class typedefs. */
   typedef RescaleIntensityImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::IntensityLinearTransform<
-      typename TInputImage::PixelType,
-      typename TOutputImage::PixelType > >  Superclass;
+      TInputImage, TOutputImage,
+      Functor::IntensityLinearTransform<
+        typename TInputImage::PixelType,
+        typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -185,7 +204,8 @@ public:
 
 protected:
   RescaleIntensityImageFilter();
-  virtual ~RescaleIntensityImageFilter() {}
+  virtual
+  ~RescaleIntensityImageFilter() {}
 
 private:
   RescaleIntensityImageFilter(const Self &); //purposely not implemented

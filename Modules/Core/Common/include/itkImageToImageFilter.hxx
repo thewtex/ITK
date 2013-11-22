@@ -38,7 +38,7 @@ namespace itk
 template< typename TInputImage, typename TOutputImage >
 ImageToImageFilter< TInputImage, TOutputImage >
 ::ImageToImageFilter() : m_CoordinateTolerance(1.0e-6),
-                         m_DirectionTolerance(1.0e-6)
+  m_DirectionTolerance(1.0e-6)
 {
   // Modify superclass default values, can be overridden by subclasses
   this->SetNumberOfRequiredInputs(1);
@@ -85,9 +85,9 @@ template< typename TInputImage, typename TOutputImage >
 const typename ImageToImageFilter< TInputImage, TOutputImage >::InputImageType *
 ImageToImageFilter< TInputImage, TOutputImage >
 ::GetInput(void) const
-{
+  {
   return itkDynamicCastInDebugMode< const TInputImage * >( this->GetPrimaryInput() );
-}
+  }
 
 /**
  *
@@ -96,7 +96,7 @@ template< typename TInputImage, typename TOutputImage >
 const typename ImageToImageFilter< TInputImage, TOutputImage >::InputImageType *
 ImageToImageFilter< TInputImage, TOutputImage >
 ::GetInput(unsigned int idx) const
-{
+  {
   const TInputImage *in = dynamic_cast< const TInputImage * >
     ( this->ProcessObject::GetInput(idx) );
 
@@ -105,7 +105,7 @@ ImageToImageFilter< TInputImage, TOutputImage >
     itkWarningMacro (<< "Unable to convert input number " << idx << " to type " <<  typeid( InputImageType ).name () );
     }
   return in;
-}
+  }
 
 //-----------------------------------------------------------------------
 //
@@ -163,6 +163,7 @@ ImageToImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "CoordinateTolerance: "
      << this->m_CoordinateTolerance << std::endl;
   os << indent << "DirectionTolerance: "
@@ -177,7 +178,7 @@ ImageToImageFilter< TInputImage, TOutputImage >
 
   typedef ImageBase< InputImageDimension > ImageBaseType;
 
-  ImageBaseType *inputPtr1 = 0;
+  ImageBaseType *         inputPtr1 = 0;
   InputDataObjectIterator it(this);
 
   for(; !it.IsAtEnd(); ++it )
@@ -194,7 +195,6 @@ ImageToImageFilter< TInputImage, TOutputImage >
       break;
       }
     }
-
 
   for (; !it.IsAtEnd(); ++it )
     {
@@ -215,7 +215,8 @@ ImageToImageFilter< TInputImage, TOutputImage >
 
       if ( !inputPtr1->GetOrigin().GetVnlVector().is_equal(inputPtrN->GetOrigin().GetVnlVector(), coordinateTol) ||
            !inputPtr1->GetSpacing().GetVnlVector().is_equal(inputPtrN->GetSpacing().GetVnlVector(), coordinateTol) ||
-           !inputPtr1->GetDirection().GetVnlMatrix().as_ref().is_equal(inputPtrN->GetDirection().GetVnlMatrix(), this->m_DirectionTolerance) )
+           !inputPtr1->GetDirection().GetVnlMatrix().as_ref().is_equal(inputPtrN->GetDirection().GetVnlMatrix(),
+                                                                       this->m_DirectionTolerance) )
         {
         std::ostringstream originString, spacingString, directionString;
         if ( !inputPtr1->GetOrigin().GetVnlVector().is_equal(inputPtrN->GetOrigin().GetVnlVector(), coordinateTol) )
@@ -234,7 +235,8 @@ ImageToImageFilter< TInputImage, TOutputImage >
                         << ", InputImage" << it.GetName() << " Spacing: " << inputPtrN->GetSpacing() << std::endl;
           spacingString << "\tTolerance: " << coordinateTol << std::endl;
           }
-        if ( !inputPtr1->GetDirection().GetVnlMatrix().as_ref().is_equal(inputPtrN->GetDirection().GetVnlMatrix(), this->m_DirectionTolerance) )
+        if ( !inputPtr1->GetDirection().GetVnlMatrix().as_ref().is_equal(inputPtrN->GetDirection().GetVnlMatrix(),
+                                                                         this->m_DirectionTolerance) )
           {
           directionString.setf( std::ios::scientific );
           directionString.precision( 7 );
@@ -287,6 +289,7 @@ ImageToImageFilter< TInputImage, TOutputImage >
   // Forward to the protected method in the superclass
   this->ProcessObject::PopFrontInput();
 }
+
 } // end namespace itk
 
 #endif

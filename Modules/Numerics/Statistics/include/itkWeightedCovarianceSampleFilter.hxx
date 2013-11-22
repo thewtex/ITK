@@ -43,6 +43,7 @@ WeightedCovarianceSampleFilter< TSample >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   // m_Weights
   os << indent << "Weights: " << this->GetWeightsInput() << std::endl;
   // m_WeightingFunction
@@ -104,9 +105,9 @@ WeightedCovarianceSampleFilter< TSample >
 
   // if weighting function is specifed, use it to compute the mean
   const InputWeightingFunctionObjectType *functionObject = this->GetWeightingFunctionInput();
-  const WeightingFunctionType *weightFunction = functionObject->Get();
+  const WeightingFunctionType *           weightFunction = functionObject->Get();
 
-  typedef WeightedMeanSampleFilter< TSample >  WeightedMeanSampleFilterType;
+  typedef WeightedMeanSampleFilter< TSample > WeightedMeanSampleFilterType;
   typename WeightedMeanSampleFilterType::Pointer meanFilter = WeightedMeanSampleFilterType::New();
 
   meanFilter->SetInput( input );
@@ -123,7 +124,6 @@ WeightedCovarianceSampleFilter< TSample >
   double weight;
   double totalWeight = 0.0;
   double sumSquaredWeight = 0.0;
-
 
   decoratedMeanOutput->Set( mean );
 
@@ -200,9 +200,9 @@ WeightedCovarianceSampleFilter< TSample >
   output.Fill(0.0);
 
   const InputWeightArrayObjectType *weightArrayObject = this->GetWeightsInput();
-  const WeightArrayType weightArray = weightArrayObject->Get();
+  const WeightArrayType             weightArray = weightArrayObject->Get();
 
-  typedef WeightedMeanSampleFilter< TSample >  WeightedMeanSampleFilterType;
+  typedef WeightedMeanSampleFilter< TSample > WeightedMeanSampleFilterType;
   typename WeightedMeanSampleFilterType::Pointer meanFilter = WeightedMeanSampleFilterType::New();
 
   meanFilter->SetInput( input );
@@ -275,6 +275,7 @@ WeightedCovarianceSampleFilter< TSample >
 
   decoratedOutput->Set(output);
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

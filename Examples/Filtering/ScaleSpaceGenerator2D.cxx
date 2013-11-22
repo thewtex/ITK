@@ -24,7 +24,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkLaplacianRecursiveGaussianImageFilter.h"
@@ -32,7 +31,8 @@
 #include <stdio.h>
 #include <iomanip>
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -41,18 +41,15 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   typedef float                            InputPixelType;
   typedef float                            OutputPixelType;
   typedef itk::Image< InputPixelType,  2 > InputImageType;
   typedef itk::Image< OutputPixelType, 2 > OutputImageType;
 
-
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
 
   typedef itk::LaplacianRecursiveGaussianImageFilter<
-                        InputImageType, OutputImageType >  FilterType;
-
+      InputImageType, OutputImageType >  FilterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
@@ -63,13 +60,11 @@ int main( int argc, char * argv[] )
 
   laplacian->SetInput( reader->GetOutput() );
 
-
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   WriterType::Pointer writer = WriterType::New();
 
   writer->SetInput( laplacian->GetOutput() );
-
 
   //  Software Guide : BeginLatex
   //
@@ -78,7 +73,6 @@ int main( int argc, char * argv[] )
   //  of the slice corresponding to that scale value.
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   int numberOfSlices = atoi(argv[3]);
@@ -97,7 +91,6 @@ int main( int argc, char * argv[] )
     }
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The set of images can now be loaded in a Viewer, such as VolView or
@@ -107,7 +100,6 @@ int main( int argc, char * argv[] )
   //  these features as edges in the original image.
   //
   //  Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

@@ -37,7 +37,8 @@
 // even though the image and it's permuted counterpart are situated in physical
 // domain precisely the same way.
 
-int itkBSplineTransformInitializerTest2( int argc, char * argv[] )
+int
+itkBSplineTransformInitializerTest2( int argc, char * argv[] )
 {
 
   if( argc < 2 )
@@ -47,12 +48,12 @@ int itkBSplineTransformInitializerTest2( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const     unsigned int   ImageDimension = 2;
+  const     unsigned int ImageDimension = 2;
 
-  typedef   unsigned char                             PixelType;
-  typedef   itk::Image< PixelType, ImageDimension >   FixedImageType;
+  typedef   unsigned char                           PixelType;
+  typedef   itk::Image< PixelType, ImageDimension > FixedImageType;
 
-  typedef   itk::ImageFileReader< FixedImageType  >   FixedReaderType;
+  typedef   itk::ImageFileReader< FixedImageType  > FixedReaderType;
   FixedReaderType::Pointer fixedReader = FixedReaderType::New();
   fixedReader->SetFileName( argv[1] );
 
@@ -77,15 +78,15 @@ int itkBSplineTransformInitializerTest2( int argc, char * argv[] )
   typedef double CoordinateRepType;
 
   typedef itk::BSplineTransform<
-                            CoordinateRepType,
-                            SpaceDimension,
-                            SplineOrder >     TransformType;
+      CoordinateRepType,
+      SpaceDimension,
+      SplineOrder >     TransformType;
 
   TransformType::Pointer bsplineTransform = TransformType::New();
 
   typedef itk::BSplineTransformInitializer<
-                  TransformType,
-                  FixedImageType >      InitializerType;
+      TransformType,
+      FixedImageType >      InitializerType;
 
   InitializerType::Pointer transformInitializer = InitializerType::New();
 
@@ -122,7 +123,7 @@ int itkBSplineTransformInitializerTest2( int argc, char * argv[] )
   // be the same.
 
   typedef itk::PermuteAxesImageFilter<FixedImageType> PermuterType;
-  PermuterType::Pointer permuter = PermuterType::New();
+  PermuterType::Pointer               permuter = PermuterType::New();
   PermuterType::PermuteOrderArrayType array;
 
   array[0] = 1;
@@ -132,7 +133,7 @@ int itkBSplineTransformInitializerTest2( int argc, char * argv[] )
   permuter->SetOrder( array );
   permuter->Update();
 
-  TransformType::Pointer bsplineTransform2 = TransformType::New();
+  TransformType::Pointer   bsplineTransform2 = TransformType::New();
   InitializerType::Pointer transformInitializer2 = InitializerType::New();
 
   transformInitializer2->SetTransform( bsplineTransform2 );
@@ -158,7 +159,7 @@ int itkBSplineTransformInitializerTest2( int argc, char * argv[] )
   std::vector<FixedImageType::PointType>::const_iterator it;
   std::vector<FixedImageType::PointType>::const_iterator it2;
   for( it = controlPointLocations.begin(), it2 = controlPointLocations2.begin();
-    it != controlPointLocations.end(); ++it, ++it2 )
+       it != controlPointLocations.end(); ++it, ++it2 )
     {
     if( *it != *it2 )
       {

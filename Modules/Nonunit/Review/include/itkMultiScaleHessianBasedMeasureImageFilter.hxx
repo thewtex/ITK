@@ -267,7 +267,8 @@ MultiScaleHessianBasedMeasureImageFilter
   typename ScalesImageType::Pointer scalesImage = static_cast< ScalesImageType * >( this->ProcessObject::GetOutput(1) );
   ImageRegionIterator< ScalesImageType > osit;
 
-  typename HessianImageType::Pointer hessianImage = static_cast< HessianImageType * >( this->ProcessObject::GetOutput(2) );
+  typename HessianImageType::Pointer hessianImage =
+    static_cast< HessianImageType * >( this->ProcessObject::GetOutput(2) );
   ImageRegionIterator< HessianImageType > ohit;
 
   oit.GoToBegin();
@@ -388,9 +389,9 @@ typename MultiScaleHessianBasedMeasureImageFilter< TInputImage, THessianImage, T
 MultiScaleHessianBasedMeasureImageFilter
 < TInputImage, THessianImage, TOutputImage >
 ::GetHessianOutput() const
-{
+  {
   return static_cast< const HessianImageType * >( this->ProcessObject::GetOutput(2) );
-}
+  }
 
 /** Get the image containing the scales at which each pixel gave the
  * best response */
@@ -402,9 +403,9 @@ typename MultiScaleHessianBasedMeasureImageFilter< TInputImage, THessianImage, T
 MultiScaleHessianBasedMeasureImageFilter
 < TInputImage, THessianImage, TOutputImage >
 ::GetScalesOutput() const
-{
+  {
   return static_cast< const ScalesImageType * >( this->ProcessObject::GetOutput(1) );
-}
+  }
 
 template< typename TInputImage,
           typename THessianImage,
@@ -425,6 +426,7 @@ MultiScaleHessianBasedMeasureImageFilter
   os << indent << "GenerateScalesOutput: " << m_GenerateScalesOutput << std::endl;
   os << indent << "GenerateHessianOutput: " << m_GenerateHessianOutput << std::endl;
 }
+
 } // end namespace itk
 
 #endif

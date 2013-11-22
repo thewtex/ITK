@@ -96,6 +96,7 @@ VarianceImageFunction< TInputImage, TCoordRep >
 
   return ( var );
 }
+
 } // end namespace itk
 
 #endif

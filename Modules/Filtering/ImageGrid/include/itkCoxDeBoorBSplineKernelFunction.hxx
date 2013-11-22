@@ -68,7 +68,9 @@ CoxDeBoorBSplineKernelFunction<VSplineOrder,TRealValueType>
   for( unsigned int i = 0; i < numberOfPieces; i++ )
     {
     const PolynomialType poly = this->CoxDeBoor( order, knots,
-      0, static_cast< unsigned int >( static_cast< TRealValueType >(0.5) * ( order ) ) + i );
+                                                 0,
+                                                 static_cast< unsigned int >( static_cast< TRealValueType >(0.5) *
+                                                                              ( order ) ) + i );
     this->m_BSplineShapeFunctions.set_row( i, poly.coefficients() );
     }
 }
@@ -77,11 +79,11 @@ template<unsigned int VSplineOrder, typename TRealValueType>
 typename CoxDeBoorBSplineKernelFunction<VSplineOrder,TRealValueType>::PolynomialType
 CoxDeBoorBSplineKernelFunction<VSplineOrder,TRealValueType>
 ::CoxDeBoor( const unsigned short order, const VectorType knots,
-  const unsigned int whichBasisFunction, const unsigned int whichPiece )
+             const unsigned int whichBasisFunction, const unsigned int whichPiece )
 {
-  VectorType tmp( 2 );
-  PolynomialType poly1( NumericTraits< TRealValueType >::Zero );
-  PolynomialType poly2( NumericTraits< TRealValueType >::Zero );
+  VectorType           tmp( 2 );
+  PolynomialType       poly1( NumericTraits< TRealValueType >::Zero );
+  PolynomialType       poly2( NumericTraits< TRealValueType >::Zero );
   const unsigned short p = order - 1;
   const unsigned short i = whichBasisFunction;
 
@@ -130,9 +132,9 @@ typename CoxDeBoorBSplineKernelFunction<VSplineOrder,TRealValueType>::MatrixType
 CoxDeBoorBSplineKernelFunction<VSplineOrder,TRealValueType>
 ::GetShapeFunctionsInZeroToOneInterval()
 {
-  const int order = this->m_SplineOrder + 1;
+  const int          order = this->m_SplineOrder + 1;
   const unsigned int numberOfPieces = static_cast<unsigned int>( order );
-  MatrixType shapeFunctions( numberOfPieces, order );
+  MatrixType         shapeFunctions( numberOfPieces, order );
 
   VectorType knots( 2 * order );
 
@@ -158,7 +160,6 @@ CoxDeBoorBSplineKernelFunction<VSplineOrder,TRealValueType>
   return this->m_BSplineShapeFunctions;
 }
 
-
 template<unsigned int VSplineOrder, typename TRealValueType>
 TRealValueType
 CoxDeBoorBSplineKernelFunction<VSplineOrder,TRealValueType>
@@ -167,6 +168,7 @@ CoxDeBoorBSplineKernelFunction<VSplineOrder,TRealValueType>
   const TRealValueType absValue = vnl_math_abs( u );
 
   unsigned int which;
+
   if( this->m_SplineOrder % 2 == 0 )
     {
     which = static_cast< unsigned int >( absValue + static_cast< TRealValueType >(0.5) );
@@ -203,6 +205,7 @@ CoxDeBoorBSplineKernelFunction<VSplineOrder,TRealValueType>
   const TRealValueType absValue = vnl_math_abs( u );
 
   unsigned int which;
+
   if( this->m_SplineOrder % 2 == 0 )
     {
     which = static_cast<unsigned int>( absValue + static_cast< TRealValueType >(0.5) );
@@ -242,6 +245,7 @@ CoxDeBoorBSplineKernelFunction<VSplineOrder,TRealValueType>
 ::PrintSelf( std::ostream &os, Indent indent ) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent  << "Spline Order: " << this->m_SplineOrder << std::endl;
   os << indent  << "Piecewise Polynomial Pieces: " << std::endl;
 
@@ -274,6 +278,7 @@ CoxDeBoorBSplineKernelFunction<VSplineOrder,TRealValueType>
     os << ",  X \\in [" << a << ", " << b << "]" << std::endl;
     }
 }
+
 } // namespace itk
 
 #endif

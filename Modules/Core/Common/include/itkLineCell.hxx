@@ -88,10 +88,11 @@ LineCell< TCellInterface >
                      CellAutoPointer & cellPointer)
 {
   VertexAutoPointer vertexPointer;
+
   if( ( dimension == 0 ) && this->GetVertex(featureId, vertexPointer) )
     {
-      TransferAutoPointer(cellPointer, vertexPointer);
-      return true;
+    TransferAutoPointer(cellPointer, vertexPointer);
+    return true;
     }
   /* else */
   cellPointer.Reset();
@@ -228,6 +229,7 @@ LineCell< TCellInterface >
   vertexPointer.TakeOwnership(vert);
   return true;
 }
+
 } // end namespace itk
 
 #endif

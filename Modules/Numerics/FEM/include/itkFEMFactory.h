@@ -42,7 +42,8 @@ template <typename T>
 class FEMFactory : public FEMFactoryBase
 {
 public:
-  static void RegisterType()
+  static void
+  RegisterType()
   {
     typename T::Pointer t = T::New();
 

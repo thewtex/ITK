@@ -28,7 +28,7 @@ namespace itk
  */
 template< typename TFixedImage, typename TMovingImage >
 ImageToImageMetric< TFixedImage, TMovingImage >
-::ImageToImageMetric():
+::ImageToImageMetric() :
   m_UseFixedImageIndexes(false),
   m_FixedImageIndexes(0),
 
@@ -42,10 +42,10 @@ ImageToImageMetric< TFixedImage, TMovingImage >
 
   m_NumberOfPixelsCounted(0),
 
-  m_FixedImage(0), // has to be provided by the user.
+  m_FixedImage(0),  // has to be provided by the user.
   m_MovingImage(0), // has to be provided by the user.
 
-  m_Transform(NULL), // has to be provided by the user.
+  m_Transform(NULL),         // has to be provided by the user.
   m_ThreaderTransform(NULL), // constructed at initialization.
 
   m_Interpolator(0), // has to be provided by the user.
@@ -83,7 +83,7 @@ ImageToImageMetric< TFixedImage, TMovingImage >
   m_BSplineInterpolator(NULL),
   m_DerivativeCalculator(NULL),
 
-  m_Threader(MultiThreaderType::New()),
+  m_Threader(MultiThreaderType::New() ),
   m_ThreaderNumberOfMovingImageSamples(NULL),
   m_WithinThreadPreProcess(false),
   m_WithinThreadPostProcess(false)
@@ -423,7 +423,7 @@ throw ( ExceptionObject )
   m_InterpolatorIsBSpline = true;
 
   BSplineInterpolatorType *testPtr = dynamic_cast< BSplineInterpolatorType * >(
-    this->m_Interpolator.GetPointer() );
+      this->m_Interpolator.GetPointer() );
   if ( !testPtr )
     {
     m_InterpolatorIsBSpline = false;
@@ -459,7 +459,7 @@ throw ( ExceptionObject )
   m_TransformIsBSpline = true;
 
   BSplineTransformType *testPtr2 = dynamic_cast< BSplineTransformType * >(
-    this->m_Transform.GetPointer() );
+      this->m_Transform.GetPointer() );
   if ( !testPtr2 )
     {
     m_TransformIsBSpline = false;
@@ -784,7 +784,7 @@ ImageToImageMetric< TFixedImage, TMovingImage >
   gradientFilter->SetInput(m_MovingImage);
 
   const typename MovingImageType::SpacingType & spacing = m_MovingImage
-                                                          ->GetSpacing();
+    ->GetSpacing();
   double maximumSpacing = 0.0;
   for ( unsigned int i = 0; i < MovingImageDimension; i++ )
     {
@@ -939,7 +939,7 @@ ImageToImageMetric< TFixedImage, TMovingImage >
           for ( unsigned int j = 0; j < FixedImageDimension; j++ )
             {
             mappedPoint[j] += weights[k] * LocalParameters[indices[k]
-                                                        + m_BSplineParametersOffset[j]];
+                                                           + m_BSplineParametersOffset[j]];
             }
           }
         }
@@ -1058,7 +1058,7 @@ ImageToImageMetric< TFixedImage, TMovingImage >
           for ( unsigned int j = 0; j < FixedImageDimension; j++ )
             {
             mappedPoint[j] += weights[k] * Local_Parameters[indices[k]
-                                                        + m_BSplineParametersOffset[j]];
+                                                            + m_BSplineParametersOffset[j]];
             }
           }
         }
@@ -1212,7 +1212,7 @@ ImageToImageMetric< TFixedImage, TMovingImage >
   threadID = ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->ThreadID;
 
   mtParam = (MultiThreaderParameterType *)
-            ( ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->UserData );
+    ( ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->UserData );
 
   mtParam->metric->GetValueThreadPreProcess(threadID, false);
 
@@ -1233,7 +1233,7 @@ ImageToImageMetric< TFixedImage, TMovingImage >
   threadID = ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->ThreadID;
 
   mtParam = (MultiThreaderParameterType *)
-            ( ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->UserData );
+    ( ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->UserData );
 
   mtParam->metric->GetValueThread(threadID);
 
@@ -1254,7 +1254,7 @@ ImageToImageMetric< TFixedImage, TMovingImage >
   threadID = ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->ThreadID;
 
   mtParam = (MultiThreaderParameterType *)
-            ( ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->UserData );
+    ( ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->UserData );
 
   mtParam->metric->GetValueThreadPostProcess(threadID, false);
 
@@ -1275,10 +1275,9 @@ ImageToImageMetric< TFixedImage, TMovingImage >
   if ( threadID == m_NumberOfThreads - 1 )
     {
     chunkSize = m_NumberOfFixedImageSamples
-                - ( ( m_NumberOfThreads - 1 )
-                    * chunkSize );
+      - ( ( m_NumberOfThreads - 1 )
+          * chunkSize );
     }
-
 
   if ( m_WithinThreadPreProcess )
     {
@@ -1375,7 +1374,7 @@ ImageToImageMetric< TFixedImage, TMovingImage >
   threadID = ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->ThreadID;
 
   mtParam = (MultiThreaderParameterType *)
-            ( ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->UserData );
+    ( ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->UserData );
 
   mtParam->metric->GetValueAndDerivativeThreadPreProcess(threadID, false);
 
@@ -1396,7 +1395,7 @@ ImageToImageMetric< TFixedImage, TMovingImage >
   threadID = ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->ThreadID;
 
   mtParam = (MultiThreaderParameterType *)
-            ( ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->UserData );
+    ( ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->UserData );
 
   mtParam->metric->GetValueAndDerivativeThread(threadID);
 
@@ -1417,7 +1416,7 @@ ImageToImageMetric< TFixedImage, TMovingImage >
   threadID = ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->ThreadID;
 
   mtParam = (MultiThreaderParameterType *)
-            ( ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->UserData );
+    ( ( (MultiThreaderType::ThreadInfoStruct *)( arg ) )->UserData );
 
   mtParam->metric->GetValueAndDerivativeThreadPostProcess(threadID, false);
 
@@ -1438,8 +1437,8 @@ ImageToImageMetric< TFixedImage, TMovingImage >
   if ( threadID == m_NumberOfThreads - 1 )
     {
     chunkSize = m_NumberOfFixedImageSamples
-                - ( ( m_NumberOfThreads - 1 )
-                    * chunkSize );
+      - ( ( m_NumberOfThreads - 1 )
+          * chunkSize );
     }
 
   int numSamples = 0;
@@ -1584,6 +1583,7 @@ ImageToImageMetric< TFixedImage, TMovingImage >
     this->m_ThreaderTransform[threadID]->SetParameters( this->m_Transform->GetParameters() );
     }
 }
+
 } // end namespace itk
 
 #endif

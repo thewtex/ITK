@@ -40,7 +40,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TMaskImage, typename TOutputImage, typename TKernel, typename THistogram >
-class MaskedMovingHistogramImageFilter:
+class MaskedMovingHistogramImageFilter :
   public MovingHistogramImageFilterBase< TInputImage, TOutputImage, TKernel >
 {
 public:
@@ -72,26 +72,30 @@ public:
   typedef THistogram                                 HistogramType;
 
   /** Set the marker image */
-  void SetMaskImage(MaskImageType *input)
+  void
+  SetMaskImage(MaskImageType *input)
   {
     // Process object is not const-correct so the const casting is required.
     this->SetNthInput( 1, const_cast< TMaskImage * >( input ) );
   }
 
   /** Get the marker image */
-  MaskImageType * GetMaskImage()
+  MaskImageType *
+  GetMaskImage()
   {
     return static_cast< MaskImageType * >( const_cast< DataObject * >( this->ProcessObject::GetInput(1) ) );
   }
 
   /** Set the input image */
-  void SetInput1(InputImageType *input)
+  void
+  SetInput1(InputImageType *input)
   {
     this->SetInput(input);
   }
 
   /** Set the marker image */
-  void SetInput2(MaskImageType *input)
+  void
+  SetInput2(MaskImageType *input)
   {
     this->SetMaskImage(input);
   }
@@ -113,7 +117,7 @@ public:
 
   typedef typename std::map< OffsetType, OffsetListType,
                              typename Functor::OffsetLexicographicCompare< itkGetStaticConstMacro(ImageDimension) > >
-  OffsetMapType;
+    OffsetMapType;
 
   /** Get the modified mask image */
   MaskImageType * GetOutputMask();
@@ -139,7 +143,8 @@ public:
 //   itkBooleanMacro(GenerateOutputMask);
 
   /** ConfigurewHistogram can be used to configure the histogram. The default version just do nothing. */
-  virtual void ConfigureHistogram(THistogram &) {}
+  virtual void
+  ConfigureHistogram(THistogram &) {}
 
 protected:
   MaskedMovingHistogramImageFilter();

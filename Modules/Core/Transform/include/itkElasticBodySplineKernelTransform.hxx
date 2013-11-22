@@ -62,7 +62,9 @@ ElasticBodySplineKernelTransform< TScalar, NDimensions >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "m_Alpha: " << m_Alpha << std::endl;
 }
+
 } // namespace itk
 #endif

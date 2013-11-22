@@ -43,6 +43,7 @@ CovariantVector< T, NVectorDimension >
 ::operator=(const Self & r)
 {
   BaseArray::operator=(r);
+
   return *this;
 }
 
@@ -52,6 +53,7 @@ CovariantVector< T, NVectorDimension >
 ::operator=(const ValueType r[NVectorDimension])
 {
   BaseArray::operator=(r);
+
   return *this;
 }
 
@@ -295,6 +297,7 @@ CovariantVector< T, NVectorDimension >
   return vnl_vector_ref< T >( NVectorDimension,
                               const_cast< T * >( this->GetDataPointer() ) );
 }
+
 #endif
 } // end namespace itk
 

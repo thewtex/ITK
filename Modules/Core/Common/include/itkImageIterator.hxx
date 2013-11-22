@@ -35,7 +35,7 @@ ImageIterator< TImage >
 //----------------------------------------------------------------------
 template< typename TImage >
 ImageIterator< TImage >
-::ImageIterator(const Self & it):
+::ImageIterator(const Self & it) :
   ImageConstIterator< TImage >(it)
 {}
 
@@ -44,7 +44,7 @@ ImageIterator< TImage >
 //----------------------------------------------------------------------
 template< typename TImage >
 ImageIterator< TImage >
-::ImageIterator(TImage *ptr, const RegionType & region):
+::ImageIterator(TImage *ptr, const RegionType & region) :
   ImageConstIterator< TImage >(ptr, region)
 {}
 
@@ -53,7 +53,7 @@ ImageIterator< TImage >
 //----------------------------------------------------------------------
 template< typename TImage >
 ImageIterator< TImage >
-::ImageIterator(const ImageConstIterator< TImage > & it):
+::ImageIterator(const ImageConstIterator< TImage > & it) :
   ImageConstIterator< TImage >(it)
 {}
 
@@ -107,6 +107,7 @@ ImageIterator< TImage >
 {
   return this->Superclass::End();
 }
+
 #endif
 } // end namespace itk
 

@@ -23,7 +23,8 @@ namespace itk
 namespace fem
 {
 
-void LoadNoisyLandmark::PrintSelf(std::ostream& os, Indent indent) const
+void
+LoadNoisyLandmark::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 

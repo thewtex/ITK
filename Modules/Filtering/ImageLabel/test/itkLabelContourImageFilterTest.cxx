@@ -22,7 +22,8 @@
 #include "itkSimpleFilterWatcher.h"
 #include "itkLabelContourImageFilter.h"
 
-int itkLabelContourImageFilterTest(int argc, char * argv[])
+int
+itkLabelContourImageFilterTest(int argc, char * argv[])
 {
 
   if( argc != 5 )
@@ -47,12 +48,12 @@ int itkLabelContourImageFilterTest(int argc, char * argv[])
   FilterType::Pointer filter = FilterType::New();
 
   // test default values
-  if ( filter->GetFullyConnected( ) != false )
+  if ( filter->GetFullyConnected() != false )
     {
     std::cerr << "Wrong default FullyConnected." << std::endl;
     return EXIT_FAILURE;
     }
-  if ( filter->GetBackgroundValue( ) != 0 )
+  if ( filter->GetBackgroundValue() != 0 )
     {
     std::cerr << "Wrong default background value." << std::endl;
     return EXIT_FAILURE;
@@ -87,20 +88,19 @@ int itkLabelContourImageFilterTest(int argc, char * argv[])
     return EXIT_FAILURE;
     }
 
-
   // set the inputs
 
   filter->SetInput( reader->GetOutput() );
 
   filter->SetFullyConnected( atoi(argv[3]) );
-  if ( filter->GetFullyConnected( ) != (bool)atoi(argv[3]) )
+  if ( filter->GetFullyConnected() != (bool)atoi(argv[3]) )
     {
     std::cerr << "Set/Get FullyConnected problem." << std::endl;
     return EXIT_FAILURE;
     }
 
   filter->SetBackgroundValue( atoi(argv[4]) );
-  if ( filter->GetBackgroundValue( ) != atoi(argv[4]) )
+  if ( filter->GetBackgroundValue() != atoi(argv[4]) )
     {
     std::cerr << "Set/Get BackgroundValue problem." << std::endl;
     return EXIT_FAILURE;

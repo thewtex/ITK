@@ -18,7 +18,6 @@
 #ifndef __itkFileFreeImageIO_h
 #define __itkFileFreeImageIO_h
 
-
 #include "itkImageIOBase.h"
 #include <vector>
 #include <string>
@@ -36,9 +35,9 @@ class FileFreeImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
-  typedef FileFreeImageIO            Self;
-  typedef ImageIOBase                Superclass;
-  typedef SmartPointer<Self>         Pointer;
+  typedef FileFreeImageIO    Self;
+  typedef ImageIOBase        Superclass;
+  typedef SmartPointer<Self> Pointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -77,11 +76,12 @@ protected:
 
 private:
   FileFreeImageIO(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);  //purposely not implemented
 
-  void SplitString (const std::string &text,
-                    const std::string &separators,
-                    std::vector<std::string> &words);
+  void SplitString(const std::string &text,
+                   const std::string &separators,
+                   std::vector<std::string> &words);
+
 };
 
 } // end namespace itk

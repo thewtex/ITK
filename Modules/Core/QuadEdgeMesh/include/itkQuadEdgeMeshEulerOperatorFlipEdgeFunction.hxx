@@ -25,7 +25,7 @@
 namespace itk
 {
 template< typename TMesh, typename TQEType >
-QuadEdgeMeshEulerOperatorFlipEdgeFunction< TMesh, TQEType >::QuadEdgeMeshEulerOperatorFlipEdgeFunction():Superclass(),
+QuadEdgeMeshEulerOperatorFlipEdgeFunction< TMesh, TQEType >::QuadEdgeMeshEulerOperatorFlipEdgeFunction() : Superclass(),
   m_EdgeStatus(STANDARD_CONFIG)
 {}
 
@@ -34,6 +34,7 @@ void
 QuadEdgeMeshEulerOperatorFlipEdgeFunction< TMesh, TQEType >::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "m_EdgeStatus: ";
   switch ( m_EdgeStatus )
     {
@@ -162,9 +163,9 @@ QuadEdgeMeshEulerOperatorFlipEdgeFunction< TMesh, TQEType >::Process(QEType *h)
   // that way in the sake of maintenance simplicity (as long as JoinFacet and
   // SplitFacet are working, this operator does it job).
   typedef QuadEdgeMeshEulerOperatorJoinFacetFunction< MeshType, QEType >
-  JoinFacet;
+    JoinFacet;
   typedef QuadEdgeMeshEulerOperatorSplitFacetFunction< MeshType, QEType >
-  SplitFacet;
+    SplitFacet;
 
   QEType *G = h->GetLnext();
   typename JoinFacet::Pointer joinFacet = JoinFacet::New();
@@ -176,6 +177,7 @@ QuadEdgeMeshEulerOperatorFlipEdgeFunction< TMesh, TQEType >::Process(QEType *h)
 
   return ( splitFacet->Evaluate(H, G) );
 }
+
 } // namespace itk
 
 #endif

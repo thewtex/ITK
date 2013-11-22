@@ -225,6 +225,7 @@ VoronoiSegmentationImageFilter< TInputImage, TOutputImage, TBinaryPriorImage >
   os << indent << "STDTolerance = " << m_STDTolerance << std::endl;
   os << indent << "STDPercentError = " << m_STDPercentError << std::endl;
 }
+
 } //end namespace
 
 #endif

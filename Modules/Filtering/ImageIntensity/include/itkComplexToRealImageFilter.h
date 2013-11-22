@@ -37,25 +37,29 @@ class ComplexToReal
 public:
   ComplexToReal() {}
   ~ComplexToReal() {}
-  bool operator!=(const ComplexToReal &) const
+  bool
+  operator!=(const ComplexToReal &) const
   {
     return false;
   }
 
-  bool operator==(const ComplexToReal & other) const
+  bool
+  operator==(const ComplexToReal & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return (TOutput)( A.real() );
   }
+
 };
 }
 
 template< typename TInputImage, typename TOutputImage >
-class ComplexToRealImageFilter:
+class ComplexToRealImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::ComplexToReal<
@@ -66,9 +70,9 @@ public:
   /** Standard class typedefs. */
   typedef ComplexToRealImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::ComplexToReal< typename TInputImage::PixelType,
-                            typename TOutputImage::PixelType > > Superclass;
+      TInputImage, TOutputImage,
+      Functor::ComplexToReal< typename TInputImage::PixelType,
+                              typename TOutputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -93,11 +97,13 @@ public:
 
 protected:
   ComplexToRealImageFilter() {}
-  virtual ~ComplexToRealImageFilter() {}
+  virtual
+  ~ComplexToRealImageFilter() {}
 
 private:
   ComplexToRealImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 } // end namespace itk
 

@@ -36,20 +36,24 @@ class Round
 public:
   Round() {}
   ~Round() {}
-  bool operator!=(const Round &) const
+  bool
+  operator!=(const Round &) const
   {
     return false;
   }
 
-  bool operator==(const Round & other) const
+  bool
+  operator==(const Round & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return itk::Math::Round<TOutput,TInput>( A );
   }
+
 };
 }
 /** \class RoundImageFilter
@@ -62,7 +66,7 @@ public:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage, typename TOutputImage >
-class RoundImageFilter:
+class RoundImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::Round< typename TInputImage::PixelType,
@@ -72,9 +76,9 @@ public:
   /** Standard class typedefs. */
   typedef RoundImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::Round< typename TInputImage::PixelType,
-                   typename TOutputImage::PixelType > >  Superclass;
+      TInputImage, TOutputImage,
+      Functor::Round< typename TInputImage::PixelType,
+                      typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -88,11 +92,13 @@ public:
 
 protected:
   RoundImageFilter() {}
-  virtual ~RoundImageFilter() {}
+  virtual
+  ~RoundImageFilter() {}
 
 private:
   RoundImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);  //purposely not implemented
+  void operator=(const Self &);   //purposely not implemented
+
 };
 } // end namespace itk
 

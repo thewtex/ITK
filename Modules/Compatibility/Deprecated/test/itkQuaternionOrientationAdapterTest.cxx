@@ -29,8 +29,8 @@ typedef SO_AdapterType::DirectionType     DirectionType;
 typedef itk::QuaternionOrientationAdapter<3> Q_AdapterType;
 typedef Q_AdapterType::OrientationType       Q_OrientationType;
 
-
-std::string SO_OrientationToString(SO_OrientationType in)
+std::string
+SO_OrientationToString(SO_OrientationType in)
 {
   switch(in)
     {
@@ -133,7 +133,7 @@ std::string SO_OrientationToString(SO_OrientationType in)
     default:
       {
       std::stringstream x;
-      x << (in & 0xff) << ", " << ((in >> 8) & 0xff) << ", " << ((in >> 16) && 0xff);
+      x << (in & 0xff) << ", " << ( (in >> 8) & 0xff) << ", " << ( (in >> 16) && 0xff);
       return x.str();
       }
     }
@@ -141,60 +141,62 @@ std::string SO_OrientationToString(SO_OrientationType in)
 
 SO_OrientationType allOrientations[] =
   {
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RIP,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LIP,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RSP,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LSP,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RIA,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LIA,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RSA,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LSA,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_IRP,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ILP,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SRP,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SLP,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_IRA,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ILA,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SRA,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SLA,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RPI,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LPI,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RAI,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LAI,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RPS,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LPS,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RAS,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LAS,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PRI,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PLI,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ARI,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ALI,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PRS,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PLS,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ARS,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ALS,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_IPR,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SPR,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_IAR,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SAR,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_IPL,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SPL,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_IAL,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SAL,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PIR,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PSR,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_AIR,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ASR,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PIL,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PSL,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_AIL,
-    itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ASL,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RIP,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LIP,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RSP,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LSP,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RIA,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LIA,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RSA,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LSA,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_IRP,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ILP,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SRP,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SLP,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_IRA,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ILA,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SRA,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SLA,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RPI,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LPI,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RAI,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LAI,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RPS,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LPS,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_RAS,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_LAS,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PRI,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PLI,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ARI,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ALI,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PRS,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PLS,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ARS,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ALS,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_IPR,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SPR,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_IAR,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SAR,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_IPL,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SPL,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_IAL,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_SAL,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PIR,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PSR,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_AIR,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ASR,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PIL,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_PSL,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_AIL,
+  itk::SpatialOrientation::ITK_COORDINATE_ORIENTATION_ASL,
   };
 
-void printDirections(const std::string &prompt,
-                     const SO_AdapterType::DirectionType &dir)
+void
+printDirections(const std::string &prompt,
+                const SO_AdapterType::DirectionType &dir)
 {
   std::cerr << prompt << std::endl;
+
   for(unsigned ii=0; ii < 3; ii++)
     {
     if(ii > 0)
@@ -213,8 +215,8 @@ void printDirections(const std::string &prompt,
   std::cout << std::endl;
 }
 
-
-int itkQuaternionOrientationAdapterTest(int argc, char *argv[])
+int
+itkQuaternionOrientationAdapterTest(int argc, char *argv[])
 {
 
   for(unsigned i = 0; i < sizeof(allOrientations)/sizeof(SO_OrientationType); i++)
@@ -222,8 +224,8 @@ int itkQuaternionOrientationAdapterTest(int argc, char *argv[])
     SO_OrientationType orient = allOrientations[i];
     std::cout << SO_OrientationToString(orient) << std::endl;
     SO_AdapterType::DirectionType dir;
-    Q_AdapterType::DirectionType dir2;
-    Q_OrientationType qorient;
+    Q_AdapterType::DirectionType  dir2;
+    Q_OrientationType             qorient;
 
     dir = SO_AdapterType().ToDirectionCosines(orient);
     qorient = Q_AdapterType().FromDirectionCosines(dir);

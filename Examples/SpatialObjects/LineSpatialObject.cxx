@@ -30,7 +30,8 @@
 #include "itkLineSpatialObject.h"
 // Software Guide : EndCodeSnippet
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 // Software Guide : BeginLatex
 //
@@ -44,10 +45,10 @@ int main( int , char *[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::LineSpatialObject<3>        LineType;
-  typedef LineType::Pointer                LinePointer;
-  typedef itk::LineSpatialObjectPoint<3>   LinePointType;
-  typedef itk::CovariantVector<double,3>   VectorType;
+  typedef itk::LineSpatialObject<3>      LineType;
+  typedef LineType::Pointer              LinePointer;
+  typedef itk::LineSpatialObjectPoint<3> LinePointType;
+  typedef itk::CovariantVector<double,3> VectorType;
 
   LinePointer Line = LineType::New();
 // Software Guide : EndCodeSnippet
@@ -75,7 +76,7 @@ int main( int , char *[] )
 
     VectorType normal1;
     VectorType normal2;
-    for(unsigned int j=0;j<3;j++)
+    for(unsigned int j=0; j<3; j++)
       {
       normal1[j]=j;
       normal2[j]=j*2;
@@ -109,11 +110,10 @@ int main( int , char *[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-   LineType::PointListType pointList = Line->GetPoints();
-   std::cout << "Number of points representing the line: ";
-   std::cout << pointList.size() << std::endl;
+  LineType::PointListType pointList = Line->GetPoints();
+  std::cout << "Number of points representing the line: ";
+  std::cout << pointList.size() << std::endl;
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -125,16 +125,16 @@ int main( int , char *[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-   LineType::PointListType::const_iterator it = Line->GetPoints().begin();
-   while(it != Line->GetPoints().end())
-     {
-     std::cout << "Position = " << (*it).GetPosition() << std::endl;
-     std::cout << "Color = " << (*it).GetColor() << std::endl;
-     std::cout << "First normal = " << (*it).GetNormal(0) << std::endl;
-     std::cout << "Second normal = " << (*it).GetNormal(1) << std::endl;
-     std::cout << std::endl;
-     it++;
-     }
+  LineType::PointListType::const_iterator it = Line->GetPoints().begin();
+  while(it != Line->GetPoints().end() )
+    {
+    std::cout << "Position = " << (*it).GetPosition() << std::endl;
+    std::cout << "Color = " << (*it).GetColor() << std::endl;
+    std::cout << "First normal = " << (*it).GetNormal(0) << std::endl;
+    std::cout << "Second normal = " << (*it).GetNormal(1) << std::endl;
+    std::cout << std::endl;
+    it++;
+    }
 // Software Guide : EndCodeSnippet
 
   return 0;

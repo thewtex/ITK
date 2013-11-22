@@ -42,7 +42,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TImage >
-class StatisticsOpeningLabelMapFilter:
+class StatisticsOpeningLabelMapFilter :
   public ShapeOpeningLabelMapFilter< TImage >
 {
 public:
@@ -93,6 +93,7 @@ protected:
 private:
   StatisticsOpeningLabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                  //purposely not implemented
+
 };                                               // end of class
 } // end namespace itk
 

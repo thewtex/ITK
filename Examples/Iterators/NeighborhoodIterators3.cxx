@@ -58,7 +58,8 @@
 #include "itkNeighborhoodAlgorithm.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   if ( argc < 4 )
     {
@@ -91,7 +92,7 @@ int main( int argc, char ** argv )
     }
 
   ImageType::Pointer output = ImageType::New();
-  output->SetRegions(reader->GetOutput()->GetRequestedRegion());
+  output->SetRegions(reader->GetOutput()->GetRequestedRegion() );
   output->Allocate();
 
   itk::SobelOperator<PixelType, 2> sobelOperator;
@@ -114,7 +115,7 @@ int main( int argc, char ** argv )
   typedef itk::NeighborhoodAlgorithm
     ::ImageBoundaryFacesCalculator< ImageType > FaceCalculatorType;
 
-  FaceCalculatorType faceCalculator;
+  FaceCalculatorType               faceCalculator;
   FaceCalculatorType::FaceListType faceList;
   // Software Guide : EndCodeSnippet
 
@@ -138,7 +139,7 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginCodeSnippet
   faceList = faceCalculator(reader->GetOutput(), output->GetRequestedRegion(),
-                            sobelOperator.GetRadius());
+                            sobelOperator.GetRadius() );
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -166,22 +167,21 @@ int main( int argc, char ** argv )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  IteratorType out;
+  IteratorType             out;
   NeighborhoodIteratorType it;
 
   for ( fit=faceList.begin(); fit != faceList.end(); ++fit)
     {
     it = NeighborhoodIteratorType( sobelOperator.GetRadius(),
-                                  reader->GetOutput(), *fit );
+                                   reader->GetOutput(), *fit );
     out = IteratorType( output, *fit );
 
-    for (it.GoToBegin(), out.GoToBegin(); ! it.IsAtEnd(); ++it, ++out)
+    for (it.GoToBegin(), out.GoToBegin(); !it.IsAtEnd(); ++it, ++out)
       {
       out.Set( innerProduct(it, sobelOperator) );
       }
     }
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -200,7 +200,7 @@ int main( int argc, char ** argv )
   typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   typedef itk::RescaleIntensityImageFilter<
-    ImageType, WriteImageType > RescaleFilterType;
+      ImageType, WriteImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
 

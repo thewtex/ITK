@@ -45,18 +45,19 @@ namespace itk
  *
  * \sa FFTWGlobalConfiguration
  */
-template< typename TInputImage, typename TOutputImage=Image< typename TInputImage::PixelType::value_type, TInputImage::ImageDimension> >
-class FFTWInverseFFTImageFilter:
+template< typename TInputImage, typename TOutputImage=
+            Image< typename TInputImage::PixelType::value_type, TInputImage::ImageDimension> >
+class FFTWInverseFFTImageFilter :
   public InverseFFTImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
-  typedef TInputImage                          InputImageType;
-  typedef typename InputImageType::PixelType   InputPixelType;
-  typedef typename InputImageType::SizeType    InputSizeType;
-  typedef TOutputImage                         OutputImageType;
-  typedef typename OutputImageType::PixelType  OutputPixelType;
-  typedef typename OutputImageType::SizeType   OutputSizeType;
+  typedef TInputImage                         InputImageType;
+  typedef typename InputImageType::PixelType  InputPixelType;
+  typedef typename InputImageType::SizeType   InputSizeType;
+  typedef TOutputImage                        OutputImageType;
+  typedef typename OutputImageType::PixelType OutputPixelType;
+  typedef typename OutputImageType::SizeType  OutputSizeType;
 
   typedef FFTWInverseFFTImageFilter                                Self;
   typedef InverseFFTImageFilter< InputImageType, OutputImageType > Superclass;
@@ -89,25 +90,30 @@ public:
    * FFTW_PATIENT, FFTW_EXHAUSTIVE provided by FFTWGlobalConfiguration.
    * /sa FFTWGlobalConfiguration
    */
-  virtual void SetPlanRigor( const int & value )
+  virtual void
+  SetPlanRigor( const int & value )
   {
     // Use that method to check the value.
     FFTWGlobalConfiguration::GetPlanRigorName( value );
+
     if( m_PlanRigor != value )
       {
       m_PlanRigor = value;
       this->Modified();
       }
   }
+
   itkGetConstReferenceMacro( PlanRigor, int );
-  void SetPlanRigor( const std::string & name )
+  void
+  SetPlanRigor( const std::string & name )
   {
     this->SetPlanRigor( FFTWGlobalConfiguration::GetPlanRigorValue( name ) );
   }
 
 protected:
   FFTWInverseFFTImageFilter();
-  virtual ~FFTWInverseFFTImageFilter() {}
+  virtual
+  ~FFTWInverseFFTImageFilter() {}
 
   virtual void BeforeThreadedGenerateData();
 
@@ -117,12 +123,11 @@ protected:
 
 private:
   FFTWInverseFFTImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);            //purposely not implemented
 
   int m_PlanRigor;
 
 };
-
 
 } // namespace itk
 

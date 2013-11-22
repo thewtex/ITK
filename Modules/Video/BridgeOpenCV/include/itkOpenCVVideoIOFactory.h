@@ -28,7 +28,7 @@ namespace itk
  *
  * \ingroup ITKVideoBridgeOpenCV
  */
-class OpenCVVideoIOFactory:public ObjectFactoryBase
+class OpenCVVideoIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -49,7 +49,8 @@ public:
   itkTypeMacro(OpenCVVideoIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     OpenCVVideoIOFactory::Pointer OpenCVFactory = OpenCVVideoIOFactory::New();
 
@@ -62,7 +63,8 @@ protected:
 
 private:
   OpenCVVideoIOFactory(const Self &); //purposely not implemented
-  void operator=(const Self &);    //purposely not implemented
+  void operator=(const Self &);       //purposely not implemented
+
 };
 } // end namespace itk
 

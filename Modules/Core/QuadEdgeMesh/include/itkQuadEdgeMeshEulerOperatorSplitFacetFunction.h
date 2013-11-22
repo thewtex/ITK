@@ -32,7 +32,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TMesh, typename TQEType >
-class QuadEdgeMeshEulerOperatorSplitFacetFunction:
+class QuadEdgeMeshEulerOperatorSplitFacetFunction :
   public QuadEdgeMeshFunctionBase< TMesh, TQEType * >
 {
 public:
@@ -64,7 +64,8 @@ private:
   QuadEdgeMeshEulerOperatorSplitFacetFunction(const Self &); //purposely not
                                                              // implemented
   void operator=(const Self &);                              //purposely not
-                                                             // implemented
+
+  // implemented
 };
 } // namespace itk
 

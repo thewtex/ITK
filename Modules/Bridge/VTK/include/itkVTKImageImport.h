@@ -53,7 +53,7 @@ namespace itk
  * \ingroup ITKVTK
  */
 template< typename TOutputImage >
-class VTKImageImport:public ImageSource< TOutputImage >
+class VTKImageImport : public ImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -114,16 +114,22 @@ public:
   itkGetConstMacro(SpacingCallback, SpacingCallbackType);
   itkSetMacro(FloatSpacingCallback, FloatSpacingCallbackType);
   itkGetConstMacro(FloatSpacingCallback, FloatSpacingCallbackType);
-  void SetSpacingCallback(FloatSpacingCallbackType f)
-  { this->SetFloatSpacingCallback(f); }
+  void
+  SetSpacingCallback(FloatSpacingCallbackType f)
+  {
+    this->SetFloatSpacingCallback(f);
+  }
 
   /** What to do when receiving SetOrigin(). */
   itkSetMacro(OriginCallback, OriginCallbackType);
   itkGetConstMacro(OriginCallback, OriginCallbackType);
   itkSetMacro(FloatOriginCallback, FloatOriginCallbackType);
   itkGetConstMacro(FloatOriginCallback, FloatOriginCallbackType);
-  void SetOriginCallback(FloatOriginCallbackType f)
-  { this->SetFloatOriginCallback(f); }
+  void
+  SetOriginCallback(FloatOriginCallbackType f)
+  {
+    this->SetFloatOriginCallback(f);
+  }
 
   /** What to do when receiving UpdateInformation(). */
   itkSetMacro(ScalarTypeCallback, ScalarTypeCallbackType);

@@ -21,147 +21,155 @@
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkImageRegionIterator.h"
 
-void AdaptorSupportedIteratorSpeed(itk::Image<float, 3> *img)
+void
+AdaptorSupportedIteratorSpeed(itk::Image<float, 3> *img)
 {
   itk::ImageRegionIteratorWithIndex<itk::Image<float, 3> >
-    it (img, img->GetRequestedRegion());
+  it (img, img->GetRequestedRegion() );
 
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
-      ++it;
+    ++it;
     }
 
 }
 
-void NoAdaptorSupportIteratorSpeed(itk::Image<float, 3> *img)
+void
+NoAdaptorSupportIteratorSpeed(itk::Image<float, 3> *img)
 {
   itk::ImageRegionIterator<itk::Image<float, 3> >
-    it (img, img->GetRequestedRegion());
+  it (img, img->GetRequestedRegion() );
 
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
-      ++it;
+    ++it;
     }
 }
 
-void AdaptorSupportedModifyScalars(itk::Image<float, 3> *img)
+void
+AdaptorSupportedModifyScalars(itk::Image<float, 3> *img)
 {
   itk::ImageRegionIteratorWithIndex<itk::Image<float, 3> >
-    it (img, img->GetRequestedRegion());
+  it (img, img->GetRequestedRegion() );
 
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
-      // *it += 3.435f;
-      it.Set(it.Get() + 3.435f);
-      ++it;
+    // *it += 3.435f;
+    it.Set(it.Get() + 3.435f);
+    ++it;
     }
 }
 
-void NoAdaptorSupportModifyScalars(itk::Image<float, 3> *img)
+void
+NoAdaptorSupportModifyScalars(itk::Image<float, 3> *img)
 {
   itk::ImageRegionIterator<itk::Image<float, 3> >
-    it (img, img->GetRequestedRegion());
+  it (img, img->GetRequestedRegion() );
 
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
-      // *it += 3.435f;
-      it.Set(it.Get() + 3.435f);
-      ++it;
+    // *it += 3.435f;
+    it.Set(it.Get() + 3.435f);
+    ++it;
     }
 }
 
-void BypassAdaptorSupportModifyScalars(itk::Image<float, 3> *img)
+void
+BypassAdaptorSupportModifyScalars(itk::Image<float, 3> *img)
 {
   itk::ImageRegionIteratorWithIndex< itk::Image<float, 3> >
-    it (img, img->GetRequestedRegion());
+  it (img, img->GetRequestedRegion() );
 
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
-      it.Value() += 3.435f;
-      ++it;
+    it.Value() += 3.435f;
+    ++it;
     }
 }
 
-void AdaptorSupportedModifyVectors(itk::Image<itk::Vector<float, 3>, 3> *img)
+void
+AdaptorSupportedModifyVectors(itk::Image<itk::Vector<float, 3>, 3> *img)
 {
   typedef itk::Vector<float, 3> VectorType;
   const unsigned int N = 3;
-  unsigned int i;
-  VectorType temp_vector;
+  unsigned int       i;
+  VectorType         temp_vector;
 
   itk::ImageRegionIteratorWithIndex<itk::Image<VectorType, 3> >
-    it (img, img->GetRequestedRegion());
+  it (img, img->GetRequestedRegion() );
 
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
-      temp_vector = it.Get();
+    temp_vector = it.Get();
 
-      for (i = 0; i<N; ++i) temp_vector[i] += 3.435f;
+    for (i = 0; i<N; ++i) temp_vector[i] += 3.435f;
 
-      it.Set(temp_vector);
-       ++it;
+    it.Set(temp_vector);
+    ++it;
     }
 }
 
-void NoAdaptorSupportModifyVectors(itk::Image<itk::Vector<float, 3>, 3> *img)
+void
+NoAdaptorSupportModifyVectors(itk::Image<itk::Vector<float, 3>, 3> *img)
 {
   typedef itk::Vector<float, 3> VectorType;
   const unsigned int N = 3;
-  unsigned int i;
-  VectorType temp_vector;
+  unsigned int       i;
+  VectorType         temp_vector;
 
   itk::ImageRegionIterator<itk::Image<VectorType, 3> >
-    it (img, img->GetRequestedRegion());
+  it (img, img->GetRequestedRegion() );
 
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
-      temp_vector = it.Get();
+    temp_vector = it.Get();
 
-      for (i = 0; i<N; ++i) temp_vector[i] += 3.435f;
+    for (i = 0; i<N; ++i) temp_vector[i] += 3.435f;
 
-      it.Set(temp_vector);
-      ++it;
+    it.Set(temp_vector);
+    ++it;
 
-      //      for (i = 0; i<N; ++i)  (*it)[i] += 3.435f;
-      //       ++it;
+    //      for (i = 0; i<N; ++i)  (*it)[i] += 3.435f;
+    //       ++it;
     }
 }
 
-void BypassAdaptorSupportModifyVectors(itk::Image<itk::Vector<float, 3>, 3> *img)
+void
+BypassAdaptorSupportModifyVectors(itk::Image<itk::Vector<float, 3>, 3> *img)
 {
   typedef itk::Vector<float, 3> VectorType;
   const unsigned int N = 3;
-  unsigned int i;
+  unsigned int       i;
 
   itk::ImageRegionIteratorWithIndex< itk::Image<VectorType, 3> >
-    it (img, img->GetRequestedRegion());
+  it (img, img->GetRequestedRegion() );
 
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
-      for (i = 0; i<N; ++i)  (it.Value())[i] += 3.435f;
-       ++it;
+    for (i = 0; i<N; ++i) (it.Value() )[i] += 3.435f;
+    ++it;
     }
 }
 
-
-void BypassNoAdaptorSupportModifyVectors(itk::Image<itk::Vector<float, 3>, 3> *img)
+void
+BypassNoAdaptorSupportModifyVectors(itk::Image<itk::Vector<float, 3>, 3> *img)
 {
   typedef itk::Vector<float, 3> VectorType;
   const unsigned int N = 3;
-  unsigned int i;
+  unsigned int       i;
 
   itk::ImageRegionIterator< itk::Image<VectorType, 3> >
-    it (img, img->GetRequestedRegion());
+  it (img, img->GetRequestedRegion() );
 
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
-      for (i = 0; i<N; ++i)  (it.Value())[i] += 3.435f;
-       ++it;
+    for (i = 0; i<N; ++i) (it.Value() )[i] += 3.435f;
+    ++it;
     }
 }
 
-
-int itkAdaptorComparisonTest(int, char * [] )
+int
+itkAdaptorComparisonTest(int, char * [] )
 {
   typedef itk::Image<float, 3>                 ScalarImageType;
   typedef itk::Image<itk::Vector<float, 3>, 3> VectorImageType;
@@ -170,14 +178,14 @@ int itkAdaptorComparisonTest(int, char * [] )
 
   // Set up some images
   itk::ImageRegion<3> region;
-  itk::Size<3> size;
-   size[0] = 100;
-   size[1] = 100;
-   size[2] = 100;
+  itk::Size<3>        size;
+  size[0] = 100;
+  size[1] = 100;
+  size[2] = 100;
   itk::Index<3> index;
-   index[0] = 0;
-   index[1] = 0;
-   index[2] = 0;
+  index[0] = 0;
+  index[1] = 0;
+  index[2] = 0;
   region.SetSize(size);
   region.SetIndex(index);
 

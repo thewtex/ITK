@@ -139,7 +139,7 @@ MatlabTransformIOTemplate<ParametersValueType>
   typename ConstTransformListType::iterator it = this->GetWriteTransformList().begin();
 
   typename MatlabTransformIOTemplate<ParametersValueType>::TransformType::ParametersType TempArray;
-  std::ofstream        out;
+  std::ofstream out;
   this->OpenStream(out, true);
   while ( it != this->GetWriteTransformList().end() )
     {
@@ -152,6 +152,7 @@ MatlabTransformIOTemplate<ParametersValueType>
     }
   out.close();
 }
+
 }
 
 #endif

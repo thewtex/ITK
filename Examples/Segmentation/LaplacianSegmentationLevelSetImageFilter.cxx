@@ -83,7 +83,8 @@
 #include "itkImageFileWriter.h"
 #include "itkZeroCrossingImageFilter.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 9 )
     {
@@ -106,16 +107,16 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   float           InternalPixelType;
-  const     unsigned int    Dimension = 2;
-  typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
+  typedef   float InternalPixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
   // Software Guide : EndCodeSnippet
 
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::BinaryThresholdImageFilter<
-                        InternalImageType,
-                        OutputImageType    >       ThresholdingFilterType;
+      InternalImageType,
+      OutputImageType    >       ThresholdingFilterType;
 
   ThresholdingFilterType::Pointer thresholder = ThresholdingFilterType::New();
 
@@ -147,7 +148,7 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::GradientAnisotropicDiffusionImageFilter< InternalImageType,
-    InternalImageType> DiffusionFilterType;
+                                                        InternalImageType> DiffusionFilterType;
   DiffusionFilterType::Pointer diffusion = DiffusionFilterType::New();
   diffusion->SetNumberOfIterations( atoi(argv[4]) );
   diffusion->SetTimeStep(0.125);
@@ -163,11 +164,11 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::LaplacianSegmentationLevelSetImageFilter< InternalImageType,
-            InternalImageType > LaplacianSegmentationLevelSetImageFilterType;
+                                                         InternalImageType >
+    LaplacianSegmentationLevelSetImageFilterType;
   LaplacianSegmentationLevelSetImageFilterType::Pointer laplacianSegmentation
-            = LaplacianSegmentationLevelSetImageFilterType::New();
+    = LaplacianSegmentationLevelSetImageFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

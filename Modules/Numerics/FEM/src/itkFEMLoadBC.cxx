@@ -24,7 +24,8 @@ namespace fem
 {
 
 // Overload the CreateAnother() method.
-::itk::LightObject::Pointer LoadBC::CreateAnother(void) const
+::itk::LightObject::Pointer
+LoadBC::CreateAnother(void) const
 {
   ::itk::LightObject::Pointer smartPtr;
   Pointer copyPtr = Self::New();
@@ -40,17 +41,20 @@ namespace fem
   return smartPtr;
 }
 
-void LoadBC::SetDegreeOfFreedom(int dof)
+void
+LoadBC::SetDegreeOfFreedom(int dof)
 {
   this->m_DegreeOfFreedom = dof;
 }
 
-int LoadBC::GetDegreeOfFreedom() const
+int
+LoadBC::GetDegreeOfFreedom() const
 {
   return this->m_DegreeOfFreedom;
 }
 
-void LoadBC::SetValue(const vnl_vector<Element::Float> val)
+void
+LoadBC::SetValue(const vnl_vector<Element::Float> val)
 {
   this->m_Value = val;
 }
@@ -60,9 +64,11 @@ vnl_vector<Element::Float> LoadBC::GetValue() const
   return this->m_Value;
 }
 
-void LoadBC::PrintSelf(std::ostream& os, Indent indent) const
+void
+LoadBC::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Element: " << this->m_Element << std::endl;
   os << indent << "Value: " << this->m_Value << std::endl;
   os << indent << "Degree Of Freedom: " << this->m_DegreeOfFreedom << std::endl;

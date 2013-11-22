@@ -16,13 +16,13 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSolver.h"
 #include "itkFEMSpatialObjectReader.h"
 #include "itkFEMSpatialObjectWriter.h"
 
 //
-int itkFEMLandmarkLoadImplementationTest(int argc, char *argv[])
+int
+itkFEMLandmarkLoadImplementationTest(int argc, char *argv[])
 {
   if(argc < 1)
     {

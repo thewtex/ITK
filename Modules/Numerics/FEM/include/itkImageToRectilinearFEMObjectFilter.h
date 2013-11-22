@@ -92,7 +92,8 @@ public:
     */
   itkGetMacro(PixelsPerElement, vnl_vector<unsigned int> );
   itkSetMacro(PixelsPerElement, vnl_vector<unsigned int> );
-  void SetPixelsPerElement( unsigned int numPixels )
+  void
+  SetPixelsPerElement( unsigned int numPixels )
   {
     this->m_PixelsPerElement.fill( numPixels );
   }
@@ -143,7 +144,8 @@ public:
 
 protected:
   ImageToRectilinearFEMObjectFilter();
-  virtual ~ImageToRectilinearFEMObjectFilter() { }
+  virtual
+  ~ImageToRectilinearFEMObjectFilter() {}
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   /** Method invoked by the pipeline in order to trigger mesh generation */

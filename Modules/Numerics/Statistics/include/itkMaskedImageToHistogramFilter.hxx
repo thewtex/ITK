@@ -37,15 +37,16 @@ MaskedImageToHistogramFilter< TImage, TMaskImage >
 template< typename TImage, typename TMaskImage >
 void
 MaskedImageToHistogramFilter< TImage, TMaskImage >
-::ThreadedComputeMinimumAndMaximum( const RegionType & inputRegionForThread, ThreadIdType threadId, ProgressReporter & progress )
+::ThreadedComputeMinimumAndMaximum( const RegionType & inputRegionForThread, ThreadIdType threadId,
+                                    ProgressReporter & progress )
 {
-  unsigned int nbOfComponents = this->GetInput()->GetNumberOfComponentsPerPixel();
+  unsigned int                   nbOfComponents = this->GetInput()->GetNumberOfComponentsPerPixel();
   HistogramMeasurementVectorType min( nbOfComponents );
   HistogramMeasurementVectorType max( nbOfComponents );
 
   MaskPixelType maskValue = this->GetMaskValue();
 
-  ImageRegionConstIterator< TImage > inputIt( this->GetInput(), inputRegionForThread );
+  ImageRegionConstIterator< TImage >     inputIt( this->GetInput(), inputRegionForThread );
   ImageRegionConstIterator< TMaskImage > maskIt( this->GetMaskImage(), inputRegionForThread );
   inputIt.GoToBegin();
   maskIt.GoToBegin();
@@ -79,12 +80,13 @@ MaskedImageToHistogramFilter< TImage, TMaskImage >
 ::ThreadedComputeHistogram(const RegionType & inputRegionForThread, ThreadIdType threadId, ProgressReporter & progress )
 {
   unsigned int nbOfComponents = this->GetInput()->GetNumberOfComponentsPerPixel();
-  ImageRegionConstIterator< TImage > inputIt( this->GetInput(), inputRegionForThread );
+
+  ImageRegionConstIterator< TImage >     inputIt( this->GetInput(), inputRegionForThread );
   ImageRegionConstIterator< TMaskImage > maskIt( this->GetMaskImage(), inputRegionForThread );
   inputIt.GoToBegin();
   maskIt.GoToBegin();
   HistogramMeasurementVectorType m( nbOfComponents );
-  MaskPixelType maskValue = this->GetMaskValue();
+  MaskPixelType                  maskValue = this->GetMaskValue();
 
   while ( !inputIt.IsAtEnd() )
     {

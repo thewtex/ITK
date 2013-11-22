@@ -33,7 +33,7 @@ namespace itk
 template< typename TScalar,         // Data type for scalars (float or double)
           unsigned int NDimensions = 3 >
 // Number of dimensions
-class ThinPlateSplineKernelTransform:
+class ThinPlateSplineKernelTransform :
   public KernelTransform< TScalar, NDimensions >
 {
 public:
@@ -72,7 +72,8 @@ public:
 
 protected:
   ThinPlateSplineKernelTransform() {}
-  virtual ~ThinPlateSplineKernelTransform() {}
+  virtual
+  ~ThinPlateSplineKernelTransform() {}
 
   /** These (rather redundant) typedefs are needed because typedefs are not inherited. */
   typedef typename Superclass::GMatrixType GMatrixType;
@@ -95,6 +96,7 @@ protected:
 private:
   ThinPlateSplineKernelTransform(const Self &); //purposely not implemented
   void operator=(const Self &);                 //purposely not implemented
+
 };
 } // namespace itk
 

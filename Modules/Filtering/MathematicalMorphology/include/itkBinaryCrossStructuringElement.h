@@ -50,7 +50,7 @@ namespace itk
 
 template< typename TPixel, unsigned int VDimension = 2,
           typename TAllocator = NeighborhoodAllocator< TPixel > >
-class BinaryCrossStructuringElement:
+class BinaryCrossStructuringElement :
   public Neighborhood< TPixel, VDimension, TAllocator >
 {
 public:
@@ -92,22 +92,26 @@ public:
   {
     // Default structuring element is defined to be 3x3x3...
     RadiusType radius;
+
     radius.Fill(1);
     this->SetRadius(radius);
   }
 
   /** Default destructor. */
-  virtual ~BinaryCrossStructuringElement() {}
+  virtual
+  ~BinaryCrossStructuringElement() {}
 
   /** Copy constructor. */
-  BinaryCrossStructuringElement(const Self & other):
+  BinaryCrossStructuringElement(const Self & other) :
     Neighborhood< TPixel, VDimension, TAllocator >(other)
   {}
 
   /** Assignment operator. */
-  Self & operator=(const Self & other)
+  Self &
+  operator=(const Self & other)
   {
     Superclass::operator=(other);
+
     return *this;
   }
 

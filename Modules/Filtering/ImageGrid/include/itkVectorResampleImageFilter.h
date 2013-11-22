@@ -56,7 +56,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage, typename TInterpolatorPrecisionType = double >
-class VectorResampleImageFilter:
+class VectorResampleImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -91,7 +91,7 @@ public:
   typedef Transform< TInterpolatorPrecisionType, itkGetStaticConstMacro(ImageDimension),
                      itkGetStaticConstMacro(ImageDimension) > TransformType;
   typedef typename TransformType::ConstPointer
-  TransformPointerType;
+    TransformPointerType;
 
   /** Interpolator typedef. */
   typedef VectorInterpolateImageFunction< InputImageType, TInterpolatorPrecisionType > InterpolatorType;
@@ -231,10 +231,10 @@ private:
   PixelType m_DefaultPixelValue;
   // default pixel value if the point
   // is outside the image
-  SpacingType       m_OutputSpacing;           // output image spacing
-  OriginPointType   m_OutputOrigin;            // output image origin
-  DirectionType     m_OutputDirection;         // output image direction cosines
-  IndexType         m_OutputStartIndex;        // output start index
+  SpacingType     m_OutputSpacing;             // output image spacing
+  OriginPointType m_OutputOrigin;              // output image origin
+  DirectionType   m_OutputDirection;           // output image direction cosines
+  IndexType       m_OutputStartIndex;          // output start index
 };
 } // end namespace itk
 

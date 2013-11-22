@@ -27,7 +27,8 @@
 namespace itk
 {
 template< typename TImageType, typename TFeatureImageType >
-void VectorThresholdSegmentationLevelSetFunction< TImageType, TFeatureImageType >
+void
+VectorThresholdSegmentationLevelSetFunction< TImageType, TFeatureImageType >
 ::CalculateSpeedImage()
 {
   ImageRegionConstIterator< FeatureImageType >
@@ -42,6 +43,7 @@ void VectorThresholdSegmentationLevelSetFunction< TImageType, TFeatureImageType 
     sit.Set( static_cast< ScalarValueType >( threshold ) );
     }
 }
+
 } // end namespace itk
 
 #endif

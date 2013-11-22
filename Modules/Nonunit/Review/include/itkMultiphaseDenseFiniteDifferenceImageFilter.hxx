@@ -286,6 +286,7 @@ MultiphaseDenseFiniteDifferenceImageFilter< TInputImage, TFeatureImage,
 {
   this->CopyInputToOutput();
 }
+
 } // end namespace itk
 
 #endif

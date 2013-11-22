@@ -80,7 +80,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TInputImage >
-class InPlaceLabelMapFilter:public LabelMapFilter< TInputImage, TInputImage >
+class InPlaceLabelMapFilter : public LabelMapFilter< TInputImage, TInputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -131,7 +131,8 @@ public:
    * determine whether a particular use of the filter is really
    * running in place. Some filters may be able to optimize their
    * operation if the InPlace is true and CanRunInPlace is true. */
-  bool CanRunInPlace() const
+  bool
+  CanRunInPlace() const
   {
     return true; // used to test if TInputImage == TOutputImage. But
                  // if you look above, the superclass declaration
@@ -164,7 +165,8 @@ protected:
    * Return the output label collection image, instead of the input as in the default
    * implementation
    */
-  virtual InputImageType * GetLabelMap()
+  virtual InputImageType *
+  GetLabelMap()
   {
     return this->GetOutput();
   }

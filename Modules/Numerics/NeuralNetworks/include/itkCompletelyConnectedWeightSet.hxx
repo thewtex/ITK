@@ -28,15 +28,14 @@ namespace Statistics
 template<typename TMeasurementVector, typename TTargetVector>
 CompletelyConnectedWeightSet<TMeasurementVector,TTargetVector>
 ::CompletelyConnectedWeightSet()
-{
-}
+{}
 
 template<typename TMeasurementVector, typename TTargetVector>
 void
 CompletelyConnectedWeightSet<TMeasurementVector,TTargetVector>
 ::SetCompleteConnectivity()
 {
-  vnl_matrix<int> c;
+  vnl_matrix<int>    c;
   const unsigned int rows = WeightSetBase<TMeasurementVector, TTargetVector>::GetNumberOfOutputNodes();
   const unsigned int cols = WeightSetBase<TMeasurementVector, TTargetVector>::GetNumberOfInputNodes();
   std::cout << "Connectivity matrix size= " << rows << " " << cols << std::endl;
@@ -46,7 +45,6 @@ CompletelyConnectedWeightSet<TMeasurementVector,TTargetVector>
   this->SetConnectivityMatrix(c);
   this->Modified();
 }
-
 
 /** Print the object */
 template<typename TMeasurementVector, typename TTargetVector>

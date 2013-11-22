@@ -49,11 +49,18 @@ public:
    * representation of data. */
   typedef TInternalType InternalType;
 
-  static inline void Set(TInternalType & output, const TExternalType & input)
-  { output = (TInternalType)vcl_log( (double)input ); }
+  static inline void
+  Set(TInternalType & output, const TExternalType & input)
+  {
+    output = (TInternalType)vcl_log( (double)input );
+  }
 
-  static inline TExternalType Get(const TInternalType & input)
-  { return (TExternalType)vcl_log( (double)input ); }
+  static inline TExternalType
+  Get(const TInternalType & input)
+  {
+    return (TExternalType)vcl_log( (double)input );
+  }
+
 };
 } // end namespace Accessor
 
@@ -67,7 +74,7 @@ public:
  * \ingroup ITKImageAdaptors
  */
 template< typename TImage, typename TOutputPixelType >
-class LogImageAdaptor:public
+class LogImageAdaptor : public
   ImageAdaptor< TImage,
                 Accessor::LogPixelAccessor<
                   typename TImage::PixelType,
@@ -92,11 +99,13 @@ public:
 
 protected:
   LogImageAdaptor() {}
-  virtual ~LogImageAdaptor() {}
+  virtual
+  ~LogImageAdaptor() {}
 
 private:
   LogImageAdaptor(const Self &); //purposely not implemented
   void operator=(const Self &);  //purposely not implemented
+
 };
 } // end namespace itk
 

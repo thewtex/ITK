@@ -26,9 +26,10 @@
 // Usage: [Video Input] [Non-Video Input] [Video Output] [Width] [Height]
 //            [Num Frames] [FpS]
 
-int test_FileListVideoIOFactory( const char* input,
-                                 char* output,
-                                 itk::SizeValueType itkNotUsed(cameraNumber) )
+int
+test_FileListVideoIOFactory( const char* input,
+                             char* output,
+                             itk::SizeValueType itkNotUsed(cameraNumber) )
 {
 
   int ret = EXIT_SUCCESS;
@@ -48,6 +49,7 @@ int test_FileListVideoIOFactory( const char* input,
   std::cout << "Trying to create IO for reading from file..." << std::endl;
   itk::VideoIOBase::Pointer ioReadFile = itk::VideoIOFactory::CreateVideoIO(
       itk::VideoIOFactory::ReadFileMode, input);
+
   if (!ioReadFile)
     {
     std::cerr << "Did not create valid VideoIO for reading from file " << std::endl;
@@ -70,7 +72,8 @@ int test_FileListVideoIOFactory( const char* input,
   return ret;
 }
 
-int itkFileListVideoIOFactoryTest( int argc, char *argv[] )
+int
+itkFileListVideoIOFactoryTest( int argc, char *argv[] )
 {
   if (argc != 8)
     {

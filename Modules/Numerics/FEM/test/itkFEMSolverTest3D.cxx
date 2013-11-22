@@ -16,12 +16,12 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMSolver.h"
 #include "itkFEMSpatialObjectReader.h"
 #include "itkFEMSpatialObjectWriter.h"
 
-int itkFEMSolverTest3D(int argc, char *argv[])
+int
+itkFEMSolverTest3D(int argc, char *argv[])
 {
   if(argc < 1)
     {

@@ -51,7 +51,8 @@ DelaunayConformingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::
 
 // ---------------------------------------------------------------------
 template< typename TInputMesh, typename TOutputMesh >
-void DelaunayConformingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::InitializePriorityQueue()
+void
+DelaunayConformingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::InitializePriorityQueue()
 {
   OutputMeshType *output = this->GetOutput();
 
@@ -65,7 +66,7 @@ void DelaunayConformingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::Initialize
         ++outCellIterator )
     {
     if ( ( edge = dynamic_cast< OutputEdgeCellType * >(
-             outCellIterator.Value() ) ) )
+               outCellIterator.Value() ) ) )
       {
       value = Dyer07Criterion( output, edge->GetQEGeom() );
 
@@ -105,7 +106,8 @@ void DelaunayConformingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::Initialize
 
 // ---------------------------------------------------------------------
 template< typename TInputMesh, typename TOutputMesh >
-void DelaunayConformingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::Process()
+void
+DelaunayConformingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::Process()
 {
   OutputMeshType *output = this->GetOutput();
 
@@ -181,7 +183,8 @@ void DelaunayConformingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::Process()
 
 // ---------------------------------------------------------------------
 template< typename TInputMesh, typename TOutputMesh >
-void DelaunayConformingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::GenerateData()
+void
+DelaunayConformingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::GenerateData()
 {
   this->CopyInputMeshToOutputMesh();
 
@@ -191,8 +194,10 @@ void DelaunayConformingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >::GenerateDa
   this->InitializePriorityQueue();
   this->Process();
 }
+
 template< typename TInputMesh, typename TOutputMesh >
-void DelaunayConformingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
+void
+DelaunayConformingQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);

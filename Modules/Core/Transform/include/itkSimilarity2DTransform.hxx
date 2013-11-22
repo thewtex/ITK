@@ -213,6 +213,7 @@ void
 Similarity2DTransform<TScalar>::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Scale =" << m_Scale  << std::endl;
 }
 

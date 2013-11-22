@@ -45,7 +45,8 @@
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
 
   if( argc < 2 )
@@ -55,8 +56,8 @@ int main( int argc, char * argv [] )
     return -1;
     }
 
-  typedef unsigned char       PixelType;
-  const unsigned int          Dimension = 2;
+  typedef unsigned char PixelType;
+  const unsigned int Dimension = 2;
 
   typedef itk::Image<PixelType, Dimension > ImageType;
 
@@ -77,33 +78,30 @@ int main( int argc, char * argv [] )
     return -1;
     }
 
-
   // Software Guide : BeginCodeSnippet
 
   // Create a List from the scalar image
-  typedef itk::Statistics::ImageToListSampleAdaptor< ImageType >   AdaptorType;
+  typedef itk::Statistics::ImageToListSampleAdaptor< ImageType > AdaptorType;
 
   AdaptorType::Pointer adaptor = AdaptorType::New();
 
   adaptor->SetImage(  reader->GetOutput() );
 
-
   // Define the Measurement vector type from the AdaptorType
-  typedef AdaptorType::MeasurementVectorType  MeasurementVectorType;
+  typedef AdaptorType::MeasurementVectorType MeasurementVectorType;
 
   // Create the K-d tree structure
   typedef itk::Statistics::WeightedCentroidKdTreeGenerator<
-                                      AdaptorType > TreeGeneratorType;
+      AdaptorType > TreeGeneratorType;
   TreeGeneratorType::Pointer treeGenerator = TreeGeneratorType::New();
 
   treeGenerator->SetSample( adaptor );
   treeGenerator->SetBucketSize( 16 );
   treeGenerator->Update();
 
-
   typedef TreeGeneratorType::KdTreeType TreeType;
   typedef itk::Statistics::KdTreeBasedKmeansEstimator< TreeType >
-                                        EstimatorType;
+    EstimatorType;
 
   EstimatorType::Pointer estimator = EstimatorType::New();
 

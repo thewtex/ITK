@@ -31,7 +31,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class NonLinearOptimizer:public Optimizer
+class NonLinearOptimizer : public Optimizer
 
 {
 public:
@@ -53,11 +53,13 @@ public:
 
 protected:
   NonLinearOptimizer() {}
-  virtual ~NonLinearOptimizer() {}
+  virtual
+  ~NonLinearOptimizer() {}
 
 private:
   NonLinearOptimizer(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
 };
 } // end namespace itk
 

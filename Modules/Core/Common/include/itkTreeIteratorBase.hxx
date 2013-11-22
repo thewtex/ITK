@@ -78,9 +78,9 @@ TreeIteratorBase< TTreeType >::TreeIteratorBase(const TTreeType *tree, const Tre
 template< typename TTreeType >
 const typename TreeIteratorBase< TTreeType >::ValueType &
 TreeIteratorBase< TTreeType >::Get() const
-{
+  {
   return m_Position->Get();
-}
+  }
 
 /** Set the current value of the node */
 template< typename TTreeType >
@@ -146,7 +146,8 @@ TreeIteratorBase< TTreeType >::Add(int itkNotUsed(childPosition), ValueType elem
 
     // signal AddEvent
     TreeIteratorBase< TTreeType > *childIterator = Clone();
-    childIterator->m_Position = dynamic_cast< TreeNodeType * >( m_Position->GetChild( m_Position->ChildPosition(node) ) );
+    childIterator->m_Position =
+      dynamic_cast< TreeNodeType * >( m_Position->GetChild( m_Position->ChildPosition(node) ) );
     // signal "child has been added deleted"
     m_Tree->InvokeEvent( TreeAddEvent< TTreeType >(*childIterator) );
     delete childIterator;
@@ -350,18 +351,19 @@ TreeIteratorBase< TTreeType >::Children()
 template< typename TTreeType >
 const typename TreeIteratorBase< TTreeType >::TreeNodeType *
 TreeIteratorBase< TTreeType >::GetParent() const
-{
+  {
   if ( m_Position == NULL )
     {
     return NULL;
     }
 
   return m_Position->GetParent();
-}
+  }
 
 /** Return the list of parents */
 template< typename TTreeType >
-TreeIteratorBase< TTreeType > *TreeIteratorBase< TTreeType >::Parents()
+TreeIteratorBase< TTreeType > *
+TreeIteratorBase< TTreeType >::Parents()
 {
   itkGenericOutputMacro("Not implemented yet");
   ::itk::ExceptionObject e_(__FILE__, __LINE__, "Not implemented yet", ITK_LOCATION);
@@ -371,7 +373,8 @@ TreeIteratorBase< TTreeType > *TreeIteratorBase< TTreeType >::Parents()
 
 /** Go to a child */
 template< typename TTreeType >
-bool TreeIteratorBase< TTreeType >::GoToChild(ChildIdentifier number)
+bool
+TreeIteratorBase< TTreeType >::GoToChild(ChildIdentifier number)
 {
   if ( m_Position == NULL )
     {
@@ -390,7 +393,8 @@ bool TreeIteratorBase< TTreeType >::GoToChild(ChildIdentifier number)
 
 /** Go to a parent */
 template< typename TTreeType >
-bool TreeIteratorBase< TTreeType >::GoToParent()
+bool
+TreeIteratorBase< TTreeType >::GoToParent()
 {
   if ( m_Position == NULL )
     {
@@ -408,7 +412,8 @@ bool TreeIteratorBase< TTreeType >::GoToParent()
 
 /** Get a child given a number */
 template< typename TTreeType >
-TreeIteratorBase< TTreeType > *TreeIteratorBase< TTreeType >::GetChild(int number) const
+TreeIteratorBase< TTreeType > *
+TreeIteratorBase< TTreeType >::GetChild(int number) const
 {
   if ( !m_Position )
     {
@@ -428,7 +433,8 @@ TreeIteratorBase< TTreeType > *TreeIteratorBase< TTreeType >::GetChild(int numbe
 
 /** Count the number of nodes from the beginning */
 template< typename TTreeType >
-int TreeIteratorBase< TTreeType >::Count()
+int
+TreeIteratorBase< TTreeType >::Count()
 {
   int size = 0;
 
@@ -448,33 +454,33 @@ int TreeIteratorBase< TTreeType >::Count()
 template< typename TTreeType >
 typename TreeIteratorBase< TTreeType >::TreeNodeType *
 TreeIteratorBase< TTreeType >::GetNode()
-{
+  {
   return const_cast< TreeNodeType * >( m_Position );
-}
+  }
 
 /** Get the node pointed by the iterator */
 template< typename TTreeType >
 const typename TreeIteratorBase< TTreeType >::TreeNodeType *
 TreeIteratorBase< TTreeType >::GetNode() const
-{
+  {
   return m_Position;
-}
+  }
 
 /** Get the root */
 template< typename TTreeType >
 typename TreeIteratorBase< TTreeType >::TreeNodeType *
 TreeIteratorBase< TTreeType >::GetRoot()
-{
+  {
   return const_cast< TreeNodeType * >( m_Root );
-}
+  }
 
 /** Get the root (const) */
 template< typename TTreeType >
 const typename TreeIteratorBase< TTreeType >::TreeNodeType *
 TreeIteratorBase< TTreeType >::GetRoot() const
-{
+  {
   return m_Root;
-}
+  }
 
 /** Remove a specific node (and its child nodes!) */
 template< typename TTreeType >
@@ -527,6 +533,7 @@ TreeIteratorBase< TTreeType >::GetTree() const
 {
   return m_Tree;
 }
+
 } // namespace itk
 
 #endif

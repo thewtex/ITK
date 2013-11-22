@@ -33,7 +33,7 @@ namespace itk
  * \ingroup ITKSpatialObjects
  */
 template< unsigned int TDimension = 3 >
-class BoxSpatialObject:
+class BoxSpatialObject :
   public SpatialObject< TDimension >
 {
 public:
@@ -95,6 +95,7 @@ protected:
 
   /** Print the object informations in a stream. */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end namespace itk
 

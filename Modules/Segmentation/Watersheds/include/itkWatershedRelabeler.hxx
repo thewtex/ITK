@@ -26,7 +26,7 @@ namespace itk
 namespace watershed
 {
 template< typename TScalar, unsigned int TImageDimension >
-Relabeler< TScalar, TImageDimension >::Relabeler():m_FloodLevel(0.0)
+Relabeler< TScalar, TImageDimension >::Relabeler() : m_FloodLevel(0.0)
 {
   typename ImageType::Pointer img =
     static_cast< ImageType * >( this->MakeOutput(0).GetPointer() );
@@ -43,7 +43,8 @@ Relabeler< TScalar, TImageDimension >
 }
 
 template< typename TScalar, unsigned int TImageDimension >
-void Relabeler< TScalar, TImageDimension >
+void
+Relabeler< TScalar, TImageDimension >
 ::GenerateData()
 {
   this->UpdateProgress(0.0);
@@ -96,7 +97,8 @@ void Relabeler< TScalar, TImageDimension >
 }
 
 template< typename TScalar, unsigned int VImageDimension >
-void Relabeler< TScalar, VImageDimension >
+void
+Relabeler< TScalar, VImageDimension >
 ::GenerateInputRequestedRegion()
 {
   // call the superclass' implementation of this method
@@ -118,7 +120,8 @@ void Relabeler< TScalar, VImageDimension >
 }
 
 template< typename TScalar, unsigned int TImageDimension >
-void Relabeler< TScalar, TImageDimension >
+void
+Relabeler< TScalar, TImageDimension >
 ::GenerateOutputRequestedRegion(DataObject *output)
 {
   // Only the Image output need to be propagated through.
@@ -144,14 +147,16 @@ void Relabeler< TScalar, TImageDimension >
 }
 
 template< typename TScalar, unsigned int TImageDimension >
-void Relabeler< TScalar, TImageDimension >
+void
+Relabeler< TScalar, TImageDimension >
 ::GraftOutput(ImageType *graft)
 {
   this->GraftNthOutput(0, graft);
 }
 
 template< typename TScalar, unsigned int TImageDimension >
-void Relabeler< TScalar, TImageDimension >
+void
+Relabeler< TScalar, TImageDimension >
 ::GraftNthOutput(unsigned int idx, ImageType *graft)
 {
   typedef typename ImageType::Pointer OutputImagePointer;
@@ -182,8 +187,10 @@ Relabeler< TScalar, TImageDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "FloodLevel: " << m_FloodLevel << std::endl;
 }
+
 } // end namespace watershed
 } // end namespace itk
 

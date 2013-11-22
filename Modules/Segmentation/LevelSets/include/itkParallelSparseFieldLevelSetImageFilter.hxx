@@ -91,20 +91,20 @@ template< typename TInputImage, typename TOutputImage >
 typename ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >::ValueType
 ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 ::m_ValueOne = NumericTraits< typename ParallelSparseFieldLevelSetImageFilter< TInputImage,
-                                                                                   TOutputImage >::ValueType >::OneValue();
+                                                                               TOutputImage >::ValueType >::OneValue();
 
 template< typename TInputImage, typename TOutputImage >
 typename ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >::ValueType
 ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 ::m_ValueZero = NumericTraits< typename ParallelSparseFieldLevelSetImageFilter< TInputImage,
-                                                                                    TOutputImage >::ValueType >::ZeroValue();
+                                                                                TOutputImage >::ValueType >::ZeroValue();
 
 template< typename TInputImage, typename TOutputImage >
 typename ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >::StatusType
 ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 ::m_StatusNull = NumericTraits< typename ParallelSparseFieldLevelSetImageFilter< TInputImage,
-                                                                                     TOutputImage >::StatusType >::
-                 NonpositiveMin();
+                                                                                 TOutputImage >::StatusType >::
+  NonpositiveMin();
 
 template< typename TInputImage, typename TOutputImage >
 typename ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >::StatusType
@@ -244,7 +244,7 @@ ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
   // m_StatusBoundaryPixel values.  Uses the face calculator to find all of the
   // region faces.
   typedef NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< StatusImageType >
-  BFCType;
+    BFCType;
 
   BFCType faceCalculator;
   typename BFCType::FaceListType faceList;
@@ -1016,7 +1016,6 @@ ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
     for ( ThreadIdType ThreadId = 0; ThreadId < m_NumOfThreads; ThreadId++ )
       {
 
-
       delete[] m_Data[ThreadId].m_ZHistogram;
 
       if ( m_Data[ThreadId].globalData != 0 )
@@ -1450,7 +1449,7 @@ ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
       for ( i = 0; i < static_cast< unsigned int >( ImageDimension ); ++i )
         {
         offset[i] = ( offset[i] * outputIt.GetCenterPixel() )
-                    / ( norm_grad_phi_squared + MIN_NORM );
+          / ( norm_grad_phi_squared + MIN_NORM );
         }
 
       layerIt->m_Value = df->ComputeUpdate (outputIt, (void *)m_Data[ThreadId].globalData, offset);
@@ -1588,8 +1587,8 @@ ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
   PixelType centerValue;
 
   typename TOutputImage::SizeValueType counter = 0;
-  float             new_value;
-  float             rms_change_accumulator = m_ValueZero;
+  float new_value;
+  float rms_change_accumulator = m_ValueZero;
 
   unsigned int Neighbor_Size = m_NeighborList.GetSize();
 
@@ -2506,12 +2505,12 @@ ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
   if ( ThreadId < m_NumOfThreads - 1 ) // this is NOT the last thread
     {
     threadRegionSize[m_SplitAxis]  = static_cast< unsigned int >( 1.0 * ( ThreadId + 1 ) * m_ZSize / m_NumOfThreads )
-                                     - static_cast< unsigned int >( 1.0 * ThreadId * m_ZSize / m_NumOfThreads );
+      - static_cast< unsigned int >( 1.0 * ThreadId * m_ZSize / m_NumOfThreads );
     }
   else
     {
     threadRegionSize[m_SplitAxis]  = m_ZSize
-                                     - static_cast< unsigned int >( 1.0 * ThreadId * m_ZSize / m_NumOfThreads );
+      - static_cast< unsigned int >( 1.0 * ThreadId * m_ZSize / m_NumOfThreads );
     }
   ThreadRegion.SetSize(threadRegionSize);
 }
@@ -2571,7 +2570,7 @@ ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
     if ( m_Boundary[ThreadId - 1] == m_Boundary[ThreadId] )
       {
       m_Data[ThreadId].m_SemaphoreArrayNumber =  1
-                                                - m_Data[ThreadId].m_SemaphoreArrayNumber;
+        - m_Data[ThreadId].m_SemaphoreArrayNumber;
       return;
       }
     }
@@ -2620,6 +2619,7 @@ ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
   ThreadIdType ThreadId)
 {
   ThreadData &td = m_Data[ThreadId];
+
   td.m_Lock[SemaphoreArrayNumber].Lock();
   ++td.m_Semaphore[SemaphoreArrayNumber];
   td.m_Condition[SemaphoreArrayNumber]->Signal();
@@ -2632,10 +2632,11 @@ ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 ::WaitForNeighbor(unsigned int SemaphoreArrayNumber, ThreadIdType ThreadId)
 {
   ThreadData &td = m_Data[ThreadId];
+
   td.m_Lock[SemaphoreArrayNumber].Lock();
   if ( td.m_Semaphore[SemaphoreArrayNumber] == 0 )
     {
-    td.m_Condition[SemaphoreArrayNumber]->Wait( & td.m_Lock[SemaphoreArrayNumber]);
+    td.m_Condition[SemaphoreArrayNumber]->Wait( &td.m_Lock[SemaphoreArrayNumber]);
     }
   --td.m_Semaphore[SemaphoreArrayNumber];
   td.m_Lock[SemaphoreArrayNumber].Unlock();
@@ -2657,6 +2658,7 @@ ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
   Superclass::PrintSelf(os, indent);
 
   unsigned int i;
+
   os << indent << "m_NumberOfLayers: " << NumericTraits< StatusType >::PrintType( this->GetNumberOfLayers() )
      << std::endl;
   os << indent << "m_IsoSurfaceValue: " << this->GetIsoSurfaceValue() << std::endl;
@@ -2676,6 +2678,7 @@ ParallelSparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

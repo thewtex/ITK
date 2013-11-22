@@ -38,7 +38,7 @@ namespace itk
  */
 
 template< typename TOutputPath >
-class PathSource:public ProcessObject
+class PathSource : public ProcessObject
 {
 public:
   /** Standard class typedefs. */
@@ -172,7 +172,8 @@ public:
 
 protected:
   PathSource();
-  virtual ~PathSource() {}
+  virtual
+  ~PathSource() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   // Inherit the empty ProcessObject::GenerateData()
@@ -183,6 +184,7 @@ protected:
 private:
   PathSource(const Self &);     //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

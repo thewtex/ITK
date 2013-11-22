@@ -27,12 +27,11 @@ template< typename TOutputImage >
 GenerateImageSource< TOutputImage >
 ::GenerateImageSource()
   : m_Spacing( 1.0 ),
-    m_Origin( 0.0 )
+  m_Origin( 0.0 )
 {
   this->m_Size.Fill( 64 ); // abitrary default size
   this->m_Direction.SetIdentity();
 }
-
 
 //----------------------------------------------------------------------------
 template< typename TOutputImage >
@@ -68,6 +67,7 @@ GenerateImageSource< TOutputImage >
   os << indent << "Direction: " << this->GetDirection() << std::endl;
 
 }
+
 } // end namespace itk
 
 #endif // __itkGenerateImageSour_hxx

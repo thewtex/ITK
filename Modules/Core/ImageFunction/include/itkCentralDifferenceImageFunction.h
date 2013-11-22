@@ -77,7 +77,7 @@ template<
   typename TCoordRep = float,
   typename TOutputType = CovariantVector<double, TInputImage::ImageDimension >
   >
-class CentralDifferenceImageFunction:
+class CentralDifferenceImageFunction :
   public ImageFunction< TInputImage,
                         TOutputType,
                         TCoordRep >
@@ -88,12 +88,12 @@ public:
                       TInputImage::ImageDimension);
 
   /** Standard class typedefs. */
-  typedef CentralDifferenceImageFunction   Self;
+  typedef CentralDifferenceImageFunction Self;
   typedef ImageFunction< TInputImage,
                          TOutputType,
                          TCoordRep >       Superclass;
-  typedef SmartPointer< Self >             Pointer;
-  typedef SmartPointer< const Self >       ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(CentralDifferenceImageFunction, ImageFunction);
@@ -215,39 +215,47 @@ private:
   CentralDifferenceImageFunction(const Self &); //purposely not implemented
   void operator=(const Self &);                 //purposely not implemented
 
-
   /** Structure for specialization of Evaulate* methods on OutputType */
   template<typename T>
   struct OutputTypeSpecializationStructType
-  {
+    {
     typedef T Type;
-  };
+    };
 
   /** Specialized versions of EvaluteAtIndex() method to handle scalar or vector pixel types.*/
   template< typename Type >
-  inline void EvaluateAtIndexSpecialized( const IndexType & index, OutputType & derivative, OutputTypeSpecializationStructType<OutputType>) const;
+  inline void EvaluateAtIndexSpecialized( const IndexType & index, OutputType & derivative,
+                                          OutputTypeSpecializationStructType<OutputType>) const;
+
   template< typename Type >
-  inline void EvaluateAtIndexSpecialized( const IndexType & index, OutputType & derivative, OutputTypeSpecializationStructType<Type>) const;
+  inline void EvaluateAtIndexSpecialized( const IndexType & index, OutputType & derivative,
+                                          OutputTypeSpecializationStructType<Type>) const;
 
   /** Specialized versions of EvaluteAtContinuousIndex() method to handle scalar or vector pixel types.*/
   template< typename Type >
-  inline void EvaluateAtContinuousIndexSpecialized( const ContinuousIndexType & index, OutputType & derivative, OutputTypeSpecializationStructType<OutputType>) const;
+  inline void EvaluateAtContinuousIndexSpecialized( const ContinuousIndexType & index, OutputType & derivative,
+                                                    OutputTypeSpecializationStructType<OutputType>) const;
+
   template< typename Type >
-  inline void EvaluateAtContinuousIndexSpecialized( const ContinuousIndexType & index, OutputType & derivative, OutputTypeSpecializationStructType<Type>) const;
+  inline void EvaluateAtContinuousIndexSpecialized( const ContinuousIndexType & index, OutputType & derivative,
+                                                    OutputTypeSpecializationStructType<Type>) const;
 
   /** Specialized versions of Evalute() method to handle scalar or vector pixel types.*/
   // NOTE: for some unknown reason, making these methods inline (as those above are inlined) makes them run *slower*.
   template< typename Type >
-  void EvaluateSpecialized( const PointType & point, OutputType & derivative, OutputTypeSpecializationStructType<OutputType>) const;
+  void EvaluateSpecialized( const PointType & point, OutputType & derivative,
+                            OutputTypeSpecializationStructType<OutputType>) const;
+
   template< typename Type >
-  void EvaluateSpecialized( const PointType & point, OutputType & derivative, OutputTypeSpecializationStructType<Type>) const;
+  void EvaluateSpecialized( const PointType & point, OutputType & derivative,
+                            OutputTypeSpecializationStructType<Type>) const;
 
   // flag to take or not the image direction into account
   // when computing the derivatives.
   bool m_UseImageDirection;
 
   // interpolator
-  InterpolatorPointer   m_Interpolator;
+  InterpolatorPointer m_Interpolator;
 };
 } // end namespace itk
 

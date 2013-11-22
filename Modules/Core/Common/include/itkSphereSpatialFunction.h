@@ -32,7 +32,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< unsigned int VImageDimension = 3, typename TInput = Point< double, VImageDimension > >
-class SphereSpatialFunction:
+class SphereSpatialFunction :
   public InteriorExteriorSpatialFunction< VImageDimension, TInput >
 {
 public:
@@ -67,7 +67,8 @@ public:
 
 protected:
   SphereSpatialFunction();
-  virtual ~SphereSpatialFunction();
+  virtual
+  ~SphereSpatialFunction();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

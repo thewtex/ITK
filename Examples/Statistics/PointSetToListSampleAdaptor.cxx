@@ -37,7 +37,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkPointSetToListSampleAdaptor.h"
 // Software Guide : EndCodeSnippet
@@ -54,7 +53,8 @@
 #include "itkVector.h"
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -126,7 +126,7 @@ int main()
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::PointSetToListSampleAdaptor<
-                                                     PointSetType > SampleType;
+      PointSetType > SampleType;
   SampleType::Pointer sample = SampleType::New();
   // Software Guide : EndCodeSnippet
 

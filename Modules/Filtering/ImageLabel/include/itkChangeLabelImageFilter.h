@@ -58,7 +58,8 @@ public:
 
   typedef std::map< TInput, TOutput > ChangeMapType;
 
-  bool operator!=(const ChangeLabel & other) const
+  bool
+  operator!=(const ChangeLabel & other) const
   {
     if ( m_ChangeMap != other.m_ChangeMap )
       {
@@ -67,32 +68,38 @@ public:
     return false;
   }
 
-  bool operator==(const ChangeLabel & other) const
+  bool
+  operator==(const ChangeLabel & other) const
   {
     return !( *this != other );
   }
 
-  TOutput GetChange(const TInput & original)
+  TOutput
+  GetChange(const TInput & original)
   {
     return m_ChangeMap[original];
   }
 
-  void SetChange(const TInput & original, const TOutput & result)
+  void
+  SetChange(const TInput & original, const TOutput & result)
   {
     m_ChangeMap[original] = result;
   }
 
-  void SetChangeMap(const ChangeMapType & changeMap)
+  void
+  SetChangeMap(const ChangeMapType & changeMap)
   {
     m_ChangeMap = changeMap;
   }
 
-  void ClearChangeMap()
+  void
+  ClearChangeMap()
   {
     m_ChangeMap.clear();
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     const typename ChangeMapType::const_iterator it = m_ChangeMap.find(A);
     if ( it != m_ChangeMap.end() )
@@ -108,7 +115,7 @@ private:
 }
 
 template< typename TInputImage, typename TOutputImage >
-class ChangeLabelImageFilter:
+class ChangeLabelImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::ChangeLabel<
@@ -160,12 +167,14 @@ public:
 
 protected:
   ChangeLabelImageFilter();
-  virtual ~ChangeLabelImageFilter() {}
+  virtual
+  ~ChangeLabelImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   ChangeLabelImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
+
 };
 } // end namespace itk
 

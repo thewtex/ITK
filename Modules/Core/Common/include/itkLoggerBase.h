@@ -34,7 +34,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT LoggerBase:public Object
+class ITKCommon_EXPORT LoggerBase : public Object
 {
 public:
 
@@ -99,7 +99,8 @@ public:
   /** Set the priority level for the current logger. Only messages that have
     * priorities equal or greater than the one set here will be posted to the
     * current outputs */
-  virtual void SetPriorityLevel(PriorityLevelType level)
+  virtual void
+  SetPriorityLevel(PriorityLevelType level)
   {
     m_PriorityLevel = level;
   }
@@ -107,17 +108,20 @@ public:
   /** Get the priority level for the current logger. Only messages that have
    * priorities equal or greater than the one set here will be posted to the
    * current outputs */
-  virtual PriorityLevelType GetPriorityLevel() const
+  virtual PriorityLevelType
+  GetPriorityLevel() const
   {
     return m_PriorityLevel;
   }
 
-  virtual void SetLevelForFlushing(PriorityLevelType level)
+  virtual void
+  SetLevelForFlushing(PriorityLevelType level)
   {
     m_LevelForFlushing = level;
   }
 
-  virtual PriorityLevelType GetLevelForFlushing() const
+  virtual PriorityLevelType
+  GetLevelForFlushing() const
   {
     return m_LevelForFlushing;
   }
@@ -128,32 +132,38 @@ public:
   virtual void Write(PriorityLevelType level, std::string const & content);
 
   /** Helper methods */
-  void Debug(std::string const & message)
+  void
+  Debug(std::string const & message)
   {
     this->Write (LoggerBase::DEBUG, message);
   }
 
-  void Info(std::string const & message)
+  void
+  Info(std::string const & message)
   {
     this->Write (LoggerBase::INFO, message);
   }
 
-  void Warning(std::string const & message)
+  void
+  Warning(std::string const & message)
   {
     this->Write (LoggerBase::WARNING, message);
   }
 
-  void Critical(std::string const & message)
+  void
+  Critical(std::string const & message)
   {
     this->Write (LoggerBase::CRITICAL, message);
   }
 
-  void Error(std::string const & message)
+  void
+  Error(std::string const & message)
   {
     this->Write (LoggerBase::CRITICAL, message);
   }
 
-  void Fatal(std::string const & message)
+  void
+  Fatal(std::string const & message)
   {
     this->Write (LoggerBase::FATAL, message);
   }
@@ -166,7 +176,8 @@ protected:
   LoggerBase();
 
   /** Destructor */
-  virtual ~LoggerBase();
+  virtual
+  ~LoggerBase();
 
   /** Print contents of a LoggerBase */
   virtual void PrintSelf(std::ostream & os, Indent indent) const;

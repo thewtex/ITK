@@ -38,7 +38,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TMesh >
-class QuadEdgeMeshTopologyChecker:public Object
+class QuadEdgeMeshTopologyChecker : public Object
 {
 public:
   // Standard types
@@ -53,8 +53,8 @@ public:
   typedef typename MeshType::CellsContainerConstIterator    CellsContainerConstIterator;
   typedef QuadEdgeMeshBoundaryEdgesMeshFunction< MeshType > BoundaryEdges;
 
-  typedef typename MeshType::PointIdentifier                PointIdentifier;
-  typedef typename MeshType::CellIdentifier                 CellIdentifier;
+  typedef typename MeshType::PointIdentifier PointIdentifier;
+  typedef typename MeshType::CellIdentifier  CellIdentifier;
 
 public:
   itkNewMacro(Self);
@@ -62,8 +62,8 @@ public:
 
   itkSetConstObjectMacro(Mesh, MeshType);
 
-  typedef ::itk::IdentifierType     IdentifierType;
-  typedef ::itk::OffsetValueType    OffsetValueType;
+  typedef::itk::IdentifierType  IdentifierType;
+  typedef::itk::OffsetValueType OffsetValueType;
 
   itkSetMacro(ExpectedNumberOfPoints, PointIdentifier);
   itkSetMacro(ExpectedNumberOfEdges, CellIdentifier);
@@ -86,11 +86,11 @@ private:
 
   MeshPointer m_Mesh;
 
-  PointIdentifier  m_ExpectedNumberOfPoints;
-  CellIdentifier   m_ExpectedNumberOfEdges;
-  CellIdentifier   m_ExpectedNumberOfFaces;
-  CellIdentifier   m_ExpectedNumberOfBoundaries;
-  OffsetValueType  m_ExpectedGenus;
+  PointIdentifier m_ExpectedNumberOfPoints;
+  CellIdentifier  m_ExpectedNumberOfEdges;
+  CellIdentifier  m_ExpectedNumberOfFaces;
+  CellIdentifier  m_ExpectedNumberOfBoundaries;
+  OffsetValueType m_ExpectedGenus;
 };
 }
 

@@ -33,16 +33,18 @@
 ///
 /// Also it is check to see if the u an v are both less then
 /// epsilon for the type
-static bool IsEqualTolerant(const float lm, const float rm, double tol) {
+static bool
+IsEqualTolerant(const float lm, const float rm, double tol) {
   tol = vcl_fabs(tol);
-  float temp = vcl_fabs(lm - rm);
-  return  temp <= tol*vcl_fabs(lm) ||
-    temp <= tol*vcl_fabs(rm) ||
-    (vcl_fabs(lm) < vcl_numeric_limits<float>::epsilon() &&
-     vcl_fabs(rm) < vcl_numeric_limits<float>::epsilon());
- }
+  float              temp = vcl_fabs(lm - rm);
+  return temp <= tol*vcl_fabs(lm) ||
+         temp <= tol*vcl_fabs(rm) ||
+         (vcl_fabs(lm) < vcl_numeric_limits<float>::epsilon() &&
+          vcl_fabs(rm) < vcl_numeric_limits<float>::epsilon() );
+}
 
-int itkDCMTKSeriesStreamReadImageWrite( int argc, char* argv[] )
+int
+itkDCMTKSeriesStreamReadImageWrite( int argc, char* argv[] )
 {
   if( argc < 6 )
     {
@@ -52,11 +54,10 @@ int itkDCMTKSeriesStreamReadImageWrite( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::Image<unsigned short,3>            ImageType;
-  typedef itk::ImageSeriesReader< ImageType >     ReaderType;
-  typedef itk::DCMTKImageIO                       ImageIOType;
-  typedef itk::DCMTKSeriesFileNames               SeriesFileNames;
-
+  typedef itk::Image<unsigned short,3>        ImageType;
+  typedef itk::ImageSeriesReader< ImageType > ReaderType;
+  typedef itk::DCMTKImageIO                   ImageIOType;
+  typedef itk::DCMTKSeriesFileNames           SeriesFileNames;
 
   unsigned int numberOfDataPieces = 4;
 
@@ -65,7 +66,6 @@ int itkDCMTKSeriesStreamReadImageWrite( int argc, char* argv[] )
   expectedSpacing[0] = atof(argv[3]);
   expectedSpacing[1] = atof(argv[4]);
   expectedSpacing[2] = atof(argv[5]);
-
 
   bool forceNoStreaming = true;
   if( argc > 6 )
@@ -78,7 +78,7 @@ int itkDCMTKSeriesStreamReadImageWrite( int argc, char* argv[] )
 
   bool expectedToStream = !forceNoStreaming;
 
-  ImageIOType::Pointer gdcmIO = ImageIOType::New();
+  ImageIOType::Pointer     gdcmIO = ImageIOType::New();
   SeriesFileNames::Pointer filenameGenerator = SeriesFileNames::New();
   filenameGenerator->SetInputDirectory( argv[1] );
 
@@ -89,7 +89,6 @@ int itkDCMTKSeriesStreamReadImageWrite( int argc, char* argv[] )
 
   reader->SetFileNames( filenames );
   reader->SetImageIO( gdcmIO );
-
 
   typedef itk::PipelineMonitorImageFilter<ImageType> MonitorFilter;
   MonitorFilter::Pointer monitor = MonitorFilter::New();
@@ -155,7 +154,6 @@ int itkDCMTKSeriesStreamReadImageWrite( int argc, char* argv[] )
   std::cout << "Spacing: " << reader->GetOutput()->GetSpacing() << std::endl;
   std::cout << "Expected Spacing: " << expectedSpacing << std::endl;
 
-
   ImageType::SpacingType spacing = reader->GetOutput()->GetSpacing();
 
   // we only give 4 bits of tolerance, IEEE float a 24-bit mantissa
@@ -163,12 +161,11 @@ int itkDCMTKSeriesStreamReadImageWrite( int argc, char* argv[] )
 
   if (!IsEqualTolerant(spacing[0], expectedSpacing[0], percentTolerance) ||
       !IsEqualTolerant(spacing[1], expectedSpacing[1], percentTolerance) ||
-      !IsEqualTolerant(spacing[2], expectedSpacing[2], percentTolerance))
+      !IsEqualTolerant(spacing[2], expectedSpacing[2], percentTolerance) )
     {
     std::cerr << "Spacing does not match expected" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   typedef itk::ImageFileWriter< ImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();

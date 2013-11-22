@@ -19,7 +19,8 @@
 #include "itkQuadEdgeMeshPoint.h"
 #include "itkMesh.h"
 
-int itkQuadEdgeMeshPointTest1( int , char* [] )
+int
+itkQuadEdgeMeshPointTest1( int , char* [] )
 {
   std::cout << "Testing points..." << std::endl;
 
@@ -27,9 +28,9 @@ int itkQuadEdgeMeshPointTest1( int , char* [] )
   // These typedefs are taken from a traditional itk mesh just
   // to get definitions that are consistent with the derived class.
   //
-  typedef itk::Mesh< float, 3 >                   NonQuadEdgeMeshType;
-  typedef NonQuadEdgeMeshType::PointIdentifier    PointIdentifier;
-  typedef NonQuadEdgeMeshType::CellIdentifier     FaceIdentifier;
+  typedef itk::Mesh< float, 3 >                NonQuadEdgeMeshType;
+  typedef NonQuadEdgeMeshType::PointIdentifier PointIdentifier;
+  typedef NonQuadEdgeMeshType::CellIdentifier  FaceIdentifier;
 
   typedef bool PrimalDataType;
   typedef bool DualDataType;
@@ -37,14 +38,13 @@ int itkQuadEdgeMeshPointTest1( int , char* [] )
   const bool ThisIsDual = true;
 
   typedef itk::GeometricalQuadEdge<
-    PointIdentifier, FaceIdentifier,
-    PrimalDataType, DualDataType,
-    ThisIsDual >                             QuadEdgeType;
+      PointIdentifier, FaceIdentifier,
+      PrimalDataType, DualDataType,
+      ThisIsDual >                             QuadEdgeType;
 
-  typedef itk::QuadEdgeMeshPoint< float, 3, QuadEdgeType >  PointType;
+  typedef itk::QuadEdgeMeshPoint< float, 3, QuadEdgeType > PointType;
 
-  typedef PointType::Superclass             SuperclassPointType;
-
+  typedef PointType::Superclass SuperclassPointType;
 
   PointType p0; // Test default constructor
 

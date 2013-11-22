@@ -26,7 +26,6 @@
 
 #include "itkSimpleFastMutexLock.h"
 
-
 namespace itk
 {
 /** \class MattesMutualInformationImageToImageMetric
@@ -111,7 +110,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template <typename TFixedImage, typename TMovingImage>
-class MattesMutualInformationImageToImageMetric:
+class MattesMutualInformationImageToImageMetric :
   public ImageToImageMetric<TFixedImage, TMovingImage>
 {
 public:
@@ -215,7 +214,8 @@ public:
   itkBooleanMacro(UseExplicitPDFDerivatives);
 
   /** The marginal PDFs are stored as std::vector. */
-  typedef double PDFValueType; //NOTE:  floating point precision is not as stable.  Double precision proves faster and more robust in real-world testing.
+  typedef double PDFValueType; //NOTE:  floating point precision is not as stable.  Double precision proves faster and more robust
+                               // in real-world testing.
 
   /** Typedef for the joint PDF and PDF derivatives are stored as ITK Images. */
   typedef Image<PDFValueType, 2> JointPDFType;
@@ -225,14 +225,15 @@ public:
    * Get the internal JointPDF image that was used in
    * creating the metric value.
    */
-  const typename JointPDFType::Pointer GetJointPDF () const
-    {
+  const typename JointPDFType::Pointer
+  GetJointPDF() const
+  {
     if( this->m_MMIMetricPerThreadVariables == NULL )
       {
       return JointPDFType::Pointer(NULL);
       }
     return this->m_MMIMetricPerThreadVariables[0].JointPDF;
-    }
+  }
 
   /**
    * Get the internal JointPDFDeriviative image that was used in
@@ -240,19 +241,21 @@ public:
    * This is only created when UseExplicitPDFDerivatives is ON, and
    * derivatives are requested.
    */
-  const typename JointPDFDerivativesType::Pointer GetJointPDFDerivatives () const
-    {
+  const typename JointPDFDerivativesType::Pointer
+  GetJointPDFDerivatives() const
+  {
     if( this->m_MMIMetricPerThreadVariables == NULL )
       {
       return JointPDFDerivativesType::Pointer(NULL);
       }
     return this->m_MMIMetricPerThreadVariables[0].JointPDFDerivatives;
-    }
+  }
 
 protected:
 
   MattesMutualInformationImageToImageMetric();
-  virtual ~MattesMutualInformationImageToImageMetric();
+  virtual
+  ~MattesMutualInformationImageToImageMetric();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
@@ -280,24 +283,28 @@ private:
 
   /** Compute PDF derivative contribution for each parameter. */
   void ComputePDFDerivatives(ThreadIdType threadID, unsigned int sampleNumber, int movingImageParzenWindowIndex,
-                                     const ImageDerivativesType
-                                     &  movingImageGradientValue,
-                                     PDFValueType cubicBSplineDerivativeValue) const;
+                             const ImageDerivativesType
+                             &  movingImageGradientValue,
+                             PDFValueType cubicBSplineDerivativeValue) const;
 
   virtual void GetValueThreadPreProcess(ThreadIdType threadID, bool withinSampleThread) const;
+
   virtual void GetValueThreadPostProcess(ThreadIdType threadID, bool withinSampleThread) const;
+
   //NOTE:  The signature in base class requires that movingImageValue is of type double
   virtual bool GetValueThreadProcessSample(ThreadIdType threadID, SizeValueType fixedImageSample,
-                                                  const MovingImagePointType & mappedPoint,
-                                                  double movingImageValue) const;
+                                           const MovingImagePointType & mappedPoint,
+                                           double movingImageValue) const;
 
   virtual void GetValueAndDerivativeThreadPreProcess( ThreadIdType threadID, bool withinSampleThread) const;
+
   virtual void GetValueAndDerivativeThreadPostProcess( ThreadIdType threadID, bool withinSampleThread) const;
+
   //NOTE:  The signature in base class requires that movingImageValue is of type double
   virtual bool GetValueAndDerivativeThreadProcessSample(ThreadIdType threadID, SizeValueType fixedImageSample,
-                                                               const MovingImagePointType & mappedPoint,
-                                                               double movingImageValue, const ImageDerivativesType &
-                                                               movingImageGradientValue) const;
+                                                        const MovingImagePointType & mappedPoint,
+                                                        double movingImageValue, const ImageDerivativesType &
+                                                        movingImageGradientValue) const;
 
   /** Variables to define the marginal and joint histograms. */
   SizeValueType m_NumberOfHistogramBins;
@@ -322,10 +329,10 @@ private:
 
   /** The moving image marginal PDF. */
   typedef std::vector< PDFValueType > MarginalPDFType;
-  mutable MarginalPDFType             m_MovingImageMarginalPDF;
+  mutable MarginalPDFType m_MovingImageMarginalPDF;
 
   struct MMIMetricPerThreadStruct
-  {
+    {
     int JointPDFStartBin;
     int JointPDFEndBin;
 
@@ -341,18 +348,20 @@ private:
     typename TransformType::JacobianType Jacobian;
 
     MarginalPDFType FixedImageMarginalPDF;
-  };
+    };
 
+#if !defined(__GCCXML__)
   itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, MMIMetricPerThreadStruct,
-                                            PaddedMMIMetricPerThreadStruct);
+                PaddedMMIMetricPerThreadStruct);
   itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedMMIMetricPerThreadStruct,
-                                               AlignedMMIMetricPerThreadStruct );
+                     AlignedMMIMetricPerThreadStruct );
   // Due to a bug in older version of Visual Studio where std::vector resize
   // uses a value instead of a const reference, this must be a pointer.
   // See
   //   http://thetweaker.wordpress.com/2010/05/05/stdvector-of-aligned-elements/
   //   http://connect.microsoft.com/VisualStudio/feedback/details/692988
   mutable AlignedMMIMetricPerThreadStruct * m_MMIMetricPerThreadVariables;
+#endif
 
   bool         m_UseExplicitPDFDerivatives;
   mutable bool m_ImplicitDerivativesSecondPass;

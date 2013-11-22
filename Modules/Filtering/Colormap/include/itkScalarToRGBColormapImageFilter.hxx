@@ -62,7 +62,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
   this->m_UseInputImageExtremaForScaling = true;
 
   typedef Function::GreyColormapFunction<
-    InputImagePixelType, OutputImagePixelType > DefaultColormapType;
+      InputImagePixelType, OutputImagePixelType > DefaultColormapType;
 
   typename DefaultColormapType::Pointer greyColormap = DefaultColormapType::New();
   this->SetColormap(greyColormap);
@@ -149,7 +149,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     case Red:
       {
       typedef Function::RedColormapFunction<
-        InputImagePixelType, OutputImagePixelType > SpecificColormapType;
+          InputImagePixelType, OutputImagePixelType > SpecificColormapType;
       typename SpecificColormapType::Pointer colormap = SpecificColormapType::New();
       this->SetColormap(colormap);
       break;
@@ -157,7 +157,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     case Green:
       {
       typedef Function::GreenColormapFunction<
-        InputImagePixelType, OutputImagePixelType > SpecificColormapType;
+          InputImagePixelType, OutputImagePixelType > SpecificColormapType;
       typename SpecificColormapType::Pointer colormap = SpecificColormapType::New();
       this->SetColormap(colormap);
       break;
@@ -165,7 +165,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     case Blue:
       {
       typedef Function::BlueColormapFunction<
-        InputImagePixelType, OutputImagePixelType > SpecificColormapType;
+          InputImagePixelType, OutputImagePixelType > SpecificColormapType;
       typename SpecificColormapType::Pointer colormap = SpecificColormapType::New();
       this->SetColormap(colormap);
       break;
@@ -174,7 +174,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     default:
       {
       typedef Function::GreyColormapFunction<
-        InputImagePixelType, OutputImagePixelType > SpecificColormapType;
+          InputImagePixelType, OutputImagePixelType > SpecificColormapType;
       typename SpecificColormapType::Pointer colormap = SpecificColormapType::New();
       this->SetColormap(colormap);
       break;
@@ -182,7 +182,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     case Hot:
       {
       typedef Function::HotColormapFunction<
-        InputImagePixelType, OutputImagePixelType > SpecificColormapType;
+          InputImagePixelType, OutputImagePixelType > SpecificColormapType;
       typename SpecificColormapType::Pointer colormap = SpecificColormapType::New();
       this->SetColormap(colormap);
       break;
@@ -190,7 +190,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     case Cool:
       {
       typedef Function::CoolColormapFunction<
-        InputImagePixelType, OutputImagePixelType > SpecificColormapType;
+          InputImagePixelType, OutputImagePixelType > SpecificColormapType;
       typename SpecificColormapType::Pointer colormap = SpecificColormapType::New();
       this->SetColormap(colormap);
       break;
@@ -198,7 +198,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     case Spring:
       {
       typedef Function::SpringColormapFunction<
-        InputImagePixelType, OutputImagePixelType > SpecificColormapType;
+          InputImagePixelType, OutputImagePixelType > SpecificColormapType;
       typename SpecificColormapType::Pointer colormap = SpecificColormapType::New();
       this->SetColormap(colormap);
       break;
@@ -206,7 +206,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     case Summer:
       {
       typedef Function::SummerColormapFunction<
-        InputImagePixelType, OutputImagePixelType > SpecificColormapType;
+          InputImagePixelType, OutputImagePixelType > SpecificColormapType;
       typename SpecificColormapType::Pointer colormap = SpecificColormapType::New();
       this->SetColormap(colormap);
       break;
@@ -214,7 +214,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     case Autumn:
       {
       typedef Function::AutumnColormapFunction<
-        InputImagePixelType, OutputImagePixelType > SpecificColormapType;
+          InputImagePixelType, OutputImagePixelType > SpecificColormapType;
       typename SpecificColormapType::Pointer colormap = SpecificColormapType::New();
       this->SetColormap(colormap);
       break;
@@ -222,7 +222,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     case Winter:
       {
       typedef Function::WinterColormapFunction<
-        InputImagePixelType, OutputImagePixelType > SpecificColormapType;
+          InputImagePixelType, OutputImagePixelType > SpecificColormapType;
       typename SpecificColormapType::Pointer colormap = SpecificColormapType::New();
       this->SetColormap(colormap);
       break;
@@ -230,7 +230,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     case Copper:
       {
       typedef Function::CopperColormapFunction<
-        InputImagePixelType, OutputImagePixelType > SpecificColormapType;
+          InputImagePixelType, OutputImagePixelType > SpecificColormapType;
       typename SpecificColormapType::Pointer colormap = SpecificColormapType::New();
       this->SetColormap(colormap);
       break;
@@ -238,7 +238,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     case Jet:
       {
       typedef Function::JetColormapFunction<
-        InputImagePixelType, OutputImagePixelType > SpecificColormapType;
+          InputImagePixelType, OutputImagePixelType > SpecificColormapType;
       typename SpecificColormapType::Pointer colormap = SpecificColormapType::New();
       this->SetColormap(colormap);
       break;
@@ -246,7 +246,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     case HSV:
       {
       typedef Function::HSVColormapFunction<
-        InputImagePixelType, OutputImagePixelType > SpecificColormapType;
+          InputImagePixelType, OutputImagePixelType > SpecificColormapType;
       typename SpecificColormapType::Pointer colormap = SpecificColormapType::New();
       this->SetColormap(colormap);
       break;
@@ -254,7 +254,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     case OverUnder:
       {
       typedef Function::OverUnderColormapFunction<
-        InputImagePixelType, OutputImagePixelType > SpecificColormapType;
+          InputImagePixelType, OutputImagePixelType > SpecificColormapType;
       typename SpecificColormapType::Pointer colormap = SpecificColormapType::New();
       this->SetColormap(colormap);
       break;
@@ -279,6 +279,7 @@ ScalarToRGBColormapImageFilter< TInputImage, TOutputImage >
     }
   os << indent << "Use Input Image Extrema for Scaling " << this->m_UseInputImageExtremaForScaling << std::endl;
 }
+
 } // end namespace itk
 
 #endif

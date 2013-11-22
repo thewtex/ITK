@@ -18,12 +18,13 @@
 
 #include "itkNiftiImageIOTest.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
-int itkNiftiImageIOTest11(int ac, char *av[])
+int
+itkNiftiImageIOTest11(int ac, char *av[])
 {
   std::string testfilename;
+
   if(ac > 1)
     {
     char *testdir = *++av;
@@ -42,14 +43,14 @@ int itkNiftiImageIOTest11(int ac, char *av[])
     return EXIT_FAILURE;
     }
   typedef  itk::Image<char,3> ImageType;
-  ImageType::RegionType imageRegion;
-  ImageType::SizeType size;
-  ImageType::IndexType index;
-  ImageType::SpacingType spacing;
-  ImageType::PointType origin;
+  ImageType::RegionType    imageRegion;
+  ImageType::SizeType      size;
+  ImageType::IndexType     index;
+  ImageType::SpacingType   spacing;
+  ImageType::PointType     origin;
   ImageType::DirectionType myDirection;
 
-  size[0] = static_cast<long int>(itk::NumericTraits<short>::max()) * 2;
+  size[0] = static_cast<long int>(itk::NumericTraits<short>::max() ) * 2;
   size[1] = 1;
   size[2] = 1;
 
@@ -61,7 +62,7 @@ int itkNiftiImageIOTest11(int ac, char *av[])
   imageRegion.SetIndex(index);
   ImageType::Pointer im =
     itk::IOTestHelper::AllocateImageFromRegionAndSpacing<ImageType>(imageRegion,spacing);
-  ImageType::DirectionType dir(CORDirCosines<ImageType>());
+  ImageType::DirectionType dir(CORDirCosines<ImageType>() );
   std::cout << "itkNiftiImageIOTest11" << std::endl;
   std::cout << "Direction = " << dir << std::endl;
   im->SetDirection(dir);

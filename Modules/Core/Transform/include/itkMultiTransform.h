@@ -81,7 +81,7 @@ public:
   /* Types common to both container and sub transforms */
 
   /** Scalar type. */
-  typedef typename Superclass::ScalarType          ScalarType;
+  typedef typename Superclass::ScalarType ScalarType;
   /** Parameters type. */
   typedef typename Superclass::ParametersType      ParametersType;
   typedef typename Superclass::ParametersValueType ParametersValueType;
@@ -95,37 +95,37 @@ public:
   /* Types relative to the container transform. */
 
   /** InverseTransform type. */
-  typedef typename Superclass::InverseTransformBasePointer    InverseTransformBasePointer;
+  typedef typename Superclass::InverseTransformBasePointer InverseTransformBasePointer;
 
   /** Standard coordinate point type for this class. */
-  typedef typename Superclass::InputPointType             InputPointType;
-  typedef typename Superclass::OutputPointType            OutputPointType;
+  typedef typename Superclass::InputPointType  InputPointType;
+  typedef typename Superclass::OutputPointType OutputPointType;
   /** Standard vector type for this class. */
-  typedef typename Superclass::InputVectorType            InputVectorType;
-  typedef typename Superclass::OutputVectorType           OutputVectorType;
+  typedef typename Superclass::InputVectorType  InputVectorType;
+  typedef typename Superclass::OutputVectorType OutputVectorType;
   /** Standard covariant vector type for this class */
-  typedef typename Superclass::InputCovariantVectorType   InputCovariantVectorType;
-  typedef typename Superclass::OutputCovariantVectorType  OutputCovariantVectorType;
+  typedef typename Superclass::InputCovariantVectorType  InputCovariantVectorType;
+  typedef typename Superclass::OutputCovariantVectorType OutputCovariantVectorType;
   /** Standard vnl_vector type for this class. */
-  typedef typename Superclass::InputVnlVectorType         InputVnlVectorType;
-  typedef typename Superclass::OutputVnlVectorType        OutputVnlVectorType;
+  typedef typename Superclass::InputVnlVectorType  InputVnlVectorType;
+  typedef typename Superclass::OutputVnlVectorType OutputVnlVectorType;
   /** Standard Vectorpixel type for this class */
-  typedef typename Superclass::InputVectorPixelType       InputVectorPixelType;
-  typedef typename Superclass::OutputVectorPixelType      OutputVectorPixelType;
+  typedef typename Superclass::InputVectorPixelType  InputVectorPixelType;
+  typedef typename Superclass::OutputVectorPixelType OutputVectorPixelType;
   /** Standard DiffusionTensor3D typedef for this class */
   typedef typename Superclass::InputDiffusionTensor3DType  InputDiffusionTensor3DType;
   typedef typename Superclass::OutputDiffusionTensor3DType OutputDiffusionTensor3DType;
   /** Standard SymmetricSecondRankTensor typedef for this class */
-  typedef typename Superclass::InputSymmetricSecondRankTensorType InputSymmetricSecondRankTensorType;
-  typedef typename Superclass::OutputSymmetricSecondRankTensorType  OutputSymmetricSecondRankTensorType;
+  typedef typename Superclass::InputSymmetricSecondRankTensorType  InputSymmetricSecondRankTensorType;
+  typedef typename Superclass::OutputSymmetricSecondRankTensorType OutputSymmetricSecondRankTensorType;
 
   /* Types relative to the sub transform type. */
 
   /** InverseTransform type. */
-  typedef typename TransformType::InverseTransformBasePointer    SubTransformInverseTransformBasePointer;
+  typedef typename TransformType::InverseTransformBasePointer SubTransformInverseTransformBasePointer;
 
   /** Transform queue type */
-  typedef std::deque<TransformTypePointer>  TransformQueueType;
+  typedef std::deque<TransformTypePointer> TransformQueueType;
 
   /** The number of parameters defininig this transform. */
   typedef typename Superclass::NumberOfParametersType NumberOfParametersType;
@@ -142,44 +142,51 @@ public:
   /** Add transforms to the queue, as stack.
    *  Most-recently added transform is always at back of queue, index N-1.
    */
-  virtual void AddTransform( TransformType *t  )
+  virtual void
+  AddTransform( TransformType *t  )
   {
     this->PushBackTransform( t );
   }
 
   /** Same as AddTransform */
-  virtual void AppendTransform( TransformType *t  )
+  virtual void
+  AppendTransform( TransformType *t  )
   {
     this->AddTransform( t );
   }
 
   /** Add transform to the front of the stack */
-  virtual void PrependTransform( TransformType *t  )
+  virtual void
+  PrependTransform( TransformType *t  )
   {
     this->PushFrontTransform( t );
   }
 
   /** Remove transform from the back of the queue, index N-1 */
-  virtual void RemoveTransform()
+  virtual void
+  RemoveTransform()
   {
     this->PopBackTransform();
   }
 
   /** Get transforms at the front and the back of the queue */
   virtual const
-  TransformType * GetFrontTransform() const
+  TransformType *
+  GetFrontTransform() const
   {
     return this->m_TransformQueue.front().GetPointer();
   }
 
   virtual const
-  TransformType * GetBackTransform() const
+  TransformType *
+  GetBackTransform() const
   {
     return this->m_TransformQueue.back().GetPointer();
   }
 
   virtual const
-  TransformTypePointer GetNthTransform( SizeValueType n ) const
+  TransformTypePointer
+  GetNthTransform( SizeValueType n ) const
   {
     //NOTE: By returning a smart pointer type, the use of this function can
     //      be a significant bottleneck in multithreaded applications.
@@ -189,37 +196,43 @@ public:
   /** Get the Nth transform.
    * \warning No bounds checking is performed. */
   virtual
-  TransformType * GetNthTransformModifiablePointer( const SizeValueType n ) const
+  TransformType *
+  GetNthTransformModifiablePointer( const SizeValueType n ) const
   {
     return this->m_TransformQueue[n].GetPointer();
   }
 
   virtual const
-  TransformType * GetNthTransformConstPointer( const SizeValueType n ) const
+  TransformType *
+  GetNthTransformConstPointer( const SizeValueType n ) const
   {
     return this->m_TransformQueue[n].GetPointer();
   }
 
   /** Access transform queue */
-  virtual const TransformQueueType & GetTransformQueue() const
+  virtual const TransformQueueType &
+  GetTransformQueue() const
   {
     return this->m_TransformQueue;
   }
 
   /** Misc. functionality */
-  virtual bool IsTransformQueueEmpty() const
+  virtual bool
+  IsTransformQueueEmpty() const
   {
     return this->m_TransformQueue.empty();
   }
 
   /** Return the number of sub-transforms. */
-  virtual SizeValueType GetNumberOfTransforms() const
+  virtual SizeValueType
+  GetNumberOfTransforms() const
   {
     return this->m_TransformQueue.size();
   }
 
   /** Clear the transform queue. */
-  virtual void ClearTransformQueue()
+  virtual void
+  ClearTransformQueue()
   {
     this->m_TransformQueue.clear();
     this->Modified();
@@ -279,28 +292,33 @@ public:
 
 protected:
   MultiTransform();
-  virtual ~MultiTransform();
+  virtual
+  ~MultiTransform();
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
-  virtual void PushFrontTransform( TransformTypePointer t  )
+  virtual void
+  PushFrontTransform( TransformTypePointer t  )
   {
     this->m_TransformQueue.push_front( t );
     this->Modified();
   }
 
-  virtual void PushBackTransform( TransformTypePointer t  )
+  virtual void
+  PushBackTransform( TransformTypePointer t  )
   {
     this->m_TransformQueue.push_back( t );
     this->Modified();
   }
 
-  virtual void PopFrontTransform()
+  virtual void
+  PopFrontTransform()
   {
     this->m_TransformQueue.pop_front();
     this->Modified();
   }
 
-  virtual void PopBackTransform()
+  virtual void
+  PopBackTransform()
   {
     this->m_TransformQueue.pop_back();
     this->Modified();
@@ -310,12 +328,12 @@ protected:
   mutable TransformQueueType m_TransformQueue;
 
   /** Cache to save time returning the number of local parameters */
-  mutable NumberOfParametersType  m_NumberOfLocalParameters;
-  mutable ModifiedTimeType        m_LocalParametersUpdateTime;
+  mutable NumberOfParametersType m_NumberOfLocalParameters;
+  mutable ModifiedTimeType       m_LocalParametersUpdateTime;
 
 private:
   MultiTransform( const Self & ); // purposely not implemented
-  void operator=( const Self & );     // purposely not implemented
+  void operator=( const Self & ); // purposely not implemented
 
 };
 

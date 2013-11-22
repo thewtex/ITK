@@ -24,7 +24,8 @@
 // Explicit instantiation to make sure all methods are compiled.
 template class itk::Array<float>;
 
-int itkArrayTest(int, char* [] )
+int
+itkArrayTest(int, char* [] )
 {
 
   typedef itk::Array<float>  FloatArrayType;
@@ -53,8 +54,8 @@ int itkArrayTest(int, char* [] )
   // Create an itk::Array which does not manage its own memory
   //
   const unsigned int n = 7;
-  float buffer[n];
-  FloatArrayType notMyOwnBoss;
+  float              buffer[n];
+  FloatArrayType     notMyOwnBoss;
   notMyOwnBoss.SetSize( n );
   notMyOwnBoss.SetData( buffer, false );
   notMyOwnBoss.Fill( 4.0 );
@@ -106,7 +107,7 @@ int itkArrayTest(int, char* [] )
   // to a user allocated buffer where the user wants to
   // maintain responsibility for deleting the array.
   FloatArrayType objectToCopy(10);
-  float* data = new float[10];
+  float*         data = new float[10];
   objectToCopy.SetData(data); // This implictly means LetArrayManageMemory=false
 
   // Make a copy of the array which is not managing its own memory.

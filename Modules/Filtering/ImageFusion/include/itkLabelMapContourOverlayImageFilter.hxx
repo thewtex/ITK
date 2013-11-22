@@ -31,7 +31,6 @@
 #include "itkSliceBySliceImageFilter.h"
 #include "itkLabelUniqueLabelMapFilter.h"
 
-
 namespace itk {
 
 template<typename TLabelMap, typename TFeatureImage, typename TOutputImage>
@@ -59,9 +58,10 @@ LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
   Superclass::GenerateInputRequestedRegion();
 
   // We need all the input.
-  LabelMapPointer input = const_cast<LabelMapType *>(this->GetInput());
+  LabelMapPointer input = const_cast<LabelMapType *>(this->GetInput() );
+
   if ( !input )
-    { return; }
+        { return; }
   input->SetRequestedRegion( input->GetLargestPossibleRegion() );
 }
 
@@ -71,9 +71,8 @@ LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
-    ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
+  ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
 }
-
 
 template<typename TLabelMap, typename TFeatureImage, typename TOutputImage>
 void
@@ -92,8 +91,8 @@ LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
   // obo->SetInPlace( false );
 
   // dilate the image
-  typedef typename OBOType::InternalInputImageType InternalImageType;
-  typedef FlatStructuringElement< ImageDimension > KernelType;
+  typedef typename OBOType::InternalInputImageType                                    InternalImageType;
+  typedef FlatStructuringElement< ImageDimension >                                    KernelType;
   typedef BinaryDilateImageFilter< InternalImageType, InternalImageType, KernelType > DilateType;
   typename DilateType::Pointer dilate = DilateType::New();
   dilate->SetKernel( KernelType::Ball( m_DilationRadius ) );
@@ -113,9 +112,8 @@ LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
   sub->SetInput( 0, dilate->GetOutput() );
   sub->SetInput( 1, erode->GetOutput() );
 
-
   typedef SliceBySliceImageFilter< InternalImageType, InternalImageType > SliceType;
-  typedef typename SliceType::InternalInputImageType SliceInternalImageType;
+  typedef typename SliceType::InternalInputImageType                      SliceInternalImageType;
   typename SliceType::Pointer slice = SliceType::New();
 
   typedef CastImageFilter< SliceInternalImageType, SliceInternalImageType > SliceCastType;
@@ -123,7 +121,7 @@ LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
   scast->SetInPlace( false );
   slice->SetInputFilter( scast );
 
-  typedef FlatStructuringElement< ImageDimension - 1 > SliceKernelType;
+  typedef FlatStructuringElement< ImageDimension - 1 >                                              SliceKernelType;
   typedef BinaryErodeImageFilter< SliceInternalImageType, SliceInternalImageType, SliceKernelType > SliceErodeType;
   typename SliceErodeType::Pointer serode = SliceErodeType::New();
   typedef typename SliceKernelType::RadiusType RadiusType;
@@ -159,7 +157,7 @@ LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
 //     typename ContourType::Pointer contour = ContourType::New();
 //     contour->SetInput( dilate->GetOutput() );
 //     obo->SetOutputFilter( contour );
-     obo->SetOutputFilter( sub );
+    obo->SetOutputFilter( sub );
     }
   else if( m_Type == SLICE_CONTOUR )
     {
@@ -187,7 +185,6 @@ LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
   m_TempImage->Update();
   m_TempImage->DisconnectPipeline();
 
-
   ThreadIdType nbOfThreads = this->GetNumberOfThreads();
   if( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() != 0 )
     {
@@ -205,22 +202,22 @@ LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
 
 }
 
-
 template<typename TLabelMap, typename TFeatureImage, typename TOutputImage>
 void
 LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
 ::ThreadedGenerateData( const OutputImageRegionType& outputRegionForThread, ThreadIdType threadId )
 {
-  OutputImageType * output = this->GetOutput();
-  LabelMapType * input = const_cast<LabelMapType *>(this->GetInput());
+  OutputImageType *        output = this->GetOutput();
+  LabelMapType *           input = const_cast<LabelMapType *>(this->GetInput() );
   const FeatureImageType * input2 = this->GetFeatureImage();
 
   FunctorType function;
+
   function.SetBackgroundValue( input->GetBackgroundValue() );
   function.SetOpacity( m_Opacity );
 
   ImageScanlineConstIterator< FeatureImageType > featureIt( input2, outputRegionForThread );
-  ImageScanlineIterator< OutputImageType > outputIt( output, outputRegionForThread );
+  ImageScanlineIterator< OutputImageType >       outputIt( output, outputRegionForThread );
 
   while ( !featureIt.IsAtEnd() )
     {
@@ -234,7 +231,6 @@ LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
     outputIt.NextLine();
     }
 
-
   // wait for the other threads to complete that part
   m_Barrier->Wait();
 
@@ -242,17 +238,17 @@ LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
   Superclass::ThreadedGenerateData( outputRegionForThread, threadId );
 }
 
-
 template<typename TLabelMap, typename TFeatureImage, typename TOutputImage>
 void
 LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
 ::ThreadedProcessLabelObject( LabelObjectType * labelObject )
 {
-  OutputImageType * output = this->GetOutput();
-  LabelMapType * input = const_cast<LabelMapType *>(this->GetInput());
+  OutputImageType *        output = this->GetOutput();
+  LabelMapType *           input = const_cast<LabelMapType *>(this->GetInput() );
   const FeatureImageType * input2 = this->GetFeatureImage();
 
   FunctorType function;
+
   function.SetBackgroundValue( input->GetBackgroundValue() );
   function.SetOpacity( m_Opacity );
 
@@ -260,14 +256,13 @@ LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
 
   // the user want the mask to be the background of the label collection image
   typename LabelObjectType::ConstIndexIterator it( labelObject );
-  while( ! it.IsAtEnd() )
+  while( !it.IsAtEnd() )
     {
     const IndexType idx = it.GetIndex();
     output->SetPixel( idx, function( input2->GetPixel(idx), label ) );
     ++it;
     }
 }
-
 
 template<typename TLabelMap, typename TFeatureImage, typename TOutputImage>
 void
@@ -305,6 +300,5 @@ LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
   os << indent << "SliceDimension: " << m_SliceDimension << std::endl;
 }
 
-
-}// end namespace itk
+} // end namespace itk
 #endif

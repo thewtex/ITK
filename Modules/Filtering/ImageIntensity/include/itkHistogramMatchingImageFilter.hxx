@@ -113,9 +113,9 @@ const typename HistogramMatchingImageFilter< TInputImage, TOutputImage, THistogr
 ::InputImageType *
 HistogramMatchingImageFilter< TInputImage, TOutputImage, THistogramMeasurement >
 ::GetReferenceImage()
-{
+  {
   return dynamic_cast< TInputImage * >( this->ProcessObject::GetInput(1) );
-}
+  }
 
 /*
  * This filter requires all of the input images to be
@@ -187,9 +187,9 @@ HistogramMatchingImageFilter< TInputImage, TOutputImage, THistogramMeasurement >
   for ( j = 1; j < m_NumberOfMatchPoints + 1; j++ )
     {
     m_QuantileTable[0][j] = m_SourceHistogram->Quantile(
-      0, double(j) * delta);
+        0, double(j) * delta);
     m_QuantileTable[1][j] = m_ReferenceHistogram->Quantile(
-      0, double(j) * delta);
+        0, double(j) * delta);
     }
 
   // Fill in the gradient array.
@@ -198,11 +198,11 @@ HistogramMatchingImageFilter< TInputImage, TOutputImage, THistogramMeasurement >
   for ( j = 0; j < m_NumberOfMatchPoints + 1; j++ )
     {
     denominator = m_QuantileTable[0][j + 1]
-                  - m_QuantileTable[0][j];
+      - m_QuantileTable[0][j];
     if ( denominator != 0 )
       {
       m_Gradients[j] = m_QuantileTable[1][j + 1]
-                       - m_QuantileTable[1][j];
+        - m_QuantileTable[1][j];
       m_Gradients[j] /= denominator;
       }
     else
@@ -223,11 +223,11 @@ HistogramMatchingImageFilter< TInputImage, TOutputImage, THistogramMeasurement >
     }
 
   denominator = m_QuantileTable[0][m_NumberOfMatchPoints + 1]
-                - m_SourceMaxValue;
+    - m_SourceMaxValue;
   if ( denominator != 0 )
     {
     m_UpperGradient = m_QuantileTable[1][m_NumberOfMatchPoints + 1]
-                      - m_ReferenceMaxValue;
+      - m_ReferenceMaxValue;
     m_UpperGradient /= denominator;
     }
   else
@@ -271,7 +271,7 @@ HistogramMatchingImageFilter< TInputImage, TOutputImage, THistogramMeasurement >
   for ( unsigned int j = 1; j < m_NumberOfMatchPoints + 1; j++ )
     {
     m_QuantileTable[2][j] = m_OutputHistogram->Quantile(
-      0, double(j) * delta);
+        0, double(j) * delta);
     }
 }
 
@@ -331,19 +331,19 @@ HistogramMatchingImageFilter< TInputImage, TOutputImage, THistogramMeasurement >
       {
       // Linear interpolate from min to point[0]
       mappedValue = m_ReferenceMinValue
-                    + ( srcValue - m_SourceMinValue ) * m_LowerGradient;
+        + ( srcValue - m_SourceMinValue ) * m_LowerGradient;
       }
     else if ( j == m_NumberOfMatchPoints + 2 )
       {
       // Linear interpolate from point[m_NumberOfMatchPoints+1] to max
       mappedValue = m_ReferenceMaxValue
-                    + ( srcValue - m_SourceMaxValue ) * m_UpperGradient;
+        + ( srcValue - m_SourceMaxValue ) * m_UpperGradient;
       }
     else
       {
       // Linear interpolate from point[j] and point[j+1].
       mappedValue = m_QuantileTable[1][j - 1]
-                    + ( srcValue - m_QuantileTable[0][j - 1] ) * m_Gradients[j - 1];
+        + ( srcValue - m_QuantileTable[0][j - 1] ) * m_Gradients[j - 1];
       }
 
     outIter.Set( static_cast< OutputPixelType >( mappedValue ) );
@@ -445,6 +445,7 @@ HistogramMatchingImageFilter< TInputImage, TOutputImage, THistogramMeasurement >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

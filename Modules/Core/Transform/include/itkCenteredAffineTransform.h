@@ -35,7 +35,7 @@ template <
   unsigned int NDimensions = 3>
 // Number of dimensions in the input space
 class CenteredAffineTransform : public AffineTransform<TScalar,
-                                                                  NDimensions>
+                                                       NDimensions>
 {
 public:
   /** Standard typedefs   */
@@ -63,9 +63,9 @@ public:
   typedef typename Superclass::InputVectorType     InputVectorType;
   typedef typename Superclass::OutputVectorType    OutputVectorType;
   typedef typename Superclass::InputCovariantVectorType
-  InputCovariantVectorType;
+    InputCovariantVectorType;
   typedef typename Superclass::OutputCovariantVectorType
-  OutputCovariantVectorType;
+    OutputCovariantVectorType;
 
   typedef typename Superclass::InputVnlVectorType    InputVnlVectorType;
   typedef typename Superclass::OutputVnlVectorType   OutputVnlVectorType;
@@ -113,7 +113,8 @@ protected:
   CenteredAffineTransform();
 
   /** Destroy an CenteredAffineTransform object */
-  virtual ~CenteredAffineTransform();
+  virtual
+  ~CenteredAffineTransform();
 
 private:
   CenteredAffineTransform(const Self & other);

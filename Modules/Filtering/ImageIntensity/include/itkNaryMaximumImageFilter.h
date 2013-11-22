@@ -40,7 +40,8 @@ public:
 
   Maximum1() {}
   ~Maximum1() {}
-  inline TOutput operator()(const std::vector< TInput > & B) const
+  inline TOutput
+  operator()(const std::vector< TInput > & B) const
   {
     OutputValueType A = NumericTraits< TOutput >::NonpositiveMin();
 
@@ -54,15 +55,18 @@ public:
     return A;
   }
 
-  bool operator==(const Maximum1 &) const
+  bool
+  operator==(const Maximum1 &) const
   {
     return true;
   }
 
-  bool operator!=(const Maximum1 &) const
+  bool
+  operator!=(const Maximum1 &) const
   {
     return false;
   }
+
 };
 }
 /** \class NaryMaximumImageFilter
@@ -101,7 +105,7 @@ public:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage, typename TOutputImage >
-class NaryMaximumImageFilter:
+class NaryMaximumImageFilter :
   public
   NaryFunctorImageFilter< TInputImage, TOutputImage,
                           Functor::Maximum1<  typename TInputImage::PixelType,
@@ -111,9 +115,9 @@ public:
   /** Standard class typedefs. */
   typedef NaryMaximumImageFilter Self;
   typedef NaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::Maximum1< typename TInputImage::PixelType,
-                       typename TInputImage::PixelType > > Superclass;
+      TInputImage, TOutputImage,
+      Functor::Maximum1< typename TInputImage::PixelType,
+                         typename TInputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -139,11 +143,13 @@ public:
 
 protected:
   NaryMaximumImageFilter() {}
-  virtual ~NaryMaximumImageFilter() {}
+  virtual
+  ~NaryMaximumImageFilter() {}
 
 private:
   NaryMaximumImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
+
 };
 } // end namespace itk
 

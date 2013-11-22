@@ -49,15 +49,18 @@ public:
     m_Sign = point.m_Sign;
   }
 
-  double getX() const
+  double
+  getX() const
   {
     return m_X;
   }
 
-  int  getSign() const
+  int
+  getSign() const
   {
     return m_Sign;
   }
+
 };
 
 /** \class TriangleMeshToBinaryImageFilter
@@ -68,7 +71,7 @@ public:
  * \ingroup ITKMesh
  */
 template< typename TInputMesh, typename TOutputImage >
-class TriangleMeshToBinaryImageFilter:public ImageSource< TOutputImage >
+class TriangleMeshToBinaryImageFilter : public ImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -182,7 +185,8 @@ public:
   using Superclass::SetInput;
   void SetInput(InputMeshType *input);
 
-  void SetInfoImage(OutputImageType *InfoImage)
+  void
+  SetInfoImage(OutputImageType *InfoImage)
   {
     if ( InfoImage != m_InfoImage )
       {
@@ -204,7 +208,8 @@ protected:
   TriangleMeshToBinaryImageFilter();
   ~TriangleMeshToBinaryImageFilter();
 
-  virtual void GenerateOutputInformation(){}  // do nothing
+  virtual void
+  GenerateOutputInformation(){}               // do nothing
   virtual void GenerateData();
 
   virtual void RasterizeTriangles();
@@ -239,6 +244,7 @@ private:
   static bool ComparePoints2D(Point2DType a, Point2DType b);
 
   static bool ComparePoints1D(Point1D a, Point1D b);
+
 };
 } // end namespace itk
 

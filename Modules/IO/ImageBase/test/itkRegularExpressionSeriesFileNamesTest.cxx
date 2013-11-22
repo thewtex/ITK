@@ -18,22 +18,22 @@
 
 #include "itkRegularExpressionSeriesFileNames.h"
 
-int itkRegularExpressionSeriesFileNamesTest(int ac, char* av[])
+int
+itkRegularExpressionSeriesFileNamesTest(int ac, char* av[])
 {
 
   if(ac < 2)
-  {
+    {
     std::cerr << "Usage: " << av[0] << " Directory\n";
     return EXIT_FAILURE;
-  }
-
+    }
 
   itk::RegularExpressionSeriesFileNames::Pointer fit = itk::RegularExpressionSeriesFileNames::New();
   fit->SetDirectory(av[1]);
   fit->SetRegularExpression("[^.]*.(.*)");
   fit->SetSubMatch(1);
 
-  std::vector<std::string> names = fit->GetFileNames();
+  std::vector<std::string>           names = fit->GetFileNames();
   std::vector<std::string>::iterator nit;
 
 // normal sort
@@ -73,7 +73,6 @@ int itkRegularExpressionSeriesFileNamesTest(int ac, char* av[])
     std::cout << "File: " << (*nit).c_str() << std::endl;
     }
 
-
   std::cout << "Vector size: " << names.size() << std::endl;
 
   // Show only those files with numbers in the names followed by other
@@ -82,7 +81,8 @@ int itkRegularExpressionSeriesFileNamesTest(int ac, char* av[])
   fit->NumericSortOn();
   fit->SetSubMatch(1);
   names = fit->GetFileNames();
-  std::cout << "Numeric sort on only files with numbers in the names.  Sort on the first set of numbers.--------" << std::endl;
+  std::cout << "Numeric sort on only files with numbers in the names.  Sort on the first set of numbers.--------" <<
+  std::endl;
   for (nit = names.begin();
        nit != names.end();
        ++nit)
@@ -96,7 +96,8 @@ int itkRegularExpressionSeriesFileNamesTest(int ac, char* av[])
   fit->NumericSortOn();
   fit->SetSubMatch(2);
   names = fit->GetFileNames();
-  std::cout << "Numeric sort on only files with numbers in the names.  Sort on the second set of numbers.--------" << std::endl;
+  std::cout << "Numeric sort on only files with numbers in the names.  Sort on the second set of numbers.--------" <<
+  std::endl;
   for (nit = names.begin();
        nit != names.end();
        ++nit)
@@ -104,13 +105,11 @@ int itkRegularExpressionSeriesFileNamesTest(int ac, char* av[])
     std::cout << "File: " << (*nit).c_str() << std::endl;
     }
 
-
   std::cout << "Vector size: " << names.size() << std::endl;
 
   std::cout << "Directory: " << fit->GetDirectory() << std::endl;
   std::cout << "RegularExpression: " << fit->GetRegularExpression() << std::endl;
   std::cout << "SubMatch: " << fit->GetSubMatch() << std::endl;
-
 
   return EXIT_SUCCESS;
 

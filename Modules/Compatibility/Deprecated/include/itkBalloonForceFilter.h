@@ -55,7 +55,7 @@ namespace itk
  * \ingroup MeshSegmentation
  */
 template< typename TInputMesh, typename TOutputMesh >
-class BalloonForceFilter:public MeshToMeshFilter< TInputMesh, TOutputMesh >
+class BalloonForceFilter : public MeshToMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
   /** Standard class typedefs. */
@@ -76,38 +76,38 @@ public:
 
   /** Typedefs for containers and their iterators. */
   typedef typename InputMeshType::PointsContainerPointer
-  InputPointsContainerPointer;
+    InputPointsContainerPointer;
   typedef typename InputMeshType::PointsContainer::Iterator
-  InputPointsContainerIterator;
+    InputPointsContainerIterator;
   typedef typename InputMeshType::PointsContainerConstPointer
-  InputPointsContainerConstPointer;
+    InputPointsContainerConstPointer;
   typedef typename InputMeshType::PointsContainer::ConstIterator
-  InputPointsContainerConstIterator;
+    InputPointsContainerConstIterator;
   typedef typename InputMeshType::PointDataContainerPointer
-  InputPointDataContainerPointer;
+    InputPointDataContainerPointer;
   typedef typename InputMeshType::PointDataContainer::Iterator
-  InputPointDataContainerIterator;
+    InputPointDataContainerIterator;
   typedef typename InputMeshType::CellsContainerPointer
-  InputCellsContainerPointer;
+    InputCellsContainerPointer;
   typedef typename InputMeshType::CellsContainer::Iterator
-  InputCellsContainerIterator;
+    InputCellsContainerIterator;
   typedef typename InputMeshType::CellDataContainerPointer
-  InputCellDataContainerPointer;
+    InputCellDataContainerPointer;
   typedef typename InputMeshType::CellDataContainer::Iterator
-  InputCellDataContainerIterator;
+    InputCellDataContainerIterator;
   typedef typename InputMeshType::CellsContainerConstPointer
-  InputCellsContainerConstPointer;
+    InputCellsContainerConstPointer;
   typedef typename InputMeshType::CellsContainer::ConstIterator
-  InputCellsContainerConstIterator;
+    InputCellsContainerConstIterator;
   typedef typename InputMeshType::CellDataContainerConstPointer
-  InputCellDataContainerConstPointer;
+    InputCellDataContainerConstPointer;
   typedef typename InputMeshType::CellDataContainer::ConstIterator
-  InputCellDataContainerConstIterator;
+    InputCellDataContainerConstIterator;
 
   typedef typename OutputMeshType::PointsContainerPointer
-  OutputPointsContainerPointer;
+    OutputPointsContainerPointer;
   typedef typename OutputMeshType::PointsContainer::Iterator
-  OutputPointsContainerIterator;
+    OutputPointsContainerIterator;
 
   /** Image types. */
   typedef typename InputMeshType::PointType IPixelType;
@@ -151,8 +151,9 @@ public:
   void ComputeOutput();
 
   void NodeAddition(int i, int res, IPixelType z); // (following 3) for adding
-                                                   // new nodes, now disabled
-                                                   // for further tests
+
+  // new nodes, now disabled
+  // for further tests
 
   void NodesRearrange();
 
@@ -216,7 +217,7 @@ private:
   IndexType     m_Center;
   float         m_MiniT;         // variabel help to stop the model when near
                                  // potential estimation
-  int           m_Step;          // the number of iteration
+  int m_Step;                    // the number of iteration
 
   unsigned int m_NumberOfNodes;
   unsigned int m_NumberOfCells;
@@ -230,7 +231,7 @@ private:
   unsigned int m_ImageHeight;
   unsigned int m_ImageDepth;
 
-  int   m_ModelXUpLimit;    // the following 4 variables record the size of the
+  int m_ModelXUpLimit;      // the following 4 variables record the size of the
                             // model
   int   m_ModelXDownLimit;
   int   m_ModelYUpLimit;
@@ -247,7 +248,7 @@ private:
   float m_DistanceToStop;
   float m_DistanceForGradient;
 
-  ImagePointer         m_Potential;     // for calculate of image force from
+  ImagePointer m_Potential;             // for calculate of image force from
                                         // potential
   GradientImagePointer m_Gradient;      // for calculate of image force from
                                         // gradient

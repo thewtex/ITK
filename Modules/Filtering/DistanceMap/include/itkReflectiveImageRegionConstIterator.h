@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKDistanceMap
  */
 template< typename TImage >
-class ReflectiveImageRegionConstIterator:public ImageConstIteratorWithIndex< TImage >
+class ReflectiveImageRegionConstIterator : public ImageConstIteratorWithIndex< TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -81,9 +81,9 @@ public:
    * properly with gcc.  Note that we have to rescope Region back to
    * itk::ImageRegion so that is it not confused with
    * ImageIterator::Index. */
-  typedef typename TImage::RegionType     RegionType;
-  typedef typename TImage::SizeType       SizeType;
-  typedef typename TImage::SizeValueType  SizeValueType;
+  typedef typename TImage::RegionType    RegionType;
+  typedef typename TImage::SizeType      SizeType;
+  typedef typename TImage::SizeValueType SizeValueType;
 
   /** Type of the Offset taken from the image.  These typedefs are
    * duplicated from the superclass for gcc support. */
@@ -132,30 +132,43 @@ public:
   void GoToBegin(void);
 
   /** Is the iterator at the beginning of the region? */
-  bool IsAtBegin(void) const
+  bool
+  IsAtBegin(void) const
   {
     return !this->m_Remaining;
   }
 
   /** Set the begin offset.  Forward iteration starts at this offset
    * from the current region.  */
-  void SetBeginOffset(const OffsetType & offset)
-  { m_BeginOffset = offset; }
+  void
+  SetBeginOffset(const OffsetType & offset)
+  {
+    m_BeginOffset = offset;
+  }
 
   /** Set the end offset.  Reverse iteration starts at this offset
    * from the current region.  */
-  void SetEndOffset(const OffsetType & offset)
-  { m_EndOffset = offset; }
+  void
+  SetEndOffset(const OffsetType & offset)
+  {
+    m_EndOffset = offset;
+  }
 
   /** Get the begin offset.  Forward iteration starts at this offset
    * from the current region.  */
-  OffsetType GetBeginOffset(const OffsetType & )
-  { return m_BeginOffset; }
+  OffsetType
+  GetBeginOffset(const OffsetType & )
+  {
+    return m_BeginOffset;
+  }
 
   /** Get the end offset.  Reverse iteration starts at this offset
    * from the current region.  */
-  OffsetType GetEndOffset(const OffsetType & )
-  { return m_EndOffset; }
+  OffsetType
+  GetEndOffset(const OffsetType & )
+  {
+    return m_EndOffset;
+  }
 
   /** Fill both offsets with a single value.  */
   void FillOffsets(const OffsetValueType & value);

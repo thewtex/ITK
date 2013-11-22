@@ -81,6 +81,7 @@ GaussianImageSource< TOutputImage >
 ::SetParameters(const ParametersType & parameters)
 {
   ArrayType sigma, mean;
+
   for ( unsigned int i = 0; i < ArrayType::Length; i++ )
     {
     sigma[i] = parameters[i];
@@ -100,6 +101,7 @@ GaussianImageSource< TOutputImage >
 ::GetParameters() const
 {
   ParametersType parameters( 2*ArrayType::Length + 1 );
+
   for ( unsigned int i = 0; i < ArrayType::Length; i++ )
     {
     parameters[i] = m_Sigma[i];

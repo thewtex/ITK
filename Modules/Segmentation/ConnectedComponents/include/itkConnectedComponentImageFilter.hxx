@@ -40,6 +40,7 @@ ConnectedComponentImageFilter< TInputImage, TOutputImage, TMaskImage >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( !input )
     {
     return;
@@ -72,7 +73,7 @@ ConnectedComponentImageFilter< TInputImage, TOutputImage, TMaskImage >
   typename TMaskImage::ConstPointer mask = this->GetMaskImage();
 
   typedef MaskImageFilter< TInputImage, TMaskImage, TInputImage >
-  MaskFilterType;
+    MaskFilterType;
   typename MaskFilterType::Pointer maskFilter = MaskFilterType::New();
   if ( mask )
     {
@@ -135,8 +136,8 @@ ConnectedComponentImageFilter< TInputImage, TOutputImage, TMaskImage >
   // find the split axis
   const IndexType outputRegionIdx = output->GetRequestedRegion().GetIndex();
   const IndexType outputRegionForThreadIdx = outputRegionForThread.GetIndex();
-  SizeType  outputRegionSize = output->GetRequestedRegion().GetSize();
-  SizeType  outputRegionForThreadSize = outputRegionForThread.GetSize();
+  SizeType        outputRegionSize = output->GetRequestedRegion().GetSize();
+  SizeType        outputRegionForThreadSize = outputRegionForThread.GetSize();
   int             splitAxis = 0;
   for ( unsigned int i = 0; i < ImageDimension; i++ )
     {
@@ -169,7 +170,7 @@ ConnectedComponentImageFilter< TInputImage, TOutputImage, TMaskImage >
       if ( PVal != NumericTraits< InputPixelType >::ZeroValue( PVal ) )
         {
         // We've hit the start of a run
-        runLength thisRun;
+        runLength       thisRun;
         const IndexType thisIndex = inLineIt.GetIndex();
         //std::cout << thisIndex << std::endl;
         SizeValueType length = 1;
@@ -247,7 +248,7 @@ ConnectedComponentImageFilter< TInputImage, TOutputImage, TMaskImage >
     outputRegionForThreadSize = outputRegionForThread.GetSize();
     outputRegionForThreadSize[splitAxis] -= 1;
     lastLineIdForThread = firstLineIdForThread
-                          + RegionType(outputRegionIdx, outputRegionForThreadSize).GetNumberOfPixels() / xsizeForThread;
+      + RegionType(outputRegionIdx, outputRegionForThreadSize).GetNumberOfPixels() / xsizeForThread;
     m_FirstLineIdToJoin[threadId] = lastLineIdForThread;
     // found the number of line ids to join
     nbOfLineIdToJoin =
@@ -369,13 +370,14 @@ ConnectedComponentImageFilter< TInputImage, TOutputImage, TMaskImage >
   fend.GoToEnd();
 
   lastLineIdForThread = firstLineIdForThread
-                        + RegionType( outputRegionIdx,
-                                      outputRegionForThread.GetSize() ).GetNumberOfPixels() / xsizeForThread;
+    + RegionType( outputRegionIdx,
+                  outputRegionForThread.GetSize() ).GetNumberOfPixels() / xsizeForThread;
 
   for ( SizeValueType ThisIdx = firstLineIdForThread; ThisIdx < lastLineIdForThread; ThisIdx++ )
     {
     // now fill the labelled sections
-    for ( typename lineEncoding::const_iterator cIt = m_LineMap[ThisIdx].begin(); cIt != m_LineMap[ThisIdx].end(); ++cIt )
+    for ( typename lineEncoding::const_iterator cIt = m_LineMap[ThisIdx].begin(); cIt != m_LineMap[ThisIdx].end();
+          ++cIt )
       {
       const SizeValueType   Ilab = LookupSet(cIt->label);
       const OutputPixelType lab = m_Consecutive[Ilab];
@@ -423,10 +425,10 @@ ConnectedComponentImageFilter< TInputImage, TOutputImage, TMaskImage >
   // offset for us. All this messing around produces an array of
   // offsets that will be used to index the map
   typename TOutputImage::Pointer output = this->GetOutput();
-  typedef Image< OffsetValueType, TOutputImage::ImageDimension - 1 >  PretendImageType;
-  typedef typename PretendImageType::RegionType::SizeType             PretendSizeType;
-  typedef typename PretendImageType::RegionType::IndexType            PretendIndexType;
-  typedef ConstShapedNeighborhoodIterator< PretendImageType >         LineNeighborhoodType;
+  typedef Image< OffsetValueType, TOutputImage::ImageDimension - 1 > PretendImageType;
+  typedef typename PretendImageType::RegionType::SizeType            PretendSizeType;
+  typedef typename PretendImageType::RegionType::IndexType           PretendIndexType;
+  typedef ConstShapedNeighborhoodIterator< PretendImageType >        LineNeighborhoodType;
 
   typename PretendImageType::Pointer fakeImage;
   fakeImage = PretendImageType::New();
@@ -461,7 +463,7 @@ ConnectedComponentImageFilter< TInputImage, TOutputImage, TMaskImage >
   typename LineNeighborhoodType::IndexListType::const_iterator LI;
 
   PretendIndexType idx = LineRegion.GetIndex();
-  OffsetValueType offset = fakeImage->ComputeOffset(idx);
+  OffsetValueType  offset = fakeImage->ComputeOffset(idx);
 
   for ( LI = ActiveIndexes.begin(); LI != ActiveIndexes.end(); LI++ )
     {
@@ -537,7 +539,7 @@ ConnectedComponentImageFilter< TInputImage, TOutputImage, TMaskImage >
       // IndexValueType ss2 = nStart + offset;
       IndexValueType ee1 = nLast - offset;
       IndexValueType ee2 = nLast + offset;
-      bool eq = false;
+      bool           eq = false;
       // the logic here can probably be improved a lot
       if ( ( ss1 >= cStart ) && ( ee2 <= cLast ) )
         {
@@ -662,6 +664,7 @@ ConnectedComponentImageFilter< TInputImage, TOutputImage, TMaskImage >
   os << indent << "BackgroundValue: "
      << static_cast< typename NumericTraits< OutputImagePixelType >::PrintType >( m_BackgroundValue ) << std::endl;
 }
+
 } // end namespace itk
 
 #endif

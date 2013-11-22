@@ -47,6 +47,7 @@ InteriorExteriorMeshFilter< TInputMesh, TOutputMesh, TSpatialFunction >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << m_SpatialFunction << std::endl;
 }
 
@@ -151,6 +152,7 @@ InteriorExteriorMeshFilter< TInputMesh, TOutputMesh, TSpatialFunction >
                                         inputMesh->GetBoundaryAssignments(dim) );
     }
 }
+
 } // end namespace itk
 
 #endif

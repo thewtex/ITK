@@ -35,14 +35,14 @@ namespace itk
  * \ingroup ITKIOMesh
  */
 
-class ITKIOMesh_EXPORT FreeSurferBinaryMeshIO:public MeshIOBase
+class ITKIOMesh_EXPORT FreeSurferBinaryMeshIO : public MeshIOBase
 {
 public:
   /** Standard class typedefs. */
-  typedef FreeSurferBinaryMeshIO       Self;
-  typedef MeshIOBase                   Superclass;
-  typedef SmartPointer< const Self >   ConstPointer;
-  typedef SmartPointer< Self >         Pointer;
+  typedef FreeSurferBinaryMeshIO     Self;
+  typedef MeshIOBase                 Superclass;
+  typedef SmartPointer< const Self > ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
 
   typedef Superclass::SizeValueType    SizeValueType;
   typedef Superclass::StreamOffsetType StreamOffsetType;
@@ -101,7 +101,8 @@ public:
 protected:
   /** Write points to output stream */
   template< typename T >
-  void WritePoints(T *buffer, std::ofstream & outputFile)
+  void
+  WritePoints(T *buffer, std::ofstream & outputFile)
   {
     float *data = new float[this->m_NumberOfPoints * this->m_PointDimension];
 
@@ -113,27 +114,33 @@ protected:
         }
       }
 
-    itk::ByteSwapper< float >::SwapWriteRangeFromSystemToBigEndian(data, this->m_NumberOfPoints * this->m_PointDimension, &outputFile);
+    itk::ByteSwapper< float >::SwapWriteRangeFromSystemToBigEndian(data,
+                                                                   this->m_NumberOfPoints * this->m_PointDimension,
+                                                                   &outputFile);
     delete[] data;
   }
 
   /** Write cells to utput stream */
   template< typename T >
-  void WriteCells(T *buffer, std::ofstream & outputFile)
+  void
+  WriteCells(T *buffer, std::ofstream & outputFile)
   {
     const itk::uint32_t numberOfCellPoints = 3;
 
     itk::uint32_t *data = new itk::uint32_t[this->m_NumberOfCells * numberOfCellPoints];
 
     ReadCellsBuffer(buffer, data);
-    itk::ByteSwapper< itk::uint32_t >::SwapWriteRangeFromSystemToBigEndian(data, this->m_NumberOfCells * numberOfCellPoints, &outputFile);
+    itk::ByteSwapper< itk::uint32_t >::SwapWriteRangeFromSystemToBigEndian(data,
+                                                                           this->m_NumberOfCells * numberOfCellPoints,
+                                                                           &outputFile);
 
     delete[] data;
   }
 
   /** Read cells from a data buffer, used when writting mesh */
   template< typename TInput, typename TOutput >
-  void ReadCellsBuffer(TInput *input, TOutput *output)
+  void
+  ReadCellsBuffer(TInput *input, TOutput *output)
   {
     if ( input && output )
       {
@@ -151,7 +158,8 @@ protected:
 
   /** Write points to output stream */
   template< typename T >
-  void WritePointData(T *buffer, std::ofstream & outputFile)
+  void
+  WritePointData(T *buffer, std::ofstream & outputFile)
   {
     float *data = new float[this->m_NumberOfPointPixels];
 
@@ -166,7 +174,8 @@ protected:
 
 protected:
   FreeSurferBinaryMeshIO();
-  virtual ~FreeSurferBinaryMeshIO(){}
+  virtual
+  ~FreeSurferBinaryMeshIO(){}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

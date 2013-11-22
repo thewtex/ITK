@@ -24,7 +24,8 @@
 #include "itkUnaryFunctorImageFilter.h"
 #include "itkScalarToRGBPixelFunctor.h"
 
-int itkVoronoiPartitioningImageFilterTest(int argc, char* argv[])
+int
+itkVoronoiPartitioningImageFilterTest(int argc, char* argv[])
 {
   typedef itk::Image<float,2>          FloatImage;
   typedef itk::Image<unsigned char,2>  UnsignedCharImage;
@@ -36,7 +37,6 @@ int itkVoronoiPartitioningImageFilterTest(int argc, char* argv[])
     std::cout << "Usage: itkVoronoiPartitioningImageFilterTest input output show_boundaries" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   /* ------------------------------------------------
    * Load an image
@@ -51,7 +51,7 @@ int itkVoronoiPartitioningImageFilterTest(int argc, char* argv[])
   itk::DiscreteGaussianImageFilter<FloatImage, FloatImage>::Pointer gaussian3
     = itk::DiscreteGaussianImageFilter<FloatImage, FloatImage>::New();
   // FilterWatcher gaussian3Watcher(gaussian3);
-  gaussian3->SetInput(original->GetOutput());
+  gaussian3->SetInput(original->GetOutput() );
   gaussian3->SetVariance(1.0);
   //gaussian3->UpdateLargestPossibleRegion();
 
@@ -72,16 +72,16 @@ int itkVoronoiPartitioningImageFilterTest(int argc, char* argv[])
   FilterWatcher voronoiWatcher(voronoi);
 
   // Write out an image of the voronoi diagram
-  typedef itk::RGBPixel<unsigned char>   RGBPixelType;
-  typedef itk::Image<RGBPixelType, 2>    RGBImageType;
+  typedef itk::RGBPixel<unsigned char> RGBPixelType;
+  typedef itk::Image<RGBPixelType, 2>  RGBImageType;
   typedef itk::Functor::ScalarToRGBPixelFunctor<float>
-                                         ColorMapFunctorType;
+    ColorMapFunctorType;
   typedef itk::UnaryFunctorImageFilter<FloatImage,
-    RGBImageType, ColorMapFunctorType>   ColorMapFilterType;
+                                       RGBImageType, ColorMapFunctorType>   ColorMapFilterType;
   typedef itk::ImageFileWriter<  RGBImageType  >
-                                         WriterType;
+    WriterType;
 
-  WriterType::Pointer writer = WriterType::New();
+  WriterType::Pointer         writer = WriterType::New();
   ColorMapFilterType::Pointer colormapper = ColorMapFilterType::New();
 
   try

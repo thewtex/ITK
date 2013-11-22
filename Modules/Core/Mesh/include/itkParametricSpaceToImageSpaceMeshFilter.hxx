@@ -145,6 +145,7 @@ ParametricSpaceToImageSpaceMeshFilter< TInputMesh, TOutputMesh >
 {
   // No additional information needs to be copied
 }
+
 } // end namespace itk
 
 #endif

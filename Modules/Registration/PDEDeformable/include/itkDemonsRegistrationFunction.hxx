@@ -54,7 +54,7 @@ DemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
     DefaultInterpolatorType::New();
 
   m_MovingImageInterpolator = static_cast< InterpolatorType * >(
-    interp.GetPointer() );
+      interp.GetPointer() );
 
   m_Metric = NumericTraits< double >::max();
   m_SumOfSquaredDifference = 0.0;
@@ -235,7 +235,7 @@ DemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
     }
 
   const double denominator = sqr_speedValue / m_Normalizer
-                             + gradientSquaredMagnitude;
+    + gradientSquaredMagnitude;
 
   if ( vnl_math_abs(speedValue) < m_IntensityDifferenceThreshold
        || denominator < m_DenominatorThreshold )
@@ -272,7 +272,7 @@ DemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
   if ( m_NumberOfPixelsProcessed )
     {
     m_Metric = m_SumOfSquaredDifference
-               / static_cast< double >( m_NumberOfPixelsProcessed );
+      / static_cast< double >( m_NumberOfPixelsProcessed );
     m_RMSChange = vcl_sqrt( m_SumOfSquaredChange
                             / static_cast< double >( m_NumberOfPixelsProcessed ) );
     }
@@ -280,6 +280,7 @@ DemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
 
   delete globalData;
 }
+
 } // end namespace itk
 
 #endif

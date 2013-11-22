@@ -43,7 +43,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage >
-class GrayscaleConnectedOpeningImageFilter:
+class GrayscaleConnectedOpeningImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:

@@ -36,7 +36,7 @@ namespace itk
  */
 
 template< typename TInputImage >
-class TobogganImageFilter:
+class TobogganImageFilter :
   public ImageToImageFilter<
     TInputImage,
     Image< IdentifierType, TInputImage::ImageDimension > >
@@ -95,7 +95,7 @@ public:
 
   /** Neighborhood iterator type */
   typedef ConstNeighborhoodIterator< TInputImage >
-  NeighborhoodIteratorType;
+    NeighborhoodIteratorType;
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -114,6 +114,7 @@ protected:
 private:
   TobogganImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
+
 };                                   // end of class
 } // end namespace itk
 

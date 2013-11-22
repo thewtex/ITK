@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TInputMesh, typename TOutputMesh >
-class SimplexMeshToTriangleMeshFilter:public MeshToMeshFilter< TInputMesh, TOutputMesh >
+class SimplexMeshToTriangleMeshFilter : public MeshToMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
   /** Standard "Self" typedef. */
@@ -104,12 +104,14 @@ public:
     /**
      * default destructor
      */
-    virtual ~SimplexCellVisitor() {}
+    virtual
+    ~SimplexCellVisitor() {}
 
     /**
      * \brief visits all polygon cells and compute the cell centers
      */
-    void Visit(CellIdentifier cellId, SimplexPolygonType *poly)
+    void
+    Visit(CellIdentifier cellId, SimplexPolygonType *poly)
     {
       typedef typename SimplexPolygonType::PointIdIterator PointIdIterator;
       PointIdIterator it =  poly->PointIdsBegin();
@@ -133,12 +135,14 @@ public:
       m_CenterMap->InsertElement(cellId, center);
     }
 
-    PointMapPointer GetCenterMap()
+    PointMapPointer
+    GetCenterMap()
     {
       return m_CenterMap;
     }
 
-    void SetMesh(const InputMeshType *mesh)
+    void
+    SetMesh(const InputMeshType *mesh)
     {
       this->m_Mesh = mesh;
     }
@@ -152,7 +156,7 @@ protected:
                                                    InputCellTraitsType,
                                                    SimplexPolygonType,
                                                    SimplexCellVisitor >
-  SimplexVisitorInterfaceType;
+    SimplexVisitorInterfaceType;
 
   typedef typename SimplexVisitorInterfaceType::Pointer SimplexVisitorInterfacePointer;
   typedef typename SimplexCellType::MultiVisitor        CellMultiVisitorType;
@@ -161,9 +165,11 @@ protected:
 protected:
 
   SimplexMeshToTriangleMeshFilter();
-  virtual ~SimplexMeshToTriangleMeshFilter();
+  virtual
+  ~SimplexMeshToTriangleMeshFilter();
   SimplexMeshToTriangleMeshFilter(const Self &) {}
-  void operator=(const Self &) {}
+  void
+  operator=(const Self &) {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

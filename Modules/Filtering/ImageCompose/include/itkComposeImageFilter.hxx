@@ -29,7 +29,8 @@ ComposeImageFilter< TInputImage, TOutputImage >
 ::ComposeImageFilter()
 {
   OutputPixelType p;
-  int nbOfComponents = NumericTraits<OutputPixelType>::GetLength(p);
+  int             nbOfComponents = NumericTraits<OutputPixelType>::GetLength(p);
+
   nbOfComponents = std::max( 1, nbOfComponents );  // require at least one input
   this->SetNumberOfRequiredInputs( nbOfComponents );
 }
@@ -93,7 +94,7 @@ ComposeImageFilter< TInputImage, TOutputImage >
   for ( unsigned int i = 0; i < numberOfInputs; i++ )
     {
     InputImageType *input = itkDynamicCastInDebugMode< InputImageType * >
-      (this->ProcessObject::GetInput(i) );
+        (this->ProcessObject::GetInput(i) );
     if ( !input )
       {
       itkExceptionMacro(<< "Input " << i << " not set!");
@@ -142,6 +143,7 @@ ComposeImageFilter< TInputImage, TOutputImage >
     ++oit;
     }
 }
+
 } // end namespace itk
 
 #endif

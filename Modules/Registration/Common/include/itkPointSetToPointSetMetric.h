@@ -42,7 +42,7 @@ namespace itk
  */
 
 template< typename TFixedPointSet,  typename TMovingPointSet >
-class PointSetToPointSetMetric:public MultipleValuedCostFunction
+class PointSetToPointSetMetric : public MultipleValuedCostFunction
 {
 public:
 
@@ -114,8 +114,11 @@ public:
   void SetTransformParameters(const ParametersType & parameters) const;
 
   /** Return the number of parameters required by the Transform */
-  unsigned int GetNumberOfParameters(void) const
-  { return m_Transform->GetNumberOfParameters(); }
+  unsigned int
+  GetNumberOfParameters(void) const
+  {
+    return m_Transform->GetNumberOfParameters();
+  }
 
   /** Initialize the Metric by making sure that all the components
    *  are present and plugged together correctly     */
@@ -124,7 +127,8 @@ public:
 
 protected:
   PointSetToPointSetMetric();
-  virtual ~PointSetToPointSetMetric() {}
+  virtual
+  ~PointSetToPointSetMetric() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   FixedPointSetConstPointer m_FixedPointSet;
@@ -136,6 +140,7 @@ protected:
 private:
   PointSetToPointSetMetric(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 } // end namespace itk
 

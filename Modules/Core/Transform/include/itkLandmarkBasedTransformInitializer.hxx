@@ -58,7 +58,8 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
 ::InternalInitializeTransform(AffineTransformType *)
 {
   AffineTransformType *transform =
-    dynamic_cast<AffineTransformType *>(this->m_Transform.GetPointer());
+    dynamic_cast<AffineTransformType *>(this->m_Transform.GetPointer() );
+
   if ( transform == 0 )
     {
     itkExceptionMacro( << "AffineTransform Expected but transform is "
@@ -71,24 +72,23 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
     }
   const unsigned int NumberOfLandMarks = m_MovingLandmarks.size();
 
-
   //[Set Landmark Weight]
   //:: If no landmark weights are given, weight matrix is identity matrix
   vnl_matrix<double> vnlWeight( NumberOfLandMarks,NumberOfLandMarks,0);
   vnlWeight.set_identity();
 
   if( !m_LandmarkWeight.empty() )
-  {
-    if( m_LandmarkWeight.size() != NumberOfLandMarks)
     {
+    if( m_LandmarkWeight.size() != NumberOfLandMarks)
+      {
       itkExceptionMacro( << " size mismatch between number of landmars pairs and weights" );
-    }
+      }
     LandmarkWeightConstIterator weightIt = m_LandmarkWeight.begin();
     for(int i = 0; weightIt != m_LandmarkWeight.end(); ++i, ++weightIt )
-    {
+      {
       vnlWeight(i,i)=(*weightIt);
+      }
     }
-  }
   // Normalize weights
   //
   vnlWeight=vnlWeight/vnlWeight.fro_norm();
@@ -98,7 +98,7 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
 
   // q
   // dim+1=4 * NumberOfLandMarks matrix
-  vnl_matrix< double > q( ImageDimension+1, NumberOfLandMarks, 0.0F);
+  vnl_matrix< double >         q( ImageDimension+1, NumberOfLandMarks, 0.0F);
   PointsContainerConstIterator fixedIt = m_FixedLandmarks.begin();
   for(int i = 0; fixedIt != m_FixedLandmarks.end(); ++i, ++fixedIt )
     {
@@ -112,7 +112,7 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
 
   // p
   // dim=3 * NumberOfLandMarks matrix
-  vnl_matrix< double > p( ImageDimension, NumberOfLandMarks,0.0F);
+  vnl_matrix< double >         p( ImageDimension, NumberOfLandMarks,0.0F);
   PointsContainerConstIterator movingIt = m_MovingLandmarks.begin();
   for(int i = 0; movingIt != m_MovingLandmarks.end(); ++i, ++movingIt )
     {
@@ -147,7 +147,7 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
     { // Iterate for the number of landmakrs
     vnl_matrix< double > qTemp( ImageDimension+1, 1 );
     // convert vector to colume matrix
-    for( unsigned int k=0; k<ImageDimension+1;k++)
+    for( unsigned int k=0; k<ImageDimension+1; k++)
       {
       qTemp(k,0)=q.get(k,i);
       }
@@ -164,11 +164,11 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
     vnl_matrix< double > qTemp( ImageDimension+1, 1 );
     vnl_matrix< double > pTemp( 1, ImageDimension );
     // convert vector to colume matrix
-    for( unsigned int k=0; k<ImageDimension+1;k++)
+    for( unsigned int k=0; k<ImageDimension+1; k++)
       {
       qTemp(k,0)=q.get(k,i);
       }
-    for( unsigned int k=0; k<ImageDimension;k++)
+    for( unsigned int k=0; k<ImageDimension; k++)
       {
       pTemp(0,k)=p.get(k,i);
       }
@@ -184,7 +184,7 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
   vnl_matrix<double> Affine= transposeAffine.transpose();
 
   vnl_matrix<double> AffineRotation =
-    vnl_matrix<double>(Affine.get_n_columns(0,ImageDimension));
+    vnl_matrix<double>(Affine.get_n_columns(0,ImageDimension) );
 
   // [Convert ITK Affine Transformation from vnl]
   //
@@ -193,7 +193,7 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
   itk::Matrix<double,ImageDimension,ImageDimension> mA =
     itk::Matrix<double,ImageDimension,ImageDimension>(AffineRotation);
   itk::Vector<double,ImageDimension> mT;
-  for(unsigned int t=0;t<ImageDimension;t++)
+  for(unsigned int t=0; t<ImageDimension; t++)
     {
     mT[t] = Affine(t,ImageDimension);
     }
@@ -210,7 +210,7 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
 {
   itkDebugMacro("Internal Initialize VersorRigid3DTransformType");
   VersorRigid3DTransformType *transform = dynamic_cast< VersorRigid3DTransformType * >(
-    this->m_Transform.GetPointer() );
+      this->m_Transform.GetPointer() );
   if ( transform == 0 )
     {
     itkExceptionMacro( << "VersorRigid3DTransformType Expected but transform is "
@@ -306,31 +306,31 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
 
     itkDebugStatement(int ii = 0; )
 
-      // Computations are relative to the Center of Rotation.
-      while ( movingItr != m_MovingLandmarks.end() )
+    // Computations are relative to the Center of Rotation.
+    while ( movingItr != m_MovingLandmarks.end() )
+      {
+      for ( unsigned int i = 0; i < ImageDimension; i++ )
         {
-        for ( unsigned int i = 0; i < ImageDimension; i++ )
-          {
-          fixedCentered[i]  = ( *fixedItr )[i]  - fixedCentroid[i];
-          movingCentered[i] = ( *movingItr )[i] - movingCentroid[i];
-          }
-
-        for ( unsigned int i = 0; i < ImageDimension; i++ )
-          {
-          for ( unsigned int j = 0; j < ImageDimension; j++ )
-            {
-            // mmm this indices i,j may have to be reverted...
-            M[i][j] += fixedCentered[i] * movingCentered[j];
-            }
-          }
-
-        itkDebugStatement(++ii; )
-          itkDebugMacro(<< "f_" << ii << " = " << fixedCentered);
-        itkDebugMacro(<< "m_" << ii << " = " << movingCentered);
-
-        ++movingItr;
-        ++fixedItr;
+        fixedCentered[i]  = ( *fixedItr )[i]  - fixedCentroid[i];
+        movingCentered[i] = ( *movingItr )[i] - movingCentroid[i];
         }
+
+      for ( unsigned int i = 0; i < ImageDimension; i++ )
+        {
+        for ( unsigned int j = 0; j < ImageDimension; j++ )
+          {
+          // mmm this indices i,j may have to be reverted...
+          M[i][j] += fixedCentered[i] * movingCentered[j];
+          }
+        }
+
+      itkDebugStatement(++ii; )
+      itkDebugMacro(<< "f_" << ii << " = " << fixedCentered);
+      itkDebugMacro(<< "m_" << ii << " = " << movingCentered);
+
+      ++movingItr;
+      ++fixedItr;
+      }
 
     // -- build the 4x4 matrix N --
 
@@ -358,9 +358,9 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
     vnl_vector< double > eigenValues(4);
 
     typedef itk::SymmetricEigenAnalysis<
-      itk::Matrix< double, 4, 4 >,
-      vnl_vector< double >,
-      vnl_matrix< double > > SymmetricEigenAnalysisType;
+        itk::Matrix< double, 4, 4 >,
+        vnl_vector< double >,
+        vnl_matrix< double > > SymmetricEigenAnalysisType;
     SymmetricEigenAnalysisType symmetricEigenSystem(4);
 
     symmetricEigenSystem.ComputeEigenValuesAndVectors(N, eigenValues, eigenVectors);
@@ -486,7 +486,7 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
     movingCentered.Fill(0.0);
 
     itkDebugStatement(int ii = 0; )
-      double s_dot   = 0;
+    double s_dot   = 0;
     double s_cross = 0;
     // Computations are relative to the Center of Rotation.
     while ( movingItr != m_MovingLandmarks.end() )
@@ -502,7 +502,7 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
         - ( movingCentered[0] * fixedCentered[1] );
 
       itkDebugStatement(++ii; )
-        itkDebugMacro(<< "f_" << ii << " = " << fixedCentered);
+      itkDebugMacro(<< "f_" << ii << " = " << fixedCentered);
       itkDebugMacro(<< "m_" << ii << " = " << movingCentered);
 
       ++movingItr;
@@ -554,7 +554,7 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
     itkExceptionMacro("Different number of fixed and moving landmarks");
     return;
     }
-  this->InternalInitializeTransform(static_cast<TTransform *>(0));
+  this->InternalInitializeTransform(static_cast<TTransform *>(0) );
 }
 
 template< typename TTransform, typename TFixedImage, typename TMovingImage >
@@ -609,6 +609,7 @@ LandmarkBasedTransformInitializer< TTransform, TFixedImage, TMovingImage >
     ++mitr;
     }
 }
+
 }  // namespace itk
 
 #endif /* __itkLandmarkBasedTransformInitializer_hxx */

@@ -37,7 +37,8 @@ public:
   typedef typename NumericTraits< TInput >::AccumulateType AccumulatorType;
   Add1() {}
   ~Add1() {}
-  inline TOutput operator()(const std::vector< TInput > & B) const
+  inline TOutput
+  operator()(const std::vector< TInput > & B) const
   {
     AccumulatorType sum = NumericTraits< TOutput >::ZeroValue();
 
@@ -48,15 +49,18 @@ public:
     return static_cast< TOutput >( sum );
   }
 
-  bool operator==(const Add1 &) const
+  bool
+  operator==(const Add1 &) const
   {
     return true;
   }
 
-  bool operator!=(const Add1 &) const
+  bool
+  operator!=(const Add1 &) const
   {
     return false;
   }
+
 };
 }
 /** \class NaryAddImageFilter
@@ -94,7 +98,7 @@ public:
  * \ingroup ITKImageIntensity
  */
 template< typename TInputImage, typename TOutputImage >
-class NaryAddImageFilter:
+class NaryAddImageFilter :
   public
   NaryFunctorImageFilter< TInputImage, TOutputImage,
                           Functor::Add1< typename TInputImage::PixelType,  typename TInputImage::PixelType > >
@@ -103,9 +107,9 @@ public:
   /** Standard class typedefs. */
   typedef NaryAddImageFilter Self;
   typedef NaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::Add1< typename TInputImage::PixelType,
-                   typename TInputImage::PixelType > > Superclass;
+      TInputImage, TOutputImage,
+      Functor::Add1< typename TInputImage::PixelType,
+                     typename TInputImage::PixelType > > Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -129,11 +133,13 @@ public:
 
 protected:
   NaryAddImageFilter() {}
-  virtual ~NaryAddImageFilter() {}
+  virtual
+  ~NaryAddImageFilter() {}
 
 private:
   NaryAddImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
 };
 } // end namespace itk
 

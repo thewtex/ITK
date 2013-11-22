@@ -36,9 +36,7 @@ LevelSetEquationPropagationTerm< TInput, TLevelSetContainer, TPropagationImage >
 template< typename TInput, typename TLevelSetContainer, typename TPropagationImage >
 LevelSetEquationPropagationTerm< TInput, TLevelSetContainer, TPropagationImage >
 ::~LevelSetEquationPropagationTerm()
-{
-}
-
+{}
 
 template< typename TInput, typename TLevelSetContainer, typename TPropagationImage >
 void
@@ -62,15 +60,13 @@ template< typename TInput, typename TLevelSetContainer, typename TPropagationIma
 void
 LevelSetEquationPropagationTerm< TInput, TLevelSetContainer, TPropagationImage >
 ::Initialize( const LevelSetInputIndexType& )
-{
-}
+{}
 
 template< typename TInput, typename TLevelSetContainer, typename TPropagationImage >
 void
 LevelSetEquationPropagationTerm< TInput, TLevelSetContainer, TPropagationImage >
 ::Update()
-{
-}
+{}
 
 template< typename TInput, typename TLevelSetContainer, typename TPropagationImage >
 void
@@ -78,8 +74,7 @@ LevelSetEquationPropagationTerm< TInput, TLevelSetContainer, TPropagationImage >
 ::UpdatePixel( const LevelSetInputIndexType& itkNotUsed( iP ),
                const LevelSetOutputRealType& itkNotUsed( oldValue ),
                const LevelSetOutputRealType& itkNotUsed( newValue ) )
-{
-}
+{}
 
 template< typename TInput, typename TLevelSetContainer, typename TPropagationImage >
 typename LevelSetEquationPropagationTerm< TInput, TLevelSetContainer, TPropagationImage >::LevelSetOutputRealType
@@ -127,7 +122,7 @@ LevelSetEquationPropagationTerm< TInput, TLevelSetContainer, TPropagationImage >
          const LevelSetDataType& iData )
 {
   const LevelSetOutputRealType zero = NumericTraits< LevelSetOutputRealType >::Zero;
-  LevelSetOutputRealType propagation_gradient = zero;
+  LevelSetOutputRealType       propagation_gradient = zero;
 
   for ( unsigned int i = 0; i < ImageDimension; i++ )
     {

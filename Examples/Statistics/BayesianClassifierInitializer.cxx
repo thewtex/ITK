@@ -56,13 +56,16 @@
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkImageRegionConstIterator.h"
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
 
   const unsigned int Dimension = 2;
+
   if( argc < 4 )
     {
-    std::cerr << "Usage arguments: InputImage MembershipImage numberOfClasses [componentToExtract ExtractedImage]" << std::endl;
+    std::cerr << "Usage arguments: InputImage MembershipImage numberOfClasses [componentToExtract ExtractedImage]" <<
+    std::endl;
     std::cerr << "  The MembershipImage image written is a VectorImage, ( an image with multiple components ) ";
     std::cerr << "Given that most viewers can't see vector images, we will optionally extract a component and ";
     std::cerr << "write it out as a scalar image as well." << std::endl;
@@ -71,9 +74,9 @@ int main(int argc, char *argv[])
 
   typedef itk::Image< unsigned char, Dimension > ImageType;
   typedef itk::BayesianClassifierInitializationImageFilter< ImageType >
-                                                BayesianInitializerType;
+    BayesianInitializerType;
   BayesianInitializerType::Pointer bayesianInitializer
-                                          = BayesianInitializerType::New();
+    = BayesianInitializerType::New();
 
   typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
@@ -96,7 +99,7 @@ int main(int argc, char *argv[])
   // TODO add test where we specify membership functions
 
   typedef itk::ImageFileWriter<
-    BayesianInitializerType::OutputImageType >  WriterType;
+      BayesianInitializerType::OutputImageType >  WriterType;
   WriterType::Pointer writer = WriterType::New();
   writer->SetInput( bayesianInitializer->GetOutput() );
   writer->SetFileName( argv[2] );
@@ -129,16 +132,16 @@ int main(int argc, char *argv[])
     typedef itk::Image< MembershipImageType::InternalPixelType,
                         Dimension > ExtractedComponentImageType;
     ExtractedComponentImageType::Pointer extractedComponentImage =
-                                    ExtractedComponentImageType::New();
+      ExtractedComponentImageType::New();
     extractedComponentImage->CopyInformation(
-                          bayesianInitializer->GetOutput() );
+      bayesianInitializer->GetOutput() );
     extractedComponentImage->SetBufferedRegion( bayesianInitializer->GetOutput()->GetBufferedRegion() );
     extractedComponentImage->SetRequestedRegion( bayesianInitializer->GetOutput()->GetRequestedRegion() );
     extractedComponentImage->Allocate();
-    typedef itk::ImageRegionConstIterator< MembershipImageType > ConstIteratorType;
+    typedef itk::ImageRegionConstIterator< MembershipImageType >    ConstIteratorType;
     typedef itk::ImageRegionIterator< ExtractedComponentImageType > IteratorType;
     ConstIteratorType cit( bayesianInitializer->GetOutput(),
-                     bayesianInitializer->GetOutput()->GetBufferedRegion() );
+                           bayesianInitializer->GetOutput()->GetBufferedRegion() );
     IteratorType it( extractedComponentImage,
                      extractedComponentImage->GetLargestPossibleRegion() );
 
@@ -155,15 +158,15 @@ int main(int argc, char *argv[])
     // Write out the rescaled extracted component
     typedef itk::Image< unsigned char, Dimension > OutputImageType;
     typedef itk::RescaleIntensityImageFilter<
-      ExtractedComponentImageType, OutputImageType > RescalerType;
+        ExtractedComponentImageType, OutputImageType > RescalerType;
     RescalerType::Pointer rescaler = RescalerType::New();
     rescaler->SetInput( extractedComponentImage );
     rescaler->SetOutputMinimum( 0 );
     rescaler->SetOutputMaximum( 255 );
     typedef itk::ImageFileWriter<  OutputImageType
-                        >  ExtractedComponentWriterType;
+                                   >  ExtractedComponentWriterType;
     ExtractedComponentWriterType::Pointer
-               rescaledImageWriter = ExtractedComponentWriterType::New();
+      rescaledImageWriter = ExtractedComponentWriterType::New();
     rescaledImageWriter->SetInput( rescaler->GetOutput() );
     rescaledImageWriter->SetFileName( argv[5] );
     rescaledImageWriter->Update();

@@ -26,12 +26,14 @@
 #include "itkShiftScaleImageFilter.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkFFTNormalizedCorrelationImageFilterTest(int argc, char * argv[] )
+int
+itkFFTNormalizedCorrelationImageFilterTest(int argc, char * argv[] )
 {
   if( argc < 4 )
     {
     std::cerr << "Usage: " << std::endl;
-    std::cerr << argv[0] << " fixedImageName movingImageName outputImageName [requiredFractionOfOverlappingPixels]" << std::endl;
+    std::cerr << argv[0] << " fixedImageName movingImageName outputImageName [requiredFractionOfOverlappingPixels]" <<
+    std::endl;
     return EXIT_FAILURE;
     }
 
@@ -39,12 +41,12 @@ int itkFFTNormalizedCorrelationImageFilterTest(int argc, char * argv[] )
   typedef itk::Image<unsigned char, 2 > OutputImageType;
   // We need the internal type to be either float or double since
   // the correlation image contains values between -1 and 1.
-  typedef itk::Image<double, 2> RealImageType;
+  typedef itk::Image<double, 2>                                                     RealImageType;
   typedef itk::FFTNormalizedCorrelationImageFilter< InputImageType, RealImageType > FilterType;
 
-  char * fixedImageFileName = argv[1];
-  char * movingImageFileName = argv[2];
-  const char * outputImageFileName = argv[3];
+  char *                    fixedImageFileName = argv[1];
+  char *                    movingImageFileName = argv[2];
+  const char *              outputImageFileName = argv[3];
   FilterType::SizeValueType requiredNumberOfOverlappingPixels = 0;
   FilterType::RealPixelType requiredFractionOfOverlappingPixels = 0;
   if( argc > 4 )
@@ -100,7 +102,8 @@ int itkFFTNormalizedCorrelationImageFilterTest(int argc, char * argv[] )
     }
 
   std::cout << "Maximum overlapping pixels: " << filter->GetMaximumNumberOfOverlappingPixels() << std::endl;
-  std::cout << "Required fraction of overlapping pixels: " << filter->GetRequiredFractionOfOverlappingPixels() << std::endl;
+  std::cout << "Required fraction of overlapping pixels: " << filter->GetRequiredFractionOfOverlappingPixels() <<
+  std::endl;
   std::cout << "Required number of overlapping pixels: " << filter->GetRequiredNumberOfOverlappingPixels() << std::endl;
 
   return EXIT_SUCCESS;

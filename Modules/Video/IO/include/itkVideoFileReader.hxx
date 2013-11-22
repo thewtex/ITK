@@ -47,7 +47,6 @@ VideoFileReader< TOutputVideoStream >
   this->SetInputStencilCurrentFrameIndex(0);
 }
 
-
 //
 // Destructor
 //
@@ -55,7 +54,6 @@ template< typename TOutputVideoStream >
 VideoFileReader< TOutputVideoStream >
 ::~VideoFileReader()
 {}
-
 
 //
 // PrintSelf
@@ -71,7 +69,7 @@ VideoFileReader< TOutputVideoStream >
   if (m_VideoIO)
     {
     os << indent << "VideoIO:" << std::endl;
-    m_VideoIO->Print(os, indent.GetNextIndent());
+    m_VideoIO->Print(os, indent.GetNextIndent() );
     }
 }
 
@@ -88,7 +86,7 @@ VideoFileReader< TOutputVideoStream >
   //
   // Use the VideoIOFactory to generate a VideoIOBase if needed
   //
-  if (m_VideoIO.IsNull())
+  if (m_VideoIO.IsNull() )
     {
     this->InitializeVideoIO();
     }
@@ -115,7 +113,7 @@ VideoFileReader< TOutputVideoStream >
     }
   else
     {
-    largestPossibleTemporalRegion.SetFrameDuration(m_VideoIO->GetFrameTotal());
+    largestPossibleTemporalRegion.SetFrameDuration(m_VideoIO->GetFrameTotal() );
     }
   this->GetOutput()->SetLargestPossibleTemporalRegion(largestPossibleTemporalRegion);
 
@@ -124,11 +122,11 @@ VideoFileReader< TOutputVideoStream >
   //
 
   // Set up largest possible spatial region
-  RegionType region;
-  SizeType size;
-  IndexType start;
-  PointType origin;
-  SpacingType spacing;
+  RegionType    region;
+  SizeType      size;
+  IndexType     start;
+  PointType     origin;
+  SpacingType   spacing;
   DirectionType direction;
   for (unsigned int i = 0; i < FrameDimension; ++i)
     {
@@ -164,13 +162,12 @@ typename VideoFileReader<TOutputVideoStream>::FrameOffsetType
 VideoFileReader< TOutputVideoStream >
 ::GetCurrentPositionFrame()
 {
-  if(m_VideoIO.IsNull())
+  if(m_VideoIO.IsNull() )
     {
     this->InitializeVideoIO();
     }
   return m_VideoIO->GetCurrentFrame();
 }
-
 
 //
 // GetCurrentPositionRatio
@@ -180,13 +177,12 @@ typename VideoFileReader<TOutputVideoStream>::TemporalRatioType
 VideoFileReader< TOutputVideoStream >
 ::GetCurrentPositionRatio()
 {
-  if(m_VideoIO.IsNull())
+  if(m_VideoIO.IsNull() )
     {
     this->InitializeVideoIO();
     }
   return m_VideoIO->GetRatio();
 }
-
 
 //
 // GetCurrentPositionMSec
@@ -196,13 +192,12 @@ typename VideoFileReader<TOutputVideoStream>::TemporalRatioType
 VideoFileReader< TOutputVideoStream >
 ::GetCurrentPositionMSec()
 {
-  if(m_VideoIO.IsNull())
+  if(m_VideoIO.IsNull() )
     {
     this->InitializeVideoIO();
     }
   return m_VideoIO->GetPositionInMSec();
 }
-
 
 //
 // GetNumberOfFrames
@@ -212,13 +207,12 @@ typename VideoFileReader<TOutputVideoStream>::FrameOffsetType
 VideoFileReader< TOutputVideoStream >
 ::GetNumberOfFrames()
 {
-  if(m_VideoIO.IsNull())
+  if(m_VideoIO.IsNull() )
     {
     this->InitializeVideoIO();
     }
   return m_VideoIO->GetFrameTotal();
 }
-
 
 //
 // GetFramesPerSecond
@@ -228,13 +222,12 @@ typename VideoFileReader<TOutputVideoStream>::TemporalRatioType
 VideoFileReader< TOutputVideoStream >
 ::GetFramesPerSecond()
 {
-  if(m_VideoIO.IsNull())
+  if(m_VideoIO.IsNull() )
     {
     this->InitializeVideoIO();
     }
   return m_VideoIO->GetFramesPerSecond();
 }
-
 
 //-PROTECTED METHODS-----------------------------------------------------------
 
@@ -247,9 +240,9 @@ VideoFileReader< TOutputVideoStream >
 ::InitializeVideoIO()
 {
   m_VideoIO = itk::VideoIOFactory::CreateVideoIO(
-                                itk::VideoIOFactory::ReadFileMode,
-                                m_FileName.c_str());
-  m_VideoIO->SetFileName(m_FileName.c_str());
+      itk::VideoIOFactory::ReadFileMode,
+      m_FileName.c_str() );
+  m_VideoIO->SetFileName(m_FileName.c_str() );
   m_VideoIO->ReadImageInformation();
 
   // Make sure the input video has the same number of dimensions as the desired
@@ -260,7 +253,7 @@ VideoFileReader< TOutputVideoStream >
   if (m_VideoIO->GetNumberOfDimensions() != FrameType::ImageDimension)
     {
     itkExceptionMacro("Cannot convert " << m_VideoIO->GetNumberOfDimensions() << "D "
-      "image set to " << FrameType::ImageDimension << "D");
+                      "image set to " << FrameType::ImageDimension << "D");
     }
 
   // See if a buffer conversion is needed
@@ -272,7 +265,7 @@ VideoFileReader< TOutputVideoStream >
     // the pixel types don't match so a type conversion needs to be
     // performed
     itkDebugMacro( << "Buffer conversion required from: "
-                   << m_VideoIO->GetComponentTypeAsString(m_VideoIO->GetComponentType())
+                   << m_VideoIO->GetComponentTypeAsString(m_VideoIO->GetComponentType() )
                    << " to: "
                    << m_VideoIO->GetComponentTypeAsString(ioType)
                    << " ConvertPixelTraits::NumComponents "
@@ -286,7 +279,6 @@ VideoFileReader< TOutputVideoStream >
     m_PixelConversionNeeded = false;
     }
 }
-
 
 //
 // TemporalStreamingGenerateData
@@ -318,10 +310,10 @@ VideoFileReader< TOutputVideoStream >
     {
     // Set up temporary buffer for reading
     size_t bufferSize = m_VideoIO->GetImageSizeInBytes();
-    char* loadBuffer = new char[bufferSize];
+    char*  loadBuffer = new char[bufferSize];
 
     // Read into a temporary buffer
-    this->m_VideoIO->Read(static_cast<void*>(loadBuffer));
+    this->m_VideoIO->Read(static_cast<void*>(loadBuffer) );
 
     // Convert the buffer into the output buffer location
     this->DoConvertBuffer(static_cast<void*>(loadBuffer), frameNum);
@@ -330,13 +322,12 @@ VideoFileReader< TOutputVideoStream >
   else
     {
     FrameType* frame = this->GetOutput()->GetFrame(frameNum);
-    m_VideoIO->Read(reinterpret_cast<void*>(frame->GetBufferPointer()));
+    m_VideoIO->Read(reinterpret_cast<void*>(frame->GetBufferPointer() ) );
     }
 
   // Mark ourselves modified
   this->Modified();
 }
-
 
 //
 // DoConvertBuffer (much borrowed from itkImageFileReader)
@@ -361,10 +352,10 @@ DoConvertBuffer(void* inputData, FrameOffsetType frameNumber)
                          PixelType,                                     \
                          ConvertPixelTraits                             \
                          >                                              \
-        ::ConvertVectorImage(static_cast< type * >( inputData ),        \
-                             m_VideoIO->GetNumberOfComponents(),        \
-                             outputData,                                \
-                             numberOfPixels);                           \
+      ::ConvertVectorImage(static_cast< type * >( inputData ),        \
+                           m_VideoIO->GetNumberOfComponents(),        \
+                           outputData,                                \
+                           numberOfPixels);                           \
       }                                                                 \
     else                                                                \
       {                                                                 \
@@ -372,10 +363,10 @@ DoConvertBuffer(void* inputData, FrameOffsetType frameNumber)
                          PixelType,                                     \
                          ConvertPixelTraits                             \
                          >                                              \
-        ::Convert(static_cast< type * >( inputData ),                   \
-                  m_VideoIO->GetNumberOfComponents(),                   \
-                  outputData,                                           \
-                  numberOfPixels);                                      \
+      ::Convert(static_cast< type * >( inputData ),                   \
+                m_VideoIO->GetNumberOfComponents(),                   \
+                outputData,                                           \
+                numberOfPixels);                                      \
       }                                                                 \
     }
 
@@ -393,8 +384,8 @@ DoConvertBuffer(void* inputData, FrameOffsetType frameNumber)
   else
     {
 #define TYPENAME_VideoFileReader(x)                                     \
-    m_VideoIO->GetComponentTypeAsString                 \
-      (ImageIOBase::MapPixelType<x>::CType)
+  m_VideoIO->GetComponentTypeAsString                 \
+    (ImageIOBase::MapPixelType<x>::CType)
 
     ExceptionObject e(__FILE__, __LINE__);
     std::ostringstream       msg;

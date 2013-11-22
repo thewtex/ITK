@@ -64,9 +64,9 @@ LabelObject< TLabel, VImageDimension >
 template< typename TLabel, unsigned int VImageDimension >
 const typename LabelObject< TLabel, VImageDimension >::LabelType &
 LabelObject< TLabel, VImageDimension >::GetLabel() const
-{
+  {
   return m_Label;
-}
+  }
 
 template< typename TLabel, unsigned int VImageDimension >
 void
@@ -98,7 +98,6 @@ LabelObject< TLabel, VImageDimension >::HasIndex(const IndexType & idx) const
   return false;
 }
 
-
 template< typename TLabel, unsigned int VImageDimension >
 bool
 LabelObject< TLabel, VImageDimension >::RemoveIndex(const IndexType & idx)
@@ -109,7 +108,7 @@ LabelObject< TLabel, VImageDimension >::RemoveIndex(const IndexType & idx)
     {
     if( it->HasIndex( idx ) )
       {
-      IndexType orgLineIndex    = it->GetIndex();
+      IndexType  orgLineIndex    = it->GetIndex();
       LengthType orgLineLength  = it->GetLength();
 
       if( orgLineLength == 1 )
@@ -204,16 +203,16 @@ template< typename TLabel, unsigned int VImageDimension >
 const
 typename LabelObject< TLabel, VImageDimension >::LineType &
 LabelObject< TLabel, VImageDimension >::GetLine(SizeValueType i) const
-{
+  {
   return m_LineContainer[i];
-}
+  }
 
 template< typename TLabel, unsigned int VImageDimension >
 typename LabelObject< TLabel, VImageDimension >::LineType &
 LabelObject< TLabel, VImageDimension >::GetLine(SizeValueType i)
-{
+  {
   return m_LineContainer[i];
-}
+  }
 
 template< typename TLabel, unsigned int VImageDimension >
 typename LabelObject< TLabel, VImageDimension >::SizeValueType
@@ -304,8 +303,8 @@ LabelObject< TLabel, VImageDimension >::Optimize()
 
     // then check the lines consistancy
     // we'll proceed line index by line index
-    IndexType currentIdx = lineContainer.begin()->GetIndex();
-    LengthType  currentLength = lineContainer.begin()->GetLength();
+    IndexType  currentIdx = lineContainer.begin()->GetIndex();
+    LengthType currentLength = lineContainer.begin()->GetLength();
 
     typename LineContainerType::const_iterator it = lineContainer.begin();
 
@@ -313,7 +312,7 @@ LabelObject< TLabel, VImageDimension >::Optimize()
       {
       const LineType & line = *it;
       IndexType        idx = line.GetIndex();
-      LengthType    length = line.GetLength();
+      LengthType       length = line.GetLength();
 
       // check the index to be sure that we are still in the same line idx
       bool sameIdx = true;
@@ -376,9 +375,11 @@ void
 LabelObject< TLabel, VImageDimension >::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "LineContainer: " << &m_LineContainer << std::endl;
   os << indent << "Label: " << static_cast< typename NumericTraits< LabelType >::PrintType >( m_Label ) << std::endl;
 }
+
 } // end namespace itk
 
 #endif

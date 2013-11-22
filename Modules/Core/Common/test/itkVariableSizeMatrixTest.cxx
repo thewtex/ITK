@@ -19,29 +19,30 @@
 #include <iostream>
 #include "itkVariableSizeMatrix.h"
 
-int itkVariableSizeMatrixTest(int, char*[])
+int
+itkVariableSizeMatrixTest(int, char*[])
 {
-  typedef itk::VariableSizeMatrix<float>   FloatVariableSizeMatrixType;
-  typedef itk::VariableSizeMatrix<double>  DoubleVariableSizeMatrixType;
+  typedef itk::VariableSizeMatrix<float>  FloatVariableSizeMatrixType;
+  typedef itk::VariableSizeMatrix<double> DoubleVariableSizeMatrixType;
 
   FloatVariableSizeMatrixType f( 3, 2 );
-    f(0,0)=1.0; f(0,1) = 2.0;
-    f(1,0)=3.0; f(1,1) = 4.0;
-    f(2,0)=5.0; f(2,1) = 6.0;
+  f(0,0)=1.0; f(0,1) = 2.0;
+  f(1,0)=3.0; f(1,1) = 4.0;
+  f(2,0)=5.0; f(2,1) = 6.0;
 
   FloatVariableSizeMatrixType g( 3, 2 );
-    g(0,0)=10.0; g(0,1) = 10.0;
-    g(1,0)=100.0; g(1,1) = 100.0;
-    g(2,0)=1000.0; g(2,1) = 1000.0;
+  g(0,0)=10.0; g(0,1) = 10.0;
+  g(1,0)=100.0; g(1,1) = 100.0;
+  g(2,0)=1000.0; g(2,1) = 1000.0;
 
   FloatVariableSizeMatrixType h;
-    h = g + f;
-    h *= 2.0;
-    h /= 2.0;
-    h += g;
-    h -= g;
-    h = g - h;
-    h = -h;
+  h = g + f;
+  h *= 2.0;
+  h /= 2.0;
+  h += g;
+  h -= g;
+  h = g - h;
+  h = -h;
 
   std::cout << "***** h" << std::endl << h << std::endl;  // should be (1,2)(3,4)(5,6)]
   std::cout << "***** h transpose" << std::endl << h.GetTranspose() << std::endl;
@@ -107,9 +108,9 @@ int itkVariableSizeMatrixTest(int, char*[])
   std::cout << "***** h *= dVnl" << std::endl << h << std::endl;
 
   DoubleVariableSizeMatrixType d13(1,3);
-    d13(0,0) = 2;
-    d13(0,1) = 1;
-    d13(0,2) = -2;
+  d13(0,0) = 2;
+  d13(0,1) = 1;
+  d13(0,2) = -2;
 
   // Verify the 4 conditions of the pseudoinverse
   std::cout << "***** d13" << std::endl << d13 << std::endl;
@@ -127,13 +128,13 @@ int itkVariableSizeMatrixTest(int, char*[])
   std::cout << "***** d13+ * d13 * d13+ = d13+" << std::endl
             << d13.GetInverse() * d13.GetVnlMatrix() * d13.GetInverse() << std::endl;
   std::cout << "***** (d13 * d13+)T = d13 * d13+" << std::endl
-            << (d13.GetVnlMatrix() * d13.GetInverse()).transpose() << std::endl;
+            << (d13.GetVnlMatrix() * d13.GetInverse() ).transpose() << std::endl;
   std::cout << "***** (d13+ * d13)T = d13+ * d13" << std::endl
-            << (d13.GetInverse() * d13.GetVnlMatrix()).transpose() << std::endl;
+            << (d13.GetInverse() * d13.GetVnlMatrix() ).transpose() << std::endl;
 
   DoubleVariableSizeMatrixType dm(10,10);
-    dm.Fill(10.0);
-    dm.SetIdentity();
+  dm.Fill(10.0);
+  dm.SetIdentity();
 
   std::cout << "***** dm(5,5)" << std::endl << dm(5,5) << std::endl;
 
@@ -157,7 +158,6 @@ int itkVariableSizeMatrixTest(int, char*[])
   std::cout << "***** vnlvector" << std::endl << vnlvector << std::endl;
   std::cout << "***** fm" << std::endl << fm << std::endl;
   std::cout << "***** fm * vnlvector" << std::endl << fm * vnlvector << std::endl;
-
 
   DoubleVariableSizeMatrixType d53(5,3);
   d53.Fill(1);

@@ -59,6 +59,7 @@ MiniPipelineSeparableImageFilter< TInputImage, TOutputImage, TFilter >
 ::Modified() const
 {
   Superclass::Modified();
+
   for ( unsigned i = 0; i < ImageDimension; i++ )
     {
     m_Filters[i]->Modified();
@@ -72,6 +73,7 @@ MiniPipelineSeparableImageFilter< TInputImage, TOutputImage, TFilter >
 ::SetNumberOfThreads(ThreadIdType nb)
 {
   Superclass::SetNumberOfThreads(nb);
+
   for ( unsigned i = 0; i < ImageDimension; i++ )
     {
     m_Filters[i]->SetNumberOfThreads(nb);
@@ -118,6 +120,7 @@ MiniPipelineSeparableImageFilter< TInputImage, TOutputImage, TFilter >
   m_Cast->Update();
   this->GraftOutput( m_Cast->GetOutput() );
 }
+
 }
 
 #endif

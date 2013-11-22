@@ -62,15 +62,15 @@ namespace itk
  */
 template<typename TTransform>
 class TimeVaryingVelocityFieldTransformParametersAdaptor
-: public TransformParametersAdaptor<TTransform>
+  : public TransformParametersAdaptor<TTransform>
 {
 public:
 
   /** Standard class typedefs. */
-  typedef TimeVaryingVelocityFieldTransformParametersAdaptor   Self;
-  typedef TransformParametersAdaptor<TTransform>               Superclass;
-  typedef SmartPointer<Self>                                   Pointer;
-  typedef SmartPointer<const Self>                             ConstPointer;
+  typedef TimeVaryingVelocityFieldTransformParametersAdaptor Self;
+  typedef TransformParametersAdaptor<TTransform>             Superclass;
+  typedef SmartPointer<Self>                                 Pointer;
+  typedef SmartPointer<const Self>                           ConstPointer;
 
   /** New macro for creation of through a Smart Pointer. */
   itkNewMacro( Self );
@@ -79,17 +79,17 @@ public:
   itkTypeMacro( TimeVaryingVelocityFieldTransformParametersAdaptor, TransformParametersAdaptor );
 
   /** Typedefs associated with the transform */
-  typedef TTransform                                     TransformType;
-  typedef typename TransformType::Pointer                TransformPointer;
-  typedef typename TransformType::ParametersType         ParametersType;
-  typedef typename TransformType::ParametersValueType    ParametersValueType;
+  typedef TTransform                                  TransformType;
+  typedef typename TransformType::Pointer             TransformPointer;
+  typedef typename TransformType::ParametersType      ParametersType;
+  typedef typename TransformType::ParametersValueType ParametersValueType;
 
-  typedef typename TransformType::TimeVaryingVelocityFieldType  TimeVaryingVelocityFieldType;
-  typedef typename TimeVaryingVelocityFieldType::Pointer        TimeVaryingVelocityFieldPointer;
-  typedef typename TimeVaryingVelocityFieldType::PointType      PointType;
-  typedef typename TimeVaryingVelocityFieldType::SizeType       SizeType;
-  typedef typename TimeVaryingVelocityFieldType::DirectionType  DirectionType;
-  typedef typename TimeVaryingVelocityFieldType::SpacingType    SpacingType;
+  typedef typename TransformType::TimeVaryingVelocityFieldType TimeVaryingVelocityFieldType;
+  typedef typename TimeVaryingVelocityFieldType::Pointer       TimeVaryingVelocityFieldPointer;
+  typedef typename TimeVaryingVelocityFieldType::PointType     PointType;
+  typedef typename TimeVaryingVelocityFieldType::SizeType      SizeType;
+  typedef typename TimeVaryingVelocityFieldType::DirectionType DirectionType;
+  typedef typename TimeVaryingVelocityFieldType::SpacingType   SpacingType;
 
   /** Dimension of parameters. */
   itkStaticConstMacro( TotalDimension, unsigned int, TransformType::Dimension + 1 );
@@ -127,7 +127,7 @@ protected:
 
 private:
   TimeVaryingVelocityFieldTransformParametersAdaptor( const Self & ); //purposely not implemented
-  void operator=( const Self & );             //purposely not implemented
+  void operator=( const Self & );                                     //purposely not implemented
 
 }; //class TimeVaryingVelocityFieldTransformParametersAdaptor
 }  // namespace itk

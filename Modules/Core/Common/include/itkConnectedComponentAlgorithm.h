@@ -128,6 +128,7 @@ setConnectivityLater(TIterator *it, bool fullyConnected = false)
     }
   return it;
 }
+
 }
 
 #endif

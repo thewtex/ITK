@@ -75,6 +75,7 @@ CropImageFilter< TInputImage, TOutputImage >
   os << indent << "LowerBoundaryCropSize: " << m_LowerBoundaryCropSize
      << std::endl;
 }
+
 } // end namespace itk
 
 #endif

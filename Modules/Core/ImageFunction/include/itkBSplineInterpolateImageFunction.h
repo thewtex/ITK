@@ -81,7 +81,7 @@ template<
   typename TImageType,
   typename TCoordRep = double,
   typename TCoefficientType = double >
-class BSplineInterpolateImageFunction:
+class BSplineInterpolateImageFunction :
   public InterpolateImageFunction< TImageType, TCoordRep >
 {
 public:
@@ -122,7 +122,7 @@ public:
   typedef TCoefficientType CoefficientDataType;
   typedef Image< CoefficientDataType,
                  itkGetStaticConstMacro(ImageDimension) >
-  CoefficientImageType;
+    CoefficientImageType;
 
   /** Define filter for calculating the BSpline coefficients */
   typedef BSplineDecompositionImageFilter< TImageType, CoefficientImageType > CoefficientFilter;
@@ -131,7 +131,7 @@ public:
   /** Derivative typedef support */
   typedef CovariantVector< OutputType,
                            itkGetStaticConstMacro(ImageDimension) >
-  CovariantVectorType;
+    CovariantVectorType;
 
   /** Evaluate the function at a ContinuousIndex position.
    *
@@ -141,7 +141,8 @@ public:
    *
    * ImageFunction::IsInsideBuffer() can be used to check bounds before
    * calling the method. */
-  virtual OutputType Evaluate(const PointType & point) const
+  virtual OutputType
+  Evaluate(const PointType & point) const
   {
     ContinuousIndexType index;
 
@@ -151,8 +152,9 @@ public:
     return ( this->EvaluateAtContinuousIndex(index) );
   }
 
-  virtual OutputType Evaluate(const PointType & point,
-                              ThreadIdType threadID) const
+  virtual OutputType
+  Evaluate(const PointType & point,
+           ThreadIdType threadID) const
   {
     ContinuousIndexType index;
 
@@ -161,8 +163,9 @@ public:
     return ( this->EvaluateAtContinuousIndex(index, threadID) );
   }
 
-  virtual OutputType EvaluateAtContinuousIndex(const ContinuousIndexType &
-                                               index) const
+  virtual OutputType
+  EvaluateAtContinuousIndex(const ContinuousIndexType &
+                            index) const
   {
     // Don't know thread information, make evaluateIndex, weights on the stack.
     // Slower, but safer.
@@ -180,7 +183,8 @@ public:
                                                index,
                                                ThreadIdType threadID) const;
 
-  CovariantVectorType EvaluateDerivative(const PointType & point) const
+  CovariantVectorType
+  EvaluateDerivative(const PointType & point) const
   {
     ContinuousIndexType index;
 
@@ -190,8 +194,9 @@ public:
     return ( this->EvaluateDerivativeAtContinuousIndex(index) );
   }
 
-  CovariantVectorType EvaluateDerivative(const PointType & point,
-                                         ThreadIdType threadID) const
+  CovariantVectorType
+  EvaluateDerivative(const PointType & point,
+                     ThreadIdType threadID) const
   {
     ContinuousIndexType index;
 
@@ -200,7 +205,8 @@ public:
     return ( this->EvaluateDerivativeAtContinuousIndex(index, threadID) );
   }
 
-  CovariantVectorType EvaluateDerivativeAtContinuousIndex(
+  CovariantVectorType
+  EvaluateDerivativeAtContinuousIndex(
     const ContinuousIndexType & x) const
   {
     // Don't know thread information, make evaluateIndex, weights,
@@ -224,9 +230,10 @@ public:
     const ContinuousIndexType & x,
     ThreadIdType threadID) const;
 
-  void EvaluateValueAndDerivative(const PointType & point,
-                                  OutputType & value,
-                                  CovariantVectorType & deriv) const
+  void
+  EvaluateValueAndDerivative(const PointType & point,
+                             OutputType & value,
+                             CovariantVectorType & deriv) const
   {
     ContinuousIndexType index;
 
@@ -239,10 +246,11 @@ public:
                                                       deriv);
   }
 
-  void EvaluateValueAndDerivative(const PointType & point,
-                                  OutputType & value,
-                                  CovariantVectorType & deriv,
-                                  ThreadIdType threadID) const
+  void
+  EvaluateValueAndDerivative(const PointType & point,
+                             OutputType & value,
+                             CovariantVectorType & deriv,
+                             ThreadIdType threadID) const
   {
     ContinuousIndexType index;
 
@@ -254,7 +262,8 @@ public:
                                                       threadID);
   }
 
-  void EvaluateValueAndDerivativeAtContinuousIndex(
+  void
+  EvaluateValueAndDerivativeAtContinuousIndex(
     const ContinuousIndexType & x,
     OutputType & value,
     CovariantVectorType & deriv
@@ -356,7 +365,7 @@ protected:
 
   // These are needed by the smoothing spline routine.
   // temp storage for processing of Coefficients
-  std::vector< CoefficientDataType >    m_Scratch;
+  std::vector< CoefficientDataType > m_Scratch;
   // Image size
   typename TImageType::SizeType m_DataLength;
   // User specified spline order (3rd or cubic is the default)

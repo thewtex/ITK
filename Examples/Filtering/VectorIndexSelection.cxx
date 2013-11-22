@@ -24,11 +24,10 @@
 
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImage.h"
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   // Verify the number of parameters in the command line
   if( argc < 4 )
@@ -38,30 +37,26 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   // Software Guide : BeginCodeSnippet
-  typedef itk::RGBPixel<unsigned char>  InputPixelType;
-  typedef unsigned char                 OutputPixelType;
-  const   unsigned int                  Dimension = 2;
+  typedef itk::RGBPixel<unsigned char> InputPixelType;
+  typedef unsigned char                OutputPixelType;
+  const   unsigned int Dimension = 2;
 
-  typedef itk::Image< InputPixelType,  Dimension >    InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >    OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< InputImageType  >     ReaderType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
   typedef itk::VectorIndexSelectionCastImageFilter<
-                  InputImageType, OutputImageType  >  FilterType;
-  typedef itk::ImageFileWriter< OutputImageType >     WriterType;
+      InputImageType, OutputImageType  >  FilterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginCodeSnippet
   FilterType::Pointer filter = FilterType::New();
-  filter->SetIndex(atoi(argv[3]));
+  filter->SetIndex(atoi(argv[3]) );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -82,19 +77,16 @@ int main( int argc, char * argv[] )
   writer->SetInput( filter->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   //
   // Here we recover the file names from the command line arguments
   //
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[2];
 
-
   // Software Guide : BeginCodeSnippet
   reader->SetFileName( inputFilename  );
   writer->SetFileName( outputFilename );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -103,7 +95,6 @@ int main( int argc, char * argv[] )
   //  version of the input image.
   //
   //  Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   try
@@ -117,7 +108,6 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
   // Software Guide : EndCodeSnippet
-
 
   return EXIT_SUCCESS;
 }

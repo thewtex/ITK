@@ -46,7 +46,7 @@ namespace itk
  * \ingroup ITKDisplacementField
  */
 template< typename TOutputImage >
-class LandmarkDisplacementFieldSource:
+class LandmarkDisplacementFieldSource :
   public ImageSource< TOutputImage >
 {
 public:
@@ -158,7 +158,7 @@ protected:
 
 private:
   LandmarkDisplacementFieldSource(const Self &); //purposely not implemented
-  void operator=(const Self &);         //purposely not implemented
+  void operator=(const Self &);                  //purposely not implemented
 
   KernelTransformPointerType m_KernelTransform;      // Coordinate transform to
                                                      // use

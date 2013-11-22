@@ -17,14 +17,12 @@
  *=========================================================================*/
 #include "itkVXLVideoIO.h"
 
-
 namespace itk
 {
 
 ///////////////////////////////////////////////////////////////////////////////
 // Constructor, Destructor, and Print
 //
-
 
 //
 // Constructor
@@ -34,7 +32,6 @@ VXLVideoIO::VXLVideoIO()
   this->ResetMembers();
 }
 
-
 //
 // Destructor
 //
@@ -43,11 +40,11 @@ VXLVideoIO::~VXLVideoIO()
   this->FinishReadingOrWriting();
 }
 
-
 //
 // PrintSelf
 //
-void VXLVideoIO::PrintSelf(std::ostream & os, Indent indent) const
+void
+VXLVideoIO::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os,indent);
 
@@ -61,7 +58,8 @@ void VXLVideoIO::PrintSelf(std::ostream & os, Indent indent) const
 //
 // FinishReadingOrWriting
 //
-void VXLVideoIO::FinishReadingOrWriting()
+void
+VXLVideoIO::FinishReadingOrWriting()
 {
   delete this->m_Writer;
   this->m_Writer = NULL;
@@ -71,16 +69,15 @@ void VXLVideoIO::FinishReadingOrWriting()
   this->ResetMembers();
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // Member Accessors
 //
 
-
 //
 // GetPositionInMSec
 //
-VXLVideoIO::TemporalOffsetType VXLVideoIO::GetPositionInMSec() const
+VXLVideoIO::TemporalOffsetType
+VXLVideoIO::GetPositionInMSec() const
 {
   return this->m_PositionInMSec;
 }
@@ -88,7 +85,8 @@ VXLVideoIO::TemporalOffsetType VXLVideoIO::GetPositionInMSec() const
 //
 // GetRatio
 //
-VXLVideoIO::TemporalRatioType VXLVideoIO::GetRatio() const
+VXLVideoIO::TemporalRatioType
+VXLVideoIO::GetRatio() const
 {
   return this->m_Ratio;
 }
@@ -96,7 +94,8 @@ VXLVideoIO::TemporalRatioType VXLVideoIO::GetRatio() const
 //
 // GetFrameTotal
 //
-VXLVideoIO::FrameOffsetType  VXLVideoIO::GetFrameTotal() const
+VXLVideoIO::FrameOffsetType
+VXLVideoIO::GetFrameTotal() const
 {
   return this->m_FrameTotal;
 }
@@ -104,7 +103,8 @@ VXLVideoIO::FrameOffsetType  VXLVideoIO::GetFrameTotal() const
 //
 // GetFramesPerSecond
 //
-VXLVideoIO::TemporalOffsetType VXLVideoIO::GetFramesPerSecond() const
+VXLVideoIO::TemporalOffsetType
+VXLVideoIO::GetFramesPerSecond() const
 {
   return this->m_FramesPerSecond;
 }
@@ -112,7 +112,8 @@ VXLVideoIO::TemporalOffsetType VXLVideoIO::GetFramesPerSecond() const
 //
 // GetCurrentFrame
 //
-VXLVideoIO::FrameOffsetType VXLVideoIO::GetCurrentFrame() const
+VXLVideoIO::FrameOffsetType
+VXLVideoIO::GetCurrentFrame() const
 {
   return this->m_CurrentFrame;
 }
@@ -120,7 +121,8 @@ VXLVideoIO::FrameOffsetType VXLVideoIO::GetCurrentFrame() const
 //
 // GetIFrameInterval
 //
-VXLVideoIO::FrameOffsetType VXLVideoIO::GetIFrameInterval() const
+VXLVideoIO::FrameOffsetType
+VXLVideoIO::GetIFrameInterval() const
 {
   return this->m_IFrameInterval;
 }
@@ -128,7 +130,8 @@ VXLVideoIO::FrameOffsetType VXLVideoIO::GetIFrameInterval() const
 //
 // GetLastIFrame
 //
-VXLVideoIO::FrameOffsetType VXLVideoIO::GetLastIFrame() const
+VXLVideoIO::FrameOffsetType
+VXLVideoIO::GetLastIFrame() const
 {
   return this->m_LastIFrame;
 }
@@ -136,7 +139,8 @@ VXLVideoIO::FrameOffsetType VXLVideoIO::GetLastIFrame() const
 //
 // SetCameraIndex
 //
-void VXLVideoIO::SetCameraIndex(int idx)
+void
+VXLVideoIO::SetCameraIndex(int idx)
 {
   this->m_CameraIndex = idx;
 }
@@ -144,7 +148,8 @@ void VXLVideoIO::SetCameraIndex(int idx)
 //
 // GetCameraIndex
 //
-int VXLVideoIO::GetCameraIndex()
+int
+VXLVideoIO::GetCameraIndex()
 {
   return this->m_CameraIndex;
 }
@@ -153,11 +158,11 @@ int VXLVideoIO::GetCameraIndex()
 // Read related methods
 //
 
-
 //
 // SetReadFromFile
 //
-void VXLVideoIO::SetReadFromFile()
+void
+VXLVideoIO::SetReadFromFile()
 {
   if (!this->m_ReaderOpen && !this->m_WriterOpen)
     {
@@ -172,7 +177,8 @@ void VXLVideoIO::SetReadFromFile()
 //
 // SetReadFromCamera
 //
-void VXLVideoIO::SetReadFromCamera()
+void
+VXLVideoIO::SetReadFromCamera()
 {
   if (!this->m_ReaderOpen && !this->m_WriterOpen)
     {
@@ -187,10 +193,12 @@ void VXLVideoIO::SetReadFromCamera()
 //
 // CanReadFile
 //
-bool VXLVideoIO::CanReadFile(const char* filename)
+bool
+VXLVideoIO::CanReadFile(const char* filename)
 {
   // Make sure filename is specified
   std::string fname = filename;
+
   if (fname == "")
     {
     itkDebugMacro(<< "NoFilename specified");
@@ -202,7 +210,7 @@ bool VXLVideoIO::CanReadFile(const char* filename)
   // Note: For now we only allow avi format, but this isn't right. We need to
   //       support all formats that vxl does (which I believe is some subset
   //       of all the formats that ffmpeg supports)
-  bool extensionFound = false;
+  bool                   extensionFound = false;
   std::string::size_type extPos = fname.rfind(".avi");
   if ( extPos != std::string::npos && extPos == fname.length() - 4 )
     {
@@ -219,10 +227,9 @@ bool VXLVideoIO::CanReadFile(const char* filename)
     return false;
     }
 
-
   // Try opening to read
   vidl_ffmpeg_istream localStream(filename);
-  if (!localStream.is_open())
+  if (!localStream.is_open() )
     {
     return false;
     }
@@ -234,17 +241,18 @@ bool VXLVideoIO::CanReadFile(const char* filename)
 //
 // CanReadCamera
 //
-bool VXLVideoIO::CanReadCamera( CameraIDType  cameraID ) const
+bool
+VXLVideoIO::CanReadCamera( CameraIDType  cameraID ) const
 {
   itkWarningMacro( << "For now, camera reading is not supported with VXL:"<<cameraID);
   return false;
 }
 
-
 //
 // ReadImageInformation
 //
-void VXLVideoIO::ReadImageInformation()
+void
+VXLVideoIO::ReadImageInformation()
 {
 
   // Get information from camera
@@ -257,7 +265,7 @@ void VXLVideoIO::ReadImageInformation()
   else if (this->m_ReadType == ReadFromFile)
     {
     // Set up local stream
-    vidl_ffmpeg_istream localStream(this->GetFileName());
+    vidl_ffmpeg_istream localStream(this->GetFileName() );
 
     // Populate information
     this->m_FrameTotal = localStream.num_frames();
@@ -299,14 +307,14 @@ void VXLVideoIO::ReadImageInformation()
         itkExceptionMacro(<< "I-Frame spacing for this video is zeror! Please check input data.");
         }
       this->m_LastIFrame =
-        static_cast<FrameOffsetType>((float)this->m_FrameTotal / (float)this->m_IFrameInterval)
+        static_cast<FrameOffsetType>( (float)this->m_FrameTotal / (float)this->m_IFrameInterval)
         * this->m_IFrameInterval -1;
 
       // If the I-Frame spacing is not 1, warn the user
       if (this->m_IFrameInterval != 1)
         {
         itkWarningMacro(<< "VXL can only seek to I-Frames. I-Frame spacing for this video is "
-          << this->m_IFrameInterval << ". Last I-Frame is " << this->m_LastIFrame);
+                        << this->m_IFrameInterval << ". Last I-Frame is " << this->m_LastIFrame);
         }
       }
     }
@@ -321,7 +329,8 @@ void VXLVideoIO::ReadImageInformation()
 //
 // Read
 //
-void VXLVideoIO::Read(void *buffer)
+void
+VXLVideoIO::Read(void *buffer)
 {
 
   // Make sure we've already called ReadImageInformation (dimensions are non-zero)
@@ -338,7 +347,7 @@ void VXLVideoIO::Read(void *buffer)
     }
 
   // Advance to the next frame if possible
-  if(!this->m_Reader->advance())
+  if(!this->m_Reader->advance() )
     {
     itkDebugMacro(<< "Could not advance to the next frame");
     }
@@ -347,7 +356,7 @@ void VXLVideoIO::Read(void *buffer)
   this->m_VIDLFrame = this->m_Reader->current_frame();
 
   // Check to see if the pixel format needs converting at all
-  if (!this->PixelFormatSupported(this->m_PixelFormat))
+  if (!this->PixelFormatSupported(this->m_PixelFormat) )
     {
 
     // Convert to RGBA (4 channels), RGB (3 channels), or mono (1 channel)
@@ -357,25 +366,25 @@ void VXLVideoIO::Read(void *buffer)
       std::stringstream ss;
       ss << "RGBA " << pixelSize*8*4;
       this->m_VIDLFrame = vidl_convert_frame(this->m_VIDLFrame,
-                            vidl_pixel_format_from_string(ss.str()));
+                                             vidl_pixel_format_from_string(ss.str() ) );
       }
     else if (this->m_NumberOfComponents == 3)
       {
       std::stringstream ss;
       ss << "RGB " << pixelSize*8*3;
       this->m_VIDLFrame = vidl_convert_frame(this->m_VIDLFrame,
-                            vidl_pixel_format_from_string(ss.str()));
+                                             vidl_pixel_format_from_string(ss.str() ) );
       }
     else if (this->m_NumberOfComponents == 1)
       {
       std::stringstream ss;
       ss << "MONO " << pixelSize*8;
       this->m_VIDLFrame = vidl_convert_frame(this->m_VIDLFrame,
-                            vidl_pixel_format_from_string(ss.str().c_str()));
+                                             vidl_pixel_format_from_string(ss.str().c_str() ) );
       }
     else
       {
-      itkExceptionMacro(<< "Unsupported Pixel Format " << vidl_pixel_format_to_string(this->m_PixelFormat));
+      itkExceptionMacro(<< "Unsupported Pixel Format " << vidl_pixel_format_to_string(this->m_PixelFormat) );
       }
 
     }
@@ -385,11 +394,11 @@ void VXLVideoIO::Read(void *buffer)
   memcpy(buffer, this->m_VIDLFrame->data(), bufferSize);
 }
 
-
 //
 // SetNextFrameToRead
 //
-bool VXLVideoIO::SetNextFrameToRead( FrameOffsetType frameNumber)
+bool
+VXLVideoIO::SetNextFrameToRead( FrameOffsetType frameNumber)
 {
   // If the reader isn't open, open it
   if (!this->m_ReaderOpen)
@@ -404,7 +413,7 @@ bool VXLVideoIO::SetNextFrameToRead( FrameOffsetType frameNumber)
     return false;
     }
 
-  if (this->m_Reader->is_open())
+  if (this->m_Reader->is_open() )
     {
     this->m_Reader->seek_frame(frameNumber);
     this->UpdateReaderProperties();
@@ -419,11 +428,11 @@ bool VXLVideoIO::SetNextFrameToRead( FrameOffsetType frameNumber)
 // Write related methods
 //
 
-
 //
 // CanWriteFile
 //
-bool VXLVideoIO::CanWriteFile(const char* filename)
+bool
+VXLVideoIO::CanWriteFile(const char* filename)
 {
 
   // Make sure reader is closed
@@ -446,7 +455,7 @@ bool VXLVideoIO::CanWriteFile(const char* filename)
   // Note: For now we only allow avi format, but this isn't right. We need to
   //       support all formats that vxl does (which I believe is some subset
   //       of all the formats that ffmpeg supports)
-  bool extensionFound = false;
+  bool                   extensionFound = false;
   std::string::size_type extPos = fname.rfind(".avi");
   if ( extPos != std::string::npos && extPos == fname.length() - 4 )
     {
@@ -469,7 +478,8 @@ bool VXLVideoIO::CanWriteFile(const char* filename)
 //
 // WriteImageInformation
 //
-void VXLVideoIO::WriteImageInformation()
+void
+VXLVideoIO::WriteImageInformation()
 {
   // Don't do anything
 }
@@ -477,9 +487,10 @@ void VXLVideoIO::WriteImageInformation()
 //
 // SetWriterParameters
 //
-void VXLVideoIO::SetWriterParameters(TemporalRatioType fps, const std::vector<SizeValueType>& dim,
-                                     const char* fourCC, unsigned int nChannels,
-                                     IOComponentType componentType)
+void
+VXLVideoIO::SetWriterParameters(TemporalRatioType fps, const std::vector<SizeValueType>& dim,
+                                const char* fourCC, unsigned int nChannels,
+                                IOComponentType componentType)
 {
   if (this->m_ReaderOpen || this->m_WriterOpen)
     {
@@ -513,21 +524,21 @@ void VXLVideoIO::SetWriterParameters(TemporalRatioType fps, const std::vector<Si
     this->m_PixelType = RGBA;
     std::stringstream ss;
     ss << "RGBA " << this->m_NumberOfComponents * this->GetComponentSize() * 8;
-    this->m_PixelFormat = vidl_pixel_format_from_string(ss.str());
+    this->m_PixelFormat = vidl_pixel_format_from_string(ss.str() );
     }
   else if (this->m_NumberOfComponents == 3)
     {
     this->m_PixelType = RGB;
     std::stringstream ss;
     ss << "RGB " << this->m_NumberOfComponents * this->GetComponentSize() * 8;
-    this->m_PixelFormat = vidl_pixel_format_from_string(ss.str());
+    this->m_PixelFormat = vidl_pixel_format_from_string(ss.str() );
     }
   else if (this->m_NumberOfComponents == 1)
     {
     this->m_PixelType = SCALAR;
     std::stringstream ss;
     ss << "MONO " << this->m_NumberOfComponents * this->GetComponentSize() * 8;
-    this->m_PixelFormat = vidl_pixel_format_from_string(ss.str());
+    this->m_PixelFormat = vidl_pixel_format_from_string(ss.str() );
     }
   else
     {
@@ -538,7 +549,8 @@ void VXLVideoIO::SetWriterParameters(TemporalRatioType fps, const std::vector<Si
 //
 // Write
 //
-void VXLVideoIO::Write(const void *buffer)
+void
+VXLVideoIO::Write(const void *buffer)
 {
   // Make sure parameters are specified
   if (this->m_FramesPerSecond == 0 || this->m_Dimensions.size() != 2 || this->m_Encoder == 0)
@@ -554,12 +566,11 @@ void VXLVideoIO::Write(const void *buffer)
 
   // Create the output frame
   this->m_VIDLFrame = new vidl_shared_frame(const_cast<void*>(buffer),
-    this->m_Dimensions[0], this->m_Dimensions[1], this->m_PixelFormat);
+                                            this->m_Dimensions[0], this->m_Dimensions[1], this->m_PixelFormat);
 
   // Write the frame out
   this->m_Writer->write_frame(this->m_VIDLFrame);
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Protected methods
@@ -568,42 +579,48 @@ void VXLVideoIO::Write(const void *buffer)
 //
 // GetNChannelsFromPixelFormat
 //
-unsigned int VXLVideoIO::GetNChannelsFromPixelFormat(vidl_pixel_format fmt)
+unsigned int
+VXLVideoIO::GetNChannelsFromPixelFormat(vidl_pixel_format fmt)
 {
 
   vidl_pixel_traits traits = vidl_pixel_format_traits(fmt);
+
   return traits.num_channels;
 }
 
 //
 // GetSizeFromPixelFormat
 //
-unsigned int VXLVideoIO::GetSizeFromPixelFormat(vidl_pixel_format fmt)
+unsigned int
+VXLVideoIO::GetSizeFromPixelFormat(vidl_pixel_format fmt)
 {
 
   vidl_pixel_traits traits = vidl_pixel_format_traits(fmt);
+
   return traits.bits_per_pixel/8;
 }
 
 //
 // PixelFormatSupported
 //
-bool VXLVideoIO::PixelFormatSupported(vidl_pixel_format fmt)
+bool
+VXLVideoIO::PixelFormatSupported(vidl_pixel_format fmt)
 {
   // Get a string representation of the format
-  vcl_string s = vidl_pixel_format_to_string(fmt);
+  vcl_string  s = vidl_pixel_format_to_string(fmt);
   vul_reg_exp reRGB(".*_RGB_.*");
-  if (reRGB.find(s))
+
+  if (reRGB.find(s) )
     {
     return true;
     }
   vul_reg_exp reRGBA(".*_RGBA_.*");
-  if (reRGBA.find(s))
+  if (reRGBA.find(s) )
     {
     return true;
     }
   vul_reg_exp reMONO(".*_MONO_.*");
-  if (reMONO.find(s))
+  if (reMONO.find(s) )
     {
     return true;
     }
@@ -614,29 +631,30 @@ bool VXLVideoIO::PixelFormatSupported(vidl_pixel_format fmt)
 //
 // FourCCtoEncoderType
 //
-vidl_ffmpeg_ostream_params::encoder_type VXLVideoIO::FourCCtoEncoderType(const char* fourCC)
+vidl_ffmpeg_ostream_params::encoder_type
+VXLVideoIO::FourCCtoEncoderType(const char* fourCC)
 {
-  if (!strcmp(fourCC, "DIVX"))
+  if (!strcmp(fourCC, "DIVX") )
     {
     return vidl_ffmpeg_ostream_params::MPEG4;
     }
-  else if (!strcmp(fourCC, "MP42"))
+  else if (!strcmp(fourCC, "MP42") )
     {
     return vidl_ffmpeg_ostream_params::MSMPEG4V2;
     }
-  else if (!strcmp(fourCC, "MP2V"))
+  else if (!strcmp(fourCC, "MP2V") )
     {
     return vidl_ffmpeg_ostream_params::MPEG2VIDEO;
     }
-  else if (!strcmp(fourCC, "DVCS"))
+  else if (!strcmp(fourCC, "DVCS") )
     {
     return vidl_ffmpeg_ostream_params::DVVIDEO;
     }
-  else if (!strcmp(fourCC, "Ljpg"))
+  else if (!strcmp(fourCC, "Ljpg") )
     {
     return vidl_ffmpeg_ostream_params::LJPEG;
     }
-  else if (!strcmp(fourCC, "raw "))
+  else if (!strcmp(fourCC, "raw ") )
     {
     return vidl_ffmpeg_ostream_params::RAWVIDEO;
     }
@@ -650,7 +668,8 @@ vidl_ffmpeg_ostream_params::encoder_type VXLVideoIO::FourCCtoEncoderType(const c
 //
 // UpdateReaderProperties
 //
-void VXLVideoIO::UpdateReaderProperties()
+void
+VXLVideoIO::UpdateReaderProperties()
 {
   this->m_CurrentFrame = this->m_Reader->frame_number();
 
@@ -662,7 +681,8 @@ void VXLVideoIO::UpdateReaderProperties()
 //
 // OpenReader
 //
-void VXLVideoIO::OpenReader()
+void
+VXLVideoIO::OpenReader()
 {
   if (this->m_ReaderOpen)
     {
@@ -678,8 +698,8 @@ void VXLVideoIO::OpenReader()
   if (this->m_ReadType == ReadFromFile)
     {
     this->m_Reader = new vidl_ffmpeg_istream();
-    this->m_Reader->open(this->GetFileName());
-    if (this->m_Reader->is_open())
+    this->m_Reader->open(this->GetFileName() );
+    if (this->m_Reader->is_open() )
       {
       this->m_ReaderOpen = true;
       }
@@ -699,7 +719,8 @@ void VXLVideoIO::OpenReader()
 //
 // OpenWriter
 //
-void VXLVideoIO::OpenWriter()
+void
+VXLVideoIO::OpenWriter()
 {
   if (this->m_WriterOpen)
     {
@@ -726,7 +747,8 @@ void VXLVideoIO::OpenWriter()
 //
 // ResetMembers
 //
-void VXLVideoIO::ResetMembers()
+void
+VXLVideoIO::ResetMembers()
 {
   this->m_PixelFormat = VIDL_PIXEL_FORMAT_UNKNOWN;
   this->m_VIDLFrame = 0;
@@ -756,6 +778,5 @@ void VXLVideoIO::ResetMembers()
   this->m_Origin[0] = 0.0;
   this->m_Origin[1] = 0.0;
 }
-
 
 } // end namespace itk

@@ -21,9 +21,13 @@
 #include "itkWatershedBoundaryResolver.h"
 #include "itkFilterWatcher.h"
 
-inline void println(const char *s) { std::cout << s << std::endl; }
+inline void
+println(const char *s) {
+  std::cout << s << std::endl;
+}
 
-int itkWatershedImageFilterTest(int, char* [] )
+int
+itkWatershedImageFilterTest(int, char* [] )
 {
   typedef itk::Image<float, 2>               ImageType2D;
   typedef itk::Image<itk::IdentifierType, 2> LongImageType2D;
@@ -31,30 +35,30 @@ int itkWatershedImageFilterTest(int, char* [] )
   println("Creating some images");
   itk::ImageRegion<2> Region2D;
 
-  itk::Size<2>  size2D;
-   size2D[0] = 314;
-   size2D[1] = 314;
+  itk::Size<2> size2D;
+  size2D[0] = 314;
+  size2D[1] = 314;
 
   itk::Index<2> orig2D;
-   orig2D[0] = 0;
-   orig2D[1] = 0;
+  orig2D[0] = 0;
+  orig2D[1] = 0;
 
   Region2D.SetSize(size2D);
   Region2D.SetIndex(orig2D);
 
   ImageType2D::Pointer image2D = ImageType2D::New();
-   image2D->SetLargestPossibleRegion(Region2D);
-   image2D->SetBufferedRegion(Region2D);
-   image2D->SetRequestedRegion(Region2D);
-   image2D->Allocate();
+  image2D->SetLargestPossibleRegion(Region2D);
+  image2D->SetBufferedRegion(Region2D);
+  image2D->SetRequestedRegion(Region2D);
+  image2D->Allocate();
 
   LongImageType2D::Pointer longimage2D = LongImageType2D::New();
-   longimage2D->SetRegions(Region2D);
-   longimage2D->Allocate();
-   longimage2D->FillBuffer(0);
+  longimage2D->SetRegions(Region2D);
+  longimage2D->Allocate();
+  longimage2D->FillBuffer(0);
 
- itk::ImageRegionIterator<ImageType2D>
-     it2D(image2D, image2D->GetRequestedRegion());
+  itk::ImageRegionIterator<ImageType2D>
+  it2D(image2D, image2D->GetRequestedRegion() );
   println("Initializing an image");
   float q = 0.00f;
   for (; !it2D.IsAtEnd(); ++it2D)
@@ -74,7 +78,8 @@ int itkWatershedImageFilterTest(int, char* [] )
   eq->GetEquivalencyTable();
   eq->Update();
 
-  println("Testing WatershedMiniPipelineProgressCommand.  Forcing the execution of the const Execute method which is not normally called.");
+  println(
+    "Testing WatershedMiniPipelineProgressCommand.  Forcing the execution of the const Execute method which is not normally called.");
   itk::WatershedMiniPipelineProgressCommand::Pointer wmppc
     = itk::WatershedMiniPipelineProgressCommand::New();
   wmppc->SetCount(2);
@@ -84,8 +89,8 @@ int itkWatershedImageFilterTest(int, char* [] )
   wmppc->SetFilter(eq);
   wmppc->GetFilter();
   const itk::ProcessObject *constp = eq.GetPointer();
-  wmppc->Execute(constp, itk::ProgressEvent());
-  wmppc->Execute(eq.GetPointer(), itk::ProgressEvent());
+  wmppc->Execute(constp, itk::ProgressEvent() );
+  wmppc->Execute(eq.GetPointer(), itk::ProgressEvent() );
 
   println("Testing watershed::BoundaryResolver");
   itk::watershed::BoundaryResolver<float, 2>::Pointer br = itk::watershed::BoundaryResolver<float, 2>::New();
@@ -106,7 +111,7 @@ int itkWatershedImageFilterTest(int, char* [] )
 
   println("Creating the watershed filter");
   itk::WatershedImageFilter<ImageType2D>::Pointer ws_filter =
-                  itk::WatershedImageFilter<ImageType2D>::New();
+    itk::WatershedImageFilter<ImageType2D>::New();
   FilterWatcher watchIt(ws_filter);
 
   ws_filter->SetInput(image2D);

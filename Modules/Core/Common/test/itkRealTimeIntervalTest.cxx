@@ -22,7 +22,7 @@
 #include "itkNumericTraits.h"
 
 #define CHECK_FOR_VALUE(a,b) \
-  { \
+    { \
     double eps = 4.0*itk::NumericTraits<double>::epsilon();             \
     eps = ( b == 0.0 ) ? eps : vcl_fabs(b*eps);                         \
     if( vcl_fabs( a - b ) > eps )                                       \
@@ -30,19 +30,19 @@
       std::cerr << "Error in "#a << " expected " << b << " but got " << a << std::endl; \
       return EXIT_FAILURE;                                              \
       }                                                                 \
-  }
+    }
 
 #define CHECK_FOR_BOOLEAN( x, expected ) \
-  { \
-  if( (x) != expected ) \
     { \
-    std::cerr << "Error in "#x << std::endl; \
-    return EXIT_FAILURE; \
-    } \
-  }
+    if( (x) != expected ) \
+      { \
+      std::cerr << "Error in "#x << std::endl; \
+      return EXIT_FAILURE; \
+      } \
+    }
 
-
-int itkRealTimeIntervalTest( int, char * [] )
+int
+itkRealTimeIntervalTest( int, char * [] )
 {
   itk::RealTimeInterval interval0;
 
@@ -102,7 +102,6 @@ int itkRealTimeIntervalTest( int, char * [] )
 
   CHECK_FOR_VALUE( timeInSeconds, 0.0 );
 
-
   itk::RealTimeInterval timeSpan;
 
   timeSpan.Set( 19, -5000000L );
@@ -128,7 +127,6 @@ int itkRealTimeIntervalTest( int, char * [] )
   timeInSeconds = timeSpan.GetTimeInSeconds();
 
   CHECK_FOR_VALUE( timeInSeconds, 24.0 );
-
 
   itk::RealTimeInterval timeSpan1( 19, 300000L );
   itk::RealTimeInterval timeSpan2( 13, 500000L );
@@ -164,7 +162,6 @@ int itkRealTimeIntervalTest( int, char * [] )
   CHECK_FOR_BOOLEAN(  dt1 <  dt3, true  );
   CHECK_FOR_BOOLEAN(  dt1 >= dt3, false );
   CHECK_FOR_BOOLEAN(  dt1 >  dt3, false );
-
 
   std::cout << "[PASSED]" << std::endl;
   return EXIT_SUCCESS;

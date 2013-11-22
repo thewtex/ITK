@@ -56,19 +56,43 @@ public:
   }
 
   /// returns voxel X coordinate (voxel column)
-  unsigned int GetX(void) const { return m_Vpos[0]; }
+  unsigned int
+  GetX(void) const {
+    return m_Vpos[0];
+  }
+
   /// returns voxel Y coordinate (voxel row)
-  unsigned int GetY(void) const { return m_Vpos[1]; }
+  unsigned int
+  GetY(void) const {
+    return m_Vpos[1];
+  }
+
   /// returns voxel Z coordinate (voxel plane)
-  unsigned int GetZ(void) const { return m_Vpos[2]; }
+  unsigned int
+  GetZ(void) const {
+    return m_Vpos[2];
+  }
+
   /// returns voxel distance to origin
-  double GetDistance(void) const { return m_Distance; }
+  double
+  GetDistance(void) const {
+    return m_Distance;
+  }
+
   /// returns voxel value
-  double GetValue(void) const { return m_Value; }
+  double
+  GetValue(void) const {
+    return m_Value;
+  }
+
   /// returns voxel position
 
   /// set the value of the voxel
-  void SetValue(const double val) { m_Value = val; }
+  void
+  SetValue(const double val) {
+    m_Value = val;
+  }
+
 };
 
 /** \class DeformableSimplexMesh3DGradientConstraintForceFilter
@@ -150,7 +174,8 @@ protected:
   DeformableSimplexMesh3DGradientConstraintForceFilter();
   ~DeformableSimplexMesh3DGradientConstraintForceFilter();
   DeformableSimplexMesh3DGradientConstraintForceFilter(const Self &) {}
-  void operator=(const Self &){}
+  void
+  operator=(const Self &){}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**

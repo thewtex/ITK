@@ -21,7 +21,6 @@
 #include "itkUnaryFunctorImageFilter.h"
 #include "itkNumericTraits.h"
 
-
 namespace itk
 {
 
@@ -57,25 +56,31 @@ template< typename TPixel >
 class BinaryNot
 {
 public:
-  BinaryNot() {};
-  ~BinaryNot() {};
-  bool operator!=( const BinaryNot & ) const
-    {
+  BinaryNot() {}
+  ~BinaryNot() {}
+  bool
+  operator!=( const BinaryNot & ) const
+  {
     return false;
-    }
-  bool operator==( const BinaryNot & other ) const
-    {
+  }
+
+  bool
+  operator==( const BinaryNot & other ) const
+  {
     return !(*this != other);
-    }
-  inline TPixel operator()( const TPixel & A )
-    {
+  }
+
+  inline TPixel
+  operator()( const TPixel & A )
+  {
     bool a = ( A == m_ForegroundValue );
+
     if( !a )
       {
       return m_ForegroundValue;
       }
     return m_BackgroundValue;
-    }
+  }
 
   TPixel m_ForegroundValue;
   TPixel m_BackgroundValue;
@@ -84,19 +89,18 @@ public:
 }
 template <typename TImage>
 class BinaryNotImageFilter :
-    public
-UnaryFunctorImageFilter<TImage, TImage,
-  Functor::BinaryNot< typename TImage::PixelType > >
-
+  public
+  UnaryFunctorImageFilter<TImage, TImage,
+                          Functor::BinaryNot< typename TImage::PixelType > >
 
 {
 public:
   /** Standard class typedefs. */
-  typedef BinaryNotImageFilter                         Self;
+  typedef BinaryNotImageFilter Self;
   typedef UnaryFunctorImageFilter<TImage, TImage,
-    Functor::BinaryNot<  typename TImage::PixelType> > Superclass;
-  typedef SmartPointer<Self>                           Pointer;
-  typedef SmartPointer<const Self>                     ConstPointer;
+                                  Functor::BinaryNot<  typename TImage::PixelType> > Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -105,7 +109,7 @@ public:
   itkTypeMacro(BinaryNotImageFilter,
                ImageToImageFilter);
 
-  typedef typename TImage::PixelType     PixelType;
+  typedef typename TImage::PixelType PixelType;
 
   /** Set/Get the value in the image considered as "foreground". Defaults to
    * maximum value of PixelType. */
@@ -122,38 +126,42 @@ public:
 
 protected:
   BinaryNotImageFilter()
-    {
+  {
     m_ForegroundValue = NumericTraits<PixelType>::max();
     m_BackgroundValue = NumericTraits<PixelType>::NonpositiveMin();
-    }
-  virtual ~BinaryNotImageFilter() {}
+  }
 
-  void PrintSelf(std::ostream& os, Indent indent) const
-    {
+  virtual
+  ~BinaryNotImageFilter() {}
+
+  void
+  PrintSelf(std::ostream& os, Indent indent) const
+  {
     Superclass::PrintSelf(os,indent);
 
     typedef typename NumericTraits<PixelType>::PrintType
-                                              PixelPrintType;
+      PixelPrintType;
 
     os << indent << "ForegroundValue: "
-                    << static_cast< PixelPrintType > (m_ForegroundValue)
-                    << std::endl;
+       << static_cast< PixelPrintType > (m_ForegroundValue)
+       << std::endl;
 
     os << indent << "BackgroundValue: "
-                    << static_cast< PixelPrintType > (m_BackgroundValue)
-                    << std::endl;
-    }
+       << static_cast< PixelPrintType > (m_BackgroundValue)
+       << std::endl;
+  }
 
-  void GenerateData()
-    {
+  void
+  GenerateData()
+  {
     this->GetFunctor().m_ForegroundValue = m_ForegroundValue;
     this->GetFunctor().m_BackgroundValue = m_BackgroundValue;
     Superclass::GenerateData();
-    }
+  }
 
 private:
   BinaryNotImageFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);       //purposely not implemented
 
   PixelType m_ForegroundValue;
   PixelType m_BackgroundValue;
@@ -161,6 +169,5 @@ private:
 };
 
 } // end namespace itk
-
 
 #endif

@@ -45,7 +45,7 @@ namespace itk
  * \ingroup ITKMesh
  */
 template< typename TInputMesh, typename TOutputMesh >
-class ParametricSpaceToImageSpaceMeshFilter:
+class ParametricSpaceToImageSpaceMeshFilter :
   public MeshToMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
@@ -84,6 +84,7 @@ private:
   //purposely not implemented
   ParametricSpaceToImageSpaceMeshFilter(const ParametricSpaceToImageSpaceMeshFilter &);
   void operator=(const ParametricSpaceToImageSpaceMeshFilter &);
+
 };
 } // end namespace itk
 

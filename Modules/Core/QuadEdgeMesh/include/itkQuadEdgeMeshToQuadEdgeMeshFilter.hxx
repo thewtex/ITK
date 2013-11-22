@@ -123,6 +123,7 @@ QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 
   CopyMeshToMeshCellData(in, out);
 }
+
 } // end namespace itk
 
 #endif

@@ -43,10 +43,10 @@ template< typename TInputImage,
 class LevelSetEquationTermContainer : public Object
 {
 public:
-  typedef LevelSetEquationTermContainer     Self;
-  typedef SmartPointer< Self >              Pointer;
-  typedef SmartPointer< const Self >        ConstPointer;
-  typedef Object                            Superclass;
+  typedef LevelSetEquationTermContainer Self;
+  typedef SmartPointer< Self >          Pointer;
+  typedef SmartPointer< const Self >    ConstPointer;
+  typedef Object                        Superclass;
 
   /** Method for creation through object factory */
   itkNewMacro( Self );
@@ -55,29 +55,29 @@ public:
   itkTypeMacro( LevelSetEquationTermContainer,
                 Object );
 
-  typedef unsigned int                      TermIdType;
+  typedef unsigned int TermIdType;
 
-  typedef TInputImage                       InputImageType;
-  typedef typename InputImageType::Pointer  InputImagePointer;
+  typedef TInputImage                      InputImageType;
+  typedef typename InputImageType::Pointer InputImagePointer;
 
-  typedef TLevelSetContainer                                LevelSetContainerType;
-  typedef typename LevelSetContainerType::Pointer           LevelSetContainerPointer;
+  typedef TLevelSetContainer                      LevelSetContainerType;
+  typedef typename LevelSetContainerType::Pointer LevelSetContainerPointer;
 
-  typedef typename LevelSetContainerType::LevelSetType      LevelSetType;
-  typedef typename LevelSetContainerType::LevelSetPointer   LevelSetPointer;
+  typedef typename LevelSetContainerType::LevelSetType    LevelSetType;
+  typedef typename LevelSetContainerType::LevelSetPointer LevelSetPointer;
 
   typedef typename LevelSetContainerType::LevelSetIdentifierType
-                                                            LevelSetIdentifierType;
-  typedef typename LevelSetContainerType::OutputType        LevelSetOutputPixelType;
-  typedef typename LevelSetContainerType::OutputRealType    LevelSetOutputRealType;
-  typedef typename LevelSetContainerType::LevelSetDataType  LevelSetDataType;
-  typedef typename LevelSetContainerType::InputIndexType    LevelSetInputIndexType;
-  typedef typename LevelSetContainerType::GradientType      LevelSetGradientType;
-  typedef typename LevelSetContainerType::HessianType       LevelSetHessianType;
+    LevelSetIdentifierType;
+  typedef typename LevelSetContainerType::OutputType       LevelSetOutputPixelType;
+  typedef typename LevelSetContainerType::OutputRealType   LevelSetOutputRealType;
+  typedef typename LevelSetContainerType::LevelSetDataType LevelSetDataType;
+  typedef typename LevelSetContainerType::InputIndexType   LevelSetInputIndexType;
+  typedef typename LevelSetContainerType::GradientType     LevelSetGradientType;
+  typedef typename LevelSetContainerType::HessianType      LevelSetHessianType;
 
   typedef LevelSetEquationTermBase< InputImageType, LevelSetContainerType >
-                                                                       TermType;
-  typedef typename TermType::Pointer                                   TermPointer;
+    TermType;
+  typedef typename TermType::Pointer TermPointer;
 
   /** Set/Get the input image to be segmented. */
   itkSetObjectMacro( Input, InputImageType );
@@ -139,163 +139,223 @@ public:
 
   class ConstIterator
   {
-  public:
+public:
     ConstIterator() {}
     ConstIterator( const MapTermContainerConstIteratorType& it ) : m_Iterator( it ) {}
     ~ConstIterator() {}
     ConstIterator( const Iterator& it ) : m_Iterator( it.m_Iterator ) {}
-    ConstIterator & operator * () { return *this; }
-    ConstIterator * operator->() { return this; }
-    ConstIterator & operator++()
-      {
+    ConstIterator &
+    operator *() {
+      return *this;
+    }
+
+    ConstIterator *
+    operator->() {
+      return this;
+    }
+
+    ConstIterator &
+    operator++()
+    {
       ++m_Iterator;
       return *this;
-      }
-    ConstIterator operator++(int)
-      {
+    }
+
+    ConstIterator
+    operator++(int)
+    {
       ConstIterator tmp( *this );
+
       ++(*this);
       return tmp;
-      }
-    ConstIterator & operator--()
-      {
+    }
+
+    ConstIterator &
+    operator--()
+    {
       --m_Iterator;
       return *this;
-      }
-    ConstIterator operator--(int)
-      {
+    }
+
+    ConstIterator
+    operator--(int)
+    {
       ConstIterator tmp( *this );
+
       --(*this);
       return tmp;
-      }
-    bool operator == (const Iterator& it) const
-      {
-      return (m_Iterator == it.m_Iterator);
-      }
-    bool operator != (const Iterator& it) const
-      {
-      return (m_Iterator != it.m_Iterator);
-      }
-    bool operator == (const ConstIterator& it) const
-      {
-      return (m_Iterator == it.m_Iterator);
-      }
-    bool operator != (const ConstIterator& it) const
-      {
-      return (m_Iterator != it.m_Iterator);
-      }
-    TermIdType GetIdentifier() const
-      {
-      return m_Iterator->first;
-      }
+    }
 
-    TermType * GetTerm() const
-      {
+    bool
+    operator ==(const Iterator& it) const
+    {
+      return (m_Iterator == it.m_Iterator);
+    }
+
+    bool
+    operator !=(const Iterator& it) const
+    {
+      return (m_Iterator != it.m_Iterator);
+    }
+
+    bool
+    operator ==(const ConstIterator& it) const
+    {
+      return (m_Iterator == it.m_Iterator);
+    }
+
+    bool
+    operator !=(const ConstIterator& it) const
+    {
+      return (m_Iterator != it.m_Iterator);
+    }
+
+    TermIdType
+    GetIdentifier() const
+    {
+      return m_Iterator->first;
+    }
+
+    TermType *
+    GetTerm() const
+    {
       return m_Iterator->second;
-      }
-  private:
+    }
+
+private:
     MapTermContainerConstIteratorType m_Iterator;
     friend class Iterator;
   };
 
   class Iterator
   {
-  public:
+public:
     Iterator() {}
     Iterator( const MapTermContainerIteratorType& it ) : m_Iterator( it ) {}
     Iterator( const ConstIterator& it ) : m_Iterator( it.m_Iterator ) {}
     ~Iterator() {}
 
-    Iterator & operator * () { return *this; }
-    Iterator * operator ->() { return this; }
+    Iterator &
+    operator *() {
+      return *this;
+    }
 
-    Iterator & operator++()
-      {
+    Iterator *
+    operator ->() {
+      return this;
+    }
+
+    Iterator &
+    operator++()
+    {
       ++m_Iterator;
       return *this;
-      }
-    Iterator operator++(int)
-      {
-       Iterator tmp( *this );
+    }
+
+    Iterator
+    operator++(int)
+    {
+      Iterator tmp( *this );
+
       ++(*this);
       return tmp;
-      }
-    Iterator & operator--()
-      {
+    }
+
+    Iterator &
+    operator--()
+    {
       --m_Iterator;
       return *this;
-      }
-    Iterator operator--(int)
-      {
+    }
+
+    Iterator
+    operator--(int)
+    {
       Iterator tmp( *this );
+
       --(*this);
       return tmp;
-      }
+    }
 
-    bool operator==(const Iterator& it) const
-      {
+    bool
+    operator==(const Iterator& it) const
+    {
       return (m_Iterator==it.m_Iterator);
-      }
-    bool operator!=(const Iterator& it) const
-      {
-      return (m_Iterator!=it.m_Iterator);
-      }
-    bool operator==(const ConstIterator& it)const
-      {
-      return (m_Iterator == it.m_Iterator);
-      }
-    bool operator!=(const ConstIterator& it)const
-      {
-      return (m_Iterator != it.m_Iterator);
-      }
-    TermIdType GetIdentifier() const
-      {
-      return m_Iterator->first;
-      }
+    }
 
-    TermType * GetTerm() const
-      {
+    bool
+    operator!=(const Iterator& it) const
+    {
+      return (m_Iterator!=it.m_Iterator);
+    }
+
+    bool
+    operator==(const ConstIterator& it) const
+    {
+      return (m_Iterator == it.m_Iterator);
+    }
+
+    bool
+    operator!=(const ConstIterator& it) const
+    {
+      return (m_Iterator != it.m_Iterator);
+    }
+
+    TermIdType
+    GetIdentifier() const
+    {
+      return m_Iterator->first;
+    }
+
+    TermType *
+    GetTerm() const
+    {
       return m_Iterator->second;
-      }
-  private:
+    }
+
+private:
     MapTermContainerIteratorType m_Iterator;
     friend class ConstIterator;
   };
 
-   Iterator Begin();
-   Iterator End();
+  Iterator Begin();
+
+  Iterator End();
 
   ConstIterator Begin() const;
+
   ConstIterator End() const;
 
 protected:
   LevelSetEquationTermContainer();
 
-  virtual ~LevelSetEquationTermContainer();
+  virtual
+  ~LevelSetEquationTermContainer();
 
-  LevelSetIdentifierType    m_CurrentLevelSetId;
-  LevelSetContainerPointer  m_LevelSetContainer;
+  LevelSetIdentifierType   m_CurrentLevelSetId;
+  LevelSetContainerPointer m_LevelSetContainer;
 
-  InputImagePointer         m_Input;
+  InputImagePointer m_Input;
 
   typedef itksys::hash_map< std::string, TermPointer > HashMapStringTermContainerType;
 
   HashMapStringTermContainerType m_NameContainer;
 
   typedef typename TermType::RequiredDataType RequiredDataType;
-  RequiredDataType  m_RequiredData;
+  RequiredDataType m_RequiredData;
 
-  MapTermContainerType  m_Container;
+  MapTermContainerType m_Container;
 
-  typedef std::map< TermIdType, LevelSetOutputRealType >  MapCFLContainerType;
-  typedef typename MapCFLContainerType::iterator          MapCFLContainerIterator;
-  typedef typename MapCFLContainerType::const_iterator    MapCFLContainerConstIterator;
+  typedef std::map< TermIdType, LevelSetOutputRealType > MapCFLContainerType;
+  typedef typename MapCFLContainerType::iterator         MapCFLContainerIterator;
+  typedef typename MapCFLContainerType::const_iterator   MapCFLContainerConstIterator;
 
-  MapCFLContainerType   m_TermContribution;
+  MapCFLContainerType m_TermContribution;
 
 private:
   LevelSetEquationTermContainer( const Self& );
-  void operator = ( const Self& );
+  void operator =( const Self& );
+
 };
 
 }

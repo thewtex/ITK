@@ -48,7 +48,6 @@ GradientDescentLineSearchOptimizerv4Template<TInternalComputationValueType>
 ::~GradientDescentLineSearchOptimizerv4Template()
 {}
 
-
 /**
 *PrintSelf
 */
@@ -58,7 +57,7 @@ GradientDescentLineSearchOptimizerv4Template<TInternalComputationValueType>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
-  }
+}
 
 /**
 * Advance one Step following the gradient direction
@@ -83,7 +82,7 @@ GradientDescentLineSearchOptimizerv4Template<TInternalComputationValueType>
 
   this->m_LineSearchIterations = 0;
   this->m_LearningRate = this->GoldenSectionSearch( this->m_LearningRate * this->m_LowerLimit ,
-                                                   this->m_LearningRate , this->m_LearningRate * this->m_UpperLimit );
+                                                    this->m_LearningRate , this->m_LearningRate * this->m_UpperLimit );
 
   /* Begin threaded gradient modification of m_Gradient variable. */
   this->ModifyGradientByLearningRate();
@@ -98,13 +97,12 @@ GradientDescentLineSearchOptimizerv4Template<TInternalComputationValueType>
     this->m_StopCondition = Superclass::UPDATE_PARAMETERS_ERROR;
     this->m_StopConditionDescription << "UpdateTransformParameters error";
     this->StopOptimization();
-      // Pass exception to caller
+    // Pass exception to caller
     throw err;
     }
 
   this->InvokeEvent( IterationEvent() );
-  }
-
+}
 
 // a and c are the current bounds; the minimum is between them.
 // b is a center point
@@ -114,7 +112,8 @@ GradientDescentLineSearchOptimizerv4Template<TInternalComputationValueType>
 template<typename TInternalComputationValueType>
 TInternalComputationValueType
 GradientDescentLineSearchOptimizerv4Template<TInternalComputationValueType>
-::GoldenSectionSearch( TInternalComputationValueType a, TInternalComputationValueType b, TInternalComputationValueType c )
+::GoldenSectionSearch( TInternalComputationValueType a, TInternalComputationValueType b,
+                       TInternalComputationValueType c )
 {
   if ( this->m_LineSearchIterations > this->m_MaximumLineSearchIterations )
     {
@@ -139,18 +138,18 @@ GradientDescentLineSearchOptimizerv4Template<TInternalComputationValueType>
   TInternalComputationValueType metricx, metricb;
 
     {
-      // Cache the learning rate , parameters , gradient
-      // Contain this in a block so these variables go out of
-      // scope before we call recursively below. With dense transforms
-      // we would otherwise eat up a lot of memory unnecessarily.
+    // Cache the learning rate , parameters , gradient
+    // Contain this in a block so these variables go out of
+    // scope before we call recursively below. With dense transforms
+    // we would otherwise eat up a lot of memory unnecessarily.
     TInternalComputationValueType baseLearningRate = this->m_LearningRate;
-    DerivativeType baseGradient( this->m_Gradient );
-    ParametersType baseParameters( this->GetCurrentPosition() );
+    DerivativeType                baseGradient( this->m_Gradient );
+    ParametersType                baseParameters( this->GetCurrentPosition() );
 
     this->m_LearningRate = x;
     this->ModifyGradientByLearningRate();
     this->m_Metric->UpdateTransformParameters( this->m_Gradient );
-    metricx = this->GetMetric()->GetValue( );
+    metricx = this->GetMetric()->GetValue();
 
     /** reset position of transform and gradient */
     this->m_Metric->SetParameters( baseParameters );
@@ -160,7 +159,7 @@ GradientDescentLineSearchOptimizerv4Template<TInternalComputationValueType>
     this->ModifyGradientByLearningRate();
 
     this->m_Metric->UpdateTransformParameters( this->m_Gradient );
-    metricb = this->GetMetric()->GetValue( );
+    metricb = this->GetMetric()->GetValue();
 
     /** reset position of transform and learning rate */
     this->m_Metric->SetParameters( baseParameters );
@@ -191,8 +190,8 @@ GradientDescentLineSearchOptimizerv4Template<TInternalComputationValueType>
       return this->GoldenSectionSearch( x, b, c  );
       }
     }
-  }
+}
 
-}//namespace itk
+} //namespace itk
 
 #endif

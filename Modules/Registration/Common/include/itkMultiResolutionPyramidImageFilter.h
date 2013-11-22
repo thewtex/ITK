@@ -109,7 +109,7 @@ template<
   typename TInputImage,
   typename TOutputImage
   >
-class MultiResolutionPyramidImageFilter:
+class MultiResolutionPyramidImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -235,6 +235,7 @@ protected:
 private:
   MultiResolutionPyramidImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                    //purposely not implemented
+
 };
 } // namespace itk
 

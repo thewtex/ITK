@@ -29,15 +29,13 @@ namespace Statistics
 template<typename ScalarType>
 TanSigmoidTransferFunction<ScalarType>
 ::TanSigmoidTransferFunction()
-{
-}
+{}
 
 /** Destructor */
 template<typename ScalarType>
 TanSigmoidTransferFunction<ScalarType>
 ::~TanSigmoidTransferFunction()
-{
-}
+{}
 
 /** Evaluate */
 template<typename ScalarType>
@@ -45,9 +43,9 @@ ScalarType
 TanSigmoidTransferFunction<ScalarType>
 ::Evaluate(const ScalarType& input)  const
 {
-  return static_cast<ScalarType>((2
-                                / (1 + vcl_exp(-2 * static_cast<ScalarType>(input))))
-                               - 1);
+  return static_cast<ScalarType>( (2
+                                   / (1 + vcl_exp(-2 * static_cast<ScalarType>(input) ) ) )
+                                  - 1);
 }
 
 /** Evaluate derivatives */
@@ -57,6 +55,7 @@ TanSigmoidTransferFunction<ScalarType>
 ::EvaluateDerivative(const ScalarType& input)  const
 {
   ScalarType f = Evaluate(input);
+
   return 1 - (f * f);
 }
 

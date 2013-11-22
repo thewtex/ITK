@@ -22,7 +22,8 @@
 /**
  * This is a test file for the itkAffineGeometryFrame class.
  */
-int itkAffineGeometryFrameTest(int, char* [])
+int
+itkAffineGeometryFrameTest(int, char* [])
 {
   typedef itk::AffineGeometryFrame<> AffineGeometryFrameType;
 
@@ -36,7 +37,7 @@ int itkAffineGeometryFrameTest(int, char* [])
 
   std::cout << "Testing GetBoundingBox(): ";
   if(geometryFrame1->GetBoundingBox() == NULL)
-     {
+    {
     std::cerr << "not initialized [FAILED]" << std::endl;
     return EXIT_FAILURE;
     }
@@ -64,9 +65,9 @@ int itkAffineGeometryFrameTest(int, char* [])
   std::cout<<"[DONE]"<<std::endl;
 
   std::cout << "Testing GetExtent() of geometry-frame: ";
-  if((geometryFrame1->GetExtent(0) != bounds[1]-bounds[0]) ||
-     (geometryFrame1->GetExtent(1) != bounds[3]-bounds[2]) ||
-     (geometryFrame1->GetExtent(2) != bounds[5]-bounds[4]) )
+  if( (geometryFrame1->GetExtent(0) != bounds[1]-bounds[0]) ||
+      (geometryFrame1->GetExtent(1) != bounds[3]-bounds[2]) ||
+      (geometryFrame1->GetExtent(2) != bounds[5]-bounds[4]) )
     {
     std::cerr << " [FAILED]" << std::endl;
     return EXIT_FAILURE;
@@ -116,19 +117,19 @@ int itkAffineGeometryFrameTest(int, char* [])
 
   std::cout << "Testing GetBoundingBox() of cloned geometry-frame: ";
   const AffineGeometryFrameType::BoundsArrayType& boundsArray = clonedGeometryFrame1->GetBoundingBox()->GetBounds();
-  unsigned int i;
+  unsigned int                                    i;
   for(i=0; i<6; ++i)
     if(boundsArray[i]!=bounds[i])
-    {
-    std::cerr << "clonedBounds[" <<i<< "]=" << boundsArray[i] << "!=" <<bounds[i] << "[FAILED]" << std::endl;
-    return EXIT_FAILURE;
-    }
+      {
+      std::cerr << "clonedBounds[" <<i<< "]=" << boundsArray[i] << "!=" <<bounds[i] << "[FAILED]" << std::endl;
+      return EXIT_FAILURE;
+      }
   std::cout<<"[PASSED]"<<std::endl;
 
   std::cout << "Testing GetExtent() of cloned geometry-frame: ";
-  if((clonedGeometryFrame1->GetExtent(0) != bounds[1]-bounds[0]) ||
-     (clonedGeometryFrame1->GetExtent(1) != bounds[3]-bounds[2]) ||
-     (clonedGeometryFrame1->GetExtent(2) != bounds[5]-bounds[4]) )
+  if( (clonedGeometryFrame1->GetExtent(0) != bounds[1]-bounds[0]) ||
+      (clonedGeometryFrame1->GetExtent(1) != bounds[3]-bounds[2]) ||
+      (clonedGeometryFrame1->GetExtent(2) != bounds[5]-bounds[4]) )
     {
     std::cerr << " [FAILED]" << std::endl;
     return EXIT_FAILURE;

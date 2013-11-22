@@ -119,8 +119,7 @@ protected:
   Euler3DTransform();
 
   ~Euler3DTransform()
-  {
-  }
+  {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

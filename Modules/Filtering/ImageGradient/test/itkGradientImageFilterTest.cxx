@@ -21,13 +21,15 @@
 #include "itkGradientImageFilter.h"
 #include "itkNullImageToImageFilterDriver.hxx"
 
-inline std::ostream& operator<<(std::ostream &o, const itk::CovariantVector<float, 3> &v)
+inline std::ostream&
+operator<<(std::ostream &o, const itk::CovariantVector<float, 3> &v)
 {
   o << "["<< v[0] << " " << v[1] << " " << v[2] << "]";
   return o;
 }
 
-int itkGradientImageFilterTest(int , char * [] )
+int
+itkGradientImageFilterTest(int , char * [] )
 {
   try
     {
@@ -44,13 +46,13 @@ int itkGradientImageFilterTest(int , char * [] )
     sz[1] = 100;
     itk::NullImageToImageFilterDriver< ImageType, OutputImageType > test1;
     test1.SetImageSize(sz);
-    test1.SetFilter(filter.GetPointer());
+    test1.SetFilter(filter.GetPointer() );
     test1.Execute();
     }
   catch(itk::ExceptionObject &err)
     {
-      (&err)->Print(std::cerr);
-      return EXIT_FAILURE;
+    (&err)->Print(std::cerr);
+    return EXIT_FAILURE;
     }
 
   // Verify that we can run with VectorImages
@@ -63,21 +65,20 @@ int itkGradientImageFilterTest(int , char * [] )
 
     FilterType::Pointer filter = FilterType::New();
 
-
-      // Run Test
-      itk::Size<3> sz;
-      sz[0] = 25;
-      sz[1] = 25;
-      sz[2] = 25;
-      itk::NullImageToImageFilterDriver< InputImageType, OutputImageType > test1;
-      test1.SetImageSize(sz);
-      test1.SetFilter(filter.GetPointer());
-      test1.Execute();
+    // Run Test
+    itk::Size<3> sz;
+    sz[0] = 25;
+    sz[1] = 25;
+    sz[2] = 25;
+    itk::NullImageToImageFilterDriver< InputImageType, OutputImageType > test1;
+    test1.SetImageSize(sz);
+    test1.SetFilter(filter.GetPointer() );
+    test1.Execute();
     }
   catch(itk::ExceptionObject &err)
     {
-      (&err)->Print(std::cerr);
-      return EXIT_FAILURE;
+    (&err)->Print(std::cerr);
+    return EXIT_FAILURE;
     }
 
   return EXIT_SUCCESS;

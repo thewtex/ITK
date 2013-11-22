@@ -29,15 +29,13 @@ namespace Statistics
 template<typename ScalarType>
 SignedHardLimitTransferFunction<ScalarType>
 ::SignedHardLimitTransferFunction()
-{
-}
+{}
 
 /** Destructor */
 template<typename ScalarType>
 SignedHardLimitTransferFunction<ScalarType>
 ::~SignedHardLimitTransferFunction()
-{
-}
+{}
 
 /** Evaluate */
 template<typename ScalarType>

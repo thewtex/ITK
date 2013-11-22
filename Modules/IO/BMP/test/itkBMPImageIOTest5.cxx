@@ -20,14 +20,14 @@
 #include "itkImageRegionConstIterator.h"
 #include <fstream>
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
 /* This test check that a RLE-compressed bitmap and an
  * uncompressed bitmap representing the same grayscale image
  * contains the same data.
  */
-int itkBMPImageIOTest5( int ac, char* av[] )
+int
+itkBMPImageIOTest5( int ac, char* av[] )
 {
 
   if(ac < 3)
@@ -41,17 +41,15 @@ int itkBMPImageIOTest5( int ac, char* av[] )
   typedef itk::ImageFileReader<ImageType>            ReaderType;
   typedef itk::ImageRegionConstIterator< ImageType > IteratorType;
 
-
-  ReaderType::Pointer reader1 = ReaderType::New();
+  ReaderType::Pointer      reader1 = ReaderType::New();
   itk::BMPImageIO::Pointer io1 = itk::BMPImageIO::New();
   reader1->SetImageIO(io1);
   reader1->SetFileName(av[1]);
 
-  ReaderType::Pointer reader2 = ReaderType::New();
+  ReaderType::Pointer      reader2 = ReaderType::New();
   itk::BMPImageIO::Pointer io2 = itk::BMPImageIO::New();
   reader2->SetImageIO(io2);
   reader2->SetFileName(av[2]);
-
 
   try
     {
@@ -65,27 +63,25 @@ int itkBMPImageIOTest5( int ac, char* av[] )
     return EXIT_FAILURE;
     }
 
-
   if(io1->GetBMPCompression() != 1)
     {
-      std::cout << "Expecting a RLE-compressed image, got an uncompressed one (" << av[1] << ")." << std::endl;
-      return EXIT_FAILURE;
+    std::cout << "Expecting a RLE-compressed image, got an uncompressed one (" << av[1] << ")." << std::endl;
+    return EXIT_FAILURE;
     }
 
   if(io2->GetBMPCompression() != 0)
     {
-      std::cout << "Expecting an uncompressed image, got an RLE-compressed one (" << av[2] << ")." << std::endl;
-      return EXIT_FAILURE;
+    std::cout << "Expecting an uncompressed image, got an RLE-compressed one (" << av[2] << ")." << std::endl;
+    return EXIT_FAILURE;
     }
 
-
   ImageType::RegionType r1 = reader1->GetOutput()->GetLargestPossibleRegion(),
-                        r2 = reader2->GetOutput()->GetLargestPossibleRegion();
+    r2 = reader2->GetOutput()->GetLargestPossibleRegion();
 
   if(r1 != r2)
     {
-      std::cout << "The images must have the same size." << std::endl;
-      return EXIT_FAILURE;
+    std::cout << "The images must have the same size." << std::endl;
+    return EXIT_FAILURE;
     }
 
   IteratorType it1( reader1->GetOutput(), r1 );
@@ -97,7 +93,9 @@ int itkBMPImageIOTest5( int ac, char* av[] )
     {
     if ( it1.Value() != it2.Value() )
       {
-      std::cout << "An image stored in a lower-left bitmap is different than the same image stored in a upper-left bitmap." << std::endl;
+      std::cout <<
+      "An image stored in a lower-left bitmap is different than the same image stored in a upper-left bitmap." <<
+      std::endl;
       return EXIT_FAILURE;
       }
 

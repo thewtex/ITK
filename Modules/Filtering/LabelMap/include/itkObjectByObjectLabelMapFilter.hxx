@@ -32,8 +32,10 @@
 
 namespace itk {
 
-template <typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter, typename TInternalInputImageType, typename TInternalOutputImageType>
-ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
+template <typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter,
+          typename TInternalInputImageType, typename TInternalOutputImageType>
+ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
+                             TInternalOutputImageType>
 ::ObjectByObjectLabelMapFilter()
 {
   m_ConstrainPaddingToImage = true;
@@ -44,7 +46,6 @@ ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFil
 
   m_InputFilter = NULL;
   m_OutputFilter = NULL;
-
 
   m_Select = SelectType::New();
   // be sure to *not* use the label objects internally
@@ -73,26 +74,30 @@ ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFil
 
 }
 
-
-template <typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter, typename TInternalInputImageType, typename TInternalOutputImageType>
+template <typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter,
+          typename TInternalInputImageType, typename TInternalOutputImageType>
 void
-ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
+ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
+                             TInternalOutputImageType>
 ::SetFilter( InputFilterType * filter )
 {
   OutputFilterType * outputFilter = dynamic_cast< OutputFilterType * >( filter );
+
   if( outputFilter == NULL && filter != NULL )
     {
     // TODO: can it be replaced by a concept check ?
-    itkExceptionMacro("Wrong output filter type. Use SetOutputFilter() and SetInputFilter() instead of SetFilter() when input and output filter types are different.");
+    itkExceptionMacro(
+      "Wrong output filter type. Use SetOutputFilter() and SetInputFilter() instead of SetFilter() when input and output filter types are different.");
     }
   this->SetInputFilter( filter );
   this->SetOutputFilter( outputFilter );
 }
 
-
-template <typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter, typename TInternalInputImageType, typename TInternalOutputImageType>
+template <typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter,
+          typename TInternalInputImageType, typename TInternalOutputImageType>
 void
-ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
+ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
+                             TInternalOutputImageType>
 ::SetInputFilter( InputFilterType * filter )
 {
   if( m_InputFilter.GetPointer() != filter )
@@ -102,10 +107,11 @@ ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFil
     }
 }
 
-
-template <typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter, typename TInternalInputImageType, typename TInternalOutputImageType>
+template <typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter,
+          typename TInternalInputImageType, typename TInternalOutputImageType>
 void
-ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
+ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
+                             TInternalOutputImageType>
 ::SetOutputFilter( OutputFilterType * filter )
 {
   if( m_OutputFilter.GetPointer() != filter )
@@ -115,10 +121,11 @@ ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFil
     }
 }
 
-
-template <typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter, typename TInternalInputImageType, typename TInternalOutputImageType>
+template <typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter,
+          typename TInternalInputImageType, typename TInternalOutputImageType>
 void
-ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
+ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
+                             TInternalOutputImageType>
 ::GenerateData()
 {
   if( !m_InputFilter)
@@ -176,7 +183,7 @@ ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFil
 
   // initialize the iterator
   typename InputImageType::ConstIterator inIt( this->GetInput() );
-  while( ! inIt.IsAtEnd() )
+  while( !inIt.IsAtEnd() )
     {
     // inform the user that we are beginning a new object
     m_Label = inIt.GetLabel();
@@ -215,7 +222,7 @@ ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFil
       // to get a specific label. If a label is already there, it means that a previous
       // object has stolen the label, so the label of the thief must be changed.
       typename LabelMapType::Iterator outIt( labelMap );
-      if( ! outIt.IsAtEnd() )
+      if( !outIt.IsAtEnd() )
         {
         LabelObjectType * outLo = outIt.GetLabelObject();
         if( output->HasLabel( m_Label ) )
@@ -238,7 +245,7 @@ ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFil
 
         // then push the other objects
         ++outIt;
-        while( ! outIt.IsAtEnd() )
+        while( !outIt.IsAtEnd() )
           {
           outLo = outIt.GetLabelObject();
           outLo->CopyAttributesFrom( inLo );
@@ -255,7 +262,7 @@ ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFil
       {
       // don't try to preserve the label - simply push the label objects as they come
       typename LabelMapType::Iterator outIt( labelMap );
-      while( ! outIt.IsAtEnd() )
+      while( !outIt.IsAtEnd() )
         {
         LabelObjectType * outLo = outIt.GetLabelObject();
         outLo->CopyAttributesFrom( inLo );
@@ -271,10 +278,11 @@ ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFil
     }
 }
 
-
-template <typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter, typename TInternalInputImageType, typename TInternalOutputImageType>
+template <typename TInputImage, typename TOutputImage, typename TInputFilter, typename TOutputFilter,
+          typename TInternalInputImageType, typename TInternalOutputImageType>
 void
-ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType, TInternalOutputImageType>
+ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFilter, TInternalInputImageType,
+                             TInternalOutputImageType>
 ::PrintSelf(std::ostream &os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
@@ -283,14 +291,16 @@ ObjectByObjectLabelMapFilter<TInputImage, TOutputImage, TInputFilter, TOutputFil
   os << indent << "PadSize: " << m_PadSize << std::endl;
   os << indent << "BinaryInternalOutput: " << m_BinaryInternalOutput << std::endl;
   os << indent << "KeepLabels: " << m_KeepLabels << std::endl;
-  os << indent << "InternalForegroundValue: " << static_cast<typename NumericTraits<InternalOutputPixelType>::PrintType>(m_InternalForegroundValue) << std::endl;
+  os << indent << "InternalForegroundValue: " <<
+    static_cast<typename NumericTraits<InternalOutputPixelType>::PrintType>(m_InternalForegroundValue) << std::endl;
   os << indent << "InputFilter: " << this->m_InputFilter->GetNameOfClass()
      << " " << this->m_InputFilter.GetPointer() << std::endl;
   os << indent << "OutputFilter: " << this->m_OutputFilter->GetNameOfClass()
      << " " << this->m_OutputFilter.GetPointer() << std::endl;
-  os << indent << "Label: " << static_cast<typename NumericTraits<InputImagePixelType>::PrintType>(m_Label) << std::endl;
+  os << indent << "Label: " << static_cast<typename NumericTraits<InputImagePixelType>::PrintType>(m_Label) <<
+    std::endl;
 
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

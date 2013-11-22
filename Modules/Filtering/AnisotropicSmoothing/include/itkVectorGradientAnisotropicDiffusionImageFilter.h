@@ -58,14 +58,14 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage >
-class VectorGradientAnisotropicDiffusionImageFilter:
+class VectorGradientAnisotropicDiffusionImageFilter :
   public AnisotropicDiffusionImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
   typedef VectorGradientAnisotropicDiffusionImageFilter Self;
   typedef AnisotropicDiffusionImageFilter< TInputImage, TOutputImage >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 

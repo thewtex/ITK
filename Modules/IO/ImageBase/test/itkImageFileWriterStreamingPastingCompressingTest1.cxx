@@ -23,20 +23,19 @@
 #include "itkExtractImageFilter.h"
 #include "itkPipelineMonitorImageFilter.h"
 
-
 const unsigned int VDimension = 3;
-typedef unsigned char                     PixelType;
-typedef itk::Image<PixelType,VDimension>  ImageType;
-typedef ImageType::Pointer                ImagePointer;
-typedef ImageType::SpacingType            SpacingType;
+typedef unsigned char                    PixelType;
+typedef itk::Image<PixelType,VDimension> ImageType;
+typedef ImageType::Pointer               ImagePointer;
+typedef ImageType::SpacingType           SpacingType;
 
 namespace {
 
-
-bool SameImage(ImagePointer testImage, ImagePointer baselineImage)
+bool
+SameImage(ImagePointer testImage, ImagePointer baselineImage)
 {
-  PixelType intensityTolerance = 5;  // need this for compression
-  int radiusTolerance = 0;
+  PixelType     intensityTolerance = 5; // need this for compression
+  int           radiusTolerance = 0;
   unsigned long numberOfPixelTolerance = 0;
 
   // NOTE ALEX: it look slike this filter does not take the spacing
@@ -71,9 +70,10 @@ bool SameImage(ImagePointer testImage, ImagePointer baselineImage)
 }
 
 // NOTE ALEX: why this function is not a wrapper of the above?
-bool SameImage(std::string testImageFileName, ImagePointer baselineImage)
+bool
+SameImage(std::string testImageFileName, ImagePointer baselineImage)
 {
-  typedef itk::ImageFileReader<ImageType>    ReaderType;
+  typedef itk::ImageFileReader<ImageType> ReaderType;
   ReaderType::Pointer readerTestImage = ReaderType::New();
   readerTestImage->SetFileName( testImageFileName );
 
@@ -99,6 +99,7 @@ ActualTest(
   std::cout << pasteWriting << " " << compressWriting << std::endl;
 
   std::ostringstream outputFileNameStream;
+
   outputFileNameStream << outputFileNameBase << streamWriting;
   outputFileNameStream << pasteWriting << compressWriting;
   outputFileNameStream << "." << outputFileNameExtension;
@@ -109,13 +110,13 @@ ActualTest(
 
   // We remove the output file
   // NOTE ALEX: should we check it exists first?
-  itksys::SystemTools::RemoveFile(outputFileName.c_str());
+  itksys::SystemTools::RemoveFile(outputFileName.c_str() );
 
-  typedef unsigned char             PixelType;
-  typedef itk::Image<PixelType,3>   ImageType;
+  typedef unsigned char           PixelType;
+  typedef itk::Image<PixelType,3> ImageType;
 
-  typedef itk::ImageFileReader<ImageType>  ReaderType;
-  typedef itk::ImageFileWriter<ImageType>  WriterType;
+  typedef itk::ImageFileReader<ImageType> ReaderType;
+  typedef itk::ImageFileWriter<ImageType> WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( inputFileName.c_str() );
@@ -142,15 +143,15 @@ ActualTest(
   // ??
   typedef itk::PipelineMonitorImageFilter<ImageType> MonitorFilter;
   MonitorFilter::Pointer monitor = MonitorFilter::New();
-  monitor->SetInput(reader->GetOutput());
+  monitor->SetInput(reader->GetOutput() );
 
   // Setup the writer
   WriterType::Pointer writer = WriterType::New();
   writer->SetFileName(outputFileName);
-  writer->SetInput(monitor->GetOutput());
+  writer->SetInput(monitor->GetOutput() );
 
   // create a vaild region from the largest
-  itk::ImageIORegion  ioregion(3);
+  itk::ImageIORegion ioregion(3);
   itk::ImageIORegionAdaptor<3>::Convert(
     pasteRegion, ioregion, largestRegion.GetIndex()
     );
@@ -197,7 +198,6 @@ ActualTest(
     return EXIT_FAILURE;
     }
 
-
   // if we didn't have an exception then we should have produced the
   // correct image - This is the TEST !!
   if (pasteWriting)
@@ -212,10 +212,10 @@ ActualTest(
     readerTestImage->SetFileName( outputFileName );
     ExtractImageFilterType::Pointer extractTestImage = ExtractImageFilterType::New();
     extractTestImage->SetDirectionCollapseToSubmatrix();
-    extractTestImage->SetInput(readerTestImage->GetOutput());
+    extractTestImage->SetInput(readerTestImage->GetOutput() );
     extractTestImage->SetExtractionRegion(pasteRegion);
 
-    if (!SameImage(extractTestImage->GetOutput(), extractBaselineImage->GetOutput()))
+    if (!SameImage(extractTestImage->GetOutput(), extractBaselineImage->GetOutput() ) )
       {
       std::cout << "Paste regions of images differ" << std::endl;
       std::cout << "TEST FAILED" << std::endl;
@@ -223,7 +223,7 @@ ActualTest(
       }
 
     }
-  else if (!SameImage(outputFileName, reader->GetOutput()))
+  else if (!SameImage(outputFileName, reader->GetOutput() ) )
     {
     std::cout << "Images differ" << std::endl;
     std::cout << "TEST FAILED" << std::endl;
@@ -236,8 +236,8 @@ ActualTest(
 
 }
 
-
-int itkImageFileWriterStreamingPastingCompressingTest1(int argc, char* argv[])
+int
+itkImageFileWriterStreamingPastingCompressingTest1(int argc, char* argv[])
 {
   if( argc < 3 )
     {
@@ -245,9 +245,9 @@ int itkImageFileWriterStreamingPastingCompressingTest1(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-  int expectException[8];
+  int       expectException[8];
   const int expectedExceptionOffset = 4;
-  int i;
+  int       i;
   for ( i = 0; i < 8; ++i)
     {
     if (argc > i + expectedExceptionOffset)
@@ -263,15 +263,22 @@ int itkImageFileWriterStreamingPastingCompressingTest1(int argc, char* argv[])
   int retValue = EXIT_SUCCESS;
   i = 0;
 
-  retValue = (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 0, 0, 0, expectException[i++]);
-  retValue = (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 0, 0, 1, expectException[i++]);
-  retValue = (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 0, 1, 0, expectException[i++]);
-  retValue = (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 0, 1, 1, expectException[i++]);
-  retValue = (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 1, 0, 0, expectException[i++]);
-  retValue = (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 1, 0, 1, expectException[i++]);
-  retValue = (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 1, 1, 0, expectException[i++]);
-  retValue = (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 1, 1, 1, expectException[i++]);
-
+  retValue =
+    (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 0, 0, 0, expectException[i++]);
+  retValue =
+    (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 0, 0, 1, expectException[i++]);
+  retValue =
+    (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 0, 1, 0, expectException[i++]);
+  retValue =
+    (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 0, 1, 1, expectException[i++]);
+  retValue =
+    (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 1, 0, 0, expectException[i++]);
+  retValue =
+    (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 1, 0, 1, expectException[i++]);
+  retValue =
+    (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 1, 1, 0, expectException[i++]);
+  retValue =
+    (retValue == EXIT_FAILURE) ? EXIT_FAILURE : ActualTest(argv[1], argv[2], argv[3], 1, 1, 1, expectException[i++]);
 
   return retValue;
 }

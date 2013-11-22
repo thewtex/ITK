@@ -31,17 +31,16 @@ InitializationBiasedParticleSwarmOptimizer
   this->m_InitializationCoefficient = 1.49609;
 }
 
-
 void
 InitializationBiasedParticleSwarmOptimizer
 ::PrintSelf( std::ostream& os, Indent indent ) const
 {
   Superclass::PrintSelf( os, indent );
+
   os<<"Acceleration coefficients [inertia, personal, global, initialization]: ";
   os<<"["<<this->m_InertiaCoefficient<<", "<<this->m_PersonalCoefficient<<", ";
   os<<this->m_GlobalCoefficient<<", "<<this->m_InitializationCoefficient<<"]\n";
 }
-
 
 void
 InitializationBiasedParticleSwarmOptimizer
@@ -49,24 +48,24 @@ InitializationBiasedParticleSwarmOptimizer
 {
   unsigned int j, k, n;
   itk::Statistics::MersenneTwisterRandomVariateGenerator::Pointer
-    randomGenerator = Statistics::MersenneTwisterRandomVariateGenerator::GetInstance();
+                 randomGenerator = Statistics::MersenneTwisterRandomVariateGenerator::GetInstance();
   ParametersType initialPosition = GetInitialPosition();
 
   n = static_cast<unsigned int>( ( GetCostFunction() )->GetNumberOfParameters() );
-          //linear decrease in the weight of the initial parameter values
+  //linear decrease in the weight of the initial parameter values
   double initializationCoefficient = this->m_InitializationCoefficient*
-    ( 1.0 - static_cast<double>(m_IterationIndex)/static_cast<double>(m_MaximalNumberOfIterations));
+    ( 1.0 - static_cast<double>(m_IterationIndex)/static_cast<double>(m_MaximalNumberOfIterations) );
 
   for( j=0; j<m_NumberOfParticles; j++ )
     {
-    ParticleData & p = m_Particles[j];
+    ParticleData &            p = m_Particles[j];
     ParametersType::ValueType phi1, phi2, phi3;
     phi1 = randomGenerator->GetVariateWithClosedRange() *
-           this->m_PersonalCoefficient;
+      this->m_PersonalCoefficient;
     phi2 = randomGenerator->GetVariateWithClosedRange() *
-           this->m_GlobalCoefficient;
+      this->m_GlobalCoefficient;
     phi3 = randomGenerator->GetVariateWithClosedRange() *
-           initializationCoefficient;
+      initializationCoefficient;
     for( k=0; k<n; k++ )
       {       //update velocity
       p.m_CurrentVelocity[k] =
@@ -74,8 +73,8 @@ InitializationBiasedParticleSwarmOptimizer
         phi1*(p.m_BestParameters[k]-p.m_CurrentParameters[k]) +
         phi2*(m_ParametersBestValue[k]-p.m_CurrentParameters[k]) +
         phi3*(initialPosition[k]-p.m_CurrentParameters[k]);
-                       //update location and ensure that it stays
-                       //inside the feasible region
+      //update location and ensure that it stays
+      //inside the feasible region
       p.m_CurrentParameters[k] += p.m_CurrentVelocity[k];
       if( p.m_CurrentParameters[k] < m_ParameterBounds[k].first )
         {

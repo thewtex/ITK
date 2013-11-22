@@ -46,6 +46,7 @@ LevelSetMotionRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField 
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Intensity difference threshold: "
      << this->GetIntensityDifferenceThreshold() << std::endl;
   os << indent << "Gradient magnitude threshold: "
@@ -324,6 +325,7 @@ LevelSetMotionRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField 
 
   this->SetRMSChange( drfp->GetRMSChange() );
 }
+
 } // end namespace itk
 
 #endif

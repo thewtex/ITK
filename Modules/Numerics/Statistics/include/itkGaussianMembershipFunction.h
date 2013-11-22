@@ -52,7 +52,7 @@ namespace Statistics
  */
 
 template< typename TMeasurementVector >
-class GaussianMembershipFunction:
+class GaussianMembershipFunction :
   public MembershipFunctionBase< TMeasurementVector >
 {
 public:
@@ -78,7 +78,7 @@ public:
   /** Type of the mean vector. RealType on a vector-type is the same
    * vector-type but with a real element type.  */
   typedef typename itk::NumericTraits< MeasurementVectorType >::RealType MeasurementVectorRealType;
-  typedef MeasurementVectorRealType MeanVectorType;
+  typedef MeasurementVectorRealType                                      MeanVectorType;
 
   /** Type of the covariance matrix */
   typedef VariableSizeMatrix< double > CovarianceMatrixType;
@@ -115,12 +115,13 @@ public:
 
 protected:
   GaussianMembershipFunction(void);
-  virtual ~GaussianMembershipFunction(void) {}
+  virtual
+  ~GaussianMembershipFunction(void) {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
-  GaussianMembershipFunction(const Self &);   //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  GaussianMembershipFunction(const Self &); //purposely not implemented
+  void operator=(const Self &);             //purposely not implemented
 
   MeanVectorType       m_Mean;            // mean
   CovarianceMatrixType m_Covariance;      // covariance matrix

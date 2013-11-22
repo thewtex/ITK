@@ -28,6 +28,7 @@ ConstantBoundaryCondition< TInputImage, TOutputImage >
 ::ConstantBoundaryCondition()
 {
   OutputPixelType p;
+
   m_Constant = NumericTraits< OutputPixelType >::ZeroValue( p );
 }
 
@@ -60,23 +61,23 @@ template< typename TInputImage, typename TOutputImage >
 const typename ConstantBoundaryCondition< TInputImage, TOutputImage >::OutputPixelType &
 ConstantBoundaryCondition< TInputImage, TOutputImage >
 ::GetConstant() const
-{
+  {
   return m_Constant;
-}
+  }
 
 template< typename TInputImage, typename TOutputImage >
 typename ConstantBoundaryCondition< TInputImage, TOutputImage >::RegionType
 ConstantBoundaryCondition< TInputImage, TOutputImage >
-:: GetInputRequestedRegion( const RegionType & inputLargestPossibleRegion,
-                            const RegionType & outputRequestedRegion ) const
+::GetInputRequestedRegion( const RegionType & inputLargestPossibleRegion,
+                           const RegionType & outputRequestedRegion ) const
 {
   RegionType inputRequestedRegion( inputLargestPossibleRegion );
-  bool cropped = inputRequestedRegion.Crop( outputRequestedRegion );
+  bool       cropped = inputRequestedRegion.Crop( outputRequestedRegion );
 
   if ( !cropped )
     {
     IndexType index; index.Fill( 0 );
-    SizeType size; size.Fill( 0 );
+    SizeType  size; size.Fill( 0 );
     inputRequestedRegion.SetIndex( index );
     inputRequestedRegion.SetSize( size );
     }
@@ -90,6 +91,7 @@ ConstantBoundaryCondition< TInputImage, TOutputImage >
 ::GetPixel( const IndexType & index, const TInputImage * image ) const
 {
   RegionType imageRegion = image->GetLargestPossibleRegion();
+
   if ( imageRegion.IsInside( index ) )
     {
     return static_cast< OutputPixelType >( image->GetPixel( index ) );
@@ -107,7 +109,6 @@ ConstantBoundaryCondition< TInputImage, TOutputImage >
 
   std::cout << i.GetNextIndent() << "Constant: " << m_Constant << std::endl;
 }
-
 
 } // namespace itk
 

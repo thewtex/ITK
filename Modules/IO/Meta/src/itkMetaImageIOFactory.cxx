@@ -50,9 +50,10 @@ MetaImageIOFactory::GetDescription() const
 
 static bool MetaImageIOFactoryHasBeenRegistered;
 
-void MetaImageIOFactoryRegister__Private(void)
+void
+MetaImageIOFactoryRegister__Private(void)
 {
-  if( ! MetaImageIOFactoryHasBeenRegistered )
+  if( !MetaImageIOFactoryHasBeenRegistered )
     {
     MetaImageIOFactoryHasBeenRegistered = true;
     MetaImageIOFactory::RegisterOneFactory();

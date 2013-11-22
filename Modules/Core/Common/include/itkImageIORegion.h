@@ -49,7 +49,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT ImageIORegion:public Region
+class ITKCommon_EXPORT ImageIORegion : public Region
 {
 public:
   /** Standard class typedefs. */
@@ -58,9 +58,9 @@ public:
 
   /** these types correspond to those of itk::Size, itk::Offset and itk::Index
     */
-  typedef ::itk::SizeValueType    SizeValueType;
-  typedef ::itk::IndexValueType   IndexValueType;
-  typedef ::itk::OffsetValueType  OffsetValueType;
+  typedef::itk::SizeValueType   SizeValueType;
+  typedef::itk::IndexValueType  IndexValueType;
+  typedef::itk::OffsetValueType OffsetValueType;
 
   /** Index typedef support. An index is used to access pixel values. */
   typedef std::vector< IndexValueType > IndexType;
@@ -95,7 +95,8 @@ public:
 
   /** Destructor. ImageIORegion is a lightweight object that is not reference
    * counted, so the destructor is public. */
-  virtual ~ImageIORegion();
+  virtual
+  ~ImageIORegion();
 
   /** Copy constructor. ImageIORegion is a lightweight object that is not
    * reference counted, so the copy constructor is public. */
@@ -110,6 +111,7 @@ public:
 
   /** Get index defining the corner of the region. */
   const IndexType & GetIndex() const;
+
   IndexType & GetModifiableIndex();
 
   /** Set the size of the region. This plus the index determines the
@@ -118,6 +120,7 @@ public:
 
   /** Get the size of the region. */
   const SizeType & GetSize() const;
+
   SizeType & GetModifiableSize();
 
   /** Convenience methods to get the size of the image in a particular
@@ -179,9 +182,10 @@ public:
   typedef typename ImageRegionType::SizeType  ImageSizeType;
   typedef typename ImageRegionType::IndexType ImageIndexType;
 
-  static void Convert(const ImageRegionType & inImageRegion,
-                      ImageIORegionType & outIORegion,
-                      const ImageIndexType & largestRegionIndex)
+  static void
+  Convert(const ImageRegionType & inImageRegion,
+          ImageIORegionType & outIORegion,
+          const ImageIndexType & largestRegionIndex)
   {
     //
     // The ImageRegion and ImageIORegion objects may have different dimensions.
@@ -218,9 +222,10 @@ public:
       }
   }
 
-  static void Convert(const ImageIORegionType & inIORegion,
-                      ImageRegionType & outImageRegion,
-                      const ImageIndexType & largestRegionIndex)
+  static void
+  Convert(const ImageIORegionType & inIORegion,
+          ImageRegionType & outImageRegion,
+          const ImageIndexType & largestRegionIndex)
   {
     ImageSizeType  size;
     ImageIndexType index;
@@ -253,6 +258,7 @@ public:
     outImageRegion.SetSize(size);
     outImageRegion.SetIndex(index);
   }
+
 };
 } // end namespace itk
 

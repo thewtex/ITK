@@ -28,7 +28,7 @@ namespace itk
  * \brief Create instances of GiplImageIO objects using an object factory.
  * \ingroup ITKIOGIPL
  */
-class ITKIOGIPL_EXPORT GiplImageIOFactory:public ObjectFactoryBase
+class ITKIOGIPL_EXPORT GiplImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -49,7 +49,8 @@ public:
   itkTypeMacro(GiplImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     GiplImageIOFactory::Pointer GiplFactory = GiplImageIOFactory::New();
 
@@ -63,6 +64,7 @@ protected:
 private:
   GiplImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
 };
 } // end namespace itk
 

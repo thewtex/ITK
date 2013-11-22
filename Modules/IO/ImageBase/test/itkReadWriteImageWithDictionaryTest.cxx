@@ -21,7 +21,8 @@
 #include "itkMetaDataObject.h"
 #include "itkSpatialOrientationAdapter.h"
 
-int itkReadWriteImageWithDictionaryTest(int argc, char* argv[])
+int
+itkReadWriteImageWithDictionaryTest(int argc, char* argv[])
 {
   if( argc != 2 )
     {
@@ -34,7 +35,7 @@ int itkReadWriteImageWithDictionaryTest(int argc, char* argv[])
   typedef itk::ImageFileWriter< ImageType > WriterType;
 
   //Create the 16x16 input image
-  ImageType::Pointer  inputImage = ImageType::New();
+  ImageType::Pointer inputImage = ImageType::New();
 
   ImageType::SizeType size;
   size.Fill( 16 );

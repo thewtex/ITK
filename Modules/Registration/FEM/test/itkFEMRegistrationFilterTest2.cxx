@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include <fstream>
 #include "itkFEMRegistrationFilter.h"
 
@@ -82,16 +81,16 @@ FillWithCircle(
 
 }
 
-
-int itkFEMRegistrationFilterTest2(int argc, char *argv[] )
+int
+itkFEMRegistrationFilterTest2(int argc, char *argv[] )
 {
-  typedef itk::Vector<float, ImageDimension>                VectorType;
-  typedef itk::Image<VectorType, ImageDimension>            FieldType;
-  typedef ImageType::IndexType                              IndexType;
-  typedef ImageType::SizeType                               SizeType;
-  typedef ImageType::RegionType                             RegionType;
-  typedef ImageType::SpacingType                            SpacingType;
-  typedef ImageType::PointType                              PointType;
+  typedef itk::Vector<float, ImageDimension>     VectorType;
+  typedef itk::Image<VectorType, ImageDimension> FieldType;
+  typedef ImageType::IndexType                   IndexType;
+  typedef ImageType::SizeType                    SizeType;
+  typedef ImageType::RegionType                  RegionType;
+  typedef ImageType::SpacingType                 SpacingType;
+  typedef ImageType::PointType                   PointType;
 
   //--------------------------------------------------------
   std::cout << "Generate input images and initial deformation field";
@@ -102,9 +101,9 @@ int itkFEMRegistrationFilterTest2(int argc, char *argv[] )
   imageOrigin[1] =  50.0;
   imageOrigin[2] = 200.0;
 
-  SpacingType spacing;
+  SpacingType              spacing;
   ImageType::SizeValueType sizeArray[ImageDimension];
-  for (unsigned int i=0;i<ImageDimension;i++)
+  for (unsigned int i=0; i<ImageDimension; i++)
     {
     sizeArray[i] = 32;
     spacing[i] = 2.0;
@@ -148,7 +147,7 @@ int itkFEMRegistrationFilterTest2(int argc, char *argv[] )
   PixelType bgnd = 15;
 
   // Set the Cricle Center
-  for (unsigned int i=0;i<ImageDimension;i++)
+  for (unsigned int i=0; i<ImageDimension; i++)
     {
     center[i] = 16;
     }
@@ -166,7 +165,7 @@ int itkFEMRegistrationFilterTest2(int argc, char *argv[] )
   FillImage<FieldType>( initField, zeroVec );
 
   // -------------------------------------------------------------
-  typedef itk::fem::FEMObject<ImageDimension>  FEMObjectType;
+  typedef itk::fem::FEMObject<ImageDimension>                                  FEMObjectType;
   typedef itk::fem::FEMRegistrationFilter<ImageType, ImageType, FEMObjectType> RegistrationType;
 
   std::cout << "Run registration and warp moving" << std::endl;
@@ -243,9 +242,9 @@ int itkFEMRegistrationFilterTest2(int argc, char *argv[] )
       }
     catch( ::itk::ExceptionObject & err )
       {
-        std::cerr << "ITK exception detected: "  << err;
-        std::cout << "Test FAILED" << std::endl;
-        return EXIT_FAILURE;
+      std::cerr << "ITK exception detected: "  << err;
+      std::cout << "Test FAILED" << std::endl;
+      return EXIT_FAILURE;
       }
     catch( ... )
       {
@@ -259,12 +258,12 @@ int itkFEMRegistrationFilterTest2(int argc, char *argv[] )
     if (argc > 1)
       {
       std::cout << "Write out deformation field" << argv[1] << std::endl;
-      std::string outFileName = argv[1];
+      std::string       outFileName = argv[1];
       std::stringstream ss;
       ss << met;
       outFileName += ss.str();
       outFileName += ".mhd";
-      typedef itk::ImageFileWriter<RegistrationType::FieldType>  ImageWriterType;
+      typedef itk::ImageFileWriter<RegistrationType::FieldType> ImageWriterType;
       ImageWriterType::Pointer writer = ImageWriterType::New();
       writer->SetFileName( outFileName );
       writer->SetInput( registrator->GetDisplacementField() );
@@ -274,12 +273,12 @@ int itkFEMRegistrationFilterTest2(int argc, char *argv[] )
     if (argc > 2)
       {
       std::cout << "Write out deformed image" << argv[2] << std::endl;
-      std::string outFileName = argv[2];
+      std::string       outFileName = argv[2];
       std::stringstream ss;
       ss << met;
       outFileName += ss.str();
       outFileName += ".mhd";
-      typedef itk::ImageFileWriter<ImageType>  ImageWriterType;
+      typedef itk::ImageFileWriter<ImageType> ImageWriterType;
       ImageWriterType::Pointer writer = ImageWriterType::New();
       writer->SetFileName( outFileName );
       writer->SetInput( registrator->GetWarpedImage() );

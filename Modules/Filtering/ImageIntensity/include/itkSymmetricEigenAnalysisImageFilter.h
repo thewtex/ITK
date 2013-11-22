@@ -41,17 +41,20 @@ public:
   SymmetricEigenAnalysisFunction() {}
   ~SymmetricEigenAnalysisFunction() {}
   typedef SymmetricEigenAnalysis< TInput, TOutput > CalculatorType;
-  bool operator!=(const SymmetricEigenAnalysisFunction &) const
+  bool
+  operator!=(const SymmetricEigenAnalysisFunction &) const
   {
     return false;
   }
 
-  bool operator==(const SymmetricEigenAnalysisFunction & other) const
+  bool
+  operator==(const SymmetricEigenAnalysisFunction & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & x) const
+  inline TOutput
+  operator()(const TInput & x) const
   {
     TOutput eigenValues;
 
@@ -60,11 +63,14 @@ public:
   }
 
   /** Method to explicitly set the dimension of the matrix */
-  void SetDimension(unsigned int n)
+  void
+  SetDimension(unsigned int n)
   {
     m_Calculator.SetDimension(n);
   }
-  unsigned int GetDimension() const
+
+  unsigned int
+  GetDimension() const
   {
     return m_Calculator.GetDimension();
   }
@@ -82,7 +88,8 @@ public:
 
   /** Order eigen values. Default is to OrderByValue:  lambda_1 <
    * lambda_2 < .... */
-  void OrderEigenValuesBy(EigenValueOrderType order)
+  void
+  OrderEigenValuesBy(EigenValueOrderType order)
   {
     if ( order == OrderByMagnitude )
       {
@@ -120,7 +127,7 @@ private:
  * \ingroup ITKImageIntensity
  */
 template< typename  TInputImage, typename  TOutputImage = TInputImage >
-class SymmetricEigenAnalysisImageFilter:
+class SymmetricEigenAnalysisImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::SymmetricEigenAnalysisFunction<
@@ -131,10 +138,10 @@ public:
   /** Standard class typedefs. */
   typedef SymmetricEigenAnalysisImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::SymmetricEigenAnalysisFunction<
-      typename TInputImage::PixelType,
-      typename TOutputImage::PixelType > >   Superclass;
+      TInputImage, TOutputImage,
+      Functor::SymmetricEigenAnalysisFunction<
+        typename TInputImage::PixelType,
+        typename TOutputImage::PixelType > >   Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -154,7 +161,8 @@ public:
 
   /** Order eigen values. Default is to OrderByValue:  lambda_1 <
    * lambda_2 < .... */
-  void OrderEigenValuesBy(EigenValueOrderType order)
+  void
+  OrderEigenValuesBy(EigenValueOrderType order)
   {
     this->GetFunctor().OrderEigenValuesBy(order);
   }
@@ -166,16 +174,22 @@ public:
   itkNewMacro(Self);
 
   /** Print internal ivars */
-  void PrintSelf(std::ostream & os, Indent indent) const
-  { this->Superclass::PrintSelf(os, indent); }
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    this->Superclass::PrintSelf(os, indent);
+  }
 
   /** Set the dimension of the tensor. (For example the SymmetricSecondRankTensor
    * is a pxp matrix) */
-  void SetDimension(unsigned int p)
+  void
+  SetDimension(unsigned int p)
   {
     this->GetFunctor().SetDimension(p);
   }
-  unsigned int GetDimension() const
+
+  unsigned int
+  GetDimension() const
   {
     return this->GetFunctor().GetDimension();
   }
@@ -189,11 +203,13 @@ public:
 
 protected:
   SymmetricEigenAnalysisImageFilter() {}
-  virtual ~SymmetricEigenAnalysisImageFilter() {}
+  virtual
+  ~SymmetricEigenAnalysisImageFilter() {}
 
 private:
   SymmetricEigenAnalysisImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                    //purposely not implemented
+
 };
 } // end namespace itk
 

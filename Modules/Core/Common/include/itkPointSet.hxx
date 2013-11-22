@@ -40,6 +40,7 @@ PointSet< TPixelType, VDimension, TMeshTraits >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Number Of Points: "
      << this->GetNumberOfPoints()  << std::endl;
 
@@ -78,7 +79,7 @@ template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 typename PointSet< TPixelType, VDimension, TMeshTraits >::PointsContainer *
 PointSet< TPixelType, VDimension, TMeshTraits >
 ::GetPoints(void)
-{
+  {
   itkDebugMacro("Starting GetPoints()");
   if ( !m_PointsContainer )
     {
@@ -86,7 +87,7 @@ PointSet< TPixelType, VDimension, TMeshTraits >
     }
   itkDebugMacro("returning Points container of " << m_PointsContainer);
   return m_PointsContainer;
-}
+  }
 
 /**
  * Access routine to get the points container.
@@ -95,10 +96,10 @@ template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 const typename PointSet< TPixelType, VDimension, TMeshTraits >::PointsContainer *
 PointSet< TPixelType, VDimension, TMeshTraits >
 ::GetPoints(void) const
-{
+  {
   itkDebugMacro("returning Points container of " << m_PointsContainer);
   return m_PointsContainer.GetPointer();
-}
+  }
 
 /**
  * Access routine to set the point data container.
@@ -123,14 +124,14 @@ template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 typename PointSet< TPixelType, VDimension, TMeshTraits >::PointDataContainer *
 PointSet< TPixelType, VDimension, TMeshTraits >
 ::GetPointData(void)
-{
+  {
   if ( !m_PointDataContainer )
     {
     this->SetPointData( PointDataContainer::New() );
     }
   itkDebugMacro("returning PointData container of " << m_PointDataContainer);
   return m_PointDataContainer;
-}
+  }
 
 /**
  * Access routine to get the point data container.
@@ -139,11 +140,11 @@ template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 const typename PointSet< TPixelType, VDimension, TMeshTraits >::PointDataContainer *
 PointSet< TPixelType, VDimension, TMeshTraits >
 ::GetPointData(void) const
-{
+  {
   itkDebugMacro("returning PointData container of "
                 << m_PointDataContainer);
   return m_PointDataContainer.GetPointer();
-}
+  }
 
 /**
  * Assign a point to a point identifier.  If a spot for the point identifier
@@ -211,8 +212,8 @@ PointSet< TPixelType, VDimension, TMeshTraits >
    * Ask the container if the point identifier exists.
    */
   PointType point;
-  bool exist = m_PointsContainer->GetElementIfIndexExists(ptId, &point);
-  if( ! exist )
+  bool      exist = m_PointsContainer->GetElementIfIndexExists(ptId, &point);
+  if( !exist )
     {
     itkExceptionMacro("Point id doesn't exist: " << ptId);
     }
@@ -322,7 +323,7 @@ PointSet< TPixelType, VDimension, TMeshTraits >
  */
 template< typename TPixelType, unsigned int VDimension, typename TMeshTraits >
 PointSet< TPixelType, VDimension, TMeshTraits >
-::PointSet():
+::PointSet() :
   m_PointsContainer(0),
   m_PointDataContainer(0)
 {
@@ -520,6 +521,7 @@ PointSet< TPixelType, VDimension, TMeshTraits >
 
   return retval;
 }
+
 } // end namespace itk
 
 #endif

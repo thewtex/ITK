@@ -24,12 +24,18 @@
 #include "itkSimpleDataObjectDecorator.h"
 
 itkDeclareExceptionMacro( SampleToHistogramFilterException, ExceptionObject, "Histogram-related Exception");
-itkDeclareExceptionMacro( MissingHistogramSizeInput, SampleToHistogramFilterException, "Histogram Size input is missing");
-itkDeclareExceptionMacro( MissingHistogramMarginalScaleInput, SampleToHistogramFilterException, "Histogram marginal scale input is missing");
-itkDeclareExceptionMacro( NullSizeHistogramInputMeasurementVectorSize, SampleToHistogramFilterException, "Input sample MeasurementVectorSize is zero");
-itkDeclareExceptionMacro( MissingHistogramBinMaximumInput, SampleToHistogramFilterException, "Histogram Bin Maximum input is missing");
-itkDeclareExceptionMacro( MissingHistogramBinMinimumInput, SampleToHistogramFilterException, "Histogram Bin Minimum input is missing");
-itkDeclareExceptionMacro( HistogramWrongNumberOfComponents, SampleToHistogramFilterException, "Histogram has wrong number of components");
+itkDeclareExceptionMacro( MissingHistogramSizeInput, SampleToHistogramFilterException,
+                          "Histogram Size input is missing");
+itkDeclareExceptionMacro( MissingHistogramMarginalScaleInput, SampleToHistogramFilterException,
+                          "Histogram marginal scale input is missing");
+itkDeclareExceptionMacro( NullSizeHistogramInputMeasurementVectorSize, SampleToHistogramFilterException,
+                          "Input sample MeasurementVectorSize is zero");
+itkDeclareExceptionMacro( MissingHistogramBinMaximumInput, SampleToHistogramFilterException,
+                          "Histogram Bin Maximum input is missing");
+itkDeclareExceptionMacro( MissingHistogramBinMinimumInput, SampleToHistogramFilterException,
+                          "Histogram Bin Minimum input is missing");
+itkDeclareExceptionMacro( HistogramWrongNumberOfComponents, SampleToHistogramFilterException,
+                          "Histogram has wrong number of components");
 
 namespace itk
 {
@@ -52,7 +58,7 @@ namespace Statistics
  */
 
 template< typename TSample, typename THistogram >
-class SampleToHistogramFilter:public ProcessObject
+class SampleToHistogramFilter : public ProcessObject
 {
 public:
   /** Standard class typedefs */
@@ -91,16 +97,16 @@ public:
 
   /** Type of DataObjects to use for Size inputs */
   typedef SimpleDataObjectDecorator<
-    HistogramSizeType > InputHistogramSizeObjectType;
+      HistogramSizeType > InputHistogramSizeObjectType;
 
   /** Type of DataObjects to use for Marginal Scale inputs */
   typedef SimpleDataObjectDecorator<
-    HistogramMeasurementType > InputHistogramMeasurementObjectType;
+      HistogramMeasurementType > InputHistogramMeasurementObjectType;
 
   /** Type of DataObjects to use for Minimum and Maximums values of the
    * histogram bins. */
   typedef SimpleDataObjectDecorator<
-    HistogramMeasurementVectorType > InputHistogramMeasurementVectorObjectType;
+      HistogramMeasurementVectorType > InputHistogramMeasurementVectorObjectType;
 
   /** Type of DataObjects to use for AutoMinimumMaximum input */
   typedef SimpleDataObjectDecorator< bool > InputBooleanObjectType;
@@ -134,7 +140,8 @@ public:
 
 protected:
   SampleToHistogramFilter();
-  virtual ~SampleToHistogramFilter();
+  virtual
+  ~SampleToHistogramFilter();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -156,14 +163,15 @@ private:
   void operator=(const Self &);          //purposely not implemented
 
   /** SafeAssign -- avoid numeric overflow/underflow */
-  HistogramMeasurementType SafeAssign(MeasurementType from) const
+  HistogramMeasurementType
+  SafeAssign(MeasurementType from) const
   {
     if(NumericTraits<HistogramMeasurementType>::is_integer)
       {
       MeasurementType fromMax = static_cast<MeasurementType>
-        (NumericTraits<HistogramMeasurementType>::max());
+        (NumericTraits<HistogramMeasurementType>::max() );
       MeasurementType fromMin = static_cast<MeasurementType>
-        (NumericTraits<HistogramMeasurementType>::min());
+        (NumericTraits<HistogramMeasurementType>::min() );
 
       if (from >= fromMax)
         {

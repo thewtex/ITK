@@ -100,6 +100,7 @@ NoiseImageFilter< TInputImage, TOutputImage >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

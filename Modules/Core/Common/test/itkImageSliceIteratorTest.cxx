@@ -20,16 +20,16 @@
 
 #include "itkImageSliceIteratorWithIndex.h"
 
-int itkImageSliceIteratorTest(int, char* [] )
+int
+itkImageSliceIteratorTest(int, char* [] )
 {
   std::cout << "Creating an image of indices" << std::endl;
 
   const unsigned int ImageDimension = 3;
 
-  typedef itk::Index< ImageDimension >             PixelType;
+  typedef itk::Index< ImageDimension > PixelType;
 
-  typedef itk::Image< PixelType, ImageDimension >  ImageType;
-
+  typedef itk::Image< PixelType, ImageDimension > ImageType;
 
   ImageType::Pointer myImage = ImageType::New();
 
@@ -64,302 +64,300 @@ int itkImageSliceIteratorTest(int, char* [] )
   ImageType::IndexType index;
 
   while( !it.IsAtEnd() )
-  {
-    while( !it.IsAtEndOfSlice() )
     {
-      while( !it.IsAtEndOfLine() )
+    while( !it.IsAtEndOfSlice() )
       {
+      while( !it.IsAtEndOfLine() )
+        {
         index = it.GetIndex();
         it.Set( index );
         ++it;
-      }
+        }
       it.NextLine();
-    }
+      }
     it.NextSlice();
-  }
-
-  {
-  // Verification
-  std::cout << "Verifying for iterator...";
-  IteratorType ot( myImage, region );
-
-  ot.GoToBegin();
-  ot.SetFirstDirection( 0 ); // 0=x, 1=y, 2=z
-  ot.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
-
-  while( !ot.IsAtEnd() )
-  {
-    while( !ot.IsAtEndOfSlice() )
-    {
-      while( !ot.IsAtEndOfLine() )
-      {
-        index = ot.GetIndex();
-        if( ot.Get() != index )
-        {
-          std::cerr << "Values don't correspond to what was stored "
-            << std::endl;
-          std::cerr << "Test failed at index ";
-          std::cerr << index << std::endl;
-          std::cerr << "It should be ";
-          std::cerr << ot.Get() << std::endl;
-          return EXIT_FAILURE;
-        }
-        ++ot;
-      }
-      ot.NextLine();
     }
-    ot.NextSlice();
-  }
-  std::cout << "  Done !" << std::endl;
 
-
-  // Verification
-  std::cout << "Verifying for const iterator...";
-  ConstIteratorType cot( myImage, region );
-
-  cot.GoToBegin();
-  cot.SetFirstDirection( 0 ); // 0=x, 1=y, 2=z
-  cot.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
-
-  while( !cot.IsAtEnd() )
-  {
-    while( !cot.IsAtEndOfSlice() )
     {
-      while( !cot.IsAtEndOfLine() )
+    // Verification
+    std::cout << "Verifying for iterator...";
+    IteratorType ot( myImage, region );
+
+    ot.GoToBegin();
+    ot.SetFirstDirection( 0 );  // 0=x, 1=y, 2=z
+    ot.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
+
+    while( !ot.IsAtEnd() )
       {
-        index = cot.GetIndex();
-        if( cot.Get() != index )
+      while( !ot.IsAtEndOfSlice() )
         {
-          std::cerr << "Values don't correspond to what was stored "
-            << std::endl;
-          std::cerr << "Test failed at index ";
-          std::cerr << index << std::endl;
-          std::cerr << "It should be ";
-          std::cerr << cot.Get() << std::endl;
-          return EXIT_FAILURE;
+        while( !ot.IsAtEndOfLine() )
+          {
+          index = ot.GetIndex();
+          if( ot.Get() != index )
+            {
+            std::cerr << "Values don't correspond to what was stored "
+                      << std::endl;
+            std::cerr << "Test failed at index ";
+            std::cerr << index << std::endl;
+            std::cerr << "It should be ";
+            std::cerr << ot.Get() << std::endl;
+            return EXIT_FAILURE;
+            }
+          ++ot;
+          }
+        ot.NextLine();
         }
-        ++cot;
+      ot.NextSlice();
       }
-      cot.NextLine();
+    std::cout << "  Done !" << std::endl;
+
+    // Verification
+    std::cout << "Verifying for const iterator...";
+    ConstIteratorType cot( myImage, region );
+
+    cot.GoToBegin();
+    cot.SetFirstDirection( 0 );  // 0=x, 1=y, 2=z
+    cot.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
+
+    while( !cot.IsAtEnd() )
+      {
+      while( !cot.IsAtEndOfSlice() )
+        {
+        while( !cot.IsAtEndOfLine() )
+          {
+          index = cot.GetIndex();
+          if( cot.Get() != index )
+            {
+            std::cerr << "Values don't correspond to what was stored "
+                      << std::endl;
+            std::cerr << "Test failed at index ";
+            std::cerr << index << std::endl;
+            std::cerr << "It should be ";
+            std::cerr << cot.Get() << std::endl;
+            return EXIT_FAILURE;
+            }
+          ++cot;
+          }
+        cot.NextLine();
+        }
+      cot.NextSlice();
+      }
+    std::cout << "  Done !" << std::endl;
+
+    // Verification
+    std::cout << "Verifying iterator in reverse direction... ";
+
+    IteratorType ior( myImage, region );
+
+    ior.GoToReverseBegin();
+    ior.SetFirstDirection( 0 );  // 0=x, 1=y, 2=z
+    ior.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
+
+    while( !ior.IsAtReverseEnd() )
+      {
+      while( !ior.IsAtReverseEndOfSlice() )
+        {
+        while( !ior.IsAtReverseEndOfLine() )
+          {
+          index = ior.GetIndex();
+          if( ior.Get() != index )
+            {
+            std::cerr << "Values don't correspond to what was stored "
+                      << std::endl;
+            std::cerr << "Test failed at index ";
+            std::cerr << index << " value is " << ior.Get() <<  std::endl;
+            return EXIT_FAILURE;
+            }
+          --ior;
+          }
+        ior.PreviousLine();
+        }
+      ior.PreviousSlice();
+      }
+
+    std::cout << "   Done ! " << std::endl;
+
+    // Verification
+    std::cout << "Verifying const iterator in reverse direction... ";
+
+    ConstIteratorType cor( myImage, region );
+
+    cor.GoToReverseBegin();
+    cor.SetFirstDirection( 0 );  // 0=x, 1=y, 2=z
+    cor.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
+
+    while( !cor.IsAtReverseEnd() )
+      {
+      while( !cor.IsAtReverseEndOfSlice() )
+        {
+        while( !cor.IsAtReverseEndOfLine() )
+          {
+          index = cor.GetIndex();
+          if( cor.Get() != index )
+            {
+            std::cerr << "Values don't correspond to what was stored "
+                      << std::endl;
+            std::cerr << "Test failed at index ";
+            std::cerr << index << " value is " << cor.Get() <<  std::endl;
+            return EXIT_FAILURE;
+            }
+          --cor;
+          }
+        cor.PreviousLine();
+        }
+      cor.PreviousSlice();
+      }
+    std::cout << "   Done ! " << std::endl;
+
     }
-    cot.NextSlice();
-  }
-  std::cout << "  Done !" << std::endl;
 
-  // Verification
-  std::cout << "Verifying iterator in reverse direction... ";
-
-  IteratorType ior( myImage, region );
-
-  ior.GoToReverseBegin();
-  ior.SetFirstDirection( 0 );  // 0=x, 1=y, 2=z
-  ior.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
-
-  while( !ior.IsAtReverseEnd() )
-  {
-    while( !ior.IsAtReverseEndOfSlice() )
     {
-      while( !ior.IsAtReverseEndOfLine() )
+    // Verification
+    std::cout << "Test in a region < LargestPossibleRegion" << std::endl;
+    std::cout << "Verifying for iterator...";
+
+    size[0]  = 50;
+    size[1]  = 50;
+    size[2]  = 50;
+
+    start[0] = 25;
+    start[1] = 25;
+    start[2] = 25;
+
+    region.SetIndex( start );
+    region.SetSize( size );
+
+    IteratorType ot( myImage, region );
+
+    ot.GoToBegin();
+    ot.SetFirstDirection( 0 );  // 0=x, 1=y, 2=z
+    ot.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
+
+    while( !ot.IsAtEnd() )
       {
-        index = ior.GetIndex();
-        if( ior.Get() != index )
+      while( !ot.IsAtEndOfSlice() )
         {
-          std::cerr << "Values don't correspond to what was stored "
-            << std::endl;
-          std::cerr << "Test failed at index ";
-          std::cerr << index << " value is " << ior.Get() <<  std::endl;
-          return EXIT_FAILURE;
+        while( !ot.IsAtEndOfLine() )
+          {
+          index = ot.GetIndex();
+          if( ot.Get() != index )
+            {
+            std::cerr << "Values don't correspond to what was stored "
+                      << std::endl;
+            std::cerr << "Test failed at index ";
+            std::cerr << index << std::endl;
+            std::cerr << "It should be ";
+            std::cerr << ot.Get() << std::endl;
+            return EXIT_FAILURE;
+            }
+          ++ot;
+          }
+        ot.NextLine();
         }
-        --ior;
+      ot.NextSlice();
       }
-      ior.PreviousLine();
-    }
-    ior.PreviousSlice();
-  }
+    std::cout << "  Done !" << std::endl;
 
-  std::cout << "   Done ! " << std::endl;
+    // Verification
+    std::cout << "Verifying for const iterator...";
+    ConstIteratorType cot( myImage, region );
 
-  // Verification
-  std::cout << "Verifying const iterator in reverse direction... ";
+    cot.GoToBegin();
+    cot.SetFirstDirection( 0 );  // 0=x, 1=y, 2=z
+    cot.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
 
-  ConstIteratorType cor( myImage, region );
-
-  cor.GoToReverseBegin();
-  cor.SetFirstDirection( 0 );  // 0=x, 1=y, 2=z
-  cor.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
-
-  while( !cor.IsAtReverseEnd() )
-  {
-    while( !cor.IsAtReverseEndOfSlice() )
-    {
-      while( !cor.IsAtReverseEndOfLine() )
+    while( !cot.IsAtEnd() )
       {
-        index = cor.GetIndex();
-        if( cor.Get() != index )
+      while( !cot.IsAtEndOfSlice() )
         {
-          std::cerr << "Values don't correspond to what was stored "
-            << std::endl;
-          std::cerr << "Test failed at index ";
-          std::cerr << index << " value is " << cor.Get() <<  std::endl;
-          return EXIT_FAILURE;
+        while( !cot.IsAtEndOfLine() )
+          {
+          index = cot.GetIndex();
+          if( cot.Get() != index )
+            {
+            std::cerr << "Values don't correspond to what was stored "
+                      << std::endl;
+            std::cerr << "Test failed at index ";
+            std::cerr << index << std::endl;
+            std::cerr << "It should be ";
+            std::cerr << cot.Get() << std::endl;
+            return EXIT_FAILURE;
+            }
+          ++cot;
+          }
+        cot.NextLine();
         }
-        --cor;
+      cot.NextSlice();
       }
-      cor.PreviousLine();
-    }
-    cor.PreviousSlice();
-  }
-  std::cout << "   Done ! " << std::endl;
+    std::cout << "  Done !" << std::endl;
 
-  }
+    // Verification
+    std::cout << "Verifying iterator in reverse direction... ";
 
-  {
-  // Verification
-  std::cout << "Test in a region < LargestPossibleRegion" << std::endl;
-  std::cout << "Verifying for iterator...";
+    IteratorType ior( myImage, region );
 
-  size[0]  = 50;
-  size[1]  = 50;
-  size[2]  = 50;
+    ior.GoToReverseBegin();
+    ior.SetFirstDirection( 0 );  // 0=x, 1=y, 2=z
+    ior.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
 
-  start[0] = 25;
-  start[1] = 25;
-  start[2] = 25;
-
-  region.SetIndex( start );
-  region.SetSize( size );
-
-  IteratorType ot( myImage, region );
-
-  ot.GoToBegin();
-  ot.SetFirstDirection( 0 ); // 0=x, 1=y, 2=z
-  ot.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
-
-  while( !ot.IsAtEnd() )
-  {
-    while( !ot.IsAtEndOfSlice() )
-    {
-      while( !ot.IsAtEndOfLine() )
+    while( !ior.IsAtReverseEnd() )
       {
-        index = ot.GetIndex();
-        if( ot.Get() != index )
+      while( !ior.IsAtReverseEndOfSlice() )
         {
-          std::cerr << "Values don't correspond to what was stored "
-            << std::endl;
-          std::cerr << "Test failed at index ";
-          std::cerr << index << std::endl;
-          std::cerr << "It should be ";
-          std::cerr << ot.Get() << std::endl;
-          return EXIT_FAILURE;
+        while( !ior.IsAtReverseEndOfLine() )
+          {
+          index = ior.GetIndex();
+          if( ior.Get() != index )
+            {
+            std::cerr << "Values don't correspond to what was stored "
+                      << std::endl;
+            std::cerr << "Test failed at index ";
+            std::cerr << index << " value is " << ior.Get() <<  std::endl;
+            return EXIT_FAILURE;
+            }
+          --ior;
+          }
+        ior.PreviousLine();
         }
-        ++ot;
+      ior.PreviousSlice();
       }
-      ot.NextLine();
-    }
-    ot.NextSlice();
-  }
-  std::cout << "  Done !" << std::endl;
 
+    std::cout << "   Done ! " << std::endl;
 
-  // Verification
-  std::cout << "Verifying for const iterator...";
-  ConstIteratorType cot( myImage, region );
+    // Verification
+    std::cout << "Verifying const iterator in reverse direction... ";
 
-  cot.GoToBegin();
-  cot.SetFirstDirection( 0 ); // 0=x, 1=y, 2=z
-  cot.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
+    ConstIteratorType cor( myImage, region );
 
-  while( !cot.IsAtEnd() )
-  {
-    while( !cot.IsAtEndOfSlice() )
-    {
-      while( !cot.IsAtEndOfLine() )
+    cor.GoToReverseBegin();
+    cor.SetFirstDirection( 0 );  // 0=x, 1=y, 2=z
+    cor.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
+
+    while( !cor.IsAtReverseEnd() )
       {
-        index = cot.GetIndex();
-        if( cot.Get() != index )
+      while( !cor.IsAtReverseEndOfSlice() )
         {
-          std::cerr << "Values don't correspond to what was stored "
-            << std::endl;
-          std::cerr << "Test failed at index ";
-          std::cerr << index << std::endl;
-          std::cerr << "It should be ";
-          std::cerr << cot.Get() << std::endl;
-          return EXIT_FAILURE;
+        while( !cor.IsAtReverseEndOfLine() )
+          {
+          index = cor.GetIndex();
+          if( cor.Get() != index )
+            {
+            std::cerr << "Values don't correspond to what was stored "
+                      << std::endl;
+            std::cerr << "Test failed at index ";
+            std::cerr << index << " value is " << cor.Get() <<  std::endl;
+            return EXIT_FAILURE;
+            }
+          --cor;
+          }
+        cor.PreviousLine();
         }
-        ++cot;
+      cor.PreviousSlice();
       }
-      cot.NextLine();
+    std::cout << "   Done ! " << std::endl;
+
     }
-    cot.NextSlice();
-  }
-  std::cout << "  Done !" << std::endl;
-
-  // Verification
-  std::cout << "Verifying iterator in reverse direction... ";
-
-  IteratorType ior( myImage, region );
-
-  ior.GoToReverseBegin();
-  ior.SetFirstDirection( 0 );  // 0=x, 1=y, 2=z
-  ior.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
-
-  while( !ior.IsAtReverseEnd() )
-  {
-    while( !ior.IsAtReverseEndOfSlice() )
-    {
-      while( !ior.IsAtReverseEndOfLine() )
-      {
-        index = ior.GetIndex();
-        if( ior.Get() != index )
-        {
-          std::cerr << "Values don't correspond to what was stored "
-            << std::endl;
-          std::cerr << "Test failed at index ";
-          std::cerr << index << " value is " << ior.Get() <<  std::endl;
-          return EXIT_FAILURE;
-        }
-        --ior;
-      }
-      ior.PreviousLine();
-    }
-    ior.PreviousSlice();
-  }
-
-  std::cout << "   Done ! " << std::endl;
-
-  // Verification
-  std::cout << "Verifying const iterator in reverse direction... ";
-
-  ConstIteratorType cor( myImage, region );
-
-  cor.GoToReverseBegin();
-  cor.SetFirstDirection( 0 );  // 0=x, 1=y, 2=z
-  cor.SetSecondDirection( 1 ); // 0=x, 1=y, 2=z
-
-  while( !cor.IsAtReverseEnd() )
-  {
-    while( !cor.IsAtReverseEndOfSlice() )
-    {
-      while( !cor.IsAtReverseEndOfLine() )
-      {
-        index = cor.GetIndex();
-        if( cor.Get() != index )
-        {
-          std::cerr << "Values don't correspond to what was stored "
-            << std::endl;
-          std::cerr << "Test failed at index ";
-          std::cerr << index << " value is " << cor.Get() <<  std::endl;
-          return EXIT_FAILURE;
-        }
-        --cor;
-      }
-      cor.PreviousLine();
-    }
-    cor.PreviousSlice();
-  }
-  std::cout << "   Done ! " << std::endl;
-
-  }
 
   std::cout << "Test passed" << std::endl;
 

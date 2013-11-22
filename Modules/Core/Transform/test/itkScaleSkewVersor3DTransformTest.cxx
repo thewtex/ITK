@@ -32,7 +32,8 @@
 //   Main code
 //
 // -------------------------
-int itkScaleSkewVersor3DTransformTest(int, char * [] )
+int
+itkScaleSkewVersor3DTransformTest(int, char * [] )
 {
 
   typedef   double ValueType;
@@ -539,7 +540,7 @@ int itkScaleSkewVersor3DTransformTest(int, char * [] )
 #if 0 //TODO: Need to instrument inverse of ScaleVersor3DTransform
       {
       TransformType::Pointer tInverse = TransformType::New();
-      if(!transform->GetInverse(tInverse))
+      if(!transform->GetInverse(tInverse) )
         {
         std::cout << "Cannot create inverse transform" << std::endl;
         return EXIT_FAILURE;

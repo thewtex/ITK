@@ -49,14 +49,14 @@ typename ScalarToRGBPixelFunctor< TScalar >::RGBPixelType
 ScalarToRGBPixelFunctor< TScalar >
 ::operator()(const TScalar & v) const
 {
-  TScalar        buf = v;
+  TScalar              buf = v;
   const unsigned char *bytes = reinterpret_cast<const unsigned char *>( &buf );
 
   if ( this->m_UseMSBForHashing == true )
     {   // swap bytes
-    TScalar tmp;
+    TScalar        tmp;
     unsigned char *tmpbytes = reinterpret_cast<unsigned char *>( &tmp );
-    unsigned int i = 0;
+    unsigned int   i = 0;
     for ( int j = sizeof( TScalar ) - 1; j >= 0; j--, i++ )
       {
       tmpbytes[i] = bytes[j];
@@ -72,6 +72,7 @@ ScalarToRGBPixelFunctor< TScalar >
 
   return ans;
 }
+
 } // end namespace Functor
 } // end namespace itk
 

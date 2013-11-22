@@ -27,11 +27,10 @@ namespace itk
 {
 template< typename TImage, typename TKernel, typename TCompare1, typename TCompare2 >
 AnchorOpenCloseImageFilter< TImage, TKernel, TCompare1, TCompare2 >
-::AnchorOpenCloseImageFilter():
+::AnchorOpenCloseImageFilter() :
   m_Boundary1( NumericTraits< InputImagePixelType >::Zero ),
   m_Boundary2( NumericTraits< InputImagePixelType >::Zero )
-{
-}
+{}
 
 template< typename TImage, typename TKernel, typename TCompare1, typename TCompare2 >
 void

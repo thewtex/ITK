@@ -272,11 +272,13 @@ OFFMeshIO
   // Read file according to ASCII or BINARY
   if ( this->m_FileType == ASCII )
     {
-    this->ReadBufferAsAscii(static_cast< float * >( buffer ), m_InputFile, this->m_NumberOfPoints * this->m_PointDimension);
+    this->ReadBufferAsAscii(static_cast< float * >( buffer ), m_InputFile,
+                            this->m_NumberOfPoints * this->m_PointDimension);
     }
   else if ( this->m_FileType == BINARY )
     {
-    this->ReadBufferAsBinary(static_cast< float * >( buffer ), m_InputFile, this->m_NumberOfPoints * this->m_PointDimension);
+    this->ReadBufferAsBinary(static_cast< float * >( buffer ), m_InputFile,
+                             this->m_NumberOfPoints * this->m_PointDimension);
     }
   else
     {
@@ -320,14 +322,12 @@ OFFMeshIO
 void
 OFFMeshIO
 ::ReadPointData(void * itkNotUsed( buffer) )
-{
-}
+{}
 
 void
 OFFMeshIO
 ::ReadCellData(void * itkNotUsed( buffer) )
-{
-}
+{}
 
 void
 OFFMeshIO
@@ -475,7 +475,8 @@ OFFMeshIO
         }
       case ULONGLONG:
         {
-        WriteBufferAsAscii(static_cast< unsigned long long * >( buffer ), outputFile, m_NumberOfPoints, m_PointDimension);
+        WriteBufferAsAscii(static_cast< unsigned long long * >( buffer ), outputFile, m_NumberOfPoints,
+                           m_PointDimension);
 
         break;
         }
@@ -515,7 +516,8 @@ OFFMeshIO
       {
       case UCHAR:
         {
-        WriteBufferAsBinary< float >(static_cast< unsigned char * >( buffer ), outputFile, m_NumberOfPoints * m_PointDimension);
+        WriteBufferAsBinary< float >(static_cast< unsigned char * >( buffer ), outputFile,
+                                     m_NumberOfPoints * m_PointDimension);
         break;
         }
       case CHAR:
@@ -526,7 +528,8 @@ OFFMeshIO
         }
       case USHORT:
         {
-        WriteBufferAsBinary< float >(static_cast< unsigned short * >( buffer ), outputFile, m_NumberOfPoints * m_PointDimension);
+        WriteBufferAsBinary< float >(static_cast< unsigned short * >( buffer ), outputFile,
+                                     m_NumberOfPoints * m_PointDimension);
 
         break;
         }
@@ -538,7 +541,8 @@ OFFMeshIO
         }
       case UINT:
         {
-        WriteBufferAsBinary< float >(static_cast< unsigned int * >( buffer ), outputFile, m_NumberOfPoints * m_PointDimension);
+        WriteBufferAsBinary< float >(static_cast< unsigned int * >( buffer ), outputFile,
+                                     m_NumberOfPoints * m_PointDimension);
 
         break;
         }
@@ -550,7 +554,8 @@ OFFMeshIO
         }
       case ULONG:
         {
-        WriteBufferAsBinary< float >(static_cast< unsigned long * >( buffer ), outputFile, m_NumberOfPoints * m_PointDimension);
+        WriteBufferAsBinary< float >(static_cast< unsigned long * >( buffer ), outputFile,
+                                     m_NumberOfPoints * m_PointDimension);
 
         break;
         }
@@ -562,13 +567,15 @@ OFFMeshIO
         }
       case ULONGLONG:
         {
-        WriteBufferAsBinary< float >(static_cast< unsigned long long * >( buffer ), outputFile, m_NumberOfPoints * m_PointDimension);
+        WriteBufferAsBinary< float >(static_cast< unsigned long long * >( buffer ), outputFile,
+                                     m_NumberOfPoints * m_PointDimension);
 
         break;
         }
       case LONGLONG:
         {
-        WriteBufferAsBinary< float >(static_cast< long long * >( buffer ), outputFile, m_NumberOfPoints * m_PointDimension);
+        WriteBufferAsBinary< float >(static_cast< long long * >( buffer ), outputFile,
+                                     m_NumberOfPoints * m_PointDimension);
 
         break;
         }
@@ -580,13 +587,15 @@ OFFMeshIO
         }
       case DOUBLE:
         {
-        WriteBufferAsBinary< float >(static_cast< double * >( buffer ), outputFile, m_NumberOfPoints * m_PointDimension);
+        WriteBufferAsBinary< float >(static_cast< double * >( buffer ), outputFile, m_NumberOfPoints *
+                                     m_PointDimension);
 
         break;
         }
       case LDOUBLE:
         {
-        WriteBufferAsBinary< float >(static_cast< long double * >( buffer ), outputFile, m_NumberOfPoints * m_PointDimension);
+        WriteBufferAsBinary< float >(static_cast< long double * >( buffer ), outputFile,
+                                     m_NumberOfPoints * m_PointDimension);
 
         break;
         }
@@ -813,20 +822,17 @@ OFFMeshIO
 void
 OFFMeshIO
 ::WritePointData(void * itkNotUsed( buffer ) )
-{
-}
+{}
 
 void
 OFFMeshIO
 ::WriteCellData(void * itkNotUsed( buffer ) )
-{
-}
+{}
 
 void
 OFFMeshIO
 ::Write()
-{
-}
+{}
 
 void
 OFFMeshIO
@@ -834,4 +840,5 @@ OFFMeshIO
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // namespace itk end

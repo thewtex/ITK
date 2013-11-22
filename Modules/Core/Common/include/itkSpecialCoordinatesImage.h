@@ -92,7 +92,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TPixel, unsigned int VImageDimension = 2 >
-class SpecialCoordinatesImage:public ImageBase< VImageDimension >
+class SpecialCoordinatesImage : public ImageBase< VImageDimension >
 {
 public:
   /** Standard class typedefs */
@@ -145,7 +145,7 @@ public:
   typedef typename Superclass::OffsetType OffsetType;
 
   /** Size typedef support. A size is used to define region bounds. */
-  typedef typename Superclass::SizeType      SizeType;
+  typedef typename Superclass::SizeType SizeType;
 
   /** Container used to store pixels in the image. */
   typedef ImportImageContainer< SizeValueType, PixelType > PixelContainer;
@@ -185,9 +185,11 @@ public:
    * Allocate() needs to have been called first -- for efficiency,
    * this function does not check that the image has actually been
    * allocated yet. */
-  void SetPixel(const IndexType & index, const TPixel & value)
+  void
+  SetPixel(const IndexType & index, const TPixel & value)
   {
     OffsetValueType offset = this->ComputeOffset(index);
+
     ( *m_Buffer )[offset] = value;
   }
 
@@ -195,9 +197,11 @@ public:
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  const TPixel & GetPixel(const IndexType & index) const
+  const TPixel &
+  GetPixel(const IndexType & index) const
   {
     OffsetValueType offset = this->ComputeOffset(index);
+
     return ( ( *m_Buffer )[offset] );
   }
 
@@ -205,9 +209,11 @@ public:
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  TPixel & GetPixel(const IndexType & index)
+  TPixel &
+  GetPixel(const IndexType & index)
   {
     OffsetValueType offset = this->ComputeOffset(index);
+
     return ( ( *m_Buffer )[offset] );
   }
 
@@ -215,45 +221,76 @@ public:
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  TPixel & operator[](const IndexType & index) { return this->GetPixel(index); }
+  TPixel &
+  operator[](const IndexType & index) {
+    return this->GetPixel(index);
+  }
 
   /** \brief Access a pixel. This version can only be an rvalue.
    *
    * For efficiency, this function does not check that the
    * image has actually been allocated yet. */
-  const TPixel & operator[](const IndexType & index) const { return this->GetPixel(index); }
+  const TPixel &
+  operator[](const IndexType & index) const {
+    return this->GetPixel(index);
+  }
 
   /** Return a pointer to the beginning of the buffer.  This is used by
    * the image iterator class. */
-  TPixel * GetBufferPointer() { return m_Buffer ? m_Buffer->GetBufferPointer() : 0; }
-  const TPixel * GetBufferPointer() const { return m_Buffer ? m_Buffer->GetBufferPointer() : 0; }
+  TPixel *
+  GetBufferPointer() {
+    return m_Buffer ? m_Buffer->GetBufferPointer() : 0;
+  }
+
+  const TPixel *
+  GetBufferPointer() const {
+    return m_Buffer ? m_Buffer->GetBufferPointer() : 0;
+  }
 
   /** Return a pointer to the container. */
-  PixelContainer * GetPixelContainer() { return m_Buffer.GetPointer(); }
+  PixelContainer *
+  GetPixelContainer() {
+    return m_Buffer.GetPointer();
+  }
 
-  const PixelContainer * GetPixelContainer() const { return m_Buffer.GetPointer(); }
+  const PixelContainer *
+  GetPixelContainer() const {
+    return m_Buffer.GetPointer();
+  }
 
   /** Set the container to use. Note that this does not cause the
    * DataObject to be modified. */
   void SetPixelContainer(PixelContainer *container);
 
   /** Return the Pixel Accessor object */
-  AccessorType GetPixelAccessor(void) { return AccessorType(); }
+  AccessorType
+  GetPixelAccessor(void) {
+    return AccessorType();
+  }
 
   /** Return the Pixel Accesor object */
-  const AccessorType GetPixelAccessor(void) const { return AccessorType(); }
+  const AccessorType
+  GetPixelAccessor(void) const {
+    return AccessorType();
+  }
 
   /** These functions do NOTHING!  They exist only to not break the pipeline.
    * It is vital that the user specify any and all physical-spacing parameters
    * to the output of a normal filter which is being used to output a
    * special-coordinates image.  Filters designed to produce a particular kind
    * of special-coordinates image should do this automatically. */
-  virtual void SetSpacing(const SpacingType &) {}
-  virtual void SetSpacing(const double[VImageDimension]) {}
-  virtual void SetSpacing(const float[VImageDimension]) {}
-  virtual void SetOrigin(const PointType) {}
-  virtual void SetOrigin(const double[VImageDimension]) {}
-  virtual void SetOrigin(const float[VImageDimension]) {}
+  virtual void
+  SetSpacing(const SpacingType &) {}
+  virtual void
+  SetSpacing(const double[VImageDimension]) {}
+  virtual void
+  SetSpacing(const float[VImageDimension]) {}
+  virtual void
+  SetOrigin(const PointType) {}
+  virtual void
+  SetOrigin(const double[VImageDimension]) {}
+  virtual void
+  SetOrigin(const float[VImageDimension]) {}
 
   /* It is ILLEGAL in C++ to make a templated member function virtual! */
   /* Therefore, we must just let templates take care of everything.    */
@@ -283,7 +320,8 @@ protected:
   SpecialCoordinatesImage();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  virtual ~SpecialCoordinatesImage() {}
+  virtual
+  ~SpecialCoordinatesImage() {}
 
 private:
   SpecialCoordinatesImage(const Self &); //purposely not implemented

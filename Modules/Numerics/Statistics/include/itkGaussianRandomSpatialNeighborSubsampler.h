@@ -42,15 +42,15 @@ namespace Statistics {
  */
 
 template < typename TSample, typename TRegion >
-  class GaussianRandomSpatialNeighborSubsampler : public UniformRandomSpatialNeighborSubsampler<TSample, TRegion>
+class GaussianRandomSpatialNeighborSubsampler : public UniformRandomSpatialNeighborSubsampler<TSample, TRegion>
 {
 public:
   /** Standard class typedefs */
-  typedef GaussianRandomSpatialNeighborSubsampler<TSample, TRegion>  Self;
-  typedef UniformRandomSpatialNeighborSubsampler<TSample, TRegion>   Superclass;
-  typedef typename Superclass::Baseclass                             Baseclass;
-  typedef SmartPointer<Self>                                         Pointer;
-  typedef SmartPointer<const Self>                                   ConstPointer;
+  typedef GaussianRandomSpatialNeighborSubsampler<TSample, TRegion> Self;
+  typedef UniformRandomSpatialNeighborSubsampler<TSample, TRegion>  Superclass;
+  typedef typename Superclass::Baseclass                            Baseclass;
+  typedef SmartPointer<Self>                                        Pointer;
+  typedef SmartPointer<const Self>                                  ConstPointer;
 
   /** Run-time type information (and related methods) */
   itkTypeMacro(GaussianRandomSpatialNeighborSubsampler,
@@ -60,10 +60,10 @@ public:
   itkNewMacro(Self);
 
   /** typedef alias for the source data container */
-  typedef typename Superclass::SampleType                  SampleType;
-  typedef typename Superclass::SampleConstPointer          SampleConstPointer;
-  typedef typename Superclass::MeasurementVectorType       MeasurementVectorType;
-  typedef typename Superclass::InstanceIdentifier          InstanceIdentifier;
+  typedef typename Superclass::SampleType            SampleType;
+  typedef typename Superclass::SampleConstPointer    SampleConstPointer;
+  typedef typename Superclass::MeasurementVectorType MeasurementVectorType;
+  typedef typename Superclass::InstanceIdentifier    InstanceIdentifier;
 
   typedef typename Superclass::SubsampleType            SubsampleType;
   typedef typename Superclass::SubsamplePointer         SubsamplePointer;
@@ -100,7 +100,8 @@ protected:
   virtual typename LightObject::Pointer InternalClone() const;
 
   GaussianRandomSpatialNeighborSubsampler();
-  virtual ~GaussianRandomSpatialNeighborSubsampler() {};
+  virtual
+  ~GaussianRandomSpatialNeighborSubsampler() {}
 
   virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
@@ -115,9 +116,9 @@ protected:
 
 private:
   GaussianRandomSpatialNeighborSubsampler(const Self&); // purposely not implemented
-  void operator=(const Self&); // purposely not implemented
+  void operator=(const Self&);                          // purposely not implemented
 
-}; // end of class GaussianRandomSpatialNeighborSubsampler
+};  // end of class GaussianRandomSpatialNeighborSubsampler
 
 } // end of namespace Statistics
 } // end of namespace itk

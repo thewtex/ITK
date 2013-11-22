@@ -21,9 +21,9 @@
 
 #include "itkRegularSphereMeshSource.h"
 
-
 /** test */
-int itkPointSetToSpatialObjectDemonsRegistrationTest(int, char* [] )
+int
+itkPointSetToSpatialObjectDemonsRegistrationTest(int, char* [] )
 {
   const unsigned int Dimension = 3;
 
@@ -43,26 +43,24 @@ int itkPointSetToSpatialObjectDemonsRegistrationTest(int, char* [] )
 
   ellipse->ComputeObjectToWorldTransform();
 
-  typedef itk::Mesh< float, Dimension >  PointSetType;
+  typedef itk::Mesh< float, Dimension > PointSetType;
 
   typedef itk::RegularSphereMeshSource<
-                                 PointSetType > SphereType;
+      PointSetType > SphereType;
 
   SphereType::Pointer sphereSource = SphereType::New();
 
   sphereSource->Update();
 
-
   typedef itk::PointSetToSpatialObjectDemonsRegistration<
-                                      PointSetType,
-                                      EllipseType
-                                        > DemonsRegistrationType;
+      PointSetType,
+      EllipseType
+      > DemonsRegistrationType;
 
-  DemonsRegistrationType::Pointer  demonsRegistration = DemonsRegistrationType::New();
+  DemonsRegistrationType::Pointer demonsRegistration = DemonsRegistrationType::New();
 
   demonsRegistration->SetFixedPointSet( sphereSource->GetOutput() );
   demonsRegistration->SetMovingSpatialObject( ellipse );
-
 
   try
     {
@@ -73,7 +71,6 @@ int itkPointSetToSpatialObjectDemonsRegistrationTest(int, char* [] )
     std::cerr << "Exception thrown during the registration process" << std::endl;
     std::cerr << excp << std::endl;
     }
-
 
   std::cout<<"Test Succeed!"<<std::endl;
   return EXIT_SUCCESS;

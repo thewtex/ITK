@@ -87,6 +87,7 @@ SphereSignedDistanceFunction< TCoordRep, VSpaceDimension >
 
   return output;
 }
+
 } // end namespace itk
 
 #endif

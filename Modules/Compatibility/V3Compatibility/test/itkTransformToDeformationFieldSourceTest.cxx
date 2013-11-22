@@ -21,7 +21,8 @@
 #include "itkTransformToDeformationFieldSource.h"
 #include "itkImageFileWriter.h"
 
-int itkTransformToDeformationFieldSourceTest( int argc, char * argv [] )
+int
+itkTransformToDeformationFieldSourceTest( int argc, char * argv [] )
 {
   /** Check command line arguments. */
   if( argc < 3 )
@@ -39,47 +40,47 @@ int itkTransformToDeformationFieldSourceTest( int argc, char * argv [] )
     }
 
   /** Typedefs. */
-  const unsigned int  Dimension = 2;
-  typedef float       ScalarPixelType;
-  typedef double      CoordRepresentationType;
-  const unsigned int  SplineOrder = 3;
+  const unsigned int Dimension = 2;
+  typedef float  ScalarPixelType;
+  typedef double CoordRepresentationType;
+  const unsigned int SplineOrder = 3;
 
   typedef itk::Vector<
-    ScalarPixelType, Dimension >          VectorPixelType;
+      ScalarPixelType, Dimension >          VectorPixelType;
 
   typedef itk::Image<
-    VectorPixelType, Dimension >          DeformationFieldImageType;
+      VectorPixelType, Dimension >          DeformationFieldImageType;
 
   typedef itk::Transform<
-    CoordRepresentationType, Dimension,
-    Dimension >                           TransformType;
+      CoordRepresentationType, Dimension,
+      Dimension >                           TransformType;
 
   typedef itk::AffineTransform<
-    CoordRepresentationType, Dimension >  AffineTransformType;
+      CoordRepresentationType, Dimension >  AffineTransformType;
 
   typedef itk::BSplineTransform<
-    CoordRepresentationType, Dimension,
-    SplineOrder >                         BSplineTransformType;
+      CoordRepresentationType, Dimension,
+      SplineOrder >                         BSplineTransformType;
 
-  typedef TransformType::ParametersType   ParametersType;
+  typedef TransformType::ParametersType ParametersType;
 
   typedef itk::TransformToDeformationFieldSource<
-    DeformationFieldImageType,
-    CoordRepresentationType >             DeformationFieldGeneratorType;
+      DeformationFieldImageType,
+      CoordRepresentationType >             DeformationFieldGeneratorType;
 
-  typedef DeformationFieldGeneratorType::SizeType       SizeType;
-  typedef DeformationFieldGeneratorType::SpacingType    SpacingType;
-  typedef DeformationFieldGeneratorType::OriginType     OriginType;
-  typedef DeformationFieldGeneratorType::IndexType      IndexType;
-  typedef DeformationFieldGeneratorType::RegionType     RegionType;
+  typedef DeformationFieldGeneratorType::SizeType    SizeType;
+  typedef DeformationFieldGeneratorType::SpacingType SpacingType;
+  typedef DeformationFieldGeneratorType::OriginType  OriginType;
+  typedef DeformationFieldGeneratorType::IndexType   IndexType;
+  typedef DeformationFieldGeneratorType::RegionType  RegionType;
   typedef itk::ImageFileWriter<
-    DeformationFieldImageType >                         WriterType;
+      DeformationFieldImageType >                         WriterType;
 
   /** Create output information. */
-  SizeType size;        size.Fill( 20 );
-  IndexType index;      index.Fill( 0 );
+  SizeType    size;        size.Fill( 20 );
+  IndexType   index;      index.Fill( 0 );
   SpacingType spacing;  spacing.Fill( 0.7 );
-  OriginType origin;    origin.Fill( -10.0 );
+  OriginType  origin;    origin.Fill( -10.0 );
 
   /** Create transforms. */
   AffineTransformType::Pointer affineTransform
@@ -112,7 +113,7 @@ int itkTransformToDeformationFieldSourceTest( int argc, char * argv [] )
       {
       dimensions[d] = spacing[d] * ( size[d] - 1.0 );
       }
-    BSplineTransformType::MeshSizeType meshSize;
+    BSplineTransformType::MeshSizeType  meshSize;
     BSplineTransformType::DirectionType direction;
     direction.SetIdentity();
 
@@ -126,7 +127,7 @@ int itkTransformToDeformationFieldSourceTest( int argc, char * argv [] )
 
     /** Create and set parameters. */
     ParametersType parameters( bSplineTransform->GetNumberOfParameters() );
-    std::ifstream input( bSplineParametersFile.c_str() );
+    std::ifstream  input( bSplineParametersFile.c_str() );
     if ( input.is_open() )
       {
       for ( unsigned int i = 0; i < parameters.GetSize(); ++i )

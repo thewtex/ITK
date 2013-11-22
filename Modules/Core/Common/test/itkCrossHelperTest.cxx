@@ -20,8 +20,8 @@
 
 #include <iostream>
 
-
-int itkCrossHelperTest( int argc, char* argv[] )
+int
+itkCrossHelperTest( int argc, char* argv[] )
 {
   (void) argc;
   (void) argv;
@@ -53,10 +53,10 @@ int itkCrossHelperTest( int argc, char* argv[] )
   v2d[0] = 0.;
   v2d[1] = 1.;
 
-  if( cross2d( u2d, v2d ).GetNorm( ) > 1e-6 )
+  if( cross2d( u2d, v2d ).GetNorm() > 1e-6 )
     {
     std::cout <<"cross product must return null vector is dimension is below 3"
-       <<std::endl;
+              <<std::endl;
     return EXIT_FAILURE;
     }
 

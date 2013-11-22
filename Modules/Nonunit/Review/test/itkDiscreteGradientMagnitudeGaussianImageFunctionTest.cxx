@@ -22,7 +22,8 @@
 #include "itkRescaleIntensityImageFilter.h"
 
 template < int VDimension >
-int itkDiscreteGradientMagnitudeGaussianImageFunctionTestND( int argc, char* argv[] )
+int
+itkDiscreteGradientMagnitudeGaussianImageFunctionTestND( int argc, char* argv[] )
 {
 
   // Verify the number of parameters in the command line
@@ -68,7 +69,7 @@ int itkDiscreteGradientMagnitudeGaussianImageFunctionTestND( int argc, char* arg
   double variance = atof( argv[3] );
   variance *= variance;
 
-  double maxError = 0.001;
+  double       maxError = 0.001;
   unsigned int maxKernelWidth = 100;
   if( argc == 5 )
     {
@@ -103,12 +104,12 @@ int itkDiscreteGradientMagnitudeGaussianImageFunctionTestND( int argc, char* arg
   IteratorType out( output, output->GetRequestedRegion() );
   out.GoToBegin();
 
-  typedef typename DiscreteGradientMagnitudeGaussianFunctionType::PointType  PointType;
+  typedef typename DiscreteGradientMagnitudeGaussianFunctionType::PointType PointType;
   PointType point;
   typedef typename DiscreteGradientMagnitudeGaussianFunctionType::ContinuousIndexType ContinuousIndexType;
   ContinuousIndexType cindex;
   const unsigned long nop = inputImage->GetRequestedRegion().GetNumberOfPixels();
-  unsigned long pixelNumber = 0;
+  unsigned long       pixelNumber = 0;
   while( !it.IsAtEnd() )
     {
     // To test all available Evaluate functions, we split it in three parts.
@@ -133,9 +134,9 @@ int itkDiscreteGradientMagnitudeGaussianImageFunctionTestND( int argc, char* arg
     }
 
   // Rescale output
-  typedef unsigned char                                                     OutputPixelType;
-  typedef itk::Image< OutputPixelType, Dimension >                          OutputImageType;
-  typedef itk::RescaleIntensityImageFilter< ImageType, OutputImageType >    RescaleType;
+  typedef unsigned char                                                  OutputPixelType;
+  typedef itk::Image< OutputPixelType, Dimension >                       OutputImageType;
+  typedef itk::RescaleIntensityImageFilter< ImageType, OutputImageType > RescaleType;
   typename RescaleType::Pointer rescaler = RescaleType::New();
   rescaler->SetInput( output );
   rescaler->SetOutputMinimum( itk::NumericTraits<OutputPixelType>::min() );
@@ -161,56 +162,57 @@ int itkDiscreteGradientMagnitudeGaussianImageFunctionTestND( int argc, char* arg
   typedef typename DiscreteGradientMagnitudeGaussianFunctionType::VarianceArrayType VarianceArrayType;
   VarianceArrayType varReturned = function->GetVariance();
   for ( unsigned int i = 0; i < Dimension; ++i )
-  {
-    if ( varReturned[ i ] != variance )
     {
+    if ( varReturned[ i ] != variance )
+      {
       std::cout << "GetVariance()[" << i << "] failed. Expected: "
-        << variance
-        << " but got: "
-        << varReturned[ i ] << std::endl;
+                << variance
+                << " but got: "
+                << varReturned[ i ] << std::endl;
       return EXIT_FAILURE;
+      }
     }
-  }
   if ( function->GetMaximumError() != maxError )
-  {
+    {
     std::cout << "GetMaximumError failed. Expected: "
-      << maxError
-      << " but got: "
-      << function->GetMaximumError() << std::endl;
+              << maxError
+              << " but got: "
+              << function->GetMaximumError() << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   if ( function->GetNormalizeAcrossScale() != true )
-  {
+    {
     std::cout << "GetNormalizeAcrossScale failed. Expected: "
-      << true
-      << " but got: "
-      << function->GetNormalizeAcrossScale() << std::endl;
+              << true
+              << " but got: "
+              << function->GetNormalizeAcrossScale() << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   if ( function->GetUseImageSpacing() != true )
-  {
+    {
     std::cout << "GetUseImageSpacing failed. Expected: "
-      << true
-      << " but got: "
-      << function->GetUseImageSpacing() << std::endl;
+              << true
+              << " but got: "
+              << function->GetUseImageSpacing() << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   if ( function->GetMaximumKernelWidth() != maxKernelWidth )
-  {
+    {
     std::cout << "GetMaximumKernelWidth failed. Expected: "
-      << maxKernelWidth
-      << " but got: "
-      << function->GetMaximumKernelWidth() << std::endl;
+              << maxKernelWidth
+              << " but got: "
+              << function->GetMaximumKernelWidth() << std::endl;
     return EXIT_FAILURE;
-  }
-  if ( function->GetInterpolationMode() != DiscreteGradientMagnitudeGaussianFunctionType::NearestNeighbourInterpolation )
-  {
+    }
+  if ( function->GetInterpolationMode() !=
+       DiscreteGradientMagnitudeGaussianFunctionType::NearestNeighbourInterpolation )
+    {
     std::cout << "GetInterpolationMode failed. Expected: "
-      << DiscreteGradientMagnitudeGaussianFunctionType::NearestNeighbourInterpolation
-      << " but got: "
-      << function->GetInterpolationMode() << std::endl;
+              << DiscreteGradientMagnitudeGaussianFunctionType::NearestNeighbourInterpolation
+              << " but got: "
+              << function->GetInterpolationMode() << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   // Call PrintSelf.
   function->Print( std::cout );
@@ -218,7 +220,8 @@ int itkDiscreteGradientMagnitudeGaussianImageFunctionTestND( int argc, char* arg
   return EXIT_SUCCESS;
 }
 
-int itkDiscreteGradientMagnitudeGaussianImageFunctionTest(int argc, char* argv[] )
+int
+itkDiscreteGradientMagnitudeGaussianImageFunctionTest(int argc, char* argv[] )
 {
   return itkDiscreteGradientMagnitudeGaussianImageFunctionTestND< 2 >( argc, argv );
 }

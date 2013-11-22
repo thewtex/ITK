@@ -34,7 +34,7 @@ namespace itk
  * \ingroup ITKSpatialObjects
  */
 template< unsigned int TPointDimension = 3 >
-class DTITubeSpatialObjectPoint:
+class DTITubeSpatialObjectPoint :
   public TubeSpatialObjectPoint< TPointDimension >
 {
 public:
@@ -56,20 +56,24 @@ public:
   DTITubeSpatialObjectPoint(void);
 
   /** Default destructor. */
-  virtual ~DTITubeSpatialObjectPoint(void);
+  virtual
+  ~DTITubeSpatialObjectPoint(void);
 
   /** Set/Get the tensor matrix */
-  void SetTensorMatrix(const DiffusionTensor3D< double > & matrix)
+  void
+  SetTensorMatrix(const DiffusionTensor3D< double > & matrix)
   {
     std::copy(matrix.Begin(), matrix.End(), m_TensorMatrix);
   }
 
-  void SetTensorMatrix(const DiffusionTensor3D< float > & matrix)
+  void
+  SetTensorMatrix(const DiffusionTensor3D< float > & matrix)
   {
     std::copy(matrix.Begin(), matrix.End(), m_TensorMatrix);
   }
 
-  void SetTensorMatrix(const float *matrix)
+  void
+  SetTensorMatrix(const float *matrix)
   {
     for ( unsigned int i = 0; i < 6; i++ )
       {
@@ -77,7 +81,10 @@ public:
       }
   }
 
-  const float * GetTensorMatrix() const { return m_TensorMatrix; }
+  const float *
+  GetTensorMatrix() const {
+    return m_TensorMatrix;
+  }
 
   /** Copy one DTITubeSpatialObjectPoint to another */
   Self & operator=(const DTITubeSpatialObjectPoint & rhs);
@@ -94,7 +101,10 @@ public:
   void SetField(const char *name, float value);
 
   /** Return the list of extra fields */
-  const FieldListType & GetFields() const { return m_Fields; }
+  const FieldListType &
+  GetFields() const {
+    return m_Fields;
+  }
 
   /** Return the value of the specific fiedls */
   float GetField(const char *name) const;
@@ -111,6 +121,7 @@ protected:
 
   /** Translate the enum to char */
   std::string TranslateEnumToChar(FieldEnumType name) const;
+
 };
 } // end of namespace itk
 

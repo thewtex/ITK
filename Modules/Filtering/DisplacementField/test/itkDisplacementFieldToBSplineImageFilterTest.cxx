@@ -18,12 +18,13 @@
 
 #include "itkDisplacementFieldToBSplineImageFilter.h"
 
-int itkDisplacementFieldToBSplineImageFilterTest( int, char * [] )
+int
+itkDisplacementFieldToBSplineImageFilterTest( int, char * [] )
 {
-  const unsigned int   ImageDimension = 2;
+  const unsigned int ImageDimension = 2;
 
-  typedef itk::Vector<float, ImageDimension>       VectorType;
-  typedef itk::Image<VectorType, ImageDimension>   DisplacementFieldType;
+  typedef itk::Vector<float, ImageDimension>     VectorType;
+  typedef itk::Image<VectorType, ImageDimension> DisplacementFieldType;
 
   // Create a displacement field
   DisplacementFieldType::PointType     origin;

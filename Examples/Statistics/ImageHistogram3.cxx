@@ -44,10 +44,10 @@
 #include "itkRGBPixel.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImageFileReader.h"
 
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
 
   if( argc < 2 )
@@ -56,7 +56,6 @@ int main( int argc, char * argv [] )
     std::cerr << "Usage :  ImageHistogram3  inputRGBImageFileName " << std::endl;
     return -1;
     }
-
 
   // Software Guide : BeginLatex
   //
@@ -68,17 +67,16 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char                         PixelComponentType;
+  typedef unsigned char PixelComponentType;
 
-  typedef itk::RGBPixel< PixelComponentType >   RGBPixelType;
+  typedef itk::RGBPixel< PixelComponentType > RGBPixelType;
 
-  const unsigned int                            Dimension = 2;
+  const unsigned int Dimension = 2;
 
   typedef itk::Image< RGBPixelType, Dimension > RGBImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< RGBImageType >  ReaderType;
+  typedef itk::ImageFileReader< RGBImageType > ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 
@@ -95,7 +93,6 @@ int main( int argc, char * argv [] )
     return -1;
     }
 
-
   // Software Guide : BeginLatex
   //
   // Using the RGB image type we can instantiate the type of the corresponding
@@ -106,12 +103,11 @@ int main( int argc, char * argv [] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::ImageToHistogramFilter<
-                            RGBImageType >   HistogramFilterType;
+      RGBImageType >   HistogramFilterType;
 
   HistogramFilterType::Pointer histogramFilter =
-                                             HistogramFilterType::New();
+    HistogramFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -128,7 +124,7 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef HistogramFilterType::HistogramSizeType   SizeType;
+  typedef HistogramFilterType::HistogramSizeType SizeType;
 
   SizeType size( 3 );
 
@@ -138,7 +134,6 @@ int main( int argc, char * argv [] )
 
   histogramFilter->SetHistogramSize( size );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -176,7 +171,6 @@ int main( int argc, char * argv [] )
   histogramFilter->SetHistogramBinMaximum( upperBound );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The input of the filter is taken from an image reader, and the
@@ -193,7 +187,6 @@ int main( int argc, char * argv [] )
   histogramFilter->Update();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We can now access the results of the histogram computation by declaring a
@@ -209,11 +202,10 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef HistogramFilterType::HistogramType  HistogramType;
+  typedef HistogramFilterType::HistogramType HistogramType;
 
   const HistogramType * histogram = histogramFilter->GetOutput();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -231,7 +223,6 @@ int main( int argc, char * argv [] )
 
   std::cout << "Histogram size " << histogramSize << std::endl;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -260,7 +251,6 @@ int main( int argc, char * argv [] )
     }
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // In order to reinforce the concepts presented above, we modify now the setup
@@ -281,7 +271,6 @@ int main( int argc, char * argv [] )
   histogramFilter->Update();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The result can be verified now by setting the desired channel to green and
@@ -301,14 +290,12 @@ int main( int argc, char * argv [] )
     }
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // To finalize the example, we do the same computation for the case of the blue
   // channel.
   //
   // Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   size[0] =   1;  // number of bins for the Red   channel
@@ -320,13 +307,11 @@ int main( int argc, char * argv [] )
   histogramFilter->Update();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // and verify the output.
   //
   // Software Guide : EndLatex
-
 
   // Software Guide : BeginCodeSnippet
   channel = 2;  // blue channel

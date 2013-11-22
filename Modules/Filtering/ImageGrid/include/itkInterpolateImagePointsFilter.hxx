@@ -57,6 +57,7 @@ InterpolateImagePointsFilter< TInputImage, TOutputImage, TCoordType, Interpolato
   Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Default (background) pixel level: " << m_DefaultPixelValue << std::endl;
 }
 
@@ -224,6 +225,7 @@ InterpolateImagePointsFilter< TInputImage, TOutputImage, TCoordType, Interpolato
 
   outputPtr->SetLargestPossibleRegion(outputLargestPossibleRegion);
 }
+
 } // namespace itk
 
 #endif

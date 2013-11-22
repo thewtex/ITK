@@ -16,14 +16,14 @@
  *
  *=========================================================================*/
 
-
 // Native ITK stuff
 
 // Spatial function stuff
 #include "itkGaussianSpatialFunction.h"
 #include "itkSpatialFunctionImageEvaluatorFilter.h"
 
-int itkSpatialFunctionImageEvaluatorFilterTest(int, char* [] )
+int
+itkSpatialFunctionImageEvaluatorFilterTest(int, char* [] )
 {
   const unsigned int dim = 3;
 
@@ -32,9 +32,9 @@ int itkSpatialFunctionImageEvaluatorFilterTest(int, char* [] )
 
   //-----------------Create a new input image--------------------
   // Image size and spacing parameters
-  ImageType::SizeValueType sourceImageSize[]  = { 20,20,20 };
+  ImageType::SizeValueType    sourceImageSize[]  = { 20,20,20 };
   ImageType::SpacingValueType sourceImageSpacing[] = { 1.0,1.0,1.0 };
-  ImageType::PointValueType sourceImageOrigin[] = { 0,0,0 };
+  ImageType::PointValueType   sourceImageOrigin[] = { 0,0,0 };
 
   // Create the sourceImage
   ImageType::Pointer sourceImage = ImageType::New();

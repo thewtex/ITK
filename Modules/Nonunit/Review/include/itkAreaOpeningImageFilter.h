@@ -57,8 +57,9 @@ namespace itk
  *
  * \ingroup ITKReview
  */
-template< typename TInputImage, typename TOutputImage, typename TAttribute = typename TInputImage::SpacingType::ValueType >
-class AreaOpeningImageFilter:
+template< typename TInputImage, typename TOutputImage, typename TAttribute =
+            typename TInputImage::SpacingType::ValueType >
+class AreaOpeningImageFilter :
   public AttributeMorphologyBaseImageFilter< TInputImage, TOutputImage, TAttribute,
                                              std::greater< typename TInputImage::PixelType > >
 
@@ -67,7 +68,7 @@ public:
   typedef AreaOpeningImageFilter Self;
   typedef AttributeMorphologyBaseImageFilter< TInputImage, TOutputImage, TAttribute,
                                               std::greater< typename TInputImage::PixelType > >
-  Superclass;
+    Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -108,9 +109,11 @@ protected:
     m_UseImageSpacing = true;
   }
 
-  virtual ~AreaOpeningImageFilter() {}
+  virtual
+  ~AreaOpeningImageFilter() {}
 
-  void GenerateData()
+  void
+  GenerateData()
   {
     this->m_AttributeValuePerPixel = 1;
     if ( m_UseImageSpacing )
@@ -129,9 +132,11 @@ protected:
     Superclass::GenerateData();
   }
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
+
     os << indent << "UseImageSpacing: "  << m_UseImageSpacing << std::endl;
   }
 

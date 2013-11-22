@@ -21,7 +21,6 @@
 #include "itkDiscreteCurvatureQuadEdgeMeshFilter.h"
 #include "vnl/vnl_math.h"
 
-
 namespace itk
 {
 /**
@@ -35,15 +34,15 @@ namespace itk
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh, typename TOutputMesh=TInputMesh >
-class DiscreteGaussianCurvatureQuadEdgeMeshFilter:
+class DiscreteGaussianCurvatureQuadEdgeMeshFilter :
   public DiscreteCurvatureQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
-  typedef DiscreteGaussianCurvatureQuadEdgeMeshFilter   Self;
-  typedef SmartPointer< Self >                          Pointer;
-  typedef SmartPointer< const Self >                    ConstPointer;
+  typedef DiscreteGaussianCurvatureQuadEdgeMeshFilter Self;
+  typedef SmartPointer< Self >                        Pointer;
+  typedef SmartPointer< const Self >                  ConstPointer;
   typedef DiscreteCurvatureQuadEdgeMeshFilter<
-    TInputMesh, TOutputMesh >                           Superclass;
+      TInputMesh, TOutputMesh >                           Superclass;
 
   typedef typename Superclass::InputMeshType    InputMeshType;
   typedef typename Superclass::InputMeshPointer InputMeshPointer;
@@ -79,7 +78,8 @@ protected:
   DiscreteGaussianCurvatureQuadEdgeMeshFilter() {}
   ~DiscreteGaussianCurvatureQuadEdgeMeshFilter() {}
 
-  virtual OutputCurvatureType EstimateCurvature(const OutputPointType & iP)
+  virtual OutputCurvatureType
+  EstimateCurvature(const OutputPointType & iP)
   {
     OutputMeshPointer output = this->GetOutput();
 
@@ -104,7 +104,7 @@ protected:
 
         // Compute Angle;
         sum_theta += static_cast< OutputCurvatureType >(
-          TriangleType::ComputeAngle(q0, iP, q1) );
+            TriangleType::ComputeAngle(q0, iP, q1) );
         area += this->ComputeMixedArea(qe_it, qe_it2);
         qe_it = qe_it2;
         }
@@ -118,9 +118,10 @@ protected:
 
 private:
   DiscreteGaussianCurvatureQuadEdgeMeshFilter(const Self &); // purposely not
-                                                                // implemented
-  void operator=(const Self &);                                 // purposely not
-                                                                // implemented
+                                                             // implemented
+  void operator=(const Self &);                              // purposely not
+
+  // implemented
 };
 }
 

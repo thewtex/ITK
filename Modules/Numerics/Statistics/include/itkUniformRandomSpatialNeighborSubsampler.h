@@ -43,15 +43,15 @@ namespace Statistics {
  */
 
 template < typename TSample, typename TRegion >
-  class UniformRandomSpatialNeighborSubsampler : public SpatialNeighborSubsampler<TSample, TRegion>
+class UniformRandomSpatialNeighborSubsampler : public SpatialNeighborSubsampler<TSample, TRegion>
 {
 public:
   /** Standard class typedefs */
-  typedef UniformRandomSpatialNeighborSubsampler<TSample, TRegion>  Self;
-  typedef SpatialNeighborSubsampler<TSample, TRegion>               Superclass;
-  typedef typename Superclass::Baseclass                            Baseclass;
-  typedef SmartPointer<Self>                                        Pointer;
-  typedef SmartPointer<const Self>                                  ConstPointer;
+  typedef UniformRandomSpatialNeighborSubsampler<TSample, TRegion> Self;
+  typedef SpatialNeighborSubsampler<TSample, TRegion>              Superclass;
+  typedef typename Superclass::Baseclass                           Baseclass;
+  typedef SmartPointer<Self>                                       Pointer;
+  typedef SmartPointer<const Self>                                 ConstPointer;
 
   /** Run-time type information (and related methods) */
   itkTypeMacro(UniformRandomSpatialNeighborSubsampler, SpatialNeighborSubsampler);
@@ -60,10 +60,10 @@ public:
   itkNewMacro(Self);
 
   /** typedef alias for the source data container */
-  typedef typename Superclass::SampleType                  SampleType;
-  typedef typename Superclass::SampleConstPointer          SampleConstPointer;
-  typedef typename Superclass::MeasurementVectorType       MeasurementVectorType;
-  typedef typename Superclass::InstanceIdentifier          InstanceIdentifier;
+  typedef typename Superclass::SampleType            SampleType;
+  typedef typename Superclass::SampleConstPointer    SampleConstPointer;
+  typedef typename Superclass::MeasurementVectorType MeasurementVectorType;
+  typedef typename Superclass::InstanceIdentifier    InstanceIdentifier;
 
   typedef typename Superclass::SubsampleType            SubsampleType;
   typedef typename Superclass::SubsamplePointer         SubsamplePointer;
@@ -71,8 +71,8 @@ public:
   typedef typename Superclass::InstanceIdentifierHolder InstanceIdentifierHolder;
   typedef typename Baseclass::SeedType                  SeedType;
 
-  typedef unsigned long                       SearchSizeType;
-  typedef unsigned int                        RandomIntType;
+  typedef unsigned long SearchSizeType;
+  typedef unsigned int  RandomIntType;
 
   /** typedefs related to image region */
   typedef typename Superclass::RadiusType      RadiusType;
@@ -82,43 +82,47 @@ public:
   typedef typename Superclass::SizeType        SizeType;
   typedef typename Superclass::ImageHelperType ImageHelperType;
 
-
   /** typedefs related to random variate generator */
   typedef itk::Statistics::MersenneTwisterRandomVariateGenerator RandomGeneratorType;
 
-  virtual void SetSeed(const SeedType seed)
+  virtual void
+  SetSeed(const SeedType seed)
   {
     Superclass::SetSeed(seed);
+
     this->m_RandomNumberGenerator->SetSeed(this->m_Seed);
   }
 
-  virtual void SetUseClockForSeed(const bool& useClock)
+  virtual void
+  SetUseClockForSeed(const bool& useClock)
   {
     if (useClock != this->m_UseClockForSeed)
-    {
+      {
       this->m_UseClockForSeed = useClock;
       if (this->m_UseClockForSeed)
-      {
+        {
         this->m_RandomNumberGenerator->SetSeed();
-      }
+        }
       this->Modified();
-    }
+      }
   }
 
   itkBooleanMacro(UseClockForSeed);
   itkGetConstMacro(UseClockForSeed, bool);
 
-  virtual void SetNumberOfResultsRequested(const SearchSizeType& numberRequested)
+  virtual void
+  SetNumberOfResultsRequested(const SearchSizeType& numberRequested)
   {
     itkDebugMacro("setting NumberOfResultsRequested to " << numberRequested);
     if (this->m_RequestMaximumNumberOfResults ||
         this->m_NumberOfResultsRequested != numberRequested)
-    {
+      {
       this->m_NumberOfResultsRequested = numberRequested;
       this->m_RequestMaximumNumberOfResults = false;
       this->Modified();
-    }
+      }
   }
+
   itkGetConstMacro(NumberOfResultsRequested, SearchSizeType);
 
   /** Main Search method that MUST be implemented by each subclass
@@ -138,7 +142,8 @@ protected:
   virtual typename LightObject::Pointer InternalClone() const;
 
   UniformRandomSpatialNeighborSubsampler();
-  virtual ~UniformRandomSpatialNeighborSubsampler() {};
+  virtual
+  ~UniformRandomSpatialNeighborSubsampler() {}
 
   virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
@@ -148,7 +153,7 @@ protected:
    * override this method to do gaussian selection */
   virtual RandomIntType GetIntegerVariate(RandomIntType lowerBound,
                                           RandomIntType upperBound,
-                                          RandomIntType itkNotUsed(mean));
+                                          RandomIntType itkNotUsed(mean) );
 
   SearchSizeType               m_NumberOfResultsRequested;
   RandomGeneratorType::Pointer m_RandomNumberGenerator;
@@ -156,9 +161,9 @@ protected:
 
 private:
   UniformRandomSpatialNeighborSubsampler(const Self&); // purposely not implemented
-  void operator=(const Self&); // purposely not implemented
+  void operator=(const Self&);                         // purposely not implemented
 
-}; // end of class UniformRandomSpatialNeighborSubsampler
+};  // end of class UniformRandomSpatialNeighborSubsampler
 
 } // end of namespace Statistics
 } // end of namespace itk

@@ -52,9 +52,9 @@ template< typename TInputPath, typename TInputImage, typename TOutputPath >
 const typename PathAndImageToPathFilter< TInputPath, TInputImage, TOutputPath >::InputPathType *
 PathAndImageToPathFilter< TInputPath, TInputImage, TOutputPath >
 ::GetPathInput(void)
-{
+  {
   return itkDynamicCastInDebugMode< const TInputPath * >( this->GetPrimaryInput() );
-}
+  }
 
 template< typename TInputPath, typename TInputImage, typename TOutputPath >
 void
@@ -72,9 +72,9 @@ template< typename TInputPath, typename TInputImage, typename TOutputPath >
 const typename PathAndImageToPathFilter< TInputPath, TInputImage, TOutputPath >::InputImageType *
 PathAndImageToPathFilter< TInputPath, TInputImage, TOutputPath >
 ::GetImageInput(void)
-{
+  {
   return static_cast< const TInputImage * >( this->ProcessObject::GetInput(1) );
-}
+  }
 
 /**
  *
@@ -99,6 +99,7 @@ PathAndImageToPathFilter< TInputPath, TInputImage, TOutputPath >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

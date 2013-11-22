@@ -34,7 +34,8 @@
 //   Main code
 //
 // -------------------------
-int itkVersorTransformTest(int, char * [] )
+int
+itkVersorTransformTest(int, char * [] )
 {
 
   typedef   double ValueType;
@@ -481,7 +482,7 @@ int itkVersorTransformTest(int, char * [] )
 
       {
       TransformType::Pointer tInverse = TransformType::New();
-      if(!t->GetInverse(tInverse))
+      if(!t->GetInverse(tInverse) )
         {
         std::cout << "Cannot create inverse transform" << std::endl;
         return EXIT_FAILURE;

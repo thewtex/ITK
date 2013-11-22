@@ -49,21 +49,20 @@ public:
 
   enum { SpaceDimension=2 };
 
-  typedef Superclass::ParametersType      ParametersType;
-  typedef Superclass::DerivativeType      DerivativeType;
-  typedef Superclass::MeasureType         MeasureType;
+  typedef Superclass::ParametersType ParametersType;
+  typedef Superclass::DerivativeType DerivativeType;
+  typedef Superclass::MeasureType    MeasureType;
 
   PowellBoundedCostFunction()
-  {
-  }
+  {}
 
+  void
+  GetDerivative( const ParametersType & ,
+                 DerivativeType &  ) const
+  {}
 
-  void GetDerivative( const ParametersType & ,
-                      DerivativeType &  ) const
-  {
-  }
-
-  MeasureType  GetValue( const ParametersType & parameters ) const
+  MeasureType
+  GetValue( const ParametersType & parameters ) const
   {
     ++POWELL_CALLS_TO_GET_VALUE;
 
@@ -82,43 +81,41 @@ public:
 
   }
 
-  unsigned int GetNumberOfParameters(void) const
-    {
+  unsigned int
+  GetNumberOfParameters(void) const
+  {
     return SpaceDimension;
-    }
+  }
 
 private:
 
-
 };
 
-int itkPowellOptimizerTest(int, char* [] )
+int
+itkPowellOptimizerTest(int, char* [] )
 {
   std::cout << "Powell Optimizer Test ";
   std::cout << std::endl << std::endl;
 
-  typedef  itk::PowellOptimizer  OptimizerType;
+  typedef  itk::PowellOptimizer OptimizerType;
 
-  typedef OptimizerType::ScalesType        ScalesType;
+  typedef OptimizerType::ScalesType ScalesType;
 
   // Declaration of a itkOptimizer
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
-
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
 
   // Declaration of the CostFunction
   PowellBoundedCostFunction::Pointer costFunction = PowellBoundedCostFunction::New();
 
-
   itkOptimizer->SetCostFunction( costFunction.GetPointer() );
 
-
-  typedef PowellBoundedCostFunction::ParametersType    ParametersType;
+  typedef PowellBoundedCostFunction::ParametersType ParametersType;
 
   const unsigned int spaceDimension =
-                      costFunction->GetNumberOfParameters();
+    costFunction->GetNumberOfParameters();
 
   // We start not so far from  | 2 -2 |
-  ParametersType  initialPosition( spaceDimension );
+  ParametersType initialPosition( spaceDimension );
 
   initialPosition[0] =  100;
   initialPosition[1] = -100;
@@ -152,7 +149,7 @@ int itkPowellOptimizerTest(int, char* [] )
   //
   // check results to see if it is within range
   //
-  bool pass = true;
+  bool   pass = true;
   double trueParameters[2] = { 2, -2 };
   for( unsigned int j = 0; j < 2; j++ )
     {
@@ -179,6 +176,5 @@ int itkPowellOptimizerTest(int, char* [] )
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;
-
 
 }

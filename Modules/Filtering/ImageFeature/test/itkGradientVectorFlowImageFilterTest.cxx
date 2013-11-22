@@ -21,7 +21,8 @@
 #include "itkVectorMagnitudeImageFilter.h"
 #include "itkGradientVectorFlowImageFilter.h"
 
-int itkGradientVectorFlowImageFilterTest(int , char *[])
+int
+itkGradientVectorFlowImageFilterTest(int , char *[])
 {
   // Define the dimension of the images
   const unsigned int myDimension = 2;
@@ -30,32 +31,31 @@ int itkGradientVectorFlowImageFilterTest(int , char *[])
   typedef itk::CovariantVector<double, myDimension> myGradientType;
 
   // Declare the types of the images
-  typedef itk::Image<double, myDimension>           myImageType;
-  typedef itk::Image<myGradientType, myDimension>   myGradientImageType;
+  typedef itk::Image<double, myDimension>         myImageType;
+  typedef itk::Image<myGradientType, myDimension> myGradientImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>             myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>              mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>       myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   typedef itk::LaplacianImageFilter<myImageType, myImageType> myLaplacianFilterType;
   typedef itk::GradientVectorFlowImageFilter<myGradientImageType, myGradientImageType>
-                                              myGVFFilterType;
+    myGVFFilterType;
 
   typedef itk::GradientImageFilter<myImageType, double, double>
-                                              myGFilterType;
+    myGFilterType;
 
   typedef itk::VectorMagnitudeImageFilter<myGradientImageType, myImageType>
-                                              myVectorMagnitudeFilterType;
+    myVectorMagnitudeFilterType;
   // Create the image
   myImageType::Pointer inputImage  = myImageType::New();
   myImageType::Pointer interImage  = myImageType::New();
   myImageType::Pointer inter1Image  = myImageType::New();
-
 
   // Define their size, and start index
   mySizeType size;
@@ -86,10 +86,10 @@ int itkGradientVectorFlowImageFilterTest(int , char *[])
   inter1Image->Allocate();
 
   // Declare Iterator types apropriated for each image
-  typedef itk::ImageRegionIteratorWithIndex<myImageType>  myIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex<myImageType> myIteratorType;
 
   typedef itk::ImageRegionIteratorWithIndex<
-                                 myGradientImageType>  myOutputIteratorType;
+      myGradientImageType>  myOutputIteratorType;
 
   // Create one iterator for the Input Image A (this is a light object)
   myIteratorType it( inputImage, inputImage->GetRequestedRegion() );
@@ -98,10 +98,10 @@ int itkGradientVectorFlowImageFilterTest(int , char *[])
   std::cout << "Input Image initialization " << std::endl;
 
   while( !it.IsAtEnd() )
-  {
+    {
     it.Set( 0.0 );
     ++it;
-  }
+    }
 
   size[0] = 100;
   size[1] = 100;
@@ -116,22 +116,21 @@ int itkGradientVectorFlowImageFilterTest(int , char *[])
 
   // Initialize the content the internal region
   while( !itb.IsAtEnd() )
-  {
+    {
     itb.Set( 100.0 );
     ++itb;
-  }
+    }
 
   // Declare the type for the
   typedef itk::GradientRecursiveGaussianImageFilter<
-                                            myImageType,
-                                            myGradientImageType
-                                                  >  myFilterType;
-
+      myImageType,
+      myGradientImageType
+      >  myFilterType;
 
   // Create a  Filter
   myFilterType::Pointer filter = myFilterType::New();
 
-  myGFilterType::Pointer gfilter = myGFilterType::New();
+  myGFilterType::Pointer               gfilter = myGFilterType::New();
   myVectorMagnitudeFilterType::Pointer gtomfilter = myVectorMagnitudeFilterType::New();
 
   // Connect the input images
@@ -146,9 +145,9 @@ int itkGradientVectorFlowImageFilterTest(int , char *[])
   std::cout << "Filter: " << filter;
 
   myLaplacianFilterType::Pointer m_LFilter = myLaplacianFilterType::New();
-  myGVFFilterType::Pointer m_GVFFilter = myGVFFilterType::New();
+  myGVFFilterType::Pointer       m_GVFFilter = myGVFFilterType::New();
 
-  m_GVFFilter->SetInput(gfilter->GetOutput());
+  m_GVFFilter->SetInput(gfilter->GetOutput() );
   m_GVFFilter->SetLaplacianFilter(m_LFilter);
   m_GVFFilter->SetNoiseLevel(500);
   m_GVFFilter->SetTimeStep(0.001);
@@ -167,10 +166,10 @@ int itkGradientVectorFlowImageFilterTest(int , char *[])
   //  Print the content of the result image
   std::cout << " Result " << std::endl;
 
-  gtomfilter->SetInput(filter->GetOutput());
+  gtomfilter->SetInput(filter->GetOutput() );
   gtomfilter->Update();
 
-  gfilter->SetInput(gtomfilter->GetOutput());
+  gfilter->SetInput(gtomfilter->GetOutput() );
   gfilter->Update();
 
   m_GVFFilter->Update();
@@ -182,7 +181,7 @@ int itkGradientVectorFlowImageFilterTest(int , char *[])
   std::cout << m_GVFFilter->GetIterationNum() << std::endl;
 
   myOutputIteratorType itgvf( m_GVFFilter->GetOutput(),
-                            m_GVFFilter->GetOutput()->GetRequestedRegion() );
+                              m_GVFFilter->GetOutput()->GetRequestedRegion() );
 
   std::cout << "Completed" << std::endl;
   // All objects should be automatically destroyed at this point

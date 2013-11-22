@@ -21,7 +21,8 @@
 #include "itkLevelSetEquationTermContainer.h"
 #include "itkAtanRegularizedHeavisideStepFunction.h"
 
-int itkMultiLevelSetChanAndVeseInternalTermTest( int , char* [] )
+int
+itkMultiLevelSetChanAndVeseInternalTermTest( int , char* [] )
 {
   const unsigned int Dimension = 2;
 
@@ -40,11 +41,11 @@ int itkMultiLevelSetChanAndVeseInternalTermTest( int , char* [] )
   typedef itk::Image< IdListType, Dimension >            IdListImageType;
   typedef itk::Image< short, Dimension >                 CacheImageType;
   typedef itk::LevelSetDomainMapImageFilter< IdListImageType, CacheImageType >
-                                                         DomainMapImageFilterType;
+    DomainMapImageFilterType;
 
-  typedef itk::LevelSetContainer< IdentifierType, LevelSetType >  LevelSetContainerType;
+  typedef itk::LevelSetContainer< IdentifierType, LevelSetType >                                LevelSetContainerType;
   typedef itk::LevelSetEquationChanAndVeseInternalTerm< InputImageType, LevelSetContainerType > ChanAndVeseTermType;
-  typedef itk::LevelSetEquationTermContainer< InputImageType, LevelSetContainerType > TermContainerType;
+  typedef itk::LevelSetEquationTermContainer< InputImageType, LevelSetContainerType >           TermContainerType;
 
   typedef itk::AtanRegularizedHeavisideStepFunction<
       LevelSetOutputRealType, LevelSetOutputRealType >  HeavisideFunctionBaseType;
@@ -87,7 +88,7 @@ int itkMultiLevelSetChanAndVeseInternalTermTest( int , char* [] )
   input2->FillBuffer( value );
 
   ImageType::IndexType idx;
-  IdListType list_ids;
+  IdListType           list_ids;
 
   IdListImageType::Pointer id_image = IdListImageType::New();
   id_image->SetRegions( region );
@@ -128,12 +129,12 @@ int itkMultiLevelSetChanAndVeseInternalTermTest( int , char* [] )
     id_image->SetPixel( idx, list_ids );
 
     it1.Set( vcl_sqrt(
-             static_cast< float> ( ( idx[0] - 2 ) * ( idx[0] - 2 ) +
-                                   ( idx[1] - 2 ) * ( idx[1] - 2 ) ) ) );
+               static_cast< float> ( ( idx[0] - 2 ) * ( idx[0] - 2 ) +
+                                     ( idx[1] - 2 ) * ( idx[1] - 2 ) ) ) );
 
     it2.Set( vcl_sqrt(
-             static_cast< float> ( ( idx[0] - 5 ) * ( idx[0] - 5 ) +
-                                   ( idx[1] - 5 ) * ( idx[1] - 5 ) ) ) );
+               static_cast< float> ( ( idx[0] - 5 ) * ( idx[0] - 5 ) +
+                                     ( idx[1] - 5 ) * ( idx[1] - 5 ) ) ) );
     ++it1;
     ++it2;
     }
@@ -147,7 +148,7 @@ int itkMultiLevelSetChanAndVeseInternalTermTest( int , char* [] )
   level_set[2]->SetImage( input2 );
 
   // Insert the levelsets in a levelset container
-  bool levelSetNotYetAdded;
+  bool                           levelSetNotYetAdded;
   LevelSetContainerType::Pointer lscontainer = LevelSetContainerType::New();
   lscontainer->SetHeaviside( heaviside );
   lscontainer->SetDomainMapFilter( domainMapFilter );
@@ -180,17 +181,17 @@ int itkMultiLevelSetChanAndVeseInternalTermTest( int , char* [] )
   typedef DomainMapImageFilterType::DomainMapType DomainMapType;
   typedef DomainMapType::const_iterator           DomainIteratorType;
   const DomainMapType domainMap = domainMapFilter->GetDomainMap();
-  DomainIteratorType map_it     = domainMap.begin();
-  DomainIteratorType map_end    = domainMap.end();
+  DomainIteratorType  map_it     = domainMap.begin();
+  DomainIteratorType  map_end    = domainMap.end();
 
-  LevelSetType::Pointer levelSet;
+  LevelSetType::Pointer        levelSet;
   ChanAndVeseTermType::Pointer eqTerm;
   while( map_it != map_end )
     {
-    const IdListImageType::RegionType temp_region = *(map_it->second.GetRegion());
+    const IdListImageType::RegionType temp_region = *(map_it->second.GetRegion() );
 
     itk::ImageRegionConstIteratorWithIndex<IdListImageType >
-        temp_it( id_image, temp_region );
+    temp_it( id_image, temp_region );
     temp_it.GoToBegin();
 
     while( !temp_it.IsAtEnd() )

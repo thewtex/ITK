@@ -21,7 +21,8 @@
 
 #include "itkSumProjectionImageFilter.h"
 
-int itkSumProjectionImageFilterTest(int argc, char * argv[])
+int
+itkSumProjectionImageFilterTest(int argc, char * argv[])
 {
   if( argc < 3 )
     {
@@ -44,7 +45,7 @@ int itkSumProjectionImageFilterTest(int argc, char * argv[])
   reader->SetFileName( argv[1] );
 
   typedef itk::SumProjectionImageFilter< InputImageType, OutputImageType >
-                                                                 FilterType;
+    FilterType;
   FilterType::Pointer filter = FilterType::New();
   filter->SetInput( reader->GetOutput() );
 

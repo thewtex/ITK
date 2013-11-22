@@ -22,8 +22,8 @@
 #include "itkLabelImageToLabelMapFilter.h"
 #include "itkLabelMapMaskImageFilter.h"
 
-
-int itkLabelMapMaskImageFilterTest(int argc, char * argv[])
+int
+itkLabelMapMaskImageFilterTest(int argc, char * argv[])
 {
 
   if( argc != 9 )

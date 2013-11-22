@@ -54,7 +54,7 @@ namespace Statistics
  * can be obtained from http://commonfund.nih.gov/bioinformatics.
  * \ingroup ITKStatistics
  */
-class TDistribution:
+class TDistribution :
   public ProbabilityDistribution
 {
 public:
@@ -72,7 +72,10 @@ public:
 
   /** Return the number of parameters.  For a univariate Student-t
    * distribution, the number of parameters is 1 (degrees of freedom) */
-  virtual SizeValueType GetNumberOfParameters() const { return 1; }
+  virtual SizeValueType
+  GetNumberOfParameters() const {
+    return 1;
+  }
 
   /** Evaluate the probability density function (pdf). The parameters
    * of the distribution are  assigned via SetParameters().  */
@@ -125,7 +128,10 @@ public:
   virtual SizeValueType GetDegreesOfFreedom() const;
 
   /** Does the Student-t distribution have a mean? */
-  virtual bool HasMean() const { return true; }
+  virtual bool
+  HasMean() const {
+    return true;
+  }
 
   /** Get the mean of the distribution. */
   virtual double GetMean() const;
@@ -198,13 +204,15 @@ public:
 
 protected:
   TDistribution(void);
-  virtual ~TDistribution(void) {}
+  virtual
+  ~TDistribution(void) {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   TDistribution(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };                              // end of class
 } // end of namespace Statistics
 } // end namespace itk

@@ -66,7 +66,8 @@ protected:
 
   /** Override ThreadedGenerateData to set all pixels in the requested region
    * to 1 */
-  virtual void ThreadedGenerateData(
+  virtual void
+  ThreadedGenerateData(
     const OutputFrameSpatialRegionType& outputRegionForThread,
     int threadId)
   {
@@ -75,6 +76,7 @@ protected:
     std::cout << "Working on thread " << threadId << std::endl;
 
     OutputVideoStreamType* video = this->GetOutput();
+
     typename OutputVideoStreamType::TemporalRegionType requestedTemporalRegion =
       video->GetRequestedTemporalRegion();
     SizeValueType startFrame = requestedTemporalRegion.GetFrameStart();
@@ -107,7 +109,8 @@ protected:
 /**
  * Create a new empty frame
  */
-FrameType::Pointer CreateEmptyFrame()
+FrameType::Pointer
+CreateEmptyFrame()
 {
   FrameType::Pointer out = FrameType::New();
 
@@ -143,7 +146,8 @@ FrameType::Pointer CreateEmptyFrame()
 /**
  * Test the basic functionality of temporal data objects
  */
-int itkVideoSourceTest( int, char* [] )
+int
+itkVideoSourceTest( int, char* [] )
 {
 
   //////
@@ -221,7 +225,7 @@ int itkVideoSourceTest( int, char* [] )
   for (SizeValueType i = frameStart; i < frameStart + numFrames; ++i)
     {
     frame = videoSource->GetOutput()->GetFrame(i);
-    FrameType::RegionType region = frame->GetRequestedRegion();
+    FrameType::RegionType               region = frame->GetRequestedRegion();
     itk::ImageRegionIterator<FrameType> iter( frame, region);
     while (!iter.IsAtEnd() )
       {
@@ -233,19 +237,19 @@ int itkVideoSourceTest( int, char* [] )
       ++iter;
       }
 
-      // Make sure (0,0) which was outside the requested spatial region didn't
-      // get set
-      if (region.GetNumberOfPixels() > 0)
-       {
-       FrameType::IndexType idx;
-       idx.Fill(0);
-       if (frame->GetPixel(idx) == 1)
-          {
-          std::cerr << "Pixel outside requested spatial region set to 1" << std::endl;
-          return EXIT_FAILURE;
-          }
-       }
-     }
+    // Make sure (0,0) which was outside the requested spatial region didn't
+    // get set
+    if (region.GetNumberOfPixels() > 0)
+      {
+      FrameType::IndexType idx;
+      idx.Fill(0);
+      if (frame->GetPixel(idx) == 1)
+        {
+        std::cerr << "Pixel outside requested spatial region set to 1" << std::endl;
+        return EXIT_FAILURE;
+        }
+      }
+    }
 
   //////
   // Test that the output has the proper number of buffers when no requested

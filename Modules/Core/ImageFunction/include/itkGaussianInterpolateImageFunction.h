@@ -66,8 +66,7 @@ public:
 
   /** ImageDimension constant */
   itkStaticConstMacro( ImageDimension, unsigned int,
-    TInputImage::ImageDimension );
-
+                       TInputImage::ImageDimension );
 
   /** OutputType typedef support. */
   typedef typename Superclass::OutputType OutputType;
@@ -90,17 +89,20 @@ public:
   /**
    * Set input image
    */
-  virtual void SetInputImage( const TInputImage *image )
-    {
+  virtual void
+  SetInputImage( const TInputImage *image )
+  {
     Superclass::SetInputImage( image );
+
     this->ComputeBoundingBox();
-    }
+  }
 
   /**
    * Set/Get sigma
    */
-  virtual void SetSigma( const ArrayType s )
-    {
+  virtual void
+  SetSigma( const ArrayType s )
+  {
     itkDebugMacro( "setting Sigma to " << s );
     if( this->m_Sigma != s )
       {
@@ -108,23 +110,28 @@ public:
       this->ComputeBoundingBox();
       this->Modified();
       }
-    }
-  virtual void SetSigma( RealType *s )
-    {
+  }
+
+  virtual void
+  SetSigma( RealType *s )
+  {
     ArrayType sigma;
+
     for( unsigned int d = 0; d < ImageDimension; d++ )
       {
       sigma[d] = s[d];
       }
     this->SetSigma( sigma );
-    }
+  }
+
   itkGetConstMacro( Sigma, ArrayType );
 
   /**
    * Set/Get alpha
    */
-  virtual void SetAlpha( const RealType a )
-    {
+  virtual void
+  SetAlpha( const RealType a )
+  {
     itkDebugMacro( "setting Alpha to " << a );
     if( this->m_Alpha != a )
       {
@@ -132,55 +139,59 @@ public:
       this->ComputeBoundingBox();
       this->Modified();
       }
-    }
+  }
+
   itkGetConstMacro( Alpha, RealType );
 
   /**
    * Set/Get sigma and alpha
    */
-  virtual void SetParameters( RealType *sigma, RealType alpha )
-    {
+  virtual void
+  SetParameters( RealType *sigma, RealType alpha )
+  {
     this->SetSigma( sigma );
     this->SetAlpha( alpha );
-    }
+  }
 
   /**
    * Evaluate at the given index
    */
-  virtual OutputType EvaluateAtContinuousIndex(
+  virtual OutputType
+  EvaluateAtContinuousIndex(
     const ContinuousIndexType & cindex ) const
-    {
+  {
     return this->EvaluateAtContinuousIndex( cindex, NULL );
-    }
+  }
 
 protected:
   GaussianInterpolateImageFunction();
-  ~GaussianInterpolateImageFunction(){};
+  ~GaussianInterpolateImageFunction(){}
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
   virtual void ComputeBoundingBox();
 
   virtual void ComputeErrorFunctionArray( unsigned int dimension, RealType cindex,
-    vnl_vector<RealType> &erfArray, vnl_vector<RealType> &gerfArray,
-    bool evaluateGradient = false ) const;
+                                          vnl_vector<RealType> &erfArray, vnl_vector<RealType> &gerfArray,
+                                          bool evaluateGradient = false ) const;
 
-  ArrayType                                 m_Sigma;
-  RealType                                  m_Alpha;
+  ArrayType m_Sigma;
+  RealType  m_Alpha;
 
-  ArrayType                                 m_BoundingBoxStart;
-  ArrayType                                 m_BoundingBoxEnd;
-  ArrayType                                 m_ScalingFactor;
-  ArrayType                                 m_CutoffDistance;
+  ArrayType m_BoundingBoxStart;
+  ArrayType m_BoundingBoxEnd;
+  ArrayType m_ScalingFactor;
+  ArrayType m_CutoffDistance;
 
 private:
   GaussianInterpolateImageFunction( const Self& ); //purposely not implemented
-  void operator=( const Self& ); //purposely not implemented
+  void operator=( const Self& );                   //purposely not implemented
 
   /**
    * Evaluate function value
    */
   virtual OutputType EvaluateAtContinuousIndex(
     const ContinuousIndexType &, OutputType * ) const;
+
 };
 
 } // end namespace itk

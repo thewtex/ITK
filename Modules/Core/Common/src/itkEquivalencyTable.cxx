@@ -19,9 +19,11 @@
 
 namespace itk
 {
-bool EquivalencyTable::Add(unsigned long a, unsigned long b)
+bool
+EquivalencyTable::Add(unsigned long a, unsigned long b)
 {
   std::pair< Iterator, bool > result;
+
   if ( a == b ) { return false; }
   else if ( a < b )
     {  // swap a, b
@@ -39,9 +41,11 @@ bool EquivalencyTable::Add(unsigned long a, unsigned long b)
   else { return true; }
 }
 
-bool EquivalencyTable::AddAndFlatten(unsigned long a, unsigned long b)
+bool
+EquivalencyTable::AddAndFlatten(unsigned long a, unsigned long b)
 {
   std::pair< Iterator, bool > result;
+
   if ( a == b ) { return false; }
   else if ( a < b )
     {  // swap a, b
@@ -81,7 +85,8 @@ bool EquivalencyTable::AddAndFlatten(unsigned long a, unsigned long b)
 //    }
 //}
 
-void EquivalencyTable::Flatten()
+void
+EquivalencyTable::Flatten()
 {
   Iterator it = this->Begin();
 
@@ -92,7 +97,8 @@ void EquivalencyTable::Flatten()
     }
 }
 
-unsigned long EquivalencyTable::RecursiveLookup(const unsigned long a) const
+unsigned long
+EquivalencyTable::RecursiveLookup(const unsigned long a) const
 {
   unsigned long ans = a;
   unsigned long last_ans = a;
@@ -113,9 +119,11 @@ unsigned long EquivalencyTable::RecursiveLookup(const unsigned long a) const
   return ans;
 }
 
-void EquivalencyTable
+void
+EquivalencyTable
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk

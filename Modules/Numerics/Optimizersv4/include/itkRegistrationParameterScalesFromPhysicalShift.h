@@ -48,22 +48,22 @@ public:
   itkTypeMacro( RegistrationParameterScalesFromPhysicalShift, RegistrationParameterScalesFromShiftBase );
 
   /** Type of scales */
-  typedef typename Superclass::ScalesType                ScalesType;
+  typedef typename Superclass::ScalesType ScalesType;
   /** Type of parameters of the optimizer */
-  typedef typename Superclass::ParametersType            ParametersType;
+  typedef typename Superclass::ParametersType ParametersType;
   /** Type of float */
-  typedef typename Superclass::FloatType                 FloatType;
+  typedef typename Superclass::FloatType FloatType;
 
-  typedef typename Superclass::VirtualPointType          VirtualPointType;
-  typedef typename Superclass::VirtualIndexType          VirtualIndexType;
-  typedef typename Superclass::MovingTransformType       MovingTransformType;
-  typedef typename Superclass::FixedTransformType        FixedTransformType;
-  typedef typename Superclass::JacobianType              JacobianType;
-  typedef typename Superclass::VirtualImageConstPointer  VirtualImageConstPointer;
+  typedef typename Superclass::VirtualPointType         VirtualPointType;
+  typedef typename Superclass::VirtualIndexType         VirtualIndexType;
+  typedef typename Superclass::MovingTransformType      MovingTransformType;
+  typedef typename Superclass::FixedTransformType       FixedTransformType;
+  typedef typename Superclass::JacobianType             JacobianType;
+  typedef typename Superclass::VirtualImageConstPointer VirtualImageConstPointer;
 
 protected:
   RegistrationParameterScalesFromPhysicalShift();
-  ~RegistrationParameterScalesFromPhysicalShift(){};
+  ~RegistrationParameterScalesFromPhysicalShift(){}
 
   virtual void PrintSelf(std::ostream &os, Indent indent) const;
 
@@ -71,7 +71,7 @@ protected:
 
 private:
   RegistrationParameterScalesFromPhysicalShift(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);                               //purposely not implemented
 
   template <typename TTransform>
   void ComputeSampleShiftsInternal(const ParametersType &deltaParameters, ScalesType &localShifts);
@@ -79,7 +79,6 @@ private:
 }; //class RegistrationParameterScalesFromPhysicalShift
 
 }  // namespace itk
-
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkRegistrationParameterScalesFromPhysicalShift.hxx"

@@ -51,7 +51,7 @@ namespace itk
  * \ingroup ITKPDEDeformableRegistration
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
-class LevelSetMotionRegistrationFunction:
+class LevelSetMotionRegistrationFunction :
   public PDEDeformableRegistrationFunction< TFixedImage,
                                             TMovingImage,
                                             TDisplacementField >
@@ -88,7 +88,7 @@ public:
   /** Deformation field type. */
   typedef typename Superclass::DisplacementFieldType DisplacementFieldType;
   typedef typename Superclass::DisplacementFieldTypePointer
-  DisplacementFieldTypePointer;
+    DisplacementFieldTypePointer;
 
   /** Inherit some enums from the superclass. */
   itkStaticConstMacro(ImageDimension, unsigned
@@ -107,26 +107,32 @@ public:
   typedef typename InterpolatorType::Pointer                        InterpolatorPointer;
   typedef typename InterpolatorType::PointType                      PointType;
   typedef LinearInterpolateImageFunction< MovingImageType, CoordRepType >
-  DefaultInterpolatorType;
+    DefaultInterpolatorType;
 
   /** Vector types. */
   typedef Vector< double, itkGetStaticConstMacro(ImageDimension) > VectorType;
   typedef CovariantVector< double, itkGetStaticConstMacro(ImageDimension) >
-  CovariantVectorType;
+    CovariantVectorType;
 
   /** Moving image gradient calculator type. */
   typedef SmoothingRecursiveGaussianImageFilter< MovingImageType >
-  MovingImageSmoothingFilterType;
+    MovingImageSmoothingFilterType;
   typedef typename MovingImageSmoothingFilterType::Pointer
-  MovingImageSmoothingFilterPointer;
+    MovingImageSmoothingFilterPointer;
 
   /** Set the moving image interpolator. */
-  void SetMovingImageInterpolator(InterpolatorType *ptr)
-  { m_MovingImageInterpolator = ptr; }
+  void
+  SetMovingImageInterpolator(InterpolatorType *ptr)
+  {
+    m_MovingImageInterpolator = ptr;
+  }
 
   /** Get the moving image interpolator. */
-  InterpolatorType * GetMovingImageInterpolator(void)
-  { return m_MovingImageInterpolator; }
+  InterpolatorType *
+  GetMovingImageInterpolator(void)
+  {
+    return m_MovingImageInterpolator;
+  }
 
   /** Compute the time step that can taken for this iterations.  In
    * this context, the timestep is a function of the maximum gradients. */
@@ -134,7 +140,8 @@ public:
 
   /** Return a pointer to a global data structure that is passed to
    * this object from the solver at each calculation.  */
-  virtual void * GetGlobalDataPointer() const
+  virtual void *
+  GetGlobalDataPointer() const
   {
     GlobalDataStruct *global = new GlobalDataStruct();
 
@@ -161,12 +168,18 @@ public:
   /** Get the metric value. The metric value is the mean square difference
    * in intensity between the fixed image and transforming moving image
    * computed over the the overlapping region between the two images. */
-  virtual double GetMetric() const
-  { return m_Metric; }
+  virtual double
+  GetMetric() const
+  {
+    return m_Metric;
+  }
 
   /** Get the rms change in deformation field. */
-  virtual double GetRMSChange() const
-  { return m_RMSChange; }
+  virtual double
+  GetRMSChange() const
+  {
+    return m_RMSChange;
+  }
 
   /** Set/Get the parameter alpha.  Alpha is added to the calculated
    * gradient magnitude prior to normalizing the gradient to protect
@@ -212,7 +225,7 @@ protected:
 
   /** FixedImage image neighborhood iterator type. */
   typedef ConstNeighborhoodIterator< FixedImageType >
-  FixedImageNeighborhoodIteratorType;
+    FixedImageNeighborhoodIteratorType;
 
   /** A global data type for this class of equation. Used to store
    * information for computing the metric. */
@@ -221,7 +234,7 @@ protected:
     SizeValueType m_NumberOfPixelsProcessed;
     double m_SumOfSquaredChange;
     double m_MaxL1Norm;
-  };
+    };
 
 private:
   LevelSetMotionRegistrationFunction(const Self &); //purposely not implemented

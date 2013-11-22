@@ -31,33 +31,31 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkMesh.h"
 #include "itkLineCell.h"
 #include "itkTetrahedronCell.h"
 
-
-int main(int, char *[])
+int
+main(int, char *[])
 {
-  typedef float                             PixelType;
-  typedef itk::Mesh< PixelType, 3 >         MeshType;
+  typedef float                     PixelType;
+  typedef itk::Mesh< PixelType, 3 > MeshType;
 
-  typedef MeshType::CellType                CellType;
+  typedef MeshType::CellType CellType;
 
-  typedef itk::VertexCell< CellType >       VertexType;
-  typedef itk::LineCell< CellType >         LineType;
-  typedef itk::TriangleCell< CellType >     TriangleType;
-  typedef itk::TetrahedronCell< CellType >  TetrahedronType;
+  typedef itk::VertexCell< CellType >      VertexType;
+  typedef itk::LineCell< CellType >        LineType;
+  typedef itk::TriangleCell< CellType >    TriangleType;
+  typedef itk::TetrahedronCell< CellType > TetrahedronType;
 
-  MeshType::Pointer  mesh = MeshType::New();
-
+  MeshType::Pointer mesh = MeshType::New();
 
   // Creating the points and inserting them in the mesh
   //
-  MeshType::PointType   point0;
-  MeshType::PointType   point1;
-  MeshType::PointType   point2;
-  MeshType::PointType   point3;
+  MeshType::PointType point0;
+  MeshType::PointType point1;
+  MeshType::PointType point2;
+  MeshType::PointType point3;
 
   point0[0] = -1; point0[1] = -1; point0[2] = -1;
   point1[0] =  1; point1[1] =  1; point1[2] = -1;
@@ -69,7 +67,6 @@ int main(int, char *[])
   mesh->SetPoint( 2, point2 );
   mesh->SetPoint( 3, point3 );
 
-
   // Creating and associating the Tetrahedron
   //
   CellType::CellAutoPointer cellpointer;
@@ -80,7 +77,6 @@ int main(int, char *[])
   cellpointer->SetPointId( 2, 2 );
   cellpointer->SetPointId( 3, 3 );
   mesh->SetCell( 0, cellpointer );
-
 
   // Creating and associating the Triangles
   //
@@ -107,7 +103,6 @@ int main(int, char *[])
   cellpointer->SetPointId( 1, 2 );
   cellpointer->SetPointId( 2, 1 );
   mesh->SetCell( 4, cellpointer );
-
 
   // Creating and associating the Edges
   //
@@ -141,7 +136,6 @@ int main(int, char *[])
   cellpointer->SetPointId( 1, 0 );
   mesh->SetCell( 10, cellpointer );
 
-
   // Creating and associating the Vertices
   //
   cellpointer.TakeOwnership( new VertexType );
@@ -160,10 +154,8 @@ int main(int, char *[])
   cellpointer->SetPointId( 0, 3 );
   mesh->SetCell( 14, cellpointer );
 
-
   std::cout << "# Points= " << mesh->GetNumberOfPoints() << std::endl;
   std::cout << "# Cell  = " << mesh->GetNumberOfCells() << std::endl;
-
 
   //  Software Guide : BeginLatex
   //
@@ -180,7 +172,7 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef MeshType::CellsContainer::ConstIterator  CellIterator;
+  typedef MeshType::CellsContainer::ConstIterator CellIterator;
 
   CellIterator cellIterator = mesh->GetCells()->Begin();
   CellIterator cellEnd      = mesh->GetCells()->End();
@@ -192,7 +184,6 @@ int main(int, char *[])
     ++cellIterator;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -241,7 +232,6 @@ int main(int, char *[])
     ++cellIterator;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

@@ -38,13 +38,11 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkGradientRecursiveGaussianImageFilter.h"
 #include "itkVectorIndexSelectionCastImageFilter.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -58,8 +56,8 @@
 #include "itkVectorCurvatureAnisotropicDiffusionImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 6 )
     {
@@ -69,7 +67,6 @@ int main( int argc, char * argv[] )
     std::cerr << "numberOfIterations  timeStep  " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -86,11 +83,9 @@ int main( int argc, char * argv[] )
   typedef itk::Image< VectorPixelType, 2 > VectorImageType;
   // Software Guide : EndCodeSnippet
 
-
-  typedef itk::ImageFileReader< InputImageType >  ReaderType;
+  typedef itk::ImageFileReader< InputImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -106,16 +101,14 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::VectorCurvatureAnisotropicDiffusionImageFilter<
-                       VectorImageType, VectorImageType >  FilterType;
+      VectorImageType, VectorImageType >  FilterType;
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
 
-
   typedef itk::GradientRecursiveGaussianImageFilter<
-                       InputImageType, VectorImageType >   GradientFilterType;
+      InputImageType, VectorImageType >   GradientFilterType;
 
   GradientFilterType::Pointer gradient = GradientFilterType::New();
-
 
   //  Software Guide : BeginLatex
   //
@@ -132,7 +125,6 @@ int main( int argc, char * argv[] )
 
   const unsigned int numberOfIterations = atoi( argv[4] );
   const double       timeStep = atof( argv[5] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -157,7 +149,6 @@ int main( int argc, char * argv[] )
   filter->Update();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Typical values for the time step are $0.125$ in $2D$ images and
@@ -167,31 +158,30 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   //
   //  If the output of this filter has been connected to other filters down the
   //  pipeline, updating any of the downstream filters would have triggered the
   //  execution of this one. For example, a writer filter could have been used
   //  after the curvature flow filter.
   //
-  typedef float                                      OutputPixelType;
-  typedef itk::Image< OutputPixelType,  2 >          OutputImageType;
+  typedef float                             OutputPixelType;
+  typedef itk::Image< OutputPixelType,  2 > OutputImageType;
   typedef itk::VectorIndexSelectionCastImageFilter<
-                  VectorImageType, OutputImageType > ComponentFilterType;
+      VectorImageType, OutputImageType > ComponentFilterType;
   ComponentFilterType::Pointer component = ComponentFilterType::New();
 
   // Select the component to extract.
   component->SetIndex( 0 );
 
-  typedef unsigned char                      WritePixelType;
-  typedef itk::Image< WritePixelType, 2 >    WriteImageType;
+  typedef unsigned char                   WritePixelType;
+  typedef itk::Image< WritePixelType, 2 > WriteImageType;
   typedef itk::RescaleIntensityImageFilter<
-           OutputImageType, WriteImageType > RescaleFilterType;
+      OutputImageType, WriteImageType > RescaleFilterType;
   RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
   rescaler->SetOutputMinimum(   0 );
   rescaler->SetOutputMaximum( 255 );
 
-  typedef itk::ImageFileWriter< WriteImageType >  WriterType;
+  typedef itk::ImageFileWriter< WriteImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
   rescaler->SetInput( component->GetOutput() );
   writer->SetInput( rescaler->GetOutput() );
@@ -201,12 +191,10 @@ int main( int argc, char * argv[] )
   writer->SetFileName( argv[2] );
   writer->Update();
 
-
   // Save the component of the smoothed gradient
   component->SetInput( filter->GetOutput() );
   writer->SetFileName( argv[3] );
   writer->Update();
-
 
   //  Software Guide : BeginLatex
   //

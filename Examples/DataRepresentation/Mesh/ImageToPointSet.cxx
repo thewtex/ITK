@@ -26,13 +26,12 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
 #include "itkImage.h"
 #include "itkPointSet.h"
 #include "itkImageRegionConstIterator.h"
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   // Verify the number of parameters in the command line
   if( argc < 2 )
@@ -42,9 +41,8 @@ int main( int argc, char * argv[] )
     return -1;
     }
 
-
-  typedef unsigned char      PixelType;
-  const   unsigned int       Dimension = 2;
+  typedef unsigned char PixelType;
+  const   unsigned int Dimension = 2;
 
   typedef itk::Image< PixelType, Dimension >    ImageType;
   typedef itk::PointSet< PixelType, Dimension > PointSetType;
@@ -66,8 +64,7 @@ int main( int argc, char * argv[] )
     return -1;
     }
 
-  PointSetType::Pointer  pointSet = PointSetType::New();
-
+  PointSetType::Pointer pointSet = PointSetType::New();
 
   typedef itk::ImageRegionConstIterator< ImageType > IteratorType;
 
@@ -77,8 +74,7 @@ int main( int argc, char * argv[] )
 
   it.GoToBegin();
 
-
-  typedef PointSetType::PointType     PointType;
+  typedef PointSetType::PointType PointType;
   PointType point;
 
   unsigned long pointId = 0;
@@ -97,10 +93,8 @@ int main( int argc, char * argv[] )
     ++pointId;
     }
 
-
   std::cout << "Number Of Points = ";
   std::cout << pointSet->GetNumberOfPoints() << std::endl;
-
 
   // Software Guide : EndCodeSnippet
   return 0;

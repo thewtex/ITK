@@ -85,7 +85,7 @@ template< typename TInputImage >
 void
 FullToHalfHermitianImageFilter< TInputImage >
 ::ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
-                       ThreadIdType itkNotUsed(threadId))
+                       ThreadIdType itkNotUsed(threadId) )
 {
   // Get pointers to the input and output.
   typename InputImageType::ConstPointer inputPtr = this->GetInput();

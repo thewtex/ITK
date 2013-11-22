@@ -21,7 +21,8 @@
 
 namespace itk
 {
-void NiftiImageIOFactory::PrintSelf(std::ostream &, Indent) const
+void
+NiftiImageIOFactory::PrintSelf(std::ostream &, Indent) const
 {}
 
 NiftiImageIOFactory::NiftiImageIOFactory()
@@ -53,9 +54,10 @@ NiftiImageIOFactory::GetDescription() const
 
 static bool NiftiImageIOFactoryHasBeenRegistered;
 
-void NiftiImageIOFactoryRegister__Private(void)
+void
+NiftiImageIOFactoryRegister__Private(void)
 {
-  if( ! NiftiImageIOFactoryHasBeenRegistered )
+  if( !NiftiImageIOFactoryHasBeenRegistered )
     {
     NiftiImageIOFactoryHasBeenRegistered = true;
     NiftiImageIOFactory::RegisterOneFactory();

@@ -20,9 +20,11 @@
 #include <cstdlib>
 #include "itksys/SystemInformation.hxx"
 
-int main(int,char *[])
+int
+main(int,char *[])
 {
   itksys::SystemInformation mySys;
+
   mySys.RunCPUCheck();
   mySys.RunOSCheck();
   mySys.RunMemoryCheck();

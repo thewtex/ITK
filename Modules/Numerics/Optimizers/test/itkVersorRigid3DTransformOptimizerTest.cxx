@@ -19,7 +19,6 @@
 #include "itkVersorRigid3DTransformOptimizer.h"
 #include "itkVersorRigid3DTransform.h"
 
-
 /** The objectif function is the sum of squared distances between two pairs of points.
  *
  *  f( T ) =  |T(P1) - P|^2 + |T(Q1) - Q|^2
@@ -51,28 +50,27 @@ class versorRigid3DCostFunction : public itk::SingleValuedCostFunction
 {
 public:
 
-  typedef versorRigid3DCostFunction           Self;
-  typedef itk::SingleValuedCostFunction       Superclass;
-  typedef itk::SmartPointer<Self>             Pointer;
-  typedef itk::SmartPointer<const Self>       ConstPointer;
+  typedef versorRigid3DCostFunction     Self;
+  typedef itk::SingleValuedCostFunction Superclass;
+  typedef itk::SmartPointer<Self>       Pointer;
+  typedef itk::SmartPointer<const Self> ConstPointer;
 
-  typedef itk::VersorRigid3DTransform<double>        TransformType;
+  typedef itk::VersorRigid3DTransform<double> TransformType;
 
   itkNewMacro( Self );
   itkTypeMacro( versorRigid3DCostFunction, SingleValuedCostFunction );
 
   itkStaticConstMacro( SpaceDimension, unsigned int, 6 );
 
-  typedef Superclass::ParametersType              ParametersType;
-  typedef Superclass::DerivativeType              DerivativeType;
+  typedef Superclass::ParametersType ParametersType;
+  typedef Superclass::DerivativeType DerivativeType;
 
-  typedef itk::Versor< double >                   VersorType;
-  typedef VersorType::VectorType                  AxisType;
-  typedef itk::Vector< double,  3 >               VectorType;
-  typedef itk::Point<  double,  3 >               PointType;
+  typedef itk::Versor< double >     VersorType;
+  typedef VersorType::VectorType    AxisType;
+  typedef itk::Vector< double,  3 > VectorType;
+  typedef itk::Point<  double,  3 > PointType;
 
   typedef double MeasureType;
-
 
   versorRigid3DCostFunction()
   {
@@ -86,7 +84,7 @@ public:
     m_Q1[1] = 10.0;
     m_Q1[2] =  0.0;
 
-    VersorType versor;
+    VersorType   versor;
     const double angle = 10.0 * vcl_atan( 1.0 ) / 45.0;
     versor.SetRotationAroundX( angle );
 
@@ -111,10 +109,11 @@ public:
     std::cout << "m_Q  = " << m_Q   << std::endl;
   }
 
-
-  MeasureType GetValue( const ParametersType & parameters ) const
+  MeasureType
+  GetValue( const ParametersType & parameters ) const
   {
-    TransformType::ParametersType p( itkGetStaticConstMacro( SpaceDimension ));
+    TransformType::ParametersType p( itkGetStaticConstMacro( SpaceDimension ) );
+
     for(unsigned int i=0; i<6; i++)
       {
       p[i] = parameters[i];
@@ -126,15 +125,17 @@ public:
     PointType Q2 = m_Transform->TransformPoint( m_Q1 );
 
     MeasureType measure = P2.SquaredEuclideanDistanceTo( m_P ) +
-                          Q2.SquaredEuclideanDistanceTo( m_Q );
+      Q2.SquaredEuclideanDistanceTo( m_Q );
 
     return measure;
   }
 
-  void GetDerivative( const ParametersType & parameters,
-                            DerivativeType & derivative  ) const
+  void
+  GetDerivative( const ParametersType & parameters,
+                 DerivativeType & derivative  ) const
   {
     VectorType rightPart;
+
     for(unsigned int i=0; i<3; i++)
       {
       rightPart[i] = parameters[i];
@@ -142,7 +143,6 @@ public:
 
     VersorType currentVersor;
     currentVersor.Set( rightPart );
-
 
     const MeasureType baseValue =  this->GetValue( parameters );
 
@@ -206,48 +206,46 @@ public:
 
   }
 
-  unsigned int GetNumberOfParameters(void) const
-    {
+  unsigned int
+  GetNumberOfParameters(void) const
+  {
     return itkGetStaticConstMacro( SpaceDimension );
-    }
+  }
 
 private:
 
-  mutable   TransformType::Pointer  m_Transform;
+  mutable   TransformType::Pointer m_Transform;
 
-  PointType   m_P;
-  PointType   m_Q;
-  PointType   m_P1;
-  PointType   m_Q1;
+  PointType m_P;
+  PointType m_Q;
+  PointType m_P1;
+  PointType m_Q1;
 
 };
 
-int itkVersorRigid3DTransformOptimizerTest(int, char* [] )
+int
+itkVersorRigid3DTransformOptimizerTest(int, char* [] )
 {
   std::cout << "VersorRigid3DTransform Optimizer Test ";
   std::cout << std::endl << std::endl;
 
-  typedef  itk::VersorRigid3DTransformOptimizer  OptimizerType;
+  typedef  itk::VersorRigid3DTransformOptimizer OptimizerType;
 
-  typedef  OptimizerType::ScalesType            ScalesType;
-
+  typedef  OptimizerType::ScalesType ScalesType;
 
   // Declaration of a itkOptimizer
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
-
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
 
   // Declaration of the CostFunction adaptor
   versorRigid3DCostFunction::Pointer costFunction = versorRigid3DCostFunction::New();
 
-
   itkOptimizer->SetCostFunction( costFunction );
 
-
-  typedef versorRigid3DCostFunction::ParametersType    ParametersType;
+  typedef versorRigid3DCostFunction::ParametersType ParametersType;
 
   typedef itk::VersorRigid3DTransform< double > TransformType;
 
-  typedef itk::Versor< double >                   VersorType;
+  typedef itk::Versor< double > VersorType;
 
   // We start with a null rotation
   VersorType::VectorType axis;
@@ -262,7 +260,7 @@ int itkVersorRigid3DTransformOptimizerTest(int, char* [] )
 
   const unsigned int parametersDimensions = costFunction->GetNumberOfParameters();
 
-  ParametersType  initialPosition( parametersDimensions );
+  ParametersType initialPosition( parametersDimensions );
   initialPosition[0] = initialRotation.GetX();
   initialPosition[1] = initialRotation.GetY();
   initialPosition[2] = initialRotation.GetZ();
@@ -270,7 +268,7 @@ int itkVersorRigid3DTransformOptimizerTest(int, char* [] )
   initialPosition[4] = 0.0;
   initialPosition[5] = 0.0;
 
-  ScalesType    parametersScale( parametersDimensions );
+  ScalesType   parametersScale( parametersDimensions );
   const double translationScaleFactor = 50.0;
   parametersScale[0] = 1.0;
   parametersScale[1] = 1.0;
@@ -309,7 +307,7 @@ int itkVersorRigid3DTransformOptimizerTest(int, char* [] )
 
   const unsigned int spaceDimensions = 3;
 
-  VersorType finalRotation;
+  VersorType             finalRotation;
   VersorType::VectorType finalRightPart;
   for(unsigned int i=0; i< spaceDimensions; i++)
     {
@@ -354,10 +352,10 @@ int itkVersorRigid3DTransformOptimizerTest(int, char* [] )
   std::cout << "Final parameters = " << finalPosition << std::endl;
   std::cout << "True Parameters  = " << trueParameters << std::endl;
 
-  VersorType ratio = finalRotation * trueRotation.GetReciprocal();
+  VersorType                  ratio = finalRotation * trueRotation.GetReciprocal();
   const VersorType::ValueType cosHalfAngle = ratio.GetW();
   const VersorType::ValueType cosHalfAngleSquare =
-                                          cosHalfAngle * cosHalfAngle;
+    cosHalfAngle * cosHalfAngle;
   if( cosHalfAngleSquare < 0.95 )
     {
     pass = false;
@@ -371,6 +369,5 @@ int itkVersorRigid3DTransformOptimizerTest(int, char* [] )
 
   std::cout << std::endl << "Test PASSED !" << std::endl;
   return EXIT_SUCCESS;
-
 
 }

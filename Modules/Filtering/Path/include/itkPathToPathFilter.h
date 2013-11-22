@@ -34,7 +34,7 @@ namespace itk
  */
 
 template< typename TInputPath, typename TOutputPath >
-class PathToPathFilter:public PathSource< TOutputPath >
+class PathToPathFilter : public PathSource< TOutputPath >
 {
 public:
   /** Standard class typedefs. */
@@ -82,6 +82,7 @@ protected:
 private:
   PathToPathFilter(const Self &); //purposely not implemented
   void operator=(const Self &);   //purposely not implemented
+
 };
 } // end namespace itk
 

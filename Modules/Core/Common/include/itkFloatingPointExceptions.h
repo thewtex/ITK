@@ -41,6 +41,7 @@ public:
 
   /** Return the current state of FP Exceptions */
   static bool GetEnabled();
+
   /** Set the state to specified value */
   static void SetEnabled(bool val);
 

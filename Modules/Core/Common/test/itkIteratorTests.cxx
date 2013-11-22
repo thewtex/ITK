@@ -24,11 +24,13 @@
 #include "itkImageRegionIteratorWithIndex.h"
 #include <time.h>
 
-int itkIteratorTests(int, char* [] )
+int
+itkIteratorTests(int, char* [] )
 {
   std::cout << "Creating an image" << std::endl;
+
   typedef itk::Image<unsigned short, 3> ScalarImage;
-  ScalarImage::Pointer  o3 = ScalarImage::New();
+  ScalarImage::Pointer o3 = ScalarImage::New();
 
   double origin3D[3] = { 5, 2.1, 8.1};
   double spacing3D[3] = { 1.5, 2.1, 1};
@@ -40,7 +42,6 @@ int itkIteratorTests(int, char* [] )
   ScalarImage::IndexType startIndex3D = {{0, 0, 0}};
   ScalarImage::IndexType bufferStartIndex3D = {{0, 0, 0}};
   ScalarImage::IndexType regionStartIndex3D = {{5,5, 5}};
-
 
   ScalarImage::RegionType region;
   region.SetSize(imageSize3D);
@@ -59,16 +60,16 @@ int itkIteratorTests(int, char* [] )
   o3->Allocate();
 
   // extra variables
-  double elapsedTime;
-  clock_t start, end;
+  double        elapsedTime;
+  clock_t       start, end;
   unsigned long num = 190*190*190;
   unsigned long i;
-  bool passed = true;
+  bool          passed = true;
 
   // memset
   start = clock();
   unsigned short *ptr = o3->GetBufferPointer();
-  memset(ptr, 0, num*sizeof(unsigned short));
+  memset(ptr, 0, num*sizeof(unsigned short) );
   end = clock();
   elapsedTime = (end - start) / (double) CLOCKS_PER_SEC;
 

@@ -43,10 +43,10 @@ template< unsigned int VDimension,
 class UpdateShiSparseLevelSet : public Object
 {
 public:
-  typedef UpdateShiSparseLevelSet       Self;
-  typedef SmartPointer< Self >          Pointer;
-  typedef SmartPointer< const Self >    ConstPointer;
-  typedef Object                        Superclass;
+  typedef UpdateShiSparseLevelSet    Self;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
+  typedef Object                     Superclass;
 
   /** Method for creation through object factory */
   itkNewMacro( Self );
@@ -56,32 +56,32 @@ public:
 
   itkStaticConstMacro( ImageDimension, unsigned int, VDimension );
 
-  typedef ShiSparseLevelSetImage< ImageDimension >     LevelSetType;
-  typedef typename LevelSetType::Pointer               LevelSetPointer;
-  typedef typename LevelSetType::InputType             LevelSetInputType;
-  typedef typename LevelSetType::OutputType            LevelSetOutputType;
-  typedef typename LevelSetType::OffsetType            LevelSetOffsetType;
+  typedef ShiSparseLevelSetImage< ImageDimension > LevelSetType;
+  typedef typename LevelSetType::Pointer           LevelSetPointer;
+  typedef typename LevelSetType::InputType         LevelSetInputType;
+  typedef typename LevelSetType::OutputType        LevelSetOutputType;
+  typedef typename LevelSetType::OffsetType        LevelSetOffsetType;
 
-  typedef typename LevelSetType::LabelMapType          LevelSetLabelMapType;
-  typedef typename LevelSetType::LabelMapPointer       LevelSetLabelMapPointer;
+  typedef typename LevelSetType::LabelMapType    LevelSetLabelMapType;
+  typedef typename LevelSetType::LabelMapPointer LevelSetLabelMapPointer;
 
   typedef typename LevelSetType::LabelObjectType       LevelSetLabelObjectType;
   typedef typename LevelSetType::LabelObjectPointer    LevelSetLabelObjectPointer;
   typedef typename LevelSetType::LabelObjectLengthType LevelSetLabelObjectLengthType;
   typedef typename LevelSetType::LabelObjectLineType   LevelSetLabelObjectLineType;
 
-  typedef typename LevelSetType::LayerType             LevelSetLayerType;
-  typedef typename LevelSetType::LayerIterator         LevelSetLayerIterator;
-  typedef typename LevelSetType::LayerConstIterator    LevelSetLayerConstIterator;
-  typedef typename LevelSetType::OutputRealType        LevelSetOutputRealType;
+  typedef typename LevelSetType::LayerType          LevelSetLayerType;
+  typedef typename LevelSetType::LayerIterator      LevelSetLayerIterator;
+  typedef typename LevelSetType::LayerConstIterator LevelSetLayerConstIterator;
+  typedef typename LevelSetType::OutputRealType     LevelSetOutputRealType;
 
-  typedef typename LevelSetType::LayerMapType           LevelSetLayerMapType;
-  typedef typename LevelSetType::LayerMapIterator       LevelSetLayerMapIterator;
-  typedef typename LevelSetType::LayerMapConstIterator  LevelSetLayerMapConstIterator;
+  typedef typename LevelSetType::LayerMapType          LevelSetLayerMapType;
+  typedef typename LevelSetType::LayerMapIterator      LevelSetLayerMapIterator;
+  typedef typename LevelSetType::LayerMapConstIterator LevelSetLayerMapConstIterator;
 
-  typedef TEquationContainer                                    EquationContainerType;
-  typedef typename EquationContainerType::Pointer               EquationContainerPointer;
-  typedef typename EquationContainerType::TermContainerPointer  TermContainerPointer;
+  typedef TEquationContainer                                   EquationContainerType;
+  typedef typename EquationContainerType::Pointer              EquationContainerPointer;
+  typedef typename EquationContainerType::TermContainerPointer TermContainerPointer;
 
   itkGetModifiableObjectMacro(OutputLevelSet, LevelSetType );
 
@@ -105,17 +105,18 @@ public:
 
 protected:
   UpdateShiSparseLevelSet();
-  virtual ~UpdateShiSparseLevelSet();
+  virtual
+  ~UpdateShiSparseLevelSet();
 
   // output
-  LevelSetPointer   m_OutputLevelSet;
+  LevelSetPointer m_OutputLevelSet;
 
   IdentifierType           m_CurrentLevelSetId;
   LevelSetOutputRealType   m_RMSChangeAccumulator;
   EquationContainerPointer m_EquationContainer;
 
-  typedef Image< int8_t, ImageDimension >   LabelImageType;
-  typedef typename LabelImageType::Pointer  LabelImagePointer;
+  typedef Image< int8_t, ImageDimension >  LabelImageType;
+  typedef typename LabelImageType::Pointer LabelImagePointer;
 
   LabelImagePointer m_InternalImage;
 
@@ -137,7 +138,7 @@ protected:
 
 private:
   UpdateShiSparseLevelSet( const Self& ); // purposely not implemented
-  void operator = ( const Self& );  // purposely not implemented
+  void operator =( const Self& );         // purposely not implemented
 
   // input
   LevelSetPointer    m_InputLevelSet;

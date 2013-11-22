@@ -26,7 +26,7 @@ namespace itk
 {
 template< typename TInputImage1, typename TInputImage2 >
 SimilarityIndexImageFilter< TInputImage1, TInputImage2 >
-::SimilarityIndexImageFilter():m_CountOfImage1(1), m_CountOfImage2(1), m_CountOfIntersection(1)
+::SimilarityIndexImageFilter() : m_CountOfImage1(1), m_CountOfImage2(1), m_CountOfIntersection(1)
 {
   // this filter requires two input images
   this->SetNumberOfRequiredInputs(2);
@@ -47,10 +47,10 @@ const typename SimilarityIndexImageFilter< TInputImage1, TInputImage2 >
 ::InputImage2Type *
 SimilarityIndexImageFilter< TInputImage1, TInputImage2 >
 ::GetInput2()
-{
+  {
   return itkDynamicCastInDebugMode< const TInputImage2 * >
-    ( this->ProcessObject::GetInput(1) );
-}
+           ( this->ProcessObject::GetInput(1) );
+  }
 
 template< typename TInputImage1, typename TInputImage2 >
 void
@@ -84,6 +84,7 @@ SimilarityIndexImageFilter< TInputImage1, TInputImage2 >
 ::EnlargeOutputRequestedRegion(DataObject *data)
 {
   Superclass::EnlargeOutputRequestedRegion(data);
+
   data->SetRequestedRegionToLargestPossibleRegion();
 }
 
@@ -122,7 +123,7 @@ void
 SimilarityIndexImageFilter< TInputImage1, TInputImage2 >
 ::AfterThreadedGenerateData()
 {
-  ThreadIdType           i;
+  ThreadIdType  i;
   SizeValueType countImage1, countImage2, countIntersect;
 
   ThreadIdType numberOfThreads = this->GetNumberOfThreads();
@@ -147,7 +148,7 @@ SimilarityIndexImageFilter< TInputImage1, TInputImage2 >
     }
 
   m_SimilarityIndex = 2.0 * static_cast< RealType >( countIntersect )
-                      / ( static_cast< RealType >( countImage1 ) + static_cast< RealType >( countImage2 ) );
+    / ( static_cast< RealType >( countImage1 ) + static_cast< RealType >( countImage2 ) );
 }
 
 template< typename TInputImage1, typename TInputImage2 >
@@ -195,5 +196,6 @@ SimilarityIndexImageFilter< TInputImage1, TInputImage2 >
 
   os << indent << "SimilarityIndex: "  << m_SimilarityIndex << std::endl;
 }
+
 } // end namespace itk
 #endif

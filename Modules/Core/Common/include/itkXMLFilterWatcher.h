@@ -28,16 +28,17 @@ namespace itk
  * with xml.
  * \ingroup ITKCommon
  */
-class XMLFilterWatcher:public SimpleFilterWatcher
+class XMLFilterWatcher : public SimpleFilterWatcher
 {
 public:
-  XMLFilterWatcher(ProcessObject *o, const char *comment = ""):
+  XMLFilterWatcher(ProcessObject *o, const char *comment = "") :
     SimpleFilterWatcher(o, comment) {}
 
 protected:
 
   /** Callback method to show the ProgressEvent */
-  virtual void ShowProgress()
+  virtual void
+  ShowProgress()
   {
     if ( this->GetProcess() )
       {
@@ -56,7 +57,8 @@ protected:
   }
 
   /** Callback method to show the StartEvent */
-  virtual void StartFilter()
+  virtual void
+  StartFilter()
   {
     this->SetSteps(0);
     this->SetIterations(0);
@@ -81,9 +83,10 @@ protected:
   }
 
   /** Callback method to show the EndEvent */
-  virtual void EndFilter()
-  {
-  }
+  virtual void
+  EndFilter()
+  {}
+
 };
 } // end namespace itk
 

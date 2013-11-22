@@ -28,7 +28,7 @@ namespace itk
  * \brief Create instances of ImageIO objects using an object factory.
  * \ingroup ITKIOImageBase
  */
-class ITKIOImageBase_EXPORT ImageIOFactory:public Object
+class ITKIOImageBase_EXPORT ImageIOFactory : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -59,6 +59,7 @@ protected:
 private:
   ImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

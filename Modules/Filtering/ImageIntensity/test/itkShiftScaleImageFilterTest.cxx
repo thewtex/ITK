@@ -18,12 +18,12 @@
 
 #include <iostream>
 
-
 #include "itkShiftScaleImageFilter.h"
 #include "itkRandomImageSource.h"
 
 #include "itkFilterWatcher.h"
-int itkShiftScaleImageFilterTest(int, char* [] )
+int
+itkShiftScaleImageFilterTest(int, char* [] )
 {
   std::cout << "itkShiftScaleImageFilterTest Start" << std::endl;
 
@@ -58,7 +58,7 @@ int itkShiftScaleImageFilterTest(int, char* [] )
   // Now generate a real image
 
   typedef itk::RandomImageSource<TestInputImage> SourceType;
-  SourceType::Pointer source = SourceType::New();
+  SourceType::Pointer           source = SourceType::New();
   TestInputImage::SizeValueType randomSize[3] = {17, 8, 20};
 
   // Set up Start, End and Progress callbacks
@@ -73,7 +73,6 @@ int itkShiftScaleImageFilterTest(int, char* [] )
   source->SetMax( static_cast< TestInputImage::PixelType >( maxValue ) );
   std::cout << source;
 
-
   // Test GetMacros
   RealType getShift = filter->GetShift();
   std::cout << "filter->GetShift(): " << getShift << std::endl;
@@ -84,8 +83,7 @@ int itkShiftScaleImageFilterTest(int, char* [] )
   long overflowCount = filter->GetOverflowCount();
   std::cout << "filter->GetOverflowCount(): " << overflowCount << std::endl;
 
-
-  filter->SetInput(source->GetOutput());
+  filter->SetInput(source->GetOutput() );
   filter->SetScale(4.0);
   try
     {

@@ -50,8 +50,10 @@ IsotropicFourthOrderLevelSetImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "MaxFilterIteration: " << m_MaxFilterIteration << std::endl;
 }
+
 } // end namespace itk
 
 #endif

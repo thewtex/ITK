@@ -28,8 +28,7 @@ namespace fem
 template <typename TBaseClass>
 Element2DMembrane<TBaseClass>
 ::Element2DMembrane() : Superclass(), m_mat(0)
-{
-}
+{}
 
 // ////////////////////////////////////////////////////////////////////////
 /**
@@ -105,6 +104,7 @@ Element2DMembrane<TBaseClass>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Materials: " << this->m_mat << std::endl;
 }
 

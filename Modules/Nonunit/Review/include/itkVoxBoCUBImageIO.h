@@ -18,7 +18,6 @@
 #ifndef __itkVoxBoCUBImageIO_h
 #define __itkVoxBoCUBImageIO_h
 
-
 #include <fstream>
 #include <string>
 #include <map>
@@ -47,7 +46,7 @@ class GenericCUBFileAdaptor;
  *
  * \ingroup ITKReview
  */
-class VoxBoCUBImageIO:public ImageIOBase
+class VoxBoCUBImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */

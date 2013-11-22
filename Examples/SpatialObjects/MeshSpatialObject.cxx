@@ -40,7 +40,8 @@
 
 // Software Guide : EndCodeSnippet
 
-int main(int, char * [] )
+int
+main(int, char * [] )
 {
   // Software Guide : BeginLatex
   //
@@ -70,11 +71,11 @@ int main(int, char * [] )
   int i;
   for(i=0; i < 4; ++i)
     {
-    myMesh->SetPoint(i, PointType(testPointCoords[i]));
+    myMesh->SetPoint(i, PointType(testPointCoords[i]) );
     }
 
   myMesh->SetCellsAllocationMethod(
-      MeshType::CellsAllocatedDynamicallyCellByCell );
+    MeshType::CellsAllocatedDynamicallyCellByCell );
   CellAutoPointer testCell1;
   testCell1.TakeOwnership(  new TetraCellType );
   testCell1->SetPointIds(tetraPoints);
@@ -94,7 +95,7 @@ int main(int, char * [] )
   // Software Guide : BeginCodeSnippet
   typedef itk::MeshSpatialObject< MeshType > MeshSpatialObjectType;
   MeshSpatialObjectType::Pointer myMeshSpatialObject =
-                                        MeshSpatialObjectType::New();
+    MeshSpatialObjectType::New();
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -176,7 +177,7 @@ int main(int, char * [] )
   typedef itk::Image< unsigned char, 3 > ImageType;
   typedef itk::GroupSpatialObject< 3 >   GroupType;
   typedef itk::SpatialObjectToImageFilter< GroupType, ImageType >
-                                         SpatialObjectToImageFilterType;
+    SpatialObjectToImageFilterType;
   SpatialObjectToImageFilterType::Pointer imageFilter =
     SpatialObjectToImageFilterType::New();
   // Software Guide : EndCodeSnippet

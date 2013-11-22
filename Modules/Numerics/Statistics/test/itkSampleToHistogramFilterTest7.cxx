@@ -20,34 +20,35 @@
 #include "itkHistogram.h"
 #include "itkSampleToHistogramFilter.h"
 
-int itkSampleToHistogramFilterTest7( int, char * [] )
+int
+itkSampleToHistogramFilterTest7( int, char * [] )
 {
 
   const unsigned int numberOfComponents = 3;
-  typedef signed int  MeasurementType;    // Exercise an integer type for the samples
 
-  typedef itk::VariableLengthVector< float >  MeasurementVectorType;
+  typedef signed int MeasurementType;     // Exercise an integer type for the samples
+
+  typedef itk::VariableLengthVector< float > MeasurementVectorType;
 
   typedef itk::Statistics::ListSample< MeasurementVectorType > SampleType;
 
   typedef itk::Statistics::Histogram< MeasurementType,
-          itk::Statistics::DenseFrequencyContainer2 > HistogramType;
+                                      itk::Statistics::DenseFrequencyContainer2 > HistogramType;
 
   typedef itk::Statistics::SampleToHistogramFilter<
-    SampleType, HistogramType > FilterType;
+      SampleType, HistogramType > FilterType;
 
-  typedef FilterType::InputHistogramSizeObjectType         InputHistogramSizeObjectType;
-  typedef FilterType::HistogramSizeType                    HistogramSizeType;
-  typedef FilterType::HistogramMeasurementType             HistogramMeasurementType;
-  typedef FilterType::HistogramMeasurementVectorType       HistogramMeasurementVectorType;
-  typedef FilterType::InputHistogramMeasurementObjectType  InputHistogramMeasurementObjectType;
+  typedef FilterType::InputHistogramSizeObjectType        InputHistogramSizeObjectType;
+  typedef FilterType::HistogramSizeType                   HistogramSizeType;
+  typedef FilterType::HistogramMeasurementType            HistogramMeasurementType;
+  typedef FilterType::HistogramMeasurementVectorType      HistogramMeasurementVectorType;
+  typedef FilterType::InputHistogramMeasurementObjectType InputHistogramMeasurementObjectType;
   typedef FilterType::
     InputHistogramMeasurementVectorObjectType  InputHistogramMeasurementVectorObjectType;
 
   FilterType::Pointer filter = FilterType::New();
 
   SampleType::Pointer sample = SampleType::New();
-
 
   HistogramMeasurementVectorType minimum( numberOfComponents );
   HistogramMeasurementVectorType maximum( numberOfComponents );
@@ -101,7 +102,6 @@ int itkSampleToHistogramFilterTest7( int, char * [] )
     std::cout << "Expected exception received" << std::endl;
     }
 
-
   const HistogramType * histogram = filter->GetOutput();
 
   if( histogram->Size() != 0 )
@@ -109,7 +109,6 @@ int itkSampleToHistogramFilterTest7( int, char * [] )
     std::cerr << "Histogram Size should have been zero" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   filter->SetHistogramSize( histogramSize );
 
@@ -133,7 +132,6 @@ int itkSampleToHistogramFilterTest7( int, char * [] )
     std::cerr << "We received " << histogram->Size() << std::endl;
     return EXIT_FAILURE;
     }
-
 
   HistogramType::ConstIterator histogramItr = histogram->Begin();
   HistogramType::ConstIterator histogramEnd = histogram->End();
@@ -174,7 +172,6 @@ int itkSampleToHistogramFilterTest7( int, char * [] )
     return EXIT_FAILURE;
     }
 
-
   filter->SetAutoMinimumMaximum( false );
 
   // Add a sample that will exercise the overflow code
@@ -196,9 +193,7 @@ int itkSampleToHistogramFilterTest7( int, char * [] )
     return EXIT_FAILURE;
     }
 
-
   filter->SetAutoMinimumMaximum( true );
-
 
   try
     {
@@ -209,7 +204,6 @@ int itkSampleToHistogramFilterTest7( int, char * [] )
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;

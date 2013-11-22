@@ -34,7 +34,7 @@ namespace itk
  */
 
 template< typename TMesh = Mesh< int > >
-class MeshSpatialObject:
+class MeshSpatialObject :
   public SpatialObject< TMesh::PointDimension >
 {
 public:
@@ -68,7 +68,8 @@ public:
 
   /** Get a pointer to the Mesh currently attached to the object. */
   MeshType * GetMesh(void);
-  const MeshType *GetMesh(void) const;
+
+  const MeshType * GetMesh(void) const;
 
   /** Return true if the object is evaluable at the requested point,
    *  and else otherwise. */
@@ -97,7 +98,8 @@ public:
   ModifiedTimeType GetMTime(void) const;
 
   /** Return the type of pixel used */
-  const char * GetPixelType()
+  const char *
+  GetPixelType()
   {
     return m_PixelType.c_str();
   }
@@ -118,9 +120,11 @@ protected:
   double      m_IsInsidePrecision;
 
   MeshSpatialObject();
-  virtual ~MeshSpatialObject();
+  virtual
+  ~MeshSpatialObject();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
+
 };
 } // end of namespace itk
 

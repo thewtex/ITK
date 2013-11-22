@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TInputImage >
-class AutoCropLabelMapFilter:
+class AutoCropLabelMapFilter :
   public ChangeRegionLabelMapFilter< TInputImage >
 {
 public:
@@ -110,7 +110,7 @@ private:
   AutoCropLabelMapFilter(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
 
-  SizeType  m_CropBorder;
+  SizeType m_CropBorder;
 };
 } // end namespace itk
 

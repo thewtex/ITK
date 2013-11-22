@@ -22,8 +22,8 @@
 #include "itkBinaryBallStructuringElement.h"
 #include "itkBinaryClosingByReconstructionImageFilter.h"
 
-
-int itkBinaryClosingByReconstructionImageFilterTest(int argc, char * argv[])
+int
+itkBinaryClosingByReconstructionImageFilterTest(int argc, char * argv[])
 {
 
   if( argc != 6 )
@@ -43,13 +43,13 @@ int itkBinaryClosingByReconstructionImageFilterTest(int argc, char * argv[])
   reader->Update();
 
   typedef itk::BinaryBallStructuringElement< bool, dim> KernelType;
-  KernelType ball;
+  KernelType           ball;
   KernelType::SizeType ballSize;
   ballSize.Fill( atoi(argv[5]) );
   ball.SetRadius(ballSize);
   ball.CreateStructuringElement();
 
- typedef itk::BinaryClosingByReconstructionImageFilter< IType, KernelType > I2LType;
+  typedef itk::BinaryClosingByReconstructionImageFilter< IType, KernelType > I2LType;
   I2LType::Pointer reconstruction = I2LType::New();
   reconstruction->SetInput( reader->GetOutput() );
   reconstruction->SetKernel( ball );

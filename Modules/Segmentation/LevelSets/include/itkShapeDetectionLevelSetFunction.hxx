@@ -25,7 +25,8 @@
 namespace itk
 {
 template< typename TImageType, typename TFeatureImageType >
-void ShapeDetectionLevelSetFunction< TImageType, TFeatureImageType >
+void
+ShapeDetectionLevelSetFunction< TImageType, TFeatureImageType >
 ::CalculateSpeedImage()
 {
   /* copy the feature image into the speed image */
@@ -34,6 +35,7 @@ void ShapeDetectionLevelSetFunction< TImageType, TFeatureImageType >
                         this->GetFeatureImage()->GetRequestedRegion(),
                         this->GetFeatureImage()->GetRequestedRegion() );
 }
+
 } // end namespace itk
 
 #endif

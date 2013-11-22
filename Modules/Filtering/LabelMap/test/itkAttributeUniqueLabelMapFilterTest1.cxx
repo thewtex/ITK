@@ -26,8 +26,8 @@
 
 #include "itkBinaryDilateImageFilter.h"
 
-
-int itkAttributeUniqueLabelMapFilterTest1(int argc, char * argv[])
+int
+itkAttributeUniqueLabelMapFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 4 )
@@ -52,9 +52,9 @@ int itkAttributeUniqueLabelMapFilterTest1(int argc, char * argv[])
   I2LType::Pointer i2l = I2LType::New();
   i2l->SetInput( reader->GetOutput() );
 
-  typedef itk::FlatStructuringElement< dim > KernelType;
+  typedef itk::FlatStructuringElement< dim >                               KernelType;
   typedef itk::BinaryDilateImageFilter< ImageType, ImageType, KernelType > DilateType;
-  DilateType::Pointer dilate = DilateType::New();
+  DilateType::Pointer  dilate = DilateType::New();
   KernelType::SizeType rad;
   rad.Fill( 15 );
   dilate->SetKernel( KernelType::Ball( rad ) );
@@ -65,7 +65,9 @@ int itkAttributeUniqueLabelMapFilterTest1(int argc, char * argv[])
   oi->SetFilter( dilate );
   oi->SetPadSize( rad );
 
-  typedef itk::AttributeUniqueLabelMapFilter< LabelMapType, itk::Functor::NumberOfPixelsLabelObjectAccessor< LabelObjectType > > UniqueType;
+  typedef itk::AttributeUniqueLabelMapFilter< LabelMapType,
+                                              itk::Functor::NumberOfPixelsLabelObjectAccessor< LabelObjectType > >
+    UniqueType;
   UniqueType::Pointer unique = UniqueType::New();
   unique->SetInput( oi->GetOutput() );
   unique->SetReverseOrdering( atoi(argv[3]) );

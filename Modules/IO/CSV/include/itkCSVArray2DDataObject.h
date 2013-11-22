@@ -43,14 +43,14 @@ namespace itk
  */
 
 template <typename TData>
-class CSVArray2DDataObject:public DataObject
+class CSVArray2DDataObject : public DataObject
 {
 public:
   /* Standard class typedefs */
-  typedef CSVArray2DDataObject        Self;
-  typedef DataObject                  SuperClass;
-  typedef SmartPointer<Self>          Pointer;
-  typedef SmartPointer<const Self>    ConstPointer;
+  typedef CSVArray2DDataObject     Self;
+  typedef DataObject               SuperClass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Standard New method. */
   itkNewMacro(Self);
@@ -59,11 +59,11 @@ public:
   itkTypeMacro(Self,Superclass);
 
   /* Vector typedefs. */
-  typedef typename std::vector<TData>              NumericVectorType;
-  typedef typename std::vector<std::string>        StringVectorType;
+  typedef typename std::vector<TData>       NumericVectorType;
+  typedef typename std::vector<std::string> StringVectorType;
 
   /** Typedef for the Array2D object. */
-  typedef typename itk::Array2D<TData>  MatrixType;
+  typedef typename itk::Array2D<TData> MatrixType;
 
   /** Set macros */
   itkSetMacro(HasColumnHeaders,bool);
@@ -148,19 +148,21 @@ public:
 protected:
 
   CSVArray2DDataObject();
-  virtual ~CSVArray2DDataObject() {}
+  virtual
+  ~CSVArray2DDataObject() {}
   /** Print method */
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
-  MatrixType             m_Matrix;
-  StringVectorType       m_ColumnHeaders;
-  StringVectorType       m_RowHeaders;
-  bool                   m_HasRowHeaders;
-  bool                   m_HasColumnHeaders;
+  MatrixType       m_Matrix;
+  StringVectorType m_ColumnHeaders;
+  StringVectorType m_RowHeaders;
+  bool             m_HasRowHeaders;
+  bool             m_HasColumnHeaders;
 
   CSVArray2DDataObject(const Self &); //purposely not implemented
   void operator=(const Self &);       //purposely not implemented
+
 };
 
 } //end namespace itk

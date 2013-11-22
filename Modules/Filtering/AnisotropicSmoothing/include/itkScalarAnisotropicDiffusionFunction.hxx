@@ -89,7 +89,7 @@ ScalarAnisotropicDiffusionFunction< TImage >
     for ( i = 0; i < ImageDimension; ++i )
       {
       val = iterator_list[i].GetPixel(Center[i] + Stride[i])
-            - iterator_list[i].GetPixel(Center[i] - Stride[i]);
+        - iterator_list[i].GetPixel(Center[i] - Stride[i]);
       PixelRealType tempval = val / -2.0f;
       val = tempval * this->m_ScaleCoefficients[i];
       accumulator += val * val;
@@ -117,7 +117,7 @@ ScalarAnisotropicDiffusionFunction< TImage >
       for ( i = 0; i < ImageDimension; ++i )
         {
         val = face_iterator_list[i].GetPixel(Center[i] + Stride[i])
-              - face_iterator_list[i].GetPixel(Center[i] - Stride[i]);
+          - face_iterator_list[i].GetPixel(Center[i] - Stride[i]);
         PixelRealType tempval = val / -2.0f;
         val = tempval * this->m_ScaleCoefficients[i];
         accumulator += val * val;
@@ -129,6 +129,7 @@ ScalarAnisotropicDiffusionFunction< TImage >
 
   this->SetAverageGradientMagnitudeSquared( (double)( accumulator / counter ) );
 }
+
 } // end namespace itk
 
 #endif

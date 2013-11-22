@@ -19,7 +19,8 @@
 #include "itkBinaryImageToLevelSetImageAdaptor.h"
 #include "itkLevelSetDomainPartitionImageWithKdTree.h"
 
-int itkLevelSetDomainPartitionImageWithKdTreeTest( int argc, char* argv[] )
+int
+itkLevelSetDomainPartitionImageWithKdTreeTest( int argc, char* argv[] )
 {
 
   if( argc < 1 )
@@ -31,16 +32,16 @@ int itkLevelSetDomainPartitionImageWithKdTreeTest( int argc, char* argv[] )
 
   const unsigned int Dimension = 2;
 
-  typedef unsigned short                                    InputPixelType;
-  typedef itk::Image< InputPixelType, Dimension >           InputImageType;
-  typedef itk::IdentifierType                               IdentifierType;
+  typedef unsigned short                          InputPixelType;
+  typedef itk::Image< InputPixelType, Dimension > InputImageType;
+  typedef itk::IdentifierType                     IdentifierType;
 
-  typedef std::list< IdentifierType >                       IdListType;
-  typedef itk::Image< IdListType, Dimension >               IdListImageType;
+  typedef std::list< IdentifierType >         IdListType;
+  typedef itk::Image< IdListType, Dimension > IdListImageType;
 
   typedef itk::LevelSetDomainPartitionImageWithKdTree< InputImageType > DomainPartitionSourceType;
   typedef DomainPartitionSourceType::ListImageType                      ListImageType;
-  typedef DomainPartitionSourceType::LevelSetDomainRegionVectorType           LevelSetDomainRegionVectorType;
+  typedef DomainPartitionSourceType::LevelSetDomainRegionVectorType     LevelSetDomainRegionVectorType;
   typedef DomainPartitionSourceType::CentroidVectorType                 CentroidVectorType;
   typedef DomainPartitionSourceType::SampleType                         SampleType;
   typedef DomainPartitionSourceType::TreeGeneratorType                  TreeGeneratorType;
@@ -82,7 +83,7 @@ int itkLevelSetDomainPartitionImageWithKdTreeTest( int argc, char* argv[] )
   LevelSetDomainRegionVectorType regionVector;
   regionVector.resize( numberOfLevelSetFunctions );
 
-  CentroidVectorType mv;
+  CentroidVectorType  mv;
   SampleType::Pointer sample = SampleType::New();
   sample->SetMeasurementVectorSize( Dimension );
 
@@ -117,12 +118,11 @@ int itkLevelSetDomainPartitionImageWithKdTreeTest( int argc, char* argv[] )
   partitionSource->SetKdTree( kdtree );
   partitionSource->PopulateListDomain();
 
-
   bool flag = true;
 
-  ListType ll;
+  ListType                    ll;
   ListImageType::ConstPointer listImage = partitionSource->GetListDomain();
-  ListImageIteratorType It( listImage, listImage->GetLargestPossibleRegion() );
+  ListImageIteratorType       It( listImage, listImage->GetLargestPossibleRegion() );
   It.GoToBegin();
   while( !It.IsAtEnd() )
     {

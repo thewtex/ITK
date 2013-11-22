@@ -18,13 +18,11 @@
 #ifndef __itkTestingMacros_h
 #define __itkTestingMacros_h
 
-
 // object's Class must be specified to build on sun studio
 #define EXERCISE_BASIC_OBJECT_METHODS( object, Class ) \
-    object->Print( std::cout );  \
-    std::cout << "Name of Class = " << object->GetNameOfClass() << std::endl; \
-    std::cout << "Name of Superclass = " << object->Class::Superclass::GetNameOfClass() << std::endl;
-
+  object->Print( std::cout );  \
+  std::cout << "Name of Class = " << object->GetNameOfClass() << std::endl; \
+  std::cout << "Name of Superclass = " << object->Class::Superclass::GetNameOfClass() << std::endl;
 
 #define TRY_EXPECT_EXCEPTION( command ) \
   try \
@@ -40,7 +38,6 @@
     std::cout << excp << std::endl; \
     }
 
-
 #define TRY_EXPECT_NO_EXCEPTION( command ) \
   try \
     {  \
@@ -54,30 +51,29 @@
     }
 
 #define TEST_EXPECT_TRUE( command )                                     \
-  {                                                                     \
-  bool _TEST_EXPECT_TRUE_command(command);                              \
-  if( !(_TEST_EXPECT_TRUE_command) )                                    \
-    {                                                                   \
-    std::cerr << "Error in " << #command << std::endl;                  \
-    std::cerr << "Expected true" << std::endl;                          \
-    std::cerr << "but got  " <<  _TEST_EXPECT_TRUE_command << std::endl; \
-    return EXIT_FAILURE;                                                \
-    }                                                                   \
-  }
+    {                                                                     \
+    bool _TEST_EXPECT_TRUE_command(command);                              \
+    if( !(_TEST_EXPECT_TRUE_command) )                                    \
+      {                                                                   \
+      std::cerr << "Error in " << #command << std::endl;                  \
+      std::cerr << "Expected true" << std::endl;                          \
+      std::cerr << "but got  " <<  _TEST_EXPECT_TRUE_command << std::endl; \
+      return EXIT_FAILURE;                                                \
+      }                                                                   \
+    }
 
 #define TEST_EXPECT_EQUAL( lh, rh )                                     \
-  {                                                                     \
-    bool _TEST_EXPECT_EQUAL_result((lh) == (rh));                       \
+    {                                                                     \
+    bool _TEST_EXPECT_EQUAL_result( (lh) == (rh) );                       \
     if( !(_TEST_EXPECT_EQUAL_result) )                                  \
-    {                                                                   \
-    std::cerr << "Error in " << #lh << " == " << #rh << std::endl;      \
-    std::cerr << "\tlh: " << (lh) << std::endl;                         \
-    std::cerr << "\trh: " << (rh) << std::endl;                         \
-    std::cerr << "Expression is not equal" << std::endl;                \
-    return EXIT_FAILURE;                                                \
-    }                                                                   \
-  }
-
+      {                                                                   \
+      std::cerr << "Error in " << #lh << " == " << #rh << std::endl;      \
+      std::cerr << "\tlh: " << (lh) << std::endl;                         \
+      std::cerr << "\trh: " << (rh) << std::endl;                         \
+      std::cerr << "Expression is not equal" << std::endl;                \
+      return EXIT_FAILURE;                                                \
+      }                                                                   \
+    }
 
 #define TEST_SET_GET( variable, command ) \
   if( variable.GetPointer() != command )   \
@@ -87,7 +83,6 @@
     std::cerr << "but got  " << command << std::endl; \
     return EXIT_FAILURE; \
     }
-
 
 #define TEST_SET_GET_VALUE( variable, command ) \
   if( variable != command )   \
@@ -106,6 +101,5 @@
     std::cerr << "but got  " << command << std::endl; \
     return EXIT_FAILURE; \
     }
-
 
 #endif

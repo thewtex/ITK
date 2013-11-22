@@ -39,14 +39,14 @@ namespace itk
  * \ingroup ITKPath
  */
 template< typename TImage >
-class ExtractOrthogonalSwath2DImageFilter:public
+class ExtractOrthogonalSwath2DImageFilter : public
   ImageAndPathToImageFilter< TImage, ParametricPath< 2 >, TImage >
 {
 public:
   /** Standard class typedefs. */
   typedef ExtractOrthogonalSwath2DImageFilter Self;
   typedef ImageAndPathToImageFilter< TImage, ParametricPath< 2 >, TImage >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -113,7 +113,8 @@ public:
   //
 
   /** Request the largest possible region on all outputs. */
-  virtual void EnlargeOutputRequestedRegion(DataObject *output)
+  virtual void
+  EnlargeOutputRequestedRegion(DataObject *output)
   {
     output->SetRequestedRegionToLargestPossibleRegion();
   }
@@ -131,7 +132,8 @@ protected:
     m_Spacing[0] = m_Spacing[1] = 1.0;
   }
 
-  virtual ~ExtractOrthogonalSwath2DImageFilter() {}
+  virtual
+  ~ExtractOrthogonalSwath2DImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   //--------------------------------------------------------------------------
@@ -141,9 +143,11 @@ protected:
   virtual void GenerateOutputInformation(void);
 
   /** Request the largest possible region on all inputs. */
-  virtual void GenerateInputRequestedRegion()
+  virtual void
+  GenerateInputRequestedRegion()
   {
     Superclass::GenerateInputRequestedRegion();
+
     this->GetNonConstImageInput()->SetRequestedRegionToLargestPossibleRegion();
     this->GetNonConstPathInput()->SetRequestedRegionToLargestPossibleRegion();
   }

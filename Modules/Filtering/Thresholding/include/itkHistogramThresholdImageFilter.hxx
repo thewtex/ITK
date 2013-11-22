@@ -53,7 +53,6 @@ HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
   m_NumberOfHistogramBins = 256;
 }
 
-
 template<typename TInputImage, typename TOutputImage, typename TMaskImage>
 void
 HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
@@ -72,16 +71,16 @@ HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
   typedef itk::Statistics::MaskedImageToHistogramFilter<InputImageType, MaskImageType> MaskedHistogramGeneratorType;
   typename MaskedHistogramGeneratorType::Pointer maskedhistogramGenerator = MaskedHistogramGeneratorType::New();
 
-  if (this->GetMaskImage())
+  if (this->GetMaskImage() )
     {
     maskedhistogramGenerator->SetInput( this->GetInput() );
-    maskedhistogramGenerator->SetMaskImage(this->GetMaskImage());
+    maskedhistogramGenerator->SetMaskImage(this->GetMaskImage() );
     maskedhistogramGenerator->SetNumberOfThreads( this->GetNumberOfThreads() );
-    typename HistogramType::SizeType hsize(this->GetInput()->GetNumberOfComponentsPerPixel());
-    hsize.Fill(this->GetNumberOfHistogramBins());
+    typename HistogramType::SizeType hsize(this->GetInput()->GetNumberOfComponentsPerPixel() );
+    hsize.Fill(this->GetNumberOfHistogramBins() );
     maskedhistogramGenerator->SetHistogramSize(hsize);
-    maskedhistogramGenerator->SetAutoMinimumMaximum(this->GetAutoMinimumMaximum());
-    maskedhistogramGenerator->SetMaskValue(this->GetMaskValue());
+    maskedhistogramGenerator->SetAutoMinimumMaximum(this->GetAutoMinimumMaximum() );
+    maskedhistogramGenerator->SetMaskValue(this->GetMaskValue() );
     progress->RegisterInternalFilter(maskedhistogramGenerator,.4f);
 
     m_Calculator->SetInput( maskedhistogramGenerator->GetOutput() );
@@ -91,10 +90,10 @@ HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
     {
     histogramGenerator->SetInput( this->GetInput() );
     histogramGenerator->SetNumberOfThreads( this->GetNumberOfThreads() );
-    typename HistogramType::SizeType hsize(this->GetInput()->GetNumberOfComponentsPerPixel());
-    hsize.Fill(this->GetNumberOfHistogramBins());
+    typename HistogramType::SizeType hsize(this->GetInput()->GetNumberOfComponentsPerPixel() );
+    hsize.Fill(this->GetNumberOfHistogramBins() );
     histogramGenerator->SetHistogramSize(hsize);
-    histogramGenerator->SetAutoMinimumMaximum(this->GetAutoMinimumMaximum());
+    histogramGenerator->SetAutoMinimumMaximum(this->GetAutoMinimumMaximum() );
     progress->RegisterInternalFilter(histogramGenerator,.4f);
 
     m_Calculator->SetInput( histogramGenerator->GetOutput() );
@@ -104,7 +103,7 @@ HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
 
   typedef BinaryThresholdImageFilter<TInputImage,TOutputImage> ThresholderType;
   typename ThresholderType::Pointer thresholder = ThresholderType::New();
-  thresholder->SetInput(this->GetInput());
+  thresholder->SetInput(this->GetInput() );
   thresholder->SetLowerThreshold( NumericTraits<InputPixelType>::NonpositiveMin() );
   thresholder->SetUpperThresholdInput( m_Calculator->GetOutput() );
   thresholder->SetInsideValue( this->GetInsideValue() );
@@ -115,10 +114,10 @@ HistogramThresholdImageFilter<TInputImage, TOutputImage, TMaskImage>
   typedef MaskImageFilter<TOutputImage, TMaskImage> MaskType;
   typename MaskType::Pointer masker = MaskType::New();
 
-  if ((this->GetMaskOutput()) && (this->GetMaskImage()))
+  if ( (this->GetMaskOutput() ) && (this->GetMaskImage() ) )
     {
-    masker->SetInput(thresholder->GetOutput());
-    masker->SetInput2(this->GetMaskImage());
+    masker->SetInput(thresholder->GetOutput() );
+    masker->SetInput2(this->GetMaskImage() );
     masker->SetNumberOfThreads( this->GetNumberOfThreads() );
     progress->RegisterInternalFilter(masker, .4f);
     masker->GraftOutput( this->GetOutput() );
@@ -140,7 +139,8 @@ void
 HistogramThresholdImageFilter<TInputImage, TOutputImage,TMaskImage>
 ::GenerateInputRequestedRegion()
 {
-  TInputImage * input = const_cast<TInputImage *>(this->GetInput());
+  TInputImage * input = const_cast<TInputImage *>(this->GetInput() );
+
   if( input )
     {
     input->SetRequestedRegionToLargestPossibleRegion();
@@ -167,6 +167,5 @@ HistogramThresholdImageFilter<TInputImage,TOutputImage,TMaskImage>
 
 }
 
-
-}// end namespace itk
+} // end namespace itk
 #endif

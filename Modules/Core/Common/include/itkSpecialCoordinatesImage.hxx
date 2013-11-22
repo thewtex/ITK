@@ -110,6 +110,7 @@ SpecialCoordinatesImage< TPixel, VImageDimension >
 
   // m_Origin and m_Spacing are printed in the Superclass
 }
+
 } // end namespace itk
 
 #endif

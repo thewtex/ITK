@@ -25,15 +25,15 @@
 
 namespace itk
 {
- /** \class DifferenceImageFilter
- * This filter is an alias to the TestingComparisonImageFilter
- * and is only here for backwards compatibility.
- *
- * This class has no implementation, thus no .hxx file is needed.
- * \ingroup ITKTestKernel
- */
+/** \class DifferenceImageFilter
+* This filter is an alias to the TestingComparisonImageFilter
+* and is only here for backwards compatibility.
+*
+* This class has no implementation, thus no .hxx file is needed.
+* \ingroup ITKTestKernel
+*/
 template< typename TInputImage, typename TOutputImage >
-class DifferenceImageFilter:
+class DifferenceImageFilter :
   public Testing::ComparisonImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -58,7 +58,8 @@ public:
   typedef typename NumericTraits< RealType >::AccumulateType  AccumulateType;
 
   DifferenceImageFilter() {}
-  virtual ~DifferenceImageFilter() {}
+  virtual
+  ~DifferenceImageFilter() {}
 
 protected:
 

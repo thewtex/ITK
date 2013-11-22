@@ -20,7 +20,8 @@
 
 #include "itkMeshFileTestHelper.h"
 
-int itkMeshFileReadWriteTest(int argc, char * argv[])
+int
+itkMeshFileReadWriteTest(int argc, char * argv[])
 {
   if(argc < 3)
     {
@@ -33,8 +34,8 @@ int itkMeshFileReadWriteTest(int argc, char * argv[])
   const unsigned int dimension = 3;
   typedef float PixelType;
 
-  typedef itk::Mesh<PixelType, dimension>            MeshType;
-  typedef itk::QuadEdgeMesh<PixelType, dimension>    QEMeshType;
+  typedef itk::Mesh<PixelType, dimension>         MeshType;
+  typedef itk::QuadEdgeMesh<PixelType, dimension> QEMeshType;
 
   int result = EXIT_SUCCESS;
 

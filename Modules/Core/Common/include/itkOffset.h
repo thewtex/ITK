@@ -62,7 +62,10 @@ public:
   itkStaticConstMacro(Dimension, unsigned int, VOffsetDimension);
 
   /** Get the dimension (size) of the index. */
-  static unsigned int GetOffsetDimension() { return VOffsetDimension; }
+  static unsigned int
+  GetOffsetDimension() {
+    return VOffsetDimension;
+  }
 
   /** Compatible offset typedefs. */
   typedef   Offset< VOffsetDimension > OffsetType;
@@ -78,7 +81,7 @@ public:
     Self result;
 
     for ( unsigned int i = 0; i < VOffsetDimension; i++ )
-          { result[i] = m_Offset[i] + offset[i]; }
+              { result[i] = m_Offset[i] + offset[i]; }
     return result;
   }
 
@@ -89,7 +92,7 @@ public:
     Self result;
 
     for ( unsigned int i = 0; i < VOffsetDimension; i++ )
-          { result[i] = m_Offset[i] + size[i]; }
+              { result[i] = m_Offset[i] + size[i]; }
     return result;
   }
 
@@ -98,7 +101,7 @@ public:
   operator+=(const Size< VOffsetDimension > & size)
   {
     for ( unsigned int i = 0; i < VOffsetDimension; i++ )
-          { m_Offset[i] += size[i]; }
+              { m_Offset[i] += size[i]; }
     return *this;
   }
 
@@ -107,7 +110,7 @@ public:
   operator-=(const Size< VOffsetDimension > & size)
   {
     for ( unsigned int i = 0; i < VOffsetDimension; i++ )
-          { m_Offset[i] -= size[i]; }
+              { m_Offset[i] -= size[i]; }
     return *this;
   }
 
@@ -118,7 +121,7 @@ public:
     Self result;
 
     for ( unsigned int i = 0; i < VOffsetDimension; i++ )
-          { result[i] = m_Offset[i] - vec.m_Offset[i]; }
+              { result[i] = m_Offset[i] - vec.m_Offset[i]; }
     return result;
   }
 
@@ -127,7 +130,7 @@ public:
   operator+=(const Self & vec)
   {
     for ( unsigned int i = 0; i < VOffsetDimension; i++ )
-          { m_Offset[i] += vec.m_Offset[i]; }
+              { m_Offset[i] += vec.m_Offset[i]; }
     return *this;
   }
 
@@ -136,7 +139,7 @@ public:
   operator-=(const Self & vec)
   {
     for ( unsigned int i = 0; i < VOffsetDimension; i++ )
-          { m_Offset[i] -= vec.m_Offset[i]; }
+              { m_Offset[i] -= vec.m_Offset[i]; }
     return *this;
   }
 
@@ -147,7 +150,7 @@ public:
     bool same = 1;
 
     for ( unsigned int i = 0; i < VOffsetDimension && same; i++ )
-          { same = ( m_Offset[i] == vec.m_Offset[i] ); }
+              { same = ( m_Offset[i] == vec.m_Offset[i] ); }
     return same;
   }
 
@@ -158,30 +161,40 @@ public:
     bool same = 1;
 
     for ( unsigned int i = 0; i < VOffsetDimension && same; i++ )
-          { same = ( m_Offset[i] == vec.m_Offset[i] ); }
+              { same = ( m_Offset[i] == vec.m_Offset[i] ); }
     return !same;
   }
 
   /** Access an element of the offset. Elements are numbered
    * 0, ..., VOffsetDimension-1. No bounds checking is performed. */
-  OffsetValueType & operator[](unsigned int dim)
-  { return m_Offset[dim]; }
+  OffsetValueType &
+  operator[](unsigned int dim)
+  {
+    return m_Offset[dim];
+  }
 
   /** Access an element of the index. Elements are numbered
    * 0, ..., VOffsetDimension-1. This version can only be an rvalue.
    * No bounds checking is performed. */
-  OffsetValueType operator[](unsigned int dim) const
-  { return m_Offset[dim]; }
+  OffsetValueType
+  operator[](unsigned int dim) const
+  {
+    return m_Offset[dim];
+  }
 
   /** Get the index. This provides a read only reference to the index.
    * \sa SetOffset() */
-  const OffsetValueType * GetOffset() const { return m_Offset; }
+  const OffsetValueType *
+  GetOffset() const {
+    return m_Offset;
+  }
 
   /** Set the index.
    * Try to prototype this function so that val has to point to a block of
    * memory that is the appropriate size.
    * \sa GetOffset() */
-  void SetOffset(const OffsetValueType val[VOffsetDimension])
+  void
+  SetOffset(const OffsetValueType val[VOffsetDimension])
   {
     std::copy(val,
               val+VOffsetDimension,
@@ -195,8 +208,11 @@ public:
 
   /** Set one value for the offset in all dimensions.  Useful for initializing
    * an offset to zero. */
-  void Fill(OffsetValueType value)
-  { for ( unsigned int i = 0; i < VOffsetDimension; ++i ) { m_Offset[i] = value; } }
+  void
+  Fill(OffsetValueType value)
+  {
+    for ( unsigned int i = 0; i < VOffsetDimension; ++i ) { m_Offset[i] = value; }
+  }
 
   /** Offset is an "aggregate" class.  Its data is public (m_Offset)
    * allowing for fast and convenient instantiations/assignments.
@@ -229,8 +245,9 @@ template< unsigned int VOffsetDimension >
 class OffsetLexicographicCompare
 {
 public:
-  bool operator()(Offset< VOffsetDimension > const & l,
-                  Offset< VOffsetDimension > const & r) const
+  bool
+  operator()(Offset< VOffsetDimension > const & l,
+             Offset< VOffsetDimension > const & r) const
   {
     for ( unsigned int i = 0; i < VOffsetDimension; ++i )
       {
@@ -245,6 +262,7 @@ public:
       }
     return false;
   }
+
 };
 }
 
@@ -261,7 +279,8 @@ Offset< VOffsetDimension >
 }
 
 template< unsigned int VOffsetDimension >
-std::ostream & operator<<(std::ostream & os, const Offset< VOffsetDimension > & ind)
+std::ostream &
+operator<<(std::ostream & os, const Offset< VOffsetDimension > & ind)
 {
   os << "[";
   unsigned int dimlim = VOffsetDimension - 1;
@@ -276,6 +295,7 @@ std::ostream & operator<<(std::ostream & os, const Offset< VOffsetDimension > & 
   os << "]";
   return os;
 }
+
 } // end namespace itk
 
 #endif

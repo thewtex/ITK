@@ -63,8 +63,7 @@ VelocityFieldTransform<TScalar, NDimensions>
 template <typename TScalar, unsigned int NDimensions>
 VelocityFieldTransform<TScalar, NDimensions>::
 ~VelocityFieldTransform()
-{
-}
+{}
 
 template <typename TScalar, unsigned int NDimensions>
 void
@@ -110,6 +109,7 @@ VelocityFieldTransform<TScalar, NDimensions>
 ::GetInverseTransform() const
 {
   Pointer inverseTransform = New();
+
   if( this->GetInverse( inverseTransform ) )
     {
     return inverseTransform.GetPointer();
@@ -121,7 +121,8 @@ VelocityFieldTransform<TScalar, NDimensions>
 }
 
 template <typename TScalar, unsigned int NDimensions>
-void VelocityFieldTransform<TScalar, NDimensions>
+void
+VelocityFieldTransform<TScalar, NDimensions>
 ::SetVelocityField( VelocityFieldType* field )
 {
   itkDebugMacro( "setting VelocityField to " << field );
@@ -216,7 +217,7 @@ template <typename TScalar, unsigned int NDimensions>
 void
 VelocityFieldTransform<TScalar, NDimensions>
 ::SetFixedParametersFromVelocityField() const
-  {
+{
   this->m_FixedParameters.SetSize( VelocityFieldDimension * ( VelocityFieldDimension + 3 ) );
 
   const typename VelocityFieldType::RegionType & fieldRegion =
@@ -268,9 +269,9 @@ VelocityFieldTransform<TScalar, NDimensions>
   rval->Allocate();
 
   ImageRegionConstIterator<DisplacementFieldType> dispIt( toCopy,toCopy->GetLargestPossibleRegion() );
-  ImageRegionIterator<DisplacementFieldType> cloneDispIt( rval,rval->GetLargestPossibleRegion() );
+  ImageRegionIterator<DisplacementFieldType>      cloneDispIt( rval,rval->GetLargestPossibleRegion() );
   for( dispIt.GoToBegin(), cloneDispIt.GoToBegin(); !dispIt.IsAtEnd() && !cloneDispIt.IsAtEnd();
-      ++dispIt, ++cloneDispIt )
+       ++dispIt, ++cloneDispIt )
     {
     cloneDispIt.Set( dispIt.Get() );
     }
@@ -284,9 +285,10 @@ VelocityFieldTransform<TScalar, NDimensions>
 {
   // create a new instance
   LightObject::Pointer loPtr = Superclass::InternalClone();
+
   typename Self::Pointer rval =
-    dynamic_cast<Self *>(loPtr.GetPointer());
-  if(rval.IsNull())
+    dynamic_cast<Self *>(loPtr.GetPointer() );
+  if(rval.IsNull() )
     {
     itkExceptionMacro(<< "downcast to type "
                       << this->GetNameOfClass()
@@ -302,7 +304,7 @@ VelocityFieldTransform<TScalar, NDimensions>
   Self *nonConstThis = const_cast<Self *>(this);
   typename DisplacementFieldType::ConstPointer dispField = nonConstThis->GetDisplacementField();
   typename DisplacementFieldType::Pointer cloneDispField =
-    this->CopyDisplacementField(dispField.GetPointer());
+    this->CopyDisplacementField(dispField.GetPointer() );
   rval->GetModifiableInterpolator()->SetInputImage( cloneDispField );
   rval->SetDisplacementField( cloneDispField );
 
@@ -314,11 +316,12 @@ VelocityFieldTransform<TScalar, NDimensions>
   // copy the VelocityField
   // SetFixedParameters allocates the VelocityField
   ImageRegionConstIterator<VelocityFieldType>
-    thisIt( this->m_VelocityField, this->m_VelocityField->GetLargestPossibleRegion() );
+  thisIt( this->m_VelocityField,
+          this->m_VelocityField->GetLargestPossibleRegion() );
   ImageRegionIterator<VelocityFieldType> cloneIt( rval->m_VelocityField,
-    rval->m_VelocityField->GetLargestPossibleRegion() );
+                                                  rval->m_VelocityField->GetLargestPossibleRegion() );
   for( thisIt.GoToBegin(),cloneIt.GoToBegin(); !thisIt.IsAtEnd() && !cloneIt.IsAtEnd();
-      ++thisIt, ++cloneIt )
+       ++thisIt, ++cloneIt )
     {
     cloneIt.Set( thisIt.Get() );
     }
@@ -356,7 +359,7 @@ VelocityFieldTransform<TScalar, NDimensions>
   os << indent << "LowerTimeBound: " << this->m_LowerTimeBound << std::endl;
   os << indent << "UpperTimeBound: " << this->m_UpperTimeBound << std::endl;
   os << indent << "NumberOfIntegrationSteps: "
-    << this->m_NumberOfIntegrationSteps << std::endl;
+     << this->m_NumberOfIntegrationSteps << std::endl;
 }
 
 } // namespace itk

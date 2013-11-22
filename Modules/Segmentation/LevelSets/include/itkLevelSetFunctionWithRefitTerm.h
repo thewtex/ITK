@@ -49,7 +49,7 @@ namespace itk
  * \ingroup ITKLevelSets
  */
 template< typename TImageType, typename TSparseImageType >
-class LevelSetFunctionWithRefitTerm:
+class LevelSetFunctionWithRefitTerm :
   public LevelSetFunction< TImageType >
 {
 public:
@@ -74,7 +74,7 @@ public:
   typedef typename Superclass::NeighborhoodScalesType NeighborhoodScalesType;
   typedef typename Superclass::TimeStepType           TimeStepType;
 
-  typedef typename NeighborhoodType::SizeValueType    NeighborhoodSizeValueType;
+  typedef typename NeighborhoodType::SizeValueType NeighborhoodSizeValueType;
 
   /** Index type derived from the ImageType. */
   typedef typename ImageType::IndexType IndexType;
@@ -89,26 +89,34 @@ public:
   typedef typename NodeType::NodeDataType NormalVectorType;
 
   /** Set the relative weight of the refitting term. */
-  void SetRefitWeight(const ScalarValueType w)
+  void
+  SetRefitWeight(const ScalarValueType w)
   {
     m_RefitWeight = w;
   }
 
   /** This is the weight for propagation terms (other than refitting)
    * that can be defined by subclasses. */
-  void SetOtherPropagationWeight(const ScalarValueType w)
+  void
+  SetOtherPropagationWeight(const ScalarValueType w)
   {
     m_OtherPropagationWeight = w;
   }
 
   /** Sets the sparse image which has nodes containing the member variable
       m_Curvature used in refitting. */
-  void SetSparseTargetImage(SparseImageType *im)
-  { m_SparseTargetImage = im; }
+  void
+  SetSparseTargetImage(SparseImageType *im)
+  {
+    m_SparseTargetImage = im;
+  }
 
   /** Returns the sparse image. */
-  SparseImageType * GetSparseTargetImage() const
-  { return m_SparseTargetImage; }
+  SparseImageType *
+  GetSparseTargetImage() const
+  {
+    return m_SparseTargetImage;
+  }
 
   /** Computes the time step for an update given a global data structure.
    * This calls the ComputeGlobalTimeStep method defined in LevelSetFunction
@@ -141,9 +149,10 @@ protected:
   /** Called by PropagationSpeed and added on to the refitting term. Function
    * classes derived from this class should define this method for their
    * propagation speed, NOT the actual PropagationSpeed method. */
-  virtual ScalarValueType OtherPropagationSpeed(const NeighborhoodType &,
-                                                const FloatOffsetType &,
-                                                GlobalDataStruct * = 0) const
+  virtual ScalarValueType
+  OtherPropagationSpeed(const NeighborhoodType &,
+                        const FloatOffsetType &,
+                        GlobalDataStruct * = 0) const
   {
     return NumericTraits< ScalarValueType >::Zero;
   }
@@ -159,8 +168,8 @@ private:
   ScalarValueType m_MinVectorNorm;
 
   /** Constants used in computations. */
-  static const NeighborhoodSizeValueType    m_NumVertex;
-  static const ScalarValueType              m_DimConst;
+  static const NeighborhoodSizeValueType m_NumVertex;
+  static const ScalarValueType           m_DimConst;
 };
 } // end namespace itk
 

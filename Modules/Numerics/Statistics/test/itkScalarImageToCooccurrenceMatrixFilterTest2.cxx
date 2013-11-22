@@ -19,17 +19,16 @@
 // Insight classes
 #include "itkImageRegionIterator.h"
 
-
 #include "itkScalarImageToCooccurrenceMatrixFilter.h"
 
-int itkScalarImageToCooccurrenceMatrixFilterTest2(int, char* [] )
+int
+itkScalarImageToCooccurrenceMatrixFilterTest2(int, char* [] )
 {
 
   //Data definitions
-  const unsigned int  IMGWIDTH         =  5;
-  const unsigned int  IMGHEIGHT        =  5;
-  const unsigned int  NDIMENSION       =  2;
-
+  const unsigned int IMGWIDTH         =  5;
+  const unsigned int IMGHEIGHT        =  5;
+  const unsigned int NDIMENSION       =  2;
 
   //------------------------------------------------------
   //Create a simple test images
@@ -38,10 +37,8 @@ int itkScalarImageToCooccurrenceMatrixFilterTest2(int, char* [] )
 
   typedef itk::ImageRegionIterator< InputImageType > InputImageIterator;
 
-
   InputImageType::Pointer image = InputImageType::New();
   InputImageType::Pointer mask = InputImageType::New();
-
 
   InputImageType::SizeType inputImageSize = {{ IMGWIDTH, IMGHEIGHT }};
 
@@ -123,16 +120,16 @@ int itkScalarImageToCooccurrenceMatrixFilterTest2(int, char* [] )
     {
 
     typedef itk::Statistics::ScalarImageToCooccurrenceMatrixFilter<
-      InputImageType> FilterType;
+        InputImageType> FilterType;
 
     FilterType::Pointer filter = FilterType::New();
 
     filter->SetInput(image);
 
-    InputImageType::OffsetType offset1 = {{0, 1}};
-    InputImageType::OffsetType offset2 = {{1, 0}};
+    InputImageType::OffsetType      offset1 = {{0, 1}};
+    InputImageType::OffsetType      offset2 = {{1, 0}};
     FilterType::OffsetVectorPointer offsetV =
-    FilterType::OffsetVector::New();
+      FilterType::OffsetVector::New();
     offsetV->push_back(offset1);
     offsetV->push_back(offset2);
 
@@ -176,7 +173,7 @@ int itkScalarImageToCooccurrenceMatrixFilterTest2(int, char* [] )
       std::cerr << "Error:" << std::endl;
       std::cerr << "The histogram was calculated incorrectly" << std::endl;
       std::cerr << "Expected 4, 0, 0, 0, 4 got " << ooF << ", " << ttF  << ", " <<
-      otF  << ", " << toF  << ", " << totalF << std::endl << std::endl;
+        otF  << ", " << toF  << ", " << totalF << std::endl << std::endl;
       passed = false;
       }
 
@@ -214,7 +211,7 @@ int itkScalarImageToCooccurrenceMatrixFilterTest2(int, char* [] )
       std::cerr << "Error:" << std::endl;
       std::cerr << "The histogram was calculated incorrectly" << std::endl;
       std::cerr << "Expected 16, 16, 14, 14, 64 got " << ooF << ", " << ttF  << ", " <<
-      otF  << ", " << toF  << ", " << totalF << std::endl << std::endl;
+        otF  << ", " << toF  << ", " << totalF << std::endl << std::endl;
       passed = false;
       }
 
@@ -253,13 +250,12 @@ int itkScalarImageToCooccurrenceMatrixFilterTest2(int, char* [] )
     ttF = hist->GetFrequency(two_two);
     totalF = hist->GetTotalFrequency();
 
-
     if( ooF != 24 || ttF != 16 || otF != 20 || toF != 20 || ooF + ttF + otF + toF != totalF)
       {
       std::cerr << "Error:" << std::endl;
       std::cerr << "The histogram was calculated incorrectly" << std::endl;
       std::cerr << "Expected 24, 16, 20, 20, 80 got " << ooF << ", " << ttF  << ", " <<
-      otF  << ", " << toF  << ", " << totalF << std::endl << std::endl;
+        otF  << ", " << toF  << ", " << totalF << std::endl << std::endl;
       passed = false;
       }
 
@@ -283,7 +279,7 @@ int itkScalarImageToCooccurrenceMatrixFilterTest2(int, char* [] )
       std::cerr << "Error:" << std::endl;
       std::cerr << "The histogram was calculated incorrectly" << std::endl;
       std::cerr << "Expected 0, 0, 0, 0, 4 got " << ooF << ", " << ttF  << ", " <<
-      otF  << ", " << toF  << ", " << totalF << std::endl << std::endl;
+        otF  << ", " << toF  << ", " << totalF << std::endl << std::endl;
       passed = false;
       }
 
@@ -304,10 +300,9 @@ int itkScalarImageToCooccurrenceMatrixFilterTest2(int, char* [] )
       std::cerr << "Error:" << std::endl;
       std::cerr << "The histogram was calculated incorrectly" << std::endl;
       std::cerr << "Expected 0, 0, 0, 0, 24 got " << ooF << ", " << ttF  << ", " <<
-      otF  << ", " << toF  << ", " << totalF << std::endl << std::endl;
+        otF  << ", " << toF  << ", " << totalF << std::endl << std::endl;
       passed = false;
       }
-
 
     if (!passed)
       {

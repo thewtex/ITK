@@ -101,6 +101,7 @@ VotingBinaryIterativeHoleFillingImageFilter< TInputImage >
   Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Radius: " << m_Radius << std::endl;
   os << indent << "Foreground value : "
      << static_cast< typename NumericTraits< InputPixelType >::PrintType >( m_ForegroundValue ) << std::endl;
@@ -111,6 +112,7 @@ VotingBinaryIterativeHoleFillingImageFilter< TInputImage >
   os << indent << "Majority Threshold           : " << m_MajorityThreshold << std::endl;
   os << indent << "Number of Pixels Changed     : " << m_NumberOfPixelsChanged << std::endl;
 }
+
 } // end namespace itk
 
 #endif

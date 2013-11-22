@@ -110,14 +110,14 @@ namespace itk
 template< typename TInputImage,
           typename TFeatureImage,
           typename TOutputPixelType = float >
-class GeodesicActiveContourShapePriorLevelSetImageFilter:
+class GeodesicActiveContourShapePriorLevelSetImageFilter :
   public ShapePriorSegmentationLevelSetImageFilter< TInputImage, TFeatureImage,
                                                     TOutputPixelType >
 {
 public:
   /** Standard class typedefs */
   typedef GeodesicActiveContourShapePriorLevelSetImageFilter
-  Self;
+    Self;
   typedef ShapePriorSegmentationLevelSetImageFilter< TInputImage, TFeatureImage,
                                                      TOutputPixelType > Superclass;
 
@@ -133,9 +133,9 @@ public:
   /** Type of the segmentation function */
   typedef GeodesicActiveContourShapePriorLevelSetFunction< OutputImageType,
                                                            FeatureImageType >
-  GeodesicActiveContourFunctionType;
+    GeodesicActiveContourFunctionType;
   typedef typename GeodesicActiveContourFunctionType::Pointer
-  GeodesicActiveContourFunctionPointer;
+    GeodesicActiveContourFunctionPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(GeodesicActiveContourShapePriorLevelSetImageFilter,
@@ -146,7 +146,8 @@ public:
 
   /** Set the value of sigma used to compute the edge potential map derivatives
     */
-  void SetDerivativeSigma(float value)
+  void
+  SetDerivativeSigma(float value)
   {
     if ( value != m_GeodesicActiveContourFunction->GetDerivativeSigma() )
       {
@@ -157,8 +158,11 @@ public:
 
   /** Get the value of sigma used to compute the edge potential map derivatives.
     */
-  float GetDerivativeSigma() const
-  { return m_GeodesicActiveContourFunction->GetDerivativeSigma(); }
+  float
+  GetDerivativeSigma() const
+  {
+    return m_GeodesicActiveContourFunction->GetDerivativeSigma();
+  }
 
 protected:
   ~GeodesicActiveContourShapePriorLevelSetImageFilter() {}

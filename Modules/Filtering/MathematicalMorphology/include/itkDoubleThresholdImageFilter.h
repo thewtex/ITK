@@ -51,7 +51,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage >
-class DoubleThresholdImageFilter:
+class DoubleThresholdImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -130,7 +130,8 @@ public:
 
 protected:
   DoubleThresholdImageFilter();
-  virtual ~DoubleThresholdImageFilter() {}
+  virtual
+  ~DoubleThresholdImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** DoubleThresholdImageFilter needs all of the input. So it must

@@ -29,13 +29,14 @@
 #include "itkCylinderSpatialObject.h"
 // Software Guide : EndCodeSnippet
 
-int main(int, char* [])
+int
+main(int, char* [])
 {
   // Software Guide : BeginLatex
   // An \doxygen{CylinderSpatialObject} exists only in 3D, therefore, it is not templated.
   // Software Guide : EndLatex
   // Software Guide : BeginCodeSnippet
-  typedef itk::CylinderSpatialObject   CylinderType;
+  typedef itk::CylinderSpatialObject CylinderType;
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex
@@ -73,7 +74,7 @@ int main(int, char* [])
   insidePoint[1]=2;
   insidePoint[2]=0;
   std::cout << "Is my point "<< insidePoint << " inside the cylinder? : "
-    << myCylinder->IsInside(insidePoint) << std::endl;
+            << myCylinder->IsInside(insidePoint) << std::endl;
   // Software Guide : EndCodeSnippet
 
   // Software Guide : BeginLatex

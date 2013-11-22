@@ -62,15 +62,12 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkConnectedThresholdImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImage.h"
 #include "itkCastImageFilter.h"
-
 
 //  Software Guide : BeginLatex
 //
@@ -88,12 +85,11 @@
 #include "itkCurvatureFlowImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-
-int main( int argc, char *argv[])
+int
+main( int argc, char *argv[])
 {
   if( argc < 7 )
     {
@@ -102,7 +98,6 @@ int main( int argc, char *argv[])
     std::cerr << " inputImage  outputImage seedX seedY lowerThreshold upperThreshold" << std::endl;
     return 1;
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -113,16 +108,15 @@ int main( int argc, char *argv[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   float           InternalPixelType;
-  const     unsigned int    Dimension = 2;
-  typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
+  typedef   float InternalPixelType;
+  const     unsigned int Dimension = 2;
+  typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
   // Software Guide : EndCodeSnippet
-
 
   typedef unsigned char                            OutputPixelType;
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
   typedef itk::CastImageFilter< InternalImageType, OutputImageType >
-                                                   CastingFilterType;
+    CastingFilterType;
   CastingFilterType::Pointer caster = CastingFilterType::New();
 
   // We instantiate reader and writer types
@@ -135,7 +129,6 @@ int main( int argc, char *argv[])
 
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -150,7 +143,6 @@ int main( int argc, char *argv[])
     CurvatureFlowImageFilterType;
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Then the filter is created by invoking the \code{New()} method and
@@ -160,9 +152,8 @@ int main( int argc, char *argv[])
 
   // Software Guide : BeginCodeSnippet
   CurvatureFlowImageFilterType::Pointer smoothing =
-                         CurvatureFlowImageFilterType::New();
+    CurvatureFlowImageFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -173,7 +164,7 @@ int main( int argc, char *argv[])
 
   // Software Guide : BeginCodeSnippet
   typedef itk::ConnectedThresholdImageFilter< InternalImageType,
-                                    InternalImageType > ConnectedFilterType;
+                                              InternalImageType > ConnectedFilterType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -186,7 +177,6 @@ int main( int argc, char *argv[])
   // Software Guide : BeginCodeSnippet
   ConnectedFilterType::Pointer connectedThreshold = ConnectedFilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -205,7 +195,6 @@ int main( int argc, char *argv[])
   writer->SetInput( caster->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The CurvatureFlowImageFilter requires a couple of parameters to
@@ -219,7 +208,6 @@ int main( int argc, char *argv[])
   smoothing->SetNumberOfIterations( 5 );
   smoothing->SetTimeStep( 0.125 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -243,7 +231,6 @@ int main( int argc, char *argv[])
   connectedThreshold->SetUpper(  upperThreshold  );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The output of this filter is a binary image with zero-value pixels
@@ -258,7 +245,6 @@ int main( int argc, char *argv[])
   connectedThreshold->SetReplaceValue( 255 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The initialization of the algorithm requires the user to provide a seed
@@ -271,16 +257,14 @@ int main( int argc, char *argv[])
   //
   //  Software Guide : EndLatex
 
-  InternalImageType::IndexType  index;
+  InternalImageType::IndexType index;
 
   index[0] = atoi( argv[3] );
   index[1] = atoi( argv[4] );
 
-
   // Software Guide : BeginCodeSnippet
   connectedThreshold->SetSeed( index );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -301,7 +285,6 @@ int main( int argc, char *argv[])
     std::cerr << excep << std::endl;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -356,7 +339,6 @@ int main( int argc, char *argv[])
   //  filter.
   //
   //  Software Guide : EndLatex
-
 
   return 0;
 }

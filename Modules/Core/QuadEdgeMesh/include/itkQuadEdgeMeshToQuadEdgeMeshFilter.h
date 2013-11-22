@@ -33,7 +33,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TInputMesh, typename TOutputMesh >
-class QuadEdgeMeshToQuadEdgeMeshFilter:
+class QuadEdgeMeshToQuadEdgeMeshFilter :
   public MeshToMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
@@ -57,22 +57,22 @@ public:
   typedef typename InputMeshType::CellDataContainer  InputCellDataContainer;
 
   typedef typename InputPointDataContainer::ConstPointer
-  InputPointDataContainerConstPointer;
+    InputPointDataContainerConstPointer;
   typedef typename InputMeshType::PointsContainerConstIterator
-  InputPointsContainerConstIterator;
+    InputPointsContainerConstIterator;
   typedef typename InputMeshType::PointsContainerConstPointer
-  InputPointsContainerConstPointer;
+    InputPointsContainerConstPointer;
   typedef typename InputMeshType::CellsContainerConstIterator
-  InputCellsContainerConstIterator;
+    InputCellsContainerConstIterator;
   typedef typename InputMeshType::CellsContainerConstPointer
-  InputCellsContainerConstPointer;
+    InputCellsContainerConstPointer;
 
   typedef typename InputMeshType::EdgeCellType    InputEdgeCellType;
   typedef typename InputMeshType::PolygonCellType InputPolygonCellType;
   typedef typename InputMeshType::PointIdList     InputPointIdList;
   typedef typename InputMeshType::CellTraits      InputCellTraits;
   typedef typename InputCellTraits::PointIdInternalIterator
-  InputPointsIdInternalIterator;
+    InputPointsIdInternalIterator;
 
   typedef typename InputQEPrimal::IteratorGeom InputQEIterator;
 
@@ -87,11 +87,11 @@ public:
   typedef typename OutputMeshType::VectorType      OutputVectorType;
   typedef typename OutputQEPrimal::IteratorGeom    OutputQEIterator;
   typedef typename OutputMeshType::PointsContainerIterator
-  OutputPointsContainerIterator;
+    OutputPointsContainerIterator;
   typedef typename OutputMeshType::PointsContainerPointer
-  OutputPointsContainerPointer;
+    OutputPointsContainerPointer;
   typedef typename OutputMeshType::PointsContainerConstPointer
-  OutputPointsContainerConstPointer;
+    OutputPointsContainerConstPointer;
 
   typedef typename OutputMeshType::PointDataContainer OutputPointDataContainer;
   typedef typename OutputMeshType::CellDataContainer  OutputCellDataContainer;
@@ -102,7 +102,8 @@ public:
 
 protected:
   QuadEdgeMeshToQuadEdgeMeshFilter();
-  virtual ~QuadEdgeMeshToQuadEdgeMeshFilter() {}
+  virtual
+  ~QuadEdgeMeshToQuadEdgeMeshFilter() {}
 
   virtual void CopyInputMeshToOutputMesh();
 
@@ -123,6 +124,7 @@ protected:
 private:
   QuadEdgeMeshToQuadEdgeMeshFilter(const Self &); // Not impl.
   void operator=(const Self &);                   // Not impl.
+
 };
 
 //
@@ -131,7 +133,8 @@ private:
 // facilitate their reuse in multiple scenarios.
 //
 template< typename TInputMesh, typename TOutputMesh >
-void CopyMeshToMesh(const TInputMesh *in, TOutputMesh *out)
+void
+CopyMeshToMesh(const TInputMesh *in, TOutputMesh *out)
 {
   CopyMeshToMeshPoints(in, out);
   CopyMeshToMeshEdgeCells(in, out);
@@ -142,7 +145,8 @@ void CopyMeshToMesh(const TInputMesh *in, TOutputMesh *out)
 
 // ---------------------------------------------------------------------
 template< typename TInputMesh, typename TOutputMesh >
-void CopyMeshToMeshCellData(const TInputMesh *in, TOutputMesh *out)
+void
+CopyMeshToMeshCellData(const TInputMesh *in, TOutputMesh *out)
 {
   typedef typename TInputMesh::CellDataContainer        InputCellDataContainer;
   typedef typename TOutputMesh::CellDataContainer       OutputCellDataContainer;
@@ -174,7 +178,8 @@ void CopyMeshToMeshCellData(const TInputMesh *in, TOutputMesh *out)
 
 // ---------------------------------------------------------------------
 template< typename TInputMesh, typename TOutputMesh >
-void CopyMeshToMeshPointData(const TInputMesh *in, TOutputMesh *out)
+void
+CopyMeshToMeshPointData(const TInputMesh *in, TOutputMesh *out)
 {
   typedef typename TOutputMesh::PointDataContainer   OutputPointDataContainer;
   typedef typename OutputPointDataContainer::Pointer OutputPointDataContainerPointer;
@@ -205,7 +210,8 @@ void CopyMeshToMeshPointData(const TInputMesh *in, TOutputMesh *out)
 
 // ---------------------------------------------------------------------
 template< typename TInputMesh, typename TOutputMesh >
-void CopyMeshToMeshCells(const TInputMesh *in, TOutputMesh *out)
+void
+CopyMeshToMeshCells(const TInputMesh *in, TOutputMesh *out)
 {
   // Copy cells
   typedef typename TInputMesh::CellsContainer         InputCellsContainer;
@@ -215,7 +221,7 @@ void CopyMeshToMeshCells(const TInputMesh *in, TOutputMesh *out)
   typedef typename TInputMesh::PointIdList            InputPointIdList;
   typedef typename TInputMesh::CellTraits             InputCellTraits;
   typedef typename InputCellTraits::PointIdInternalIterator
-  InputPointsIdInternalIterator;
+    InputPointsIdInternalIterator;
 
   out->SetCellsAllocationMethod(TOutputMesh::CellsAllocatedDynamicallyCellByCell);
 
@@ -248,7 +254,8 @@ void CopyMeshToMeshCells(const TInputMesh *in, TOutputMesh *out)
 
 // ---------------------------------------------------------------------
 template< typename TInputMesh, typename TOutputMesh >
-void CopyMeshToMeshEdgeCells(const TInputMesh *in, TOutputMesh *out)
+void
+CopyMeshToMeshEdgeCells(const TInputMesh *in, TOutputMesh *out)
 {
   // Copy Edge Cells
   typedef typename TInputMesh::CellsContainer         InputCellsContainer;
@@ -278,15 +285,16 @@ void CopyMeshToMeshEdgeCells(const TInputMesh *in, TOutputMesh *out)
 
 // ---------------------------------------------------------------------
 template< typename TInputMesh, typename TOutputMesh >
-void CopyMeshToMeshPoints(const TInputMesh *in, TOutputMesh *out)
+void
+CopyMeshToMeshPoints(const TInputMesh *in, TOutputMesh *out)
 {
   // Copy points
-  typedef typename TInputMesh::PointsContainerConstPointer   InputPointsContainerConstPointer;
-  typedef typename TInputMesh::PointsContainerConstIterator  InputPointsContainerConstIterator;
+  typedef typename TInputMesh::PointsContainerConstPointer  InputPointsContainerConstPointer;
+  typedef typename TInputMesh::PointsContainerConstIterator InputPointsContainerConstIterator;
 
-  typedef typename TOutputMesh::PointsContainer             OutputPointsContainer;
-  typedef typename TOutputMesh::PointsContainerPointer      OutputPointsContainerPointer;
-  typedef typename TOutputMesh::PointType                   OutputPointType;
+  typedef typename TOutputMesh::PointsContainer        OutputPointsContainer;
+  typedef typename TOutputMesh::PointsContainerPointer OutputPointsContainerPointer;
+  typedef typename TOutputMesh::PointType              OutputPointType;
 
   InputPointsContainerConstPointer inPoints = in->GetPoints();
 
@@ -295,13 +303,13 @@ void CopyMeshToMeshPoints(const TInputMesh *in, TOutputMesh *out)
     InputPointsContainerConstIterator inIt  = inPoints->Begin();
     InputPointsContainerConstIterator inEnd = inPoints->End();
 
-    OutputPointsContainerPointer      oPoints = out->GetPoints();
+    OutputPointsContainerPointer oPoints = out->GetPoints();
     if( oPoints.IsNull() )
       {
       oPoints = OutputPointsContainer::New();
       out->SetPoints( oPoints );
       }
-    OutputPointType                   pOut;
+    OutputPointType pOut;
 
     while ( inIt != inEnd )
       {
@@ -311,6 +319,7 @@ void CopyMeshToMeshPoints(const TInputMesh *in, TOutputMesh *out)
       }
     }
 }
+
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION

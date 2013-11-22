@@ -17,14 +17,15 @@
  *=========================================================================*/
 // The example tests the class itk::Statistics::JointDomainImageToListSampleAdaptor.
 
-
 #include "itkJointDomainImageToListSampleAdaptor.h"
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkMath.h"
 
-int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
+int
+itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
 {
   const unsigned int MeasurementVectorSize = 8;
+
   typedef unsigned long                                                      MeasurementComponentType;
   typedef itk::FixedArray< MeasurementComponentType, MeasurementVectorSize > PixelType;
 
@@ -39,7 +40,7 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
   start.Fill(0);
   size.Fill(10);
 
-  unsigned long totalSize = size[0] * size[1] * size[2];
+  unsigned long         totalSize = size[0] * size[1] * size[2];
   ImageType::RegionType region( start, size );
   image->SetRegions( region );
   image->Allocate();
@@ -50,7 +51,7 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
 
   it.GoToBegin();
 
-  while (!it.IsAtEnd())
+  while (!it.IsAtEnd() )
     {
     PixelType value;
     for( unsigned int i=0; i< MeasurementVectorSize; i++ )
@@ -63,10 +64,10 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
 
   //define an adaptor type
   typedef itk::Statistics::JointDomainImageToListSampleAdaptor<
-    ImageType > JointDomainImageToListSampleAdaptorType;
+      ImageType > JointDomainImageToListSampleAdaptorType;
   JointDomainImageToListSampleAdaptorType::Pointer adaptor
-                              = JointDomainImageToListSampleAdaptorType::New();
- //Test if the methods throw exceptions if invoked before setting the image
+    = JointDomainImageToListSampleAdaptorType::New();
+  //Test if the methods throw exceptions if invoked before setting the image
   try
     {
     // calling Size() method prematurely in order to trigger an exception.
@@ -105,7 +106,7 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
   try
     {
     // calling GetImage() method prematurely in order to trigger an exception.
-    adaptor->GetImage( );
+    adaptor->GetImage();
     std::cerr << "Exception should have been thrown since the input image \
                   is not set yet" << std::endl;
     }
@@ -126,35 +127,32 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
     std::cerr << "Caught expected exception: " << excp << std::endl;
     }
 
-
   adaptor->SetImage ( image );
 
   //check size
-  if (totalSize != adaptor->Size())
+  if (totalSize != adaptor->Size() )
     {
     std::cerr << "Size() is not returning the correct size"<< std::endl;
     return EXIT_FAILURE;
     }
 
   //check frequency
-  if (totalSize != adaptor->GetTotalFrequency())
+  if (totalSize != adaptor->GetTotalFrequency() )
     {
     std::cerr << "GetTotalFrequency() is not returning the correct frequency"<< std::endl;
     return EXIT_FAILURE;
     }
-
 
   adaptor->Print( std::cout );
 
   ImageType::IndexType index;
   ImageType::PixelType pixel;
 
-  JointDomainImageToListSampleAdaptorType::InstanceIdentifier    iid;
+  JointDomainImageToListSampleAdaptorType::InstanceIdentifier iid;
   typedef JointDomainImageToListSampleAdaptorType::MeasurementVectorType MeasurementVectorType;
-  JointDomainImageToListSampleAdaptorType::PointType             tempPoint;
+  JointDomainImageToListSampleAdaptorType::PointType tempPoint;
 
-
-  MeasurementVectorType   measurementVector;
+  MeasurementVectorType measurementVector;
 
   for ( unsigned int i=0; i < size[2]; i++ )
     {
@@ -180,7 +178,7 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
         iid = adaptor->GetImage()->ComputeOffset( index );
 
         MeasurementVectorType measurementVectorFromAdaptor = adaptor->GetMeasurementVector(iid);
-        for ( unsigned int m=0; m < 5; m ++ )
+        for ( unsigned int m=0; m < 5; m++ )
           {
           if ( !itk::Math::FloatAlmostEqual(measurementVectorFromAdaptor[m],measurementVector[m],4,1.0E-6) )
             {
@@ -203,7 +201,7 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-  adaptor->UsePixelContainerOn(  );
+  adaptor->UsePixelContainerOn();
   if ( adaptor->GetUsePixelContainer() != true )
     {
     std::cerr << "Error in Set/Get UsePixelContainerOn method" << std::endl;
@@ -212,18 +210,20 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
 
   //Get measurement vector from the pixel container and using ComputeIndex and compare
   //the result
-  JointDomainImageToListSampleAdaptorType::MeasurementVectorType  v1 = adaptor->GetMeasurementVector( 4 );
+  JointDomainImageToListSampleAdaptorType::MeasurementVectorType v1 = adaptor->GetMeasurementVector( 4 );
   adaptor->UsePixelContainerOff();
-  JointDomainImageToListSampleAdaptorType::MeasurementVectorType  v2 = adaptor->GetMeasurementVector( 4 );
+  JointDomainImageToListSampleAdaptorType::MeasurementVectorType v2 = adaptor->GetMeasurementVector( 4 );
 
   const double epsilon = 1e-3;
 
-  for ( unsigned int m=0; m < 5; m ++ )
+  for ( unsigned int m=0; m < 5; m++ )
     {
     if ( !itk::Math::FloatAlmostEqual(v1[m],v2[m],4,epsilon) )
       {
-      std::cerr << "Accessing the measurement vector using the two method produced different \
-                  result " << std::endl;
+      std::cerr <<
+      "Accessing the measurement vector using the two method produced different \
+                  result "                                                                                  <<
+      std::endl;
       return EXIT_FAILURE;
       }
     }
@@ -263,16 +263,16 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
       }
 
     JointDomainImageToListSampleAdaptorType::InstanceIdentifier iid2 = 0;
-    while (s_iter != adaptor->End())
+    while (s_iter != adaptor->End() )
       {
       if (adaptor->GetMeasurementVector(iid2) !=
-          s_iter.GetMeasurementVector())
+          s_iter.GetMeasurementVector() )
         {
         std::cerr << "Iterator::GetMeasurementVector (forward) failed"
                   << std::endl;
         return EXIT_FAILURE;
         }
-      if (iid2 != s_iter.GetInstanceIdentifier())
+      if (iid2 != s_iter.GetInstanceIdentifier() )
         {
         std::cerr << "Iterator::GetInstanceIdentifier (forward) failed"
                   << std::endl;
@@ -292,7 +292,7 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
       ++s_iter;
       }
 
-    if (s_iter != adaptor->End())
+    if (s_iter != adaptor->End() )
       {
       std::cerr << "Iterator::End (forward) failed" << std::endl;
       return EXIT_FAILURE;
@@ -300,12 +300,11 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
 
     }
 
-
   //Test the iterators
   std::cerr << "Const Iterators..." << std::endl;
     {
     // forward iterator
-    typedef JointDomainImageToListSampleAdaptorType::ConstIterator  ConstIteratorType;
+    typedef JointDomainImageToListSampleAdaptorType::ConstIterator ConstIteratorType;
 
     ConstIteratorType s_iter = adaptor->Begin();
 
@@ -329,7 +328,7 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
       }
 
     // copy from non-const iterator
-    JointDomainImageToListSampleAdaptorType::Iterator nonconst_iter = adaptor->Begin();
+    JointDomainImageToListSampleAdaptorType::Iterator      nonconst_iter = adaptor->Begin();
     JointDomainImageToListSampleAdaptorType::ConstIterator s2_iter(nonconst_iter);
     if (s2_iter != s_iter)
       {
@@ -346,16 +345,16 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
       }
 
     JointDomainImageToListSampleAdaptorType::InstanceIdentifier iid3 = 0;
-    while (s_iter != adaptor->End())
+    while (s_iter != adaptor->End() )
       {
       if (adaptor->GetMeasurementVector(iid3) !=
-          s_iter.GetMeasurementVector())
+          s_iter.GetMeasurementVector() )
         {
         std::cerr << "Iterator::GetMeasurementVector (forward) failed"
                   << std::endl;
         return EXIT_FAILURE;
         }
-      if (iid3 != s_iter.GetInstanceIdentifier())
+      if (iid3 != s_iter.GetInstanceIdentifier() )
         {
         std::cerr << "Iterator::GetInstanceIdentifier (forward) failed"
                   << std::endl;
@@ -370,14 +369,13 @@ int itkJointDomainImageToListSampleAdaptorTest(int, char* [] )
       ++s_iter;
       }
 
-    if (s_iter != adaptor->End())
+    if (s_iter != adaptor->End() )
       {
       std::cerr << "Iterator::End (forward) failed" << std::endl;
       return EXIT_FAILURE;
       }
 
     }
-
 
   std::cerr << "[PASSED]" << std::endl;
   return EXIT_SUCCESS;

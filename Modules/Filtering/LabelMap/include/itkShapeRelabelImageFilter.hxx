@@ -42,6 +42,7 @@ ShapeRelabelImageFilter< TInputImage >
 
   // We need all the input.
   InputImagePointer input = const_cast< InputImageType * >( this->GetInput() );
+
   if ( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
@@ -120,5 +121,6 @@ ShapeRelabelImageFilter< TInputImage >
   os << indent << "Attribute: "  << LabelObjectType::GetNameFromAttribute(m_Attribute) << " (" << m_Attribute << ")"
      << std::endl;
 }
+
 } // end namespace itk
 #endif

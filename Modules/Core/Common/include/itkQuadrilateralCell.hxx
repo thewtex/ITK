@@ -510,7 +510,8 @@ QuadrilateralCell< TCellInterface >
 template< typename TCellInterface >
 void
 QuadrilateralCell< TCellInterface >
-::EvaluateLocation(int & itkNotUsed(subId), const PointsContainer *points, const CoordRepType pointCoords[PointDimension],
+::EvaluateLocation(int & itkNotUsed(
+                     subId), const PointsContainer *points, const CoordRepType pointCoords[PointDimension],
                    CoordRepType x[PointDimension], InterpolationWeightType *weights)
 {
   this->InterpolationFunctions(pointCoords, weights);

@@ -36,9 +36,7 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImageFileReader.h"
-
 
 // Software Guide : BeginLatex
 //
@@ -62,8 +60,8 @@
 #include "itkImage.h"
 // Software Guide : EndCodeSnippet
 
-
-int main(int argc, char * argv[] )
+int
+main(int argc, char * argv[] )
 {
 
   if( argc < 3 )
@@ -71,7 +69,6 @@ int main(int argc, char * argv[] )
     std::cerr << "Usage: IsoSurfaceExtraction  inputImageFile   objectValue " << std::endl;
     return EXIT_FAILURE;
     }
-
 
 // Software Guide : BeginLatex
 //
@@ -82,11 +79,10 @@ int main(int argc, char * argv[] )
 
 // Software Guide : BeginCodeSnippet
   const unsigned int Dimension = 3;
-  typedef unsigned char  PixelType;
+  typedef unsigned char PixelType;
 
-  typedef itk::Image< PixelType, Dimension >   ImageType;
+  typedef itk::Image< PixelType, Dimension > ImageType;
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -96,7 +92,7 @@ int main(int argc, char * argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< ImageType >    ReaderType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
 // Software Guide : EndCodeSnippet
@@ -112,7 +108,6 @@ int main(int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
 // Software Guide : BeginLatex
 //
 // The type of the \doxygen{Mesh} is instantiated by specifying the type to be
@@ -124,9 +119,8 @@ int main(int argc, char * argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::Mesh<double>                         MeshType;
+  typedef itk::Mesh<double> MeshType;
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -136,13 +130,11 @@ int main(int argc, char * argv[] )
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
-  typedef itk::BinaryMask3DMeshSource< ImageType, MeshType >   MeshSourceType;
+  typedef itk::BinaryMask3DMeshSource< ImageType, MeshType > MeshSourceType;
 
   MeshSourceType::Pointer meshSource = MeshSourceType::New();
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -163,7 +155,6 @@ int main(int argc, char * argv[] )
   meshSource->SetObjectValue( objectValue );
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // The input to the surface extraction filter is taken from the output of
@@ -173,11 +164,9 @@ int main(int argc, char * argv[] )
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
   meshSource->SetInput( reader->GetOutput() );
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -200,7 +189,6 @@ int main(int argc, char * argv[] )
     }
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // As a way of taking a look at the output Mesh we print out here its number of
@@ -213,7 +201,6 @@ int main(int argc, char * argv[] )
   std::cout << "Cells = " << meshSource->GetNumberOfCells() << std::endl;
 // Software Guide : EndCodeSnippet
 
-
 // Software Guide : BeginLatex
 //
 // This resulting Mesh could be used as input for a deformable model
@@ -221,7 +208,6 @@ int main(int argc, char * argv[] )
 // visualization in an interactive application.
 //
 // Software Guide : EndLatex
-
 
   return EXIT_SUCCESS;
 }

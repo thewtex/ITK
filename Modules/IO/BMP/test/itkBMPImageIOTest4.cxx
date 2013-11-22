@@ -21,13 +21,13 @@
 #include "itkImageRegionConstIterator.h"
 #include <fstream>
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
 
 /* This test check that a lower-left bitmap and an upper-left bitmap
  * representing the same RGB image contains the same data.
  */
-int itkBMPImageIOTest4( int ac, char* av[] )
+int
+itkBMPImageIOTest4( int ac, char* av[] )
 {
 
   if(ac < 3)
@@ -41,17 +41,15 @@ int itkBMPImageIOTest4( int ac, char* av[] )
   typedef itk::ImageFileReader<ImageType>            ReaderType;
   typedef itk::ImageRegionConstIterator< ImageType > IteratorType;
 
-
-  ReaderType::Pointer reader1 = ReaderType::New();
+  ReaderType::Pointer      reader1 = ReaderType::New();
   itk::BMPImageIO::Pointer io1 = itk::BMPImageIO::New();
   reader1->SetImageIO(io1);
   reader1->SetFileName(av[1]);
 
-  ReaderType::Pointer reader2 = ReaderType::New();
+  ReaderType::Pointer      reader2 = ReaderType::New();
   itk::BMPImageIO::Pointer io2 = itk::BMPImageIO::New();
   reader2->SetImageIO(io2);
   reader2->SetFileName(av[2]);
-
 
   try
     {
@@ -65,27 +63,25 @@ int itkBMPImageIOTest4( int ac, char* av[] )
     return EXIT_FAILURE;
     }
 
-
-  if(!io1->GetFileLowerLeft())
+  if(!io1->GetFileLowerLeft() )
     {
-      std::cout << "Expecting a lower-left bitmap, got an upper-left." << std::endl;
-      return EXIT_FAILURE;
+    std::cout << "Expecting a lower-left bitmap, got an upper-left." << std::endl;
+    return EXIT_FAILURE;
     }
 
-  if(io2->GetFileLowerLeft())
+  if(io2->GetFileLowerLeft() )
     {
-      std::cout << "Expecting an upper-left bitmap, got a lower-left." << std::endl;
-      return EXIT_FAILURE;
+    std::cout << "Expecting an upper-left bitmap, got a lower-left." << std::endl;
+    return EXIT_FAILURE;
     }
-
 
   ImageType::RegionType r1 = reader1->GetOutput()->GetLargestPossibleRegion(),
-                        r2 = reader2->GetOutput()->GetLargestPossibleRegion();
+    r2 = reader2->GetOutput()->GetLargestPossibleRegion();
 
   if(r1 != r2)
     {
-      std::cout << "The images must have the same size." << std::endl;
-      return EXIT_FAILURE;
+    std::cout << "The images must have the same size." << std::endl;
+    return EXIT_FAILURE;
     }
 
   IteratorType it1( reader1->GetOutput(), r1 );
@@ -95,9 +91,11 @@ int itkBMPImageIOTest4( int ac, char* av[] )
   it2.GoToBegin();
   while ( !it1.IsAtEnd() )
     {
-    if ( !(it1.Value() == it2.Value()) )
+    if ( !(it1.Value() == it2.Value() ) )
       {
-      std::cout << "An image stored in a lower-left bitmap is different than the same image stored in a upper-left bitmap." << std::endl;
+      std::cout <<
+      "An image stored in a lower-left bitmap is different than the same image stored in a upper-left bitmap." <<
+      std::endl;
       return EXIT_FAILURE;
       }
 

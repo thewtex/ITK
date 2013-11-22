@@ -23,7 +23,8 @@
 #include "itkFEMElement3DC0LinearHexahedronStrain.h"
 
 //
-int itkFEMGenerateMeshTest(int, char *[])
+int
+itkFEMGenerateMeshTest(int, char *[])
 {
   //Need to register default FEM object types,
   //and setup SpatialReader to recognize FEM types

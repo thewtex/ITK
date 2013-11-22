@@ -57,44 +57,45 @@ namespace itk
  *
  */
 template< typename TImage >
-class ConstNeighborhoodIteratorWithOnlyIndex:
+class ConstNeighborhoodIteratorWithOnlyIndex :
   public Neighborhood< char, TImage::ImageDimension >
 {
 public:
 
   /** Type used to refer to space dimensions */
-  typedef unsigned int                  DimensionValueType;
+  typedef unsigned int DimensionValueType;
 
   /** Save the image dimension. */
   itkStaticConstMacro(Dimension, DimensionValueType, TImage::ImageDimension);
 
-  typedef char                          DummyNeighborhoodPixelType;
+  typedef char DummyNeighborhoodPixelType;
 
   /** Standard class typedefs. */
-  typedef ConstNeighborhoodIteratorWithOnlyIndex Self;
-  typedef Neighborhood< DummyNeighborhoodPixelType, itkGetStaticConstMacro(Dimension) >    Superclass;
+  typedef ConstNeighborhoodIteratorWithOnlyIndex                                        Self;
+  typedef Neighborhood< DummyNeighborhoodPixelType, itkGetStaticConstMacro(Dimension) > Superclass;
 
   /** Inherit typedefs from superclass */
-  typedef typename Superclass::OffsetType      OffsetType;
-  typedef typename Superclass::RadiusType      RadiusType;
-  typedef typename Superclass::SizeType        SizeType;
-  typedef typename Superclass::Iterator        Iterator;
-  typedef typename Superclass::ConstIterator   ConstIterator;
+  typedef typename Superclass::OffsetType    OffsetType;
+  typedef typename Superclass::RadiusType    RadiusType;
+  typedef typename Superclass::SizeType      SizeType;
+  typedef typename Superclass::Iterator      Iterator;
+  typedef typename Superclass::ConstIterator ConstIterator;
 
   /** Typedef support for common objects */
-  typedef TImage                                     ImageType;
-  typedef typename TImage::RegionType                RegionType;
-  typedef Index< itkGetStaticConstMacro(Dimension) > IndexType;
+  typedef TImage                                                                        ImageType;
+  typedef typename TImage::RegionType                                                   RegionType;
+  typedef Index< itkGetStaticConstMacro(Dimension) >                                    IndexType;
   typedef Neighborhood< DummyNeighborhoodPixelType, itkGetStaticConstMacro(Dimension) > NeighborhoodType;
 
   /** Type used to refer to the elements in the list of neighbor pixels. */
-  typedef typename NeighborhoodType::NeighborIndexType  NeighborIndexType;
+  typedef typename NeighborhoodType::NeighborIndexType NeighborIndexType;
 
   /** Default constructor */
   ConstNeighborhoodIteratorWithOnlyIndex();
 
   /** Virtual destructor */
-  virtual ~ConstNeighborhoodIteratorWithOnlyIndex() {}
+  virtual
+  ~ConstNeighborhoodIteratorWithOnlyIndex() {}
 
   /** Copy constructor */
   ConstNeighborhoodIteratorWithOnlyIndex(const ConstNeighborhoodIteratorWithOnlyIndex &);
@@ -114,54 +115,62 @@ public:
   OffsetType ComputeInternalIndex(NeighborIndexType n) const;
 
   /** Returns the array of upper loop bounds used during iteration. */
-  IndexType GetBound() const
+  IndexType
+  GetBound() const
   {
     return m_Bound;
   }
 
   /** Returns the loop bound used to define the edge of a single
    * dimension in the itk::Image region. */
-  IndexValueType GetBound(NeighborIndexType n) const
+  IndexValueType
+  GetBound(NeighborIndexType n) const
   {
     return m_Bound[n];
   }
 
   /** Returns a smartpointer to the image on which this iterator operates. */
-  const ImageType * GetImagePointer(void) const
+  const ImageType *
+  GetImagePointer(void) const
   {
     return m_ConstImage;
   }
 
   /** Returns the N-dimensional index of the iterator's position in
    * the image. */
-  virtual IndexType GetIndex(void) const
+  virtual IndexType
+  GetIndex(void) const
   {
     return m_Loop;
   }
 
   /** Returns the image index for neighbor pixel at offset o from the center of
       the neighborhood. */
-  virtual IndexType GetIndex(const OffsetType & o) const
+  virtual IndexType
+  GetIndex(const OffsetType & o) const
   {
     return ( this->GetIndex() + o );
   }
 
   /** Returns the image index for neighbor pixel at index i in the
       neighborhood. */
-  virtual IndexType GetIndex(NeighborIndexType i) const
+  virtual IndexType
+  GetIndex(NeighborIndexType i) const
   {
     return ( this->GetIndex() + this->GetOffset(i) );
   }
 
   /**  Returns the region of iteration. */
-  RegionType GetRegion() const
+  RegionType
+  GetRegion() const
   {
     return m_Region;
   }
 
   /** Returns the N-dimensional starting index of the iterator's position on
    * the image. */
-  IndexType GetBeginIndex() const
+  IndexType
+  GetBeginIndex() const
   {
     return m_BeginIndex;
   }
@@ -185,7 +194,8 @@ public:
 
   /** Virtual method for determining whether the iterator is at the
    * beginning of its iteration region. */
-  virtual bool IsAtBegin() const
+  virtual bool
+  IsAtBegin() const
   {
     return ( this->GetIndex() == m_BeginIndex );
   }
@@ -209,7 +219,8 @@ public:
   /** Returns a boolean == comparison of the current location/index
    * of two ConstNeighborhoodIteratorWithOnlyIndexs of like
    * dimensionality.  The radii of the iterators are ignored. */
-  bool operator==(const Self & it) const
+  bool
+  operator==(const Self & it) const
   {
     return it.GetIndex() == this->GetIndex();
   }
@@ -217,7 +228,8 @@ public:
   /** Returns a boolean != comparison of the current location/index
    * of two ConstNeighborhoodIteratorWithOnlyIndexs of like
    * dimensionality.  The radii of the iterators are ignored. */
-  bool operator!=(const Self & it) const
+  bool
+  operator!=(const Self & it) const
   {
     return it.GetIndex() != this->GetIndex();
   }
@@ -254,7 +266,8 @@ public:
    * image. SetLocation should _NOT_ be used to update the position of the
    * iterator during iteration, only for initializing it to a position
    * prior to iteration.  This method is not optimized for speed. */
-  void SetLocation(const IndexType & position)
+  void
+  SetLocation(const IndexType & position)
   {
     this->SetLoop(position);
   }
@@ -270,7 +283,8 @@ public:
   Self & operator-=(const OffsetType &);
 
   /** Distance between two iterators */
-  OffsetType operator-(const Self & b)
+  OffsetType
+  operator-(const Self & b)
   {
     return m_Loop - b.m_Loop;
   }
@@ -294,22 +308,26 @@ public:
   bool IndexInBounds(NeighborIndexType n, OffsetType & internalIndex, OffsetType & offset ) const;
 
   /** */
-  void NeedToUseBoundaryConditionOn()
+  void
+  NeedToUseBoundaryConditionOn()
   {
     this->SetNeedToUseBoundaryCondition(true);
   }
 
-  void NeedToUseBoundaryConditionOff()
+  void
+  NeedToUseBoundaryConditionOff()
   {
     this->SetNeedToUseBoundaryCondition(false);
   }
 
-  void SetNeedToUseBoundaryCondition(bool b)
+  void
+  SetNeedToUseBoundaryCondition(bool b)
   {
     m_NeedToUseBoundaryCondition = b;
   }
 
-  bool GetNeedToUseBoundaryCondition() const
+  bool
+  GetNeedToUseBoundaryCondition() const
   {
     return m_NeedToUseBoundaryCondition;
   }
@@ -318,7 +336,8 @@ protected:
 
   /** Default method for setting the coordinate location of the iterator.
    * Loop indices correspond to the actual Image region index. */
-  virtual void SetLoop(const IndexType & p)
+  virtual void
+  SetLoop(const IndexType & p)
   {
     m_Loop = p; m_IsInBoundsValid = false;
   }
@@ -330,7 +349,8 @@ protected:
 
   /** Default method for setting the first index of the
    * iteration region. */
-  virtual void SetBeginIndex(const IndexType & start)
+  virtual void
+  SetBeginIndex(const IndexType & start)
   {
     m_BeginIndex = start;
   }
@@ -398,7 +418,9 @@ inline ConstNeighborhoodIteratorWithOnlyIndex< TImage >
 operator+(const typename ConstNeighborhoodIteratorWithOnlyIndex< TImage >
           ::OffsetType & ind,
           const ConstNeighborhoodIteratorWithOnlyIndex< TImage > & it)
-{  return ( it + ind ); }
+{
+  return ( it + ind );
+}
 
 template< typename TImage >
 inline ConstNeighborhoodIteratorWithOnlyIndex< TImage >
@@ -411,6 +433,7 @@ operator-(const ConstNeighborhoodIteratorWithOnlyIndex< TImage > & it,
   ret -= ind;
   return ret;
 }
+
 } // namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION

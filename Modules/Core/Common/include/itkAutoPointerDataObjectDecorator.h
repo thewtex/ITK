@@ -58,7 +58,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename T >
-class AutoPointerDataObjectDecorator:public DataObject
+class AutoPointerDataObjectDecorator : public DataObject
 {
 public:
   /** Standard typedefs. */
@@ -81,8 +81,15 @@ public:
   virtual void Set(T *val);
 
   /** Get the contained object */
-  virtual T * Get() { return m_Component.get(); }
-  virtual const T * Get() const { return m_Component.get(); }
+  virtual T *
+  Get() {
+    return m_Component.get();
+  }
+
+  virtual const T *
+  Get() const {
+    return m_Component.get();
+  }
 
 protected:
   AutoPointerDataObjectDecorator();

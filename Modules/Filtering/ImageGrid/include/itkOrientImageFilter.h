@@ -137,7 +137,7 @@ namespace itk
  * \ingroup ITKImageGrid
  */
 template< typename TInputImage, typename TOutputImage >
-class OrientImageFilter:
+class OrientImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -159,7 +159,7 @@ public:
   typedef typename OutputImageType::RegionType   OutputImageRegionType;
   typedef typename OutputImageType::PixelType    OutputImagePixelType;
   typedef SpatialOrientation::ValidCoordinateOrientationFlags
-  CoordinateOrientationCode;
+    CoordinateOrientationCode;
   /** Axes permuter type. */
   typedef PermuteAxesImageFilter< TInputImage >        PermuterType;
   typedef typename PermuterType::PermuteOrderArrayType PermuteOrderArrayType;
@@ -184,7 +184,8 @@ public:
   itkGetEnumMacro(GivenCoordinateOrientation, CoordinateOrientationCode);
   void SetGivenCoordinateOrientation(CoordinateOrientationCode newCode);
 
-  inline void SetGivenCoordinateDirection(const typename TInputImage::DirectionType & GivenDirection)
+  inline void
+  SetGivenCoordinateDirection(const typename TInputImage::DirectionType & GivenDirection)
   {
     SetGivenCoordinateOrientation(
       itk::SpatialOrientationAdapter().FromDirectionCosines(GivenDirection) );
@@ -193,7 +194,8 @@ public:
   itkGetEnumMacro(DesiredCoordinateOrientation, CoordinateOrientationCode);
   void SetDesiredCoordinateOrientation(CoordinateOrientationCode newCode);
 
-  inline void SetDesiredCoordinateDirection(const typename TOutputImage::DirectionType & DesiredDirection)
+  inline void
+  SetDesiredCoordinateDirection(const typename TOutputImage::DirectionType & DesiredDirection)
   {
     SetDesiredCoordinateOrientation(
       itk::SpatialOrientationAdapter().FromDirectionCosines(DesiredDirection) );
@@ -229,17 +231,20 @@ public:
    *  SetDesiredCoordinateOrientationToSagittal is equivalent to
    *  SetDesiredCoordinateOrientation (ITK_COORDINATE_ORIENTATION_ASL).
    */
-  void SetDesiredCoordinateOrientationToAxial()
+  void
+  SetDesiredCoordinateOrientationToAxial()
   {
     this->SetDesiredCoordinateOrientation (SpatialOrientation::ITK_COORDINATE_ORIENTATION_RAI);
   }
 
-  void SetDesiredCoordinateOrientationToCoronal()
+  void
+  SetDesiredCoordinateOrientationToCoronal()
   {
     this->SetDesiredCoordinateOrientation (SpatialOrientation::ITK_COORDINATE_ORIENTATION_RSA);
   }
 
-  void SetDesiredCoordinateOrientationToSagittal()
+  void
+  SetDesiredCoordinateOrientationToSagittal()
   {
     this->SetDesiredCoordinateOrientation (SpatialOrientation::ITK_COORDINATE_ORIENTATION_ASL);
   }

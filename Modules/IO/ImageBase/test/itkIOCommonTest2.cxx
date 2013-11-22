@@ -21,7 +21,8 @@
 
 #include "itkIOCommon.h"
 
-int itkIOCommonTest2(int, char *[])
+int
+itkIOCommonTest2(int, char *[])
 {
 // Test the atomic pixel type to string conversions
     {

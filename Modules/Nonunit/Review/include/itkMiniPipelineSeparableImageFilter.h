@@ -47,7 +47,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TFilter >
-class MiniPipelineSeparableImageFilter:
+class MiniPipelineSeparableImageFilter :
   public BoxImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -86,7 +86,8 @@ public:
 
   virtual void SetRadius(const RadiusType &);
 
-  virtual void SetRadius(const SizeValueType & radius)
+  virtual void
+  SetRadius(const SizeValueType & radius)
   {
     // needed because of the overloading of the method
     Superclass::SetRadius(radius);
@@ -108,6 +109,7 @@ protected:
 private:
   MiniPipelineSeparableImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                   //purposely not implemented
+
 };
 }
 

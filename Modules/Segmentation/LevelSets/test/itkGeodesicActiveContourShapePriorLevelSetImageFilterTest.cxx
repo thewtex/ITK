@@ -29,7 +29,6 @@
 #include "itkBinaryThresholdImageFilter.h"
 #include "itkSimilarityIndexImageFilter.h"
 
-
 /* Uncomment to write out image files */
 /*
 */
@@ -44,22 +43,28 @@ class ShowIterationObject
 {
 public:
   ShowIterationObject( TFilter * filter )
-    { m_Filter = filter; }
-  void ShowIteration()
-    {
+  {
+    m_Filter = filter;
+  }
+
+  void
+  ShowIteration()
+  {
     std::cout << m_Filter->GetElapsedIterations() << ": ";
     std::cout << m_Filter->GetCurrentParameters() << " ";
     std::cout << m_Filter->GetRMSChange() << std::endl;
-    }
+  }
 
   typename TFilter::Pointer m_Filter;
 };
 }
 
-int itkGeodesicActiveContourShapePriorLevelSetImageFilterTest( int, char *[])
+int
+itkGeodesicActiveContourShapePriorLevelSetImageFilterTest( int, char *[])
 {
   /* Typedefs of components. */
-  const unsigned int    ImageDimension = 2;
+  const unsigned int ImageDimension = 2;
+
   typedef unsigned char PixelType;
   typedef float         InternalPixelType;
 
@@ -75,11 +80,10 @@ int itkGeodesicActiveContourShapePriorLevelSetImageFilterTest( int, char *[])
   typedef itk::AmoebaOptimizer       OptimizerType;
   typedef FilterType::ParametersType ParametersType;
 
-  FilterType::Pointer  filter            = FilterType::New();
-  ShapeFunctionType::Pointer  shape      = ShapeFunctionType::New();
-  CostFunctionType::Pointer costFunction = CostFunctionType::New();
-  OptimizerType::Pointer  optimizer      = OptimizerType::New();
-
+  FilterType::Pointer        filter            = FilterType::New();
+  ShapeFunctionType::Pointer shape      = ShapeFunctionType::New();
+  CostFunctionType::Pointer  costFunction = CostFunctionType::New();
+  OptimizerType::Pointer     optimizer      = OptimizerType::New();
 
   ImageType::SizeType imageSize;
   imageSize[0] = 128;
@@ -145,18 +149,18 @@ int itkGeodesicActiveContourShapePriorLevelSetImageFilterTest( int, char *[])
   it2.GoToBegin();
 
   while( !it.IsAtEnd() )
-  {
-  ImageType::IndexType index = it.GetIndex();
-  ShapeFunctionType::PointType point;
-  inputImage->TransformIndexToPhysicalPoint( index, point );
-  if( shape->Evaluate( point ) <= 0.0 )
     {
-    it.Set( foreground );
-    it2.Set( foreground );
+    ImageType::IndexType         index = it.GetIndex();
+    ShapeFunctionType::PointType point;
+    inputImage->TransformIndexToPhysicalPoint( index, point );
+    if( shape->Evaluate( point ) <= 0.0 )
+      {
+      it.Set( foreground );
+      it2.Set( foreground );
+      }
+    ++it;
+    ++it2;
     }
-  ++it;
-  ++it2;
-  }
 
   /**
    * Create an edge potential map.
@@ -168,7 +172,7 @@ int itkGeodesicActiveContourShapePriorLevelSetImageFilterTest( int, char *[])
   caster->SetInput( inputImage );
 
   typedef itk::GradientMagnitudeRecursiveGaussianImageFilter< InternalImageType,
-    InternalImageType > GradientImageType;
+                                                              InternalImageType > GradientImageType;
 
   GradientImageType::Pointer gradMagnitude = GradientImageType::New();
   gradMagnitude->SetInput( caster->GetOutput() );
@@ -212,7 +216,6 @@ int itkGeodesicActiveContourShapePriorLevelSetImageFilterTest( int, char *[])
   fastMarching->SetSpeedConstant( 1.0 );
   fastMarching->SetOutputSize( imageSize );
 
-
   /**
    * Set up the components of the shape prior segmentation filter
    */
@@ -245,8 +248,8 @@ int itkGeodesicActiveContourShapePriorLevelSetImageFilterTest( int, char *[])
   ParametersType parameters( shape->GetNumberOfParameters() );
 
   parameters[0] = mean[0]; // mean radius
-  parameters[1] = 64; // center of the image
-  parameters[2] = 64; // center of the image
+  parameters[1] = 64;      // center of the image
+  parameters[2] = 64;      // center of the image
 
   // Set up the scaling between the level set terms
   filter->SetPropagationScaling( 0.5 );
@@ -255,8 +258,8 @@ int itkGeodesicActiveContourShapePriorLevelSetImageFilterTest( int, char *[])
   filter->SetShapePriorScaling( 0.1 );
 
   // Hook up components to the filter
-  filter->SetInput( fastMarching->GetOutput() );  // initial level set
-  filter->SetFeatureImage( sigmoid->GetOutput() );  // edge potential map
+  filter->SetInput( fastMarching->GetOutput() );   // initial level set
+  filter->SetFeatureImage( sigmoid->GetOutput() ); // edge potential map
   filter->SetShapeFunction( shape );
   filter->SetCostFunction( costFunction );
   filter->SetOptimizer( optimizer );
@@ -270,7 +273,7 @@ int itkGeodesicActiveContourShapePriorLevelSetImageFilterTest( int, char *[])
    * Connect an observer to the filter
    */
   typedef ShowIterationObject<FilterType> WatcherType;
-  WatcherType iterationWatcher(filter);
+  WatcherType                                    iterationWatcher(filter);
   itk::SimpleMemberCommand<WatcherType>::Pointer command =
     itk::SimpleMemberCommand<WatcherType>::New();
   command->SetCallbackFunction( &iterationWatcher,

@@ -23,10 +23,11 @@
 #include "itkTextOutput.h"
 #include "itkSimpleFilterWatcher.h"
 
-int itkMapGrayscaleErodeImageFilterTest(int ac, char* av[] )
+int
+itkMapGrayscaleErodeImageFilterTest(int ac, char* av[] )
 {
   // Comment the following if you want to use the itk text output window
-  itk::OutputWindow::SetInstance(itk::TextOutput::New());
+  itk::OutputWindow::SetInstance(itk::TextOutput::New() );
 
   if(ac < 6)
     {

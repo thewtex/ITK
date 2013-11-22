@@ -37,7 +37,7 @@ namespace itk
  */
 
 template< unsigned int VDimension = 3, typename TInput = Point< double, 3 > >
-class TorusInteriorExteriorSpatialFunction:
+class TorusInteriorExteriorSpatialFunction :
   public InteriorExteriorSpatialFunction< VDimension, TInput >
 {
 public:
@@ -78,14 +78,16 @@ public:
 
 protected:
   TorusInteriorExteriorSpatialFunction();
-  virtual ~TorusInteriorExteriorSpatialFunction();
+  virtual
+  ~TorusInteriorExteriorSpatialFunction();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   TorusInteriorExteriorSpatialFunction(const Self &); //purposely not
                                                       // implemented
   void operator=(const Self &);                       //purposely not
-                                                      // implemented
+
+  // implemented
 
   /** The origin of the torus (the point from which the major
    * radius is measured) */

@@ -27,7 +27,8 @@ because it is used here to verify the correctness of the query output.
 #include <iostream>
 #include "itkMacro.h"
 
-int itkDOMTest4( int argc, char* argv[] )
+int
+itkDOMTest4( int argc, char* argv[] )
 {
   if ( argc < 4 )
     {

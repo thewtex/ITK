@@ -24,8 +24,8 @@
 #include "itkTubeSpatialObject.h"
 #include "itkGroupSpatialObject.h"
 
-
-int itkTubeSpatialObjectTest(int, char * [] )
+int
+itkTubeSpatialObjectTest(int, char * [] )
 {
   typedef double                                      ScalarType;
   typedef bool                                        OutputType;
@@ -43,9 +43,9 @@ int itkTubeSpatialObjectTest(int, char * [] )
   typedef ChildrenListType *                          ChildrenListPointer;
 
   Vector axis, translation;
-  Point in, out;
+  Point  in, out;
   double angle;
-  bool passed = true;
+  bool   passed = true;
 
   //======================================
   // testing of a single SpatialObject...
@@ -139,9 +139,9 @@ int itkTubeSpatialObjectTest(int, char * [] )
   std::cout<<"=================================="<<std::endl;
   std::cout<<"Testing GroupSpatialObject:"<<std::endl<<std::endl;
 
-  ChildrenListType childrenList;
+  ChildrenListType    childrenList;
   ChildrenListPointer returnedList;
-  unsigned int nbChildren;
+  unsigned int        nbChildren;
 
   TubePointer tube2 = TubeType::New();
   tube2->GetProperty()->SetName("Tube 2");
@@ -157,7 +157,6 @@ int itkTubeSpatialObjectTest(int, char * [] )
 
   GroupPointer tubeNet1 = GroupType::New();
   tubeNet1->GetProperty()->SetName("tube network 1");
-
 
   tubeNet1->AddSpatialObject( tube1 );
   tubeNet1->AddSpatialObject( tube2 );
@@ -214,7 +213,7 @@ int itkTubeSpatialObjectTest(int, char * [] )
 
     for(unsigned int i=0; it!=end; ++itTest,++it,i++ )
       {
-      if((*itTest) != (*it))
+      if( (*itTest) != (*it) )
         {
         passed = false;
         break;
@@ -259,7 +258,7 @@ int itkTubeSpatialObjectTest(int, char * [] )
 
     for(unsigned int i=0; it!=end; ++itTest,++it,i++ )
       {
-      if((*itTest) != (*it))
+      if( (*itTest) != (*it) )
         {
         passed = false;
         break;
@@ -350,7 +349,6 @@ int itkTubeSpatialObjectTest(int, char * [] )
     return EXIT_FAILURE;
     }
 
-
   //====================================================
   // testing of references behavior for SpatialObject...
   //====================================================
@@ -358,7 +356,7 @@ int itkTubeSpatialObjectTest(int, char * [] )
   std::cout<<"=============================================="<<std::endl;
   std::cout<<"Testing references behavior for SpatialObject:"<<std::endl<<std::endl;
 
-  TubePointer tube = TubeType::New();
+  TubePointer  tube = TubeType::New();
   GroupPointer net = GroupType::New();
 
   unsigned int tubeCount, netCount;
@@ -403,14 +401,14 @@ int itkTubeSpatialObjectTest(int, char * [] )
 
   if( tubeCount != 1 )
     {
-      std::cout<<"[FAILED]: Problem in Tube with decrementation of references count"<<std::endl;
-      return EXIT_FAILURE;
+    std::cout<<"[FAILED]: Problem in Tube with decrementation of references count"<<std::endl;
+    return EXIT_FAILURE;
     }
 
   if( netCount != 1 )
     {
-      std::cout << "[FAILED]: Problem in TubeNetwork with decrementation of references count"<<std::endl;
-      return EXIT_FAILURE;
+    std::cout << "[FAILED]: Problem in TubeNetwork with decrementation of references count"<<std::endl;
+    return EXIT_FAILURE;
     }
 
   std::cout << "[PASSED]" << std::endl;
@@ -426,25 +424,24 @@ int itkTubeSpatialObjectTest(int, char * [] )
     }
   std::cout << "[PASSED]" << std::endl;
 
-
   // Testing ComputeTangentAndNormals();
   std::cout << "ComputeTangentAndNormals: ";
   tube1->ComputeTangentAndNormals();
 
-  TubePointType::VectorType t = static_cast<const TubePointType*>(tube1->GetPoint(1))->GetTangent();
-  TubePointType::CovariantVectorType n1 = static_cast<const TubePointType*>(tube1->GetPoint(1))->GetNormal1();
-  TubePointType::CovariantVectorType n2 = static_cast<const TubePointType*>(tube1->GetPoint(1))->GetNormal2();
+  TubePointType::VectorType          t = static_cast<const TubePointType*>(tube1->GetPoint(1) )->GetTangent();
+  TubePointType::CovariantVectorType n1 = static_cast<const TubePointType*>(tube1->GetPoint(1) )->GetNormal1();
+  TubePointType::CovariantVectorType n2 = static_cast<const TubePointType*>(tube1->GetPoint(1) )->GetNormal2();
 
   if(  (vcl_fabs(t[0]-0.57735)>0.0001)
-    || (vcl_fabs(t[1]-0.57735)>0.0001)
-    || (vcl_fabs(t[2]-0.57735)>0.0001)
-    || (vcl_fabs(n1[0]-0.0)>0.0001)
-    || (vcl_fabs(n1[1]+0.57735)>0.0001)
-    || (vcl_fabs(n1[2]-0.57735)>0.0001)
-    || (vcl_fabs(n2[0]-0.666667)>0.0001)
-    || (vcl_fabs(n2[1]+0.333333)>0.0001)
-    || (vcl_fabs(n2[2]+0.333333)>0.0001)
-    )
+       || (vcl_fabs(t[1]-0.57735)>0.0001)
+       || (vcl_fabs(t[2]-0.57735)>0.0001)
+       || (vcl_fabs(n1[0]-0.0)>0.0001)
+       || (vcl_fabs(n1[1]+0.57735)>0.0001)
+       || (vcl_fabs(n1[2]-0.57735)>0.0001)
+       || (vcl_fabs(n2[0]-0.666667)>0.0001)
+       || (vcl_fabs(n2[1]+0.333333)>0.0001)
+       || (vcl_fabs(n2[2]+0.333333)>0.0001)
+       )
     {
     std::cout << "[FAILED]" << std::endl;
     return EXIT_FAILURE;
@@ -456,7 +453,7 @@ int itkTubeSpatialObjectTest(int, char * [] )
   std::cout << "IsInside() with m_EndType=1: ";
   p1.Fill(19.5);
 
-  if(tube1->IsInside(p1))
+  if(tube1->IsInside(p1) )
     {
     std::cout << "[FAILED]" << std::endl;
     return EXIT_FAILURE;
@@ -464,13 +461,12 @@ int itkTubeSpatialObjectTest(int, char * [] )
 
   tube1->SetEndType(1);
 
-  if(!tube1->IsInside(p1))
+  if(!tube1->IsInside(p1) )
     {
     std::cout << "[FAILED]" << std::endl;
     return EXIT_FAILURE;
     }
   std::cout << "[PASSED]" << std::endl;
-
 
   // For coverage only
   std::cout << "Testing PointBasedSO: ";

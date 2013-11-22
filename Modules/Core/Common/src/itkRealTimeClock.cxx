@@ -29,7 +29,7 @@
 namespace itk
 {
 /** Constructor */
-RealTimeClock::RealTimeClock():m_Frequency(1)
+RealTimeClock::RealTimeClock() : m_Frequency(1)
 {
 #if defined( WIN32 ) || defined( _WIN32 )
   LARGE_INTEGER frequency;
@@ -103,7 +103,7 @@ RealTimeClock::GetTimeInSeconds() const
   ::gettimeofday(&tval, 0);
 
   TimeStampType value = static_cast< TimeStampType >( tval.tv_sec ) + static_cast< TimeStampType >( tval.tv_usec )
-                        / this->m_Frequency;
+    / this->m_Frequency;
   return value;
 #endif  // defined(WIN32) || defined(_WIN32)
 }
@@ -126,10 +126,10 @@ RealTimeClock::GetRealTimeStamp() const
   TimeStampType seconds = static_cast< TimeStampType >( static_cast<__int64>( tick.QuadPart ) ) / this->m_Frequency;
   seconds += this->m_Origin;
 
-  typedef RealTimeStamp::SecondsCounterType       SecondsCounterType;
-  typedef RealTimeStamp::MicroSecondsCounterType  MicroSecondsCounterType;
+  typedef RealTimeStamp::SecondsCounterType      SecondsCounterType;
+  typedef RealTimeStamp::MicroSecondsCounterType MicroSecondsCounterType;
 
-  SecondsCounterType iseconds = vcl_floor( seconds );
+  SecondsCounterType      iseconds = vcl_floor( seconds );
   MicroSecondsCounterType useconds = vcl_floor( ( seconds - iseconds ) * 1e6 );
 
   RealTimeStamp value( iseconds, useconds );
@@ -138,13 +138,15 @@ RealTimeClock::GetRealTimeStamp() const
   struct timeval tval;
   ::gettimeofday(&tval, 0);
 
-  RealTimeStamp value( static_cast<RealTimeStamp::SecondsCounterType>(tval.tv_sec), static_cast<RealTimeStamp::MicroSecondsCounterType>(tval.tv_usec) );
+  RealTimeStamp value( static_cast<RealTimeStamp::SecondsCounterType>(tval.tv_sec),
+                       static_cast<RealTimeStamp::MicroSecondsCounterType>(tval.tv_usec) );
   return value;
 #endif  // defined(WIN32) || defined(_WIN32)
 }
 
 /** Print the object */
-void RealTimeClock::PrintSelf(std::ostream & os, itk::Indent indent) const
+void
+RealTimeClock::PrintSelf(std::ostream & os, itk::Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
@@ -155,4 +157,5 @@ void RealTimeClock::PrintSelf(std::ostream & os, itk::Indent indent) const
   os << indent << "Origin : "
      << this->m_Origin << std::endl;
 }
+
 }

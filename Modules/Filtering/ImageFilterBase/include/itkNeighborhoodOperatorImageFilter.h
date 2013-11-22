@@ -48,7 +48,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage, typename TOutputImage, typename TOperatorValueType = typename TOutputImage::PixelType >
-class NeighborhoodOperatorImageFilter:
+class NeighborhoodOperatorImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -89,7 +89,7 @@ public:
 
   /** Typedef for generic boundary condition pointer. */
   typedef ImageBoundaryCondition< InputImageType > *
-  ImageBoundaryConditionPointerType;
+    ImageBoundaryConditionPointerType;
 
   /** Typedef for the default boundary condition */
   typedef ZeroFluxNeumannBoundaryCondition< InputImageType > DefaultBoundaryCondition;
@@ -104,27 +104,37 @@ public:
   /** Sets the operator that is used to filter the image. Note
    * that the operator is stored as an internal COPY (it
    * is not part of the pipeline). */
-  void SetOperator(const OutputNeighborhoodType & p)
+  void
+  SetOperator(const OutputNeighborhoodType & p)
   {
     m_Operator = p;
     this->Modified();
   }
 
   /** Get the operator that is used to filter the image. */
-  const OutputNeighborhoodType & GetOperator() const
-  { return m_Operator; }
+  const OutputNeighborhoodType &
+  GetOperator() const
+  {
+    return m_Operator;
+  }
 
   /** Allows a user to override the internal boundary condition. Care should be
    * be taken to ensure that the overriding boundary condition is a persistent
    * object during the time it is referenced.  The overriding condition
    * can be of a different type than the default type as long as it is
    * a subclass of ImageBoundaryCondition. */
-  void OverrideBoundaryCondition(const ImageBoundaryConditionPointerType i)
-  { m_BoundsCondition = i; }
+  void
+  OverrideBoundaryCondition(const ImageBoundaryConditionPointerType i)
+  {
+    m_BoundsCondition = i;
+  }
 
   /** Get the boundary condition specified */
-  ImageBoundaryConditionPointerType GetBoundaryCondition()
-  { return m_BoundsCondition; }
+  ImageBoundaryConditionPointerType
+  GetBoundaryCondition()
+  {
+    return m_BoundsCondition;
+  }
 
   /** NeighborhoodOperatorImageFilter needs a larger input requested
    * region than the output requested region.  As such,
@@ -153,8 +163,12 @@ public:
 
 protected:
   NeighborhoodOperatorImageFilter()
-  { m_BoundsCondition = static_cast< ImageBoundaryConditionPointerType >( &m_DefaultBoundaryCondition ); }
-  virtual ~NeighborhoodOperatorImageFilter() {}
+  {
+    m_BoundsCondition = static_cast< ImageBoundaryConditionPointerType >( &m_DefaultBoundaryCondition );
+  }
+
+  virtual
+  ~NeighborhoodOperatorImageFilter() {}
 
   /** NeighborhoodOperatorImageFilter can be implemented as a
    * multithreaded filter.  Therefore, this implementation provides a
@@ -170,8 +184,11 @@ protected:
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                             ThreadIdType threadId);
 
-  void PrintSelf(std::ostream & os, Indent indent) const
-  {  Superclass::PrintSelf(os, indent); }
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+  }
 
 private:
   NeighborhoodOperatorImageFilter(const Self &); //purposely not implemented

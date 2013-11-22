@@ -36,7 +36,8 @@
 
 #include "itkImageFileReader.h"
 
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
 
   if ( argc < 2 )
@@ -47,11 +48,11 @@ int main( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-  typedef itk::ImageMaskSpatialObject<3>      ImageMaskSpatialObject;
+  typedef itk::ImageMaskSpatialObject<3> ImageMaskSpatialObject;
 
-  typedef ImageMaskSpatialObject::ImageType   ImageType;
-  typedef ImageType::RegionType               RegionType;
-  typedef itk::ImageFileReader< ImageType >   ReaderType;
+  typedef ImageMaskSpatialObject::ImageType ImageType;
+  typedef ImageType::RegionType             RegionType;
+  typedef itk::ImageFileReader< ImageType > ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
 

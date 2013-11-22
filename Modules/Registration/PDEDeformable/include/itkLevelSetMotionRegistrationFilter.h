@@ -88,16 +88,16 @@ namespace itk
  * \ingroup ITKPDEDeformableRegistration
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
-class LevelSetMotionRegistrationFilter:
+class LevelSetMotionRegistrationFilter :
   public PDEDeformableRegistrationFilter< TFixedImage, TMovingImage,
                                           TDisplacementField >
 {
 public:
   /** Standard class typedefs. */
-  typedef LevelSetMotionRegistrationFilter                                                Self;
+  typedef LevelSetMotionRegistrationFilter                                                 Self;
   typedef PDEDeformableRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField > Superclass;
-  typedef SmartPointer< Self >                                                            Pointer;
-  typedef SmartPointer< const Self >                                                      ConstPointer;
+  typedef SmartPointer< Self >                                                             Pointer;
+  typedef SmartPointer< const Self >                                                       ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -119,13 +119,13 @@ public:
 
   /** Deformation field type. */
   typedef typename Superclass::DisplacementFieldType
-  DisplacementFieldType;
+    DisplacementFieldType;
   typedef typename Superclass::DisplacementFieldPointer
-  DisplacementFieldPointer;
+    DisplacementFieldPointer;
 
   /** FiniteDifferenceFunction type. */
   typedef typename Superclass::FiniteDifferenceFunctionType
-  FiniteDifferenceFunctionType;
+    FiniteDifferenceFunctionType;
 
   /** LevelSetMotionFilterFunction type. */
   typedef LevelSetMotionRegistrationFunction< FixedImageType, MovingImageType,
@@ -198,6 +198,7 @@ protected:
 private:
   LevelSetMotionRegistrationFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                   //purposely not implemented
+
 };
 } // end namespace itk
 

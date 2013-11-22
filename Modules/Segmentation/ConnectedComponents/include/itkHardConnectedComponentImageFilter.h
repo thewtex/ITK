@@ -46,7 +46,7 @@ namespace itk
  * \ingroup ITKConnectedComponents
  */
 template< typename TInputImage, typename TOutputImage >
-class HardConnectedComponentImageFilter:
+class HardConnectedComponentImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -95,8 +95,11 @@ public:
   itkNewMacro(Self);
 
   /** Setting the seed points for specified object. */
-  void SetObjectSeed(const IndexType & seed)
-  { m_Seeds.push_front(seed); }
+  void
+  SetObjectSeed(const IndexType & seed)
+  {
+    m_Seeds.push_front(seed);
+  }
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -117,19 +120,23 @@ public:
 
 protected:
   HardConnectedComponentImageFilter() {}
-  virtual ~HardConnectedComponentImageFilter() {}
+  virtual
+  ~HardConnectedComponentImageFilter() {}
 
   /**
    * Standard pipeline method.
    */
   void GenerateData();
 
-  void PrintSelf(std::ostream & os, Indent indent) const
-  { Superclass::PrintSelf(os, indent); }
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+  }
 
 private:
   HardConnectedComponentImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  void operator=(const Self &);                    //purposely not implemented
 
   ListType m_Seeds;
 };

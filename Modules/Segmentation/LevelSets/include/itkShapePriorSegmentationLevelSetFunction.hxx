@@ -42,6 +42,7 @@ ShapePriorSegmentationLevelSetFunction< TImageType, TFeatureImageType >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "ShapeFunction: " << m_ShapeFunction.GetPointer() << std::endl;
   os << indent << "ShapePriorWeight: " << m_ShapePriorWeight << std::endl;
 }
@@ -74,7 +75,7 @@ ShapePriorSegmentationLevelSetFunction< TImageType, TFeatureImageType >
     this->GetFeatureImage()->TransformContinuousIndexToPhysicalPoint(cdx, point);
 
     ScalarValueType shape_term = m_ShapePriorWeight
-                                 * ( m_ShapeFunction->Evaluate(point) - neighborhood.GetCenterPixel() );
+      * ( m_ShapeFunction->Evaluate(point) - neighborhood.GetCenterPixel() );
 
     value += shape_term;
 
@@ -141,6 +142,7 @@ ShapePriorSegmentationLevelSetFunction< TImageType, TFeatureImageType >
 
   return dt;
 }
+
 } // end namespace itk
 
 #endif

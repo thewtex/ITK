@@ -44,7 +44,7 @@ class SpatialObject;
  * \ingroup ITKSpatialObjects
  */
 template< unsigned int TDimension >
-class SpatialObjectTreeContainer:
+class SpatialObjectTreeContainer :
   public TreeContainer< itk::SpatialObject< TDimension > * >
 {
 public:
@@ -70,13 +70,17 @@ public:
   /** Set the root */
   bool SetRoot(const SpatialObjectPointer element);
 
-  bool SetRoot(typename Superclass::TreeNodeType *node)
-  { return Superclass::SetRoot(node); }
+  bool
+  SetRoot(typename Superclass::TreeNodeType *node)
+  {
+    return Superclass::SetRoot(node);
+  }
 
 protected:
 
   SpatialObjectTreeContainer();
-  virtual ~SpatialObjectTreeContainer();
+  virtual
+  ~SpatialObjectTreeContainer();
 };
 } // namespace itk
 

@@ -37,8 +37,8 @@
 
 #include <fstream>
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
 
   if( argc < 3 )
@@ -50,23 +50,21 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const     unsigned int   Dimension = 2;
-  typedef   float          VectorComponentType;
+  const     unsigned int Dimension = 2;
+  typedef   float VectorComponentType;
 
-  typedef   itk::Vector< VectorComponentType, Dimension >    VectorType;
+  typedef   itk::Vector< VectorComponentType, Dimension > VectorType;
 
-  typedef   itk::Image< VectorType,  Dimension >   DisplacementFieldType;
+  typedef   itk::Image< VectorType,  Dimension > DisplacementFieldType;
 
+  typedef   unsigned char                      PixelType;
+  typedef   itk::Image< PixelType, Dimension > FixedImageType;
+  typedef   itk::Image< PixelType, Dimension > MovingImageType;
 
-  typedef   unsigned char                            PixelType;
-  typedef   itk::Image< PixelType, Dimension >       FixedImageType;
-  typedef   itk::Image< PixelType, Dimension >       MovingImageType;
+  typedef   itk::ImageFileReader< FixedImageType  > FixedReaderType;
+  typedef   itk::ImageFileReader< MovingImageType > MovingReaderType;
 
-  typedef   itk::ImageFileReader< FixedImageType  >  FixedReaderType;
-  typedef   itk::ImageFileReader< MovingImageType >  MovingReaderType;
-
-  typedef   itk::ImageFileWriter< MovingImageType >  MovingWriterType;
-
+  typedef   itk::ImageFileWriter< MovingImageType > MovingWriterType;
 
   FixedReaderType::Pointer fixedReader = FixedReaderType::New();
   fixedReader->SetFileName( argv[2] );
@@ -82,20 +80,17 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   MovingReaderType::Pointer movingReader = MovingReaderType::New();
   MovingWriterType::Pointer movingWriter = MovingWriterType::New();
 
   movingReader->SetFileName( argv[3] );
   movingWriter->SetFileName( argv[4] );
 
-
   FixedImageType::ConstPointer fixedImage = fixedReader->GetOutput();
 
-
   typedef itk::LandmarkDisplacementFieldSource<
-                                DisplacementFieldType
-                                             >  DisplacementSourceType;
+      DisplacementFieldType
+      >  DisplacementSourceType;
 
   DisplacementSourceType::Pointer deformer = DisplacementSourceType::New();
 
@@ -106,9 +101,9 @@ int main( int argc, char * argv[] )
 
   //  Create source and target landmarks.
   //
-  typedef DisplacementSourceType::LandmarkContainerPointer   LandmarkContainerPointer;
-  typedef DisplacementSourceType::LandmarkContainer          LandmarkContainerType;
-  typedef DisplacementSourceType::LandmarkPointType          LandmarkPointType;
+  typedef DisplacementSourceType::LandmarkContainerPointer LandmarkContainerPointer;
+  typedef DisplacementSourceType::LandmarkContainer        LandmarkContainerType;
+  typedef DisplacementSourceType::LandmarkPointType        LandmarkPointType;
 
   LandmarkContainerType::Pointer sourceLandmarks = LandmarkContainerType::New();
   LandmarkContainerType::Pointer targetLandmarks = LandmarkContainerType::New();
@@ -137,7 +132,6 @@ int main( int argc, char * argv[] )
 
   pointsFile.close();
 
-
   deformer->SetSourceLandmarks( sourceLandmarks.GetPointer() );
   deformer->SetTargetLandmarks( targetLandmarks.GetPointer() );
 
@@ -161,12 +155,11 @@ int main( int argc, char * argv[] )
   FilterType::Pointer warper = FilterType::New();
 
   typedef itk::LinearInterpolateImageFunction<
-                       MovingImageType, double >  InterpolatorType;
+      MovingImageType, double >  InterpolatorType;
 
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
 
   warper->SetInterpolator( interpolator );
-
 
   warper->SetOutputSpacing( displacementField->GetSpacing() );
   warper->SetOutputOrigin(  displacementField->GetOrigin() );

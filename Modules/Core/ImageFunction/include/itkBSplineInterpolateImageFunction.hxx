@@ -85,6 +85,7 @@ BSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficientType >
   Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Spline Order: " << m_SplineOrder << std::endl;
   os << indent << "UseImageDirection = "
      << ( this->m_UseImageDirection ? "On" : "Off" ) << std::endl;
@@ -370,7 +371,7 @@ BSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficientType >
           }
         }
       derivativeValue[n] += m_Coefficients->GetPixel(coefficientIndex)
-                            * w1;
+        * w1;
       }
     // take spacing into account
     derivativeValue[n] /= this->GetInputImage()->GetSpacing()[n];
@@ -665,6 +666,7 @@ BSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficientType >
                            unsigned int splineOrder) const
 {
   const float halfOffset = splineOrder & 1 ? 0.0 : 0.5;
+
   for ( unsigned int n = 0; n < ImageDimension; n++ )
     {
     long indx = (long)vcl_floor( (float)x[n] + halfOffset ) - splineOrder / 2;
@@ -821,7 +823,7 @@ BSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficientType >
           }
         }
       derivativeValue[n] += m_Coefficients->GetPixel(coefficientIndex)
-                            * w1;
+        * w1;
       }
     // take spacing into account
     derivativeValue[n] /= this->GetInputImage()->GetSpacing()[n];
@@ -901,6 +903,7 @@ BSplineInterpolateImageFunction< TImageType, TCoordRep, TCoefficientType >
 
   return ( derivativeValue );
 }
+
 } // namespace itk
 
 #endif

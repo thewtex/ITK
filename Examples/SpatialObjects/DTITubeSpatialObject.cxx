@@ -35,7 +35,8 @@
 #include "itkDTITubeSpatialObject.h"
 // Software Guide : EndCodeSnippet
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 
 // Software Guide : BeginLatex
@@ -50,8 +51,8 @@ int main( int , char *[] )
   unsigned int i;
 
 // Software Guide : BeginCodeSnippet
-  typedef itk::DTITubeSpatialObject<3>            DTITubeType;
-  typedef itk::DTITubeSpatialObjectPoint<3>       DTITubePointType;
+  typedef itk::DTITubeSpatialObject<3>      DTITubeType;
+  typedef itk::DTITubeSpatialObjectPoint<3> DTITubePointType;
 
   DTITubeType::Pointer dtiTube = DTITubeType::New();
 // Software Guide : EndCodeSnippet
@@ -86,7 +87,7 @@ int main( int , char *[] )
     p.AddField("Lambda2",5*i);
     p.AddField("Lambda3",6*i);
     float* v = new float[6];
-    for(unsigned int k=0;k<6;k++)
+    for(unsigned int k=0; k<6; k++)
       {
       v[k] = k;
       }
@@ -135,7 +136,7 @@ int main( int , char *[] )
 // Software Guide : BeginCodeSnippet
   DTITubeType::PointListType::const_iterator it = dtiTube->GetPoints().begin();
   i=0;
-  while(it != dtiTube->GetPoints().end())
+  while(it != dtiTube->GetPoints().end() )
     {
     std::cout << std::endl;
     std::cout << "Point #" << i << std::endl;

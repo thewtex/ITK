@@ -135,6 +135,7 @@ ConicShellInteriorExteriorSpatialFunction< VDimension, TInput >
   Superclass::PrintSelf(os, indent);
 
   unsigned int i;
+
   os << indent << "Origin: [";
   for ( i = 0; i < VDimension - 1; i++ )
     {
@@ -154,6 +155,7 @@ ConicShellInteriorExteriorSpatialFunction< VDimension, TInput >
   os << indent << "Epsilon: " << m_Epsilon << std::endl;
   os << indent << "Polarity: " << m_Polarity << std::endl;
 }
+
 } // end namespace itk
 
 #endif

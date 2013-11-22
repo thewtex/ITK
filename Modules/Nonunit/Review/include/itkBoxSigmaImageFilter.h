@@ -38,7 +38,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage = TInputImage >
-class BoxSigmaImageFilter:
+class BoxSigmaImageFilter :
   public BoxImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -92,6 +92,7 @@ protected:
 private:
   BoxSigmaImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
+
 };                                   // end of class
 } // end namespace itk
 

@@ -24,7 +24,7 @@ ProgressReporter::ProgressReporter(ProcessObject *filter, ThreadIdType threadId,
                                    SizeValueType numberOfPixels,
                                    SizeValueType numberOfUpdates,
                                    float initialProgress,
-                                   float progressWeight):
+                                   float progressWeight) :
   m_Filter(filter),
   m_ThreadId(threadId),
   m_CurrentPixel(0),
@@ -62,4 +62,5 @@ ProgressReporter::~ProgressReporter()
     m_Filter->UpdateProgress(m_InitialProgress + m_ProgressWeight);
     }
 }
+
 } // end namespace itk

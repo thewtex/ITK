@@ -111,10 +111,10 @@ GradientNDAnisotropicDiffusionFunction< TImage >
     {
     // ``Half'' directional derivatives
     dx_forward = it.GetPixel(m_Center + m_Stride[i])
-                 - it.GetPixel(m_Center);
+      - it.GetPixel(m_Center);
     dx_forward *= this->m_ScaleCoefficients[i];
     dx_backward =  it.GetPixel(m_Center)
-                  - it.GetPixel(m_Center - m_Stride[i]);
+      - it.GetPixel(m_Center - m_Stride[i]);
     dx_backward *= this->m_ScaleCoefficients[i];
 
     // Calculate the conductance terms.  Conductance varies with each
@@ -158,6 +158,7 @@ GradientNDAnisotropicDiffusionFunction< TImage >
 
   return static_cast< PixelType >( delta );
 }
+
 } // end namespace itk
 
 #endif

@@ -16,26 +16,27 @@
  *
  *=========================================================================*/
 
-
 #include "itkMahalanobisDistanceThresholdImageFunction.h"
 #include "itkImage.h"
 
-int itkMahalanobisDistanceThresholdImageFunctionTest(int, char* [] )
+int
+itkMahalanobisDistanceThresholdImageFunctionTest(int, char* [] )
 {
 
-  const unsigned int                         Dimension = 3;
-  typedef unsigned char                      PixelComponentType;
-  typedef itk::RGBPixel<PixelComponentType>  PixelType;
+  const unsigned int Dimension = 3;
+
+  typedef unsigned char                     PixelComponentType;
+  typedef itk::RGBPixel<PixelComponentType> PixelType;
 
   typedef itk::Image< PixelType, Dimension > ImageType;
   typedef itk::MahalanobisDistanceThresholdImageFunction< ImageType >
-                                             FunctionType;
+    FunctionType;
 
   // Create and allocate the image
-  ImageType::Pointer      image = ImageType::New();
-  ImageType::SizeType     size;
-  ImageType::IndexType    start;
-  ImageType::RegionType   region;
+  ImageType::Pointer    image = ImageType::New();
+  ImageType::SizeType   size;
+  ImageType::IndexType  start;
+  ImageType::RegionType region;
 
   size[0] = 50;
   size[1] = 50;
@@ -64,9 +65,8 @@ int itkMahalanobisDistanceThresholdImageFunctionTest(int, char* [] )
   const double threshold = 5.0;
   function->SetThreshold( threshold );
 
-
   FunctionType::CovarianceMatrixType Covariance( Dimension, Dimension );
-  FunctionType::MeanVectorType  Mean( Dimension );
+  FunctionType::MeanVectorType       Mean( Dimension );
 
   Mean[0] = 10.0;
   Mean[1] = 20.0;
@@ -80,13 +80,13 @@ int itkMahalanobisDistanceThresholdImageFunctionTest(int, char* [] )
   function->SetCovariance( Covariance );
   function->SetMean( Mean );
 
-  ImageType::IndexType    index;
+  ImageType::IndexType index;
 
   index[0] = 25;
   index[1] = 25;
   index[2] = 25;
 
-  FunctionType::OutputType  belongs;
+  FunctionType::OutputType belongs;
 
   belongs = function->EvaluateAtIndex( index );
   std::cout << "function->EvaluateAtIndex( index ): " << belongs << std::endl;
@@ -123,7 +123,6 @@ int itkMahalanobisDistanceThresholdImageFunctionTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   const double distance2 = function->EvaluateDistance(point);
   std::cout << "function->EvaluateDistance(point): " << distance2 << std::endl;
 
@@ -134,7 +133,6 @@ int itkMahalanobisDistanceThresholdImageFunctionTest(int, char* [] )
     std::cerr << "Distance obtained value = " << distance2 << std::endl;
     return EXIT_FAILURE;
     }
-
 
   // Test EvaluateAtContinuousIndex
   FunctionType::ContinuousIndexType cindex;
@@ -151,7 +149,6 @@ int itkMahalanobisDistanceThresholdImageFunctionTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   // Test GetConstReferenceMacro
   const double & getThreshold = function->GetThreshold();
   std::cout << "function->GetThreshold(): " << getThreshold << std::endl;
@@ -161,11 +158,9 @@ int itkMahalanobisDistanceThresholdImageFunctionTest(int, char* [] )
     return EXIT_FAILURE;
     }
 
-
   // Exercise GetMean() and GetCovariance()
   Mean       = function->GetMean();
   Covariance = function->GetCovariance();
-
 
   std::cout << "Test PASSED ! " << std::endl;
   return EXIT_SUCCESS;

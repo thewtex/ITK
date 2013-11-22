@@ -35,7 +35,7 @@ template< unsigned int NDimensions = 3,
                                                           NDimensions,
                                                           NDimensions >
           >
-class SpatialObjectWriter:public Object
+class SpatialObjectWriter : public Object
 {
 public:
 
@@ -50,7 +50,7 @@ public:
   /** base type for MetaConverters -- bidirections conversion btw
    *  SpatialObject & MetaObject
    */
-  typedef MetaConverterBase< NDimensions >  MetaConverterBaseType;
+  typedef MetaConverterBase< NDimensions > MetaConverterBaseType;
 
   /** Method for creation through the object factory */
   itkNewMacro(Self);
@@ -69,9 +69,15 @@ public:
   itkGetStringMacro(FileName);
 
   /** Set the Input  */
-  void SetInput(SpatialObjectType *input){ m_SpatialObject = input; }
+  void
+  SetInput(SpatialObjectType *input){
+    m_SpatialObject = input;
+  }
 
-  void SetInput(SceneType *input){ m_Scene = input; }
+  void
+  SetInput(SceneType *input){
+    m_Scene = input;
+  }
 
   itkSetMacro(BinaryPoints, bool);
   itkGetConstMacro(BinaryPoints, bool);
@@ -98,7 +104,8 @@ protected:
   bool        m_WriteImagesInSeparateFile;
 
   SpatialObjectWriter();
-  virtual ~SpatialObjectWriter();
+  virtual
+  ~SpatialObjectWriter();
 
 private:
 

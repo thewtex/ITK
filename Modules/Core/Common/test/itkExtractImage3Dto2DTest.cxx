@@ -20,7 +20,8 @@
 #include "itkExtractImageFilter.h"
 #include "itkRandomImageSource.h"
 
-int itkExtractImage3Dto2DTest(int, char* [] )
+int
+itkExtractImage3Dto2DTest(int, char* [] )
 {
   typedef itk::Image<unsigned char,3>                      Image3DType;
   typedef itk::Image<unsigned char,2>                      Image2DType;
@@ -34,7 +35,7 @@ int itkExtractImage3Dto2DTest(int, char* [] )
   Image3DType::SizeType size = {{16,16,16}};
   src->SetSize(size);
   src->Update();
-  Image3DType::Pointer im3d(src->GetOutput());
+  Image3DType::Pointer       im3d(src->GetOutput() );
   Image3DType::DirectionType dir = im3d->GetDirection();
   dir[1][1] = 0.0;
   dir[1][2] = 1.0;
@@ -50,7 +51,7 @@ int itkExtractImage3Dto2DTest(int, char* [] )
   ExtractType::Pointer extract = ExtractType::New();
   extract->SetDirectionCollapseToIdentity();
   Image3DType::RegionType extractRegion = im3d->GetLargestPossibleRegion();
-  Image3DType::SizeType extractSize = extractRegion.GetSize();
+  Image3DType::SizeType   extractSize = extractRegion.GetSize();
 
   extractSize[2] = 0;
   Image3DType::IndexType extractIndex;

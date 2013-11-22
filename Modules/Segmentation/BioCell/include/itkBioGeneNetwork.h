@@ -18,7 +18,6 @@
 #ifndef __itkBioGeneNetwork_h
 #define __itkBioGeneNetwork_h
 
-
 #include "itkMacro.h"
 
 #include <vector>
@@ -43,7 +42,8 @@ public:
 
 public:
   GeneNetwork();
-  virtual ~GeneNetwork();
+  virtual
+  ~GeneNetwork();
 
   void Copy(const GeneNetwork & genome);
 

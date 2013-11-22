@@ -122,6 +122,7 @@ VectorCentralDifferenceImageFunction< TInputImage, TCoordRep >
 
   return ( derivative );
 }
+
 } // end namespace itk
 
 #endif

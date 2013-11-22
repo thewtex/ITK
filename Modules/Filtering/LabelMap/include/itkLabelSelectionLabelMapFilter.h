@@ -23,7 +23,6 @@
 #include "itkLabelObjectAccessors.h"
 #include <set>
 
-
 namespace itk {
 /** \class LabelSelectionLabelMapFilter
  * \brief remove the objects according to the value of their attribute
@@ -51,22 +50,24 @@ namespace itk {
  */
 template<typename TImage>
 class LabelSelectionLabelMapFilter :
-    public AttributeSelectionLabelMapFilter<TImage, typename Functor::LabelLabelObjectAccessor< typename TImage::LabelObjectType > >
+  public AttributeSelectionLabelMapFilter<TImage,
+                                          typename Functor::LabelLabelObjectAccessor< typename TImage::LabelObjectType > >
 {
 public:
   /** Standard class typedefs. */
   typedef LabelSelectionLabelMapFilter Self;
-  typedef AttributeSelectionLabelMapFilter<TImage, typename Functor::LabelLabelObjectAccessor< typename TImage::LabelObjectType > >
-                                       Superclass;
-  typedef SmartPointer<Self>           Pointer;
-  typedef SmartPointer<const Self>     ConstPointer;
+  typedef AttributeSelectionLabelMapFilter<TImage,
+                                           typename Functor::LabelLabelObjectAccessor< typename TImage::LabelObjectType > >
+    Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TImage                              ImageType;
-  typedef typename ImageType::Pointer         ImagePointer;
-  typedef typename ImageType::ConstPointer    ImageConstPointer;
-  typedef typename ImageType::PixelType       PixelType;
-  typedef typename ImageType::IndexType       IndexType;
+  typedef TImage                           ImageType;
+  typedef typename ImageType::Pointer      ImagePointer;
+  typedef typename ImageType::ConstPointer ImageConstPointer;
+  typedef typename ImageType::PixelType    PixelType;
+  typedef typename ImageType::IndexType    IndexType;
 
   typedef typename Superclass::AttributeAccessorType AttributeAccessorType;
   typedef typename Superclass::AttributeValueType    AttributeValueType;
@@ -92,42 +93,47 @@ public:
     (Concept::Convertible<int, InputImagePixelType>));
   itkConceptMacro(InputOStreamWritableCheck,
     (Concept::OStreamWritable<InputImagePixelType>));*/
-  // End concept checking
+// End concept checking
 #endif
 
-  const AttributeSetType & GetLabelSet() const
-    {
+  const AttributeSetType &
+  GetLabelSet() const
+  {
     return this->GetAttributeSet();
-    }
+  }
 
-  void SetLabelSet( const AttributeSetType & set )
-    {
+  void
+  SetLabelSet( const AttributeSetType & set )
+  {
     this->SetAttributeSet( set );
-    }
+  }
 
   /** Clear the attribute set, and add the attribute passed in parameter */
-  void SetLabel( const AttributeValueType & attr )
-    {
+  void
+  SetLabel( const AttributeValueType & attr )
+  {
     this->SetAttribute( attr );
-    }
+  }
 
-  void ClearLabelSet()
-    {
+  void
+  ClearLabelSet()
+  {
     this->ClearAttributeSet();
-    }
+  }
 
-  void AddLabel( const AttributeValueType & attr )
-    {
+  void
+  AddLabel( const AttributeValueType & attr )
+  {
     this->AddAttribute( attr );
-    }
+  }
 
 protected:
-  LabelSelectionLabelMapFilter() {};
-  ~LabelSelectionLabelMapFilter() {};
+  LabelSelectionLabelMapFilter() {}
+  ~LabelSelectionLabelMapFilter() {}
 
 private:
   LabelSelectionLabelMapFilter(const Self&); //purposely not implemented
-  void operator=(const Self&); //purposely not implemented
+  void operator=(const Self&);               //purposely not implemented
 
 }; // end of class
 

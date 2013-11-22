@@ -46,7 +46,7 @@ SobelOperator< TPixel, VDimension, TAllocator >
         for ( x = -1; x <= 1; x++ )
           {
           pos = center + z *this->GetStride(2) + y *this->GetStride(1)
-                + x *this->GetStride(0);
+            + x *this->GetStride(0);
           this->operator[](pos) = static_cast< TPixel >( coeff[i] );
 
           i++;
@@ -83,6 +83,7 @@ SobelOperator< TPixel, VDimension, TAllocator >
 ::GenerateCoefficients()
 {
   std::vector< double > coeff;
+
   if ( VDimension == 2 && this->GetDirection() == 0 )
     {
     coeff.push_back(-1.0);  coeff.push_back(0.0);  coeff.push_back(1.0);
@@ -146,6 +147,7 @@ SobelOperator< TPixel, VDimension, TAllocator >
 
   return coeff;
 }
+
 } // namespace itk
 
 #endif

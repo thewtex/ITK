@@ -26,7 +26,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkHoughTransform2DLinesImageFilter.h"
 // Software Guide : EndCodeSnippet
@@ -41,7 +40,8 @@
 #include <list>
 #include "itkCastImageFilter.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 4 )
     {
@@ -64,9 +64,9 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef   unsigned char   PixelType;
-  typedef   float           AccumulatorPixelType;
-  const     unsigned int    Dimension = 2;
+  typedef   unsigned char PixelType;
+  typedef   float         AccumulatorPixelType;
+  const     unsigned int Dimension = 2;
 
   typedef itk::Image< PixelType, Dimension >            ImageType;
   typedef itk::Image< AccumulatorPixelType, Dimension > AccumulatorImageType;
@@ -95,7 +95,6 @@ int main( int argc, char *argv[] )
   ImageType::Pointer localImage = reader->GetOutput();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Once the image is loaded, we apply a
@@ -112,14 +111,13 @@ int main( int argc, char *argv[] )
   std::cout << "Applying gradient magnitude filter" << std::endl;
 
   typedef itk::GradientMagnitudeImageFilter<AccumulatorImageType,
-               AccumulatorImageType > GradientFilterType;
+                                            AccumulatorImageType > GradientFilterType;
   GradientFilterType::Pointer gradFilter =  GradientFilterType::New();
 
   caster->SetInput(localImage);
-  gradFilter->SetInput(caster->GetOutput());
+  gradFilter->SetInput(caster->GetOutput() );
   gradFilter->Update();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -134,7 +132,7 @@ int main( int argc, char *argv[] )
   typedef itk::ThresholdImageFilter<AccumulatorImageType> ThresholdFilterType;
   ThresholdFilterType::Pointer threshFilter = ThresholdFilterType::New();
 
-  threshFilter->SetInput( gradFilter->GetOutput());
+  threshFilter->SetInput( gradFilter->GetOutput() );
   threshFilter->SetOutsideValue(0);
   unsigned char threshBelow = 0;
   unsigned char threshAbove = 255;
@@ -151,10 +149,10 @@ int main( int argc, char *argv[] )
   // Software Guide : BeginCodeSnippet
   std::cout << "Computing Hough Map" << std::endl;
   typedef itk::HoughTransform2DLinesImageFilter<AccumulatorPixelType,
-                              AccumulatorPixelType>  HoughTransformFilterType;
+                                                AccumulatorPixelType>  HoughTransformFilterType;
 
   HoughTransformFilterType::Pointer houghFilter
-                                            = HoughTransformFilterType::New();
+    = HoughTransformFilterType::New();
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -171,17 +169,17 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  houghFilter->SetInput(threshFilter->GetOutput());
-  houghFilter->SetNumberOfLines(atoi(argv[3]));
+  houghFilter->SetInput(threshFilter->GetOutput() );
+  houghFilter->SetNumberOfLines(atoi(argv[3]) );
 
   if(argc > 4 )
     {
-    houghFilter->SetVariance(atof(argv[4]));
+    houghFilter->SetVariance(atof(argv[4]) );
     }
 
   if(argc > 5 )
     {
-    houghFilter->SetDiscRadius(atof(argv[5]));
+    houghFilter->SetDiscRadius(atof(argv[5]) );
     }
   houghFilter->Update();
   AccumulatorImageType::Pointer localAccumulator = houghFilter->GetOutput();
@@ -196,7 +194,7 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   HoughTransformFilterType::LinesListType lines;
-  lines = houghFilter->GetLines(atoi(argv[3]));
+  lines = houghFilter->GetLines(atoi(argv[3]) );
   std::cout << "Found " << lines.size() << " line(s)." << std::endl;
   // Software Guide : EndCodeSnippet
 
@@ -211,18 +209,17 @@ int main( int argc, char *argv[] )
   typedef  unsigned char                            OutputPixelType;
   typedef  itk::Image< OutputPixelType, Dimension > OutputImageType;
 
-  OutputImageType::Pointer  localOutputImage = OutputImageType::New();
+  OutputImageType::Pointer localOutputImage = OutputImageType::New();
 
   OutputImageType::RegionType region;
-  region.SetSize(localImage->GetLargestPossibleRegion().GetSize());
-  region.SetIndex(localImage->GetLargestPossibleRegion().GetIndex());
+  region.SetSize(localImage->GetLargestPossibleRegion().GetSize() );
+  region.SetIndex(localImage->GetLargestPossibleRegion().GetIndex() );
   localOutputImage->SetRegions( region );
-  localOutputImage->SetOrigin(localImage->GetOrigin());
-  localOutputImage->SetSpacing(localImage->GetSpacing());
+  localOutputImage->SetOrigin(localImage->GetOrigin() );
+  localOutputImage->SetSpacing(localImage->GetSpacing() );
   localOutputImage->Allocate();
   localOutputImage->FillBuffer(0);
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -246,10 +243,10 @@ int main( int argc, char *argv[] )
     //  Software Guide : EndLatex
 
     // Software Guide : BeginCodeSnippet
-    typedef HoughTransformFilterType::LineType::PointListType  PointListType;
+    typedef HoughTransformFilterType::LineType::PointListType PointListType;
 
-    PointListType                   pointsList = (*itLines)->GetPoints();
-    PointListType::const_iterator   itPoints = pointsList.begin();
+    PointListType                 pointsList = (*itLines)->GetPoints();
+    PointListType::const_iterator itPoints = pointsList.begin();
 
     double u[2];
     u[0] = (*itPoints).GetPosition()[0];
@@ -272,8 +269,8 @@ int main( int argc, char *argv[] )
 
     // Software Guide : BeginCodeSnippet
     ImageType::IndexType localIndex;
-    itk::Size<2> size = localOutputImage->GetLargestPossibleRegion().GetSize();
-    float diag = vcl_sqrt((float)( size[0]*size[0] + size[1]*size[1] ));
+    itk::Size<2>         size = localOutputImage->GetLargestPossibleRegion().GetSize();
+    float                diag = vcl_sqrt( (float)( size[0]*size[0] + size[1]*size[1] ) );
 
     for(int i=static_cast<int>(-diag); i<static_cast<int>(diag); i++)
       {
@@ -281,7 +278,7 @@ int main( int argc, char *argv[] )
       localIndex[1]=(long int)(u[1]+i*v[1]);
 
       OutputImageType::RegionType outputRegion =
-                          localOutputImage->GetLargestPossibleRegion();
+        localOutputImage->GetLargestPossibleRegion();
 
       if( outputRegion.IsInside( localIndex ) )
         {

@@ -79,6 +79,7 @@ ImageFunction< TInputImage, TOutput, TCoordRep >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

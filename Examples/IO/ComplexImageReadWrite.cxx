@@ -35,7 +35,6 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include <complex>
 #include "itkImage.h"
@@ -43,8 +42,8 @@
 #include "itkImageFileWriter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
 
   // Verify the number of parameters in the command line
@@ -63,14 +62,12 @@ int main( int argc, char * argv [] )
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
   const unsigned int Dimension = 2;
 
   typedef std::complex< float >              PixelType;
   typedef itk::Image< PixelType, Dimension > ImageType;
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //
@@ -86,7 +83,6 @@ int main( int argc, char * argv [] )
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
 // Software Guide : EndCodeSnippet
-
 
 // Software Guide : BeginLatex
 //

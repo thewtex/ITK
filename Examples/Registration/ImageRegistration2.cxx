@@ -39,14 +39,12 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkImageRegistrationMethod.h"
 #include "itkTranslationTransform.h"
 #include "itkMutualInformationImageToImageMetric.h"
 #include "itkGradientDescentOptimizer.h"
 // Software Guide : EndCodeSnippet
-
 
 //  Software Guide : BeginLatex
 //
@@ -77,14 +75,12 @@
 #include "itkDiscreteGaussianImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
 #include "itkResampleImageFilter.h"
 #include "itkCastImageFilter.h"
 #include "itkCheckerBoardImageFilter.h"
-
 
 //  The following section of code implements a Command observer
 //  that will monitor the evolution of the registration process.
@@ -93,39 +89,43 @@
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef  CommandIterationUpdate   Self;
-  typedef  itk::Command             Superclass;
-  typedef  itk::SmartPointer<Self>  Pointer;
+  typedef  CommandIterationUpdate  Self;
+  typedef  itk::Command            Superclass;
+  typedef  itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
-  CommandIterationUpdate() {};
+  CommandIterationUpdate() {}
 
 public:
-  typedef   itk::GradientDescentOptimizer     OptimizerType;
-  typedef   const OptimizerType   *           OptimizerPointer;
+  typedef   itk::GradientDescentOptimizer OptimizerType;
+  typedef   const OptimizerType *         OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     OptimizerPointer optimizer =
       dynamic_cast< OptimizerPointer >( object );
-    if( ! itk::IterationEvent().CheckEvent( &event ) )
+
+    if( !itk::IterationEvent().CheckEvent( &event ) )
       {
       return;
       }
     std::cout << optimizer->GetCurrentIteration() << "   ";
     std::cout << optimizer->GetValue() << "   ";
     std::cout << optimizer->GetCurrentPosition() << std::endl;
-    }
+  }
+
 };
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 4 )
     {
@@ -144,11 +144,11 @@ int main( int argc, char *argv[] )
   // Software Guide : EndLatex
   //
   // Software Guide : BeginCodeSnippet
-  const    unsigned int    Dimension = 2;
-  typedef  unsigned short  PixelType;
+  const    unsigned int Dimension = 2;
+  typedef  unsigned short PixelType;
 
-  typedef itk::Image< PixelType, Dimension >  FixedImageType;
-  typedef itk::Image< PixelType, Dimension >  MovingImageType;
+  typedef itk::Image< PixelType, Dimension > FixedImageType;
+  typedef itk::Image< PixelType, Dimension > MovingImageType;
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -165,7 +165,6 @@ int main( int argc, char *argv[] )
   typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The rest of the image registration components are instantiated as
@@ -174,18 +173,16 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   typedef itk::TranslationTransform< double, Dimension > TransformType;
   typedef itk::GradientDescentOptimizer                  OptimizerType;
   typedef itk::LinearInterpolateImageFunction<
-                                    InternalImageType,
-                                    double             > InterpolatorType;
+      InternalImageType,
+      double             > InterpolatorType;
   typedef itk::ImageRegistrationMethod<
-                                    InternalImageType,
-                                    InternalImageType >  RegistrationType;
+      InternalImageType,
+      InternalImageType >  RegistrationType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -196,20 +193,18 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::MutualInformationImageToImageMetric<
-                                          InternalImageType,
-                                          InternalImageType >    MetricType;
+      InternalImageType,
+      InternalImageType >    MetricType;
   // Software Guide : EndCodeSnippet
 
-
-  TransformType::Pointer      transform     = TransformType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
+  TransformType::Pointer    transform     = TransformType::New();
+  OptimizerType::Pointer    optimizer     = OptimizerType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
 
   registration->SetOptimizer(     optimizer     );
   registration->SetTransform(     transform     );
   registration->SetInterpolator(  interpolator  );
-
 
   //  Software Guide : BeginLatex
   //
@@ -219,10 +214,9 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  MetricType::Pointer         metric        = MetricType::New();
+  MetricType::Pointer metric        = MetricType::New();
   registration->SetMetric( metric  );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -256,7 +250,6 @@ int main( int argc, char *argv[] )
   fixedImageReader->SetFileName(  argv[1] );
   movingImageReader->SetFileName( argv[2] );
 
-
   //  Software Guide : BeginLatex
   //
   //  The normalization filters are instantiated using the fixed and moving
@@ -266,20 +259,20 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::NormalizeImageFilter<
-                                FixedImageType,
-                                InternalImageType
-                                        > FixedNormalizeFilterType;
+      FixedImageType,
+      InternalImageType
+      > FixedNormalizeFilterType;
 
   typedef itk::NormalizeImageFilter<
-                                MovingImageType,
-                                InternalImageType
-                                              > MovingNormalizeFilterType;
+      MovingImageType,
+      InternalImageType
+      > MovingNormalizeFilterType;
 
   FixedNormalizeFilterType::Pointer fixedNormalizer =
-                                            FixedNormalizeFilterType::New();
+    FixedNormalizeFilterType::New();
 
   MovingNormalizeFilterType::Pointer movingNormalizer =
-                                            MovingNormalizeFilterType::New();
+    MovingNormalizeFilterType::New();
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
@@ -292,9 +285,9 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::DiscreteGaussianImageFilter<
-                                      InternalImageType,
-                                      InternalImageType
-                                                    > GaussianFilterType;
+      InternalImageType,
+      InternalImageType
+      > GaussianFilterType;
 
   GaussianFilterType::Pointer fixedSmoother  = GaussianFilterType::New();
   GaussianFilterType::Pointer movingSmoother = GaussianFilterType::New();
@@ -323,10 +316,9 @@ int main( int argc, char *argv[] )
   registration->SetMovingImage(   movingSmoother->GetOutput()   );
   // Software Guide : EndCodeSnippet
 
-
   fixedNormalizer->Update();
   FixedImageType::RegionType fixedImageRegion =
-       fixedNormalizer->GetOutput()->GetBufferedRegion();
+    fixedNormalizer->GetOutput()->GetBufferedRegion();
   registration->SetFixedImageRegion( fixedImageRegion );
 
   typedef RegistrationType::ParametersType ParametersType;
@@ -375,11 +367,10 @@ int main( int argc, char *argv[] )
   const unsigned int numberOfPixels = fixedImageRegion.GetNumberOfPixels();
 
   const unsigned int numberOfSamples =
-                        static_cast< unsigned int >( numberOfPixels * 0.01 );
+    static_cast< unsigned int >( numberOfPixels * 0.01 );
 
   metric->SetNumberOfSpatialSamples( numberOfSamples );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -396,13 +387,11 @@ int main( int argc, char *argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   optimizer->SetLearningRate( 15.0 );
   optimizer->SetNumberOfIterations( 200 );
   optimizer->MaximizeOn();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -429,7 +418,6 @@ int main( int argc, char *argv[] )
   CommandIterationUpdate::Pointer observer = CommandIterationUpdate::New();
   optimizer->AddObserver( itk::IterationEvent(), observer );
 
-
   try
     {
     registration->Update();
@@ -453,7 +441,6 @@ int main( int argc, char *argv[] )
 
   double bestValue = optimizer->GetValue();
 
-
   // Print out results
   //
   std::cout << std::endl;
@@ -463,7 +450,6 @@ int main( int argc, char *argv[] )
   std::cout << " Iterations    = " << numberOfIterations << std::endl;
   std::cout << " Metric value  = " << bestValue          << std::endl;
   std::cout << " Numb. Samples = " << numberOfSamples    << std::endl;
-
 
   //  Software Guide : BeginLatex
   //
@@ -500,8 +486,8 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   typedef itk::ResampleImageFilter<
-                            MovingImageType,
-                            FixedImageType >    ResampleFilterType;
+      MovingImageType,
+      FixedImageType >    ResampleFilterType;
 
   TransformType::Pointer finalTransform = TransformType::New();
 
@@ -521,29 +507,24 @@ int main( int argc, char *argv[] )
   resample->SetOutputDirection( fixedImage->GetDirection() );
   resample->SetDefaultPixelValue( 100 );
 
-
-  typedef  unsigned char  OutputPixelType;
+  typedef  unsigned char OutputPixelType;
 
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
   typedef itk::CastImageFilter<
-                        FixedImageType,
-                        OutputImageType > CastFilterType;
+      FixedImageType,
+      OutputImageType > CastFilterType;
 
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
-
-  WriterType::Pointer      writer =  WriterType::New();
-  CastFilterType::Pointer  caster =  CastFilterType::New();
-
+  WriterType::Pointer     writer =  WriterType::New();
+  CastFilterType::Pointer caster =  CastFilterType::New();
 
   writer->SetFileName( argv[3] );
-
 
   caster->SetInput( resample->GetOutput() );
   writer->SetInput( caster->GetOutput()   );
   writer->Update();
-
 
   // Generate checkerboards before and after registration
   //
@@ -568,7 +549,6 @@ int main( int argc, char *argv[] )
     writer->Update();
     }
 
-
   // After registration
   resample->SetTransform( finalTransform );
   if( argc > 5 )
@@ -576,7 +556,6 @@ int main( int argc, char *argv[] )
     writer->SetFileName( argv[5] );
     writer->Update();
     }
-
 
   //  Software Guide : BeginLatex
   //

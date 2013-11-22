@@ -98,7 +98,6 @@
 //
 //   Software Guide : EndLatex
 
-
 #include "itkImageRegistrationMethod.h"
 #include "itkTranslationTransform.h"
 #include "itkRegularStepGradientDescentOptimizer.h"
@@ -134,26 +133,28 @@ class RescaleDynamicRangeFunctor
 {
 public:
   typedef unsigned char OutputPixelType;
-  RescaleDynamicRangeFunctor() {};
-  ~RescaleDynamicRangeFunctor() {};
-  inline OutputPixelType operator()( const TInput &A )
-    {
+  RescaleDynamicRangeFunctor() {}
+  ~RescaleDynamicRangeFunctor() {}
+  inline OutputPixelType
+  operator()( const TInput &A )
+  {
     if( (A > 0.0) )
       {
-      if( -(30.0 * vcl_log(A)) > 255 )
+      if( -(30.0 * vcl_log(A) ) > 255 )
         {
         return static_cast<OutputPixelType>( 255 );
         }
       else
         {
-        return static_cast<OutputPixelType>( -(30.0 * vcl_log(A)) );
+        return static_cast<OutputPixelType>( -(30.0 * vcl_log(A) ) );
         }
       }
     else
       {
       return static_cast<OutputPixelType>(255);
       }
-    }
+  }
+
 };
 
 // Class to write the joint histograms.
@@ -175,20 +176,20 @@ public:
   typedef itk::Image< InternalPixelType, Dimension > InternalImageType;
 
   typedef itk::MutualInformationHistogramImageToImageMetric<
-                                        InternalImageType,
-                                        InternalImageType >    MetricType;
+      InternalImageType,
+      InternalImageType >    MetricType;
   // Software Guide : EndCodeSnippet
 
-  typedef MetricType::Pointer   MetricPointer;
+  typedef MetricType::Pointer MetricPointer;
 
   // Software Guide : BeginCodeSnippet
-  typedef MetricType::HistogramType   HistogramType;
+  typedef MetricType::HistogramType HistogramType;
 
   typedef itk::HistogramToEntropyImageFilter< HistogramType >
-                                HistogramToEntropyImageFilterType;
+    HistogramToEntropyImageFilterType;
 
   typedef HistogramToEntropyImageFilterType::Pointer
-                                HistogramToImageFilterPointer;
+    HistogramToImageFilterPointer;
 
   typedef HistogramToEntropyImageFilterType::OutputImageType OutputImageType;
 
@@ -198,9 +199,9 @@ public:
 
   typedef HistogramToEntropyImageFilterType::OutputPixelType OutputPixelType;
 
-  HistogramWriter():
+  HistogramWriter() :
     m_Metric(0)
-    {
+  {
 
     // Software Guide : BeginLatex
     //
@@ -227,26 +228,30 @@ public:
     // Software Guide : EndCodeSnippet
 
     std::string outputFileBase = "JointHistogram";
-            // Base of series filenames ( of the joint histogram )
+    // Base of series filenames ( of the joint histogram )
     this->m_OutputFile = outputFileBase + "%03d.";
     this->m_OutputFile += "mhd";   // histogram filename extension
-    }
+  }
 
-  ~HistogramWriter() { };
+  ~HistogramWriter() {}
 
-  void SetMetric( MetricPointer metric )
-    {
+  void
+  SetMetric( MetricPointer metric )
+  {
     this->m_Metric = metric;
-    }
+  }
 
-  MetricPointer GetMetric() const
-    {
+  MetricPointer
+  GetMetric() const
+  {
     return this->m_Metric;
-    }
+  }
 
-  void WriteHistogramFile( unsigned int iterationNumber )
-    {
+  void
+  WriteHistogramFile( unsigned int iterationNumber )
+  {
     char outputFilename[1000];
+
     sprintf (outputFilename, this->m_OutputFile.c_str(), iterationNumber );
 
     m_HistogramFileWriter->SetFileName( outputFilename );
@@ -274,7 +279,7 @@ public:
     std::cout << "Joint Histogram file: ";
     std::cout << outputFilename << " written" << std::endl;
 
-    }
+  }
 
   // Software Guide : BeginLatex
   //
@@ -287,10 +292,10 @@ public:
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  void WriteHistogramFile( const char * outputFilename  )
-    {
+  void
+  WriteHistogramFile( const char * outputFilename  )
+  {
     // Software Guide : EndCodeSnippet
-
 
     // Software Guide : BeginCodeSnippet
     this->m_Filter->SetInput( m_Metric->GetHistogram() );
@@ -307,31 +312,30 @@ public:
     //
     // Software Guide : EndLatex
 
-
     //Write the joint histogram as outputFilename. Also intensity window
     //the image by lower and upper thresholds and rescale the image to
     //8 bits.
     typedef itk::Image< unsigned char, Dimension > RescaledOutputImageType;
 
     typedef RescaleDynamicRangeFunctor<
-                              OutputPixelType
-                                      > RescaleDynamicRangeFunctorType;
+        OutputPixelType
+        > RescaleDynamicRangeFunctorType;
 
     typedef itk::UnaryFunctorImageFilter<
-                                OutputImageType,
-                                RescaledOutputImageType,
-                                RescaleDynamicRangeFunctorType
-                                      > RescaleDynamicRangeFilterType;
+        OutputImageType,
+        RescaledOutputImageType,
+        RescaleDynamicRangeFunctorType
+        > RescaleDynamicRangeFilterType;
 
     RescaleDynamicRangeFilterType::Pointer rescaler =
-                                RescaleDynamicRangeFilterType::New();
+      RescaleDynamicRangeFilterType::New();
 
     rescaler->SetInput( m_Filter->GetOutput() );
 
     typedef itk::ImageFileWriter< RescaledOutputImageType > RescaledWriterType;
 
     RescaledWriterType::Pointer rescaledWriter =
-                                RescaledWriterType::New();
+      RescaledWriterType::New();
 
     rescaledWriter->SetInput( rescaler->GetOutput() );
 
@@ -357,8 +361,8 @@ public:
       }
 
     std::cout << "Joint Histogram file: " << outputFilename <<
-        " written" << std::endl;
-    }
+      " written" << std::endl;
+  }
 
 // Software Guide : BeginLatex
 //
@@ -366,47 +370,48 @@ public:
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 
 private:
-  MetricPointer                   m_Metric;
-  HistogramToImageFilterPointer   m_Filter;
-  HistogramFileWriterPointer      m_HistogramFileWriter;
+  MetricPointer                 m_Metric;
+  HistogramToImageFilterPointer m_Filter;
+  HistogramFileWriterPointer    m_HistogramFileWriter;
   // Software Guide : EndCodeSnippet
-  std::string   m_OutputFile;
+  std::string m_OutputFile;
 };
-
 
 // Command - observer invoked after every iteration of the optimizer
 class CommandIterationUpdate : public itk::Command
 {
 public:
-  typedef  CommandIterationUpdate   Self;
-  typedef  itk::Command             Superclass;
-  typedef  itk::SmartPointer<Self>  Pointer;
+  typedef  CommandIterationUpdate  Self;
+  typedef  itk::Command            Superclass;
+  typedef  itk::SmartPointer<Self> Pointer;
   itkNewMacro( Self );
 
 protected:
   CommandIterationUpdate()
-    {
+  {
     m_WriteHistogramsAfterEveryIteration = false;
-    }
+  }
 
 public:
 
-  typedef   itk::RegularStepGradientDescentOptimizer     OptimizerType;
-  typedef   const OptimizerType *                        OptimizerPointer;
+  typedef   itk::RegularStepGradientDescentOptimizer OptimizerType;
+  typedef   const OptimizerType *                    OptimizerPointer;
 
-  void Execute(itk::Object *caller, const itk::EventObject & event)
-    {
+  void
+  Execute(itk::Object *caller, const itk::EventObject & event)
+  {
     Execute( (const itk::Object *)caller, event);
-    }
+  }
 
-  void Execute(const itk::Object * object, const itk::EventObject & event)
-    {
+  void
+  Execute(const itk::Object * object, const itk::EventObject & event)
+  {
     OptimizerPointer optimizer = dynamic_cast< OptimizerPointer >( object );
-    if( ! itk::IterationEvent().CheckEvent( &event ) )
+
+    if( !itk::IterationEvent().CheckEvent( &event ) )
       {
       return;
       }
@@ -416,7 +421,6 @@ public:
 
     // Write the joint histogram as a file JointHistogramXXX.mhd
     // where \code{XXX} is the iteration number
-
 
     //Write Joint Entropy Histogram prior to registration.
     if( optimizer->GetCurrentIteration() == 0 )
@@ -435,30 +439,32 @@ public:
     if( m_WriteHistogramsAfterEveryIteration )
       {
       m_JointHistogramWriter.WriteHistogramFile(
-                                           optimizer->GetCurrentIteration() );
+        optimizer->GetCurrentIteration() );
       }
-    }
+  }
 
-  void SetWriteHistogramsAfterEveryIteration( bool value )
-    {
+  void
+  SetWriteHistogramsAfterEveryIteration( bool value )
+  {
     m_WriteHistogramsAfterEveryIteration = value;
-    }
+  }
 
-  void SetInitialHistogramFile( const char * filename )
-    {
+  void
+  SetInitialHistogramFile( const char * filename )
+  {
     m_InitialHistogramFile = filename;
-    }
+  }
 
   HistogramWriter m_JointHistogramWriter;
 
 private:
-  bool              m_WriteHistogramsAfterEveryIteration;
-  std::string       m_InitialHistogramFile;
+  bool        m_WriteHistogramsAfterEveryIteration;
+  std::string m_InitialHistogramFile;
 
 };
 
-
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   if( argc < 8 )
     {
@@ -473,7 +479,7 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
     }
 
-  typedef  unsigned char  PixelType;
+  typedef  unsigned char PixelType;
 
   const unsigned int Dimension = 2;
 
@@ -485,15 +491,15 @@ int main( int argc, char *argv[] )
   typedef itk::TranslationTransform< double, Dimension > TransformType;
   typedef itk::RegularStepGradientDescentOptimizer       OptimizerType;
   typedef itk::LinearInterpolateImageFunction<
-                                    InternalImageType,
-                                    double             > InterpolatorType;
+      InternalImageType,
+      double             > InterpolatorType;
   typedef itk::ImageRegistrationMethod<
-                                    InternalImageType,
-                                    InternalImageType >  RegistrationType;
+      InternalImageType,
+      InternalImageType >  RegistrationType;
 
   typedef itk::MutualInformationHistogramImageToImageMetric<
-                                          InternalImageType,
-                                          InternalImageType >    MetricType;
+      InternalImageType,
+      InternalImageType >    MetricType;
 
   // Software Guide : BeginLatex
   //
@@ -502,12 +508,11 @@ int main( int argc, char *argv[] )
   //
   // Software Guide : EndLatex
 
-  TransformType::Pointer      transform     = TransformType::New();
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-  InterpolatorType::Pointer   interpolator  = InterpolatorType::New();
-  RegistrationType::Pointer   registration  = RegistrationType::New();
-  MetricType::Pointer         metric        = MetricType::New();
-
+  TransformType::Pointer    transform     = TransformType::New();
+  OptimizerType::Pointer    optimizer     = OptimizerType::New();
+  InterpolatorType::Pointer interpolator  = InterpolatorType::New();
+  RegistrationType::Pointer registration  = RegistrationType::New();
+  MetricType::Pointer       metric        = MetricType::New();
 
   registration->SetOptimizer(     optimizer     );
   registration->SetTransform(     transform     );
@@ -528,7 +533,7 @@ int main( int argc, char *argv[] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  unsigned int numberOfHistogramBins = atoi( argv[7] );
+  unsigned int                        numberOfHistogramBins = atoi( argv[7] );
   MetricType::HistogramType::SizeType histogramSize;
   histogramSize[0] = numberOfHistogramBins;
   histogramSize[1] = numberOfHistogramBins;
@@ -557,26 +562,25 @@ int main( int argc, char *argv[] )
   fixedImageReader->SetFileName(  argv[1] );
   movingImageReader->SetFileName( argv[2] );
 
+  typedef itk::NormalizeImageFilter<
+      FixedImageType,
+      InternalImageType
+      > FixedNormalizeFilterType;
 
   typedef itk::NormalizeImageFilter<
-                                FixedImageType,
-                                InternalImageType
-                                        > FixedNormalizeFilterType;
-
-  typedef itk::NormalizeImageFilter<
-                                MovingImageType,
-                                InternalImageType
-                                              > MovingNormalizeFilterType;
+      MovingImageType,
+      InternalImageType
+      > MovingNormalizeFilterType;
 
   FixedNormalizeFilterType::Pointer fixedNormalizer =
-                                            FixedNormalizeFilterType::New();
+    FixedNormalizeFilterType::New();
 
   MovingNormalizeFilterType::Pointer movingNormalizer =
-                                            MovingNormalizeFilterType::New();
+    MovingNormalizeFilterType::New();
   typedef itk::DiscreteGaussianImageFilter<
-                                      InternalImageType,
-                                      InternalImageType
-                                                    > GaussianFilterType;
+      InternalImageType,
+      InternalImageType
+      > GaussianFilterType;
 
   GaussianFilterType::Pointer fixedSmoother  = GaussianFilterType::New();
   GaussianFilterType::Pointer movingSmoother = GaussianFilterType::New();
@@ -592,10 +596,9 @@ int main( int argc, char *argv[] )
   registration->SetFixedImage(    fixedSmoother->GetOutput()    );
   registration->SetMovingImage(   movingSmoother->GetOutput()   );
 
-
   fixedNormalizer->Update();
   registration->SetFixedImageRegion(
-       fixedNormalizer->GetOutput()->GetBufferedRegion() );
+    fixedNormalizer->GetOutput()->GetBufferedRegion() );
 
   typedef RegistrationType::ParametersType ParametersType;
   ParametersType initialParameters( transform->GetNumberOfParameters() );
@@ -605,7 +608,6 @@ int main( int argc, char *argv[] )
 
   registration->SetInitialTransformParameters( initialParameters );
 
-
   optimizer->SetMaximumStepLength( 4.00 );
   optimizer->SetMinimumStepLength( 0.01 );
   optimizer->SetRelaxationFactor(  0.90 );
@@ -614,14 +616,12 @@ int main( int argc, char *argv[] )
 
   optimizer->AddObserver( itk::IterationEvent(), observer );
 
-
   observer->SetInitialHistogramFile( argv[5] );
 
   if( atoi(argv[4]) )
     {
     observer->SetWriteHistogramsAfterEveryIteration( true );
     }
-
 
   try
     {
@@ -646,7 +646,6 @@ int main( int argc, char *argv[] )
 
   double bestValue = optimizer->GetValue();
 
-
   std::cout << "Result = " << std::endl;
   std::cout << " Translation X = " << TranslationAlongX  << std::endl;
   std::cout << " Translation Y = " << TranslationAlongY  << std::endl;
@@ -657,8 +656,8 @@ int main( int argc, char *argv[] )
   observer->m_JointHistogramWriter.WriteHistogramFile( argv[6] );
 
   typedef itk::ResampleImageFilter<
-                            MovingImageType,
-                            FixedImageType >    ResampleFilterType;
+      MovingImageType,
+      FixedImageType >    ResampleFilterType;
 
   TransformType::Pointer finalTransform = TransformType::New();
 
@@ -678,24 +677,20 @@ int main( int argc, char *argv[] )
   resample->SetOutputDirection( fixedImage->GetDirection() );
   resample->SetDefaultPixelValue( 100 );
 
-
-  typedef  unsigned char  OutputPixelType;
+  typedef  unsigned char OutputPixelType;
 
   typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
   typedef itk::CastImageFilter<
-                        FixedImageType,
-                        OutputImageType > CastFilterType;
+      FixedImageType,
+      OutputImageType > CastFilterType;
 
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
-
-  WriterType::Pointer      writer =  WriterType::New();
-  CastFilterType::Pointer  caster =  CastFilterType::New();
-
+  WriterType::Pointer     writer =  WriterType::New();
+  CastFilterType::Pointer caster =  CastFilterType::New();
 
   writer->SetFileName( argv[3] );
-
 
   caster->SetInput( resample->GetOutput() );
   writer->SetInput( caster->GetOutput()   );

@@ -29,7 +29,6 @@
 //
 //  Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkImage.h"
 #include "itkPNGImageIO.h"
@@ -45,7 +44,8 @@
 
 #include "itkRescaleIntensityImageFilter.h"
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -53,7 +53,7 @@ int main( int argc, char * argv[] )
     std::cerr << argv[0] << "  inputImageFile  ";
     std::cerr << " outputImageFile radius " << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   //
   //  The following code defines the input and output pixel types and their
@@ -61,34 +61,34 @@ int main( int argc, char * argv[] )
   //
   const unsigned int Dimension = 2;
 
-  typedef unsigned char   PixelType;
-  typedef unsigned char   WritePixelType;
+  typedef unsigned char PixelType;
+  typedef unsigned char WritePixelType;
 
-  typedef itk::Image< PixelType,  Dimension >       ImageType;
-    typedef itk::Image< WritePixelType, Dimension > WriteImageType;
+  typedef itk::Image< PixelType,  Dimension >     ImageType;
+  typedef itk::Image< WritePixelType, Dimension > WriteImageType;
   // readers/writers
   typedef itk::ImageFileReader< ImageType  >     ReaderType;
   typedef itk::ImageFileWriter< WriteImageType > WriterType;
 
   // structuring element
   typedef itk::BinaryBallStructuringElement<
-            PixelType, Dimension  > StructuringElementType;
+      PixelType, Dimension  > StructuringElementType;
   // define the opening and closing types
   typedef itk::GrayscaleMorphologicalOpeningImageFilter<
-            ImageType, ImageType, StructuringElementType >  OpeningFilterType;
+      ImageType, ImageType, StructuringElementType >  OpeningFilterType;
   typedef itk::GrayscaleMorphologicalClosingImageFilter<
-            ImageType, ImageType, StructuringElementType >  ClosingFilterType;
+      ImageType, ImageType, StructuringElementType >  ClosingFilterType;
   // define arithmetic operation filters
   typedef itk::ConstrainedValueAdditionImageFilter<
-            ImageType, ImageType, ImageType > AdditionFilterType;
+      ImageType, ImageType, ImageType > AdditionFilterType;
   typedef itk::ConstrainedValueDifferenceImageFilter<
-            ImageType, ImageType, ImageType > SubtractionFilterType;
+      ImageType, ImageType, ImageType > SubtractionFilterType;
   // define rescaling filter
   typedef itk::RescaleIntensityImageFilter<
-            ImageType, WriteImageType>    RescaleFilterType;
+      ImageType, WriteImageType>    RescaleFilterType;
 
   // Create structuring element
-  StructuringElementType  structuringElement;
+  StructuringElementType structuringElement;
   // (argv[3]+1) x (argv[3]+1) structuring element
   structuringElement.SetRadius( atoi(argv[3]) );
   structuringElement.CreateStructuringElement();
@@ -113,8 +113,8 @@ int main( int argc, char * argv[] )
     }
 
   // Create the opening closing filters
-  OpeningFilterType::Pointer  opening  = OpeningFilterType::New();
-  ClosingFilterType::Pointer  closing  = ClosingFilterType::New();
+  OpeningFilterType::Pointer opening  = OpeningFilterType::New();
+  ClosingFilterType::Pointer closing  = ClosingFilterType::New();
   // Setup the opening and closing methods
   opening->SetKernel(  structuringElement );
   closing->SetKernel(  structuringElement );
@@ -132,12 +132,12 @@ int main( int argc, char * argv[] )
   SubtractionFilterType::Pointer bottomHat = SubtractionFilterType::New();
   bottomHat->SetInput1(        closing->GetOutput()          );
   bottomHat->SetInput2(        reader->GetOutput()           );
-  AdditionFilterType::Pointer    internalAddition = AdditionFilterType::New();
+  AdditionFilterType::Pointer internalAddition = AdditionFilterType::New();
   internalAddition->SetInput1( reader->GetOutput()           );
   internalAddition->SetInput2( topHat->GetOutput()           );
 
   SubtractionFilterType::Pointer imageEnhancement =
-                                                 SubtractionFilterType::New();
+    SubtractionFilterType::New();
   imageEnhancement->SetInput1( internalAddition->GetOutput() );
   imageEnhancement->SetInput2( bottomHat->GetOutput()        );
   rescaleFilter->SetInput(     imageEnhancement->GetOutput() );

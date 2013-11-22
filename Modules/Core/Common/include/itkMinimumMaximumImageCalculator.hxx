@@ -157,6 +157,7 @@ MinimumMaximumImageCalculator< TInputImage >
   m_Region.Print( os, indent.GetNextIndent() );
   os << indent << "Region set by User: " << m_RegionSetByUser << std::endl;
 }
+
 } // end namespace itk
 
 #endif

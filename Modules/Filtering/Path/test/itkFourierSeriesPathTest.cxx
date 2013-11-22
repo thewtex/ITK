@@ -19,22 +19,22 @@
 #include <iostream>
 #include "itkFourierSeriesPath.h"
 
-int itkFourierSeriesPathTest(int, char*[])
+int
+itkFourierSeriesPathTest(int, char*[])
 {
-  typedef  itk::FourierSeriesPath<2>   PathType;
-  typedef  PathType::InputType         InputType;
-  typedef  PathType::IndexType         IndexType;
-  typedef  PathType::OffsetType        OffsetType;
-  typedef  PathType::VectorType        VectorType;
+  typedef  itk::FourierSeriesPath<2> PathType;
+  typedef  PathType::InputType       InputType;
+  typedef  PathType::IndexType       IndexType;
+  typedef  PathType::OffsetType      OffsetType;
+  typedef  PathType::VectorType      VectorType;
 
   bool passed = true;
 
-  InputType   input;
-  OffsetType  offset;
-  VectorType  cosV, sinV, v;
+  InputType  input;
+  OffsetType offset;
+  VectorType cosV, sinV, v;
 
   PathType::Pointer path = PathType::New();
-
 
   // Average value is (5,5)
   cosV.Fill(5);
@@ -46,34 +46,34 @@ int itkFourierSeriesPathTest(int, char*[])
   path->AddHarmonic( cosV, sinV );
 
   std::cout << "Evaluating at 0, 0.5, and 1.0:  " << path->Evaluate(0) << ", "
-       << path->Evaluate(0.5) << ", " << path->Evaluate(1.0) << std::endl;
+            << path->Evaluate(0.5) << ", " << path->Evaluate(1.0) << std::endl;
   // Floating point can be inprecise, so convert to rounded int for comparison:
-  if( int(0.5+1000*(path->Evaluate(1.0))[0]) !=
-      int(0.5+1000*(path->Evaluate(0.0))[0]) ||
-      int(0.5+1000*(path->Evaluate(1.0))[1]) !=
-      int(0.5+1000*(path->Evaluate(0.0))[1]) )
+  if( int(0.5+1000*(path->Evaluate(1.0) )[0]) !=
+      int(0.5+1000*(path->Evaluate(0.0) )[0]) ||
+      int(0.5+1000*(path->Evaluate(1.0) )[1]) !=
+      int(0.5+1000*(path->Evaluate(0.0) )[1]) )
     {
     std::cout << "FourierSeriesPathTest:  Evaluate() Failed" << std::endl;
     passed = false;
     }
 
   std::cout << "Evaluating to an index at 0, 0.5, and 1.0:  "
-       << path->EvaluateToIndex(0) << ", " << path->EvaluateToIndex(0.5)
-       << ", " << path->EvaluateToIndex(1.0) << std::endl;
-  if( (path->EvaluateToIndex(1.0)) != (path->EvaluateToIndex(0.0)) )
+            << path->EvaluateToIndex(0) << ", " << path->EvaluateToIndex(0.5)
+            << ", " << path->EvaluateToIndex(1.0) << std::endl;
+  if( (path->EvaluateToIndex(1.0) ) != (path->EvaluateToIndex(0.0) ) )
     {
     std::cout << "FourierSeriesPathTest:  EvaluateToIndex() Failed" << std::endl;
     passed = false;
     }
 
   std::cout << "Evaluating the derivative at 0, 0.5, and 1.0:  "
-       << path->EvaluateDerivative(0) << ", " << path->EvaluateDerivative(0.5)
-       << ", " << path->EvaluateDerivative(1.0) << std::endl;
+            << path->EvaluateDerivative(0) << ", " << path->EvaluateDerivative(0.5)
+            << ", " << path->EvaluateDerivative(1.0) << std::endl;
   // Floating point can be inprecise, so convert to rounded int for comparison:
-  if( int(0.5+1000*(path->EvaluateDerivative(1.0))[0]) !=
-      int(0.5+1000*(path->EvaluateDerivative(0.0))[0]) ||
-      int(0.5+1000*(path->EvaluateDerivative(1.0))[1]) !=
-      int(0.5+1000*(path->EvaluateDerivative(0.0))[1]) )
+  if( int(0.5+1000*(path->EvaluateDerivative(1.0) )[0]) !=
+      int(0.5+1000*(path->EvaluateDerivative(0.0) )[0]) ||
+      int(0.5+1000*(path->EvaluateDerivative(1.0) )[1]) !=
+      int(0.5+1000*(path->EvaluateDerivative(0.0) )[1]) )
     {
     std::cout << "FourierSeriesPathTest:  EvaluateDerivative() Failed" << std::endl;
     passed = false;

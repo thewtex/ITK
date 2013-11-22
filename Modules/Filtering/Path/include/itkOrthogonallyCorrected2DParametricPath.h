@@ -41,7 +41,7 @@ namespace itk
  * \ingroup PathObjects
  * \ingroup ITKPath
  */
-class OrthogonallyCorrected2DParametricPath:public
+class OrthogonallyCorrected2DParametricPath : public
   ParametricPath< 2 >
 {
 public:
@@ -70,7 +70,7 @@ public:
   typedef VectorContainer< unsigned, double >    OrthogonalCorrectionTableType;
   typedef OrthogonalCorrectionTableType::Pointer OrthogonalCorrectionTablePointer;
 
-  typedef OrthogonalCorrectionTableType::ElementIdentifier  OrthogonalCorrectionTableSizeType;
+  typedef OrthogonalCorrectionTableType::ElementIdentifier OrthogonalCorrectionTableSizeType;
 
   /** Return the location of the parametric path at the specified location. */
   virtual OutputType Evaluate(const InputType & input) const;
@@ -90,19 +90,22 @@ public:
   itkNewMacro(Self);
 
   /** Needed for Pipelining */
-  virtual void Initialize(void)
+  virtual void
+  Initialize(void)
   {
     this->m_OriginalPath = NULL;
     this->m_OrthogonalCorrectionTable = NULL;
   }
 
   /** These are determined by the original path */
-  virtual inline InputType StartOfInput() const
+  virtual inline InputType
+  StartOfInput() const
   {
     return m_OriginalPath->StartOfInput();
   }
 
-  virtual inline InputType EndOfInput() const
+  virtual inline InputType
+  EndOfInput() const
   {
     return m_OriginalPath->EndOfInput();
   }
@@ -116,7 +119,8 @@ private:
   OrthogonallyCorrected2DParametricPath(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 
   OriginalPathConstPointer         m_OriginalPath;
   OrthogonalCorrectionTablePointer m_OrthogonalCorrectionTable;

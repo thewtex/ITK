@@ -117,7 +117,7 @@ public:
    * this setting, regardless of the mesh type. Points have an entry
    * in the Onext ring */
   typedef QuadEdgeMeshPoint<
-    CoordRepType, VPointDimension, QEPrimal >                 PointType;
+      CoordRepType, VPointDimension, QEPrimal >                 PointType;
 
   typedef Point< CoordRepType, VPointDimension > PointHashType;
 
@@ -127,11 +127,11 @@ public:
 
   /** Standard itk cell interface. */
   typedef QuadEdgeMeshCellTraitsInfo<
-    VPointDimension, CoordRepType,
-    InterpolationWeightType, PointIdentifier,
-    CellIdentifier,          CellFeatureIdentifier,
-    PointType,               PointsContainer,
-    UsingCellsContainer,     QEPrimal >                       CellTraits;
+      VPointDimension, CoordRepType,
+      InterpolationWeightType, PointIdentifier,
+      CellIdentifier,          CellFeatureIdentifier,
+      PointType,               PointsContainer,
+      UsingCellsContainer,     QEPrimal >                       CellTraits;
 
   /** The interface to cells to be used by the mesh. */
   typedef CellInterface< CellPixelType, CellTraits > CellType;

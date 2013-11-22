@@ -44,6 +44,7 @@ ExpectationMaximizationMixtureModelEstimator< TSample >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Maximum Iteration: "
      << this->GetMaximumIteration() << std::endl;
   os << indent << "Sample: "
@@ -92,17 +93,17 @@ template< typename TSample >
 const typename ExpectationMaximizationMixtureModelEstimator< TSample >::ProportionVectorType &
 ExpectationMaximizationMixtureModelEstimator< TSample >
 ::GetInitialProportions() const
-{
+  {
   return m_InitialProportions;
-}
+  }
 
 template< typename TSample >
 const typename ExpectationMaximizationMixtureModelEstimator< TSample >::ProportionVectorType &
 ExpectationMaximizationMixtureModelEstimator< TSample >
 ::GetProportions() const
-{
+  {
   return m_Proportions;
-}
+  }
 
 template< typename TSample >
 void
@@ -149,9 +150,9 @@ template< typename TSample >
 typename ExpectationMaximizationMixtureModelEstimator< TSample >::ComponentMembershipFunctionType *
 ExpectationMaximizationMixtureModelEstimator< TSample >
 ::GetComponentMembershipFunction(int componentIndex) const
-{
+  {
   return ( m_ComponentVector[componentIndex] )->GetMembershipFunction();
-}
+  }
 
 template< typename TSample >
 bool
@@ -274,7 +275,7 @@ ExpectationMaximizationMixtureModelEstimator< TSample >
             measurementVectorIndex++ )
         {
         temp = m_ComponentVector[componentIndex]->
-               GetWeight(measurementVectorIndex);
+          GetWeight(measurementVectorIndex);
         if( temp > NumericTraits<double>::epsilon() )
           {
           sum += temp * ( logProportion + vcl_log( temp ) );
@@ -321,7 +322,7 @@ ExpectationMaximizationMixtureModelEstimator< TSample >
   size_t numberOfComponents = m_ComponentVector.size();
   size_t sampleSize = m_Sample->Size();
   double totalFrequency = static_cast< double >( m_Sample->GetTotalFrequency() );
-  size_t   i, j;
+  size_t i, j;
   double tempSum;
   bool   updated = false;
 
@@ -382,8 +383,8 @@ template< typename TSample >
 const typename ExpectationMaximizationMixtureModelEstimator< TSample >::MembershipFunctionVectorObjectType *
 ExpectationMaximizationMixtureModelEstimator< TSample >
 ::GetOutput() const
-{
-  size_t                   numberOfComponents = m_ComponentVector.size();
+  {
+  size_t                         numberOfComponents = m_ComponentVector.size();
   MembershipFunctionVectorType & membershipFunctionsVector = m_MembershipFunctionsObject->Get();
 
   typename SampleType::MeasurementVectorSizeType measurementVectorSize =
@@ -391,7 +392,7 @@ ExpectationMaximizationMixtureModelEstimator< TSample >
 
   typename GaussianMembershipFunctionType::MeanVectorType mean;
   NumericTraits<typename GaussianMembershipFunctionType::MeanVectorType>::SetLength(mean,
-    measurementVectorSize);
+                                                                                    measurementVectorSize);
 
   typename GaussianMembershipFunctionType::CovarianceMatrixType covariance;
   covariance.SetSize(measurementVectorSize, measurementVectorSize);
@@ -426,15 +427,15 @@ ExpectationMaximizationMixtureModelEstimator< TSample >
     }
 
   return static_cast< const MembershipFunctionVectorObjectType * >( m_MembershipFunctionsObject );
-}
+  }
 
 template< typename TSample >
 const typename ExpectationMaximizationMixtureModelEstimator< TSample
                                                              >::MembershipFunctionsWeightsArrayObjectType *
 ExpectationMaximizationMixtureModelEstimator< TSample >
 ::GetMembershipFunctionsWeightsArray() const
-{
-  size_t           numberOfComponents = m_ComponentVector.size();
+  {
+  size_t                 numberOfComponents = m_ComponentVector.size();
   ProportionVectorType & membershipFunctionsWeightVector =
     m_MembershipFunctionsWeightArrayObject->Get();
 
@@ -445,7 +446,7 @@ ExpectationMaximizationMixtureModelEstimator< TSample >
     }
 
   return static_cast< const MembershipFunctionsWeightsArrayObjectType * >( m_MembershipFunctionsWeightArrayObject );
-}
+  }
 
 template< typename TSample >
 void
@@ -454,6 +455,7 @@ ExpectationMaximizationMixtureModelEstimator< TSample >
 {
   this->GenerateData();
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

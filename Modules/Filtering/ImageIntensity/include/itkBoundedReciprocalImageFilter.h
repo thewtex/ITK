@@ -49,25 +49,29 @@ class BoundedReciprocal
 public:
   BoundedReciprocal() {}
   ~BoundedReciprocal() {}
-  bool operator!=(const BoundedReciprocal &) const
+  bool
+  operator!=(const BoundedReciprocal &) const
   {
     return false;
   }
 
-  bool operator==(const BoundedReciprocal & other) const
+  bool
+  operator==(const BoundedReciprocal & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
+  inline TOutput
+  operator()(const TInput & A) const
   {
     return static_cast< TOutput >( 1.0 / ( 1.0 +  static_cast< double >( A ) ) );
   }
+
 };
 }
 
 template< typename TInputImage, typename TOutputImage >
-class BoundedReciprocalImageFilter:
+class BoundedReciprocalImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::BoundedReciprocal<
@@ -104,11 +108,13 @@ public:
 
 protected:
   BoundedReciprocalImageFilter() {}
-  virtual ~BoundedReciprocalImageFilter() {}
+  virtual
+  ~BoundedReciprocalImageFilter() {}
 
 private:
   BoundedReciprocalImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);               //purposely not implemented
+
 };
 } // end namespace itk
 

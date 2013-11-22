@@ -42,19 +42,19 @@ class GradientDescentLineSearchOptimizerv4TestMetric
 {
 public:
 
-  typedef GradientDescentLineSearchOptimizerv4TestMetric  Self;
-  typedef itk::ObjectToObjectMetricBase                   Superclass;
-  typedef itk::SmartPointer<Self>                         Pointer;
-  typedef itk::SmartPointer<const Self>                   ConstPointer;
+  typedef GradientDescentLineSearchOptimizerv4TestMetric Self;
+  typedef itk::ObjectToObjectMetricBase                  Superclass;
+  typedef itk::SmartPointer<Self>                        Pointer;
+  typedef itk::SmartPointer<const Self>                  ConstPointer;
   itkNewMacro( Self );
   itkTypeMacro( GradientDescentLineSearchOptimizerv4TestMetric, ObjectToObjectMetricBase );
 
   enum { SpaceDimension=2 };
 
-  typedef Superclass::ParametersType        ParametersType;
-  typedef Superclass::ParametersValueType   ParametersValueType;
-  typedef Superclass::DerivativeType        DerivativeType;
-  typedef Superclass::MeasureType           MeasureType;
+  typedef Superclass::ParametersType      ParametersType;
+  typedef Superclass::ParametersValueType ParametersValueType;
+  typedef Superclass::DerivativeType      DerivativeType;
+  typedef Superclass::MeasureType         MeasureType;
 
   GradientDescentLineSearchOptimizerv4TestMetric()
   {
@@ -63,16 +63,20 @@ public:
     m_Parameters.Fill( 0 );
   }
 
-  void Initialize(void) throw ( itk::ExceptionObject ) {}
+  void
+  Initialize(void) throw ( itk::ExceptionObject ) {}
 
-  void GetDerivative( DerivativeType & derivative ) const
+  void
+  GetDerivative( DerivativeType & derivative ) const
   {
     MeasureType value;
+
     GetValueAndDerivative( value, derivative );
   }
 
-  void GetValueAndDerivative( MeasureType & value,
-                              DerivativeType & derivative ) const
+  void
+  GetValueAndDerivative( MeasureType & value,
+                         DerivativeType & derivative ) const
   {
     if( derivative.Size() != 2 )
       derivative.SetSize(2);
@@ -98,7 +102,8 @@ public:
     m_Iterations++;
   }
 
-  MeasureType  GetValue() const
+  MeasureType
+  GetValue() const
   {
     double x = m_Parameters[0];
     double y = m_Parameters[1];
@@ -108,47 +113,54 @@ public:
     return value;
   }
 
-  void UpdateTransformParameters( const DerivativeType & update, ParametersValueType )
+  void
+  UpdateTransformParameters( const DerivativeType & update, ParametersValueType )
   {
     m_Parameters += update;
   }
 
-  unsigned int GetNumberOfParameters(void) const
+  unsigned int
+  GetNumberOfParameters(void) const
   {
     return SpaceDimension;
   }
 
-  unsigned int GetNumberOfLocalParameters() const
+  unsigned int
+  GetNumberOfLocalParameters() const
   {
     return SpaceDimension;
   }
 
-  virtual bool HasLocalSupport() const
-    {
+  virtual bool
+  HasLocalSupport() const
+  {
     return false;
-    }
+  }
 
   /* These Set/Get methods are only needed for this test derivation that
    * isn't using a transform */
-  void SetParameters( ParametersType & parameters )
+  void
+  SetParameters( ParametersType & parameters )
   {
     m_Parameters = parameters;
   }
 
-  const ParametersType & GetParameters() const
+  const ParametersType &
+  GetParameters() const
   {
     return m_Parameters;
   }
 
 private:
 
-  ParametersType        m_Parameters;
-  mutable unsigned int  m_Iterations;
+  ParametersType       m_Parameters;
+  mutable unsigned int m_Iterations;
 
 };
 
 ///////////////////////////////////////////////////////////
-int GradientDescentLineSearchOptimizerv4RunTest(
+int
+GradientDescentLineSearchOptimizerv4RunTest(
   itk::GradientDescentLineSearchOptimizerv4::Pointer & itkOptimizer )
 {
   try
@@ -166,7 +178,7 @@ int GradientDescentLineSearchOptimizerv4RunTest(
     return EXIT_FAILURE;
     }
 
-  typedef GradientDescentLineSearchOptimizerv4TestMetric::ParametersType    ParametersType;
+  typedef GradientDescentLineSearchOptimizerv4TestMetric::ParametersType ParametersType;
   ParametersType finalPosition = itkOptimizer->GetMetric()->GetParameters();
   std::cout << "Solution        = (";
   std::cout << finalPosition[0] << ",";
@@ -189,31 +201,34 @@ int GradientDescentLineSearchOptimizerv4RunTest(
 
   return EXIT_SUCCESS;
 }
+
 ///////////////////////////////////////////////////////////
-int itkGradientDescentLineSearchOptimizerv4Test(int, char* [] )
+int
+itkGradientDescentLineSearchOptimizerv4Test(int, char* [] )
 {
   std::cout << "Gradient Descent Object Optimizer Test ";
   std::cout << std::endl << std::endl;
 
-  typedef  itk::GradientDescentLineSearchOptimizerv4  OptimizerType;
+  typedef  itk::GradientDescentLineSearchOptimizerv4 OptimizerType;
 
-  typedef OptimizerType::ScalesType             ScalesType;
+  typedef OptimizerType::ScalesType ScalesType;
 
   // Declaration of a itkOptimizer
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
 
   // Declaration of the Metric
-  GradientDescentLineSearchOptimizerv4TestMetric::Pointer metric = GradientDescentLineSearchOptimizerv4TestMetric::New();
+  GradientDescentLineSearchOptimizerv4TestMetric::Pointer metric =
+    GradientDescentLineSearchOptimizerv4TestMetric::New();
 
   itkOptimizer->SetMetric( metric );
 
-  typedef GradientDescentLineSearchOptimizerv4TestMetric::ParametersType    ParametersType;
+  typedef GradientDescentLineSearchOptimizerv4TestMetric::ParametersType ParametersType;
 
   const unsigned int spaceDimension =
-                      metric->GetNumberOfParameters();
+    metric->GetNumberOfParameters();
 
   // We start not so far from  | 2 -2 |
-  ParametersType  initialPosition( spaceDimension );
+  ParametersType initialPosition( spaceDimension );
 
   initialPosition[0] =  100;
   initialPosition[1] = -100;
@@ -255,7 +270,7 @@ int itkGradientDescentLineSearchOptimizerv4Test(int, char* [] )
   std::cout << "Stop description   = " << itkOptimizer->GetStopConditionDescription() << std::endl;
 
   OptimizerType::Pointer badOptimizer = OptimizerType::New();
-  bool caught=false;
+  bool                   caught=false;
   try
     {
     badOptimizer->GetCurrentPosition();

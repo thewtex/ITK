@@ -60,6 +60,7 @@ BSplineDecompositionImageFilter< TInputImage, TOutputImage >
   Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Spline Order: " << m_SplineOrder << std::endl;
 }
 
@@ -160,9 +161,9 @@ BSplineDecompositionImageFilter< TInputImage, TOutputImage >
     case 5:
       m_NumberOfPoles = 2;
       m_SplinePoles[0] = vcl_sqrt( 135.0 / 2.0 - vcl_sqrt(17745.0 / 4.0) ) + vcl_sqrt(105.0 / 4.0)
-                         - 13.0 / 2.0;
+        - 13.0 / 2.0;
       m_SplinePoles[1] = vcl_sqrt( 135.0 / 2.0 + vcl_sqrt(17745.0 / 4.0) ) - vcl_sqrt(105.0 / 4.0)
-                         - 13.0 / 2.0;
+        - 13.0 / 2.0;
       break;
     default:
       // SplineOrder not implemented yet.
@@ -181,8 +182,9 @@ BSplineDecompositionImageFilter< TInputImage, TOutputImage >
 {
   /* beginning InitialCausalCoefficient */
   /* See Unser, 1999, Box 2 for explanation */
-  CoeffType     sum;
-  double        zn, z2n, iz;
+  CoeffType sum;
+  double    zn, z2n, iz;
+
   typename TInputImage::SizeValueType horizon;
 
   /* this initialization corresponds to mirror boundaries */
@@ -411,6 +413,7 @@ BSplineDecompositionImageFilter< TInputImage, TOutputImage >
   // Clean up
   m_Scratch.clear();
 }
+
 } // namespace itk
 
 #endif

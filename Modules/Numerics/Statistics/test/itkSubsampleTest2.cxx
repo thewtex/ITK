@@ -19,7 +19,8 @@
 #include "itkListSample.h"
 #include "itkSubsample.h"
 
-int itkSubsampleTest2( int, char * [] )
+int
+itkSubsampleTest2( int, char * [] )
 {
   std::cout << "Subsample Test \n \n";
 
@@ -49,8 +50,8 @@ int itkSubsampleTest2( int, char * [] )
     }
 
   // tests begin
-  typedef itk::Statistics::Subsample< SampleType >   SubsampleType;
-  SubsampleType::Pointer   subSample = SubsampleType::New();
+  typedef itk::Statistics::Subsample< SampleType > SubsampleType;
+  SubsampleType::Pointer subSample = SubsampleType::New();
   subSample->SetSample( sample );
 
   //Add measurment vectors in sample with even id number to subSample
@@ -72,15 +73,15 @@ int itkSubsampleTest2( int, char * [] )
               << subSample->GetMeasurementVector( i ) << std::endl;
 
     if ( subSample->GetMeasurementVector( i ) !=
-                sample->GetMeasurementVector( i*2 ) )
+         sample->GetMeasurementVector( i*2 ) )
       {
       std::cerr << "Subsampling is not correctly done!" << std::endl;
       return EXIT_FAILURE;
       }
     }
 
-  typedef itk::Statistics::Subsample< SubsampleType >   CascadedSubsampleType;
-  CascadedSubsampleType::Pointer  subSample2  = CascadedSubsampleType::New();
+  typedef itk::Statistics::Subsample< SubsampleType > CascadedSubsampleType;
+  CascadedSubsampleType::Pointer subSample2  = CascadedSubsampleType::New();
   subSample2->SetSample( subSample );
 
   //Add measurment vectors in subsample with even id number to subSample2
@@ -107,7 +108,7 @@ int itkSubsampleTest2( int, char * [] )
               << subSample2->GetMeasurementVector( i ) << std::endl;
 
     if ( subSample2->GetMeasurementVector( i ) !=
-                sample->GetMeasurementVector( i*4 ) )
+         sample->GetMeasurementVector( i*4 ) )
       {
       std::cerr << "Subsampling of a subsample is not correctly done!" << std::endl;
       return EXIT_FAILURE;
@@ -149,13 +150,11 @@ int itkSubsampleTest2( int, char * [] )
     return EXIT_FAILURE;
     }
 
-
   if( !(citer == iter1) )
     {
     std::cerr << "Error in iterator == operator " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   if( iter1 != iter2 )
     {
@@ -163,13 +162,11 @@ int itkSubsampleTest2( int, char * [] )
     return EXIT_FAILURE;
     }
 
-
   if( !(iter1 == iter2) )
     {
     std::cerr << "Error in iterator == operator " << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //
   // Additional iterator tests
@@ -290,9 +287,8 @@ int itkSubsampleTest2( int, char * [] )
       return EXIT_FAILURE;
       }
 
-
     ConstIteratorType iter9( subSample2 );
-    unsigned int targetEntry = 2;
+    unsigned int      targetEntry = 2;
     for( unsigned int kk = 0; kk < targetEntry; kk++ )
       {
       std::cout << "Instance identifier = " << iter9.GetInstanceIdentifier() << std::endl;
@@ -313,14 +309,13 @@ int itkSubsampleTest2( int, char * [] )
         }
       }
 
-    unsigned int counter = 0;
+    unsigned int      counter = 0;
     ConstIteratorType iter10( constSample );
     if( iter10 != constSample->Begin() )
       {
       std::cerr << "ConstIterator constructor from sample failed" << std::endl;
       return EXIT_FAILURE;
       }
-
 
     while( iter10 != constSample->End() )
       {

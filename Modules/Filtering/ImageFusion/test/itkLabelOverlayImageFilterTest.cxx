@@ -22,8 +22,8 @@
 #include "itkLabelOverlayImageFilter.h"
 #include "itkVectorImage.h"
 
-
-int itkLabelOverlayImageFilterTest(int argc, char * argv[])
+int
+itkLabelOverlayImageFilterTest(int argc, char * argv[])
 {
   const int Dimension = 2;
 
@@ -35,11 +35,11 @@ int itkLabelOverlayImageFilterTest(int argc, char * argv[])
     return 1;
     }
 
-  typedef unsigned char                               PixelType;
-  typedef itk::Image< PixelType, Dimension >          ImageType;
-  typedef itk::RGBPixel<unsigned char>                ColorPixelType;
-  typedef itk::Image< ColorPixelType, Dimension >     ColorImageType;
-  typedef itk::ImageFileReader< ImageType >           ReaderType;
+  typedef unsigned char                           PixelType;
+  typedef itk::Image< PixelType, Dimension >      ImageType;
+  typedef itk::RGBPixel<unsigned char>            ColorPixelType;
+  typedef itk::Image< ColorPixelType, Dimension > ColorImageType;
+  typedef itk::ImageFileReader< ImageType >       ReaderType;
 
   //Read in the input image
   ReaderType::Pointer reader = ReaderType::New();
@@ -51,7 +51,7 @@ int itkLabelOverlayImageFilterTest(int argc, char * argv[])
 
   //Instantiate the filter
   typedef itk::LabelOverlayImageFilter<
-    ImageType, ImageType, ColorImageType> FilterType;
+      ImageType, ImageType, ColorImageType> FilterType;
   FilterType::Pointer filter = FilterType::New();
 
   // Exercising Background Value methods
@@ -75,7 +75,6 @@ int itkLabelOverlayImageFilterTest(int argc, char * argv[])
     std::cerr << "Opacity Set/Get Problem" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   //Set the filter input and label images
   filter->SetInput( reader->GetOutput() );

@@ -30,7 +30,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TMesh, typename TQEType >
-class QuadEdgeMeshZipMeshFunction:
+class QuadEdgeMeshZipMeshFunction :
   public QuadEdgeMeshFunctionBase< TMesh, typename TQEType::OriginRefType >
 {
 public:
@@ -65,6 +65,7 @@ protected:
 private:
   QuadEdgeMeshZipMeshFunction(const Self &); //purposely not implemented
   void operator=(const Self &);              //purposely not implemented
+
 };
 } // namespace itk
 

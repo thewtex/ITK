@@ -50,9 +50,10 @@ VXLVideoIOFactory::GetDescription() const
 
 static bool VXLVideoIOFactoryHasBeenRegistered;
 
-void VXLVideoIOFactoryRegister__Private(void)
+void
+VXLVideoIOFactoryRegister__Private(void)
 {
-  if( ! VXLVideoIOFactoryHasBeenRegistered )
+  if( !VXLVideoIOFactoryHasBeenRegistered )
     {
     VXLVideoIOFactoryHasBeenRegistered = true;
     VXLVideoIOFactory::RegisterOneFactory();

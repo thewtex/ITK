@@ -31,6 +31,7 @@ NeighborhoodOperator< TPixel, VDimension, TAllocator >
   for ( unsigned i = 0; i < this->Size(); i++ )
     {
     this->operator[](i) = static_cast< TPixel >( this->operator[](i) * s );
+
     }
 }
 
@@ -52,6 +53,7 @@ NeighborhoodOperator< TPixel, VDimension, TAllocator >
     this->operator[](i) = this->operator[](swap_with);
 
     this->operator[](swap_with) = temp;
+
     }
 }
 
@@ -114,7 +116,7 @@ NeighborhoodOperator< TPixel, VDimension, TAllocator >
   this->InitializeToZero();
 
   // Collect slice information
-  unsigned long start=0;
+  unsigned long       start=0;
   const unsigned long stride = this->GetStride(m_Direction);
   const unsigned long size   = this->GetSize(m_Direction);
   for ( unsigned int i = 0; i < VDimension; ++i )
@@ -129,7 +131,7 @@ NeighborhoodOperator< TPixel, VDimension, TAllocator >
   const int sizediff = ( (int)size - (int)coeff.size() ) >> 1;
 
   // Create a slice iterator centered in the neighborhood.
-  std::slice *                      temp_slice;
+  std::slice * temp_slice;
   typename CoefficientVector::const_iterator it;
   if ( sizediff >= 0 )
     {
@@ -153,6 +155,7 @@ NeighborhoodOperator< TPixel, VDimension, TAllocator >
     *data = static_cast< TPixel >( *it );
     }
 }
+
 } // namespace itk
 
 #endif

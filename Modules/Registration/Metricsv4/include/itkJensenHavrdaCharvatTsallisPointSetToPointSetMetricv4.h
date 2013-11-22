@@ -69,7 +69,7 @@ namespace itk {
 
 template<typename TPointSet>
 class JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4 :
-    public PointSetToPointSetMetricv4<TPointSet, TPointSet>
+  public PointSetToPointSetMetricv4<TPointSet, TPointSet>
 {
 public:
   /** Standard class typedefs. */
@@ -84,37 +84,37 @@ public:
   /** Run-time type information (and related methods) */
   itkTypeMacro( JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4, PointSetToPointSetMetricv4 );
 
-  typedef TPointSet                                 PointSetType;
-  typedef typename PointSetType::PointsContainer    PointsContainer;
-  typedef typename PointsContainer::ConstIterator   PointsContainerConstIterator;
+  typedef TPointSet                               PointSetType;
+  typedef typename PointSetType::PointsContainer  PointsContainer;
+  typedef typename PointsContainer::ConstIterator PointsContainerConstIterator;
 
   itkStaticConstMacro( PointDimension, unsigned int, TPointSet::PointDimension );
 
   /** Types transferred from the base class */
-  typedef typename Superclass::MeasureType              MeasureType;
-  typedef typename Superclass::DerivativeType           DerivativeType;
-  typedef typename Superclass::DerivativeValueType      DerivativeValueType;
-  typedef typename Superclass::LocalDerivativeType      LocalDerivativeType;
-  typedef typename Superclass::PointType                PointType;
-  typedef typename Superclass::PixelType                PixelType;
-  typedef typename Superclass::CoordRepType             CoordRepType;
-  typedef typename Superclass::PointIdentifier          PointIdentifier;
-  typedef typename Superclass::NeighborsIdentifierType  NeighborsIdentifierType;
-  typedef typename Superclass::NumberOfParametersType   NumberOfParametersType;
+  typedef typename Superclass::MeasureType             MeasureType;
+  typedef typename Superclass::DerivativeType          DerivativeType;
+  typedef typename Superclass::DerivativeValueType     DerivativeValueType;
+  typedef typename Superclass::LocalDerivativeType     LocalDerivativeType;
+  typedef typename Superclass::PointType               PointType;
+  typedef typename Superclass::PixelType               PixelType;
+  typedef typename Superclass::CoordRepType            CoordRepType;
+  typedef typename Superclass::PointIdentifier         PointIdentifier;
+  typedef typename Superclass::NeighborsIdentifierType NeighborsIdentifierType;
+  typedef typename Superclass::NumberOfParametersType  NumberOfParametersType;
 
-  typedef typename Superclass::JacobianType                   JacobianType;
-  typedef typename Superclass::FixedTransformJacobianType     FixedTransformJacobianType;
-  typedef typename Superclass::MovingTransformJacobianType    MovingTransformJacobianType;
+  typedef typename Superclass::JacobianType                JacobianType;
+  typedef typename Superclass::FixedTransformJacobianType  FixedTransformJacobianType;
+  typedef typename Superclass::MovingTransformJacobianType MovingTransformJacobianType;
 
-  typedef MeasureType                                   RealType;
+  typedef MeasureType RealType;
 
   /**
    * Other typedefs
    */
   typedef ManifoldParzenWindowsPointSetFunction
     <PointSetType, RealType>                            DensityFunctionType;
-  typedef typename DensityFunctionType::GaussianType    GaussianType;
-  typedef typename DensityFunctionType::Pointer         DensityFunctionPointer;
+  typedef typename DensityFunctionType::GaussianType GaussianType;
+  typedef typename DensityFunctionType::Pointer      DensityFunctionPointer;
 
   /** Initialize the Metric by making sure that all the components
    *  are present and plugged together correctly     */
@@ -204,11 +204,12 @@ public:
 
   virtual MeasureType GetLocalNeighborhoodValue( const PointType & point, const PixelType & pixel = 0 ) const;
 
-  virtual void GetLocalNeighborhoodValueAndDerivative( const PointType &, MeasureType &, LocalDerivativeType &, const PixelType & pixel = 0 ) const;
+  virtual void GetLocalNeighborhoodValueAndDerivative( const PointType &, MeasureType &, LocalDerivativeType &,
+                                                       const PixelType & pixel = 0 ) const;
 
   /** Clone method will clone the existing instance of this type,
    *  including its internal member variables. */
-  virtual ::itk::LightObject::Pointer Clone( void ) const;
+  virtual::itk::LightObject::Pointer Clone( void ) const;
 
 protected:
   JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4();
@@ -216,7 +217,8 @@ protected:
 
   virtual void InitializeForIteration( void ) const;
 
-  void ComputeValueAndDerivative( const PointType & samplePoint, MeasureType &value, LocalDerivativeType &derivativeReturn, bool calcValue, bool calcDerivative ) const;
+  void ComputeValueAndDerivative( const PointType & samplePoint, MeasureType &value,
+                                  LocalDerivativeType &derivativeReturn, bool calcValue, bool calcDerivative ) const;
 
   void PrintSelf( std::ostream& os, Indent indent ) const;
 
@@ -225,24 +227,23 @@ private:
   JensenHavrdaCharvatTsallisPointSetToPointSetMetricv4( const Self& );
   void operator=( const Self& );
 
-  DensityFunctionPointer                   m_MovingDensityFunction;
-  DensityFunctionPointer                   m_FixedDensityFunction;
+  DensityFunctionPointer m_MovingDensityFunction;
+  DensityFunctionPointer m_FixedDensityFunction;
 
-  bool                                     m_UseAnisotropicCovariances;
+  bool m_UseAnisotropicCovariances;
 
-  RealType                                 m_PointSetSigma;
-  RealType                                 m_KernelSigma;
-  unsigned int                             m_CovarianceKNeighborhood;
-  unsigned int                             m_EvaluationKNeighborhood;
+  RealType     m_PointSetSigma;
+  RealType     m_KernelSigma;
+  unsigned int m_CovarianceKNeighborhood;
+  unsigned int m_EvaluationKNeighborhood;
 
-  RealType                                 m_Alpha;
+  RealType m_Alpha;
 
   /** Precomputed cached values */
-  mutable RealType                         m_TotalNumberOfPoints;
-  mutable RealType                         m_Prefactor0;
-  mutable RealType                         m_Prefactor1;
+  mutable RealType m_TotalNumberOfPoints;
+  mutable RealType m_Prefactor0;
+  mutable RealType m_Prefactor1;
 };
-
 
 } // end namespace itk
 

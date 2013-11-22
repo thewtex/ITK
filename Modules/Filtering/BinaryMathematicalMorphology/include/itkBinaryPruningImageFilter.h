@@ -51,7 +51,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class BinaryPruningImageFilter:
+class BinaryPruningImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -124,7 +124,8 @@ public:
 
 protected:
   BinaryPruningImageFilter();
-  virtual ~BinaryPruningImageFilter() {}
+  virtual
+  ~BinaryPruningImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Compute thinning Image. */

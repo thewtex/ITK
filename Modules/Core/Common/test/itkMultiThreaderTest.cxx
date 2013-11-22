@@ -18,7 +18,8 @@
 
 #include "itkMultiThreader.h"
 
-bool VerifyRange(int value, int min, int max, const char * msg)
+bool
+VerifyRange(int value, int min, int max, const char * msg)
 {
   if( value < min )
     {
@@ -34,34 +35,40 @@ bool VerifyRange(int value, int min, int max, const char * msg)
   return true;
 }
 
-
-bool SetAndVerifyGlobalMaximumNumberOfThreads( int value )
+bool
+SetAndVerifyGlobalMaximumNumberOfThreads( int value )
 {
   itk::MultiThreader::SetGlobalMaximumNumberOfThreads( value );
+
   return VerifyRange( itk::MultiThreader::GetGlobalMaximumNumberOfThreads(),
-        1, ITK_MAX_THREADS, "Range error in MaximumNumberOfThreads");
+                      1, ITK_MAX_THREADS, "Range error in MaximumNumberOfThreads");
 }
 
-bool SetAndVerifyGlobalDefaultNumberOfThreads( int value )
+bool
+SetAndVerifyGlobalDefaultNumberOfThreads( int value )
 {
   itk::MultiThreader::SetGlobalDefaultNumberOfThreads( value );
+
   return VerifyRange( itk::MultiThreader::GetGlobalDefaultNumberOfThreads(),
-        1, itk::MultiThreader::GetGlobalMaximumNumberOfThreads(),
-        "Range error in DefaultNumberOfThreads");
+                      1, itk::MultiThreader::GetGlobalMaximumNumberOfThreads(),
+                      "Range error in DefaultNumberOfThreads");
 }
 
-bool SetAndVerifyNumberOfThreads( int value, itk::MultiThreader * threader )
+bool
+SetAndVerifyNumberOfThreads( int value, itk::MultiThreader * threader )
 {
   threader->SetNumberOfThreads( value );
   return VerifyRange( threader->GetNumberOfThreads(),
-        1, itk::MultiThreader::GetGlobalMaximumNumberOfThreads(),
-        "Range error in NumberOfThreads");
+                      1, itk::MultiThreader::GetGlobalMaximumNumberOfThreads(),
+                      "Range error in NumberOfThreads");
 }
 
-int itkMultiThreaderTest(int argc, char* argv[])
+int
+itkMultiThreaderTest(int argc, char* argv[])
 {
   // Choose a number of threads.
   int numberOfThreads = 10;
+
   if( argc > 1 )
     {
     const int nt = atoi( argv[1] );
@@ -71,60 +78,59 @@ int itkMultiThreaderTest(int argc, char* argv[])
       }
     }
 
-  itk::MultiThreader::Pointer    threader = itk::MultiThreader::New();
-  if(threader.IsNull())
+  itk::MultiThreader::Pointer threader = itk::MultiThreader::New();
+  if(threader.IsNull() )
     {
     return EXIT_FAILURE;
     }
 
   itk::MultiThreader::SetGlobalDefaultNumberOfThreads( numberOfThreads );
 
-  {
-  // Test settings for GlobalMaximumNumberOfThreads
-
-  bool result = true;
-
-  result &= SetAndVerifyGlobalMaximumNumberOfThreads( -1 );
-  result &= SetAndVerifyGlobalMaximumNumberOfThreads(  0 );
-  result &= SetAndVerifyGlobalMaximumNumberOfThreads(  1 );
-  result &= SetAndVerifyGlobalMaximumNumberOfThreads(  2 );
-  result &= SetAndVerifyGlobalMaximumNumberOfThreads(  ITK_MAX_THREADS  );
-  result &= SetAndVerifyGlobalMaximumNumberOfThreads(  ITK_MAX_THREADS - 1 );
-  result &= SetAndVerifyGlobalMaximumNumberOfThreads(  ITK_MAX_THREADS + 1 );
-
-  if( !result )
     {
-    return EXIT_FAILURE;
+    // Test settings for GlobalMaximumNumberOfThreads
+
+    bool result = true;
+
+    result &= SetAndVerifyGlobalMaximumNumberOfThreads( -1 );
+    result &= SetAndVerifyGlobalMaximumNumberOfThreads(  0 );
+    result &= SetAndVerifyGlobalMaximumNumberOfThreads(  1 );
+    result &= SetAndVerifyGlobalMaximumNumberOfThreads(  2 );
+    result &= SetAndVerifyGlobalMaximumNumberOfThreads(  ITK_MAX_THREADS  );
+    result &= SetAndVerifyGlobalMaximumNumberOfThreads(  ITK_MAX_THREADS - 1 );
+    result &= SetAndVerifyGlobalMaximumNumberOfThreads(  ITK_MAX_THREADS + 1 );
+
+    if( !result )
+      {
+      return EXIT_FAILURE;
+      }
+
+    result &= SetAndVerifyGlobalDefaultNumberOfThreads( -1 );
+    result &= SetAndVerifyGlobalDefaultNumberOfThreads(  0 );
+    result &= SetAndVerifyGlobalDefaultNumberOfThreads(  1 );
+    result &= SetAndVerifyGlobalDefaultNumberOfThreads( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() );
+    result &= SetAndVerifyGlobalDefaultNumberOfThreads( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() - 1 );
+    result &= SetAndVerifyGlobalDefaultNumberOfThreads( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() + 1 );
+
+    if( !result )
+      {
+      return EXIT_FAILURE;
+      }
+
+    itk::MultiThreader::Pointer threader2 = itk::MultiThreader::New();
+
+    result &= SetAndVerifyNumberOfThreads( -1, threader2 );
+    result &= SetAndVerifyNumberOfThreads(  0, threader2 );
+    result &= SetAndVerifyNumberOfThreads(  1, threader2 );
+    result &= SetAndVerifyNumberOfThreads( itk::MultiThreader::GetGlobalMaximumNumberOfThreads(), threader2 );
+    result &= SetAndVerifyNumberOfThreads( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() - 1, threader2);
+    result &= SetAndVerifyNumberOfThreads( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() + 1, threader2);
+
+    if( !result )
+      {
+      return EXIT_FAILURE;
+      }
+
     }
-
-
-  result &= SetAndVerifyGlobalDefaultNumberOfThreads( -1 );
-  result &= SetAndVerifyGlobalDefaultNumberOfThreads(  0 );
-  result &= SetAndVerifyGlobalDefaultNumberOfThreads(  1 );
-  result &= SetAndVerifyGlobalDefaultNumberOfThreads( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() );
-  result &= SetAndVerifyGlobalDefaultNumberOfThreads( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() - 1 );
-  result &= SetAndVerifyGlobalDefaultNumberOfThreads( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() + 1 );
-
-  if( !result )
-    {
-    return EXIT_FAILURE;
-    }
-
-  itk::MultiThreader::Pointer threader2 = itk::MultiThreader::New();
-
-  result &= SetAndVerifyNumberOfThreads( -1, threader2 );
-  result &= SetAndVerifyNumberOfThreads(  0, threader2 );
-  result &= SetAndVerifyNumberOfThreads(  1, threader2 );
-  result &= SetAndVerifyNumberOfThreads( itk::MultiThreader::GetGlobalMaximumNumberOfThreads(), threader2 );
-  result &= SetAndVerifyNumberOfThreads( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() - 1, threader2);
-  result &= SetAndVerifyNumberOfThreads( itk::MultiThreader::GetGlobalMaximumNumberOfThreads() + 1, threader2);
-
-  if( !result )
-    {
-    return EXIT_FAILURE;
-    }
-
-  }
 
   return EXIT_SUCCESS;
 }
@@ -132,7 +138,8 @@ int itkMultiThreaderTest(int argc, char* argv[])
 namespace itkMultiThreaderTestHelpers
 {
 
-void ThreadedMethod()
+void
+ThreadedMethod()
 {
 
 #ifdef ITK_USE_PTHREADS
@@ -144,6 +151,5 @@ void ThreadedMethod()
 #endif
 
 }
-
 
 } // end of itkMultiThreaderTestHelpers

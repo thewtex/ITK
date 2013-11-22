@@ -68,19 +68,19 @@ template< typename TInputMesh, typename TOutputImage >
 typename TriangleMeshToBinaryImageFilter< TInputMesh, TOutputImage >::InputMeshType *
 TriangleMeshToBinaryImageFilter< TInputMesh, TOutputImage >
 ::GetInput(void)
-{
+  {
   return static_cast< TInputMesh * >( this->GetInput() );
-}
+  }
 
 /** Get the input Mesh */
 template< typename TInputMesh, typename TOutputImage >
 typename TriangleMeshToBinaryImageFilter< TInputMesh, TOutputImage >::InputMeshType *
 TriangleMeshToBinaryImageFilter< TInputMesh, TOutputImage >
 ::GetInput(unsigned int idx)
-{
+  {
   return itkDynamicCastInDebugMode< TInputMesh * >
-         ( this->ProcessObject::GetInput(idx) );
-}
+           ( this->ProcessObject::GetInput(idx) );
+  }
 
 //----------------------------------------------------------------------------
 template< typename TInputMesh, typename TOutputImage >
@@ -89,6 +89,7 @@ TriangleMeshToBinaryImageFilter< TInputMesh, TOutputImage >
 ::SetSpacing(const double spacing[3])
 {
   SpacingType s;
+
   for(unsigned int i = 0; i < TOutputImage::ImageDimension; ++i)
     {
     s[i] = static_cast<SpacePrecisionType>(spacing[i]);
@@ -499,7 +500,7 @@ TriangleMeshToBinaryImageFilter< TInputMesh, TOutputImage >
         }
       //get the first entry
       double lastx = xlist[0].m_X;
-      int lastSign = xlist[0].m_Sign;
+      int    lastSign = xlist[0].m_Sign;
       int    signproduct = 1;
 
       // if adjacent x values are within tolerance of each
@@ -530,7 +531,7 @@ TriangleMeshToBinaryImageFilter< TInputMesh, TOutputImage >
         lastSign = sign;
         }
 
-        nlist.push_back(lastx);
+      nlist.push_back(lastx);
 
       // if xlist length is not divisible by two, then
       // the polydata isn't a closed surface
@@ -575,6 +576,7 @@ TriangleMeshToBinaryImageFilter< TInputMesh, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Size : " << m_Size << std::endl;
   os << indent << "Inside Value : "
      << static_cast< typename NumericTraits< ValueType >::PrintType >( m_InsideValue ) << std::endl;
@@ -586,6 +588,7 @@ TriangleMeshToBinaryImageFilter< TInputMesh, TOutputImage >
   os << indent << "Direction: " << std::endl << m_Direction << std::endl;
   os << indent << "Index: " << m_Index << std::endl;
 }
+
 } // end namespace itk
 
 #endif

@@ -16,14 +16,15 @@
  *
  *=========================================================================*/
 
-
 #include "itkVectorMeanImageFunction.h"
 
-int itkVectorMeanImageFunctionTest(int, char* [] )
+int
+itkVectorMeanImageFunctionTest(int, char* [] )
 {
 
   const unsigned int Dimension = 3;
-  typedef unsigned char   PixelComponentType;
+
+  typedef unsigned char PixelComponentType;
   const unsigned int VectorDimension = 4;
 
   typedef itk::FixedArray< PixelComponentType, VectorDimension > PixelType;
@@ -32,10 +33,10 @@ int itkVectorMeanImageFunctionTest(int, char* [] )
   typedef itk::VectorMeanImageFunction< ImageType > FunctionType;
 
   // Create and allocate the image
-  ImageType::Pointer      image = ImageType::New();
-  ImageType::SizeType     size;
-  ImageType::IndexType    start;
-  ImageType::RegionType   region;
+  ImageType::Pointer    image = ImageType::New();
+  ImageType::SizeType   size;
+  ImageType::IndexType  start;
+  ImageType::RegionType region;
 
   size[0] = 20;
   size[1] = 20;
@@ -64,13 +65,13 @@ int itkVectorMeanImageFunctionTest(int, char* [] )
 
   function->SetNeighborhoodRadius( 5 );
 
-  ImageType::IndexType    index;
+  ImageType::IndexType index;
 
   index[0] = 10;
   index[1] = 10;
   index[2] = 10;
 
-  FunctionType::OutputType  mean;
+  FunctionType::OutputType mean;
 
   mean = function->EvaluateAtIndex( index );
   std::cout << "function->EvaluateAtIndex( index ): " << mean << std::endl;
@@ -96,7 +97,6 @@ int itkVectorMeanImageFunctionTest(int, char* [] )
   // Test GetConstReferenceMacro
   const unsigned int & neighborhoodRadius = function->GetNeighborhoodRadius();
   std::cout << "function->GetNeighborhoodRadius(): " << neighborhoodRadius << std::endl;
-
 
   // since the input image is constant
   // the should be equal to the initial value

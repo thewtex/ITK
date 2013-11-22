@@ -63,5 +63,6 @@ ShapeKeepNObjectsLabelMapFilter< TImage >
   os << indent << "Attribute: "  << LabelObjectType::GetNameFromAttribute(m_Attribute) << " (" << m_Attribute << ")"
      << std::endl;
 }
+
 } // end namespace itk
 #endif

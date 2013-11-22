@@ -22,15 +22,16 @@
 
 #include <iostream>
 
-int itkVTKPolyDataIOQuadEdgeMeshTest(int argc, char* argv[] )
+int
+itkVTKPolyDataIOQuadEdgeMeshTest(int argc, char* argv[] )
 {
 
-  typedef itk::QuadEdgeMesh<float, 3>         MeshType;
-  typedef itk::VTKPolyDataReader< MeshType >  ReaderType;
-  typedef itk::VTKPolyDataWriter< MeshType >  WriterType;
+  typedef itk::QuadEdgeMesh<float, 3>        MeshType;
+  typedef itk::VTKPolyDataReader< MeshType > ReaderType;
+  typedef itk::VTKPolyDataWriter< MeshType > WriterType;
 
-  ReaderType::Pointer  polyDataReader = ReaderType::New();
-  WriterType::Pointer  polyDataWriter = WriterType::New();
+  ReaderType::Pointer polyDataReader = ReaderType::New();
+  WriterType::Pointer polyDataWriter = WriterType::New();
 
   if( argc != 3 )
     {

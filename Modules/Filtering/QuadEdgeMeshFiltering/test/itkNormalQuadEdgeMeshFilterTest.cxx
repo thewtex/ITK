@@ -21,7 +21,8 @@
 #include "itkQuadEdgeMeshExtendedTraits.h"
 #include "itkNormalQuadEdgeMeshFilter.h"
 
-int itkNormalQuadEdgeMeshFilterTest( int argc, char* argv[] )
+int
+itkNormalQuadEdgeMeshFilterTest( int argc, char* argv[] )
 {
   if( argc < 2 )
     {
@@ -34,26 +35,26 @@ int itkNormalQuadEdgeMeshFilterTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  const unsigned int    Dimension = 3;
-  typedef double        CoordType;
+  const unsigned int Dimension = 3;
+  typedef double CoordType;
 
   typedef itk::QuadEdgeMesh< CoordType, Dimension > InputMeshType;
 
   typedef itk::Vector< CoordType, Dimension > VectorType;
 
   typedef itk::QuadEdgeMeshExtendedTraits <
-    VectorType,
-    Dimension,
-    2,
-    CoordType,
-    CoordType,
-    VectorType,
-    bool,
-    bool > Traits;
+      VectorType,
+      Dimension,
+      2,
+      CoordType,
+      CoordType,
+      VectorType,
+      bool,
+      bool > Traits;
 
   typedef itk::QuadEdgeMesh < VectorType, Dimension, Traits > OutputMeshType;
 
-  typedef itk::MeshFileReader< InputMeshType > ReaderType;
+  typedef itk::MeshFileReader< InputMeshType >                           ReaderType;
   typedef itk::NormalQuadEdgeMeshFilter< InputMeshType, OutputMeshType > NormalFilterType;
   NormalFilterType::WeightType weight_type;
 
@@ -84,12 +85,12 @@ int itkNormalQuadEdgeMeshFilterTest( int argc, char* argv[] )
       }
     }
 
-  ReaderType::Pointer reader = ReaderType::New( );
+  ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
 
   try
     {
-    reader->Update( );
+    reader->Update();
     }
   catch( itk::ExceptionObject & excp )
     {
@@ -98,14 +99,14 @@ int itkNormalQuadEdgeMeshFilterTest( int argc, char* argv[] )
     return EXIT_FAILURE;
     }
 
-  InputMeshType::Pointer mesh = reader->GetOutput( );
+  InputMeshType::Pointer mesh = reader->GetOutput();
 
-  NormalFilterType::Pointer normals = NormalFilterType::New( );
+  NormalFilterType::Pointer normals = NormalFilterType::New();
   normals->SetInput( mesh );
   normals->SetWeight( weight_type );
-  normals->Update( );
+  normals->Update();
 
-  OutputMeshType::Pointer output = normals->GetOutput( );
+  OutputMeshType::Pointer output = normals->GetOutput();
 
   //
   //   FIXME

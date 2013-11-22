@@ -46,6 +46,7 @@ ShapePriorMAPCostFunction< TFeatureImage, TOutputPixel >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "ShapeParameterMeans: " << m_ShapeParameterMeans << std::endl;
   os << indent << "ShapeParameterStandardDeviations:  ";
   os << m_ShapeParameterStandardDeviations  << std::endl;
@@ -196,6 +197,7 @@ throw ( ExceptionObject )
                       << " number of elements.");
     }
 }
+
 } // end namespace itk
 
 #endif

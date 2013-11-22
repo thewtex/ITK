@@ -27,7 +27,8 @@
 namespace itk
 {
 template< typename TImageType, typename TFeatureImageType >
-void CannySegmentationLevelSetFunction< TImageType, TFeatureImageType >
+void
+CannySegmentationLevelSetFunction< TImageType, TFeatureImageType >
 ::CalculateSpeedImage()
 {
   // Create a distance transform to the canny edges
@@ -38,7 +39,8 @@ void CannySegmentationLevelSetFunction< TImageType, TFeatureImageType >
 }
 
 template< typename TImageType, typename TFeatureImageType >
-void CannySegmentationLevelSetFunction< TImageType, TFeatureImageType >
+void
+CannySegmentationLevelSetFunction< TImageType, TFeatureImageType >
 ::CalculateAdvectionImage()
 {
   typename GradientImageFilter< ImageType, ScalarValueType, ScalarValueType >::Pointer
@@ -73,7 +75,8 @@ void CannySegmentationLevelSetFunction< TImageType, TFeatureImageType >
 }
 
 template< typename TImageType, typename TFeatureImageType >
-void CannySegmentationLevelSetFunction< TImageType, TFeatureImageType >
+void
+CannySegmentationLevelSetFunction< TImageType, TFeatureImageType >
 ::CalculateDistanceImage()
 {
   typename TFeatureImageType::Pointer tempFeature = TFeatureImageType::New();
@@ -99,6 +102,7 @@ void CannySegmentationLevelSetFunction< TImageType, TFeatureImageType >
   m_Distance->GetOutput()->SetRequestedRegion( this->GetSpeedImage()->GetRequestedRegion() );
   m_Distance->Update();
 }
+
 } // end namespace itk
 
 #endif

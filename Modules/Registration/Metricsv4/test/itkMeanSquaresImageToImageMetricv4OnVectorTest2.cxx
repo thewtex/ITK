@@ -25,12 +25,14 @@
  */
 
 template<typename TMetric>
-int itkMeanSquaresImageToImageMetricv4OnVectorTest2Run( typename TMetric::MeasureType & measureReturn, typename TMetric::DerivativeType & derivativeReturn )
+int
+itkMeanSquaresImageToImageMetricv4OnVectorTest2Run( typename TMetric::MeasureType & measureReturn,
+                                                    typename TMetric::DerivativeType & derivativeReturn )
 {
   const unsigned int imageSize = 5;
   const unsigned int imageDimensionality = 3;
 
-  typedef typename TMetric::FixedImageType  ImageType;
+  typedef typename TMetric::FixedImageType ImageType;
 
   typename ImageType::SizeType       size;
   size.Fill( imageSize );
@@ -66,7 +68,7 @@ int itkMeanSquaresImageToImageMetricv4OnVectorTest2Run( typename TMetric::Measur
    */
   typedef typename ImageType::PixelType PixelType;
 
-  itk::ImageRegionIterator<ImageType> itFixed( fixedImage, region );
+  itk::ImageRegionIterator<ImageType>          itFixed( fixedImage, region );
   itk::ImageRegionIteratorWithIndex<ImageType> itMoving( movingImage, region );
 
   itFixed.GoToBegin();
@@ -137,20 +139,23 @@ int itkMeanSquaresImageToImageMetricv4OnVectorTest2Run( typename TMetric::Measur
 
 ///////////////////////////////////////////////////////////////////////
 
-int itkMeanSquaresImageToImageMetricv4OnVectorTest2(int, char ** const)
+int
+itkMeanSquaresImageToImageMetricv4OnVectorTest2(int, char ** const)
 {
   const unsigned int imageDimensionality = 3;
   const unsigned int vectorLength = 3;
 
   /* The vector metric */
-  typedef itk::Vector<double, vectorLength>                  VectorType;
-  typedef itk::Image< VectorType, imageDimensionality >      VectorImageType;
+  typedef itk::Vector<double, vectorLength>             VectorType;
+  typedef itk::Image< VectorType, imageDimensionality > VectorImageType;
 
-  typedef itk::VectorImageToImageMetricTraitsv4< VectorImageType, VectorImageType, VectorImageType, vectorLength, double >    MetricTraitsType;
-  typedef itk::MeanSquaresImageToImageMetricv4< VectorImageType, VectorImageType, VectorImageType, double, MetricTraitsType > VectorMetricType;
+  typedef itk::VectorImageToImageMetricTraitsv4< VectorImageType, VectorImageType, VectorImageType, vectorLength,
+                                                 double >          MetricTraitsType;
+  typedef itk::MeanSquaresImageToImageMetricv4< VectorImageType, VectorImageType, VectorImageType, double,
+                                                MetricTraitsType > VectorMetricType;
 
-  VectorMetricType::MeasureType     vectorMeasure = 0.0;
-  VectorMetricType::DerivativeType  vectorDerivative;
+  VectorMetricType::MeasureType    vectorMeasure = 0.0;
+  VectorMetricType::DerivativeType vectorDerivative;
   vectorDerivative.Fill(0);
 
   itkMeanSquaresImageToImageMetricv4OnVectorTest2Run<VectorMetricType>( vectorMeasure, vectorDerivative );
@@ -160,8 +165,8 @@ int itkMeanSquaresImageToImageMetricv4OnVectorTest2(int, char ** const)
   typedef itk::Image< double, imageDimensionality >                                                 ScalarImageType;
   typedef itk::MeanSquaresImageToImageMetricv4< ScalarImageType, ScalarImageType, ScalarImageType > ScalarMetricType;
 
-  ScalarMetricType::MeasureType     scalarMeasure = 0.0;
-  ScalarMetricType::DerivativeType  scalarDerivative;
+  ScalarMetricType::MeasureType    scalarMeasure = 0.0;
+  ScalarMetricType::DerivativeType scalarDerivative;
   scalarDerivative.Fill(0);
 
   itkMeanSquaresImageToImageMetricv4OnVectorTest2Run<ScalarMetricType>( scalarMeasure, scalarDerivative );
@@ -171,7 +176,8 @@ int itkMeanSquaresImageToImageMetricv4OnVectorTest2(int, char ** const)
   double tolerance = 1e-8;
   if( vcl_fabs( scalarMeasure - ( vectorMeasure / vectorLength ) ) > tolerance )
     {
-    std::cerr << "Measures do not match within tolerance. scalarMeasure, vectorMeasure: " << scalarMeasure << ", " << vectorMeasure << std::endl;
+    std::cerr << "Measures do not match within tolerance. scalarMeasure, vectorMeasure: " << scalarMeasure << ", " <<
+    vectorMeasure << std::endl;
     return EXIT_FAILURE;
     }
   std::cout << "Measure values match." << std::endl;
@@ -180,7 +186,8 @@ int itkMeanSquaresImageToImageMetricv4OnVectorTest2(int, char ** const)
     {
     if( vcl_fabs( scalarDerivative[n] - ( vectorDerivative[n] / vectorLength ) ) > tolerance )
       {
-      std::cerr << "Derivatives do not match within tolerance. scalarDerivative, vectorDerivative: " << scalarDerivative << std::endl << vectorDerivative << std::endl;
+      std::cerr << "Derivatives do not match within tolerance. scalarDerivative, vectorDerivative: " <<
+      scalarDerivative << std::endl << vectorDerivative << std::endl;
       return EXIT_FAILURE;
       }
     }

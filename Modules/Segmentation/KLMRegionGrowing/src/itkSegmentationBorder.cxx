@@ -20,7 +20,7 @@
 namespace itk
 {
 SegmentationBorder
-::SegmentationBorder(void):
+::SegmentationBorder(void) :
   m_BorderLength(0)
 {}
 
@@ -36,7 +36,9 @@ SegmentationBorder
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Segmentation border object" << std::endl;
   os << indent << "Length of the border: " << m_BorderLength << std::endl;
 }
+
 } // end namespace itk

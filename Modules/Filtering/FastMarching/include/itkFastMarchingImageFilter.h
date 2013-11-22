@@ -101,8 +101,8 @@ namespace itk
  */
 template<
   typename TLevelSet,
-  typename TSpeedImage = Image< float,  TLevelSet ::ImageDimension > >
-class FastMarchingImageFilter:
+  typename TSpeedImage = Image< float,  TLevelSet::ImageDimension > >
+class FastMarchingImageFilter :
   public ImageToImageFilter< TSpeedImage, TLevelSet >
 {
 public:
@@ -133,13 +133,24 @@ public:
   typedef typename LevelSetImageType::DirectionType   OutputDirectionType;
   typedef typename LevelSetImageType::PointType       OutputPointType;
 
-  class AxisNodeType:public NodeType
+  class AxisNodeType : public NodeType
   {
 public:
-    int GetAxis() const { return m_Axis; }
-    void SetAxis(int axis) { m_Axis = axis; }
-    const AxisNodeType & operator=(const NodeType & node)
-    { this->NodeType::operator=(node); return *this; }
+    int
+    GetAxis() const {
+      return m_Axis;
+    }
+
+    void
+    SetAxis(int axis) {
+      m_Axis = axis;
+    }
+
+    const AxisNodeType &
+    operator=(const NodeType & node)
+    {
+      this->NodeType::operator=(node); return *this;
+    }
 
 private:
     int m_Axis;
@@ -175,11 +186,12 @@ private:
   typedef typename LabelImageType::Pointer LabelImagePointer;
 
   template< typename TPixel >
-  void SetBinaryMask( Image< TPixel, SetDimension >* iImage )
-    {
+  void
+  SetBinaryMask( Image< TPixel, SetDimension >* iImage )
+  {
     typedef Image< TPixel, SetDimension > InternalImageType;
     typedef ImageRegionConstIteratorWithIndex< InternalImageType >
-        InternalRegionIterator;
+      InternalRegionIterator;
     InternalRegionIterator b_it( iImage, iImage->GetLargestPossibleRegion() );
     b_it.GoToBegin();
 
@@ -204,10 +216,11 @@ private:
       ++b_it;
       }
     this->Modified();
-    }
+  }
 
   /** Set the container of points that are not meant to be evaluated. */
-  void SetOutsidePoints(NodeContainer *points)
+  void
+  SetOutsidePoints(NodeContainer *points)
   {
     m_OutsidePoints = points;
     this->Modified();
@@ -215,34 +228,39 @@ private:
 
   /** Set the container of Alive Points representing the initial front.
    * Alive points are represented as a VectorContainer of LevelSetNodes. */
-  void SetAlivePoints(NodeContainer *points)
+  void
+  SetAlivePoints(NodeContainer *points)
   {
     m_AlivePoints = points;
     this->Modified();
   }
 
   /** Get the container of Alive Points representing the initial front. */
-  NodeContainerPointer GetAlivePoints()
+  NodeContainerPointer
+  GetAlivePoints()
   {
     return m_AlivePoints;
   }
 
   /** Set the container of Trial Points representing the initial front.
    * Trial points are represented as a VectorContainer of LevelSetNodes. */
-  void SetTrialPoints(NodeContainer *points)
+  void
+  SetTrialPoints(NodeContainer *points)
   {
     m_TrialPoints = points;
     this->Modified();
   }
 
   /** Get the container of Trial Points representing the initial front. */
-  NodeContainerPointer GetTrialPoints()
+  NodeContainerPointer
+  GetTrialPoints()
   {
     return m_TrialPoints;
   }
 
   /** Get the point type label image. */
-  LabelImagePointer GetLabelImage() const
+  LabelImagePointer
+  GetLabelImage() const
   {
     return m_LabelImage;
   }
@@ -250,7 +268,8 @@ private:
   /** Set the Speed Constant. If the Speed Image is NULL,
    * the SpeedConstant value is used for the whole level set.
    * By default, the SpeedConstant is set to 1.0. */
-  void SetSpeedConstant(double value)
+  void
+  SetSpeedConstant(double value)
   {
     m_SpeedConstant = value;
     m_InverseSpeed = -1.0 * vnl_math_sqr(1.0 / m_SpeedConstant);
@@ -289,7 +308,8 @@ private:
    * is set, the algorithm collects a container of all processed nodes.
    * This is useful for defining creating Narrowbands for level
    * set algorithms that supports narrow banding. */
-  NodeContainerPointer GetProcessedPoints() const
+  NodeContainerPointer
+  GetProcessedPoints() const
   {
     return m_ProcessedPoints;
   }
@@ -300,10 +320,18 @@ private:
    * parameters can be specified using methods SetOutputRegion(), SetOutputSpacing(), SetOutputDirection(),
    * and SetOutputOrigin(). Else if the speed image is not NULL, the output information
    * is copied from the input speed image. */
-  virtual void SetOutputSize(const OutputSizeType & size)
-  { m_OutputRegion = size; }
-  virtual OutputSizeType GetOutputSize() const
-  { return m_OutputRegion.GetSize(); }
+  virtual void
+  SetOutputSize(const OutputSizeType & size)
+  {
+    m_OutputRegion = size;
+  }
+
+  virtual OutputSizeType
+  GetOutputSize() const
+  {
+    return m_OutputRegion.GetSize();
+  }
+
   itkSetMacro(OutputRegion, OutputRegionType);
   itkGetConstReferenceMacro(OutputRegion, OutputRegionType);
   itkSetMacro(OutputSpacing, OutputSpacingType);
@@ -342,8 +370,11 @@ protected:
   virtual double UpdateValue(const IndexType & index,
                              const SpeedImageType *, LevelSetImageType *);
 
-  const AxisNodeType & GetNodeUsedInCalculation(unsigned int idx) const
-  { return m_NodesUsed[idx]; }
+  const AxisNodeType &
+  GetNodeUsedInCalculation(unsigned int idx) const
+  {
+    return m_NodesUsed[idx];
+  }
 
   void GenerateData();
 
@@ -398,7 +429,7 @@ private:
   typedef std::vector< AxisNodeType >  HeapContainer;
   typedef std::greater< AxisNodeType > NodeComparer;
   typedef std::priority_queue< AxisNodeType, HeapContainer, NodeComparer >
-  HeapType;
+    HeapType;
 
   HeapType m_TrialHeap;
 

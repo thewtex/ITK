@@ -129,7 +129,8 @@ ScalarImageToTextureFeaturesFilter< TImage, THistogramFrequencyContainer >::Full
     for ( fnameIt = m_RequestedFeatures->Begin(), featureNum = 0;
           fnameIt != m_RequestedFeatures->End(); fnameIt++, featureNum++ )
       {
-      features[offsetNum][featureNum] = this->m_GLCMCalculator->GetFeature( (InternalTextureFeatureName)fnameIt.Value() );
+      features[offsetNum][featureNum] =
+        this->m_GLCMCalculator->GetFeature( (InternalTextureFeatureName)fnameIt.Value() );
       }
     }
 
@@ -280,18 +281,18 @@ template< typename TImage, typename THistogramFrequencyContainer >
 const typename
 ScalarImageToTextureFeaturesFilter< TImage, THistogramFrequencyContainer >::FeatureValueVectorDataObjectType *
 ScalarImageToTextureFeaturesFilter< TImage, THistogramFrequencyContainer >::GetFeatureMeansOutput() const
-{
+  {
   return itkDynamicCastInDebugMode< const FeatureValueVectorDataObjectType * >( this->ProcessObject::GetOutput(0) );
-}
+  }
 
 template< typename TImage, typename THistogramFrequencyContainer >
 const typename
 ScalarImageToTextureFeaturesFilter< TImage, THistogramFrequencyContainer >::FeatureValueVectorDataObjectType *
 ScalarImageToTextureFeaturesFilter< TImage, THistogramFrequencyContainer >
 ::GetFeatureStandardDeviationsOutput() const
-{
+  {
   return itkDynamicCastInDebugMode< const FeatureValueVectorDataObjectType * >( this->ProcessObject::GetOutput(1) );
-}
+  }
 
 template< typename TImage, typename THistogramFrequencyContainer >
 const TImage *
@@ -317,12 +318,14 @@ ScalarImageToTextureFeaturesFilter< TImage, THistogramFrequencyContainer >::Prin
                                                                                       Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "RequestedFeatures: " << this->GetRequestedFeatures() << std::endl;
   os << indent << "FeatureStandardDeviations: " << this->GetFeatureStandardDeviations() << std::endl;
   os << indent << "FastCalculations: " << this->GetFastCalculations() << std::endl;
   os << indent << "Offsets: " << this->GetOffsets() << std::endl;
   os << indent << "FeatureMeans: " << this->GetFeatureMeans() << std::endl;
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

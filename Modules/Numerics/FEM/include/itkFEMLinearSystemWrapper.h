@@ -66,8 +66,8 @@ public:
    */
   LinearSystemWrapper() :
     m_Order(0), m_NumberOfMatrices(1), m_NumberOfVectors(1), m_NumberOfSolutions(1)
-  {
-  }
+  {}
+
   /* , m_PrimaryMatrixSetupFunction(0), m_PrimaryVectorSetupFunction(0),
     m_PrimarySolutionSetupFunction(0) {} */
 
@@ -75,9 +75,9 @@ public:
    * Virtual destructor should properly destroy the object and clean up any
    * memory allocated for matrix and vector storage.
    */
-  virtual ~LinearSystemWrapper()
-  {
-  }
+  virtual
+  ~LinearSystemWrapper()
+  {}
 
   /**
    * Clear all the data (matrices) inside the system, so that the system
@@ -90,7 +90,8 @@ public:
    * all vectors will be of size N
    * \param N order of the linear system
    */
-  void SetSystemOrder(unsigned int N)
+  void
+  SetSystemOrder(unsigned int N)
   {
     m_Order = N;
   }
@@ -98,7 +99,8 @@ public:
   /**
    * Get the order of the system
    */
-  unsigned int GetSystemOrder() const
+  unsigned int
+  GetSystemOrder() const
   {
     return m_Order;
   }
@@ -107,7 +109,8 @@ public:
    * Set Index of matrices used by the system
    * \param nMatrices Index of matrices used by system
    */
-  void SetNumberOfMatrices(unsigned int nMatrices)
+  void
+  SetNumberOfMatrices(unsigned int nMatrices)
   {
     m_NumberOfMatrices = nMatrices;
   }
@@ -125,7 +128,8 @@ public:
   /**
    * Get Index of matrices used by system
    */
-  unsigned int GetNumberOfMatrices() const
+  unsigned int
+  GetNumberOfMatrices() const
   {
     return m_NumberOfMatrices;
   }
@@ -134,7 +138,8 @@ public:
    * Set Index of vectors used by the system
    * \param nVectors Index of vectors used by system
    */
-  void SetNumberOfVectors(unsigned int nVectors)
+  void
+  SetNumberOfVectors(unsigned int nVectors)
   {
     m_NumberOfVectors = nVectors;
   }
@@ -142,7 +147,8 @@ public:
   /**
    * Get Index of vectors used by system
    */
-  unsigned int GetNumberOfVectors() const
+  unsigned int
+  GetNumberOfVectors() const
   {
     return m_NumberOfVectors;
   }
@@ -151,7 +157,8 @@ public:
    * Set Index of solutions used by the system
    * \param nSolutions Index of solutions used by system
    */
-  void SetNumberOfSolutions(unsigned int nSolutions)
+  void
+  SetNumberOfSolutions(unsigned int nSolutions)
   {
     m_NumberOfSolutions = nSolutions;
   }
@@ -159,7 +166,8 @@ public:
   /**
    * Get Index of solutions used by system
    */
-  unsigned int GetNumberOfSolutions() const
+  unsigned int
+  GetNumberOfSolutions() const
   {
     return m_NumberOfSolutions;
   }
@@ -405,7 +413,8 @@ public:
    * \param solutionIndex index of solution to multiply
    * \param resultVectorIndex index of vector where result is store
    */
-  virtual void MultiplyMatrixSolution(unsigned int resultVectorIndex, unsigned int matrixIndex, unsigned int solutionIndex);
+  virtual void MultiplyMatrixSolution(unsigned int resultVectorIndex, unsigned int matrixIndex,
+                                      unsigned int solutionIndex);
 
   /**
    * Copy a solution vector to a vector
@@ -505,13 +514,14 @@ public:
    * must be provided: file, lineNumber, location and a detailed description
    * of the exception.
    */
-  FEMExceptionLinearSystem(const char *file, unsigned int lineNumber, std::string location, std::string moreDescription);
+  FEMExceptionLinearSystem(const char *file, unsigned int lineNumber, std::string location,
+                           std::string moreDescription);
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMExceptionLinearSystem()
+  virtual
+  ~FEMExceptionLinearSystem()
   throw ( )
-  {
-  }
+  {}
 
   /** Type related information. */
   itkTypeMacro(FEMExceptionLinearSystem, FEMException);
@@ -538,10 +548,10 @@ public:
                                  unsigned int index2);
 
   /** Virtual destructor needed for subclasses. Has to have empty throw(). */
-  virtual ~FEMExceptionLinearSystemBounds()
+  virtual
+  ~FEMExceptionLinearSystemBounds()
   throw ( )
-  {
-  }
+  {}
 
   /** Type related information. */
   itkTypeMacro(FEMExceptionLinearSystem, FEMException);

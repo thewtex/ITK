@@ -30,10 +30,10 @@
 //
 // Software Guide : EndLatex
 
-
 #include "itkImage.h"
 
-int main(int, char *[])
+int
+main(int, char *[])
 {
   // First the image type should be declared
   typedef itk::Image< unsigned short, 3 > ImageType;
@@ -43,7 +43,7 @@ int main(int, char *[])
 
   // The image region should be initialized
   const ImageType::SizeType  size  = {{ 200, 200, 200}}; //Size along {X,Y,Z}
-  const ImageType::IndexType start = {{ 0, 0, 0 }}; // First index on {X,Y,Z}
+  const ImageType::IndexType start = {{ 0, 0, 0 }};      // First index on {X,Y,Z}
 
   ImageType::RegionType region;
   region.SetSize( size );
@@ -54,9 +54,8 @@ int main(int, char *[])
   image->Allocate();
 
   // The image buffer is initialized to a particular value
-  ImageType::PixelType  initialValue = 0;
+  ImageType::PixelType initialValue = 0;
   image->FillBuffer( initialValue );
-
 
   // Software Guide : BeginLatex
   //
@@ -84,7 +83,6 @@ int main(int, char *[])
   const ImageType::IndexType pixelIndex = {{27,29,37}}; // Position of {X,Y,Z}
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // Having defined a pixel position with an index, it is then possible to
@@ -96,10 +94,9 @@ int main(int, char *[])
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  ImageType::PixelType   pixelValue = image->GetPixel( pixelIndex );
+  ImageType::PixelType pixelValue = image->GetPixel( pixelIndex );
 
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -113,7 +110,6 @@ int main(int, char *[])
   image->SetPixel(   pixelIndex,   pixelValue+1  );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // Please note that \code{GetPixel()} returns the pixel value using copy
@@ -125,7 +121,6 @@ int main(int, char *[])
   // querying pixel values by clicking with the mouse.
   //
   // Software Guide : EndLatex
-
 
   return 0;
 

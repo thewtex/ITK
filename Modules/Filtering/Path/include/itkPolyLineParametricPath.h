@@ -53,7 +53,7 @@ namespace itk
  * \endwiki
  */
 template< unsigned int VDimension >
-class PolyLineParametricPath:public
+class PolyLineParametricPath : public
   ParametricPath< VDimension >
 {
 public:
@@ -93,7 +93,8 @@ public:
    * Adding a vertex has the additional effect of extending the domain of the
    * PolyLineParametricPath by 1.0 (each pair of consecutive verticies is
    * separated by one unit of input). */
-  inline void AddVertex(const ContinuousIndexType & vertex)
+  inline void
+  AddVertex(const ContinuousIndexType & vertex)
   {
     m_VertexList->InsertElement(m_VertexList->Size(), vertex);
     this->Modified();
@@ -102,7 +103,8 @@ public:
   /** Where does the path end?  This value is necessary for IncrementInput() to
    * know how to go to the end of a path.  Since each line segment covers one
    * unit of input, this is the number of verticies - 1. */
-  virtual inline InputType EndOfInput() const
+  virtual inline InputType
+  EndOfInput() const
   {
     return m_VertexList->Size() - 1;
   }
@@ -111,7 +113,8 @@ public:
   itkNewMacro(Self);
 
   /** Needed for Pipelining */
-  virtual void Initialize(void)
+  virtual void
+  Initialize(void)
   {
     m_VertexList->Initialize();
   }

@@ -86,24 +86,26 @@ KullbackLeiblerCompareHistogramImageToImageMetric< TFixedImage, \
   // The actual number of total frequency is a bit larger
   // than the number of counts because we add m_Epsilon to every bin
   double AdjustedTotalTrainingFreq = totalTrainingFreq
-                                     + this->GetHistogramSize()[0] * this->GetHistogramSize()[1] * m_Epsilon;
+    + this->GetHistogramSize()[0] * this->GetHistogramSize()[1] * m_Epsilon;
   double AdjustedTotalMeasuredFreq = totalMeasuredFreq
-                                     + this->GetHistogramSize()[0] * this->GetHistogramSize()[1] * m_Epsilon;
+    + this->GetHistogramSize()[0] * this->GetHistogramSize()[1] * m_Epsilon;
 
   KullbackLeibler = KullbackLeibler / static_cast< MeasureType >( AdjustedTotalMeasuredFreq )
-                    - vcl_log(AdjustedTotalMeasuredFreq / AdjustedTotalTrainingFreq);
+    - vcl_log(AdjustedTotalMeasuredFreq / AdjustedTotalTrainingFreq);
 
   return KullbackLeibler;
 }
 
 template< typename TFixedImage, typename TMovingImage >
-void KullbackLeiblerCompareHistogramImageToImageMetric< TFixedImage, TMovingImage >::PrintSelf(std::ostream & os,
-                                                                                               Indent indent) const
+void
+KullbackLeiblerCompareHistogramImageToImageMetric< TFixedImage, TMovingImage >::PrintSelf(std::ostream & os,
+                                                                                          Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
   os << indent << "Epsilon: " << m_Epsilon << std::endl;
 }
+
 } // End namespace itk
 
 #endif // itkKullbackLeiblerCompareHistogramImageToImageMetric_hxx

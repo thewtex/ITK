@@ -41,8 +41,8 @@
 #include "itkImageFileWriter.h"
 // Software Guide : EndCodeSnippet
 
-
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
   // Verify the number of parameters in the command line
   if( argc < 3 )
@@ -61,9 +61,8 @@ int main( int argc, char * argv [] )
   // Software Guide : BeginCodeSnippet
   const unsigned int VectorDimension = 3;
 
-  typedef itk::Vector< float, VectorDimension >    PixelType;
+  typedef itk::Vector< float, VectorDimension > PixelType;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -93,7 +92,6 @@ int main( int argc, char * argv [] )
   WriterType::Pointer writer = WriterType::New();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // Filename must be provided to both the reader and the writer. In this
@@ -105,7 +103,6 @@ int main( int argc, char * argv [] )
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //

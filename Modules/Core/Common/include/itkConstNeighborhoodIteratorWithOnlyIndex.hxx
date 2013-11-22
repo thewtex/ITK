@@ -66,7 +66,7 @@ ConstNeighborhoodIteratorWithOnlyIndex< TImage >
     }
   else
     {
-    bool              flag = true;
+    bool flag = true;
     internalIndex = this->ComputeInternalIndex(n);
 
     // Is this pixel in bounds?
@@ -79,7 +79,7 @@ ConstNeighborhoodIteratorWithOnlyIndex< TImage >
       else  // part of this dimension spills out of bounds
         {
         // Calculate overlap for this dimension
-        OffsetValueType   OverlapLow = m_InnerBoundsLow[i] - m_Loop[i];
+        OffsetValueType OverlapLow = m_InnerBoundsLow[i] - m_Loop[i];
         if ( internalIndex[i] < OverlapLow )
           {
           flag = false;
@@ -88,7 +88,8 @@ ConstNeighborhoodIteratorWithOnlyIndex< TImage >
         else
           {
           OffsetValueType OverlapHigh;
-          OverlapHigh = static_cast< OffsetValueType >( this->GetSize(i) - ( ( m_Loop[i] + 2 ) - m_InnerBoundsHigh[i] ) );
+          OverlapHigh =
+            static_cast< OffsetValueType >( this->GetSize(i) - ( ( m_Loop[i] + 2 ) - m_InnerBoundsHigh[i] ) );
           if ( OverlapHigh < internalIndex[i] )
             {
             flag = false;
@@ -132,6 +133,7 @@ ConstNeighborhoodIteratorWithOnlyIndex< TImage >
   RegionType ans;
 
   IndexValueType zero = NumericTraits< IndexValueType >::Zero;
+
   ans.SetIndex( this->GetIndex(zero) );
   ans.SetSize( this->GetSize() );
 
@@ -143,6 +145,7 @@ ConstNeighborhoodIteratorWithOnlyIndex< TImage >
 ::ConstNeighborhoodIteratorWithOnlyIndex()
 {
   IndexType zeroIndex;
+
   zeroIndex.Fill(0);
 
   SizeType zeroSize;
@@ -166,7 +169,7 @@ ConstNeighborhoodIteratorWithOnlyIndex< TImage >
 
 template< typename TImage >
 ConstNeighborhoodIteratorWithOnlyIndex< TImage >
-::ConstNeighborhoodIteratorWithOnlyIndex(const Self & orig):
+::ConstNeighborhoodIteratorWithOnlyIndex(const Self & orig) :
   Neighborhood< DummyNeighborhoodPixelType, Dimension >(orig)
 {
   m_Bound      = orig.m_Bound;
@@ -207,7 +210,9 @@ ConstNeighborhoodIteratorWithOnlyIndex< TImage >
   if ( m_Region.GetNumberOfPixels() > 0 )
     {
     m_EndIndex = m_Region.GetIndex();
-    m_EndIndex[Dimension - 1] = m_Region.GetIndex()[Dimension - 1] + static_cast< OffsetValueType >( m_Region.GetSize()[Dimension - 1] );
+    m_EndIndex[Dimension -
+               1] =
+      m_Region.GetIndex()[Dimension - 1] + static_cast< OffsetValueType >( m_Region.GetSize()[Dimension - 1] );
     }
   else
     {
@@ -233,7 +238,8 @@ ConstNeighborhoodIteratorWithOnlyIndex< TImage >
 }
 
 template< typename TImage >
-void ConstNeighborhoodIteratorWithOnlyIndex< TImage >
+void
+ConstNeighborhoodIteratorWithOnlyIndex< TImage >
 ::Initialize(const SizeType & radius, const ImageType *ptr, const RegionType & region)
 {
   m_ConstImage = ptr;
@@ -254,8 +260,12 @@ void ConstNeighborhoodIteratorWithOnlyIndex< TImage >
   m_NeedToUseBoundaryCondition = false;
   for ( DimensionValueType i = 0; i < Dimension; ++i )
     {
-    const OffsetValueType overlapLow = static_cast< OffsetValueType >( ( rStart[i] - static_cast<OffsetValueType>( radius[i] ) ) - bStart[i] );
-    const OffsetValueType overlapHigh = static_cast< OffsetValueType >( ( bStart[i] + bSize[i] ) - ( rStart[i] + rSize[i] + static_cast<OffsetValueType>( radius[i] ) ) );
+    const OffsetValueType overlapLow =
+      static_cast< OffsetValueType >( ( rStart[i] - static_cast<OffsetValueType>( radius[i] ) ) - bStart[i] );
+    const OffsetValueType overlapHigh =
+      static_cast< OffsetValueType >( ( bStart[i] +
+                                        bSize[i] ) -
+                                      ( rStart[i] + rSize[i] + static_cast<OffsetValueType>( radius[i] ) ) );
 
     if ( overlapLow < 0 ) // out of bounds condition, define a region of
       {
@@ -306,25 +316,27 @@ ConstNeighborhoodIteratorWithOnlyIndex< TImage >
 }
 
 template< typename TImage >
-bool ConstNeighborhoodIteratorWithOnlyIndex< TImage >
+bool
+ConstNeighborhoodIteratorWithOnlyIndex< TImage >
 ::operator<(const Self & it) const
 {
- for( DimensionValueType i = 1; i <= Dimension; i++ )
-  {
-  if( this->GetIndex()[Dimension - i] < it.GetIndex()[Dimension - i] )
+  for( DimensionValueType i = 1; i <= Dimension; i++ )
     {
-    return true;
+    if( this->GetIndex()[Dimension - i] < it.GetIndex()[Dimension - i] )
+      {
+      return true;
+      }
+    if( this->GetIndex()[Dimension - i] > it.GetIndex()[Dimension - i] )
+      {
+      return false;
+      }
     }
-  if( this->GetIndex()[Dimension - i] > it.GetIndex()[Dimension - i] )
-    {
-    return false;
-    }
-  }
   return false;
 }
 
 template< typename TImage >
-bool ConstNeighborhoodIteratorWithOnlyIndex< TImage >
+bool
+ConstNeighborhoodIteratorWithOnlyIndex< TImage >
 ::operator<=(const Self & it) const
 {
   if( this->operator==( it ) )
@@ -332,28 +344,31 @@ bool ConstNeighborhoodIteratorWithOnlyIndex< TImage >
     return true;
     }
   return this->operator<( it );
+
 }
 
 template< typename TImage >
-bool ConstNeighborhoodIteratorWithOnlyIndex< TImage >
+bool
+ConstNeighborhoodIteratorWithOnlyIndex< TImage >
 ::operator>(const Self & it) const
 {
- for( DimensionValueType i = 1; i <= Dimension; i++ )
-  {
-  if( this->GetIndex()[Dimension - i] > it.GetIndex()[Dimension - i] )
+  for( DimensionValueType i = 1; i <= Dimension; i++ )
     {
-    return true;
+    if( this->GetIndex()[Dimension - i] > it.GetIndex()[Dimension - i] )
+      {
+      return true;
+      }
+    if( this->GetIndex()[Dimension - i] < it.GetIndex()[Dimension - i] )
+      {
+      return false;
+      }
     }
-  if( this->GetIndex()[Dimension - i] < it.GetIndex()[Dimension - i] )
-    {
-    return false;
-    }
-  }
   return false;
 }
 
 template< typename TImage >
-bool ConstNeighborhoodIteratorWithOnlyIndex< TImage >
+bool
+ConstNeighborhoodIteratorWithOnlyIndex< TImage >
 ::operator>=(const Self & it) const
 {
   if( this->operator==( it ) )
@@ -361,10 +376,12 @@ bool ConstNeighborhoodIteratorWithOnlyIndex< TImage >
     return true;
     }
   return this->operator>( it );
+
 }
 
 template< typename TImage >
-bool ConstNeighborhoodIteratorWithOnlyIndex< TImage >
+bool
+ConstNeighborhoodIteratorWithOnlyIndex< TImage >
 ::IsAtEnd() const
 {
   // m_EndIndex is at end of iteration when its greatest dimension
@@ -496,12 +513,13 @@ ConstNeighborhoodIteratorWithOnlyIndex< TImage >
 }
 
 template< typename TImage >
-void ConstNeighborhoodIteratorWithOnlyIndex< TImage >
+void
+ConstNeighborhoodIteratorWithOnlyIndex< TImage >
 ::SetBound(const SizeType & size)
 {
-  SizeType               radius  = this->GetRadius();
-  const IndexType        imageBRStart  = m_ConstImage->GetBufferedRegion().GetIndex();
-  SizeType               imageBRSize = m_ConstImage->GetBufferedRegion().GetSize();
+  SizeType        radius  = this->GetRadius();
+  const IndexType imageBRStart  = m_ConstImage->GetBufferedRegion().GetIndex();
+  SizeType        imageBRSize = m_ConstImage->GetBufferedRegion().GetSize();
 
   // Set the bounds and the wrapping offsets. Inner bounds are the loop
   // indices where the iterator will begin to overlap the edge of the image
@@ -509,8 +527,11 @@ void ConstNeighborhoodIteratorWithOnlyIndex< TImage >
   for ( DimensionValueType i = 0; i < Dimension; ++i )
     {
     m_Bound[i] = m_BeginIndex[i] + static_cast< OffsetValueType >( size[i] );
-    m_InnerBoundsHigh[i] = static_cast< IndexValueType >( imageBRStart[i] + static_cast< OffsetValueType >( imageBRSize[i] ) - static_cast< OffsetValueType >( radius[i] ) );
-    m_InnerBoundsLow[i] = static_cast< IndexValueType >( imageBRStart[i] + static_cast< OffsetValueType >( radius[i] ) );
+    m_InnerBoundsHigh[i] =
+      static_cast< IndexValueType >( imageBRStart[i] + static_cast< OffsetValueType >( imageBRSize[i] ) -
+                                     static_cast< OffsetValueType >( radius[i] ) );
+    m_InnerBoundsLow[i] =
+      static_cast< IndexValueType >( imageBRStart[i] + static_cast< OffsetValueType >( radius[i] ) );
     }
 }
 
@@ -542,6 +563,7 @@ ConstNeighborhoodIteratorWithOnlyIndex< TImage >
   m_Loop -= idx;
   return *this;
 }
+
 } // namespace itk
 
 #endif

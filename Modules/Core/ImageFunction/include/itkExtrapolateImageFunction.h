@@ -40,18 +40,18 @@ namespace itk
  * \ingroup ITKImageFunction
  */
 template< typename TInputImage, typename TCoordRep = float >
-class ExtrapolateImageFunction:
+class ExtrapolateImageFunction :
   public ImageFunction< TInputImage,
                         typename NumericTraits< typename TInputImage::PixelType >::RealType, TCoordRep >
 {
 public:
   /** Standard class typedefs. */
-  typedef ExtrapolateImageFunction                        Self;
+  typedef ExtrapolateImageFunction Self;
   typedef ImageFunction< TInputImage,
                          typename NumericTraits< typename TInputImage::PixelType >::RealType,
                          TCoordRep >                      Superclass;
-  typedef SmartPointer< Self >                            Pointer;
-  typedef SmartPointer< const Self >                      ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
+  typedef SmartPointer< const Self > ConstPointer;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro(ExtrapolateImageFunction, ImageFunction);
@@ -83,7 +83,8 @@ public:
    * Returns the extrapolated image intensity at a
    * specified point position.
    */
-  virtual OutputType Evaluate(const PointType & point) const
+  virtual OutputType
+  Evaluate(const PointType & point) const
   {
     ContinuousIndexType index;
 
@@ -110,12 +111,16 @@ public:
 protected:
   ExtrapolateImageFunction(){}
   ~ExtrapolateImageFunction(){}
-  void PrintSelf(std::ostream & os, Indent indent) const
-  { Superclass::PrintSelf(os, indent); }
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+  }
 
 private:
   ExtrapolateImageFunction(const Self &); //purposely not implemented
   void operator=(const Self &);           //purposely not implemented
+
 };
 } // end namespace itk
 

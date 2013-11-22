@@ -74,7 +74,7 @@ namespace Statistics
 
 template< typename TMeasurement = float,
           typename TFrequencyContainer = DenseFrequencyContainer2 >
-class Histogram:
+class Histogram :
   public Sample< Array< TMeasurement > >
 {
 public:
@@ -98,9 +98,9 @@ public:
   typedef TMeasurement MeasurementType;
 
   /** Common sample class typedefs */
-  typedef typename Superclass::MeasurementVectorType      MeasurementVectorType;
-  typedef typename Superclass::InstanceIdentifier         InstanceIdentifier;
-  typedef typename Superclass::MeasurementVectorSizeType  MeasurementVectorSizeType;
+  typedef typename Superclass::MeasurementVectorType     MeasurementVectorType;
+  typedef typename Superclass::InstanceIdentifier        InstanceIdentifier;
+  typedef typename Superclass::MeasurementVectorSizeType MeasurementVectorSizeType;
 
   typedef MeasurementVectorType ValueType;
 
@@ -145,7 +145,7 @@ public:
   /** Get the index of a measurement value from the histogram.
    * \deprecated Use GetIndex(const MeasurementVectorType &
    * measurement, IndexType & index ) const instead. */
-  itkLegacyMacro(const IndexType & GetIndex(const MeasurementVectorType & measurement) const);
+  itkLegacyMacro(const IndexType &GetIndex(const MeasurementVectorType &measurement) const);
 
   /** Get the index of histogram corresponding to the specified
    *  measurement value. Returns true if index is valid and false if
@@ -244,12 +244,12 @@ public:
   /** Set the frequency of an index. Returns false if the bin is
    * out of bounds. */
   bool SetFrequencyOfIndex(const IndexType & index,
-                    AbsoluteFrequencyType value);
+                           AbsoluteFrequencyType value);
 
   /** Set the frequency of a measurement. Returns false if the bin is
    * out of bounds. */
   bool SetFrequencyOfMeasurement(const MeasurementVectorType & measurement,
-                                  AbsoluteFrequencyType value);
+                                 AbsoluteFrequencyType value);
 
   /** Increase the frequency of an instance identifier.
    * Frequency is increased by the specified value. Returns false if
@@ -260,30 +260,33 @@ public:
    * increased by the specified value. Returns false if the bin is out
    * of bounds. */
   bool IncreaseFrequencyOfIndex(const IndexType & index,
-                                 AbsoluteFrequencyType value);
+                                AbsoluteFrequencyType value);
 
   /** Increase the frequency of a measurement.  Frequency is
    * increased by the specified value. Returns false if the
    * measurement is outside the bounds of the histogram. */
   bool IncreaseFrequencyOfMeasurement(
-         const MeasurementVectorType & measurement,
-         AbsoluteFrequencyType value);
+    const MeasurementVectorType & measurement,
+    AbsoluteFrequencyType value);
+
 #ifdef ITKV3_COMPATIBILITY
   //In ITKv4 the member functions are given unique names to dis-ambiguate
   //the intended behavior.  Make aliases of the overloaded calls
   //for ITKv3 backwards compatibility.
-  bool IncreaseFrequency(const IndexType & index,
-                                 AbsoluteFrequencyType value)
-    {
+  bool
+  IncreaseFrequency(const IndexType & index,
+                    AbsoluteFrequencyType value)
+  {
     return IncreaseFrequencyOfIndex(index,value);
-    }
+  }
 
-  bool IncreaseFrequency(
-         const MeasurementVectorType & measurement,
-         AbsoluteFrequencyType value)
-    {
+  bool
+  IncreaseFrequency(
+    const MeasurementVectorType & measurement,
+    AbsoluteFrequencyType value)
+  {
     return IncreaseFrequencyOfMeasurement(measurement,value);
-    }
+  }
 
 #endif
 
@@ -357,45 +360,53 @@ public:
       m_Histogram = it.m_Histogram;
     }
 
-    ConstIterator & operator=(const ConstIterator & it)
+    ConstIterator &
+    operator=(const ConstIterator & it)
     {
       m_Id  = it.m_Id;
       m_Histogram = it.m_Histogram;
       return *this;
     }
 
-    AbsoluteFrequencyType GetFrequency() const
+    AbsoluteFrequencyType
+    GetFrequency() const
     {
       return m_Histogram->GetFrequency(m_Id);
     }
 
-    InstanceIdentifier GetInstanceIdentifier() const
+    InstanceIdentifier
+    GetInstanceIdentifier() const
     {
       return m_Id;
     }
 
-    const MeasurementVectorType & GetMeasurementVector() const
+    const MeasurementVectorType &
+    GetMeasurementVector() const
     {
       return m_Histogram->GetMeasurementVector(m_Id);
     }
 
-    const IndexType & GetIndex() const
+    const IndexType &
+    GetIndex() const
     {
       return m_Histogram->GetIndex(m_Id);
     }
 
-    ConstIterator & operator++()
+    ConstIterator &
+    operator++()
     {
       ++m_Id;
       return *this;
     }
 
-    bool operator!=(const ConstIterator & it)
+    bool
+    operator!=(const ConstIterator & it)
     {
       return ( m_Id != it.m_Id );
     }
 
-    bool operator==(const ConstIterator & it)
+    bool
+    operator==(const ConstIterator & it)
     {
       return ( m_Id == it.m_Id );
     }
@@ -404,7 +415,7 @@ protected:
     // This method is purposely not implemented
     ConstIterator();
 
-    ConstIterator(InstanceIdentifier id, const Self *histogram):
+    ConstIterator(InstanceIdentifier id, const Self *histogram) :
       m_Id(id), m_Histogram(histogram)
     {}
 
@@ -419,27 +430,29 @@ protected:
    * \brief class that walks through the elements of the histogram.
    * \ingroup ITKStatistics
    */
-  class Iterator:public ConstIterator
+  class Iterator : public ConstIterator
   {
 public:
 
-    Iterator(Self *histogram):ConstIterator(histogram)
+    Iterator(Self *histogram) : ConstIterator(histogram)
     {}
 
-    Iterator(InstanceIdentifier id, Self *histogram):
+    Iterator(InstanceIdentifier id, Self *histogram) :
       ConstIterator(id, histogram)
     {}
 
-    Iterator(const Iterator & it):ConstIterator(it)
+    Iterator(const Iterator & it) : ConstIterator(it)
     {}
 
-    Iterator & operator=(const Iterator & it)
+    Iterator &
+    operator=(const Iterator & it)
     {
       this->ConstIterator::operator=(it);
       return *this;
     }
 
-    bool SetFrequency(const AbsoluteFrequencyType value)
+    bool
+    SetFrequency(const AbsoluteFrequencyType value)
     {
       Self *histogram = const_cast< Self * >( this->m_Histogram );
 
@@ -458,33 +471,38 @@ protected:
 private:
   };   // end of iterator class
 
-  Iterator  Begin()
+  Iterator
+  Begin()
   {
     Iterator iter(0, this);
 
     return iter;
   }
 
-  Iterator  End()
+  Iterator
+  End()
   {
     return Iterator(m_OffsetTable[this->GetMeasurementVectorSize()], this);
   }
 
-  ConstIterator  Begin() const
+  ConstIterator
+  Begin() const
   {
     ConstIterator iter(0, this);
 
     return iter;
   }
 
-  ConstIterator End() const
+  ConstIterator
+  End() const
   {
     return ConstIterator(m_OffsetTable[this->GetMeasurementVectorSize()], this);
   }
 
 protected:
   Histogram();
-  virtual ~Histogram() {}
+  virtual
+  ~Histogram() {}
 
   // The number of bins for each dimension
   SizeType m_Size;
@@ -500,7 +518,8 @@ private:
 
   // This method is provided here just to avoid a "hidden" warning
   // related to the virtual method available in DataObject.
-  virtual void Initialize() {}
+  virtual void
+  Initialize() {}
 
   // lower bound of each bin
   std::vector< std::vector< MeasurementType > > m_Min;

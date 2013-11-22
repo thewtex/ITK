@@ -43,7 +43,8 @@ public:
   static const ElementIdentifierType m_ElementNotFound;
 
   ElementWrapperInterface();
-  virtual ~ElementWrapperInterface();
+  virtual
+  ~ElementWrapperInterface();
 
   virtual ElementIdentifierType GetLocation(const ElementType & element) const = 0;
 
@@ -54,9 +55,9 @@ public:
 
   virtual bool is_greater(const ElementType & element1,
                           const ElementType & element2) const = 0;
+
 };
 // ------------------------------------------------------------------------
-
 
 // ------------------------------------------------------------------------
 // If you want to manage the items outside the queue for example, if you don't
@@ -75,7 +76,8 @@ public:
   static const ElementIdentifierType m_ElementNotFound;
 
   ElementWrapperPointerInterface();
-  virtual ~ElementWrapperPointerInterface();
+  virtual
+  ~ElementWrapperPointerInterface();
 
   TElementIdentifier GetLocation(const ElementWrapperPointerType & element) const;
 
@@ -83,10 +85,11 @@ public:
                    const ElementIdentifierType & identifier);
 
   virtual bool is_less(const ElementWrapperPointerType & element1,
-               const ElementWrapperPointerType & element2) const;
+                       const ElementWrapperPointerType & element2) const;
 
   virtual bool is_greater(const ElementWrapperPointerType & element1,
-                  const ElementWrapperPointerType & element2) const;
+                          const ElementWrapperPointerType & element2) const;
+
 };
 // ------------------------------------------------------------------------
 
@@ -104,7 +107,7 @@ template<
   typename TElementPriority = double,
   typename TElementIdentifier = IdentifierType
   >
-class MinPriorityQueueElementWrapper:
+class MinPriorityQueueElementWrapper :
   public ElementWrapperInterface<
     MinPriorityQueueElementWrapper< TElement,
                                     TElementPriority,
@@ -114,8 +117,8 @@ class MinPriorityQueueElementWrapper:
 {
 public:
   typedef MinPriorityQueueElementWrapper< TElement,
-    TElementPriority,
-    TElementIdentifier >     Superclass;
+                                          TElementPriority,
+                                          TElementIdentifier >     Superclass;
   typedef TElement           ElementType;
   typedef TElementPriority   ElementPriorityType;
   typedef TElementIdentifier ElementIdentifierType;
@@ -129,7 +132,8 @@ public:
   MinPriorityQueueElementWrapper(ElementType element,
                                  ElementPriorityType priority);
 
-  virtual ~MinPriorityQueueElementWrapper();
+  virtual
+  ~MinPriorityQueueElementWrapper();
 
   bool operator>(const MinPriorityQueueElementWrapper & other) const;
 
@@ -152,7 +156,6 @@ public:
 };
 // ------------------------------------------------------------------------
 
-
 // ------------------------------------------------------------------------
 // this implementation is used for max sorted priorityqueue
 // most of the job is already done, just need to overload the less
@@ -162,7 +165,7 @@ template<
   typename TElementPriority = double,
   typename TElementIdentifier = IdentifierType
   >
-class MaxPriorityQueueElementWrapper:
+class MaxPriorityQueueElementWrapper :
   public MinPriorityQueueElementWrapper< TElement,
                                          TElementPriority,
                                          TElementIdentifier >
@@ -180,23 +183,23 @@ public:
   MaxPriorityQueueElementWrapper(ElementType element,
                                  ElementPriorityType priority);
 
-  virtual ~MaxPriorityQueueElementWrapper() {}
+  virtual
+  ~MaxPriorityQueueElementWrapper() {}
 
   virtual bool is_less(const MaxPriorityQueueElementWrapper & element1,
-               const MaxPriorityQueueElementWrapper & element2) const;
+                       const MaxPriorityQueueElementWrapper & element2) const;
 
   virtual bool is_less(const Superclass & element1,
-               const Superclass & element2) const;
+                       const Superclass & element2) const;
 
   virtual bool is_greater(const MaxPriorityQueueElementWrapper & element1,
-                  const MaxPriorityQueueElementWrapper & element2) const;
+                          const MaxPriorityQueueElementWrapper & element2) const;
 
   virtual bool is_greater(const Superclass & element1,
-                  const Superclass & element2) const;
+                          const Superclass & element2) const;
 
 };
 // ------------------------------------------------------------------------
-
 
 // ------------------------------------------------------------------------
 // finally, implement the priority queue itself on top of an
@@ -207,7 +210,7 @@ template<
   typename TElementPriority = double,
   typename TElementIdentifier = IdentifierType
   >
-class PriorityQueueContainer:
+class PriorityQueueContainer :
   public VectorContainer< TElementIdentifier, TElementWrapper >
 {
 public:
@@ -227,10 +230,11 @@ public:
   ~PriorityQueueContainer();
 
   template< typename TInputIterator >
-  PriorityQueueContainer(TInputIterator first, TInputIterator last):
+  PriorityQueueContainer(TInputIterator first, TInputIterator last) :
     Superclass()
   {
     TInputIterator it = first;
+
     while( it != last )
       {
       this->Push( *it );
@@ -246,7 +250,9 @@ public:
   //{ this->Superclass->Reserve( NbOfElementsToStore ); }
   //void Squeeze( ) { this->Superclass->Squeeze( ); }
   void Clear();
+
   bool Empty() const;
+
   void Push(ElementWrapperType element);
 
   const ElementWrapperType & Peek() const;
@@ -268,45 +274,51 @@ protected:
   // One instance of the interface to deal with the functions calls
   ElementInterfaceType m_Interface;
 
-  inline ElementWrapperType & GetElementAtLocation( const ElementIdentifierType & identifier )
+  inline ElementWrapperType &
+  GetElementAtLocation( const ElementIdentifierType & identifier )
   {
     return this->operator[](identifier);
   }
 
-  inline const ElementWrapperType & GetElementAtLocation(const ElementIdentifierType & identifier) const
+  inline const ElementWrapperType &
+  GetElementAtLocation(const ElementIdentifierType & identifier) const
   {
     return this->operator[](identifier);
   }
 
-  inline void SetElementAtLocation(const ElementIdentifierType & identifier,
-                                   ElementWrapperType& element)
+  inline void
+  SetElementAtLocation(const ElementIdentifierType & identifier,
+                       ElementWrapperType& element)
   {
     this->operator[](identifier) = element;
     m_Interface.SetLocation(element, identifier);
   }
 
-  inline ElementIdentifierType GetParent(const ElementIdentifierType & identifier) const
+  inline ElementIdentifierType
+  GetParent(const ElementIdentifierType & identifier) const
   {
     return ( ( identifier - 1 ) >> 1 );
   }
 
-  inline ElementIdentifierType GetLeft(const ElementIdentifierType & identifier) const
+  inline ElementIdentifierType
+  GetLeft(const ElementIdentifierType & identifier) const
   {
     return ( ( identifier << 1 ) + 1 );
   }
 
-  inline ElementIdentifierType GetRight(const ElementIdentifierType & identifier) const
+  inline ElementIdentifierType
+  GetRight(const ElementIdentifierType & identifier) const
   {
     return ( ( identifier << 1 ) + 2 );
   }
 
-  inline bool HasParent( const ElementIdentifierType& iId ) const
-    {
+  inline bool
+  HasParent( const ElementIdentifierType& iId ) const
+  {
     return ( iId > 0 );
-    }
+  }
 
   void UpdateUpTree(const ElementIdentifierType & identifier);
-
 
   void UpdateDownTree(const ElementIdentifierType & identifier);
 

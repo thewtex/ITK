@@ -59,7 +59,8 @@ public:
 protected:
   /** destructor, to silence "virtual class has non-virtual destructor()"
     warnings */
-  virtual ~OrientationAdapterBase() {}
+  virtual
+  ~OrientationAdapterBase() {}
 };
 } // namespace itk
 #endif // __itkOrientationAdapterBase_h

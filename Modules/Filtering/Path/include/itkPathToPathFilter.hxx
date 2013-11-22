@@ -65,9 +65,9 @@ template< typename TInputPath, typename TOutputPath >
 const typename PathToPathFilter< TInputPath, TOutputPath >::InputPathType *
 PathToPathFilter< TInputPath, TOutputPath >
 ::GetInput(void)
-{
+  {
   return itkDynamicCastInDebugMode< const TInputPath * >( this->GetPrimaryInput() );
-}
+  }
 
 /**
  *
@@ -76,9 +76,9 @@ template< typename TInputPath, typename TOutputPath >
 const typename PathToPathFilter< TInputPath, TOutputPath >::InputPathType *
 PathToPathFilter< TInputPath, TOutputPath >
 ::GetInput(unsigned int idx)
-{
+  {
   return itkDynamicCastInDebugMode< const TInputPath * > ( this->ProcessObject::GetInput(idx) );
-}
+  }
 
 /**
  *
@@ -103,6 +103,7 @@ PathToPathFilter< TInputPath, TOutputPath >
 {
   Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 
 #endif

@@ -41,7 +41,7 @@ namespace itk
  * \ingroup ITKDistanceMap
  */
 template< typename TImage >
-class ReflectiveImageRegionIterator:public ReflectiveImageRegionConstIterator< TImage >
+class ReflectiveImageRegionIterator : public ReflectiveImageRegionConstIterator< TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -79,20 +79,27 @@ public:
   ReflectiveImageRegionIterator(const ImageIteratorWithIndex< TImage > & it);
 
   /** Set the pixel value */
-  void Set(const PixelType & value) const
-  { this->m_PixelAccessor.Set(*( const_cast< InternalPixelType * >( this->m_Position ) ), value); }
+  void
+  Set(const PixelType & value) const
+  {
+    this->m_PixelAccessor.Set(*( const_cast< InternalPixelType * >( this->m_Position ) ), value);
+  }
 
   /** Return a reference to the pixel
    * This method will provide the fastest access to pixel
    * data, but it will NOT support ImageAdaptors. */
-  PixelType & Value(void)
-  { return *( const_cast< InternalPixelType * >( this->m_Position ) ); }
+  PixelType &
+  Value(void)
+  {
+    return *( const_cast< InternalPixelType * >( this->m_Position ) );
+  }
 
 protected:
   /** the construction from a const iterator is declared protected
       in order to enforce const correctness. */
   ReflectiveImageRegionIterator(const ReflectiveImageRegionConstIterator< TImage > & it);
   Self & operator=(const ReflectiveImageRegionConstIterator< TImage > & it);
+
 };
 } // end namespace itk
 

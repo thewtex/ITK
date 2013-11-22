@@ -55,7 +55,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class VectorNeighborhoodOperatorImageFilter:
+class VectorNeighborhoodOperatorImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -98,8 +98,9 @@ public:
   /** Sets the operator that is used to filter the image. Note
    * that the operator is stored as an internal COPY (it
    * is not part of the pipeline). */
-  void SetOperator(const Neighborhood< ScalarValueType,
-                                       itkGetStaticConstMacro(ImageDimension) > & p)
+  void
+  SetOperator(const Neighborhood< ScalarValueType,
+                                  itkGetStaticConstMacro(ImageDimension) > & p)
   {
     m_Operator = p;
     this->Modified();
@@ -110,8 +111,11 @@ public:
    * object during the time it is referenced.  The overriding condition
    * can be of a different type than the default type as long as it is
    * a subclass of ImageBoundaryCondition. */
-  void OverrideBoundaryCondition(const ImageBoundaryConditionPointerType i)
-  { m_BoundsCondition = i; }
+  void
+  OverrideBoundaryCondition(const ImageBoundaryConditionPointerType i)
+  {
+    m_BoundsCondition = i;
+  }
 
   /** VectorNeighborhoodOperatorImageFilter needs a larger input requested
    * region than the output requested region.  As such,
@@ -134,7 +138,8 @@ public:
 
 protected:
   VectorNeighborhoodOperatorImageFilter() {}
-  virtual ~VectorNeighborhoodOperatorImageFilter() {}
+  virtual
+  ~VectorNeighborhoodOperatorImageFilter() {}
 
   /** VectorNeighborhoodOperatorImageFilter can be implemented as a
    * multithreaded filter.  Therefore, this implementation provides a
@@ -149,8 +154,11 @@ protected:
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                             ThreadIdType threadId);
 
-  void PrintSelf(std::ostream & os, Indent indent) const
-  { Superclass::PrintSelf(os, indent);  }
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
+  {
+    Superclass::PrintSelf(os, indent);
+  }
 
 private:
   VectorNeighborhoodOperatorImageFilter(const Self &); //purposely not

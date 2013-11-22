@@ -24,7 +24,7 @@ namespace itk
 {
 template< typename TImage >
 LineIterator< TImage >
-::LineIterator(ImageType *imagePtr, const IndexType & firstIndex, const IndexType & lastIndex):
+::LineIterator(ImageType *imagePtr, const IndexType & firstIndex, const IndexType & lastIndex) :
   LineConstIterator< TImage >(imagePtr, firstIndex, lastIndex)
 {}
 
@@ -36,6 +36,7 @@ LineIterator< TImage >
   this->LineConstIterator< TImage >::operator=(it);
   return *this;
 }
+
 } // end namespace itk
 
 #endif

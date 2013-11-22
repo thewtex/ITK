@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedImage, typename TMovingImage >
-class CorrelationCoefficientHistogramImageToImageMetric:
+class CorrelationCoefficientHistogramImageToImageMetric :
   public HistogramImageToImageMetric< TFixedImage, TMovingImage >
 {
 public:
@@ -75,13 +75,14 @@ public:
 
   typedef typename HistogramType::Iterator HistogramIteratorType;
   typedef typename HistogramType::MeasurementVectorType
-  HistogramMeasurementVectorType;
+    HistogramMeasurementVectorType;
 
 protected:
   /** Constructor is protected to ensure that \c New() function is used to
       create instances. */
   CorrelationCoefficientHistogramImageToImageMetric(){}
-  virtual ~CorrelationCoefficientHistogramImageToImageMetric(){}
+  virtual
+  ~CorrelationCoefficientHistogramImageToImageMetric(){}
 
   /** Evaluates the sum of squared differences from the histogram. */
   virtual MeasureType EvaluateMeasure(HistogramType & histogram) const;
@@ -105,6 +106,7 @@ private:
   // Purposely not implemented.
   CorrelationCoefficientHistogramImageToImageMetric(Self const &);
   void operator=(Self const &); // Purposely not implemented.
+
 };
 } // End namespace itk.
 

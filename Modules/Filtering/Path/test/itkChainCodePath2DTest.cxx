@@ -19,18 +19,18 @@
 #include <iostream>
 #include "itkChainCodePath2D.h"
 
-int itkChainCodePath2DTest(int, char*[])
+int
+itkChainCodePath2DTest(int, char*[])
 {
-  typedef  itk::ChainCodePath2D       PathType;
-  typedef  PathType::IndexType        IndexType;
-  typedef  PathType::OffsetType       OffsetType;
-  typedef  PathType::ChainCodeType    ChainCodeType;
+  typedef  itk::ChainCodePath2D    PathType;
+  typedef  PathType::IndexType     IndexType;
+  typedef  PathType::OffsetType    OffsetType;
+  typedef  PathType::ChainCodeType ChainCodeType;
 
   bool passed = true;
 
-
-  IndexType   index;
-  OffsetType  offset;
+  IndexType  index;
+  OffsetType offset;
 
   PathType::Pointer path = PathType::New();
 
@@ -45,7 +45,7 @@ int itkChainCodePath2DTest(int, char*[])
     }
 
   std::cout << "Path is " << path->NumberOfSteps() << " steps:  \""
-       << path->GetChainCodeAsString() << "\"." << std::endl;
+            << path->GetChainCodeAsString() << "\"." << std::endl;
 
   offset[0]=0;
   offset[1]=-1;
@@ -58,12 +58,11 @@ int itkChainCodePath2DTest(int, char*[])
   std::cout <<"Changed step[8] to 3 = ("<<offset[0]<<","<<offset[1]<<")"<<std::endl;
 
   std::cout << "Path is " << path->NumberOfSteps() << " steps:  \""
-       << path->GetChainCodeAsString() << "\"." << std::endl;
+            << path->GetChainCodeAsString() << "\"." << std::endl;
   if( path->NumberOfSteps() != 17 )
     {
     passed = false;
     }
-
 
   index=path->GetStart();
   std::cout <<"Starting at index ("<<index[0]<<","<<index[1]<<")" << std::endl;

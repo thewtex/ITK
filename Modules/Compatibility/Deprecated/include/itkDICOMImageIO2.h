@@ -33,7 +33,7 @@ namespace itk
  * \deprecated
  * \ingroup ITKDeprecated
  */
-class DICOMImageIO2:public ImageIOBase
+class DICOMImageIO2 : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -71,14 +71,19 @@ public:
 
   /** Determine the file type. Returns true if this ImageIO can write the
    * file specified. */
-  virtual bool CanWriteFile(const char *) { return false; }
+  virtual bool
+  CanWriteFile(const char *) {
+    return false;
+  }
 
   /** Set the spacing and dimension information for the set filename. */
-  virtual void WriteImageInformation() {}
+  virtual void
+  WriteImageInformation() {}
 
   /** Writes the data to disk from the memory buffer provided. Make sure
    * that the IORegions has been set properly. */
-  virtual void Write(const void *) {}
+  virtual void
+  Write(const void *) {}
 
   /** Get methods to query patient information and scanner information */
   void GetPatientName(char *name);
@@ -113,10 +118,11 @@ public:
 
 protected:
   DICOMImageIO2();
-  virtual ~DICOMImageIO2();
+  virtual
+  ~DICOMImageIO2();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
-  itkdicomparser::DICOMParser    *m_Parser;
+  itkdicomparser::DICOMParser *   m_Parser;
   itkdicomparser::DICOMAppHelper *m_AppHelper;
 
   void ReadDataCallback(doublebyte group,
@@ -130,6 +136,7 @@ protected:
 private:
   DICOMImageIO2(const Self &);  //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

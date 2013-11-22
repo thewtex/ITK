@@ -35,10 +35,10 @@ namespace
  */
 template<typename TOutputScalar, typename TInputScalar>
 struct TransformIOHelper
-{
-  typedef TransformBaseTemplate<TInputScalar>     InputTransformType;
-  typedef TransformBaseTemplate<TOutputScalar>    OutputTransformType;
-  typedef typename OutputTransformType::Pointer   OutputTransformPointer;
+  {
+  typedef TransformBaseTemplate<TInputScalar>   InputTransformType;
+  typedef TransformBaseTemplate<TOutputScalar>  OutputTransformType;
+  typedef typename OutputTransformType::Pointer OutputTransformPointer;
 
   /*
    This function gets the type name of the input transform and creates
@@ -76,13 +76,15 @@ struct TransformIOHelper
   }
 
   /* Set fixed parameters and parameters of the new type created transform */
-  static void SetAllParameters(const InputTransformType *transform, OutputTransformPointer& convertedTransform)
+  static void
+  SetAllParameters(const InputTransformType *transform, OutputTransformPointer& convertedTransform)
   {
     // The precision type of the input transform parameters should be converted to the requested output precision
     convertedTransform->SetFixedParameters( ConvertParametersType( transform->GetFixedParameters() ) );
     convertedTransform->SetParameters( ConvertParametersType( transform->GetParameters() ) );
   }
-};
+
+  };
 
 } // end TransformFileWriterHelper namespace
 
@@ -98,12 +100,12 @@ TransformFileWriterTemplate<ScalarType>
 template<typename ScalarType>
 TransformFileWriterTemplate<ScalarType>
 ::~TransformFileWriterTemplate()
-{
-}
+{}
 
 /** Set the writer to append to the specified file */
 template<typename ScalarType>
-void TransformFileWriterTemplate<ScalarType>
+void
+TransformFileWriterTemplate<ScalarType>
 ::SetAppendOn()
 {
   this->SetAppendMode(true);
@@ -112,7 +114,8 @@ void TransformFileWriterTemplate<ScalarType>
 /** Set the writer to overwrite the specified file - This is the
 * default mode. */
 template<typename ScalarType>
-void TransformFileWriterTemplate<ScalarType>
+void
+TransformFileWriterTemplate<ScalarType>
 ::SetAppendOff()
 {
   this->SetAppendMode(false);
@@ -120,7 +123,8 @@ void TransformFileWriterTemplate<ScalarType>
 
 /** Set the writer mode (append/overwrite). */
 template<typename ScalarType>
-void TransformFileWriterTemplate<ScalarType>
+void
+TransformFileWriterTemplate<ScalarType>
 ::SetAppendMode(bool mode)
 {
   this->m_AppendMode = mode;
@@ -128,7 +132,8 @@ void TransformFileWriterTemplate<ScalarType>
 
 /** Get the writer mode. */
 template<typename ScalarType>
-bool TransformFileWriterTemplate<ScalarType>
+bool
+TransformFileWriterTemplate<ScalarType>
 ::GetAppendMode()
 {
   return ( this->m_AppendMode );
@@ -146,7 +151,8 @@ TransformFileWriterTemplate<float>
 
 /** Set the input transform and reinitialize the list of transforms */
 template<typename ScalarType>
-void TransformFileWriterTemplate<ScalarType>
+void
+TransformFileWriterTemplate<ScalarType>
 ::SetInput(const Object *transform)
 {
   m_TransformList.clear();
@@ -157,14 +163,16 @@ template<typename ScalarType>
 const typename TransformFileWriterTemplate<ScalarType>::TransformType *
 TransformFileWriterTemplate<ScalarType>
 ::GetInput()
-{
-  ConstTransformPointer res = *(m_TransformList.begin());
+  {
+  ConstTransformPointer res = *(m_TransformList.begin() );
+
   return res.GetPointer();
-}
+  }
 
 /** Add a transform to be written */
 template<typename ScalarType>
-void TransformFileWriterTemplate<ScalarType>
+void
+TransformFileWriterTemplate<ScalarType>
 ::AddTransform(const Object *transform)
 {
   /* Check for a CompositeTransform.
@@ -172,6 +180,7 @@ void TransformFileWriterTemplate<ScalarType>
    * be the first transform in the file
    */
   const std::string transformName = transform->GetNameOfClass();
+
   if( transformName.find("CompositeTransform") != std::string::npos )
     {
     if(this->m_TransformList.size() > 0)
@@ -185,7 +194,8 @@ void TransformFileWriterTemplate<ScalarType>
 }
 
 template<typename ScalarType>
-void TransformFileWriterTemplate<ScalarType>
+void
+TransformFileWriterTemplate<ScalarType>
 ::Update()
 {
   if ( m_FileName == "" )
@@ -206,7 +216,8 @@ void TransformFileWriterTemplate<ScalarType>
 }
 
 template<typename ScalarType>
-void TransformFileWriterTemplate<ScalarType>
+void
+TransformFileWriterTemplate<ScalarType>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);

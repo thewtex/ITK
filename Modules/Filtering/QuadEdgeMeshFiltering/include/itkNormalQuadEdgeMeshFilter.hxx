@@ -99,7 +99,7 @@ NormalQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
         ++it )
     {
     id = it->Index();
-    output->SetPointData( id, ComputeVertexNormal(id,outputMesh));
+    output->SetPointData( id, ComputeVertexNormal(id,outputMesh) );
     }
 }
 
@@ -145,7 +145,7 @@ NormalQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
     {
 
     OutputPolygonType *poly = dynamic_cast< OutputPolygonType * >(
-      outputMesh->GetCells()->GetElement(iCId) );
+        outputMesh->GetCells()->GetElement(iCId) );
     if ( poly != 0 ) // this test should be removed...
       {
       // this test should be removed...
@@ -209,12 +209,12 @@ NormalQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
               v *= norm_v;
               }
             return static_cast< OutputVertexNormalComponentType >(
-                     vcl_acos(u * v) );
+              vcl_acos(u * v) );
             }
           case AREA:
             {
             return static_cast< OutputVertexNormalComponentType >(
-                     TriangleType::ComputeArea(pt[0], pt[1], pt[2]) );
+              TriangleType::ComputeArea(pt[0], pt[1], pt[2]) );
             }
           }
         }
@@ -232,7 +232,8 @@ NormalQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 }
 
 template< typename TInputMesh, typename TOutputMesh >
-void NormalQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
+void
+NormalQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 ::GenerateData()
 {
   this->CopyInputMeshToOutputMesh();
@@ -241,13 +242,15 @@ void NormalQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 }
 
 template< typename TInputMesh, typename TOutputMesh >
-void NormalQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
+void
+NormalQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
   std::cout << indent << "Weight: " << m_Weight << std::endl;
 }
+
 }
 
 #endif

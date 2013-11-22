@@ -20,22 +20,23 @@
 #include "itkOrthogonallyCorrected2DParametricPath.h"
 #include "itkPolyLineParametricPath.h"
 
-int itkOrthogonallyCorrected2DParametricPathTest(int, char*[])
+int
+itkOrthogonallyCorrected2DParametricPathTest(int, char*[])
 {
-  typedef  itk::OrthogonallyCorrected2DParametricPath   PathType;
-  typedef  itk::PolyLineParametricPath<2>               OriginalPathType;
-  typedef  PathType::InputType                          InputType;
-  typedef  PathType::IndexType                          IndexType;
-  typedef  PathType::OffsetType                         OffsetType;
-  typedef  OriginalPathType::VertexType                 VertexType;
-  typedef  PathType::OrthogonalCorrectionTableType      OrthogonalCorrectionTableType;
-  typedef  PathType::OrthogonalCorrectionTablePointer   OrthogonalCorrectionTablePointer;
+  typedef  itk::OrthogonallyCorrected2DParametricPath PathType;
+  typedef  itk::PolyLineParametricPath<2>             OriginalPathType;
+  typedef  PathType::InputType                        InputType;
+  typedef  PathType::IndexType                        IndexType;
+  typedef  PathType::OffsetType                       OffsetType;
+  typedef  OriginalPathType::VertexType               VertexType;
+  typedef  PathType::OrthogonalCorrectionTableType    OrthogonalCorrectionTableType;
+  typedef  PathType::OrthogonalCorrectionTablePointer OrthogonalCorrectionTablePointer;
 
   bool passed = true;
 
-  InputType   input;
-  OffsetType  offset;
-  VertexType  v;
+  InputType  input;
+  OffsetType offset;
+  VertexType v;
 
   // Original Path
   OriginalPathType::Pointer originalPath =  OriginalPathType::New();
@@ -68,13 +69,13 @@ int itkOrthogonallyCorrected2DParametricPathTest(int, char*[])
   // Test the corrected path
 
   std::cout << "Evaluating at 0, 0.5, and 3.99999:  " << path->Evaluate(0) << ", "
-       << path->Evaluate(0.5) << ", " << path->Evaluate(3.99999) << std::endl;
+            << path->Evaluate(0.5) << ", " << path->Evaluate(3.99999) << std::endl;
 
   std::cout << "Evaluating to an index at 0, 0.5, and 1.0:  "
-       << path->EvaluateToIndex(0) << ", " << path->EvaluateToIndex(0.5)
-       << ", " << path->EvaluateToIndex(0.0) << std::endl;
-  if( int(0.5+1000*(path->Evaluate(0.0))[0]) != 1016 ||
-      int(0.5+1000*(path->Evaluate(0.0))[1]) != 2179 )
+            << path->EvaluateToIndex(0) << ", " << path->EvaluateToIndex(0.5)
+            << ", " << path->EvaluateToIndex(0.0) << std::endl;
+  if( int(0.5+1000*(path->Evaluate(0.0) )[0]) != 1016 ||
+      int(0.5+1000*(path->Evaluate(0.0) )[1]) != 2179 )
     {
     std::cout << "OrthogonallyCorrected2DParametricPathTest:  EvaluateToIndex() Failed" << std::endl;
     passed = false;

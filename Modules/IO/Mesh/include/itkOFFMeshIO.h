@@ -32,14 +32,14 @@ namespace itk
  * \ingroup ITKIOMesh
  */
 
-class ITKIOMesh_EXPORT OFFMeshIO:public MeshIOBase
+class ITKIOMesh_EXPORT OFFMeshIO : public MeshIOBase
 {
 public:
   /** Standard class typedefs. */
-  typedef OFFMeshIO                    Self;
-  typedef MeshIOBase                   Superclass;
-  typedef SmartPointer< const Self >   ConstPointer;
-  typedef SmartPointer< Self >         Pointer;
+  typedef OFFMeshIO                  Self;
+  typedef MeshIOBase                 Superclass;
+  typedef SmartPointer< const Self > ConstPointer;
+  typedef SmartPointer< Self >       Pointer;
 
   typedef Superclass::SizeValueType    SizeValueType;
   typedef Superclass::StreamOffsetType StreamOffsetType;
@@ -98,11 +98,12 @@ public:
 protected:
   /** Read buffer as ascii stream */
   template< typename T >
-  void ReadCellsBufferAsAscii(T *buffer, std::ifstream & inputFile)
-    {
+  void
+  ReadCellsBufferAsAscii(T *buffer, std::ifstream & inputFile)
+  {
     SizeValueType index = 0;
-    unsigned int numberOfPoints = 0;
-    std::string  line;
+    unsigned int  numberOfPoints = 0;
+    std::string   line;
 
     for ( SizeValueType ii = 0; ii < this->m_NumberOfCells; ii++ )
       {
@@ -114,14 +115,15 @@ protected:
         }
       std::getline(inputFile, line, '\n');
       }
-    }
+  }
 
   /** Read cells from a data buffer, used when writting cells. This function
     write all kind of cells as it is stored in cells container. It is used when
     cells container have only one kind of cells */
   template< typename TInput, typename TOutput >
-  void ReadCellsBuffer(TInput *input, TOutput *output)
-    {
+  void
+  ReadCellsBuffer(TInput *input, TOutput *output)
+  {
     if ( input && output )
       {
       SizeValueType indInput  = 0;
@@ -137,11 +139,12 @@ protected:
           }
         }
       }
-    }
+  }
 
   template< typename T >
-  void WriteCellsAsAscii(T *buffer, std::ofstream & outputFile)
-    {
+  void
+  WriteCellsAsAscii(T *buffer, std::ofstream & outputFile)
+  {
     SizeValueType index = 0;
 
     for ( SizeValueType ii = 0; ii < this->m_NumberOfCells; ii++ )
@@ -157,22 +160,24 @@ protected:
 
       outputFile << '\n';
       }
-    }
+  }
 
   template< typename TOutput, typename TInput >
-  void WriteCellsAsBinary(TInput *buffer, std::ofstream & outputFile)
-    {
+  void
+  WriteCellsAsBinary(TInput *buffer, std::ofstream & outputFile)
+  {
     TOutput *data = new TOutput[m_CellBufferSize - this->m_NumberOfCells];
 
     ReadCellsBuffer(buffer, data);
     WriteBufferAsBinary< TOutput >(data, outputFile, m_CellBufferSize - this->m_NumberOfCells);
 
     delete[] data;
-    }
+  }
 
 protected:
   OFFMeshIO();
-  virtual ~OFFMeshIO(){}
+  virtual
+  ~OFFMeshIO(){}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

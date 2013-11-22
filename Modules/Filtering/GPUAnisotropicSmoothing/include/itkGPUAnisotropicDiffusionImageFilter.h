@@ -63,10 +63,10 @@ public:
   typedef typename GPUSuperclass::TimeStepType TimeStepType;
 
 protected:
-  GPUAnisotropicDiffusionImageFilter() {
-  }
-  ~GPUAnisotropicDiffusionImageFilter() {
-  }
+  GPUAnisotropicDiffusionImageFilter() {}
+
+  ~GPUAnisotropicDiffusionImageFilter() {}
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Prepare for the iteration process. */

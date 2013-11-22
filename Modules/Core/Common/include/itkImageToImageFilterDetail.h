@@ -72,7 +72,7 @@ struct BooleanDispatch {};
  * version of the routine would need to be called for each integer value.
  */
 template< int >
-struct IntDispatch:public DispatchBase {};
+struct IntDispatch : public DispatchBase {};
 
 /** \struct UnsignedIntDispatch
  * \brief Templated class to produce a unique type for each unsigned integer (usually a dimension).
@@ -89,7 +89,7 @@ struct IntDispatch:public DispatchBase {};
  *     void Calculate(const UnsignedIntDispatch<2>&); // 2D optimized version
  */
 template< unsigned int >
-struct UnsignedIntDispatch:public DispatchBase {};
+struct UnsignedIntDispatch : public DispatchBase {};
 
 /** \struct BinaryBooleanDispatch
  * \brief Templated class to produce a unique type for a pairing of booleans.
@@ -104,7 +104,7 @@ struct BinaryBooleanDispatch {
         template parameters (true/false) */
   typedef BooleanDispatch< B1 > FirstType;
   typedef BooleanDispatch< B2 > SecondType;
-};
+  };
 
 /** \struct BinaryIntDispatch
  * \brief Templated class to produce a unique type for a pairing of integers.
@@ -118,7 +118,7 @@ struct BinaryIntDispatch {
         template parameters (unique type for the integer value) */
   typedef IntDispatch< D1 > FirstType;
   typedef IntDispatch< D2 > SecondType;
-};
+  };
 
 /** \struct BinaryUnsignedIntDispatch
  * \brief Templated class to produce a unique type for a pairing of unsigned integers (usually two dimensions).
@@ -132,7 +132,7 @@ struct BinaryIntDispatch {
  * dimension) pairing.
  */
 template< unsigned int D1, unsigned int D2 >
-struct BinaryUnsignedIntDispatch:public DispatchBase {
+struct BinaryUnsignedIntDispatch : public DispatchBase {
   /** Typedefs to extract the unique types for the first and second
       template parameters (unique type for the unsigned integer value) */
   typedef UnsignedIntDispatch< D1 > FirstType;
@@ -154,10 +154,10 @@ struct BinaryUnsignedIntDispatch:public DispatchBase {
    * do not indicate the relationship between D1 and D2.
    */
   typedef IntDispatch < ( D1 > D2 ) - ( D1 < D2 ) > ComparisonType;
-  typedef IntDispatch< 0 >                          FirstEqualsSecondType;
-  typedef IntDispatch< 1 >                          FirstGreaterThanSecondType;
-  typedef IntDispatch< -1 >                         FirstLessThanSecondType;
-};
+  typedef IntDispatch< 0 >          FirstEqualsSecondType;
+  typedef IntDispatch< 1 >          FirstGreaterThanSecondType;
+  typedef IntDispatch< -1 >         FirstLessThanSecondType;
+  };
 
 /**
  * Copy an image region (start index and size) for the case where
@@ -176,10 +176,11 @@ struct BinaryUnsignedIntDispatch:public DispatchBase {
  * input of the filter is the destination region.
  */
 template< unsigned int D1, unsigned int D2 >
-void ImageToImageFilterDefaultCopyRegion(const typename
-                                         BinaryUnsignedIntDispatch< D1, D2 >::FirstEqualsSecondType &,
-                                         ImageRegion< D1 > & destRegion,
-                                         const ImageRegion< D2 > & srcRegion)
+void
+ImageToImageFilterDefaultCopyRegion(const typename
+                                    BinaryUnsignedIntDispatch< D1, D2 >::FirstEqualsSecondType &,
+                                    ImageRegion< D1 > & destRegion,
+                                    const ImageRegion< D2 > & srcRegion)
 {
   destRegion = srcRegion;
 }
@@ -201,10 +202,11 @@ void ImageToImageFilterDefaultCopyRegion(const typename
  * input of the filter is the destination.
  */
 template< unsigned int D1, unsigned int D2 >
-void ImageToImageFilterDefaultCopyRegion(const typename
-                                         BinaryUnsignedIntDispatch< D1, D2 >::FirstLessThanSecondType &,
-                                         ImageRegion< D1 > & destRegion,
-                                         const ImageRegion< D2 > & srcRegion)
+void
+ImageToImageFilterDefaultCopyRegion(const typename
+                                    BinaryUnsignedIntDispatch< D1, D2 >::FirstLessThanSecondType &,
+                                    ImageRegion< D1 > & destRegion,
+                                    const ImageRegion< D2 > & srcRegion)
 {
   // Source dimension is greater than the destination dimension, copy the
   // first part of the source into the destination
@@ -243,10 +245,11 @@ void ImageToImageFilterDefaultCopyRegion(const typename
  * input of the filter is the destination.
  */
 template< unsigned int D1, unsigned int D2 >
-void ImageToImageFilterDefaultCopyRegion(const typename
-                                         BinaryUnsignedIntDispatch< D1, D2 >::FirstGreaterThanSecondType &,
-                                         ImageRegion< D1 > & destRegion,
-                                         const ImageRegion< D2 > & srcRegion)
+void
+ImageToImageFilterDefaultCopyRegion(const typename
+                                    BinaryUnsignedIntDispatch< D1, D2 >::FirstGreaterThanSecondType &,
+                                    ImageRegion< D1 > & destRegion,
+                                    const ImageRegion< D2 > & srcRegion)
 {
   // Source dimension is less than the destination dimension, copy source
   // into the first part of the destination and set zeros elsewhere.
@@ -316,8 +319,9 @@ template< unsigned int D1, unsigned int D2 >
 class ImageRegionCopier
 {
 public:
-  virtual void operator()(ImageRegion< D1 > & destRegion,
-                          const ImageRegion< D2 > & srcRegion) const
+  virtual void
+  operator()(ImageRegion< D1 > & destRegion,
+             const ImageRegion< D2 > & srcRegion) const
   {
     typedef typename BinaryUnsignedIntDispatch< D1, D2 >::ComparisonType ComparisonType;
     ImageToImageFilterDefaultCopyRegion< D1, D2 >(
@@ -325,14 +329,16 @@ public:
       destRegion, srcRegion);
   }
 
-  virtual ~ImageRegionCopier() {}
+  virtual
+  ~ImageRegionCopier() {}
 };
 
 /** Stream operator for ImageRegionCopier objects. Just prints the RTTI
     typename. */
 template< unsigned int D1, unsigned int D2 >
-std::ostream & operator<<(std::ostream & os,
-                          const ImageRegionCopier< D1, D2 > &)
+std::ostream &
+operator<<(std::ostream & os,
+           const ImageRegionCopier< D1, D2 > &)
 {
   os << "ImageRegionCopier: "
      << typeid( ImageRegionCopier< D1, D2 > ).name() << std::endl;
@@ -341,11 +347,13 @@ std::ostream & operator<<(std::ostream & os,
 
 /** operator!= for ImageRegionCopier objects. */
 template< unsigned int D1, unsigned int D2 >
-bool operator!=(const ImageRegionCopier< D1, D2 > & c1,
-                const ImageRegionCopier< D1, D2 > & c2)
+bool
+operator!=(const ImageRegionCopier< D1, D2 > & c1,
+           const ImageRegionCopier< D1, D2 > & c2)
 {
   return &c1 != &c2;
 }
+
 } // end of namespace ImageToImageFilterDetail
 } // end namespace itk
 

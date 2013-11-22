@@ -130,7 +130,6 @@ FiniteDifferenceFunctionLoad<TMoving, TFixed>::SetCurrentEnergy(double e)
     }
 }
 
-
 template <typename TMoving, typename TFixed>
 typename FiniteDifferenceFunctionLoad<TMoving, TFixed>::Float
 FiniteDifferenceFunctionLoad<TMoving, TFixed>::EvaluateMetricGivenSolution( ElementContainerType *el, Float step)
@@ -143,14 +142,13 @@ FiniteDifferenceFunctionLoad<TMoving, TFixed>::EvaluateMetricGivenSolution( Elem
   typename Element::MatrixType solmat;
   typename Element::Float w;
 
-
   //ElementContainerType::Iterator elt;
   if ( (el == NULL) || (el->Size() < 1) )
     {
     return 10.0;
     }
 
-  Element::Pointer element = el->GetElement(0);
+  Element::Pointer   element = el->GetElement(0);
   const unsigned int Nnodes = element->GetNumberOfNodes();
 
   FEMVectorType Gpos;
@@ -212,7 +210,6 @@ FiniteDifferenceFunctionLoad<TMoving, TFixed>::EvaluateMetricGivenSolution( Elem
   return vcl_fabs( (double)energy * (double)m_Gamma - (double)defe);
 }
 
-
 template <typename TMoving, typename TFixed>
 typename FiniteDifferenceFunctionLoad<TMoving, TFixed>::FEMVectorType
 FiniteDifferenceFunctionLoad<TMoving, TFixed>::Fe( FEMVectorType  Gpos )
@@ -259,7 +256,7 @@ FiniteDifferenceFunctionLoad<TMoving, TFixed>::Fe( FEMVectorType  Gpos )
       return femVec;
       }
 
-      physicalPoint[k] = Gpos[k];
+    physicalPoint[k] = Gpos[k];
     }
 
   m_FixedImage->TransformPhysicalPointToIndex(physicalPoint, oindex);

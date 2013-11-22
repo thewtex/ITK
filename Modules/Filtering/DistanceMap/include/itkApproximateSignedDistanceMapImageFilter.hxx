@@ -32,7 +32,7 @@ namespace itk
  */
 template< typename TInputImage, typename TOutputImage >
 ApproximateSignedDistanceMapImageFilter< TInputImage, TOutputImage >
-::ApproximateSignedDistanceMapImageFilter():
+::ApproximateSignedDistanceMapImageFilter() :
   m_IsoContourFilter( IsoContourType::New() ),
   m_ChamferFilter( ChamferType::New() ),
   m_InsideValue( NumericTraits< InputPixelType >::min() ),
@@ -142,6 +142,7 @@ ApproximateSignedDistanceMapImageFilter< TInputImage, TOutputImage >
   os << indent << "FastChamferDistanceImageFilter (used internally): "
      << m_ChamferFilter << std::endl;
 }
+
 } // end of namespace itk
 
 #endif

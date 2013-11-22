@@ -45,7 +45,7 @@ ScaleSkewVersor3DTransform<TScalar>::ScaleSkewVersor3DTransform(unsigned int par
 // Constructor with arguments
 template <typename TScalar>
 ScaleSkewVersor3DTransform<TScalar>::ScaleSkewVersor3DTransform(const MatrixType & matrix,
-                                                                    const OutputVectorType & offset) :
+                                                                const OutputVectorType & offset) :
   Superclass(matrix, offset)
 {
   this->ComputeMatrixParameters();

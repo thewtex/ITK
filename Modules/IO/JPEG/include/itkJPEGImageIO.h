@@ -18,7 +18,6 @@
 #ifndef __itkJPEGImageIO_h
 #define __itkJPEGImageIO_h
 
-
 #include "itkImageIOBase.h"
 
 namespace itk
@@ -31,7 +30,7 @@ namespace itk
  *
  * \ingroup ITKIOJPEG
  */
-class JPEGImageIO:public ImageIOBase
+class JPEGImageIO : public ImageIOBase
 {
 public:
   /** Standard class typedefs. */
@@ -98,6 +97,7 @@ protected:
 private:
   JPEGImageIO(const Self &);    //purposely not implemented
   void operator=(const Self &); //purposely not implemented
+
 };
 } // end namespace itk
 

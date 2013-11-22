@@ -41,6 +41,7 @@ Vector< T, TVectorDimension >
 ::operator=(const ValueType r[TVectorDimension])
 {
   BaseArray::operator=(r);
+
   return *this;
 }
 

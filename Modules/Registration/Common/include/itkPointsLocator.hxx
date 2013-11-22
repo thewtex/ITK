@@ -33,8 +33,7 @@ PointsLocator<TPointsContainer>
 template<typename TPointsContainer>
 PointsLocator<TPointsContainer>
 ::~PointsLocator()
-{
-}
+{}
 
 template<typename TPointsContainer>
 void
@@ -74,6 +73,7 @@ PointsLocator<TPointsContainer>
 ::FindClosestPoint( const PointType &query ) const
 {
   NeighborsIdentifierType identifiers;
+
   this->m_Tree->Search( query, 1u, identifiers );
 
   return identifiers[0];
@@ -84,15 +84,16 @@ template<
 void
 PointsLocator<TPointsContainer>
 ::Search( const PointType &query, unsigned int numberOfNeighborsRequested,
-  NeighborsIdentifierType &identifiers ) const
+          NeighborsIdentifierType &identifiers ) const
 {
   unsigned int N = numberOfNeighborsRequested;
+
   if( N > this->m_Points->Size() )
     {
     N = this->m_Points->Size();
 
     itkWarningMacro( "The number of requested neighbors is greater than the "
-     << "total number of points.  Only returning " << N << " points." );
+                     << "total number of points.  Only returning " << N << " points." );
     }
   this->m_Tree->Search( query, N, identifiers );
 }
@@ -102,15 +103,16 @@ template<
 void
 PointsLocator<TPointsContainer>
 ::FindClosestNPoints( const PointType &query, unsigned int
-  numberOfNeighborsRequested, NeighborsIdentifierType &identifiers ) const
+                      numberOfNeighborsRequested, NeighborsIdentifierType &identifiers ) const
 {
   unsigned int N = numberOfNeighborsRequested;
+
   if( N > this->m_Points->Size() )
     {
     N = this->m_Points->Size();
 
     itkWarningMacro( "The number of requested neighbors is greater than the "
-     << "total number of points.  Only returning " << N << " points." );
+                     << "total number of points.  Only returning " << N << " points." );
     }
   this->m_Tree->Search( query, N, identifiers );
 }
@@ -120,7 +122,7 @@ template<
 void
 PointsLocator<TPointsContainer>
 ::Search( const PointType &query, double radius,
-  NeighborsIdentifierType &identifiers ) const
+          NeighborsIdentifierType &identifiers ) const
 {
   this->m_Tree->Search( query, radius, identifiers );
 }
@@ -130,7 +132,7 @@ template<
 void
 PointsLocator<TPointsContainer>
 ::FindPointsWithinRadius( const PointType &query, double radius,
-  NeighborsIdentifierType &identifiers ) const
+                          NeighborsIdentifierType &identifiers ) const
 {
   this->m_Tree->Search( query, radius, identifiers );
 }

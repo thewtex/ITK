@@ -29,7 +29,6 @@
 //
 // Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 
@@ -37,7 +36,8 @@
 #include "itkPolyLineParametricPath.h"
 // Software Guide : EndCodeSnippet
 
-int main(int argc, char * argv [] )
+int
+main(int argc, char * argv [] )
 {
 
   if( argc < 2 )
@@ -60,10 +60,9 @@ int main(int argc, char * argv [] )
   typedef itk::PolyLineParametricPath< Dimension > PathType;
   // Software Guide : EndCodeSnippet
 
+  typedef itk::ImageFileReader< ImageType > ReaderType;
 
-  typedef itk::ImageFileReader< ImageType >    ReaderType;
-
-  ReaderType::Pointer   reader = ReaderType::New();
+  ReaderType::Pointer reader = ReaderType::New();
 
   reader->SetFileName( argv[1] );
 
@@ -82,21 +81,17 @@ int main(int argc, char * argv [] )
 
   ImageType::ConstPointer image = reader->GetOutput();
 
-
   PathType::Pointer path = PathType::New();
-
 
   path->Initialize();
 
-
-  typedef PathType::ContinuousIndexType    ContinuousIndexType;
+  typedef PathType::ContinuousIndexType ContinuousIndexType;
 
   ContinuousIndexType cindex;
 
-  typedef ImageType::PointType             ImagePointType;
+  typedef ImageType::PointType ImagePointType;
 
   ImagePointType origin = image->GetOrigin();
-
 
   ImageType::SpacingType spacing = image->GetSpacing();
   ImageType::SizeType    size    = image->GetBufferedRegion().GetSize();
@@ -113,8 +108,6 @@ int main(int argc, char * argv [] )
   image->TransformPhysicalPointToContinuousIndex( point, cindex );
 
   path->AddVertex( cindex );
-
-
 
   // Software Guide : EndCodeSnippet
 

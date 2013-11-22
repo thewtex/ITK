@@ -20,18 +20,19 @@
 #include "itkFastMarchingThresholdStoppingCriterion.h"
 
 template< unsigned int VDimension >
-int FastMarchingImageFilterBase( )
-  {
+int
+FastMarchingImageFilterBase()
+{
   typedef float PixelType;
 
   typedef itk::Image< PixelType, VDimension > ImageType;
   typename ImageType::Pointer input = ImageType::New();
 
   typedef itk::FastMarchingThresholdStoppingCriterion< ImageType, ImageType >
-      CriterionType;
+    CriterionType;
 
   typedef itk::FastMarchingImageFilterBase< ImageType, ImageType >
-      FMMType;
+    FMMType;
   typename FMMType::Pointer fmm = FMMType::New();
   fmm->SetInput( input );
 
@@ -57,12 +58,12 @@ int FastMarchingImageFilterBase( )
   typename ImageType::Pointer output = fmm->GetOutput();
 
   return EXIT_SUCCESS;
-  }
-
+}
 
 // ----------------------------------------------------------------------------
-int itkFastMarchingImageFilterBaseTest( int , char * [] )
-  {
+int
+itkFastMarchingImageFilterBaseTest( int , char * [] )
+{
   if( FastMarchingImageFilterBase< 2 >() == EXIT_FAILURE )
     {
     std::cerr << "2D Fails" <<std::endl;
@@ -74,4 +75,4 @@ int itkFastMarchingImageFilterBaseTest( int , char * [] )
     return EXIT_FAILURE;
     }
   return EXIT_SUCCESS;
-  }
+}

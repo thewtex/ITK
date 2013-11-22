@@ -56,7 +56,8 @@
 #include "itkSampleToHistogramFilter.h"
 // Software Guide : EndCodeSnippet
 
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
 
   if( argc < 2 )
@@ -74,8 +75,8 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char       PixelType;
-  const unsigned int          Dimension = 2;
+  typedef unsigned char PixelType;
+  const unsigned int Dimension = 2;
 
   typedef itk::Image<PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
@@ -109,7 +110,7 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::Statistics::ImageToListSampleAdaptor< ImageType >   AdaptorType;
+  typedef itk::Statistics::ImageToListSampleAdaptor< ImageType > AdaptorType;
 
   AdaptorType::Pointer adaptor = AdaptorType::New();
 
@@ -157,9 +158,9 @@ int main( int argc, char * argv [] )
   typedef itk::Statistics::Histogram< HistogramMeasurementType >
     HistogramType;
   typedef itk::Statistics::SampleToHistogramFilter<
-                                                AdaptorType,
-                                                HistogramType>
-                                                FilterType;
+      AdaptorType,
+      HistogramType>
+    FilterType;
 
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
@@ -178,7 +179,7 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  const unsigned int numberOfComponents = 1;
+  const unsigned int      numberOfComponents = 1;
   HistogramType::SizeType size( numberOfComponents );
   size.Fill( 255 );
 

@@ -58,7 +58,7 @@ namespace itk
  */
 
 template< typename TFixedImage, typename TMovingSpatialObject >
-class ImageToSpatialObjectMetric:
+class ImageToSpatialObjectMetric :
   public SingleValuedCostFunction
 {
 public:
@@ -97,8 +97,8 @@ public:
 
   /**  Type of the Interpolator Base class */
   typedef LinearInterpolateImageFunction<
-    TFixedImage,
-    CoordinateRepresentationType > InterpolatorType;
+      TFixedImage,
+      CoordinateRepresentationType > InterpolatorType;
 
   typedef typename InterpolatorType::Pointer InterpolatorPointer;
 
@@ -117,7 +117,7 @@ public:
 
   /** Pointer type for the MovingSpatialObject */
   typedef typename MovingSpatialObjectType::Pointer
-  MovingSpatialObjectPointer;
+    MovingSpatialObjectPointer;
 
   /** Const pointer type for the FixedImage */
   typedef typename FixedImageType::ConstPointer FixedImageConstPointer;
@@ -165,9 +165,11 @@ public:
 protected:
 
   ImageToSpatialObjectMetric();
-  virtual ~ImageToSpatialObjectMetric() {}
+  virtual
+  ~ImageToSpatialObjectMetric() {}
   ImageToSpatialObjectMetric(const Self &) {}
-  void operator=(const Self &) {}
+  void
+  operator=(const Self &) {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   MeasureType              m_MatchMeasure;

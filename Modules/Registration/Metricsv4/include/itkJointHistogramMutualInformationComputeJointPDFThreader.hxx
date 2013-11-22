@@ -26,12 +26,15 @@ namespace itk
 
 template< typename TJointHistogramMetric >
 void
-JointHistogramMutualInformationComputeJointPDFThreader< ThreadedImageRegionPartitioner< TJointHistogramMetric::VirtualImageDimension >, TJointHistogramMetric >
+JointHistogramMutualInformationComputeJointPDFThreader< ThreadedImageRegionPartitioner< TJointHistogramMetric::
+                                                                                        VirtualImageDimension >,
+                                                        TJointHistogramMetric >
 ::ThreadedExecution( const DomainType & imageSubRegion,
                      const ThreadIdType threadId )
 {
   VirtualPointType virtualPoint;
   VirtualIndexType virtualIndex;
+
   typedef ImageRegionConstIteratorWithIndex< VirtualImageType > IteratorType;
   IteratorType it( this->m_Associate->GetVirtualImage(), imageSubRegion );
   for( it.GoToBegin(); !it.IsAtEnd(); ++it )
@@ -50,6 +53,7 @@ JointHistogramMutualInformationComputeJointPDFThreader< ThreadedIndexedContainer
 {
   VirtualPointType virtualPoint;
   VirtualIndexType virtualIndex;
+
   typedef typename VirtualPointSetType::MeshTraits::PointIdentifier ElementIdentifierType;
   const ElementIdentifierType begin = indexSubRange[0];
   const ElementIdentifierType end   = indexSubRange[1];

@@ -30,17 +30,18 @@
 
 #include "itkQuadEdgeMesh.h"
 
-int itkQuadEdgeMeshFrontIteratorTest( int , char *[] )
+int
+itkQuadEdgeMeshFrontIteratorTest( int , char *[] )
 {
-  typedef itk::QuadEdgeMesh< double, 3 >      MeshType;
-  typedef MeshType::Pointer                   MeshPointer;
-  typedef MeshType::CellsContainer::Iterator  CellIterator;
+  typedef itk::QuadEdgeMesh< double, 3 >     MeshType;
+  typedef MeshType::Pointer                  MeshPointer;
+  typedef MeshType::CellsContainer::Iterator CellIterator;
 
   typedef MeshType::PointIdentifier   PointIdentifier;
   typedef std::set< PointIdentifier > PointIdSet;
 
-  typedef MeshType::CellType                        CellType;
-  typedef itk::QuadEdgeMeshPolygonCell< CellType >  QEPolygonCellType;
+  typedef MeshType::CellType                       CellType;
+  typedef itk::QuadEdgeMeshPolygonCell< CellType > QEPolygonCellType;
 
   typedef MeshType::FrontIterator FrontIterator;
   typedef FrontIterator::QEType   QEType;
@@ -53,38 +54,38 @@ int itkQuadEdgeMeshFrontIteratorTest( int , char *[] )
 
   /////////////////////////////////////////////////////////////
   int simpleSquareCells[96] =
-  { 0,  1,  6,
-    0,  6,  5,
-    1,  2,  7,
-    1,  7,  6,
-    2,  3,  8,
-    2,  8,  7,
-    3,  4,  9,
-    3,  9,  8,
-    5,  6, 11,
-    5, 11, 10,
-    6,  7, 12,
-    6, 12, 11,
-    7,  8, 13,
-    7, 13, 12,
-    8,  9, 14,
-    8, 14, 13,
-    10, 11, 16,
-    10, 16, 15,
-    11, 12, 17,
-    11, 17, 16,
-    12, 13, 18,
-    12, 18, 17,
-    13, 14, 19,
-    13, 19, 18,
-    15, 16, 21,
-    15, 21, 20,
-    16, 17, 22,
-    16, 22, 21,
-    17, 18, 23,
-    17, 23, 22,
-    18, 19, 24,
-    18, 24, 23 };
+      { 0,  1,  6,
+      0,  6,  5,
+      1,  2,  7,
+      1,  7,  6,
+      2,  3,  8,
+      2,  8,  7,
+      3,  4,  9,
+      3,  9,  8,
+      5,  6, 11,
+      5, 11, 10,
+      6,  7, 12,
+      6, 12, 11,
+      7,  8, 13,
+      7, 13, 12,
+      8,  9, 14,
+      8, 14, 13,
+      10, 11, 16,
+      10, 16, 15,
+      11, 12, 17,
+      11, 17, 16,
+      12, 13, 18,
+      12, 18, 17,
+      13, 14, 19,
+      13, 19, 18,
+      15, 16, 21,
+      15, 21, 20,
+      16, 17, 22,
+      16, 22, 21,
+      17, 18, 23,
+      17, 23, 22,
+      18, 19, 24,
+      18, 24, 23 };
 
   // Configuration of simpleSquare mesh:
   // #Vertices= 25 , #Edges= 56, #Faces= 32, #Boundary= 1, Chi= 1
@@ -111,7 +112,7 @@ int itkQuadEdgeMeshFrontIteratorTest( int , char *[] )
   //    | /          | /          | /          | /          |
   //    0 ---------- 1 ---------- 2  --------- 3 ---------  4
 
-  MeshPointer  mesh = MeshType::New();
+  MeshPointer mesh = MeshType::New();
 
   MeshType::PointType pts[25];
 
@@ -150,7 +151,7 @@ int itkQuadEdgeMeshFrontIteratorTest( int , char *[] )
   std::cout << "numPts= " << numPts << std::endl;
 
   CellType::CellAutoPointer cellpointer;
-  QEPolygonCellType *poly;
+  QEPolygonCellType *       poly;
 
   for(int i=0; i<expectedNumCells; i++)
     {
@@ -169,7 +170,7 @@ int itkQuadEdgeMeshFrontIteratorTest( int , char *[] )
   PointIdSet visitedSet;
 
   for( FrontIterator it = mesh->BeginFront();
-      it != mesh->EndFront(); it++ )
+       it != mesh->EndFront(); it++ )
     {
     QEType* edge = it.Value();
 
@@ -192,7 +193,7 @@ int itkQuadEdgeMeshFrontIteratorTest( int , char *[] )
 
   std::cout << "numberOfPoints " << numberOfPoints << std::endl;
   std::cout << "computedNumberOfPoints= " << computedNumberOfPoints
-    << std::endl;
+            << std::endl;
 
   if( computedNumberOfPoints == numberOfPoints )
     {

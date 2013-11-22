@@ -175,7 +175,7 @@ namespace itk
  */
 template< typename TInputImage, typename TFeatureImage, typename TOutputImage, typename TFunction,
           typename TIdCell = unsigned int >
-class MultiphaseSparseFiniteDifferenceImageFilter:
+class MultiphaseSparseFiniteDifferenceImageFilter :
   public MultiphaseFiniteDifferenceImageFilter< TInputImage,
                                                 TFeatureImage, TOutputImage, TFunction, TIdCell >
 {
@@ -199,17 +199,17 @@ public:
   typedef typename Superclass::TimeStepType TimeStepType;
 
   /** Information derived from the image types. */
-  typedef typename Superclass::InputImageType         InputImageType;
-  typedef typename Superclass::InputImagePointer      InputImagePointer;
-  typedef typename Superclass::InputRegionType        InputRegionType;
-  typedef typename Superclass::InputSizeType          InputSizeType;
-  typedef typename Superclass::InputSizeValueType     InputSizeValueType;
-  typedef typename Superclass::InputIndexType         InputIndexType;
-  typedef typename Superclass::InputIndexValueType    InputIndexValueType;
-  typedef typename Superclass::InputPixelType         InputPixelType;
-  typedef typename Superclass::InputPointType         InputPointType;
-  typedef typename Superclass::InputSpacingType       InputSpacingType;
-  typedef typename Superclass::InputOffsetValueType   InputOffsetValueType;
+  typedef typename Superclass::InputImageType       InputImageType;
+  typedef typename Superclass::InputImagePointer    InputImagePointer;
+  typedef typename Superclass::InputRegionType      InputRegionType;
+  typedef typename Superclass::InputSizeType        InputSizeType;
+  typedef typename Superclass::InputSizeValueType   InputSizeValueType;
+  typedef typename Superclass::InputIndexType       InputIndexType;
+  typedef typename Superclass::InputIndexValueType  InputIndexValueType;
+  typedef typename Superclass::InputPixelType       InputPixelType;
+  typedef typename Superclass::InputPointType       InputPointType;
+  typedef typename Superclass::InputSpacingType     InputSpacingType;
+  typedef typename Superclass::InputOffsetValueType InputOffsetValueType;
 
   typedef typename Superclass::FeatureImageType    FeatureImageType;
   typedef typename Superclass::FeatureSizeType     FeatureSizeType;
@@ -230,11 +230,11 @@ public:
   typedef typename Superclass::IdCellType    IdCellType;
 
   typedef typename Superclass::FiniteDifferenceFunctionType
-  FiniteDifferenceFunctionType;
+    FiniteDifferenceFunctionType;
   typedef typename Superclass::FiniteDifferenceFunctionPointer
-  FiniteDifferenceFunctionPointer;
+    FiniteDifferenceFunctionPointer;
   typedef typename FiniteDifferenceFunctionType::FloatOffsetType
-  FiniteDifferenceFunctionFloatOffsetType;
+    FiniteDifferenceFunctionFloatOffsetType;
 
   /** Node type used in sparse field layer lists. */
   typedef SparseFieldLevelSetNode< OutputIndexType > LayerNodeType;
@@ -256,13 +256,13 @@ public:
   /** The type of the image used to index status information.  Necessary for
    *  the internals of the algorithm. */
   typedef Image< StatusType, itkGetStaticConstMacro(ImageDimension) >
-  StatusImageType;
+    StatusImageType;
   typedef typename StatusImageType::Pointer StatusImagePointer;
 
   typedef ZeroCrossingImageFilter< InputImageType, InputImageType >
-  ZeroCrossingFilterType;
+    ZeroCrossingFilterType;
   typedef typename ZeroCrossingFilterType::Pointer
-  ZeroCrossingFilterPointer;
+    ZeroCrossingFilterPointer;
 
   typedef NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< StatusImageType > BFCType;
 
@@ -296,12 +296,20 @@ public:
   itkGetConstMacro(InterpolateSurfaceLocation, bool);
 
   /** See Get/SetInterpolateSurfaceLocation */
-  void InterpolateSurfaceLocationOn()
-  { this->SetInterpolateSurfaceLocation(true); }
-  void InterpolateSurfaceLocationOff()
-  { this->SetInterpolateSurfaceLocation(false); }
+  void
+  InterpolateSurfaceLocationOn()
+  {
+    this->SetInterpolateSurfaceLocation(true);
+  }
 
-  void SetFunctionCount(const IdCellType & n)
+  void
+  InterpolateSurfaceLocationOff()
+  {
+    this->SetInterpolateSurfaceLocation(false);
+  }
+
+  void
+  SetFunctionCount(const IdCellType & n)
   {
     this->Superclass::SetFunctionCount(n);
 
@@ -363,7 +371,7 @@ protected:
     UpdateBufferType m_UpdateBuffer;
 
     IdCellType m_Index;
-  };
+    };
 
   /** Connectivity information for examining neighbor pixels.   */
   NeighborListType m_NeighborList;
@@ -375,7 +383,8 @@ protected:
    * output values are applied during each iteration.  The default simply
    * follows the standard finite difference scheme of scaling the change by the
    * timestep and adding to the value of the previous iteration. */
-  inline virtual ValueType CalculateUpdateValue(
+  inline virtual ValueType
+  CalculateUpdateValue(
     const OutputIndexType & itkNotUsed(idx),
     const TimeStepType & dt,
     const ValueType & value,
@@ -405,7 +414,8 @@ protected:
   void CopyInputToOutput();
 
   /** Reserves memory in the update buffer. Called before each iteration. */
-  void AllocateUpdateBuffer(){}
+  void
+  AllocateUpdateBuffer(){}
 
   /** Applies the update buffer values to the active layer and reconstructs the
    *  sparse field layers for the next iteration. */
@@ -467,10 +477,11 @@ protected:
 
   void InitializeIteration();
 
-  virtual void UpdatePixel( unsigned int itkNotUsed(functionIndex), unsigned int itkNotUsed(idx),
-                            NeighborhoodIterator< InputImageType > & itkNotUsed(iterator), ValueType & itkNotUsed(
-                              newValue),
-                            bool & itkNotUsed(status) ){}
+  virtual void
+  UpdatePixel( unsigned int itkNotUsed(functionIndex), unsigned int itkNotUsed(idx),
+               NeighborhoodIterator< InputImageType > & itkNotUsed(iterator), ValueType & itkNotUsed(
+                 newValue),
+               bool & itkNotUsed(status) ){}
 
   itkGetConstMacro(ValueZero, ValueType);
   itkGetConstMacro(ValueOne, ValueType);

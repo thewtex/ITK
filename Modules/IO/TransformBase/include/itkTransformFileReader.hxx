@@ -29,18 +29,17 @@ template<typename ScalarType>
 TransformFileReaderTemplate<ScalarType>
 ::TransformFileReaderTemplate() :
   m_FileName("") /* to be removed soon. See .h */
-{
-}
+{}
 
 /** Destructor */
 template<typename ScalarType>
 TransformFileReaderTemplate<ScalarType>
 ::~TransformFileReaderTemplate()
-{
-}
+{}
 
 template<typename ScalarType>
-void TransformFileReaderTemplate<ScalarType>
+void
+TransformFileReaderTemplate<ScalarType>
 ::Update()
 {
   if ( m_FileName == "" )
@@ -48,7 +47,8 @@ void TransformFileReaderTemplate<ScalarType>
     itkExceptionMacro ("No file name given");
     }
   typename TransformIOBaseTemplate<ScalarType>::Pointer transformIO =
-      TransformIOFactoryTemplate<ScalarType>::CreateTransformIO( m_FileName.c_str(), /*TransformIOFactoryTemplate<ScalarType>::*/ ReadMode );
+    TransformIOFactoryTemplate<ScalarType>::CreateTransformIO(
+      m_FileName.c_str(), /*TransformIOFactoryTemplate<ScalarType>::*/ ReadMode );
   if ( transformIO.IsNull() )
     {
     itkExceptionMacro("Can't Create IO object for file "
@@ -59,20 +59,20 @@ void TransformFileReaderTemplate<ScalarType>
   transformIO->Read();
 
   typename TransformIOBaseTemplate<ScalarType>::TransformListType &ioTransformList =
-  transformIO->GetTransformList();
+    transformIO->GetTransformList();
 
-    // In the case where the first transform in the list is a
-    // CompositeTransform, add all the transforms to that first
-    // transform. and return a single composite item on the
-    // m_TransformList
+  // In the case where the first transform in the list is a
+  // CompositeTransform, add all the transforms to that first
+  // transform. and return a single composite item on the
+  // m_TransformList
   const std::string firstTransformName = ioTransformList.front()->GetNameOfClass();
   if(firstTransformName.find("CompositeTransform") != std::string::npos)
     {
     typename TransformListType::const_iterator tit = ioTransformList.begin();
     typename TransformType::Pointer composite = (*tit).GetPointer();
-      //
-      // CompositeTransformIOHelperTemplate knows how to assign to the composite
-      // transform's internal list
+    //
+    // CompositeTransformIOHelperTemplate knows how to assign to the composite
+    // transform's internal list
     CompositeTransformIOHelperTemplate<ScalarType> helper;
     helper.SetTransformList(composite.GetPointer(),ioTransformList);
 
@@ -81,8 +81,8 @@ void TransformFileReaderTemplate<ScalarType>
   else  //Just return the entire list of elements
     {
     for ( typename TransformListType::iterator it =
-         ioTransformList.begin();
-         it != ioTransformList.end(); ++it )
+            ioTransformList.begin();
+          it != ioTransformList.end(); ++it )
       {
       this->m_TransformList.push_back( (*it).GetPointer() );
       }
@@ -90,7 +90,8 @@ void TransformFileReaderTemplate<ScalarType>
 }
 
 template<typename ScalarType>
-void TransformFileReaderTemplate<ScalarType>
+void
+TransformFileReaderTemplate<ScalarType>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);

@@ -71,15 +71,14 @@ protected:
    * Default constructor
    */
   FEMLightObject() : m_GlobalNumber(-1)
-  {
-  }
+  {}
 
   /**
    * Virtual destructor
    */
-  virtual ~FEMLightObject()
-  {
-  }
+  virtual
+  ~FEMLightObject()
+  {}
 
   virtual void PrintSelf(std::ostream& os, Indent indent) const;
 

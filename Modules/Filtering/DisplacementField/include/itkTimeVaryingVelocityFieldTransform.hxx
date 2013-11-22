@@ -31,8 +31,7 @@ namespace itk
 template<typename TScalar, unsigned int NDimensions>
 TimeVaryingVelocityFieldTransform<TScalar, NDimensions>
 ::TimeVaryingVelocityFieldTransform()
-{
-}
+{}
 
 /**
  * Destructor
@@ -40,8 +39,7 @@ TimeVaryingVelocityFieldTransform<TScalar, NDimensions>
 template<typename TScalar, unsigned int NDimensions>
 TimeVaryingVelocityFieldTransform<TScalar, NDimensions>::
 ~TimeVaryingVelocityFieldTransform()
-{
-}
+{}
 
 template<typename TScalar, unsigned int NDimensions>
 void

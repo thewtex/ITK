@@ -19,7 +19,8 @@
 
 namespace itk
 {
-bool ITKCommon_EXPORT ci_equal(char a, char b)
+bool ITKCommon_EXPORT
+ci_equal(char a, char b)
 {
   return tolower( static_cast< int >( a ) ) == tolower( static_cast< int >( b ) );
 }
@@ -27,7 +28,8 @@ bool ITKCommon_EXPORT ci_equal(char a, char b)
 MapRecord::~MapRecord()
 {}
 
-void MapRecord::Reset(void)
+void
+MapRecord::Reset(void)
 {
   m_Tokens.clear();
   m_RecordName = "";
@@ -35,7 +37,8 @@ void MapRecord::Reset(void)
 
 /* SmapsRecord implementation */
 
-ITKCommon_EXPORT std::istream &  operator>>(std::istream & in, SmapsRecord & record)
+ITKCommon_EXPORT std::istream &
+operator>>(std::istream & in, SmapsRecord & record)
 {
   record.Reset();
 
@@ -99,7 +102,8 @@ ITKCommon_EXPORT std::istream &  operator>>(std::istream & in, SmapsRecord & rec
   return in;
 }
 
-ITKCommon_EXPORT std::istream & operator>>(std::istream & in, VMMapSummaryRecord & record)
+ITKCommon_EXPORT std::istream &
+operator>>(std::istream & in, VMMapSummaryRecord & record)
 {
   record.Reset();
 
@@ -173,7 +177,8 @@ ITKCommon_EXPORT std::istream & operator>>(std::istream & in, VMMapSummaryRecord
  *  __DATA                         a0003000 [  20K] rw-/rw- SM=COW ...System.B.dylib
 */
 
-ITKCommon_EXPORT std::istream & operator>>(std::istream & in, VMMapRecord & record)
+ITKCommon_EXPORT std::istream &
+operator>>(std::istream & in, VMMapRecord & record)
 {
   record.Reset();
   bool submapFound = false;
@@ -253,7 +258,8 @@ ITKCommon_EXPORT std::istream & operator>>(std::istream & in, VMMapRecord & reco
       }
     if ( bracket.length() > 1 )
       { //bracket contains the size, ie "[1024K]"
-      record.m_Tokens["Size"] = static_cast<itk::SizeValueType>( atoi( bracket.substr(1, bracket.length() - 3).c_str() ) );
+      record.m_Tokens["Size"] =
+        static_cast<itk::SizeValueType>( atoi( bracket.substr(1, bracket.length() - 3).c_str() ) );
       }
     else
       {
@@ -287,40 +293,43 @@ ITKCommon_EXPORT std::istream & operator>>(std::istream & in, VMMapRecord & reco
  */
 template< typename TFirstType >
 struct MapRecordPlusor {
-  MapRecordPlusor< TFirstType >(const char *token = "Size"):
-    m_Token(token)
-           {}
+  MapRecordPlusor< TFirstType >(const char *token = "Size") :
+  m_Token(token)
+              {}
 
-  TFirstType operator()(TFirstType first, const MapRecord *const & second)
+  TFirstType
+  operator()(TFirstType first, const MapRecord *const & second)
   {
     std::map< std::string, MapRecord::MemoryLoadType >::const_iterator it = second->m_Tokens.find(m_Token);
+
     return first + ( ( it != second->m_Tokens.end() ) ? it->second : 0 );
   }
 
   const char *m_Token;
-};
+  };
 
 /** Binary functor to accumulate memory usage in kB
  *  The record must match (insensitively) the filter in order to be taken into account
  */
 template< typename TFirstType >
 struct MapRecordConditionalPlusor {
-  MapRecordConditionalPlusor< TFirstType >(const char *filter, const char *token = "Size"):
-    m_Filter(filter), m_Token(token)
-         {}
-  TFirstType operator()(TFirstType first, const MapRecord *const & second)
+  MapRecordConditionalPlusor< TFirstType >(const char *filter, const char *token = "Size") :
+  m_Filter(filter), m_Token(token)
+            {}
+  TFirstType
+  operator()(TFirstType first, const MapRecord *const & second)
   {
     if ( std::search(second->m_RecordName.begin(), second->m_RecordName.end(),
                      m_Filter.begin(), m_Filter.end(), ci_equal) != second->m_RecordName.end() )
       {
-      return MapRecordPlusor< TFirstType >(m_Token) (first, second);
+      return MapRecordPlusor< TFirstType > (m_Token) (first, second);
       }
     return first;
   }
 
   std::string m_Filter;
   const char *m_Token;
-};
+  };
 
 /**              ---             MapData               ---              **/
 
@@ -347,19 +356,23 @@ MapData::GetMemoryUsage(const char *filter, const char *token)
 }
 
 /** is the data empty ? */
-bool MapData::Empty()
+bool
+MapData::Empty()
 {
   return m_Records.empty();
 }
 
-void DeleteMapRecord(MapRecord *const & record)
+void
+DeleteMapRecord(MapRecord *const & record)
 {
   delete record;
 }
 
-void MapData::Reset()
+void
+MapData::Reset()
 {
   std::for_each(m_Records.begin(), m_Records.end(), DeleteMapRecord);
+
   m_Records.clear();
 }
 
@@ -368,7 +381,8 @@ void MapData::Reset()
 SmapsData_2_6::~SmapsData_2_6()
 {}
 
-std::istream & operator>>(std::istream & smapsStream, SmapsData_2_6 & data)
+std::istream &
+operator>>(std::istream & smapsStream, SmapsData_2_6 & data)
 {
   SmapsRecord *record = NULL;
 
@@ -418,7 +432,7 @@ SmapsData_2_6::GetStackUsage()
 /**              ---            VMMapData               ---              **/
 
 VMMapData_10_2
-::VMMapData_10_2():
+::VMMapData_10_2() :
   m_UsingSummary(false)
 {}
 
@@ -426,7 +440,8 @@ VMMapData_10_2
 ::~VMMapData_10_2()
 {}
 
-std::istream & operator>>(std::istream & stream, VMMapData_10_2 & data)
+std::istream &
+operator>>(std::istream & stream, VMMapData_10_2 & data)
 {
   MapRecord *record = NULL;
 
@@ -434,7 +449,7 @@ std::istream & operator>>(std::istream & stream, VMMapData_10_2 & data)
   data.Reset();
   try
     {
-    std::string    line;
+    std::string line;
 
     // get to the Summary subsection
     while ( std::getline(stream, line).good() )
@@ -530,4 +545,5 @@ VMMapData_10_2::GetStackUsage()
 {
   return this->GetMemoryUsage("stack", "Size");
 }
+
 } // end namespace itk

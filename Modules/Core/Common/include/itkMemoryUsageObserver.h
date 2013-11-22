@@ -25,11 +25,11 @@
 #include "itkIntTypes.h"
 
 #if defined( WIN32 ) || defined( _WIN32 )
-  #include <windows.h>
-  #define SUPPORT_TOOLHELP32
-  #if defined( SUPPORT_TOOLHELP32 )
+#include <windows.h>
+#define SUPPORT_TOOLHELP32
+#if defined( SUPPORT_TOOLHELP32 )
 typedef LONG NTSTATUS;
-  #endif
+#endif
 #endif
 
 namespace itk
@@ -50,19 +50,22 @@ public:
   typedef SizeValueType MemoryLoadType;
 
   /** destructor */
-  virtual ~MemoryUsageObserverBase();
+  virtual
+  ~MemoryUsageObserverBase();
 
   /** Returns the memory load in kO */
   virtual MemoryLoadType GetMemoryUsage() = 0;
+
 };
 
 #if defined( WIN32 ) || defined( _WIN32 )
-class ITKCommon_EXPORT WindowsMemoryUsageObserver:public MemoryUsageObserverBase
+class ITKCommon_EXPORT WindowsMemoryUsageObserver : public MemoryUsageObserverBase
 {
 public:
   WindowsMemoryUsageObserver();
   /** destructor */
-  virtual ~WindowsMemoryUsageObserver();
+  virtual
+  ~WindowsMemoryUsageObserver();
 
   /** Returns the memory load in kO */
   virtual MemoryLoadType GetMemoryUsage();
@@ -80,42 +83,50 @@ protected:
 #endif // defined(WIN32) || defined(_WIN32)
 
 #ifdef linux
-class ITKCommon_EXPORT LinuxMemoryUsageObserver:public MemoryUsageObserverBase
+class ITKCommon_EXPORT LinuxMemoryUsageObserver : public MemoryUsageObserverBase
 {
 public:
   /** destructor */
-  virtual ~LinuxMemoryUsageObserver();
+  virtual
+  ~LinuxMemoryUsageObserver();
   virtual MemoryLoadType GetMemoryUsage();
+
 };
 #endif // linux
 
 #if defined( __APPLE__ )
-class ITKCommon_EXPORT MacOSXMemoryUsageObserver:public MemoryUsageObserverBase
+class ITKCommon_EXPORT MacOSXMemoryUsageObserver : public MemoryUsageObserverBase
 {
 public:
   /** destructor */
-  virtual ~MacOSXMemoryUsageObserver();
+  virtual
+  ~MacOSXMemoryUsageObserver();
   virtual MemoryLoadType GetMemoryUsage();
+
 };
 #endif // Mac OS X
 
 #if defined( __SUNPRO_CC ) || defined ( __sun__ )
-class ITKCommon_EXPORT SunSolarisMemoryUsageObserver:public MemoryUsageObserverBase
+class ITKCommon_EXPORT SunSolarisMemoryUsageObserver : public MemoryUsageObserverBase
 {
 public:
   /** destructor */
-  virtual ~SunSolarisMemoryUsageObserver();
+  virtual
+  ~SunSolarisMemoryUsageObserver();
   virtual MemoryLoadType GetMemoryUsage();
+
 };
 #endif // Sun Solaris
 
 #if !defined( WIN32 ) && !defined( _WIN32 )
-class ITKCommon_EXPORT SysResourceMemoryUsageObserver:public MemoryUsageObserverBase
+class ITKCommon_EXPORT SysResourceMemoryUsageObserver : public MemoryUsageObserverBase
 {
 public:
   /** destructor */
-  virtual ~SysResourceMemoryUsageObserver();
+  virtual
+  ~SysResourceMemoryUsageObserver();
   virtual MemoryLoadType GetMemoryUsage();
+
 };
 #if !defined( __APPLE__ ) && !defined( __SUNPRO_CC ) && !defined ( __sun__ ) && !defined( __FreeBSD__ ) \
   && !defined( __OpenBSD__ )
@@ -123,12 +134,14 @@ public:
  * \brief The MallinfoMemoryUsageObserver
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT MallinfoMemoryUsageObserver:public MemoryUsageObserverBase
+class ITKCommon_EXPORT MallinfoMemoryUsageObserver : public MemoryUsageObserverBase
 {
 public:
   /** destructor */
-  virtual ~MallinfoMemoryUsageObserver();
+  virtual
+  ~MallinfoMemoryUsageObserver();
   virtual MemoryLoadType GetMemoryUsage();
+
 };
 #endif // Mallinfo
 #endif // !defined(WIN32) && !defined(_WIN32)
@@ -140,7 +153,7 @@ public:
  * For FreeBSD, some alternatives would be to parse the output of
  * "sysctl vm.vmtotal" or "sysctl -a | grep -i memory"
 */
-class ITKCommon_EXPORT MemoryUsageObserver:
+class ITKCommon_EXPORT MemoryUsageObserver :
 #if defined( WIN32 ) || defined( _WIN32 )
   public WindowsMemoryUsageObserver
 #elif defined( linux )
@@ -157,7 +170,8 @@ class ITKCommon_EXPORT MemoryUsageObserver:
 {
 public:
   /** destructor */
-  virtual ~MemoryUsageObserver(){}
+  virtual
+  ~MemoryUsageObserver(){}
 };
 } // end of namespace itk
 

@@ -26,12 +26,15 @@ namespace itk
 
 template< typename TImageToImageMetricv4 >
 void
-ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< TImageToImageMetricv4::VirtualImageDimension >, TImageToImageMetricv4 >
-::ThreadedExecution ( const DomainType & imageSubRegion,
-                      const ThreadIdType threadId )
+ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< TImageToImageMetricv4::
+                                                                                   VirtualImageDimension >,
+                                                   TImageToImageMetricv4 >
+::ThreadedExecution( const DomainType & imageSubRegion,
+                     const ThreadIdType threadId )
 {
   VirtualPointType virtualPoint;
   VirtualIndexType virtualIndex;
+
   typename VirtualImageType::ConstPointer virtualImage = this->m_Associate->GetVirtualImage();
   typedef ImageRegionConstIteratorWithIndex< VirtualImageType > IteratorType;
   IteratorType it( virtualImage, imageSubRegion );
@@ -46,13 +49,15 @@ ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitione
 template< typename TImageToImageMetricv4 >
 void
 ImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, TImageToImageMetricv4 >
-::ThreadedExecution ( const DomainType & indexSubRange,
-                      const ThreadIdType threadId )
+::ThreadedExecution( const DomainType & indexSubRange,
+                     const ThreadIdType threadId )
 {
   VirtualPointType virtualPoint;
   VirtualIndexType virtualIndex;
+
   typename VirtualImageType::ConstPointer virtualImage = this->m_Associate->GetVirtualImage();
-  typename TImageToImageMetricv4::VirtualPointSetType::ConstPointer virtualSampledPointSet = this->m_Associate->GetVirtualSampledPointSet();
+  typename TImageToImageMetricv4::VirtualPointSetType::ConstPointer virtualSampledPointSet =
+    this->m_Associate->GetVirtualSampledPointSet();
   typedef typename TImageToImageMetricv4::VirtualPointSetType::MeshTraits::PointIdentifier ElementIdentifierType;
   const ElementIdentifierType begin = indexSubRange[0];
   const ElementIdentifierType end   = indexSubRange[1];

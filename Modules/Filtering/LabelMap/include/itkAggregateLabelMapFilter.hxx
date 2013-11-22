@@ -36,16 +36,16 @@ AggregateLabelMapFilter< TImage >
   ProgressReporter progress( this, 0, output->GetNumberOfLabelObjects() );
 
   typename TImage::Iterator it( output );
-  if ( ! it.IsAtEnd() )
+  if ( !it.IsAtEnd() )
     {
     LabelObjectType *mainLo = it.GetLabelObject();
     progress.CompletedPixel();
     ++it;
-    while ( ! it.IsAtEnd() )
+    while ( !it.IsAtEnd() )
       {
-      LabelObjectType *lo = it.GetLabelObject();
+      LabelObjectType *                           lo = it.GetLabelObject();
       typename LabelObjectType::ConstLineIterator lit( lo );
-      while( ! lit.IsAtEnd() )
+      while( !lit.IsAtEnd() )
         {
         mainLo->AddLine( lit.GetLine() );
         ++lit;
@@ -69,5 +69,6 @@ AggregateLabelMapFilter< TImage >
 {
   this->Superclass::PrintSelf(os, indent);
 }
+
 } // end namespace itk
 #endif

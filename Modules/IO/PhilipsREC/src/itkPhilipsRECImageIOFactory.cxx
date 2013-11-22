@@ -54,4 +54,5 @@ PhilipsRECImageIOFactory::GetDescription(void) const
   return "Philips REC ImageIO Factory, allows the loading of Philips REC images"
          " into Insight";
 }
+
 } // end namespace itk

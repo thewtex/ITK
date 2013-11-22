@@ -23,7 +23,7 @@ namespace itk
 {
 template< typename TInputImage, typename TClassifiedImage >
 MRFImageFilter< TInputImage, TClassifiedImage >
-::MRFImageFilter(void):
+::MRFImageFilter(void) :
   m_NumberOfClasses(0),
   m_MaximumNumberOfIterations(50),
   m_ErrorCounter(0),
@@ -185,14 +185,14 @@ MRFImageFilter< TInputImage, TClassifiedImage >
   // Set the iterators to the processed image
   //--------------------------------------------------------------------
   LabelledImageRegionIterator
-  labelledImageIt( m_ClassifierPtr->GetClassifiedImage(),
-                   outputPtr->GetRequestedRegion() );
+    labelledImageIt( m_ClassifierPtr->GetClassifiedImage(),
+                     outputPtr->GetRequestedRegion() );
 
   //--------------------------------------------------------------------
   // Set the iterators to the output image buffer
   //--------------------------------------------------------------------
   LabelledImageRegionIterator
-  outImageIt( outputPtr, outputPtr->GetRequestedRegion() );
+    outImageIt( outputPtr, outputPtr->GetRequestedRegion() );
 
   //--------------------------------------------------------------------
 
@@ -468,7 +468,7 @@ MRFImageFilter< TInputImage, TClassifiedImage >
     MinimizeFunctional();
     m_NumberOfIterations += 1;
     m_ErrorCounter = m_TotalNumberOfValidPixelsInOutputImage
-                     - totalNumberOfPixelsInInputImage;
+      - totalNumberOfPixelsInInputImage;
 
     LabelStatusImageIterator rIter( m_LabelStatusImage,
                                     m_LabelStatusImage->GetBufferedRegion() );
@@ -572,19 +572,19 @@ MRFImageFilter< TInputImage, TClassifiedImage >
 
   //Walk through the entire data set (not visiting the boundaries )
   InputImageNeighborhoodIterator
-  nInputImageNeighborhoodIter(m_InputImageNeighborhoodRadius,
-                              inputImage,
-                              *inputImageFaceListIter);
+    nInputImageNeighborhoodIter(m_InputImageNeighborhoodRadius,
+                                inputImage,
+                                *inputImageFaceListIter);
 
   LabelledImageNeighborhoodIterator
-  nLabelledImageNeighborhoodIter(m_LabelledImageNeighborhoodRadius,
-                                 labelledImage,
-                                 *labelledImageFaceListIter);
+    nLabelledImageNeighborhoodIter(m_LabelledImageNeighborhoodRadius,
+                                   labelledImage,
+                                   *labelledImageFaceListIter);
 
   LabelStatusImageNeighborhoodIterator
-  nLabelStatusImageNeighborhoodIter(m_LabelStatusImageNeighborhoodRadius,
-                                    m_LabelStatusImage,
-                                    *labelStatusImageFaceListIter);
+    nLabelStatusImageNeighborhoodIter(m_LabelStatusImageNeighborhoodRadius,
+                                      m_LabelStatusImage,
+                                      *labelStatusImageFaceListIter);
 
   //---------------------------------------------------------------------
   while ( !nInputImageNeighborhoodIter.IsAtEnd() )
@@ -641,7 +641,7 @@ MRFImageFilter< TInputImage, TClassifiedImage >
   for ( index = 0; index < m_NumberOfClasses; index++ )
     {
     m_MahalanobisDistance[index] = m_NeighborInfluence[index]
-                                   - pixelMembershipValue[index];
+      - pixelMembershipValue[index];
     }
 
   //Determine the maximum possible distance
@@ -677,6 +677,7 @@ MRFImageFilter< TInputImage, TClassifiedImage >
     labelStatusIter.SetCenterPixel(0);
     }
 } // end DoNeighborhoodOperation
+
 } // namespace itk
 
 #endif

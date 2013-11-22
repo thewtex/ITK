@@ -342,5 +342,6 @@ OnePlusOneEvolutionaryOptimizer
   os << indent << "MetricWorstPossibleValue " << GetMetricWorstPossibleValue()
      << std::endl;
 }
+
 } // end of namespace itk
 #endif

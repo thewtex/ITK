@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include <fstream>
 #include "itkFEMElement2DC0LinearQuadrilateralMembrane.h"
 #include "itkFEMElement3DC0LinearHexahedronMembrane.h"
@@ -29,16 +28,16 @@
 // tyepdefs used for registration
 const unsigned int ImageDimension = 3;
 const unsigned int ImageWidth = 16;
-typedef unsigned char                                 PixelType;
-typedef itk::Image<PixelType, ImageDimension>         testImageType;
-typedef itk::Vector<float, ImageDimension>            VectorType;
-typedef itk::Image<VectorType, ImageDimension>        FieldType;
+typedef unsigned char                          PixelType;
+typedef itk::Image<PixelType, ImageDimension>  testImageType;
+typedef itk::Vector<float, ImageDimension>     VectorType;
+typedef itk::Image<VectorType, ImageDimension> FieldType;
 
 const unsigned int PixelsPerElement = 1;
-typedef itk::fem::Element2DC0LinearQuadrilateralMembrane  Element2DType;
-typedef itk::fem::Element3DC0LinearHexahedronMembrane     Element3DType;
-typedef itk::fem::FEMObject<ImageDimension>               FEMObjectType;
-typedef itk::fem::Solver<ImageDimension>                  SolverType;
+typedef itk::fem::Element2DC0LinearQuadrilateralMembrane                     Element2DType;
+typedef itk::fem::Element3DC0LinearHexahedronMembrane                        Element3DType;
+typedef itk::fem::FEMObject<ImageDimension>                                  FEMObjectType;
+typedef itk::fem::Solver<ImageDimension>                                     SolverType;
 typedef itk::fem::FiniteDifferenceFunctionLoad<testImageType, testImageType> ImageMetricLoadType;
 
 typedef itk::MeanSquareRegistrationFunction<testImageType, testImageType, FieldType> MetricType0;
@@ -116,10 +115,11 @@ CopyImageBuffer(
 
 }
 
-FEMObjectType::Pointer CreateMesh(testImageType* image, unsigned int elementWidth = 1)
+FEMObjectType::Pointer
+CreateMesh(testImageType* image, unsigned int elementWidth = 1)
 {
-  typedef itk::fem::MaterialLinearElasticity                          MaterialType;
-  typedef itk::fem::ImageToRectilinearFEMObjectFilter<testImageType>  MeshFilterType;
+  typedef itk::fem::MaterialLinearElasticity                         MaterialType;
+  typedef itk::fem::ImageToRectilinearFEMObjectFilter<testImageType> MeshFilterType;
 
   vnl_vector<unsigned int> pixelsPerElement;
   pixelsPerElement.set_size(ImageDimension);
@@ -132,31 +132,33 @@ FEMObjectType::Pointer CreateMesh(testImageType* image, unsigned int elementWidt
   meshFilter->SetPixelsPerElement(pixelsPerElement);
   MaterialType::Pointer m = MaterialType::New();
   if (ImageDimension == 2)
-  {
+    {
     Element2DType::Pointer e = Element2DType::New();
-    e->SetMaterial(m.GetPointer());
-    meshFilter->SetElement(e.GetPointer());
-  }
+    e->SetMaterial(m.GetPointer() );
+    meshFilter->SetElement(e.GetPointer() );
+    }
   else
-  {
+    {
     Element3DType::Pointer e = Element3DType::New();
-    e->SetMaterial(m.GetPointer());
-    meshFilter->SetElement(e.GetPointer());
-  }
+    e->SetMaterial(m.GetPointer() );
+    meshFilter->SetElement(e.GetPointer() );
+    }
   meshFilter->Update();
 
   return meshFilter->GetOutput();
 }
 
-int RunTest(testImageType* fixed, testImageType* moving, FieldType* initField,
-            FieldType* outField, SolverType* solver, unsigned int metricType, std::string filenamePrefix)
+int
+RunTest(testImageType* fixed, testImageType* moving, FieldType* initField,
+        FieldType* outField, SolverType* solver, unsigned int metricType, std::string filenamePrefix)
 {
   testImageType::SpacingType spacing = fixed->GetSpacing();
-  testImageType::PointType origin = fixed->GetOrigin();
+  testImageType::PointType   origin = fixed->GetOrigin();
 
   // --------------------------------------------------------
   std::cout << "Create a FiniteElementFunctionLoad\n" << std::endl;
   ImageMetricLoadType::Pointer load = ImageMetricLoadType::New();
+
   load->SetMovingImage(moving);
   load->SetFixedImage(fixed);
   load->SetDisplacementField(initField);
@@ -165,37 +167,36 @@ int RunTest(testImageType* fixed, testImageType* moving, FieldType* initField,
   if (metricType == 1)
     {
     MetricType1::Pointer metric = MetricType1::New();
-    load->SetMetric(metric.GetPointer());
+    load->SetMetric(metric.GetPointer() );
     load->SetDescentDirectionMinimize();
     }
   else if (metricType == 2)
     {
     MetricType2::Pointer metric = MetricType2::New();
-    load->SetMetric(metric.GetPointer());
+    load->SetMetric(metric.GetPointer() );
     load->SetDescentDirectionMaximize();
     }
   else if (metricType == 3)
     {
     MetricType3::Pointer metric = MetricType3::New();
-    load->SetMetric(metric.GetPointer());
+    load->SetMetric(metric.GetPointer() );
     load->SetDescentDirectionMinimize();
     }
   else
     {
     MetricType0::Pointer metric = MetricType0::New();
-    load->SetMetric(metric.GetPointer());
+    load->SetMetric(metric.GetPointer() );
     load->SetDescentDirectionMinimize();
     }
   load->InitializeMetric();
 
   ImageMetricLoadType::RadiusType r;
   for (unsigned int i = 0; i < ImageDimension; i++)
-      r[i] = 2;
+    r[i] = 2;
   load->SetMetricRadius(r);
   load->SetGamma(1);
   load->SetNumberOfIntegrationPoints(1);
   load->PrintCurrentEnergy();
-
 
   // --------------------------------------------------------
   // Test force computations Fe()
@@ -203,7 +204,7 @@ int RunTest(testImageType* fixed, testImageType* moving, FieldType* initField,
   position.set_size(ImageDimension);
   solution.set_size(ImageDimension);
   typedef itk::ImageRegionIteratorWithIndex<FieldType> Iterator;
-  Iterator iter(outField, outField->GetLargestPossibleRegion());
+  Iterator iter(outField, outField->GetLargestPossibleRegion() );
   for( iter.GoToBegin(); !iter.IsAtEnd(); ++iter )
     {
     // Query the image-based force (function Fe())
@@ -224,10 +225,10 @@ int RunTest(testImageType* fixed, testImageType* moving, FieldType* initField,
   // Write to vector image
   typedef itk::ImageFileWriter<FieldType> FieldWriterType;
   FieldWriterType::Pointer fieldWriter = FieldWriterType::New();
-  std::ostringstream outFilenameStream;
+  std::ostringstream       outFilenameStream;
   outFilenameStream << filenamePrefix << "ForcesWithMetric" << metricType << ".vtk";
   std::string outFilename = outFilenameStream.str();
-  fieldWriter->SetFileName(outFilename.c_str());
+  fieldWriter->SetFileName(outFilename.c_str() );
   fieldWriter->SetInput(outField);
   fieldWriter->Update();
 
@@ -240,7 +241,7 @@ int RunTest(testImageType* fixed, testImageType* moving, FieldType* initField,
   const FieldType::RegionType& region = outField->GetLargestPossibleRegion();
 
   FEMObjectType::Pointer femObject = solver->GetInput();
-  load->SetSolution(solver->GetLinearSystemWrapper());
+  load->SetSolution(solver->GetLinearSystemWrapper() );
   Element2DType::VectorType force;
   force.set_size(ImageDimension);
   for (unsigned int i = 0; i < femObject->GetNumberOfElements(); i++)
@@ -257,7 +258,7 @@ int RunTest(testImageType* fixed, testImageType* moving, FieldType* initField,
         coords[d] = element->GetNodeCoordinates(n)[d];
         }
       fixed->TransformPhysicalPointToIndex(coords, index);
-      if (!region.IsInside(index))
+      if (!region.IsInside(index) )
         continue;
 
       pixelVal = outField->GetPixel(index);
@@ -266,7 +267,7 @@ int RunTest(testImageType* fixed, testImageType* moving, FieldType* initField,
       outField->SetPixel(index, pixelVal);
 
       } // end of for (each node in an element)
-    } // end of for(each element)
+    }   // end of for(each element)
 
   // Write to vector image
   std::ostringstream vectorOutFilenameStream;
@@ -275,33 +276,33 @@ int RunTest(testImageType* fixed, testImageType* moving, FieldType* initField,
   std::string vectorOutFilename  = vectorOutFilenameStream.str();
 
   FieldWriterType::Pointer forceFieldWriter = FieldWriterType::New();
-  forceFieldWriter->SetFileName(vectorOutFilename.c_str());
+  forceFieldWriter->SetFileName(vectorOutFilename.c_str() );
   forceFieldWriter->SetInput(outField);
   forceFieldWriter->Update();
 
   return EXIT_SUCCESS;
 }
 
-
-int itkFEMFiniteDifferenceFunctionLoadTest(int argc, char* argv[])
+int
+itkFEMFiniteDifferenceFunctionLoadTest(int argc, char* argv[])
 {
   if (argc < 2)
-  {
+    {
     std::cerr << "Missing output file name prefix" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
   std::string filenamePrefix = argv[1];
 
-  typedef testImageType::IndexType                          IndexType;
-  typedef testImageType::SizeType                           SizeType;
-  typedef testImageType::RegionType                         RegionType;
-  typedef testImageType::SpacingType                        SpacingType;
+  typedef testImageType::IndexType   IndexType;
+  typedef testImageType::SizeType    SizeType;
+  typedef testImageType::RegionType  RegionType;
+  typedef testImageType::SpacingType SpacingType;
 
   // --------------------------------------------------------
   std::cout << "Generate input images and initial deformation field" << std::endl;
 
-  SpacingType spacing;
-  float origin[ImageDimension];
+  SpacingType                  spacing;
+  float                        origin[ImageDimension];
   testImageType::SizeValueType sizeArray[ImageDimension];
 
   for (unsigned int i = 0; i < ImageDimension; i++)
@@ -350,8 +351,8 @@ int itkFEMFiniteDifferenceFunctionLoadTest(int argc, char* argv[])
   outField->SetSpacing(spacing);
   outField->SetOrigin(origin);
 
-  double    center[ImageDimension];
-  double    radius;
+  double center[ImageDimension];
+  double radius;
   for (unsigned int i = 0; i < ImageDimension; i++)
     center[i] = ImageWidth / 2.0;
 
@@ -373,20 +374,19 @@ int itkFEMFiniteDifferenceFunctionLoadTest(int argc, char* argv[])
 
   typedef itk::ImageFileWriter<testImageType> ImageWriterType;
   ImageWriterType::Pointer writer = ImageWriterType::New();
-  std::string filename(filenamePrefix);
+  std::string              filename(filenamePrefix);
   writer->SetInput(moving);
-  writer->SetFileName((filename + "Moving.mha").c_str());
+  writer->SetFileName( (filename + "Moving.mha").c_str() );
   writer->Update();
   writer->SetInput(fixed);
-  writer->SetFileName((filename + "Fixed.mha").c_str());
+  writer->SetFileName( (filename + "Fixed.mha").c_str() );
   writer->Update();
 
   // --------------------------------------------------------
   // Create mesh from image
   FEMObjectType::Pointer femObject = CreateMesh(fixed, PixelsPerElement);
-  SolverType::Pointer solver = SolverType::New();
+  SolverType::Pointer    solver = SolverType::New();
   solver->SetInput(femObject);
-
 
   // --------------------------------------------------------
   // Test FinitDifferenceFunctionLoad with four metric types

@@ -51,8 +51,8 @@
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 5 )
     {
@@ -82,7 +82,6 @@ int main( int argc, char * argv[] )
   typedef itk::Image< OutputPixelType, 2 > OutputImageType;
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The filter type can be instantiated using the input and output image
@@ -97,26 +96,25 @@ int main( int argc, char * argv[] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::DanielssonDistanceMapImageFilter<
-               InputImageType, OutputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType, OutputImageType >  FilterType;
   FilterType::Pointer filter = FilterType::New();
   // Software Guide : EndCodeSnippet
 
   typedef itk::RescaleIntensityImageFilter<
-                   OutputImageType, OutputImageType > RescalerType;
+      OutputImageType, OutputImageType > RescalerType;
   RescalerType::Pointer scaler = RescalerType::New();
 
   //
   // Reader and Writer types are instantiated.
   //
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
 
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
-
 
   //  Software Guide : BeginLatex
   //
@@ -134,10 +132,8 @@ int main( int argc, char * argv[] )
   writer->SetInput( scaler->GetOutput() );
   // Software Guide : EndCodeSnippet
 
-
   scaler->SetOutputMaximum( 65535L );
   scaler->SetOutputMinimum(     0L );
-
 
   //  Software Guide : BeginLatex
   //
@@ -151,7 +147,6 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   filter->InputIsBinaryOn();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -178,10 +173,8 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   writer->Update();
   const char * voronoiMapFileName = argv[3];
-
 
   //  Software Guide : BeginLatex
   //
@@ -199,7 +192,6 @@ int main( int argc, char * argv[] )
   writer->Update();
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The distance filter also produces an image of \doxygen{Offset} pixels
@@ -210,9 +202,8 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef FilterType::VectorImageType   OffsetImageType;
+  typedef FilterType::VectorImageType OffsetImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -222,10 +213,9 @@ int main( int argc, char * argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileWriter< OffsetImageType >  WriterOffsetType;
+  typedef itk::ImageFileWriter< OffsetImageType > WriterOffsetType;
   WriterOffsetType::Pointer offsetWriter = WriterOffsetType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -238,9 +228,7 @@ int main( int argc, char * argv[] )
   offsetWriter->SetInput(  filter->GetVectorDistanceMap()  );
   // Software Guide : EndCodeSnippet
 
-
   offsetWriter->SetFileName( argv[4]  );
-
 
   //  Software Guide : BeginLatex
   //
@@ -261,7 +249,6 @@ int main( int argc, char * argv[] )
     std::cerr <<     exp    << std::endl;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

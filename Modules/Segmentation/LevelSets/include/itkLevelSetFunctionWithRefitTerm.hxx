@@ -52,6 +52,7 @@ LevelSetFunctionWithRefitTerm< TImageType, TSparseImageType >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "RefitWeight: " << m_RefitWeight << std::endl;
   os << indent << "OtherPropagationWeight: "
      << m_OtherPropagationWeight << std::endl;
@@ -79,10 +80,10 @@ typename LevelSetFunctionWithRefitTerm< TImageType,
 LevelSetFunctionWithRefitTerm< TImageType, TSparseImageType >
 ::ComputeCurvature(const NeighborhoodType & neighborhood) const
 {
-  unsigned int  j, k;
-  unsigned int  counterN, counterP;
+  unsigned int              j, k;
+  unsigned int              counterN, counterP;
   NeighborhoodSizeValueType positionN,  positionP,
-                stride[TImageType::ImageDimension], indicator[TImageType::ImageDimension];
+    stride[TImageType::ImageDimension], indicator[TImageType::ImageDimension];
 
   const NeighborhoodSizeValueType one = 1;
   const NeighborhoodSizeValueType center = neighborhood.Size() / 2;
@@ -189,6 +190,7 @@ LevelSetFunctionWithRefitTerm< TImageType, TSparseImageType >
          + m_OtherPropagationWeight *
          OtherPropagationSpeed (neighborhood, offset, globaldata);
 }
+
 } //end namespace itk
 
 #endif

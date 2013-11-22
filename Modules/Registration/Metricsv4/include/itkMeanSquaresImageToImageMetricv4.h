@@ -39,17 +39,22 @@ namespace itk
  */
 template <typename TFixedImage, typename TMovingImage, typename TVirtualImage = TFixedImage,
           typename TInternalComputationValueType = double,
-          typename TMetricTraits = DefaultImageToImageMetricTraitsv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType>
+          typename TMetricTraits =
+            DefaultImageToImageMetricTraitsv4<TFixedImage,TMovingImage,TVirtualImage,TInternalComputationValueType>
           >
 class MeanSquaresImageToImageMetricv4 :
   public ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputationValueType, TMetricTraits>
 {
 public:
   /** Standard class typedefs. */
-  typedef MeanSquaresImageToImageMetricv4                                                                        Self;
-  typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputationValueType, TMetricTraits> Superclass;
-  typedef SmartPointer<Self>                                                                                     Pointer;
-  typedef SmartPointer<const Self>                                                                               ConstPointer;
+  typedef MeanSquaresImageToImageMetricv4
+                                              Self;
+  typedef ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputationValueType,
+                               TMetricTraits> Superclass;
+  typedef SmartPointer<Self>
+                                              Pointer;
+  typedef SmartPointer<const Self>
+                                              ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -57,22 +62,22 @@ public:
   /** Run-time type information (and related methods). */
   itkTypeMacro(MeanSquaresImageToImageMetricv4, ImageToImageMetricv4);
 
-  typedef typename Superclass::DerivativeType          DerivativeType;
+  typedef typename Superclass::DerivativeType DerivativeType;
 
-  typedef typename Superclass::FixedImagePointType     FixedImagePointType;
-  typedef typename Superclass::FixedImagePixelType     FixedImagePixelType;
-  typedef typename Superclass::FixedImageGradientType  FixedImageGradientType;
+  typedef typename Superclass::FixedImagePointType    FixedImagePointType;
+  typedef typename Superclass::FixedImagePixelType    FixedImagePixelType;
+  typedef typename Superclass::FixedImageGradientType FixedImageGradientType;
 
   typedef typename Superclass::MovingImagePointType    MovingImagePointType;
   typedef typename Superclass::MovingImagePixelType    MovingImagePixelType;
   typedef typename Superclass::MovingImageGradientType MovingImageGradientType;
 
-  typedef typename Superclass::MovingTransformType        MovingTransformType;
-  typedef typename Superclass::JacobianType               JacobianType;
-  typedef typename Superclass::VirtualImageType           VirtualImageType;
-  typedef typename Superclass::VirtualIndexType           VirtualIndexType;
-  typedef typename Superclass::VirtualPointType           VirtualPointType;
-  typedef typename Superclass::VirtualPointSetType        VirtualPointSetType;
+  typedef typename Superclass::MovingTransformType MovingTransformType;
+  typedef typename Superclass::JacobianType        JacobianType;
+  typedef typename Superclass::VirtualImageType    VirtualImageType;
+  typedef typename Superclass::VirtualIndexType    VirtualIndexType;
+  typedef typename Superclass::VirtualPointType    VirtualPointType;
+  typedef typename Superclass::VirtualPointSetType VirtualPointSetType;
 
   /* Image dimension accessors */
   itkStaticConstMacro(VirtualImageDimension, ImageDimensionType, TVirtualImage::ImageDimension);
@@ -81,20 +86,29 @@ public:
 
 protected:
   MeanSquaresImageToImageMetricv4();
-  virtual ~MeanSquaresImageToImageMetricv4();
+  virtual
+  ~MeanSquaresImageToImageMetricv4();
 
-  friend class MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< Superclass::VirtualImageDimension >, Superclass, Self >;
-  friend class MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Superclass, Self >;
-  typedef MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< Superclass::VirtualImageDimension >, Superclass, Self >
+  friend class MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< Superclass
+                                                                                                             ::
+                                                                                                             VirtualImageDimension >,
+                                                                             Superclass, Self >;
+  friend class MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner,
+                                                                             Superclass, Self >;
+  typedef MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedImageRegionPartitioner< Superclass::
+                                                                                                        VirtualImageDimension >,
+                                                                        Superclass, Self >
     MeanSquaresDenseGetValueAndDerivativeThreaderType;
-  typedef MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Superclass, Self >
+  typedef MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Superclass,
+                                                                        Self >
     MeanSquaresSparseGetValueAndDerivativeThreaderType;
 
   void PrintSelf(std::ostream& os, Indent indent) const;
 
 private:
   MeanSquaresImageToImageMetricv4(const Self &); //purposely not implemented
-  void operator = (const Self &); //purposely not implemented
+  void operator =(const Self &);                 //purposely not implemented
+
 };
 
 } // end namespace itk

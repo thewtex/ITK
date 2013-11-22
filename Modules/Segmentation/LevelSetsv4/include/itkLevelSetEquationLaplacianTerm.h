@@ -45,14 +45,14 @@ namespace itk
 template< typename TInput, // Input image or mesh
           typename TLevelSetContainer >
 class LevelSetEquationLaplacianTerm :
-    public LevelSetEquationTermBase< TInput, TLevelSetContainer >
+  public LevelSetEquationTermBase< TInput, TLevelSetContainer >
 {
 public:
-  typedef LevelSetEquationLaplacianTerm         Self;
-  typedef SmartPointer< Self >                  Pointer;
-  typedef SmartPointer< const Self >            ConstPointer;
+  typedef LevelSetEquationLaplacianTerm Self;
+  typedef SmartPointer< Self >          Pointer;
+  typedef SmartPointer< const Self >    ConstPointer;
   typedef LevelSetEquationTermBase< TInput, TLevelSetContainer >
-                                                Superclass;
+    Superclass;
 
   /** Method for creation through object factory */
   itkNewMacro( Self );
@@ -66,16 +66,16 @@ public:
   typedef typename Superclass::InputPixelType     InputPixelType;
   typedef typename Superclass::InputPixelRealType InputPixelRealType;
 
-  typedef typename Superclass::LevelSetContainerType      LevelSetContainerType;
-  typedef typename Superclass::LevelSetContainerPointer   LevelSetContainerPointer;
-  typedef typename Superclass::LevelSetType               LevelSetType;
-  typedef typename Superclass::LevelSetPointer            LevelSetPointer;
-  typedef typename Superclass::LevelSetOutputPixelType    LevelSetOutputPixelType;
-  typedef typename Superclass::LevelSetOutputRealType     LevelSetOutputRealType;
-  typedef typename Superclass::LevelSetInputIndexType     LevelSetInputIndexType;
-  typedef typename Superclass::LevelSetGradientType       LevelSetGradientType;
-  typedef typename Superclass::LevelSetHessianType        LevelSetHessianType;
-  typedef typename Superclass::LevelSetIdentifierType     LevelSetIdentifierType;
+  typedef typename Superclass::LevelSetContainerType    LevelSetContainerType;
+  typedef typename Superclass::LevelSetContainerPointer LevelSetContainerPointer;
+  typedef typename Superclass::LevelSetType             LevelSetType;
+  typedef typename Superclass::LevelSetPointer          LevelSetPointer;
+  typedef typename Superclass::LevelSetOutputPixelType  LevelSetOutputPixelType;
+  typedef typename Superclass::LevelSetOutputRealType   LevelSetOutputRealType;
+  typedef typename Superclass::LevelSetInputIndexType   LevelSetInputIndexType;
+  typedef typename Superclass::LevelSetGradientType     LevelSetGradientType;
+  typedef typename Superclass::LevelSetHessianType      LevelSetHessianType;
+  typedef typename Superclass::LevelSetIdentifierType   LevelSetIdentifierType;
 
   typedef typename Superclass::HeavisideType         HeavisideType;
   typedef typename Superclass::HeavisideConstPointer HeavisideConstPointer;
@@ -85,8 +85,8 @@ public:
   itkStaticConstMacro(ImageDimension, unsigned int, InputImageType::ImageDimension);
 
   /** Neighborhood radius type */
-  typedef ZeroFluxNeumannBoundaryCondition< InputImageType > DefaultBoundaryConditionType;
-  typedef typename ConstNeighborhoodIterator< InputImageType >::RadiusType RadiusType;
+  typedef ZeroFluxNeumannBoundaryCondition< InputImageType >                        DefaultBoundaryConditionType;
+  typedef typename ConstNeighborhoodIterator< InputImageType >::RadiusType          RadiusType;
   typedef ConstNeighborhoodIterator< InputImageType, DefaultBoundaryConditionType > NeighborhoodType;
 
   typedef Vector< LevelSetOutputRealType, itkGetStaticConstMacro(ImageDimension) > NeighborhoodScalesType;
@@ -108,7 +108,8 @@ public:
 protected:
   LevelSetEquationLaplacianTerm();
 
-  virtual ~LevelSetEquationLaplacianTerm();
+  virtual
+  ~LevelSetEquationLaplacianTerm();
 
   /** Return the spatial speed dependence a given pixel location
    * Usually, it is constant across the image domain */
@@ -125,7 +126,8 @@ protected:
 
 private:
   LevelSetEquationLaplacianTerm( const Self& ); // purposely not implemented
-  void operator = ( const Self& ); // purposely not implemented
+  void operator =( const Self& );               // purposely not implemented
+
 };
 
 }

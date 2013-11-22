@@ -37,7 +37,7 @@ namespace Statistics
  * \ingroup ITKStatistics
  */
 
-class SparseFrequencyContainer2:public Object
+class SparseFrequencyContainer2 : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -68,7 +68,7 @@ public:
   /** Histogram typedef support */
   typedef std::map< InstanceIdentifier, AbsoluteFrequencyType > FrequencyContainerType;
   typedef FrequencyContainerType::const_iterator
-  FrequencyContainerConstIterator;
+    FrequencyContainerConstIterator;
 
   /** prepares the frequency container */
   void Initialize(SizeValueType length);
@@ -90,14 +90,16 @@ public:
    * zero when the Id is out of bounds.  */
   AbsoluteFrequencyType GetFrequency(const InstanceIdentifier id) const;
 
-  TotalAbsoluteFrequencyType GetTotalFrequency()
+  TotalAbsoluteFrequencyType
+  GetTotalFrequency()
   {
     return m_TotalFrequency;
   }
 
 protected:
   SparseFrequencyContainer2();
-  virtual ~SparseFrequencyContainer2() {}
+  virtual
+  ~SparseFrequencyContainer2() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

@@ -67,14 +67,14 @@ public:
 
 protected:
   GPUScalarAnisotropicDiffusionFunction();
-  ~GPUScalarAnisotropicDiffusionFunction() {
-  }
+  ~GPUScalarAnisotropicDiffusionFunction() {}
 
 private:
   GPUScalarAnisotropicDiffusionFunction(const Self &); //purposely not
                                                        // implemented
   void operator=(const Self &);                        //purposely not
-                                                       // implemented
+
+  // implemented
 
 };
 } // end namespace itk

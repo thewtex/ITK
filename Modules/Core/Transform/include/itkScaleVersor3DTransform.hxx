@@ -34,8 +34,7 @@ ScaleVersor3DTransform<TScalar>
 template <typename TScalar>
 ScaleVersor3DTransform<TScalar>
 ::~ScaleVersor3DTransform()
-{
-}
+{}
 
 // Constructor with arguments
 template <typename TScalar>
@@ -48,7 +47,7 @@ ScaleVersor3DTransform<TScalar>::ScaleVersor3DTransform(unsigned int parametersD
 // Constructor with arguments
 template <typename TScalar>
 ScaleVersor3DTransform<TScalar>::ScaleVersor3DTransform(const MatrixType & matrix,
-                                                            const OutputVectorType & offset) :
+                                                        const OutputVectorType & offset) :
   Superclass(matrix, offset)
 {
   this->ComputeMatrixParameters();

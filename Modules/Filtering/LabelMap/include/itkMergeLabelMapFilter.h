@@ -50,7 +50,7 @@ namespace itk
  * \ingroup ITKLabelMap
  */
 template< typename TImage >
-class MergeLabelMapFilter:
+class MergeLabelMapFilter :
   public InPlaceLabelMapFilter< TImage >
 {
 public:
@@ -124,6 +124,7 @@ private:
   void MergeWithPack();
 
   void MergeWithStrict();
+
 }; // end of class
 } // end namespace itk
 

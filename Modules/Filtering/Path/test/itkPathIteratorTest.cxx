@@ -21,24 +21,24 @@
 #include "itkPolyLineParametricPath.h"
 #include "itkPathIterator.h"
 
-int itkPathIteratorTest(int, char*[])
+int
+itkPathIteratorTest(int, char*[])
 {
-  typedef  itk::Image<double, 2>                          ImageType;
-  typedef  itk::PolyLineParametricPath<2>                 PathType;
-  typedef  itk::PathIterator< ImageType, PathType >       IterType;
+  typedef  itk::Image<double, 2>                    ImageType;
+  typedef  itk::PolyLineParametricPath<2>           PathType;
+  typedef  itk::PathIterator< ImageType, PathType > IterType;
 
-  typedef  ImageType::IndexType                           IndexType;
-  typedef  PathType::InputType                            PathInputType;
-  typedef  PathType::VertexType                           VertexType;
-  typedef  PathType::OffsetType                           OffsetType;
+  typedef  ImageType::IndexType IndexType;
+  typedef  PathType::InputType  PathInputType;
+  typedef  PathType::VertexType VertexType;
+  typedef  PathType::OffsetType OffsetType;
 
   bool passed = true;
 
-
   // Setup the image
   std::cout << "Making a 64x64 white square centered in a 128x128 black image"<<std::endl;
-  ImageType::Pointer  image = ImageType::New();
-  IndexType start;
+  ImageType::Pointer image = ImageType::New();
+  IndexType          start;
   start[0]=0;
   start[1]=0;
   ImageType::SizeType size;
@@ -57,7 +57,7 @@ int itkPathIteratorTest(int, char*[])
   ImageItType it( image, image->GetRequestedRegion() );
   it.GoToBegin();
   ImageType::PixelType storedValue;
-  IndexType pixelIndex;
+  IndexType            pixelIndex;
   while( !it.IsAtEnd() )
     {
     pixelIndex = it.GetIndex();
@@ -102,10 +102,10 @@ int itkPathIteratorTest(int, char*[])
   for( iter.GoToBegin(); !iter.IsAtEnd(); ++iter )
     {
     std::cout << "Path("<<iter.GetPathPosition()<<") @ "<<iter.GetIndex()<<" = "
-         << iter.Get()<<"; Now inverting."<<std::endl;
+              << iter.Get()<<"; Now inverting."<<std::endl;
     iter.Set( 1.0 - iter.Get() );
     }
-  if( int(.5+1000*iter.Get()) != 1000 )
+  if( int(.5+1000*iter.Get() ) != 1000 )
     {
     std::cout << "PathIteratorTest:  Set() Failed" << std::endl;
     passed = false;
@@ -114,12 +114,12 @@ int itkPathIteratorTest(int, char*[])
   for( iter.GoToBegin(); !iter.IsAtEnd(); ++iter )
     {
     std::cout << "Path("<<iter.GetPathPosition()<<") @ "<<iter.GetIndex()<<" = "
-         << iter.Get()<<std::endl;
+              << iter.Get()<<std::endl;
     }
   std::cout << "Should still be at end:  ";
   std::cout << "Path("<<iter.GetPathPosition()<<") @ "<<iter.GetIndex()<<" = "<<
-          iter.Get()<<std::endl;
-  if( (iter.GetIndex())[0] != 30 || (iter.GetIndex())[1] != 30 )
+    iter.Get()<<std::endl;
+  if( (iter.GetIndex() )[0] != 30 || (iter.GetIndex() )[1] != 30 )
     {
     std::cout << "PathIteratorTest:  Failed to iterate over a closed loop" << std::endl;
     passed = false;

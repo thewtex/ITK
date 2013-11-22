@@ -18,14 +18,16 @@
 
 #include <fstream>
 
-
 #include <metaCommand.h>
 
-int testMetaCommand(int argc, char * argv[])
+int
+testMetaCommand(int argc, char * argv[])
 {
   MetaCommand command;
+
   command.SetOption("ExpectedFailStatus","ExpectedFailStatus",true,"Use to check that proper failures are listed.");
-  command.AddOptionField("ExpectedFailStatus","ExpectedFailStatus", MetaCommand::INT,true,"1","Expected fail status is true");
+  command.AddOptionField("ExpectedFailStatus","ExpectedFailStatus", MetaCommand::INT,true,"1",
+                         "Expected fail status is true");
 
   command.SetOption("SumOfValues","sum",true,"Sum of values passed into command line, Default values are 100");
   command.AddOptionField("SumOfValues","SumOfValues", MetaCommand::INT,true);
@@ -57,12 +59,18 @@ int testMetaCommand(int argc, char * argv[])
     {
     const int SumValue=
       +( command.GetOptionWasSet("Required2_ri")         ? command.GetValueAsInt("Required2_ri","Required2_ri") : 0 )
-      +( command.GetOptionWasSet("OptionalField1_ri")    ? command.GetValueAsInt("OptionalField1_ri","OptionalField1_ri"): 0 )
-      +( command.GetOptionWasSet("OptionalField2_ri")    ? command.GetValueAsInt("OptionalField2_ri","OptionalField2_ri"): 0 )
-      +( command.GetOptionWasSet("OptionalField1_oi")    ? command.GetValueAsInt("OptionalField1_oi","OptionalField1_oi"): 0 )
-      +( command.GetOptionWasSet("OptionalField2_oi")    ? command.GetValueAsInt("OptionalField2_oi","OptionalField2_oi"): 0 )
-      +( command.GetOptionWasSet("OptionalField3_ri_oi") ? command.GetValueAsInt("OptionalField3_ri_oi","OptionalField3_ri"): 0 )
-      +( command.GetOptionWasSet("OptionalField3_ri_oi") ? command.GetValueAsInt("OptionalField3_ri_oi","OptionalField3_oi"): 0 );
+      +( command.GetOptionWasSet("OptionalField1_ri")    ? command.GetValueAsInt("OptionalField1_ri",
+                                                                                 "OptionalField1_ri") : 0 )
+      +( command.GetOptionWasSet("OptionalField2_ri")    ? command.GetValueAsInt("OptionalField2_ri",
+                                                                                 "OptionalField2_ri") : 0 )
+      +( command.GetOptionWasSet("OptionalField1_oi")    ? command.GetValueAsInt("OptionalField1_oi",
+                                                                                 "OptionalField1_oi") : 0 )
+      +( command.GetOptionWasSet("OptionalField2_oi")    ? command.GetValueAsInt("OptionalField2_oi",
+                                                                                 "OptionalField2_oi") : 0 )
+      +( command.GetOptionWasSet("OptionalField3_ri_oi") ? command.GetValueAsInt("OptionalField3_ri_oi",
+                                                                                 "OptionalField3_ri") : 0 )
+      +( command.GetOptionWasSet("OptionalField3_ri_oi") ? command.GetValueAsInt("OptionalField3_ri_oi",
+                                                                                 "OptionalField3_oi") : 0 );
     std::cout << "Computed " <<  SumValue << " expected " << command.GetValueAsInt("SumOfValues") << std::endl;
 
     if(command.GetValueAsInt("ExpectedFailStatus","ExpectedFailStatus") == 1)
@@ -75,7 +83,7 @@ int testMetaCommand(int argc, char * argv[])
       return ( command.GetValueAsInt("SumOfValues") - SumValue );
       }
     }
-    else
+  else
     {
     if(command.GetValueAsInt("ExpectedFailStatus","ExpectedFailStatus") == 1)
       {

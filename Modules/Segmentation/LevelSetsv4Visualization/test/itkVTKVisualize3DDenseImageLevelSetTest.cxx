@@ -24,9 +24,9 @@
 #include "itkImageRegionIterator.h"
 #include "itkImageRegionIteratorWithIndex.h"
 
-
 template< typename TImage >
-void GenerateImage( typename TImage::Pointer ioImage )
+void
+GenerateImage( typename TImage::Pointer ioImage )
 {
   typename TImage::IndexType  index;
   index.Fill( 0 );
@@ -60,7 +60,8 @@ void GenerateImage( typename TImage::Pointer ioImage )
     }
 }
 
-int itkVTKVisualize3DDenseImageLevelSetTest( int , char* [] )
+int
+itkVTKVisualize3DDenseImageLevelSetTest( int , char* [] )
 {
   typedef unsigned char PixelType;
   const unsigned int Dimension = 3;
@@ -85,10 +86,10 @@ int itkVTKVisualize3DDenseImageLevelSetTest( int , char* [] )
   while( !it.IsAtEnd() )
     {
     LevelSetImageType::IndexType idx = it.GetIndex();
-    LevelSetOutputType value =
-        static_cast< LevelSetOutputType >( ( idx[0] - 25 ) * ( idx[0] - 25 ) +
-                                           ( idx[1] - 25 ) * ( idx[1] - 25 ) +
-                                           ( idx[2] - 25 ) * ( idx[2] - 25 ) );
+    LevelSetOutputType           value =
+      static_cast< LevelSetOutputType >( ( idx[0] - 25 ) * ( idx[0] - 25 ) +
+                                         ( idx[1] - 25 ) * ( idx[1] - 25 ) +
+                                         ( idx[2] - 25 ) * ( idx[2] - 25 ) );
     value = vcl_sqrt( value ) - 20;
     it.Set( value );
     ++it;

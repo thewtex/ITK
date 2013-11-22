@@ -38,7 +38,7 @@ namespace itk
  * \ingroup ITKRegistrationCommon
  */
 template< typename TFixedPointSet, typename TMovingImage >
-class MeanSquaresPointSetToImageMetric:
+class MeanSquaresPointSetToImageMetric :
   public PointSetToImageMetric< TFixedPointSet, TMovingImage >
 {
 public:
@@ -88,11 +88,13 @@ public:
 
 protected:
   MeanSquaresPointSetToImageMetric();
-  virtual ~MeanSquaresPointSetToImageMetric() {}
+  virtual
+  ~MeanSquaresPointSetToImageMetric() {}
 
 private:
   MeanSquaresPointSetToImageMetric(const Self &); //purposely not implemented
   void operator=(const Self &);                   //purposely not implemented
+
 };
 } // end namespace itk
 

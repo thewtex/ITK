@@ -131,6 +131,7 @@ private:
   template< typename TImage >
   void ComputeConvolution( const TImage *kernelImage,
                            ProgressAccumulator *progress );
+
 };
 }
 

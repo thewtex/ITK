@@ -48,7 +48,6 @@
 //
 //  Software Guide : EndLatex
 
-
 #include "itkImage.h"
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -56,8 +55,8 @@
 #include "itkAffineTransform.h"
 #include "itkNearestNeighborInterpolateImageFunction.h"
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc < 4 )
     {
@@ -74,16 +73,15 @@ int main( int argc, char * argv[] )
     exampleAction = atoi( argv[3] );
     }
 
-  const     unsigned int   Dimension = 2;
-  typedef   unsigned char  InputPixelType;
-  typedef   unsigned char  OutputPixelType;
+  const     unsigned int Dimension = 2;
+  typedef   unsigned char InputPixelType;
+  typedef   unsigned char OutputPixelType;
 
-  typedef itk::Image< InputPixelType,  Dimension >   InputImageType;
-  typedef itk::Image< OutputPixelType, Dimension >   OutputImageType;
+  typedef itk::Image< InputPixelType,  Dimension > InputImageType;
+  typedef itk::Image< OutputPixelType, Dimension > OutputImageType;
 
-
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
@@ -91,19 +89,17 @@ int main( int argc, char * argv[] )
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
 
-
   typedef itk::ResampleImageFilter<
-                  InputImageType, OutputImageType >  FilterType;
+      InputImageType, OutputImageType >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
-  typedef itk::AffineTransform< double, Dimension >  TransformType;
+  typedef itk::AffineTransform< double, Dimension > TransformType;
   TransformType::Pointer transform = TransformType::New();
 
   typedef itk::NearestNeighborInterpolateImageFunction<
-                       InputImageType, double >  InterpolatorType;
+      InputImageType, double >  InterpolatorType;
   InterpolatorType::Pointer interpolator = InterpolatorType::New();
   filter->SetInterpolator( interpolator );
-
 
   //  Software Guide : BeginLatex
   //
@@ -117,7 +113,6 @@ int main( int argc, char * argv[] )
   // Software Guide : BeginCodeSnippet
   filter->SetDefaultPixelValue( 50 );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -147,7 +142,6 @@ int main( int argc, char * argv[] )
   filter->SetOutputDirection( reader->GetOutput()->GetDirection() );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Additionally, we will specify a non-zero origin. Note that the values
@@ -166,8 +160,7 @@ int main( int argc, char * argv[] )
     // Software Guide : EndCodeSnippet
     }
 
-
-  InputImageType::SizeType   size;
+  InputImageType::SizeType size;
 
   size[0] = 300;  // number of pixels along X
   size[1] = 300;  // number of pixels along Y
@@ -175,7 +168,6 @@ int main( int argc, char * argv[] )
 
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
-
 
   //  Software Guide : BeginLatex
   //
@@ -191,7 +183,6 @@ int main( int argc, char * argv[] )
   transform->SetIdentity();
   filter->SetTransform( transform );
   // Software Guide : EndCodeSnippet
-
 
   if( exampleAction == 0 )
     {
@@ -219,7 +210,6 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   //  Software Guide : BeginLatex
   //
   //  The code for a different selection of origin and image size is
@@ -236,7 +226,6 @@ int main( int argc, char * argv[] )
   filter->SetSize( size );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  \index{itk::ResampleImageFilter!SetOutputOrigin()}
@@ -251,12 +240,10 @@ int main( int argc, char * argv[] )
     // Software Guide : EndCodeSnippet
     }
 
-
   if( exampleAction == 1 )
     {
     writer->Update();
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -276,7 +263,6 @@ int main( int argc, char * argv[] )
   //  $Q=(60,30)$ maps to the pixel with index $I=(60,30)$.
   //
   //  Software Guide : EndLatex
-
 
   //  Software Guide : BeginLatex
   //
@@ -303,12 +289,10 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   if( exampleAction == 2 )
     {
     writer->Update();
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -353,13 +337,11 @@ int main( int argc, char * argv[] )
   //
   //  Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   size[0] = 80;  // number of pixels along X
   size[1] = 50;  // number of pixels along Y
   filter->SetSize( size );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -367,7 +349,6 @@ int main( int argc, char * argv[] )
   //  $160$ millimeters by $150$ millimeters.
   //
   //  Software Guide : EndLatex
-
 
   //  Software Guide : BeginLatex
   //
@@ -418,7 +399,6 @@ int main( int argc, char * argv[] )
     {
     writer->Update();
     }
-
 
   //  Software Guide : BeginLatex
   //
@@ -498,7 +478,6 @@ int main( int argc, char * argv[] )
     {
     writer->Update();
     }
-
 
   //  Software Guide : BeginLatex
   //

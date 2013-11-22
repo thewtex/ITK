@@ -105,7 +105,8 @@ SmapsFileParser< TSmapsDataType >
 
 /* SmapsFileParser implementation */
 template< typename TSmapsDataType >
-void SmapsFileParser< TSmapsDataType >::ReadFile(const std::string & mapFileLocation)
+void
+SmapsFileParser< TSmapsDataType >::ReadFile(const std::string & mapFileLocation)
 {
   std::stringstream filename;
 
@@ -152,7 +153,8 @@ VMMapFileParser< TVMMapDataType >
 
 /* VMapFileParser implementation */
 template< typename TVMMapDataType >
-void VMMapFileParser< TVMMapDataType >::ReadFile(const std::string & mapFileLocation)
+void
+VMMapFileParser< TVMMapDataType >::ReadFile(const std::string & mapFileLocation)
 {
   try
     {
@@ -206,6 +208,7 @@ void VMMapFileParser< TVMMapDataType >::ReadFile(const std::string & mapFileLoca
     itkGenericExceptionMacro(<< "The vmmap file is an invalid file or contains errors");
     }
 }
+
 } //end namespace itk
 
 #endif //__itkSmapsFileParser_hxx

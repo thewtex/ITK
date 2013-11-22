@@ -191,7 +191,7 @@ PadImageFilter< TInputImage, TOutputImage >
   // Use the region copy method to copy the input image values to the
   // output image.
   OutputImageRegionType copyRegion( outputRegionForThread );
-  bool regionOverlaps = copyRegion.Crop( inputPtr->GetLargestPossibleRegion() );
+  bool                  regionOverlaps = copyRegion.Crop( inputPtr->GetLargestPossibleRegion() );
   if ( regionOverlaps )
     {
     // Do a block copy for the overlapping region.
@@ -241,7 +241,6 @@ PadImageFilter< TInputImage, TOutputImage >
 {
   m_BoundaryCondition = boundaryCondition;
 }
-
 
 } // end namespace itk
 

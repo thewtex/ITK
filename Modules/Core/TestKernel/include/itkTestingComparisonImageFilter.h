@@ -39,15 +39,15 @@ namespace Testing
  * \ingroup ITKTestKernel
  */
 template< typename TInputImage, typename TOutputImage >
-class ComparisonImageFilter:
+class ComparisonImageFilter :
   public ImageSource< TOutputImage >
 {
 public:
   /** Standard class typedefs. */
-  typedef ComparisonImageFilter             Self;
-  typedef ImageSource< TOutputImage >       Superclass;
-  typedef SmartPointer< Self >              Pointer;
-  typedef SmartPointer< const Self >        ConstPointer;
+  typedef ComparisonImageFilter       Self;
+  typedef ImageSource< TOutputImage > Superclass;
+  typedef SmartPointer< Self >        Pointer;
+  typedef SmartPointer< const Self >  ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -97,13 +97,17 @@ public:
   /** Set/Get the image input of this process object.  */
   using Superclass::SetInput;
   virtual void SetInput(const TInputImage *image);
+
   virtual void SetInput(unsigned int, const TInputImage *image);
+
   const TInputImage * GetInput(void) const;
+
   const TInputImage * GetInput(unsigned int idx) const;
 
 protected:
   ComparisonImageFilter();
-  virtual ~ComparisonImageFilter() {}
+  virtual
+  ~ComparisonImageFilter() {}
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -135,11 +139,11 @@ protected:
 
   int m_ToleranceRadius;
 
-  Array< AccumulateType >    m_ThreadDifferenceSum;
-  Array< SizeValueType >     m_ThreadNumberOfPixels;
+  Array< AccumulateType > m_ThreadDifferenceSum;
+  Array< SizeValueType >  m_ThreadNumberOfPixels;
 
-  Array< OutputPixelType >    m_ThreadMinimumDifference;
-  Array< OutputPixelType >    m_ThreadMaximumDifference;
+  Array< OutputPixelType > m_ThreadMinimumDifference;
+  Array< OutputPixelType > m_ThreadMaximumDifference;
 
 private:
   ComparisonImageFilter(const Self &); //purposely not implemented
@@ -153,6 +157,5 @@ private:
 #ifndef ITK_MANUAL_INSTANTIATION
 #include "itkTestingComparisonImageFilter.hxx"
 #endif
-
 
 #endif

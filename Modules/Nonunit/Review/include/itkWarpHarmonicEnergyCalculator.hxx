@@ -196,6 +196,7 @@ WarpHarmonicEnergyCalculator< TInputImage >
   os << indent << "Derivative Weights: " << this->m_DerivativeWeights << std::endl;
   os << indent << "Neighborhood Radius: " << this->m_NeighborhoodRadius << std::endl;
 }
+
 } // end namespace itk
 
 #endif

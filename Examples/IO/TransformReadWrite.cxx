@@ -36,10 +36,11 @@
 #include "itkBSplineTransform.h"
 #include "itkTransformFactory.h"
 
-int main(int itkNotUsed(ac), char* itkNotUsed(av)[])
+int
+main(int itkNotUsed(ac), char* itkNotUsed(av)[])
 {
   typedef itk::AffineTransform<double,3> AffineTransformType;
-  AffineTransformType::Pointer affine = AffineTransformType::New();
+  AffineTransformType::Pointer        affine = AffineTransformType::New();
   AffineTransformType::InputPointType cor;
   cor.Fill(12);
   affine->SetCenter(cor);
@@ -142,9 +143,9 @@ int main(int itkNotUsed(ac), char* itkNotUsed(av)[])
 
   try
     {
-  // Software Guide : BeginCodeSnippet
+    // Software Guide : BeginCodeSnippet
     reader->Update();
-  // Software Guide : EndCodeSnippet
+    // Software Guide : EndCodeSnippet
     }
   catch( itk::ExceptionObject & excp )
     {
@@ -174,19 +175,19 @@ int main(int itkNotUsed(ac), char* itkNotUsed(av)[])
   // Software Guide : BeginCodeSnippet
   itk::TransformFileReader::TransformListType::const_iterator it
     = transforms->begin();
-  if(!strcmp((*it)->GetNameOfClass(),"AffineTransform"))
+  if(!strcmp( (*it)->GetNameOfClass(),"AffineTransform") )
     {
     AffineTransformType::Pointer affine_read
-      = static_cast<AffineTransformType*>((*it).GetPointer());
+      = static_cast<AffineTransformType*>( (*it).GetPointer() );
     affine_read->Print(std::cout);
     }
 
   ++it;
 
-  if(!strcmp((*it)->GetNameOfClass(),"BSplineTransform"))
+  if(!strcmp( (*it)->GetNameOfClass(),"BSplineTransform") )
     {
     BSplineTransformType::Pointer bspline_read
-      = static_cast<BSplineTransformType*>((*it).GetPointer());
+      = static_cast<BSplineTransformType*>( (*it).GetPointer() );
     bspline_read->Print(std::cout);
     }
   //  Software Guide : EndCodeSnippet

@@ -29,14 +29,15 @@
 #include "itkArrowSpatialObject.h"
 // Software Guide : EndCodeSnippet
 
-int main( int , char *[] )
+int
+main( int , char *[] )
 {
 // Software Guide : BeginLatex
 // The \doxygen{ArrowSpatialObject}, like many SpatialObjects, is templated
 // over the dimensionality of the object.
 // Software Guide : EndLatex
 // Software Guide : BeginCodeSnippet
-  typedef itk::ArrowSpatialObject<3>   ArrowType;
+  typedef itk::ArrowSpatialObject<3> ArrowType;
   ArrowType::Pointer myArrow = ArrowType::New();
 // Software Guide : EndCodeSnippet
 

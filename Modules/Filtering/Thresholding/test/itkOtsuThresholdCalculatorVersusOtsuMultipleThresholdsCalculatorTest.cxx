@@ -22,15 +22,16 @@
 #include "itkOtsuThresholdCalculator.h"
 #include "itkOtsuMultipleThresholdsCalculator.h"
 
-int itkOtsuThresholdCalculatorVersusOtsuMultipleThresholdsCalculatorTest(int argc, char* argv[] )
+int
+itkOtsuThresholdCalculatorVersusOtsuMultipleThresholdsCalculatorTest(int argc, char* argv[] )
 {
   if( argc < 2 )
-  {
+    {
     std::cerr << "Usage: " << argv[0];
     std::cerr << " inputImageFile ";
     std::cerr << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   // Set up an OtsuThresholdCalculator and an OtsuMultipleThresholdsCalculator.
   // Set the OtsuMultipleThresholdsCalculator to have only one threshold.
@@ -38,28 +39,28 @@ int itkOtsuThresholdCalculatorVersusOtsuMultipleThresholdsCalculatorTest(int arg
   // histogram bins.
   // The two algorithms should output the same result.
   std::string inputImageName = argv[1];
-  int numberOfThresholds = 1;
+  int         numberOfThresholds = 1;
 
   const unsigned int ImageDimension = 2;
-  typedef itk::Image<unsigned short, ImageDimension>    InputImageType;
-  typedef itk::ImageFileReader< InputImageType >        ReaderType;
+  typedef itk::Image<unsigned short, ImageDimension> InputImageType;
+  typedef itk::ImageFileReader< InputImageType >     ReaderType;
 
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( inputImageName );
   reader->Update();
 
   typedef itk::Statistics::ScalarImageToHistogramGenerator< InputImageType > HistogramGeneratorType;
-  typedef HistogramGeneratorType::HistogramType HistogramType;
+  typedef HistogramGeneratorType::HistogramType                              HistogramType;
   HistogramGeneratorType::Pointer histogramGenerator = HistogramGeneratorType::New();
   histogramGenerator->SetInput( reader->GetOutput() );
 
   // Compute the OtsuThreshold for the input image.
   typedef itk::OtsuThresholdCalculator<HistogramType> OtsuCalculatorType;
   OtsuCalculatorType::Pointer otsuCalculator = OtsuCalculatorType::New();
-  otsuCalculator->SetInput(histogramGenerator->GetOutput());
+  otsuCalculator->SetInput(histogramGenerator->GetOutput() );
 
   // Compute the OtsuMultipleThresholds for the input image
-  typedef itk::OtsuMultipleThresholdsCalculator< HistogramType >  OtsuMultipleCalculatorType;
+  typedef itk::OtsuMultipleThresholdsCalculator< HistogramType > OtsuMultipleCalculatorType;
   OtsuMultipleCalculatorType::Pointer otsuMultipleCalculator = OtsuMultipleCalculatorType::New();
   otsuMultipleCalculator->SetInputHistogram( histogramGenerator->GetOutput() );
   otsuMultipleCalculator->SetNumberOfThresholds(numberOfThresholds);
@@ -67,22 +68,25 @@ int itkOtsuThresholdCalculatorVersusOtsuMultipleThresholdsCalculatorTest(int arg
   static const int binsArray[] = {4,8,16,32,64,128,256,512,1024};
   std::vector<int> binsVector (binsArray, binsArray + sizeof(binsArray) / sizeof(binsArray[0]) );
   for( std::vector<int>::iterator binsIterator = binsVector.begin(); binsIterator != binsVector.end(); binsIterator++ )
-  {
+    {
     histogramGenerator->SetNumberOfBins( *binsIterator );
     histogramGenerator->Compute();
 
     otsuCalculator->Compute();
     otsuMultipleCalculator->Compute();
-    std::cout << "Computed Otsu threshold using " << *binsIterator << " bins: " << otsuCalculator->GetThreshold() << std::endl;
-    std::cout << "Computed Otsu multiple threshold using " << *binsIterator << " bins: " << otsuMultipleCalculator->GetOutput()[0] << std::endl;
+    std::cout << "Computed Otsu threshold using " << *binsIterator << " bins: " << otsuCalculator->GetThreshold() <<
+    std::endl;
+    std::cout << "Computed Otsu multiple threshold using " << *binsIterator << " bins: " <<
+    otsuMultipleCalculator->GetOutput()[0] << std::endl;
 
     if( otsuCalculator->GetThreshold() != otsuMultipleCalculator->GetOutput()[0] )
-    {
-      std::cout << "Computed Otsu threshold (" << otsuCalculator->GetThreshold() << ") is different from computed Otsu multiple threshold ("
-          << otsuMultipleCalculator->GetOutput()[0] << ")" << std::endl;
+      {
+      std::cout << "Computed Otsu threshold (" << otsuCalculator->GetThreshold() <<
+      ") is different from computed Otsu multiple threshold ("
+                << otsuMultipleCalculator->GetOutput()[0] << ")" << std::endl;
       return EXIT_FAILURE;
+      }
     }
-  }
 
   return EXIT_SUCCESS;
 }

@@ -52,6 +52,7 @@ MultiStartOptimizerv4Template<TInternalComputationValueType>
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Number of iterations: " << this->m_NumberOfIterations  << std::endl;
   os << indent << "Current iteration: " << this->m_CurrentIteration << std::endl;
   os << indent << "Stop condition:"<< this->m_StopCondition << std::endl;
@@ -63,9 +64,9 @@ template<typename TInternalComputationValueType>
 typename MultiStartOptimizerv4Template<TInternalComputationValueType>::ParametersListType &
 MultiStartOptimizerv4Template<TInternalComputationValueType>
 ::GetParametersList()
-{
+  {
   return this->m_ParametersList;
-}
+  }
 
 /** Set the list of parameters over which to search */
 template<typename TInternalComputationValueType>
@@ -85,19 +86,18 @@ template<typename TInternalComputationValueType>
 const typename MultiStartOptimizerv4Template<TInternalComputationValueType>::MetricValuesListType &
 MultiStartOptimizerv4Template<TInternalComputationValueType>
 ::GetMetricValuesList() const
-{
+  {
   return this->m_MetricValuesList;
-}
+  }
 
 //-------------------------------------------------------------------
 template<typename TInternalComputationValueType>
 typename MultiStartOptimizerv4Template<TInternalComputationValueType>::ParametersType
 MultiStartOptimizerv4Template<TInternalComputationValueType>
-::GetBestParameters( )
+::GetBestParameters()
 {
   return this->m_ParametersList[m_BestParametersIndex];
 }
-
 
 //-------------------------------------------------------------------
 template<typename TInternalComputationValueType>
@@ -106,6 +106,7 @@ MultiStartOptimizerv4Template<TInternalComputationValueType>
 ::InstantiateLocalOptimizer()
 {
   LocalOptimizerPointer optimizer = LocalOptimizerType::New();
+
   optimizer->SetLearningRate( static_cast<TInternalComputationValueType>(1.e-1) );
   optimizer->SetNumberOfIterations( 25 );
   this->m_LocalOptimizer=optimizer;
@@ -127,7 +128,7 @@ MultiStartOptimizerv4Template<TInternalComputationValueType>
 ::StopOptimization(void)
 {
   itkDebugMacro( "StopOptimization called with a description - "
-                << this->GetStopConditionDescription() );
+                 << this->GetStopConditionDescription() );
   this->m_Stop = true;
 
   this->m_Metric->SetParameters( this->m_ParametersList[ this->m_BestParametersIndex ] );
@@ -158,7 +159,7 @@ MultiStartOptimizerv4Template<TInternalComputationValueType>
 
   this->m_CurrentIteration = static_cast<SizeValueType>(0);
 
-  if( ! doOnlyInitialization )
+  if( !doOnlyInitialization )
     {
     if ( this->m_NumberOfIterations > static_cast<SizeValueType>(0) )
       {
@@ -180,7 +181,7 @@ MultiStartOptimizerv4Template<TInternalComputationValueType>
   this->InvokeEvent( StartEvent() );
 
   this->m_Stop = false;
-  while( ! this->m_Stop )
+  while( !this->m_Stop )
     {
     /* Compute metric value */
     try
@@ -200,7 +201,9 @@ MultiStartOptimizerv4Template<TInternalComputationValueType>
       /** We simply ignore this exception because it may just be a bad starting point.
        *  We hope that other start points are better.
        */
-      itkWarningMacro("An exception occurred in sub-optimization number " << this->m_CurrentIteration << ".  If too many of these occur, you may need to set a different set of initial parameters.");
+      itkWarningMacro(
+        "An exception occurred in sub-optimization number " << this->m_CurrentIteration <<
+        ".  If too many of these occur, you may need to set a different set of initial parameters.");
       }
 
     if ( this->m_CurrentMetricValue <  this->m_MinimumMetricValue )
@@ -223,8 +226,8 @@ MultiStartOptimizerv4Template<TInternalComputationValueType>
     if ( this->m_CurrentIteration >= this->m_NumberOfIterations )
       {
       this->m_StopConditionDescription << "Maximum number of iterations ("
-      << this->m_NumberOfIterations
-      << ") exceeded.";
+                                       << this->m_NumberOfIterations
+                                       << ") exceeded.";
       this->m_StopCondition = MAXIMUM_NUMBER_OF_ITERATIONS;
       this->StopOptimization();
       break;

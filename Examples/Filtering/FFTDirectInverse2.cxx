@@ -47,7 +47,8 @@
 //will also work.
 #endif
 
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
   if( argc != 3 )
     {
@@ -62,10 +63,10 @@ int main( int argc, char * argv[] )
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-  const unsigned int      Dimension = 2;
+  const unsigned int Dimension = 2;
   //  typedef unsigned char   OutputPixelType;
-  typedef unsigned short  OutputPixelType;
-  typedef float           WorkPixelType;
+  typedef unsigned short OutputPixelType;
+  typedef float          WorkPixelType;
 
   typedef itk::Image< WorkPixelType,  Dimension > InputImageType;
   typedef itk::Image< WorkPixelType,  Dimension > WorkImageType;
@@ -99,13 +100,13 @@ int main( int argc, char * argv[] )
   typedef itk::FFTWInverseFFTImageFilter < ComplexImageType > invFFTFilterType;
 
   invFFTFilterType::Pointer fftoutput = invFFTFilterType::New();
-  fftoutput->SetInput(fftinput->GetOutput()); // try to recover the input image
+  fftoutput->SetInput(fftinput->GetOutput() ); // try to recover the input image
   fftoutput->Update();
 
   // Rescale the output to suit the output image type
   typedef itk::RescaleIntensityImageFilter<
-                                      WorkImageType,
-                                      OutputImageType > RescaleFilterType;
+      WorkImageType,
+      OutputImageType > RescaleFilterType;
 
   RescaleFilterType::Pointer intensityrescaler = RescaleFilterType::New();
 
@@ -116,7 +117,7 @@ int main( int argc, char * argv[] )
   intensityrescaler->SetOutputMaximum( 65535 );
 
   // Write the output
-  writer->SetInput(intensityrescaler->GetOutput());
+  writer->SetInput(intensityrescaler->GetOutput() );
   writer->Update();
 
   //DEBUG: std::cout << "inputreader "<<inputreader->GetOutput()->GetLargestPossibleRegion().GetSize() << std::endl;

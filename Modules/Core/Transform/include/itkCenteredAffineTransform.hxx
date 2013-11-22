@@ -27,15 +27,13 @@ namespace itk
 // Constructor with default arguments
 template <typename TScalar, unsigned int NDimensions>
 CenteredAffineTransform<TScalar, NDimensions>::CenteredAffineTransform() : Superclass(ParametersDimension)
-{
-}
+{}
 
 // Destructor
 template <typename TScalar, unsigned int NDimensions>
 CenteredAffineTransform<TScalar, NDimensions>::
 ~CenteredAffineTransform()
-{
-}
+{}
 
 // Get parameters
 template <typename TScalar, unsigned int NDimensions>

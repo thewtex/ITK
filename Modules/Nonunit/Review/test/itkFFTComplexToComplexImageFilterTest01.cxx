@@ -37,7 +37,8 @@
 #include "itkImageFileWriter.h"
 #include "itkFFTComplexToComplexImageFilter.h"
 
-int itkFFTComplexToComplexImageFilterTest01( int argc, char * argv[] )
+int
+itkFFTComplexToComplexImageFilterTest01( int argc, char * argv[] )
 {
 
   if( argc < 3 )
@@ -49,25 +50,23 @@ int itkFFTComplexToComplexImageFilterTest01( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const unsigned int                              Dimension = 2;
+  const unsigned int Dimension = 2;
 #if defined(ITK_USE_FFTWF) && !defined(ITK_USE_FFTWD)
-  typedef float                                   PixelComponentType;
+  typedef float PixelComponentType;
 #else
-  typedef double                                  PixelComponentType;
+  typedef double PixelComponentType;
 #endif
-  typedef std::complex< PixelComponentType >      PixelType;
+  typedef std::complex< PixelComponentType > PixelType;
 
-  typedef itk::Image< PixelType,  Dimension >     ImageType;
-  typedef itk::ImageFileReader< ImageType >       ReaderType;
-  typedef itk::ImageFileWriter< ImageType >       WriterType;
-
+  typedef itk::Image< PixelType,  Dimension > ImageType;
+  typedef itk::ImageFileReader< ImageType >   ReaderType;
+  typedef itk::ImageFileWriter< ImageType >   WriterType;
 
   ReaderType::Pointer reader = ReaderType::New();
   WriterType::Pointer writer = WriterType::New();
 
   reader->SetFileName( argv[1] );
   writer->SetFileName( argv[2] );
-
 
   //  FFT filter
   typedef itk::FFTComplexToComplexImageFilter < ImageType > FFTFilterType;
@@ -87,9 +86,7 @@ int itkFFTComplexToComplexImageFilterTest01( int argc, char * argv[] )
 
     }
 
-
   FFTFilterType::Pointer fftFilter =    FFTFilterType::New();
-
 
   if( Direction == 1 )
     {
@@ -100,10 +97,8 @@ int itkFFTComplexToComplexImageFilterTest01( int argc, char * argv[] )
     fftFilter->SetTransformDirection( FFTFilterType::INVERSE );
     }
 
-
   fftFilter->SetInput( reader->GetOutput() );
   writer->SetInput( fftFilter->GetOutput() );
-
 
   try
     {

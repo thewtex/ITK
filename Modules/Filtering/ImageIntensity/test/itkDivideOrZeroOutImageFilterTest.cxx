@@ -20,9 +20,11 @@
 #include "itkImageRegionConstIteratorWithIndex.h"
 #include "itkNumericTraits.h"
 
-int itkDivideOrZeroOutImageFilterTest(int, char* [])
+int
+itkDivideOrZeroOutImageFilterTest(int, char* [])
 {
-  const unsigned int                                   Dimension = 3;
+  const unsigned int Dimension = 3;
+
   typedef float                                        PixelType;
   typedef itk::Image< PixelType, Dimension >           ImageType;
   typedef itk::DivideOrZeroOutImageFilter< ImageType > DivideFilterType;
@@ -50,7 +52,7 @@ int itkDivideOrZeroOutImageFilterTest(int, char* [])
   divider->InPlaceOn();
   divider->UpdateLargestPossibleRegion();
 
-  ImageType::RegionType region = divider->GetOutput()->GetLargestPossibleRegion();
+  ImageType::RegionType                               region = divider->GetOutput()->GetLargestPossibleRegion();
   itk::ImageRegionConstIteratorWithIndex< ImageType > iter( divider->GetOutput(), region );
   for (; !iter.IsAtEnd(); ++iter)
     {

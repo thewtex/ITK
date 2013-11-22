@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-
 #include "itkFEMObject.h"
 #include "itkFEMObjectSpatialObject.h"
 #include "itkGroupSpatialObject.h"
@@ -27,7 +26,8 @@
 #include <iostream>
 
 //  Example taken from 'Fundamentals of the Finite ELement Method' - Grandin
-int itkFEMElement2DC0LinearQuadrilateralStressTestFEMObjectReader(int argc, char *argv[])
+int
+itkFEMElement2DC0LinearQuadrilateralStressTestFEMObjectReader(int argc, char *argv[])
 {
   //Need to register default FEM object types,
   //and setup SpatialReader to recognize FEM types

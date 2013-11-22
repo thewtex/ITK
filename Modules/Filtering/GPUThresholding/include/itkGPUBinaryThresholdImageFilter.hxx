@@ -48,49 +48,49 @@ GPUBinaryThresholdImageFilter< TInputImage, TOutputImage >
   defines << "#define DIM_" << TInputImage::ImageDimension << "\n";
 
   std::string validTypeName;
-  bool isValid = GetValidTypename(typeid( typename TInputImage::PixelType ), validTypes, validTypeName);
+  bool        isValid = GetValidTypename(typeid( typename TInputImage::PixelType ), validTypes, validTypeName);
   if (isValid)
     {
-      defines << "#define InPixelType " << validTypeName << "\n";
-      defines << "#define OutPixelType " << validTypeName << "\n";
+    defines << "#define InPixelType " << validTypeName << "\n";
+    defines << "#define OutPixelType " << validTypeName << "\n";
 #ifdef __APPLE__
-      // This is to work around a bug in the OpenCL compiler on Mac OS 10.6 and 10.7 with NVidia drivers
-      // where the compiler was not handling unsigned char arguments correctly.
-      // be sure to define the kernel arguments as InArgType and OutArgType in the kernel source
-      // Using unsigned short instead of unsigned char in the kernel definition
-      // is a known workaround to this problem.
-      if (validTypeName == "unsigned char")
+    // This is to work around a bug in the OpenCL compiler on Mac OS 10.6 and 10.7 with NVidia drivers
+    // where the compiler was not handling unsigned char arguments correctly.
+    // be sure to define the kernel arguments as InArgType and OutArgType in the kernel source
+    // Using unsigned short instead of unsigned char in the kernel definition
+    // is a known workaround to this problem.
+    if (validTypeName == "unsigned char")
       {
-        defines << "#define InArgType unsigned short\n";
-        defines << "#define OutArgType unsigned short\n";
+      defines << "#define InArgType unsigned short\n";
+      defines << "#define OutArgType unsigned short\n";
       }
-      else
+    else
       {
-        defines << "#define InArgType " << validTypeName << "\n";
-        defines << "#define OutArgType " << validTypeName << "\n";
-      }
-#else
       defines << "#define InArgType " << validTypeName << "\n";
       defines << "#define OutArgType " << validTypeName << "\n";
+      }
+#else
+    defines << "#define InArgType " << validTypeName << "\n";
+    defines << "#define OutArgType " << validTypeName << "\n";
 #endif
     }
   else
     {
-      std::ostringstream excpMsg;
-      excpMsg << "GPUBinaryThresholdImageFilter supports";
-      unsigned int sz = validTypes.size();
-      for (unsigned int ii = 0; ii < sz; ++ii)
+    std::ostringstream excpMsg;
+    excpMsg << "GPUBinaryThresholdImageFilter supports";
+    unsigned int sz = validTypes.size();
+    for (unsigned int ii = 0; ii < sz; ++ii)
+      {
+      if (ii < sz-1)
         {
-        if (ii < sz-1)
-          {
-            excpMsg << " " << validTypes[ii] << ",";
-          }
-        else
-          {
-            excpMsg << " and " << validTypes[ii] << " input and output images.";
-          }
+        excpMsg << " " << validTypes[ii] << ",";
         }
-      itkExceptionMacro(<< excpMsg.str().c_str());
+      else
+        {
+        excpMsg << " and " << validTypes[ii] << " input and output images.";
+        }
+      }
+    itkExceptionMacro(<< excpMsg.str().c_str() );
     }
 
   std::cout << "Defines: " << defines.str() << std::endl;

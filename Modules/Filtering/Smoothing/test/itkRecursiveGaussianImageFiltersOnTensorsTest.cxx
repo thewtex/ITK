@@ -18,7 +18,8 @@
 #include "itkRecursiveGaussianImageFilter.h"
 #include "itkSymmetricSecondRankTensor.h"
 
-int itkRecursiveGaussianImageFiltersOnTensorsTest(int, char* [] )
+int
+itkRecursiveGaussianImageFiltersOnTensorsTest(int, char* [] )
 {
   // In this test, we will create a 9x9 image of tensors with pixels (4,4)
   // and (1,6) set to 'tensor1'. We will filter it using
@@ -81,7 +82,7 @@ int itkRecursiveGaussianImageFiltersOnTensorsTest(int, char* [] )
   // is filtered independently.
   //
   typedef itk::RecursiveGaussianImageFilter<
-          ImageType, ImageType >  FilterType;
+      ImageType, ImageType >  FilterType;
   FilterType::Pointer filterX = FilterType::New();
   FilterType::Pointer filterY = FilterType::New();
   filterX->SetDirection( 0 );   // 0 --> X direction
@@ -108,7 +109,7 @@ int itkRecursiveGaussianImageFiltersOnTensorsTest(int, char* [] )
   //Test a few pixels of the  fitlered image
   //
   ImageType::Pointer filteredImage = filterY->GetOutput();
-  ConstIteratorType cit( filteredImage, filteredImage->GetRequestedRegion() );
+  ConstIteratorType  cit( filteredImage, filteredImage->GetRequestedRegion() );
   cit.SetDirection(0);
 
   /* Print out all Tensor values.
@@ -127,20 +128,20 @@ int itkRecursiveGaussianImageFiltersOnTensorsTest(int, char* [] )
   index[0] = 4;
   index[1] = 4;
   cit.SetIndex(index);
-  if( vnl_math_abs(cit.Get()(0,0) - 0.160313) > tolerance )
+  if( vnl_math_abs(cit.Get() (0,0) - 0.160313) > tolerance )
     {
     std::cout << "[FAILED] Tensor(0,0) at index (4,4) must be 0.1603 but is "
-      << cit.Get()(0,0) << std::endl;
+              << cit.Get() (0,0) << std::endl;
     return EXIT_FAILURE;
     }
 
   index[0]=6;
   index[1]=6;
   cit.SetIndex(index);
-  if( vnl_math_abs(cit.Get()(3,3) -0.0026944) > tolerance )
+  if( vnl_math_abs(cit.Get() (3,3) -0.0026944) > tolerance )
     {
     std::cout << "[FAILED] Tensor(3,3) at index (6,6) must be 0.0026944 but is "
-      << cit.Get()(3,3) << std::endl;
+              << cit.Get() (3,3) << std::endl;
     return EXIT_FAILURE;
     }
 

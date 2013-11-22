@@ -38,7 +38,7 @@ class CorrelationImageToImageMetricv4HelperThreader
 {
 public:
   /** Standard class typedefs. */
-  typedef CorrelationImageToImageMetricv4HelperThreader                                      Self;
+  typedef CorrelationImageToImageMetricv4HelperThreader                                                Self;
   typedef ImageToImageMetricv4GetValueAndDerivativeThreader< TDomainPartitioner, TImageToImageMetric > Superclass;
   typedef SmartPointer< Self >                                                                         Pointer;
   typedef SmartPointer< const Self >                                                                   ConstPointer;
@@ -66,12 +66,13 @@ public:
   typedef typename Superclass::InternalComputationValueType InternalComputationValueType;
   typedef typename Superclass::NumberOfParametersType       NumberOfParametersType;
 
-  typedef typename Superclass::FixedOutputPointType     FixedOutputPointType;
-  typedef typename Superclass::MovingOutputPointType    MovingOutputPointType;
+  typedef typename Superclass::FixedOutputPointType  FixedOutputPointType;
+  typedef typename Superclass::MovingOutputPointType MovingOutputPointType;
 
 protected:
   CorrelationImageToImageMetricv4HelperThreader();
-  virtual ~CorrelationImageToImageMetricv4HelperThreader();
+  virtual
+  ~CorrelationImageToImageMetricv4HelperThreader();
 
   /** Overload: Resize and initialize per thread objects. */
   virtual void BeforeThreadedExecution();
@@ -85,7 +86,6 @@ protected:
    * support).  */
   virtual void AfterThreadedExecution();
 
-
   /* Overload: don't need to compute the image gradients and store derivatives
    *
    * Method called by the threaders to process the given virtual point.  This
@@ -96,29 +96,29 @@ protected:
                                     const VirtualPointType & virtualPoint,
                                     const ThreadIdType threadId );
 
-
   /**
    * Not using. All processing is done in ProcessVirtualPoint.
    */
-  virtual bool ProcessPoint(
-        const VirtualIndexType &          ,
-        const VirtualPointType &          ,
-        const FixedImagePointType &       ,
-        const FixedImagePixelType &       ,
-        const FixedImageGradientType &    ,
-        const MovingImagePointType &      ,
-        const MovingImagePixelType &      ,
-        const MovingImageGradientType &   ,
-        MeasureType &                     ,
-        DerivativeType &                  ,
-        const ThreadIdType                 ) const
+  virtual bool
+  ProcessPoint(
+    const VirtualIndexType &          ,
+    const VirtualPointType &          ,
+    const FixedImagePointType &       ,
+    const FixedImagePixelType &       ,
+    const FixedImageGradientType &    ,
+    const MovingImagePointType &      ,
+    const MovingImagePixelType &      ,
+    const MovingImageGradientType &   ,
+    MeasureType &                     ,
+    DerivativeType &                  ,
+    const ThreadIdType                 ) const
   {
     return false;
   }
 
 private:
   CorrelationImageToImageMetricv4HelperThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  void operator=( const Self & );                                // purposely not implemented
 
   struct CorrelationMetricPerThreadStruct
     {
@@ -126,9 +126,9 @@ private:
     InternalComputationValueType MovSum;
     };
   itkPadStruct( ITK_CACHE_LINE_ALIGNMENT, CorrelationMetricPerThreadStruct,
-                                          PaddedCorrelationMetricPerThreadStruct);
+                PaddedCorrelationMetricPerThreadStruct);
   itkAlignedTypedef( ITK_CACHE_LINE_ALIGNMENT, PaddedCorrelationMetricPerThreadStruct,
-                                               AlignedCorrelationMetricPerThreadStruct );
+                     AlignedCorrelationMetricPerThreadStruct );
   /* per thread variables for correlation and its derivatives */
   mutable AlignedCorrelationMetricPerThreadStruct * m_CorrelationMetricPerThreadVariables;
 

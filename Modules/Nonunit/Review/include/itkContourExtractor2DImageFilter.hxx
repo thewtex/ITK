@@ -144,10 +144,10 @@ ContourExtractor2DImageFilter< TInputImage >
     // these into the switch below is even worse.  InterpolateContourPosition
     // takes the values at two vertices, the index of the first vertex, and the
     // offset between the two vertices.
-    #define TOP_     this->InterpolateContourPosition(v0, v1, index, right)
-    #define BOTTOM_  this->InterpolateContourPosition(v2, v3, index + down, right)
-    #define LEFT_    this->InterpolateContourPosition(v0, v2, index,       down)
-    #define RIGHT_   this->InterpolateContourPosition(v1, v3, index + right, down)
+#define TOP_     this->InterpolateContourPosition(v0, v1, index, right)
+#define BOTTOM_  this->InterpolateContourPosition(v2, v3, index + down, right)
+#define LEFT_    this->InterpolateContourPosition(v0, v2, index,       down)
+#define RIGHT_   this->InterpolateContourPosition(v1, v3, index + right, down)
 
     // (2) Add line segments to the growing contours as defined by the cases.
     // AddSegment takes a "from" vertex and a "to" vertex, and adds it to the
@@ -261,7 +261,7 @@ ContourExtractor2DImageFilter< TInputImage >
     "toOffset has unexpected values");
 
   double x = ( m_ContourValue - static_cast< InputRealType >( fromValue ) )
-             / ( toValue - static_cast< InputRealType >( fromValue ) );
+    / ( toValue - static_cast< InputRealType >( fromValue ) );
 
   output[0] = fromIndex[0] + x * toOffset[0];
   output[1] = fromIndex[1] + x * toOffset[1];
@@ -532,6 +532,7 @@ ContourExtractor2DImageFilter< TInputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "ReverseContourOrientation: " << m_ReverseContourOrientation
      << std::endl;
   os << indent << "VertexConnectHighPixels: " << m_VertexConnectHighPixels
@@ -551,6 +552,7 @@ ContourExtractor2DImageFilter< TInputImage >
      << static_cast< InputRealPrintType >( m_ContourValue )
      << std::endl;
 }
+
 } // end namespace itk
 
 #endif

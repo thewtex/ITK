@@ -21,9 +21,7 @@
 #include "itkImageFileReader.h"
 #include "itkImageLinearIteratorWithIndex.h"
 
-
 #define SPECIFIC_IMAGEIO_MODULE_TEST
-
 
 // Helper class for reading a file and checking the content
 template< typename TImageType >
@@ -31,7 +29,8 @@ class RawImageIOReadFileTester
 {
 public:
 // Only single method of this class
-int Read( const char *filename , bool ReadBigEndian, unsigned int dims[] )
+  int
+  Read( const char *filename , bool ReadBigEndian, unsigned int dims[] )
   {
 
     const unsigned int ImageDimension = TImageType::ImageDimension;
@@ -81,7 +80,6 @@ int Read( const char *filename , bool ReadBigEndian, unsigned int dims[] )
     it.GoToBegin();
     it.SetDirection( 0 );
 
-
     PixelType value = itk::NumericTraits< PixelType >::Zero;
     while ( !it.IsAtEnd() )
       {
@@ -107,7 +105,8 @@ int Read( const char *filename , bool ReadBigEndian, unsigned int dims[] )
 
 };
 
-int itkRawImageIOTest4(int argc, char*argv[])
+int
+itkRawImageIOTest4(int argc, char*argv[])
 {
 
   typedef unsigned short PixelType;
@@ -121,7 +120,7 @@ int itkRawImageIOTest4(int argc, char*argv[])
   typedef itk::PixelTraits< PixelType >::ValueType ComponentType;
   typedef itk::ByteSwapper< ComponentType >        ByteSwapperType;
 
-  PixelType value = itk::NumericTraits< PixelType >::Zero;
+  PixelType    value = itk::NumericTraits< PixelType >::Zero;
   unsigned int numberOfPixels = dims[0] * dims[1];
 
   if(argc < 3)
@@ -129,7 +128,6 @@ int itkRawImageIOTest4(int argc, char*argv[])
     std::cerr << "Usage: " << argv[0] << " Output1 Output2\n";
     return EXIT_FAILURE;
     }
-
 
   // Create the BigEndian binary file
   std::ofstream outputFile1(argv[1], std::ios::out);
@@ -153,7 +151,7 @@ int itkRawImageIOTest4(int argc, char*argv[])
     // BigEndian regardless of the platform
     ByteSwapperType::SwapFromSystemToBigEndian( &swappedValue );
     outputFile1.write( reinterpret_cast<char*>(&swappedValue),
-                      sizeof(swappedValue) );
+                       sizeof(swappedValue) );
     ++value;
     }
   outputFile1.close();
@@ -187,7 +185,7 @@ int itkRawImageIOTest4(int argc, char*argv[])
     // LittleEndian regardless of the platform
     ByteSwapperType::SwapFromSystemToLittleEndian( &swappedValue );
     outputFile2.write( reinterpret_cast<char*>(&swappedValue),
-                      sizeof(swappedValue) );
+                       sizeof(swappedValue) );
     ++value;
     }
   outputFile2.close();
@@ -198,8 +196,7 @@ int itkRawImageIOTest4(int argc, char*argv[])
     return EXIT_FAILURE;
     }
 
-  RawImageIOReadFileTester<ImageType>  readTester;
-
+  RawImageIOReadFileTester<ImageType> readTester;
 
   int status;
 

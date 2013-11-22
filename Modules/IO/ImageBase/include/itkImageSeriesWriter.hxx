@@ -33,7 +33,7 @@ namespace itk
 //---------------------------------------------------------
 template< typename TInputImage, typename TOutputImage >
 ImageSeriesWriter< TInputImage, TOutputImage >
-::ImageSeriesWriter():
+::ImageSeriesWriter() :
   m_ImageIO(0), m_UserSpecifiedImageIO(false),
   m_SeriesFormat("%d"),
   m_StartIndex(1), m_IncrementIndex(1), m_MetaDataDictionaryArray(NULL)
@@ -63,18 +63,18 @@ template< typename TInputImage, typename TOutputImage >
 const typename ImageSeriesWriter< TInputImage, TOutputImage >::InputImageType *
 ImageSeriesWriter< TInputImage, TOutputImage >
 ::GetInput(void)
-{
+  {
   return itkDynamicCastInDebugMode< TInputImage * >( this->GetPrimaryInput() );
-}
+  }
 
 //---------------------------------------------------------
 template< typename TInputImage, typename TOutputImage >
 const typename ImageSeriesWriter< TInputImage, TOutputImage >::InputImageType *
 ImageSeriesWriter< TInputImage, TOutputImage >
 ::GetInput(unsigned int idx)
-{
+  {
   return itkDynamicCastInDebugMode< TInputImage * >( this->ProcessObject::GetInput(idx) );
-}
+  }
 
 //---------------------------------------------------------
 template< typename TInputImage, typename TOutputImage >
@@ -408,6 +408,7 @@ ImageSeriesWriter< TInputImage, TOutputImage >
     os << indent << "Compression: Off\n";
     }
 }
+
 } // end namespace itk
 
 #endif

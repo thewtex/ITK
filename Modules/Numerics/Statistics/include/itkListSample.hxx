@@ -53,7 +53,8 @@ ListSample< TMeasurementVector >
   if ( this->GetMeasurementVectorSize() != NumericTraits<MeasurementVectorType>::GetLength(mv) )
     {
     itkExceptionMacro("MeasurementVectorSize: " << this->GetMeasurementVectorSize()
-      << " doesn't match input measurement vector length: " << NumericTraits<MeasurementVectorType>::GetLength(mv));
+                                                << " doesn't match input measurement vector length: " <<
+        NumericTraits<MeasurementVectorType>::GetLength(mv) );
     }
   this->m_InternalContainer.push_back(mv);
 }
@@ -64,7 +65,7 @@ ListSample< TMeasurementVector >
 ::Size() const
 {
   return static_cast< InstanceIdentifier >(
-           this->m_InternalContainer.size() );
+    this->m_InternalContainer.size() );
 }
 
 template< typename TMeasurementVector >
@@ -81,13 +82,13 @@ template< typename TMeasurementVector >
 const typename ListSample< TMeasurementVector >::MeasurementVectorType &
 ListSample< TMeasurementVector >
 ::GetMeasurementVector(InstanceIdentifier instanceId) const
-{
+  {
   if ( instanceId < m_InternalContainer.size() )
     {
     return m_InternalContainer[instanceId];
     }
   itkExceptionMacro("MeasurementVector " << instanceId << " does not exist");
-}
+  }
 
 template< typename TMeasurementVector >
 void
@@ -156,6 +157,7 @@ ListSample< TMeasurementVector >
   os << indent << "Number of samples: "
      << this->m_InternalContainer.size() << std::endl;
 }
+
 } // end of namespace Statistics
 } // end of namespace itk
 

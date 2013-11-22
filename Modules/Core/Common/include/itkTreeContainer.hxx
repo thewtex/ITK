@@ -227,7 +227,8 @@ TreeContainer< TValueType >::IsRoot(TValueType element)
 
 /** Clear the tree */
 template< typename TValueType >
-bool TreeContainer< TValueType >::Clear()
+bool
+TreeContainer< TValueType >::Clear()
 {
   PreOrderTreeIterator< Self > it(this, m_Root);
   bool                         success = it.Remove();
@@ -327,6 +328,7 @@ void
 TreeContainer< TValueType >::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Number of objects = " << this->Count() << std::endl;
 
   if ( this->Count() > 0 )
@@ -346,6 +348,7 @@ TreeContainer< TValueType >::PrintSelf(std::ostream & os, Indent indent) const
       }
     }
 }
+
 } // namespace itk
 
 #endif

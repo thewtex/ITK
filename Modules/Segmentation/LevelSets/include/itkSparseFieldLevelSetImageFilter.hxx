@@ -103,8 +103,8 @@ template< typename TInputImage, typename TOutputImage >
 typename SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >::StatusType
 SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
 ::m_StatusNull = NumericTraits< typename SparseFieldLevelSetImageFilter< TInputImage,
-                                                                             TOutputImage >::StatusType >::
-                 NonpositiveMin();
+                                                                         TOutputImage >::StatusType >::
+  NonpositiveMin();
 
 template< typename TInputImage, typename TOutputImage >
 typename SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >::StatusType
@@ -288,7 +288,7 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
           {
           node = m_LayerNodeStore->Borrow();
           node->m_Value = statusIt.GetIndex()
-                          + m_NeighborList.GetNeighborhoodOffset(i);
+            + m_NeighborList.GetNeighborhoodOffset(i);
           OutputList->PushFront(node);
           } // else this index was out of bounds.
         }
@@ -559,7 +559,7 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
   // m_StatusBoundaryPixel values.  Uses the face calculator to find all of the
   // region faces.
   typedef NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< StatusImageType >
-  BFCType;
+    BFCType;
 
   BFCType faceCalculator;
   typename BFCType::FaceListType faceList;
@@ -705,7 +705,7 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
   typename OutputImageType::IndexType upperBounds, lowerBounds;
   lowerBounds = this->m_OutputImage->GetRequestedRegion().GetIndex();
   upperBounds = this->m_OutputImage->GetRequestedRegion().GetIndex()
-                + this->m_OutputImage->GetRequestedRegion().GetSize();
+    + this->m_OutputImage->GetRequestedRegion().GetSize();
 
   for ( outputIt.GoToBegin(); !outputIt.IsAtEnd(); ++outputIt )
     {
@@ -743,7 +743,7 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
       for ( unsigned int i = 0; i < m_NeighborList.GetSize(); ++i )
         {
         offset_index = center_index
-                       + m_NeighborList.GetNeighborhoodOffset(i);
+          + m_NeighborList.GetNeighborhoodOffset(i);
 
         if ( outputIt.GetPixel( m_NeighborList.GetArrayIndex(i) ) != m_ValueZero )
           {
@@ -806,7 +806,7 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
           {
           node = m_LayerNodeStore->Borrow();
           node->m_Value = statusIt.GetIndex()
-                          + m_NeighborList.GetNeighborhoodOffset(i);
+            + m_NeighborList.GetNeighborhoodOffset(i);
           m_Layers[to]->PushFront(node);
           }
         }
@@ -903,7 +903,7 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
     this->GetDifferenceFunction();
   typename Superclass::FiniteDifferenceFunctionType::FloatOffsetType offset;
   ValueType norm_grad_phi_squared, dx_forward, dx_backward, forwardValue,
-            backwardValue, centerValue;
+    backwardValue, centerValue;
   unsigned  i;
   ValueType MIN_NORM      = 1.0e-6;
   if ( this->GetUseImageSpacing() )
@@ -1191,6 +1191,7 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
   Superclass::PrintSelf(os, indent);
 
   unsigned int i;
+
   os << indent << "m_IsoSurfaceValue: " << m_IsoSurfaceValue << std::endl;
   os << indent << "m_LayerNodeStore: " << std::endl;
   m_LayerNodeStore->Print( os, indent.GetNextIndent() );
@@ -1204,6 +1205,7 @@ SparseFieldLevelSetImageFilter< TInputImage, TOutputImage >
   os << indent << "m_UpdateBuffer: size=" << static_cast< SizeValueType >( m_UpdateBuffer.size() )
      << " capacity=" << static_cast< SizeValueType >( m_UpdateBuffer.capacity() ) << std::endl;
 }
+
 } // end namespace itk
 
 #endif

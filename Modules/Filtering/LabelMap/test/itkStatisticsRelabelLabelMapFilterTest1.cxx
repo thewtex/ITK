@@ -19,13 +19,13 @@
 #include "itkImageFileWriter.h"
 #include "itkSimpleFilterWatcher.h"
 
-
 #include "itkStatisticsRelabelLabelMapFilter.h"
 #include "itkLabelImageToStatisticsLabelMapFilter.h"
 
 #include "itkTestingMacros.h"
 
-int itkStatisticsRelabelLabelMapFilterTest1(int argc, char * argv[])
+int
+itkStatisticsRelabelLabelMapFilterTest1(int argc, char * argv[])
 {
 
   if( argc != 6)
@@ -41,8 +41,8 @@ int itkStatisticsRelabelLabelMapFilterTest1(int argc, char * argv[])
 
   typedef itk::Image< PixelType, dim > ImageType;
 
-  typedef itk::StatisticsLabelObject< PixelType, dim >           StatisticsLabelObjectType;
-  typedef itk::LabelMap< StatisticsLabelObjectType >             LabelMapType;
+  typedef itk::StatisticsLabelObject< PixelType, dim > StatisticsLabelObjectType;
+  typedef itk::LabelMap< StatisticsLabelObjectType >   LabelMapType;
 
   //Reading Image File
   typedef itk::ImageFileReader< ImageType > ReaderType;

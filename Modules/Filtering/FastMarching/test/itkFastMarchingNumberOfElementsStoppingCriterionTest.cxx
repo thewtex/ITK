@@ -18,7 +18,8 @@
 
 #include "itkFastMarchingNumberOfElementsStoppingCriterion.h"
 
-int itkFastMarchingNumberOfElementsStoppingCriterionTest( int , char * [] )
+int
+itkFastMarchingNumberOfElementsStoppingCriterionTest( int , char * [] )
 {
   typedef itk::Image< float, 2> ImageType;
 
@@ -34,7 +35,7 @@ int itkFastMarchingNumberOfElementsStoppingCriterionTest( int , char * [] )
   typedef itk::QuadEdgeMesh< float, 3 > MeshType;
 
   typedef itk::FastMarchingNumberOfElementsStoppingCriterion< MeshType, MeshType >
-      MeshStoppingCriterionType;
+    MeshStoppingCriterionType;
 
   MeshStoppingCriterionType::Pointer mesh_criterion = MeshStoppingCriterionType::New();
   if( mesh_criterion.IsNull() )

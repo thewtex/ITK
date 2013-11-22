@@ -25,28 +25,26 @@ namespace itk
 template< typename TMesh >
 LevelSetDomainPartitionMesh <TMesh>
 ::LevelSetDomainPartitionMesh()
-{
-}
+{}
 
 template< typename TMesh >
 LevelSetDomainPartitionMesh <TMesh>
 ::~LevelSetDomainPartitionMesh()
-{
-}
+{}
 
 template< typename TMesh >
 void
 LevelSetDomainPartitionMesh <TMesh>
 ::PopulateListDomain()
 {
-  PointsContainerConstPointer points = this->m_Mesh->GetPoints();
+  PointsContainerConstPointer  points = this->m_Mesh->GetPoints();
   PointsContainerConstIterator p_it = points->Begin();
   PointsContainerConstIterator p_end = points->End();
 
   while( p_it != p_end )
     {
     PointIdentifierType & idx = p_it->Index();
-    IdentifierListType identifierList;
+    IdentifierListType    identifierList;
 
     for( IdentifierType i = NumericTraits< IdentifierType >::Zero; i < this->m_NumberOfLevelSetFunctions; ++i )
       {
@@ -65,8 +63,7 @@ template< typename TMesh >
 void
 LevelSetDomainPartitionMesh <TMesh>
 ::AllocateListDomain()
-{
-}
+{}
 
 } //end namespace itk
 

@@ -38,13 +38,13 @@ template< typename TIteratingFilter, typename TFilterToUpdate >
 class LevelSetIterationUpdateCommand : public Command
 {
 public:
-  typedef LevelSetIterationUpdateCommand  Self;
-  typedef Command                         Superclass;
-  typedef SmartPointer< Self >            Pointer;
-  typedef SmartPointer< const Self >      ConstPointer;
+  typedef LevelSetIterationUpdateCommand Self;
+  typedef Command                        Superclass;
+  typedef SmartPointer< Self >           Pointer;
+  typedef SmartPointer< const Self >     ConstPointer;
 
-  typedef TIteratingFilter  IteratingFilterType;
-  typedef TFilterToUpdate   FilterToUpdateType;
+  typedef TIteratingFilter IteratingFilterType;
+  typedef TFilterToUpdate  FilterToUpdateType;
 
   /** Run-time type information (and related methods). */
   itkTypeMacro( LevelSetIterationUpdateCommand, Command );
@@ -66,14 +66,15 @@ public:
 
 protected:
   LevelSetIterationUpdateCommand();
-  virtual ~LevelSetIterationUpdateCommand();
+  virtual
+  ~LevelSetIterationUpdateCommand();
 
 private:
   LevelSetIterationUpdateCommand( const Self& ); // purposely not implemented
-  void operator= ( const Self& ); // purposely not implemented
+  void operator=( const Self& );                 // purposely not implemented
 
-  WeakPointer< FilterToUpdateType >  m_FilterToUpdate;
-  IdentifierType                     m_UpdatePeriod;
+  WeakPointer< FilterToUpdateType > m_FilterToUpdate;
+  IdentifierType                    m_UpdatePeriod;
 };
 
 } // end namespace itk

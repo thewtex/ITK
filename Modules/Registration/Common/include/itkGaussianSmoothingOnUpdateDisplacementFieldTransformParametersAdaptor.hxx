@@ -30,14 +30,12 @@ GaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor<TTransform>
   m_GaussianSmoothingVarianceForTheTotalField( 0.5 ),
   m_GaussianSmoothingVarianceForTheUpdateFieldSetTime( 0 ),
   m_GaussianSmoothingVarianceForTheTotalFieldSetTime( 0 )
-{
-}
+{}
 
 template<typename TTransform>
 GaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor<TTransform>
 ::~GaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor()
-{
-}
+{}
 
 template<typename TTransform>
 void

@@ -45,6 +45,7 @@ CurvesLevelSetImageFilter< TInputImage, TFeatureImage, TOutputType >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "CurvesFunction: \n";
   m_CurvesFunction->Print( os, indent.GetNextIndent() );
 }
@@ -66,6 +67,7 @@ CurvesLevelSetImageFilter< TInputImage, TFeatureImage, TOutputType >
   // Continue with Superclass implementation
   Superclass::GenerateData();
 }
+
 } // end namespace itk
 
 #endif

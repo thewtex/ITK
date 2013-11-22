@@ -41,7 +41,7 @@ namespace itk
  * \ingroup ITKImageGrid
  */
 template< typename TInputImage, typename TOutputImage >
-class InterpolateImageFilter:
+class InterpolateImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -76,10 +76,17 @@ public:
   typedef InterpolateImageFunction< IntermediateImageType >                           InterpolatorType;
 
   /** Set/Get the first image */
-  void SetInput1(const InputImageType *image)
-  { this->SetInput(image); }
-  const InputImageType * GetInput1()
-  { return this->GetInput(); }
+  void
+  SetInput1(const InputImageType *image)
+  {
+    this->SetInput(image);
+  }
+
+  const InputImageType *
+  GetInput1()
+  {
+    return this->GetInput();
+  }
 
   /** Set/Get the second image */
   void SetInput2(const InputImageType *image);

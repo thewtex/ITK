@@ -50,7 +50,6 @@
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
 #include "itkScalarImageToHistogramGenerator.h"
 #include "itkImage.h"
@@ -58,7 +57,8 @@
 
 #include "itkImageFileReader.h"
 
-int main( int argc, char * argv [] )
+int
+main( int argc, char * argv [] )
 {
 
   if( argc < 3 )
@@ -77,8 +77,8 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef unsigned char       PixelType;
-  const   unsigned int        Dimension = 3;
+  typedef unsigned char PixelType;
+  const   unsigned int Dimension = 3;
 
   typedef itk::Image< PixelType, Dimension > ImageType;
   // Software Guide : EndCodeSnippet
@@ -109,12 +109,11 @@ int main( int argc, char * argv [] )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::Statistics::ScalarImageToHistogramGenerator<
-                                      ImageType >   HistogramGeneratorType;
+      ImageType >   HistogramGeneratorType;
 
   HistogramGeneratorType::Pointer histogramGenerator =
-                                      HistogramGeneratorType::New();
+    HistogramGeneratorType::New();
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -133,7 +132,6 @@ int main( int argc, char * argv [] )
   histogramGenerator->SetMarginalScale( 10.0 );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We can then connect as input the output image from a reader and trigger the
@@ -148,7 +146,6 @@ int main( int argc, char * argv [] )
   histogramGenerator->Compute();
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // The resulting histogram can be recovered from the generator by using the
@@ -158,11 +155,10 @@ int main( int argc, char * argv [] )
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef HistogramGeneratorType::HistogramType  HistogramType;
+  typedef HistogramGeneratorType::HistogramType HistogramType;
 
   const HistogramType * histogram = histogramGenerator->GetOutput();
   // Software Guide : EndCodeSnippet
-
 
   const unsigned int histogramSize = histogram->Size();
 
@@ -173,7 +169,6 @@ int main( int argc, char * argv [] )
     std::cout << "bin = " << bin << " frequency = ";
     std::cout << histogram->GetFrequency( bin, 0 ) << std::endl;
     }
-
 
   // Software Guide : BeginLatex
   //
@@ -191,7 +186,6 @@ int main( int argc, char * argv [] )
   //
   // Software Guide : EndLatex
 
-
   // Software Guide : BeginCodeSnippet
   HistogramType::ConstIterator itr = histogram->Begin();
   HistogramType::ConstIterator end = histogram->End();
@@ -200,7 +194,6 @@ int main( int argc, char * argv [] )
 
   double Entropy = 0.0;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -224,12 +217,11 @@ int main( int argc, char * argv [] )
 
     if( probability > 0.99 / Sum )
       {
-      Entropy += - probability * vcl_log( probability ) / vcl_log( 2.0 );
+      Entropy += -probability * vcl_log( probability ) / vcl_log( 2.0 );
       }
     ++itr;
     }
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -245,7 +237,6 @@ int main( int argc, char * argv [] )
   // Software Guide : BeginCodeSnippet
   std::cout << "Image entropy = " << Entropy << " bits " << std::endl;
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -274,7 +265,6 @@ int main( int argc, char * argv [] )
   // measures such as the entropy.
   //
   // Software Guide : EndLatex
-
 
   return 0;
 

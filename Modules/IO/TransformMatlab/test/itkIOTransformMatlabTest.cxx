@@ -28,9 +28,11 @@
 #include "itksys/SystemTools.hxx"
 
 template<typename ScalarType>
-static int oneTest(const char *goodname,const char *badname)
+static int
+oneTest(const char *goodname,const char *badname)
 {
   unsigned int i;
+
   typedef itk::AffineTransform<ScalarType,4>  AffineTransformType;
   typedef itk::AffineTransform<ScalarType,10> AffineTransformTypeNotRegistered;
   typename AffineTransformType::Pointer        affine = AffineTransformType::New();
@@ -39,7 +41,6 @@ static int oneTest(const char *goodname,const char *badname)
   typedef itk::TransformFileReaderTemplate<ScalarType> TransformReaderType;
 
   itk::ObjectFactoryBase::RegisterFactory(itk::MatlabTransformIOFactory::New() );
-
 
   // Set it's parameters
   typename AffineTransformType::ParametersType p = affine->GetParameters();
@@ -82,7 +83,6 @@ static int oneTest(const char *goodname,const char *badname)
     return EXIT_FAILURE;
     }
 
-
   try
     {
     typename TransformReaderType::TransformListType *list;
@@ -101,7 +101,6 @@ static int oneTest(const char *goodname,const char *badname)
     std::cout << "[FAILED]" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "\n\nCreating bad writer" << std::endl;
   typename AffineTransformTypeNotRegistered::Pointer Bogus = AffineTransformTypeNotRegistered::New();
@@ -174,9 +173,11 @@ static int oneTest(const char *goodname,const char *badname)
 // This test will exercise this reported bug:
 // http://public.kitware.com/Bug/view.php?id=7028
 template<typename ScalarType>
-int secondTest()
+int
+secondTest()
 {
   std::filebuf fb;
+
   fb.open("IllegalTransform.txt",std::ios::out);
   std::ostream os(&fb);
   os << "#Insight Transform File V1.0"
@@ -219,7 +220,8 @@ int secondTest()
   return EXIT_FAILURE;
 }
 
-int itkIOTransformMatlabTest(int argc, char* argv[])
+int
+itkIOTransformMatlabTest(int argc, char* argv[])
 {
   if (argc > 1)
     {
@@ -233,7 +235,7 @@ int itkIOTransformMatlabTest(int argc, char* argv[])
   int result4 =  secondTest<double>();
 
   return (
-          ( !( result1 == EXIT_SUCCESS && result2 == EXIT_SUCCESS) ) &&
-          ( !( result3 == EXIT_SUCCESS && result4 == EXIT_SUCCESS) )
-         );
+    ( !( result1 == EXIT_SUCCESS && result2 == EXIT_SUCCESS) ) &&
+    ( !( result3 == EXIT_SUCCESS && result4 == EXIT_SUCCESS) )
+    );
 }

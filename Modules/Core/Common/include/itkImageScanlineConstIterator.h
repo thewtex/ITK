@@ -55,8 +55,8 @@ namespace itk
  *
  */
 template< typename TImage >
-class ImageScanlineConstIterator:
-    public ImageConstIterator< TImage >
+class ImageScanlineConstIterator :
+  public ImageConstIterator< TImage >
 {
 public:
   /** Standard class typedef. */
@@ -91,7 +91,7 @@ public:
 
   /** Default constructor. Needed since we provide a cast constructor. */
   ImageScanlineConstIterator()
-    :ImageConstIterator< TImage >()
+    : ImageConstIterator< TImage >()
   {
     m_SpanBeginOffset = 0;
     m_SpanEndOffset = 0;
@@ -99,7 +99,7 @@ public:
 
   /** Constructor establishes an iterator to walk a particular image and a
    * particular region of that image. */
-  ImageScanlineConstIterator(const ImageType *ptr, const RegionType & region):
+  ImageScanlineConstIterator(const ImageType *ptr, const RegionType & region) :
     ImageConstIterator< TImage >(ptr, region)
   {
     m_SpanBeginOffset = this->m_BeginOffset;
@@ -118,9 +118,9 @@ public:
 
     IndexType ind = this->GetIndex();
     m_SpanEndOffset = this->m_Offset + static_cast< OffsetValueType >( this->m_Region.GetSize()[0] )
-                      - ( ind[0] - this->m_Region.GetIndex()[0] );
+      - ( ind[0] - this->m_Region.GetIndex()[0] );
     m_SpanBeginOffset = m_SpanEndOffset
-                        - static_cast< OffsetValueType >( this->m_Region.GetSize()[0] );
+      - static_cast< OffsetValueType >( this->m_Region.GetSize()[0] );
   }
 
   /** Constructor that can be used to cast from an ImageConstIterator to an
@@ -135,14 +135,15 @@ public:
 
     IndexType ind = this->GetIndex();
     m_SpanEndOffset = this->m_Offset + static_cast< OffsetValueType >( this->m_Region.GetSize()[0] )
-                      - ( ind[0] - this->m_Region.GetIndex()[0] );
+      - ( ind[0] - this->m_Region.GetIndex()[0] );
     m_SpanBeginOffset = m_SpanEndOffset
-                        - static_cast< OffsetValueType >( this->m_Region.GetSize()[0] );
+      - static_cast< OffsetValueType >( this->m_Region.GetSize()[0] );
   }
 
   /** Move an iterator to the beginning of the region. "Begin" is
    * defined as the first pixel in the region. */
-  void GoToBegin()
+  void
+  GoToBegin()
   {
     Superclass::GoToBegin();
 
@@ -156,7 +157,8 @@ public:
    * "End" is defined as
    * one pixel past the last pixel of the region.
    */
-  void GoToEnd()
+  void
+  GoToEnd()
   {
     Superclass::GoToEnd();
 
@@ -172,7 +174,8 @@ public:
    * \sa NextLine
    * \sa IsAtEndOfLine
    */
-  void GoToBeginOfLine(void)
+  void
+  GoToBeginOfLine(void)
   {
     this->Offset = m_SpanBeginOffset;
   }
@@ -185,29 +188,32 @@ public:
    * \sa NextLine
    * \sa IsAtEndOfLine
    */
-  void GoToEndOfLine(void)
+  void
+  GoToEndOfLine(void)
   {
     this->Offset = m_SpanEndOffset;
   }
 
   /** Test if the index is at the end of line
    */
-  inline bool IsAtEndOfLine(void)
+  inline bool
+  IsAtEndOfLine(void)
   {
     return this->m_Offset >= m_SpanEndOffset;
   }
-
 
   /** Set the index without bounds checking.
    *
    * This is overridden from the parent because we have an extra ivar.
    * \sa GetIndex
    */
-  void SetIndex(const IndexType & ind)
+  void
+  SetIndex(const IndexType & ind)
   {
     Superclass::SetIndex(ind);
+
     m_SpanEndOffset = this->m_Offset + static_cast< OffsetValueType >( this->m_Region.GetSize()[0] )
-                      - ( ind[0] - this->m_Region.GetIndex()[0] );
+      - ( ind[0] - this->m_Region.GetIndex()[0] );
     m_SpanBeginOffset = m_SpanEndOffset - static_cast< OffsetValueType >( this->m_Region.GetSize()[0] );
   }
 
@@ -219,10 +225,11 @@ public:
    * \sa operator++
    * \sa IsAtEndOfLine
    */
-  inline void NextLine(void)
+  inline void
+  NextLine(void)
   {
     this->Increment();
-  };
+  }
 
   /** Increment (prefix) along the scanline the iterator's index.
    *
@@ -231,7 +238,8 @@ public:
    * means is may assert in debug mode or result in an undefined
    * iterator which may have unknown consequences if used.
    */
-  Self& operator++()
+  Self&
+  operator++()
   {
     itkAssertInDebugAndIgnoreInReleaseMacro( !this->IsAtEndOfLine() );
     ++this->m_Offset;
@@ -241,13 +249,13 @@ public:
   /** decrement (prefix) along the scanline the iterator's index.
    *
    */
-  Self& operator--()
+  Self&
+  operator--()
   {
     itkAssertInDebugAndIgnoreInReleaseMacro( !this->IsAtEndOfLine() );
     --this->m_Offset;
     return *this;
   }
-
 
 protected:
   OffsetValueType m_SpanBeginOffset; // one pixel the beginning of the scanline

@@ -40,7 +40,7 @@ namespace itk
  * \ingroup ITKSpatialFunction
  */
 template< typename TSpatialFunction, typename TInputImage, typename TOutputImage >
-class SpatialFunctionImageEvaluatorFilter:
+class SpatialFunctionImageEvaluatorFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -82,12 +82,16 @@ public:
   typedef typename FunctionType::InputType PositionType;
 
   /** Set the internal spatial function. */
-  void SetFunction(FunctionType *PixelFunction)
-  { m_PixelFunction = PixelFunction; }
+  void
+  SetFunction(FunctionType *PixelFunction)
+  {
+    m_PixelFunction = PixelFunction;
+  }
 
 protected:
   SpatialFunctionImageEvaluatorFilter();
-  virtual ~SpatialFunctionImageEvaluatorFilter() {}
+  virtual
+  ~SpatialFunctionImageEvaluatorFilter() {}
 
   /** Method for evaluating the implicit function over the image. */
   void GenerateData();

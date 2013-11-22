@@ -168,6 +168,7 @@ ConjugateGradientOptimizer
 {
   return m_VnlOptimizer->get_num_iterations();
 }
+
 } // end namespace itk
 
 #endif

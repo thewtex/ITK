@@ -53,7 +53,7 @@ namespace itk {
  */
 template<typename TInputImage, typename TOutputImage>
 class NormalizeToConstantImageFilter :
-    public ImageToImageFilter<TInputImage, TOutputImage>
+  public ImageToImageFilter<TInputImage, TOutputImage>
 {
 public:
   /** Standard class typedefs. */
@@ -61,21 +61,21 @@ public:
 
   typedef ImageToImageFilter<TInputImage, TOutputImage> Superclass;
 
-  typedef SmartPointer<Self>        Pointer;
-  typedef SmartPointer<const Self>  ConstPointer;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Some convenient typedefs. */
-  typedef TInputImage                              InputImageType;
-  typedef TOutputImage                             OutputImageType;
-  typedef typename InputImageType::Pointer         InputImagePointer;
-  typedef typename InputImageType::ConstPointer    InputImageConstPointer;
-  typedef typename InputImageType::PixelType       InputImagePixelType;
-  typedef typename OutputImageType::Pointer        OutputImagePointer;
-  typedef typename OutputImageType::ConstPointer   OutputImageConstPointer;
-  typedef typename OutputImageType::PixelType      OutputImagePixelType;
-  typedef typename InputImageType::RegionType      RegionType;
-  typedef typename InputImageType::IndexType       IndexType;
-  typedef typename InputImageType::SizeType        SizeType;
+  typedef TInputImage                            InputImageType;
+  typedef TOutputImage                           OutputImageType;
+  typedef typename InputImageType::Pointer       InputImagePointer;
+  typedef typename InputImageType::ConstPointer  InputImageConstPointer;
+  typedef typename InputImageType::PixelType     InputImagePixelType;
+  typedef typename OutputImageType::Pointer      OutputImagePointer;
+  typedef typename OutputImageType::ConstPointer OutputImageConstPointer;
+  typedef typename OutputImageType::PixelType    OutputImagePixelType;
+  typedef typename InputImageType::RegionType    RegionType;
+  typedef typename InputImageType::IndexType     IndexType;
+  typedef typename InputImageType::SizeType      SizeType;
 
   typedef typename NumericTraits<InputImagePixelType>::RealType RealType;
 
@@ -100,15 +100,16 @@ public:
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
   itkConceptMacro(InputHasPixelTraitsCheck,
-    (Concept::HasPixelTraits<InputImagePixelType>));
+                  (Concept::HasPixelTraits<InputImagePixelType>) );
   itkConceptMacro(InputHasNumericTraitsCheck,
-    (Concept::HasNumericTraits<InputImagePixelType>));
+                  (Concept::HasNumericTraits<InputImagePixelType>) );
   // End concept checking
 #endif
 
 protected:
   NormalizeToConstantImageFilter();
-  virtual ~NormalizeToConstantImageFilter() {};
+  virtual
+  ~NormalizeToConstantImageFilter() {}
   void PrintSelf(std::ostream& os, Indent indent) const;
 
   void GenerateInputRequestedRegion();

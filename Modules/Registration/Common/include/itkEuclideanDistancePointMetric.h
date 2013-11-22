@@ -44,7 +44,7 @@ namespace itk
 template< typename TFixedPointSet, typename TMovingPointSet,
           typename TDistanceMap =
             ::itk::Image< unsigned short, TMovingPointSet::PointDimension > >
-class EuclideanDistancePointMetric:
+class EuclideanDistancePointMetric :
   public PointSetToPointSetMetric< TFixedPointSet, TMovingPointSet >
 {
 public:
@@ -107,7 +107,8 @@ public:
 
 protected:
   EuclideanDistancePointMetric();
-  virtual ~EuclideanDistancePointMetric() {}
+  virtual
+  ~EuclideanDistancePointMetric() {}
 
   /** PrintSelf function */
   void PrintSelf(std::ostream & os, Indent indent) const;

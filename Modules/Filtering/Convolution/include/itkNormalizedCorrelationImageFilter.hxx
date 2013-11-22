@@ -147,7 +147,7 @@ NormalizedCorrelationImageFilter< TInputImage, TMaskImage, TOutputImage, TOperat
   // only concerned with centering the neighborhood operator at the
   // pixels that correspond to output pixels.
   typedef NeighborhoodAlgorithm::ImageBoundaryFacesCalculator< InputImageType >
-  BFC;
+    BFC;
 
   typedef typename BFC::FaceListType FaceListType;
   BFC          faceCalculator;
@@ -261,6 +261,7 @@ NormalizedCorrelationImageFilter< TInputImage, TMaskImage, TOutputImage, TOperat
       }
     }
 }
+
 } // end namespace itk
 
 #endif

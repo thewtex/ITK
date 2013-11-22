@@ -101,9 +101,9 @@ public:
 
   /** CovariantVector type. */
   typedef typename Superclass::InputCovariantVectorType
-  InputCovariantVectorType;
+    InputCovariantVectorType;
   typedef typename Superclass::OutputCovariantVectorType
-  OutputCovariantVectorType;
+    OutputCovariantVectorType;
 
   /** VnlVector type. */
   typedef typename Superclass::InputVnlVectorType  InputVnlVectorType;
@@ -168,8 +168,8 @@ protected:
   CenteredSimilarity2DTransform(unsigned int spaceDimension, unsigned int parametersDimension);
 
   ~CenteredSimilarity2DTransform()
-  {
-  }
+  {}
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

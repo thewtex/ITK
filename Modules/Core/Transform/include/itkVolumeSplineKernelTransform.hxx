@@ -24,7 +24,7 @@ namespace itk
 template< typename TScalar, unsigned int NDimensions >
 void
 VolumeSplineKernelTransform< TScalar, NDimensions >::ComputeG(const InputVectorType & x,
-                                                                  GMatrixType & gmatrix) const
+                                                              GMatrixType & gmatrix) const
 {
   const TScalar r = x.GetNorm();
 
@@ -49,9 +49,9 @@ VolumeSplineKernelTransform< TScalar, NDimensions >::ComputeDeformationContribut
 
   for ( unsigned int lnd = 0; lnd < numberOfLandmarks; lnd++ )
     {
-    InputVectorType   position = thisPoint - sp->Value();
-    const TScalar r = position.GetNorm();
-    const TScalar r3 = r * r * r;
+    InputVectorType position = thisPoint - sp->Value();
+    const TScalar   r = position.GetNorm();
+    const TScalar   r3 = r * r * r;
 
     for ( unsigned int odim = 0; odim < NDimensions; odim++ )
       {
@@ -60,5 +60,6 @@ VolumeSplineKernelTransform< TScalar, NDimensions >::ComputeDeformationContribut
     ++sp;
     }
 }
+
 } // namespace itk
 #endif

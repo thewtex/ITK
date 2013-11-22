@@ -32,7 +32,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInputMesh, typename TOutputMesh=TInputMesh >
-class DiscreteCurvatureQuadEdgeMeshFilter:
+class DiscreteCurvatureQuadEdgeMeshFilter :
   public QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 {
 public:
@@ -70,11 +70,13 @@ public:
 
 protected:
   DiscreteCurvatureQuadEdgeMeshFilter() : m_OutputMesh(0) {}
-  virtual ~DiscreteCurvatureQuadEdgeMeshFilter() {}
+  virtual
+  ~DiscreteCurvatureQuadEdgeMeshFilter() {}
 
   virtual OutputCurvatureType EstimateCurvature(const OutputPointType & iP) = 0;
 
-  OutputCurvatureType ComputeMixedArea(OutputQEType *iQE1, OutputQEType *iQE2)
+  OutputCurvatureType
+  ComputeMixedArea(OutputQEType *iQE1, OutputQEType *iQE2)
   {
 
     OutputPointIdentifier id[3];
@@ -93,7 +95,8 @@ protected:
     return static_cast< OutputCurvatureType >( TriangleType::ComputeMixedArea( p[0], p[1], p[2] ) );
   }
 
-  virtual void GenerateData()
+  virtual void
+  GenerateData()
   {
     this->CopyInputMeshToOutputMesh();
 
@@ -117,9 +120,10 @@ private:
   /** Cache output pointer to avoid calls in inner loop to GetOutput() */
   OutputMeshType *m_OutputMesh;
   DiscreteCurvatureQuadEdgeMeshFilter(const Self &); // purposely not
-                                                        // implemented
-  void operator=(const Self &);                         // purposely not
-                                                        // implemented
+                                                     // implemented
+  void operator=(const Self &);                      // purposely not
+
+  // implemented
 };
 } // end namespace itk
 

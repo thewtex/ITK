@@ -51,7 +51,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TInput = float, typename TOutput = double >
-class HeavisideStepFunctionBase:public FunctionBase< TInput, TOutput >
+class HeavisideStepFunctionBase : public FunctionBase< TInput, TOutput >
 {
 public:
   typedef HeavisideStepFunctionBase       Self;
@@ -61,7 +61,6 @@ public:
 
   /** Run-time type information */
   itkTypeMacro ( HeavisideStepFunctionBase, FunctionBase );
-
 
   typedef typename Superclass::InputType  InputType;
   typedef typename Superclass::OutputType OutputType;
@@ -74,19 +73,21 @@ public:
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   itkConceptMacro( DoubleConvertibleToInputCheck,
-                 ( Concept::Convertible< double, TInput > ) );
+                   ( Concept::Convertible< double, TInput > ) );
 
   itkConceptMacro( DoubleConvertibleToOutputCheck,
-                 ( Concept::Convertible< double, TOutput > ) );
+                   ( Concept::Convertible< double, TOutput > ) );
 #endif // ITK_USE_CONCEPT_CHECKING
 
 protected:
   HeavisideStepFunctionBase() : Superclass() {}
-  virtual ~HeavisideStepFunctionBase() {}
+  virtual
+  ~HeavisideStepFunctionBase() {}
 
 private:
   HeavisideStepFunctionBase(const Self &); //purposely not implemented
   void operator=(const Self &);            //purposely not implemented
+
 };
 }
 

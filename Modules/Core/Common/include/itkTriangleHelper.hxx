@@ -23,7 +23,8 @@
 namespace itk
 {
 template< typename TPoint >
-bool TriangleHelper< TPoint >::IsObtuse(const PointType & iA, const PointType & iB, const PointType & iC)
+bool
+TriangleHelper< TPoint >::IsObtuse(const PointType & iA, const PointType & iB, const PointType & iC)
 {
   VectorType v01 = iB - iA;
   VectorType v02 = iC - iA;
@@ -77,7 +78,7 @@ TriangleHelper< TPoint >::Cotangent(const PointType & iA,
                                     const PointType & iB,
                                     const PointType & iC)
 {
-  VectorType   v21 = iA - iB;
+  VectorType v21 = iA - iB;
 
   CoordRepType v21_l2 = v21.GetSquaredNorm();
 
@@ -239,15 +240,15 @@ TriangleHelper< TPoint >::ComputeArea(const PointType & iP1,
 template< typename TPoint >
 typename TriangleHelper< TPoint >::CoordRepType
 TriangleHelper< TPoint >::ComputeMixedArea(const PointType & iP1,
-                                      const PointType & iP2,
-                                      const PointType & iP3)
+                                           const PointType & iP2,
+                                           const PointType & iP3)
 {
   typedef TriangleHelper< TPoint > TriangleType;
 
   if ( !TriangleType::IsObtuse(iP1, iP2, iP3) )
     {
     CoordRepType sq_d01 =
-        static_cast< CoordRepType >( iP1.SquaredEuclideanDistanceTo(iP2) );
+      static_cast< CoordRepType >( iP1.SquaredEuclideanDistanceTo(iP2) );
     CoordRepType sq_d02 =
       static_cast< CoordRepType >( iP1.SquaredEuclideanDistanceTo(iP3) );
 
@@ -271,6 +272,7 @@ TriangleHelper< TPoint >::ComputeMixedArea(const PointType & iP1,
       }
     }
 }
+
 }
 
 #endif

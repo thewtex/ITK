@@ -44,8 +44,8 @@
 
 #include <fstream>
 
-
-int main( int argc, char * argv[] )
+int
+main( int argc, char * argv[] )
 {
 
   if( argc < 3 )
@@ -57,19 +57,17 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-  const     unsigned int   Dimension = 2;
-  typedef   float          VectorComponentType;
+  const     unsigned int Dimension = 2;
+  typedef   float VectorComponentType;
 
-  typedef   itk::Vector< VectorComponentType, Dimension >    VectorType;
+  typedef   itk::Vector< VectorComponentType, Dimension > VectorType;
 
-  typedef   itk::Image< VectorType,  Dimension >   DisplacementFieldType;
+  typedef   itk::Image< VectorType,  Dimension > DisplacementFieldType;
 
+  typedef   unsigned char                      PixelType;
+  typedef   itk::Image< PixelType, Dimension > FixedImageType;
 
-  typedef   unsigned char                            PixelType;
-  typedef   itk::Image< PixelType, Dimension >       FixedImageType;
-
-  typedef   itk::ImageFileReader< FixedImageType >   FixedReaderType;
-
+  typedef   itk::ImageFileReader< FixedImageType > FixedReaderType;
 
   FixedReaderType::Pointer fixedReader = FixedReaderType::New();
 
@@ -86,12 +84,11 @@ int main( int argc, char * argv[] )
     return EXIT_FAILURE;
     }
 
-
   FixedImageType::ConstPointer fixedImage = fixedReader->GetOutput();
 
   typedef itk::LandmarkDisplacementFieldSource<
-                                DisplacementFieldType
-                                             >  FilterType;
+      DisplacementFieldType
+      >  FilterType;
 
   FilterType::Pointer filter = FilterType::New();
 
@@ -107,9 +104,9 @@ int main( int argc, char * argv[] )
   typedef FilterType::LandmarkPointType        LandmarkPointType;
 
   LandmarkContainerType::Pointer sourceLandmarks
-                                               = LandmarkContainerType::New();
+    = LandmarkContainerType::New();
   LandmarkContainerType::Pointer targetLandmarks
-                                               = LandmarkContainerType::New();
+    = LandmarkContainerType::New();
   std::ifstream pointsFile;
   pointsFile.open( argv[1] );
 

@@ -47,7 +47,6 @@ public:
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
-
   /** Evaluate at the specified input position */
   virtual ScalarType Evaluate(const ScalarType& input) const;
 
@@ -57,19 +56,19 @@ public:
 protected:
 
   IdentityTransferFunction();
-  virtual ~IdentityTransferFunction();
+  virtual
+  ~IdentityTransferFunction();
 
   /** Method to print the object. */
   virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
-};//class
+};  //class
 
 } // end namespace Statistics
 } // end namespace itk
 
 #ifndef ITK_MANUAL_INSTANTIATION
-  #include "itkIdentityTransferFunction.hxx"
+#include "itkIdentityTransferFunction.hxx"
 #endif
-
 
 #endif

@@ -44,13 +44,13 @@ BinaryFillholeImageFilter<TInputImage>
   Superclass::GenerateInputRequestedRegion();
 
   // We need all the input.
-  InputImagePointer input = const_cast<InputImageType *>(this->GetInput());
+  InputImagePointer input = const_cast<InputImageType *>(this->GetInput() );
+
   if( input )
     {
     input->SetRequestedRegion( input->GetLargestPossibleRegion() );
     }
 }
-
 
 template <typename TInputImage>
 void
@@ -58,9 +58,8 @@ BinaryFillholeImageFilter<TInputImage>
 ::EnlargeOutputRequestedRegion(DataObject *)
 {
   this->GetOutput()
-    ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
+  ->SetRequestedRegion( this->GetOutput()->GetLargestPossibleRegion() );
 }
-
 
 template<typename TInputImage>
 void
@@ -71,6 +70,7 @@ BinaryFillholeImageFilter<TInputImage>
   // because closing is extensive so no background pixels will be added
   // it is just needed for internal erosion filter and constant padder
   InputImagePixelType backgroundValue = NumericTraits<InputImagePixelType>::Zero;
+
   if ( m_ForegroundValue == backgroundValue )
     {
     // current background value is already used for foreground value
@@ -128,7 +128,6 @@ BinaryFillholeImageFilter<TInputImage>
   this->GraftOutput( binarizer->GetOutput() );
 }
 
-
 template<typename TInputImage>
 void
 BinaryFillholeImageFilter<TInputImage>
@@ -136,9 +135,10 @@ BinaryFillholeImageFilter<TInputImage>
 {
   Superclass::PrintSelf(os, indent);
 
-  os << indent << "ForegroundValue: " << static_cast<typename NumericTraits<InputImagePixelType>::PrintType>(m_ForegroundValue) << std::endl;
+  os << indent << "ForegroundValue: " <<
+    static_cast<typename NumericTraits<InputImagePixelType>::PrintType>(m_ForegroundValue) << std::endl;
   os << indent << "FullyConnected: "  << m_FullyConnected << std::endl;
 }
 
-}// end namespace itk
+} // end namespace itk
 #endif

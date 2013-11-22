@@ -33,7 +33,7 @@ namespace itk
  */
 template <typename TScalar, unsigned int NDimensions>
 DisplacementFieldTransform<TScalar, NDimensions>::DisplacementFieldTransform()
-: Superclass( 0 )
+  : Superclass( 0 )
 {
   this->m_DisplacementField = NULL;
   this->m_InverseDisplacementField = NULL;
@@ -73,8 +73,7 @@ DisplacementFieldTransform<TScalar, NDimensions>::DisplacementFieldTransform()
 template <typename TScalar, unsigned int NDimensions>
 DisplacementFieldTransform<TScalar, NDimensions>::
 ~DisplacementFieldTransform()
-{
-}
+{}
 
 /**
  * Transform point
@@ -119,7 +118,8 @@ DisplacementFieldTransform<TScalar, NDimensions>
  * return an inverse transformation
  */
 template <typename TScalar, unsigned int NDimensions>
-bool DisplacementFieldTransform<TScalar, NDimensions>
+bool
+DisplacementFieldTransform<TScalar, NDimensions>
 ::GetInverse( Self *inverse ) const
 {
   if( !inverse || !this->m_InverseDisplacementField )
@@ -186,10 +186,11 @@ template <typename TScalar, unsigned int NDimensions>
 void
 DisplacementFieldTransform<TScalar, NDimensions>
 ::ComputeInverseJacobianWithRespectToPosition( const InputPointType & point,
-                                        JacobianType & jacobian )
+                                               JacobianType & jacobian )
 const
 {
   IndexType idx;
+
   this->m_DisplacementField->TransformPhysicalPointToIndex(point, idx);
   this->ComputeJacobianWithRespectToPositionInternal( idx, jacobian, true );
 }
@@ -367,7 +368,8 @@ DisplacementFieldTransform<TScalar, NDimensions>
 }
 
 template <typename TScalar, unsigned int NDimensions>
-void DisplacementFieldTransform<TScalar, NDimensions>
+void
+DisplacementFieldTransform<TScalar, NDimensions>
 ::SetDisplacementField( DisplacementFieldType* field )
 {
   itkDebugMacro("setting DisplacementField to " << field);
@@ -395,7 +397,8 @@ void DisplacementFieldTransform<TScalar, NDimensions>
 }
 
 template <typename TScalar, unsigned int NDimensions>
-void DisplacementFieldTransform<TScalar, NDimensions>
+void
+DisplacementFieldTransform<TScalar, NDimensions>
 ::SetInverseDisplacementField( DisplacementFieldType* inverseField )
 {
   itkDebugMacro( "setting InverseDisplacementField to " << inverseField );
@@ -424,14 +427,14 @@ DisplacementFieldTransform<TScalar, NDimensions>
     // check to see if the candidate inverse displacement field has the
     // same fixed parameters as the displacement field.
 
-    SizeType inverseFieldSize = this->m_InverseDisplacementField->GetLargestPossibleRegion().GetSize();
-    PointType inverseFieldOrigin = this->m_InverseDisplacementField->GetOrigin();
-    SpacingType inverseFieldSpacing = this->m_InverseDisplacementField->GetSpacing();
+    SizeType      inverseFieldSize = this->m_InverseDisplacementField->GetLargestPossibleRegion().GetSize();
+    PointType     inverseFieldOrigin = this->m_InverseDisplacementField->GetOrigin();
+    SpacingType   inverseFieldSpacing = this->m_InverseDisplacementField->GetSpacing();
     DirectionType inverseFieldDirection = this->m_InverseDisplacementField->GetDirection();
 
-    SizeType fieldSize = this->m_DisplacementField->GetLargestPossibleRegion().GetSize();
-    PointType fieldOrigin = this->m_DisplacementField->GetOrigin();
-    SpacingType fieldSpacing = this->m_DisplacementField->GetSpacing();
+    SizeType      fieldSize = this->m_DisplacementField->GetLargestPossibleRegion().GetSize();
+    PointType     fieldOrigin = this->m_DisplacementField->GetOrigin();
+    SpacingType   fieldSpacing = this->m_DisplacementField->GetSpacing();
     DirectionType fieldDirection = this->m_DisplacementField->GetDirection();
 
     // tolerance for origin and spacing depends on the size of pixel
@@ -453,7 +456,7 @@ DisplacementFieldTransform<TScalar, NDimensions>
       {
       unequalSizes = true;
       sizeString << "InverseDisplacementField Size: " << inverseFieldSize
-                   << ", DisplacementField Size: " << fieldSize << std::endl;
+                 << ", DisplacementField Size: " << fieldSize << std::endl;
 
       }
     if( !inverseFieldOrigin.GetVnlVector().is_equal( fieldOrigin.GetVnlVector(), coordinateTolerance ) )
@@ -480,7 +483,8 @@ DisplacementFieldTransform<TScalar, NDimensions>
     if( unequalSizes || unequalOrigins || unequalSpacings || unequalDirections )
       {
       itkExceptionMacro( "The inverse and displacement fields do not have the same fixed parameters: "
-                        << std::endl << sizeString.str() << originString.str() << spacingString.str() << directionString.str() );
+                         << std::endl << sizeString.str() << originString.str() << spacingString.str() <<
+        directionString.str() );
       }
     }
 }
@@ -587,7 +591,7 @@ template <typename TScalar, unsigned int NDimensions>
 void
 DisplacementFieldTransform<TScalar, NDimensions>
 ::SetFixedParametersFromDisplacementField() const
-  {
+{
   this->m_FixedParameters.SetSize( NDimensions * ( NDimensions + 3 ) );
 
   const typename DisplacementFieldType::RegionType & fieldRegion =

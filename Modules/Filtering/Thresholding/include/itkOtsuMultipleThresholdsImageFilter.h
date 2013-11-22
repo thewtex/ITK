@@ -53,7 +53,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class OtsuMultipleThresholdsImageFilter:
+class OtsuMultipleThresholdsImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -115,7 +115,8 @@ public:
   itkBooleanMacro(ValleyEmphasis);
 
   /** Get the computed threshold. */
-  const ThresholdVectorType & GetThresholds() const
+  const ThresholdVectorType &
+  GetThresholds() const
   {
     return m_Thresholds;
   }

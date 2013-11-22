@@ -36,7 +36,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int main( int argc, char *argv[] )
+int
+main( int argc, char *argv[] )
 {
   // Verify the number of parameters on the command line.
   if ( argc < 3 )
@@ -55,11 +56,10 @@ int main( int argc, char *argv[] )
 //
 // Software Guide : EndLatex
 
-
 // Software Guide : BeginCodeSnippet
-  typedef unsigned char               PixelType;
-  typedef itk::Image< PixelType, 3 >  Image3DType;
-  typedef itk::Image< PixelType, 4 >  Image4DType;
+  typedef unsigned char              PixelType;
+  typedef itk::Image< PixelType, 3 > Image3DType;
+  typedef itk::Image< PixelType, 4 > Image4DType;
 
   typedef itk::ImageFileReader< Image4DType > Reader4DType;
   typedef itk::ImageFileWriter< Image3DType > Writer3DType;
@@ -81,29 +81,29 @@ int main( int argc, char *argv[] )
   Image4DType::ConstPointer image4D = reader4D->GetOutput();
 
   Image3DType::Pointer image3D = Image3DType::New();
-  typedef Image3DType::IndexType    Index3DType;
-  typedef Image3DType::SizeType     Size3DType;
-  typedef Image3DType::RegionType   Region3DType;
-  typedef Image3DType::SpacingType  Spacing3DType;
-  typedef Image3DType::PointType    Origin3DType;
+  typedef Image3DType::IndexType   Index3DType;
+  typedef Image3DType::SizeType    Size3DType;
+  typedef Image3DType::RegionType  Region3DType;
+  typedef Image3DType::SpacingType Spacing3DType;
+  typedef Image3DType::PointType   Origin3DType;
 
-  typedef Image4DType::IndexType    Index4DType;
-  typedef Image4DType::SizeType     Size4DType;
-  typedef Image4DType::RegionType   Region4DType;
-  typedef Image4DType::SpacingType  Spacing4DType;
-  typedef Image4DType::PointType    Origin4DType;
+  typedef Image4DType::IndexType   Index4DType;
+  typedef Image4DType::SizeType    Size4DType;
+  typedef Image4DType::RegionType  Region4DType;
+  typedef Image4DType::SpacingType Spacing4DType;
+  typedef Image4DType::PointType   Origin4DType;
 
-  Index3DType       index3D;
-  Size3DType        size3D;
-  Spacing3DType     spacing3D;
-  Origin3DType      origin3D;
+  Index3DType   index3D;
+  Size3DType    size3D;
+  Spacing3DType spacing3D;
+  Origin3DType  origin3D;
 
   Image4DType::RegionType region4D = image4D->GetBufferedRegion();
 
-  Index4DType       index4D   = region4D.GetIndex();
-  Size4DType        size4D    = region4D.GetSize();
-  Spacing4DType     spacing4D = image4D->GetSpacing();
-  Origin4DType      origin4D  = image4D->GetOrigin();
+  Index4DType   index4D   = region4D.GetIndex();
+  Size4DType    size4D    = region4D.GetSize();
+  Spacing4DType spacing4D = image4D->GetSpacing();
+  Origin4DType  origin4D  = image4D->GetOrigin();
 
   for( unsigned int i=0; i < 3; i++)
     {
@@ -123,14 +123,13 @@ int main( int argc, char *argv[] )
   image3D->SetRegions( region3D  );
   image3D->Allocate();
 
-
-  typedef itk::NumericTraits< PixelType >::AccumulateType    SumType;
-  typedef itk::NumericTraits< SumType   >::RealType          MeanType;
+  typedef itk::NumericTraits< PixelType >::AccumulateType SumType;
+  typedef itk::NumericTraits< SumType   >::RealType       MeanType;
 
   const unsigned int timeLength = region4D.GetSize()[3];
 
   typedef itk::ImageLinearConstIteratorWithIndex<
-                                  Image4DType > IteratorType;
+      Image4DType > IteratorType;
 
   IteratorType it( image4D, region4D );
   it.SetDirection( 3 ); // Walk along time dimension
@@ -146,7 +145,7 @@ int main( int argc, char *argv[] )
       ++it;
       }
     MeanType mean = static_cast< MeanType >( sum ) /
-                    static_cast< MeanType >( timeLength );
+      static_cast< MeanType >( timeLength );
 
     index3D[0] = index4D[0];
     index3D[1] = index4D[1];
@@ -155,7 +154,6 @@ int main( int argc, char *argv[] )
     image3D->SetPixel( index3D, static_cast< PixelType >( mean ) );
     it.NextLine();
     }
-
 
   // Software Guide : EndCodeSnippet
 

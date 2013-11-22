@@ -21,18 +21,18 @@
 #include "itkImageFileWriter.h"
 #include "itkVotingBinaryImageFilter.h"
 
-
 namespace
 {
 
 template<typename  TInputImageType >
-int itkVotingBinaryImageFilterTestImp( const std::string &infname,
-                                       const std::string &outfname,
-                                       itk::SizeValueType radius,
-                                       long foregroundValue,
-                                       long backgroundValue,
-                                       unsigned int birthThreshold = 1,
-                                       unsigned int survivalThreshold = 1)
+int
+itkVotingBinaryImageFilterTestImp( const std::string &infname,
+                                   const std::string &outfname,
+                                   itk::SizeValueType radius,
+                                   long foregroundValue,
+                                   long backgroundValue,
+                                   unsigned int birthThreshold = 1,
+                                   unsigned int survivalThreshold = 1)
 {
   typedef TInputImageType InputImageType;
   typedef TInputImageType OutputImageType;
@@ -81,23 +81,22 @@ int itkVotingBinaryImageFilterTestImp( const std::string &infname,
 
 }
 
-
-int itkVotingBinaryImageFilterTest(int argc, char* argv[] )
+int
+itkVotingBinaryImageFilterTest(int argc, char* argv[] )
 {
 
   if ( argc < 6 )
-  {
+    {
     std::cerr << "Missing arguments" << std::endl;
     std::cerr << "Usage: " << argv[0] << " Inputimage OutputImage radius ForegroundValue BackgroundValue" << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
-  const std::string infname = argv[1];
-  const std::string outfname = argv[2];
+  const std::string  infname = argv[1];
+  const std::string  outfname = argv[2];
   const unsigned int radius = atoi( argv[3] );
-  const long foregroundValue = atol( argv[4] );
-  const long backgroundValue = atol( argv[5] );
-
+  const long         foregroundValue = atol( argv[4] );
+  const long         backgroundValue = atol( argv[5] );
 
   itk::ImageIOBase::Pointer iobase =
     itk::ImageIOFactory::CreateImageIO( infname.c_str(), itk::ImageIOFactory::ReadMode);
@@ -107,11 +106,9 @@ int itkVotingBinaryImageFilterTest(int argc, char* argv[] )
     itkGenericExceptionMacro( "Unable to determine ImageIO reader for \"" << infname << "\"" );
     }
 
-
   //const itk::ImageIOBase::IOPixelType pixelType = iobase->GetPixelType();
   const itk::ImageIOBase::IOComponentType componentType = iobase->GetComponentType();
-  const unsigned int dimension = iobase->GetNumberOfDimensions();
-
+  const unsigned int                      dimension = iobase->GetNumberOfDimensions();
 
   switch(componentType)
     {
@@ -119,22 +116,28 @@ int itkVotingBinaryImageFilterTest(int argc, char* argv[] )
     case itk::ImageIOBase::UCHAR:
     case itk::ImageIOBase::SHORT:
       if ( dimension == 2 )
-        return itkVotingBinaryImageFilterTestImp< itk::Image<short, 2> >( infname, outfname, radius, foregroundValue, backgroundValue );
+        return itkVotingBinaryImageFilterTestImp< itk::Image<short, 2> >( infname, outfname, radius, foregroundValue,
+                                                                          backgroundValue );
       else if ( dimension == 3 )
-        return itkVotingBinaryImageFilterTestImp< itk::Image<short, 3> >( infname, outfname, radius, foregroundValue, backgroundValue );
+        return itkVotingBinaryImageFilterTestImp< itk::Image<short, 3> >( infname, outfname, radius, foregroundValue,
+                                                                          backgroundValue );
       break;
     case itk::ImageIOBase::USHORT:
     case itk::ImageIOBase::INT:
       if ( dimension == 2 )
-        return itkVotingBinaryImageFilterTestImp< itk::Image<int, 2> >( infname, outfname, radius, foregroundValue, backgroundValue );
+        return itkVotingBinaryImageFilterTestImp< itk::Image<int, 2> >( infname, outfname, radius, foregroundValue,
+                                                                        backgroundValue );
       else if ( dimension == 3 )
-        return itkVotingBinaryImageFilterTestImp< itk::Image<int, 3> >( infname, outfname, radius, foregroundValue, backgroundValue );
+        return itkVotingBinaryImageFilterTestImp< itk::Image<int, 3> >( infname, outfname, radius, foregroundValue,
+                                                                        backgroundValue );
       break;
     case itk::ImageIOBase::UINT:
       if ( dimension == 2 )
-        return itkVotingBinaryImageFilterTestImp< itk::Image<unsigned int, 2> >( infname, outfname, radius, foregroundValue, backgroundValue );
+        return itkVotingBinaryImageFilterTestImp< itk::Image<unsigned int, 2> >( infname, outfname, radius,
+                                                                                 foregroundValue, backgroundValue );
       else if ( dimension == 3 )
-        return itkVotingBinaryImageFilterTestImp< itk::Image<unsigned int, 3> >( infname, outfname, radius, foregroundValue, backgroundValue );
+        return itkVotingBinaryImageFilterTestImp< itk::Image<unsigned int, 3> >( infname, outfname, radius,
+                                                                                 foregroundValue, backgroundValue );
       break;
     case itk::ImageIOBase::ULONG:
     case itk::ImageIOBase::LONG:

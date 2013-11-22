@@ -34,6 +34,7 @@ GradientMagnitudeImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "UseImageSpacing = " << m_UseImageSpacing << std::endl;
 }
 
@@ -192,6 +193,7 @@ GradientMagnitudeImageFilter< TInputImage, TOutputImage >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

@@ -605,9 +605,9 @@ template< unsigned int NSpaceDimension >
 typename CellularAggregate< NSpaceDimension >::SubstratesVector &
 CellularAggregate< NSpaceDimension >
 ::GetSubstrates(void)
-{
+  {
   return m_Substrates;
-}
+  }
 
 template< unsigned int NSpaceDimension >
 typename CellularAggregate< NSpaceDimension >::SubstrateValueType
@@ -639,6 +639,7 @@ CellularAggregate< NSpaceDimension >
 
   return value;
 }
+
 } // end namespace bio
 } // end namespace itk
 

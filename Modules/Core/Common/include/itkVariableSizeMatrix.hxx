@@ -25,7 +25,7 @@ namespace itk
 {
 template< typename T >
 VariableSizeMatrix< T >
-::VariableSizeMatrix(unsigned int rows, unsigned int cols):
+::VariableSizeMatrix(unsigned int rows, unsigned int cols) :
   m_Matrix(rows, cols) {}
 
 /**
@@ -243,6 +243,7 @@ VariableSizeMatrix< T >
 {
   return m_Matrix * vc;
 }
+
 } // end namespace itk
 
 #endif

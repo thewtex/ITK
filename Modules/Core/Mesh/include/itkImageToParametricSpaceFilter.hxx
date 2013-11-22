@@ -72,6 +72,7 @@ ImageToParametricSpaceFilter< TInputImage, TOutputMesh >
   PointsContainerPointer points     = mesh->GetPoints();
 
   PointDataContainerPointer pointData;
+
   if ( mesh->GetPointData() )
     {
     pointData = mesh->GetPointData();
@@ -82,7 +83,7 @@ ImageToParametricSpaceFilter< TInputImage, TOutputMesh >
     }
 
   InputImageConstPointer image      = this->GetInput(0);
-  const SizeValueType numberOfPixels =
+  const SizeValueType    numberOfPixels =
     image->GetRequestedRegion().GetNumberOfPixels();
 
   points->Reserve(numberOfPixels);
@@ -119,7 +120,7 @@ ImageToParametricSpaceFilter< TInputImage, TOutputMesh >
     {
     image = this->GetInput(component);
     ImageRegionConstIterator< InputImageType >
-      itr( image, image->GetRequestedRegion() );
+    itr( image, image->GetRequestedRegion() );
 
     PointsContainerIterator point  = points->Begin();
 
@@ -138,7 +139,7 @@ ImageToParametricSpaceFilter< TInputImage, TOutputMesh >
     PointDataContainerIterator data   = pointData->Begin();
     image = this->GetInput(0);
     ImageRegionConstIteratorWithIndex< InputImageType >
-      itr( image, image->GetRequestedRegion() );
+    itr( image, image->GetRequestedRegion() );
     itr.GoToBegin();
     while ( !itr.IsAtEnd() )
       {
@@ -153,6 +154,7 @@ ImageToParametricSpaceFilter< TInputImage, TOutputMesh >
       }
     }
 }
+
 } // end namespace itk
 
 #endif

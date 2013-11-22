@@ -40,7 +40,8 @@ public:
   typedef SmartPointer< Self >                                                                         Pointer;
   typedef SmartPointer< const Self >                                                                   ConstPointer;
 
-  itkTypeMacro( MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader, ImageToImageMetricv4GetValueAndDerivativeThreader );
+  itkTypeMacro( MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader,
+                ImageToImageMetricv4GetValueAndDerivativeThreader );
 
   itkNewMacro( Self );
 
@@ -68,21 +69,22 @@ protected:
    *  the metric to the global integral of the metric/derivative.
    */
   virtual bool ProcessPoint(
-        const VirtualIndexType &          virtualIndex,
-        const VirtualPointType &          virtualPoint,
-        const FixedImagePointType &       mappedFixedPoint,
-        const FixedImagePixelType &       mappedFixedPixelValue,
-        const FixedImageGradientType &    mappedFixedImageGradient,
-        const MovingImagePointType &      mappedMovingPoint,
-        const MovingImagePixelType &      mappedMovingPixelValue,
-        const MovingImageGradientType &   mappedMovingImageGradient,
-        MeasureType &                     metricValueReturn,
-        DerivativeType &                  localDerivativeReturn,
-        const ThreadIdType                threadID ) const;
+    const VirtualIndexType &          virtualIndex,
+    const VirtualPointType &          virtualPoint,
+    const FixedImagePointType &       mappedFixedPoint,
+    const FixedImagePixelType &       mappedFixedPixelValue,
+    const FixedImageGradientType &    mappedFixedImageGradient,
+    const MovingImagePointType &      mappedMovingPoint,
+    const MovingImagePixelType &      mappedMovingPixelValue,
+    const MovingImageGradientType &   mappedMovingImageGradient,
+    MeasureType &                     metricValueReturn,
+    DerivativeType &                  localDerivativeReturn,
+    const ThreadIdType                threadID ) const;
 
 private:
   MeanSquaresImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
+  void operator=( const Self & );                                               // purposely not implemented
+
 };
 
 } // end namespace itk

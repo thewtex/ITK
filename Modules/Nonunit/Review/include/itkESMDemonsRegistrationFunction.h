@@ -57,7 +57,7 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TFixedImage, typename TMovingImage, typename TDisplacementField >
-class ESMDemonsRegistrationFunction:
+class ESMDemonsRegistrationFunction :
   public PDEDeformableRegistrationFunction< TFixedImage,
                                             TMovingImage, TDisplacementField >
 {
@@ -65,7 +65,7 @@ public:
   /** Standard class typedefs. */
   typedef ESMDemonsRegistrationFunction Self;
   typedef PDEDeformableRegistrationFunction<
-    TFixedImage, TMovingImage, TDisplacementField >    Superclass;
+      TFixedImage, TMovingImage, TDisplacementField >    Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -93,7 +93,7 @@ public:
   /** Deformation field type. */
   typedef typename Superclass::DisplacementFieldType DisplacementFieldType;
   typedef typename Superclass::DisplacementFieldTypePointer
-  DisplacementFieldTypePointer;
+    DisplacementFieldTypePointer;
 
   /** Inherit some enums from the superclass. */
   itkStaticConstMacro(ImageDimension, unsigned int, Superclass::ImageDimension);
@@ -108,16 +108,16 @@ public:
   /** Interpolator type. */
   typedef double CoordRepType;
   typedef InterpolateImageFunction<
-    MovingImageType, CoordRepType >                   InterpolatorType;
+      MovingImageType, CoordRepType >                   InterpolatorType;
   typedef typename InterpolatorType::Pointer   InterpolatorPointer;
   typedef typename InterpolatorType::PointType PointType;
   typedef LinearInterpolateImageFunction<
-    MovingImageType, CoordRepType >                   DefaultInterpolatorType;
+      MovingImageType, CoordRepType >                   DefaultInterpolatorType;
 
   /** Warper type */
   typedef WarpImageFilter<
-    MovingImageType,
-    MovingImageType, DisplacementFieldType >           WarperType;
+      MovingImageType,
+      MovingImageType, DisplacementFieldType >           WarperType;
 
   typedef typename WarperType::Pointer WarperPointer;
 
@@ -130,25 +130,35 @@ public:
 
   /** Moving image gradient (unwarped) calculator type. */
   typedef CentralDifferenceImageFunction< MovingImageType, CoordRepType >
-  MovingImageGradientCalculatorType;
+    MovingImageGradientCalculatorType;
   typedef typename MovingImageGradientCalculatorType::Pointer
-  MovingImageGradientCalculatorPointer;
+    MovingImageGradientCalculatorPointer;
 
   /** Set the moving image interpolator. */
-  void SetMovingImageInterpolator(InterpolatorType *ptr)
-  { m_MovingImageInterpolator = ptr; m_MovingImageWarper->SetInterpolator(ptr); }
+  void
+  SetMovingImageInterpolator(InterpolatorType *ptr)
+  {
+    m_MovingImageInterpolator = ptr; m_MovingImageWarper->SetInterpolator(ptr);
+  }
 
   /** Get the moving image interpolator. */
-  InterpolatorType * GetMovingImageInterpolator(void)
-  { return m_MovingImageInterpolator; }
+  InterpolatorType *
+  GetMovingImageInterpolator(void)
+  {
+    return m_MovingImageInterpolator;
+  }
 
   /** This class uses a constant timestep of 1. */
-  virtual TimeStepType ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) ) const
-  { return m_TimeStep; }
+  virtual TimeStepType
+  ComputeGlobalTimeStep( void *itkNotUsed(GlobalData) ) const
+  {
+    return m_TimeStep;
+  }
 
   /** Return a pointer to a global data structure that is passed to
    * this object from the solver at each calculation.  */
-  virtual void * GetGlobalDataPointer() const
+  virtual void *
+  GetGlobalDataPointer() const
   {
     GlobalDataStruct *global = new GlobalDataStruct();
 
@@ -173,12 +183,18 @@ public:
   /** Get the metric value. The metric value is the mean square difference
    * in intensity between the fixed image and transforming moving image
    * computed over the the overlapping region between the two images. */
-  virtual double GetMetric() const
-  { return m_Metric; }
+  virtual double
+  GetMetric() const
+  {
+    return m_Metric;
+  }
 
   /** Get the rms change in deformation field. */
-  virtual const double & GetRMSChange() const
-  { return m_RMSChange; }
+  virtual const double &
+  GetRMSChange() const
+  {
+    return m_RMSChange;
+  }
 
   /** Set/Get the threshold below which the absolute difference of
    * intensity yields a match. When the intensities match between a
@@ -191,12 +207,14 @@ public:
   /** Set/Get the maximum update step length. In Thirion this is 0.5.
    *  Setting it to 0 implies no restriction (beware of numerical
    *  instability in this case. */
-  virtual void SetMaximumUpdateStepLength(double sm)
+  virtual void
+  SetMaximumUpdateStepLength(double sm)
   {
     this->m_MaximumUpdateStepLength = sm;
   }
 
-  virtual double GetMaximumUpdateStepLength() const
+  virtual double
+  GetMaximumUpdateStepLength() const
   {
     return this->m_MaximumUpdateStepLength;
   }
@@ -210,10 +228,17 @@ public:
     };
 
   /** Set/Get the type of used image forces */
-  virtual void SetUseGradientType(GradientType gtype)
-  { m_UseGradientType = gtype; }
-  virtual GradientType GetUseGradientType() const
-  { return m_UseGradientType; }
+  virtual void
+  SetUseGradientType(GradientType gtype)
+  {
+    m_UseGradientType = gtype;
+  }
+
+  virtual GradientType
+  GetUseGradientType() const
+  {
+    return m_UseGradientType;
+  }
 
 protected:
   ESMDemonsRegistrationFunction();
@@ -229,7 +254,7 @@ protected:
     double m_SumOfSquaredDifference;
     SizeValueType m_NumberOfPixelsProcessed;
     double m_SumOfSquaredChange;
-  };
+    };
 
 private:
   ESMDemonsRegistrationFunction(const Self &); //purposely not implemented

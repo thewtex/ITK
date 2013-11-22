@@ -36,7 +36,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMesh
  */
 template< typename TCellInterface >
-class QuadEdgeMeshLineCell:
+class QuadEdgeMeshLineCell :
   public TCellInterface, public TCellInterface::CellTraits::QuadEdgeType
 {
 public:
@@ -94,12 +94,16 @@ public:
   itkTypeMacro(QuadEdgeMeshLineCell, TCellInterface);
 
   // accessor to the new QEGeom link that replaces now inheritance.
-  QEType * GetQEGeom() const { return ( m_QuadEdgeGeom ); }
+  QEType *
+  GetQEGeom() const {
+    return ( m_QuadEdgeGeom );
+  }
 
 public:
   /** Object memory management methods. */
   QuadEdgeMeshLineCell();
-  virtual ~QuadEdgeMeshLineCell();
+  virtual
+  ~QuadEdgeMeshLineCell();
 
   /** Accessors for m_Identifier. */
   void SetIdent(CellIdentifier cid);
@@ -125,7 +129,8 @@ public:
                                   CellAutoPointer & cell);
 
   /** Useless methods. */
-  virtual void MakeCopy(CellAutoPointer & cell) const
+  virtual void
+  MakeCopy(CellAutoPointer & cell) const
   {
     cell.TakeOwnership(new Self);
     cell->SetPointId( 0, this->GetQEGeom()->GetOrigin() );
@@ -143,38 +148,44 @@ public:
 
   virtual void SetPointId(int localId, PointIdentifier pId);
 
-  virtual PointIdIterator PointIdsBegin()
+  virtual PointIdIterator
+  PointIdsBegin()
   {
     SynchronizePointsAPI();
     return &m_PointIds[0];
   }
 
-  virtual PointIdIterator PointIdsEnd()
+  virtual PointIdIterator
+  PointIdsEnd()
   {
     SynchronizePointsAPI();
     return ( &m_PointIds[1] + 1 );
   }
 
-  virtual PointIdConstIterator GetPointIds() const
+  virtual PointIdConstIterator
+  GetPointIds() const
   {
     SynchronizePointsAPI();
     return &m_PointIds[0];
   }
 
-  virtual PointIdConstIterator PointIdsBegin() const
+  virtual PointIdConstIterator
+  PointIdsBegin() const
   {
     SynchronizePointsAPI();
     return &m_PointIds[0];
   }
 
-  virtual PointIdConstIterator PointIdsEnd() const
+  virtual PointIdConstIterator
+  PointIdsEnd() const
   {
     SynchronizePointsAPI();
     return ( &m_PointIds[1] + 1 );
   }
 
   /** helper for backward compatibility */
-  void SynchronizePointsAPI() const
+  void
+  SynchronizePointsAPI() const
   {
     m_PointIds[0] = GetQEGeom()->GetOrigin();
     m_PointIds[1] = GetQEGeom()->GetDestination();

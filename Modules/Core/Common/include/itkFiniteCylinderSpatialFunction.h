@@ -37,7 +37,7 @@ namespace itk
 
 template< unsigned int VDimension = 3,
           typename TInput = Point< double, VDimension > >
-class FiniteCylinderSpatialFunction:
+class FiniteCylinderSpatialFunction :
   public InteriorExteriorSpatialFunction< VDimension, TInput >
 {
 public:
@@ -92,7 +92,8 @@ public:
 protected:
 
   FiniteCylinderSpatialFunction();
-  virtual ~FiniteCylinderSpatialFunction();
+  virtual
+  ~FiniteCylinderSpatialFunction();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 

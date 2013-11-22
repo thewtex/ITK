@@ -25,7 +25,6 @@
 #include "itkHeavisideStepFunctionBase.h"
 #include "itkLevelSetDomainMapImageFilter.h"
 
-
 namespace itk
 {
 /**
@@ -72,21 +71,21 @@ public:
 
   itkStaticConstMacro ( Dimension, unsigned int, LevelSetType::Dimension );
 
-  typedef std::list< LevelSetIdentifierType >           IdListType;
-  typedef typename IdListType::iterator                 IdListIterator;
-  typedef typename IdListType::const_iterator           IdListConstIterator;
-  typedef Image< IdListType, Dimension >                IdListImageType;
-  typedef Image< short, Dimension >                     CacheImageType;
+  typedef std::list< LevelSetIdentifierType > IdListType;
+  typedef typename IdListType::iterator       IdListIterator;
+  typedef typename IdListType::const_iterator IdListConstIterator;
+  typedef Image< IdListType, Dimension >      IdListImageType;
+  typedef Image< short, Dimension >           CacheImageType;
 
   typedef LevelSetDomainMapImageFilter< IdListImageType, CacheImageType > DomainMapImageFilterType;
 
   typedef std::pair< LevelSetIdentifierType, LevelSetPointer > LevelSetPairType;
 
-  typedef typename DomainMapImageFilterType::Pointer          DomainMapImageFilterPointer;
-  typedef typename DomainMapImageFilterType::LevelSetDomain   LevelSetDomainType;
+  typedef typename DomainMapImageFilterType::Pointer        DomainMapImageFilterPointer;
+  typedef typename DomainMapImageFilterType::LevelSetDomain LevelSetDomainType;
 
-  typedef std::map< LevelSetIdentifierType, LevelSetDomainType >   DomainContainerType;
-  typedef typename DomainContainerType::iterator                   DomainIteratorType;
+  typedef std::map< LevelSetIdentifierType, LevelSetDomainType > DomainContainerType;
+  typedef typename DomainContainerType::iterator                 DomainIteratorType;
 
   /** Declare iterators to container. */
   class Iterator;
@@ -97,138 +96,194 @@ public:
     */
   class ConstIterator
   {
-  public:
-    ConstIterator( ) {}
+public:
+    ConstIterator() {}
     ConstIterator( const LevelSetContainerConstIteratorType& it ) : m_Iterator( it ) {}
     ~ConstIterator() {}
     ConstIterator( const Iterator& it ) : m_Iterator( it.m_Iterator ) {}
 
-    ConstIterator & operator * () { return *this; }
-    ConstIterator * operator->()  { return this; }
-    ConstIterator & operator++()
+    ConstIterator &
+    operator *() {
+      return *this;
+    }
+
+    ConstIterator *
+    operator->()  {
+      return this;
+    }
+
+    ConstIterator &
+    operator++()
     {
       ++m_Iterator;
       return *this;
     }
-    ConstIterator operator++(int)
+
+    ConstIterator
+    operator++(int)
     {
       ConstIterator tmp( *this );
+
       ++(*this);
       return tmp;
     }
-    ConstIterator & operator--()
+
+    ConstIterator &
+    operator--()
     {
       --m_Iterator;
       return *this;
     }
-    ConstIterator operator--(int)
+
+    ConstIterator
+    operator--(int)
     {
       ConstIterator tmp( *this );
+
       --(*this);
       return tmp;
     }
-    bool operator==(const Iterator& it) const
+
+    bool
+    operator==(const Iterator& it) const
     {
       return ( m_Iterator == it.m_Iterator );
     }
-    bool operator!=(const Iterator& it) const
-    {
-      return (m_Iterator != it.m_Iterator );
-    }
-    bool operator==(const ConstIterator& it) const
-    {
-      return ( m_Iterator == it.m_Iterator );
-    }
-    bool operator!=(const ConstIterator& it) const
+
+    bool
+    operator!=(const Iterator& it) const
     {
       return (m_Iterator != it.m_Iterator );
     }
 
-    LevelSetIdentifierType GetIdentifier() const
+    bool
+    operator==(const ConstIterator& it) const
+    {
+      return ( m_Iterator == it.m_Iterator );
+    }
+
+    bool
+    operator!=(const ConstIterator& it) const
+    {
+      return (m_Iterator != it.m_Iterator );
+    }
+
+    LevelSetIdentifierType
+    GetIdentifier() const
     {
       return m_Iterator->first;
     }
 
-    LevelSetType* GetLevelSet() const
+    LevelSetType*
+    GetLevelSet() const
     {
       return m_Iterator->second;
     }
 
-  private:
+private:
     LevelSetContainerConstIteratorType m_Iterator;
     friend class Iterator;
-    };
+  };
 
   /** \class Iterator
     \ingroup ITKLevelSetsv4 */
   class Iterator
-    {
-  public:
-    Iterator( ) {}
+  {
+public:
+    Iterator() {}
     Iterator( const LevelSetContainerIteratorType& it ) : m_Iterator( it ) {}
     Iterator( const ConstIterator& it ) : m_Iterator( it.m_Iterator ) {}
     ~Iterator() {}
 
-    Iterator & operator * () { return *this; }
-    Iterator * operator->()  { return this; }
-    Iterator & operator++()
+    Iterator &
+    operator *() {
+      return *this;
+    }
+
+    Iterator *
+    operator->()  {
+      return this;
+    }
+
+    Iterator &
+    operator++()
     {
       ++m_Iterator;
       return *this;
     }
-    Iterator operator++(int)
+
+    Iterator
+    operator++(int)
     {
       Iterator tmp( *this );
+
       ++(*this);
       return tmp;
     }
-    Iterator & operator--()
+
+    Iterator &
+    operator--()
     {
       --m_Iterator;
       return *this;
     }
-    Iterator operator--(int)
+
+    Iterator
+    operator--(int)
     {
       Iterator tmp( *this );
+
       --(*this);
       return tmp;
     }
-    bool operator==(const Iterator& it) const
+
+    bool
+    operator==(const Iterator& it) const
     {
       return ( m_Iterator == it.m_Iterator );
     }
-    bool operator!=(const Iterator& it) const
-    {
-      return (m_Iterator != it.m_Iterator );
-    }
-    bool operator==(const ConstIterator& it) const
-    {
-      return ( m_Iterator == it.m_Iterator );
-    }
-    bool operator!=(const ConstIterator& it) const
+
+    bool
+    operator!=(const Iterator& it) const
     {
       return (m_Iterator != it.m_Iterator );
     }
 
-    LevelSetIdentifierType GetIdentifier() const
+    bool
+    operator==(const ConstIterator& it) const
+    {
+      return ( m_Iterator == it.m_Iterator );
+    }
+
+    bool
+    operator!=(const ConstIterator& it) const
+    {
+      return (m_Iterator != it.m_Iterator );
+    }
+
+    LevelSetIdentifierType
+    GetIdentifier() const
     {
       return m_Iterator->first;
     }
 
-    LevelSetType* GetLevelSet() const
+    LevelSetType*
+    GetLevelSet() const
     {
       return m_Iterator->second;
     }
 
-  private:
+private:
     LevelSetContainerIteratorType m_Iterator;
     friend class ConstIterator;
   };
 
   Iterator Begin();
+
   Iterator End();
 
   ConstIterator Begin() const;
+
   ConstIterator End() const;
 
   /** Get the number of LevelSets in the container. */
@@ -279,15 +334,16 @@ protected:
   ~LevelSetContainerBase();
 
   const LevelSetContainerType& GetContainer() const;
+
   void SetContainer( const LevelSetContainerType& iContainer );
 
 private:
   LevelSetContainerBase( const Self & ); // purposely not implemented
-  void operator = ( const Self & ); // purposely not implemented
+  void operator =( const Self & );       // purposely not implemented
 
-  HeavisideConstPointer         m_Heaviside;
-  DomainMapImageFilterPointer   m_DomainMapFilter;
-  LevelSetContainerType         m_Container;
+  HeavisideConstPointer       m_Heaviside;
+  DomainMapImageFilterPointer m_DomainMapFilter;
+  LevelSetContainerType       m_Container;
 };
 }
 

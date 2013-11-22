@@ -32,18 +32,20 @@ typedef itk::SizeValueType                   SizeValueType;
 //
 // Utility function to get an ITK image from an void* buffer
 //
-ImageType::Pointer itkImageFromBuffer( itk::VXLVideoIO::Pointer vxlIO, void* buffer, size_t bufferSize )
+ImageType::Pointer
+itkImageFromBuffer( itk::VXLVideoIO::Pointer vxlIO, void* buffer, size_t bufferSize )
 {
   // Set up for incoming image
   ImageType::RegionType region;
-  ImageType::SizeType size;
-  ImageType::IndexType start;
+  ImageType::SizeType   size;
+  ImageType::IndexType  start;
+
   size[0] = vxlIO->GetDimensions(0);
   size[1] = vxlIO->GetDimensions(1);
   start.Fill(0);
   region.SetIndex(start);
   region.SetSize(size);
-  ImageType::PointType origin;
+  ImageType::PointType   origin;
   ImageType::SpacingType space;
   origin.Fill(0.0);
   space.Fill(1.0);  // May need fixing
@@ -65,20 +67,21 @@ ImageType::Pointer itkImageFromBuffer( itk::VXLVideoIO::Pointer vxlIO, void* buf
 //
 // Note: vxlIO should already have called ReadImageInformation
 //
-bool readCorrectly( itk::VXLVideoIO::Pointer vxlIO, vidl_ffmpeg_istream* stream, SizeValueType frameNumber )
+bool
+readCorrectly( itk::VXLVideoIO::Pointer vxlIO, vidl_ffmpeg_istream* stream, SizeValueType frameNumber )
 {
   bool ret = true;
 
   // Set up the buffer for the frame data
-  size_t bufferSize = vxlIO->GetImageSizeInBytes();
+  size_t    bufferSize = vxlIO->GetImageSizeInBytes();
   PixelType buffer[bufferSize];
 
   // Read the frame data
-  vxlIO->Read(static_cast<void*>(buffer));
+  vxlIO->Read(static_cast<void*>(buffer) );
 
   // Open the frame directly with VXL and convert to RGB 24
   vidl_frame_sptr vxlFrame = stream->read_frame();
-  vxlFrame = vidl_convert_frame(vxlFrame, vidl_pixel_format_from_string("RGB 24"));
+  vxlFrame = vidl_convert_frame(vxlFrame, vidl_pixel_format_from_string("RGB 24") );
 
   // Make sure buffers are same sized
   if (vxlFrame->size() != bufferSize)
@@ -101,7 +104,7 @@ bool readCorrectly( itk::VXLVideoIO::Pointer vxlIO, vidl_ffmpeg_istream* stream,
       std::cerr << "Frame Origin not set correctly" << std::endl;
       ret = false;
       }
-    if (vxlIO->GetDirection(i) != vxlIO->GetDefaultDirection(i))
+    if (vxlIO->GetDirection(i) != vxlIO->GetDefaultDirection(i) )
       {
       std::cerr << "Frame Direction not set correctly" << std::endl;
       ret = false;
@@ -109,7 +112,7 @@ bool readCorrectly( itk::VXLVideoIO::Pointer vxlIO, vidl_ffmpeg_istream* stream,
     }
 
   // Compare buffer contents
-  if (memcmp(reinterpret_cast<void*>(buffer), vxlFrame->data(), bufferSize))
+  if (memcmp(reinterpret_cast<void*>(buffer), vxlFrame->data(), bufferSize) )
     {
     std::cerr << "Frame buffers don't match for frame " << frameNumber << std::endl;
     ret = false;
@@ -193,9 +196,10 @@ bool videosMatch(char* file1, char* file2)
 // Usage: [Video Input] [Non-Video Input] [Video Output] [Width] [Height]
 //            [Num Frames] [FpS]
 
-                   int test_VXLVideoIO ( char* input, char* nonVideoInput, char* output, char* cameraOutput,
-                                         unsigned int inWidth, unsigned int inHeight,
-                                         SizeValueType inNumFrames, double inFpS )
+int
+test_VXLVideoIO( char* input, char* nonVideoInput, char* output, char* cameraOutput,
+                 unsigned int inWidth, unsigned int inHeight,
+                 SizeValueType inNumFrames, double inFpS )
 {
 
   int ret = EXIT_SUCCESS;
@@ -203,14 +207,13 @@ bool videosMatch(char* file1, char* file2)
   // Create the VideoIO
   itk::VXLVideoIO::Pointer vxlIO = itk::VXLVideoIO::New();
 
-
   //////
   // CanReadFile
   //////
   std::cout << "VXLVideoIO::CanReadFile..." << std::endl;
 
   // Test CanReadFile on good file
-  if (!vxlIO->CanReadFile(input))
+  if (!vxlIO->CanReadFile(input) )
     {
     std::cerr << "Could not read " << input << std::endl;
     ret = EXIT_FAILURE;
@@ -218,14 +221,14 @@ bool videosMatch(char* file1, char* file2)
 
   // Test CanReadFile on non-existant file
   std::string nonExistantFile = "Bad/Path/To/Nothing";
-  if (vxlIO->CanReadFile(nonExistantFile.c_str()))
+  if (vxlIO->CanReadFile(nonExistantFile.c_str() ) )
     {
     std::cerr << "Should have failed to open \"" << nonExistantFile << "\"" << std::endl;
     ret = EXIT_FAILURE;
     }
 
   // Test CanReadFile on non-video file
-  if (vxlIO->CanReadFile(nonVideoInput))
+  if (vxlIO->CanReadFile(nonVideoInput) )
     {
     std::cerr << "Should have failed to open \"" << nonVideoInput << "\"" << std::endl;
     ret = EXIT_FAILURE;
@@ -238,7 +241,7 @@ bool videosMatch(char* file1, char* file2)
 
   vxlIO->SetFileName(input);
   vxlIO->ReadImageInformation();
-  bool infoSet = true;
+  bool              infoSet = true;
   std::stringstream paramMessage;
   if (vxlIO->GetDimensions(0) != inWidth)
     {
@@ -272,7 +275,6 @@ bool videosMatch(char* file1, char* file2)
     ret = EXIT_FAILURE;
     }
 
-
   //////
   // Read
   //////
@@ -281,12 +283,12 @@ bool videosMatch(char* file1, char* file2)
 
   // Set up VXL stream
   vidl_ffmpeg_istream* stream = new vidl_ffmpeg_istream();
-  stream->open(vxlIO->GetFileName());
+  stream->open(vxlIO->GetFileName() );
 
   // Loop through all frames
   for (SizeValueType i = 0; i < vxlIO->GetFrameTotal(); ++i)
     {
-    if (!readCorrectly(vxlIO, stream, i))
+    if (!readCorrectly(vxlIO, stream, i) )
       {
       std::cerr << "Failed to read frame " << i << " correctly" << std::endl;
       ret = EXIT_FAILURE;
@@ -297,7 +299,6 @@ bool videosMatch(char* file1, char* file2)
   // delete stream
   delete stream;
 
-
   //////
   // SetNextFrameToRead
   //////
@@ -305,20 +306,19 @@ bool videosMatch(char* file1, char* file2)
 
   // Set up the buffer for the frame data so Read can be called
   //size_t bufferSize = vxlIO->GetDimensions(1)*vxlIO->GetDimensions(0)*vxlIO->GetNumberOfComponents()*vxlIO->GetBytesPerPixel();
-  size_t bufferSize = vxlIO->GetImageSizeInBytes();
+  size_t    bufferSize = vxlIO->GetImageSizeInBytes();
   PixelType buffer[bufferSize];
-
 
   // try seeking to an I-Frame
   SizeValueType seekFrame = vxlIO->GetIFrameInterval();
-  if (!vxlIO->SetNextFrameToRead(seekFrame))
+  if (!vxlIO->SetNextFrameToRead(seekFrame) )
     {
     std::cerr << "Failed to seek to second I-Frame..." << std::endl;
     ret = EXIT_FAILURE;
     }
 
   // Read the frame data which updates the current frame correctly
-  vxlIO->Read(static_cast<void*>(buffer));
+  vxlIO->Read(static_cast<void*>(buffer) );
 
   if (vxlIO->GetCurrentFrame() != seekFrame)
     {
@@ -326,20 +326,19 @@ bool videosMatch(char* file1, char* file2)
     ret = EXIT_FAILURE;
     }
 
-
   // If there are I-Frame intervals, check behavior
   if (vxlIO->GetIFrameInterval() > 1)
     {
 
     // try seeking in-between I-Frames
     seekFrame = vxlIO->GetIFrameInterval()/2;
-    if (!vxlIO->SetNextFrameToRead(seekFrame))
+    if (!vxlIO->SetNextFrameToRead(seekFrame) )
       {
       std::cerr << "Failed to seek between I-Frames" << std::endl;
       ret = EXIT_FAILURE;
       }
-    vxlIO->Read(static_cast<void*>(buffer));
-    if (vxlIO->GetCurrentFrame() != vxlIO->GetIFrameInterval())
+    vxlIO->Read(static_cast<void*>(buffer) );
+    if (vxlIO->GetCurrentFrame() != vxlIO->GetIFrameInterval() )
       {
       std::cerr << "Seek between I-Frames didn't end up in the right place" << std::endl;
       ret = EXIT_FAILURE;
@@ -347,7 +346,7 @@ bool videosMatch(char* file1, char* file2)
 
     // try seeking past last I-Frame
     seekFrame = vxlIO->GetLastIFrame() + 1;
-    if (vxlIO->SetNextFrameToRead(seekFrame))
+    if (vxlIO->SetNextFrameToRead(seekFrame) )
       {
       std::cerr << "Did no fail when seeking past the last I-Frame" << std::endl;
       ret = EXIT_FAILURE;
@@ -356,15 +355,14 @@ bool videosMatch(char* file1, char* file2)
     }
 
   // Save the current parameters
-  double fps = vxlIO->GetFramesPerSecond();
+  double       fps = vxlIO->GetFramesPerSecond();
   unsigned int width = vxlIO->GetDimensions(0);
   unsigned int height = vxlIO->GetDimensions(1);
-  const char* fourCC = "MP42";
+  const char*  fourCC = "MP42";
   unsigned int nChannels = vxlIO->GetNumberOfComponents();
 
   // Reset the VideoIO
   vxlIO->FinishReadingOrWriting();
-
 
   //////
   // Test reading from camera -- If webcam 0 can be opened, it will, otherwise this will be skipped
@@ -373,7 +371,7 @@ bool videosMatch(char* file1, char* file2)
   //////
 
   // Check to see if camera is available
-  if (vxlIO->CanReadCamera( 0 ))
+  if (vxlIO->CanReadCamera( 0 ) )
     {
 
     std::cout << "VXLVideoIO::Read (from camera)..." << std::endl;
@@ -395,13 +393,13 @@ bool videosMatch(char* file1, char* file2)
     // set up buffer for camera
     //size_t camBufferSize = vxlIO->GetDimensions(1)*vxlIO->GetDimensions(0)*
     //                        vxlIO->GetNumberOfComponents()*vxlIO->GetBytesPerPixel();
-    size_t camBufferSize = vxlIO->GetImageSizeInBytes();
+    size_t    camBufferSize = vxlIO->GetImageSizeInBytes();
     PixelType camBuffer[camBufferSize];
 
     // Read from the camera
     try
       {
-      vxlIO->Read(reinterpret_cast<void*>(camBuffer));
+      vxlIO->Read(reinterpret_cast<void*>(camBuffer) );
       }
     catch (itk::ExceptionObject & e)
       {
@@ -429,89 +427,87 @@ bool videosMatch(char* file1, char* file2)
 
     }
 
-
   /////////////////////////////////////////////////////////////////////////////
-    // Test Writing
-    //
+  // Test Writing
+  //
 
-    // Create the VideoIO
-    itk::VXLVideoIO::Pointer vxlIO_write = itk::VXLVideoIO::New();
+  // Create the VideoIO
+  itk::VXLVideoIO::Pointer vxlIO_write = itk::VXLVideoIO::New();
 
-    //////
-    // SetWriterParameters
-    //////
-    std::cout << "VXLVIdeoIO::SetWriterParameters..." << std::endl;
+  //////
+  // SetWriterParameters
+  //////
+  std::cout << "VXLVIdeoIO::SetWriterParameters..." << std::endl;
 
-    // Reset the saved parameters
-    std::vector<itk::SizeValueType> size;
-    size.push_back(width);
-    size.push_back(height);
-    vxlIO_write->SetWriterParameters(fps, size, fourCC, nChannels, itk::ImageIOBase::UCHAR);
+  // Reset the saved parameters
+  std::vector<itk::SizeValueType> size;
+  size.push_back(width);
+  size.push_back(height);
+  vxlIO_write->SetWriterParameters(fps, size, fourCC, nChannels, itk::ImageIOBase::UCHAR);
 
-    // Make sure they set correctly
-    if (vxlIO_write->GetFramesPerSecond() != fps || vxlIO_write->GetDimensions(0) != width ||
-        vxlIO_write->GetDimensions(1) != height || vxlIO_write->GetNumberOfComponents() != nChannels)
-      {
-      std::cerr << "Didn't set writer parmeters correctly" << std::endl;
-      ret = EXIT_FAILURE;
-      }
+  // Make sure they set correctly
+  if (vxlIO_write->GetFramesPerSecond() != fps || vxlIO_write->GetDimensions(0) != width ||
+      vxlIO_write->GetDimensions(1) != height || vxlIO_write->GetNumberOfComponents() != nChannels)
+    {
+    std::cerr << "Didn't set writer parmeters correctly" << std::endl;
+    ret = EXIT_FAILURE;
+    }
 
-    //////
-    // CanWriteFile
-    //////
-    std::cout << "VXLVideoIO::CanWriteFile..." << std::endl;
+  //////
+  // CanWriteFile
+  //////
+  std::cout << "VXLVideoIO::CanWriteFile..." << std::endl;
 
-    // Test CanWriteFile on good filename
-    if (!vxlIO_write->CanWriteFile(output))
-      {
-      std::cerr << "CanWriteFile didn't return true correctly" << std::endl;
-      ret = EXIT_FAILURE;
-      }
+  // Test CanWriteFile on good filename
+  if (!vxlIO_write->CanWriteFile(output) )
+    {
+    std::cerr << "CanWriteFile didn't return true correctly" << std::endl;
+    ret = EXIT_FAILURE;
+    }
 
-    // Test CanWriteFile on bad filename
-    if (vxlIO_write->CanWriteFile("asdfasdfasdf"))
-      {
-      std::cerr << "CanWriteFile should have failed for bad filename" << std::endl;
-      ret = EXIT_FAILURE;
-      }
+  // Test CanWriteFile on bad filename
+  if (vxlIO_write->CanWriteFile("asdfasdfasdf") )
+    {
+    std::cerr << "CanWriteFile should have failed for bad filename" << std::endl;
+    ret = EXIT_FAILURE;
+    }
 
+  //////
+  // Write
+  //////
+  std::cout << "VXLVIdeoIO::Write..." << std::endl;
 
-    //////
-    // Write
-    //////
-    std::cout << "VXLVIdeoIO::Write..." << std::endl;
+  // Set output filename
+  vxlIO_write->SetFileName( output );
 
-    // Set output filename
-    vxlIO_write->SetFileName( output );
+  // Set up a second VideoIO to read while we're writing
+  itk::VXLVideoIO::Pointer vxlIO_read = itk::VXLVideoIO::New();
+  vxlIO_read->SetFileName( input );
+  vxlIO_read->ReadImageInformation();
 
-    // Set up a second VideoIO to read while we're writing
-    itk::VXLVideoIO::Pointer vxlIO_read = itk::VXLVideoIO::New();
-    vxlIO_read->SetFileName( input );
-    vxlIO_read->ReadImageInformation();
+  // Loop through all frames to read with opencvIO2 and write with opencvIO
+  // Set up a buffer to read to
 
-    // Loop through all frames to read with opencvIO2 and write with opencvIO
-    // Set up a buffer to read to
+  for (unsigned int i = 0; i < inNumFrames; ++i)
+    {
+    PixelType buffer2[ vxlIO_read->GetImageSizeInBytes() ];
+    // Read into the buffer
+    vxlIO_read->Read(static_cast<void*>(buffer2) );
 
-    for (unsigned int i = 0; i < inNumFrames; ++i)
-      {
-      PixelType buffer2[ vxlIO_read->GetImageSizeInBytes() ];
-      // Read into the buffer
-      vxlIO_read->Read(static_cast<void*>(buffer2));
+    // Write out the frame from the buffer
+    vxlIO_write->Write(static_cast<void*>(buffer2) );
+    }
 
-      // Write out the frame from the buffer
-      vxlIO_write->Write(static_cast<void*>(buffer2));
-      }
+  // Finish writing and reading
+  vxlIO_read->FinishReadingOrWriting();
+  vxlIO_write->FinishReadingOrWriting();
 
-
-    // Finish writing and reading
-    vxlIO_read->FinishReadingOrWriting();
-    vxlIO_write->FinishReadingOrWriting();
-
-    std::cout<<"Done !"<<std::endl;
-    return ret;
+  std::cout<<"Done !"<<std::endl;
+  return ret;
 }
 
-int itkVXLVideoIOTest ( int argc, char *argv[] )
+int
+itkVXLVideoIOTest( int argc, char *argv[] )
 {
   if (argc != 9)
     {
@@ -521,5 +517,5 @@ int itkVXLVideoIOTest ( int argc, char *argv[] )
     }
 
   return test_VXLVideoIO(argv[1], argv[2], argv[3], argv[4], atoi(argv[5]), atoi(argv[6]),
-                         atoi(argv[7]), atof(argv[8]));
+                         atoi(argv[7]), atof(argv[8]) );
 }

@@ -48,7 +48,7 @@ namespace itk
  */
 template< typename TInputImage1, typename TInputImage2,
           typename TOutputImage, typename TFunction    >
-class BinaryFunctorImageFilter:
+class BinaryFunctorImageFilter :
   public InPlaceImageFilter< TInputImage1, TOutputImage >
 {
 public:
@@ -71,14 +71,14 @@ public:
   typedef typename Input1ImageType::RegionType   Input1ImageRegionType;
   typedef typename Input1ImageType::PixelType    Input1ImagePixelType;
   typedef SimpleDataObjectDecorator<Input1ImagePixelType>
-                                                 DecoratedInput1ImagePixelType;
+    DecoratedInput1ImagePixelType;
 
   typedef TInputImage2                           Input2ImageType;
   typedef typename Input2ImageType::ConstPointer Input2ImagePointer;
   typedef typename Input2ImageType::RegionType   Input2ImageRegionType;
   typedef typename Input2ImageType::PixelType    Input2ImagePixelType;
   typedef SimpleDataObjectDecorator<Input2ImagePixelType>
-                                                 DecoratedInput2ImagePixelType;
+    DecoratedInput2ImagePixelType;
 
   typedef TOutputImage                         OutputImageType;
   typedef typename OutputImageType::Pointer    OutputImagePointer;
@@ -87,7 +87,9 @@ public:
 
   /** Connect one of the operands for pixel-wise operation */
   virtual void SetInput1(const TInputImage1 *image1);
+
   virtual void SetInput1(const DecoratedInput1ImagePixelType *input1);
+
   virtual void SetInput1(const Input1ImagePixelType &input1);
 
   /** Set the first operand as a constant */
@@ -100,16 +102,22 @@ public:
 
   /** Connect one of the operands for pixel-wise operation */
   virtual void SetInput2(const TInputImage2 *image2);
+
   virtual void SetInput2(const DecoratedInput2ImagePixelType *input2);
+
   virtual void SetInput2(const Input2ImagePixelType &input2);
 
   /** Set the second operand as a constant */
   virtual void SetConstant2(const Input2ImagePixelType &input2);
-  void SetConstant(Input2ImagePixelType ct)
+
+  void
+  SetConstant(Input2ImagePixelType ct)
   {
     this->SetConstant2(ct);
   }
-  const Input2ImagePixelType & GetConstant() const
+
+  const Input2ImagePixelType &
+  GetConstant() const
   {
     return this->GetConstant2();
   }
@@ -123,13 +131,17 @@ public:
    * (Functors do not have to derive from itk::LightObject, so they do
    * not necessarily have a reference count. So we cannot return a
    * SmartPointer.) */
-  FunctorType & GetFunctor() { return m_Functor; }
+  FunctorType &
+  GetFunctor() {
+    return m_Functor;
+  }
 
   /** Get the functor object.  The functor is returned by reference.
    * (Functors do not have to derive from itk::LightObject, so they do
    * not necessarily have a reference count. So we cannot return a
    * SmartPointer.) */
-  const FunctorType & GetFunctor() const
+  const FunctorType &
+  GetFunctor() const
   {
     return m_Functor;
   }
@@ -140,7 +152,8 @@ public:
    * This method requires an operator!=() be defined on the functor
    * (or the compiler's default implementation of operator!=() being
    * appropriate). */
-  void SetFunctor(const FunctorType & functor)
+  void
+  SetFunctor(const FunctorType & functor)
   {
     if ( m_Functor != functor )
       {
@@ -170,7 +183,8 @@ public:
 
 protected:
   BinaryFunctorImageFilter();
-  virtual ~BinaryFunctorImageFilter() {}
+  virtual
+  ~BinaryFunctorImageFilter() {}
 
   /** BinaryFunctorImageFilter can be implemented as a multithreaded filter.
    * Therefore, this implementation provides a ThreadedGenerateData() routine

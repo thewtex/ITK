@@ -18,10 +18,11 @@
 
 #include "itkNarrowBand.h"
 
-
-int itkNarrowBandTest (int, char*[])
+int
+itkNarrowBandTest(int, char*[])
 {
   unsigned int i;
+
   typedef unsigned int                      IndexType;
   typedef float                             DataType;
   typedef itk::BandNode<IndexType,DataType> BandNodeType;
@@ -53,10 +54,10 @@ int itkNarrowBandTest (int, char*[])
   i= 0;
 //  BandNodeType *tmp;
   for(; it != itend; it++)
-  {
-  std::cout <<"Node "<<i<<std::endl<<"Index: "<<it->m_Index<<" Data: "<<it->m_Data<<std::endl;
-  i++;
-  }
+    {
+    std::cout <<"Node "<<i<<std::endl<<"Index: "<<it->m_Index<<" Data: "<<it->m_Data<<std::endl;
+    i++;
+    }
 
   //Split the band
   std::vector<RegionType> regions;
@@ -68,12 +69,12 @@ int itkNarrowBandTest (int, char*[])
   std::cout<<"Number of regions: "<<regions.size()<<std::endl;
   i = 0;
   for(; regionsit != regionsitend; ++regionsit)
-  {
+    {
     std::cout<<"Region "<<i<<std::endl;
     for(; regions[i].Begin != regions[i].End; regions[i].Begin++)
-       std::cout<<"Index: "<<regions[i].Begin->m_Index<<" Data: "<<regions[i].Begin->m_Data<<std::endl;
+      std::cout<<"Index: "<<regions[i].Begin->m_Index<<" Data: "<<regions[i].Begin->m_Data<<std::endl;
     i++;
-  }
+    }
   std::cout << "Test Passed. " << std::endl;
   return EXIT_SUCCESS;
 }

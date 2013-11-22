@@ -157,7 +157,6 @@ public:
   typedef typename Superclass::InputPointType  InputPointType;
   typedef typename Superclass::OutputPointType OutputPointType;
 
-
   /** This method sets the fixed parameters of the transform.
    * For a BSpline deformation transform, the fixed parameters are the
    * following: grid size, grid origin, grid spacing, and grid direction.
@@ -202,7 +201,7 @@ public:
   virtual void SetCoefficientImages( const CoefficientImageArray & images );
 
   /** Typedefs for specifying the extent of the grid. */
-  typedef typename Superclass::RegionType    RegionType;
+  typedef typename Superclass::RegionType RegionType;
 
   typedef typename Superclass::IndexType     IndexType;
   typedef typename Superclass::SizeType      SizeType;
@@ -229,7 +228,7 @@ public:
    */
   using Superclass::TransformPoint;
   virtual void TransformPoint( const InputPointType & inputPoint, OutputPointType & outputPoint,
-    WeightsType & weights, ParameterIndexArrayType & indices, bool & inside ) const;
+                               WeightsType & weights, ParameterIndexArrayType & indices, bool & inside ) const;
 
   virtual void ComputeJacobianWithRespectToParameters( const InputPointType &, JacobianType & ) const;
 
@@ -239,8 +238,8 @@ public:
   /** Return the number of parameters per dimension */
   NumberOfParametersType GetNumberOfParametersPerDimension() const;
 
-  typedef typename Superclass::SpacingType   PhysicalDimensionsType;
-  typedef typename Superclass::PixelType     PixelType;
+  typedef typename Superclass::SpacingType PhysicalDimensionsType;
+  typedef typename Superclass::PixelType   PixelType;
 
   typedef typename Superclass::MeshSizeType MeshSizeType;
 
@@ -273,7 +272,8 @@ protected:
   void PrintSelf( std::ostream & os, Indent indent ) const;
 
   BSplineTransform();
-  virtual ~BSplineTransform();
+  virtual
+  ~BSplineTransform();
 
 private:
 

@@ -74,11 +74,11 @@ const typename BoundingBox< TPointIdentifier, VPointDimension, TCoordRep,
                             TPointsContainer >::PointsContainer *
 BoundingBox< TPointIdentifier, VPointDimension, TCoordRep, TPointsContainer >
 ::GetPoints(void) const
-{
+  {
   itkDebugMacro("returning Points container of " << m_PointsContainer);
 
   return m_PointsContainer.GetPointer();
-}
+  }
 
 /** Compute and get the corners of the bounding box */
 template< typename TPointIdentifier, int VPointDimension,
@@ -87,7 +87,7 @@ const typename BoundingBox< TPointIdentifier, VPointDimension, TCoordRep,
                             TPointsContainer >::PointsContainer *
 BoundingBox< TPointIdentifier, VPointDimension, TCoordRep, TPointsContainer >
 ::GetCorners(void)
-{
+  {
   m_CornersContainer->clear();
 
   PointType center = this->GetCenter();
@@ -104,7 +104,7 @@ BoundingBox< TPointIdentifier, VPointDimension, TCoordRep, TPointsContainer >
     for ( unsigned int i = 0; i < VPointDimension; i++ )
       {
       pnt[i] = center[i] + vcl_pow( -1.0, ( (double)( j / ( int( vcl_pow(2.0, (double)i) ) ) ) ) )
-               * radius[i];
+        * radius[i];
       }
 
     // Push back is not defined so we insert at the end of the list
@@ -112,13 +112,13 @@ BoundingBox< TPointIdentifier, VPointDimension, TCoordRep, TPointsContainer >
     }
 
   return m_CornersContainer.GetPointer();
-}
+  }
 
 /** */
 template< typename TPointIdentifier, int VPointDimension,
           typename TCoordRep, typename TPointsContainer >
 BoundingBox< TPointIdentifier, VPointDimension, TCoordRep, TPointsContainer >
-::BoundingBox():m_PointsContainer(NULL)
+::BoundingBox() : m_PointsContainer(NULL)
 {
   m_Bounds.Fill(NumericTraits< CoordRepType >::Zero);
   m_CornersContainer = PointsContainer::New();
@@ -316,7 +316,7 @@ BoundingBox< TPointIdentifier, VPointDimension, TCoordRep, TPointsContainer >
     for ( unsigned int i = 0; i < PointDimension; i++ )
       {
       dist2 += ( m_Bounds[2 * i] - m_Bounds[2 * i + 1] )
-               * ( m_Bounds[2 * i] - m_Bounds[2 * i + 1] );
+        * ( m_Bounds[2 * i] - m_Bounds[2 * i + 1] );
       }
     }
 
@@ -400,6 +400,7 @@ BoundingBox< TPointIdentifier, VPointDimension, TCoordRep, TPointsContainer >
 
   return clone;
 }
+
 } // end namespace itk
 
 #endif

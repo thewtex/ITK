@@ -41,8 +41,7 @@ AzimuthElevationToCartesianTransform< TScalar, NDimensions >::AzimuthElevationTo
 template< typename TScalar, unsigned int NDimensions >
 AzimuthElevationToCartesianTransform< TScalar, NDimensions >::
 ~AzimuthElevationToCartesianTransform()
-{
-}
+{}
 
 // Print self
 template< typename TScalar, unsigned int NDimensions >
@@ -100,11 +99,11 @@ AzimuthElevationToCartesianTransform< TScalar,
 {
   OutputPointType result;
   ScalarType      Azimuth = ( ( 2 * vnl_math::pi ) / 360 )
-                            * ( point[0] * m_AzimuthAngularSeparation
-                                - ( ( m_MaxAzimuth - 1 ) / 2.0 ) );
+    * ( point[0] * m_AzimuthAngularSeparation
+        - ( ( m_MaxAzimuth - 1 ) / 2.0 ) );
   ScalarType Elevation   = ( ( 2 * vnl_math::pi ) / 360 )
-                           * ( point[1] * m_ElevationAngularSeparation
-                               - ( ( m_MaxElevation - 1 ) / 2.0 ) );
+    * ( point[1] * m_ElevationAngularSeparation
+        - ( ( m_MaxElevation - 1 ) / 2.0 ) );
   ScalarType r = ( m_FirstSampleDistance + point[2] ) * m_RadiusSampleSize;
 
   ScalarType cosOfAzimuth = vcl_cos(Azimuth);
@@ -127,9 +126,9 @@ AzimuthElevationToCartesianTransform< TScalar, NDimensions >::TransformCartesian
   InputPointType result;       // Converted point
 
   result[0] = ( vcl_atan(point[0] / point[2]) ) * ( 360 / ( 2 * vnl_math::pi ) )
-              + ( ( m_MaxAzimuth - 1 ) / 2.0 );
+    + ( ( m_MaxAzimuth - 1 ) / 2.0 );
   result[1] = ( vcl_atan(point[1] / point[2]) ) * ( 360 / ( 2 * vnl_math::pi ) )
-              + ( ( m_MaxElevation - 1 ) / 2.0 );
+    + ( ( m_MaxElevation - 1 ) / 2.0 );
   result[2] = ( ( vcl_sqrt(point[0] * point[0]
                            + point[1] * point[1]
                            + point[2] * point[2]) / m_RadiusSampleSize )
@@ -191,5 +190,6 @@ AzimuthElevationToCartesianTransform< TScalar, NDimensions >::SetForwardCartesia
 {
   m_ForwardAzimuthElevationToPhysical = false;
 }
+
 } //namespace
 #endif

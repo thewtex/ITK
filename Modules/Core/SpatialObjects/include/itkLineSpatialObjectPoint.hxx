@@ -29,7 +29,7 @@ LineSpatialObjectPoint< TPointDimension >
 {
   this->m_ID = 0;
   unsigned int ii = 0;
-  VectorType normal;
+  VectorType   normal;
   normal.Fill(0);
   while( ii < TPointDimension - 1 )
     {
@@ -49,9 +49,9 @@ template< unsigned int TPointDimension >
 const typename LineSpatialObjectPoint< TPointDimension >::VectorType &
 LineSpatialObjectPoint< TPointDimension >
 ::GetNormal(unsigned int index) const
-{
+  {
   return m_NormalArray[index];
-}
+  }
 
 /** Print the object */
 template< unsigned int TPointDimension >
@@ -60,6 +60,7 @@ LineSpatialObjectPoint< TPointDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "LineSpatialObjectPoint(" << this << ")" << std::endl;
   unsigned int ii = 0;
   while( ii < TPointDimension - 1 )
@@ -88,6 +89,7 @@ LineSpatialObjectPoint< TPointDimension >
   this->m_X = rhs.m_X;
   return *this;
 }
+
 } // end namespace itk
 
 #endif

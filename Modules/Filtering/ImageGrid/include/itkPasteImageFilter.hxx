@@ -51,12 +51,12 @@ template< typename TInputImage, typename TSourceImage, typename TOutputImage >
 const typename PasteImageFilter< TInputImage, TSourceImage, TOutputImage >::SourceImageType *
 PasteImageFilter< TInputImage, TSourceImage, TOutputImage >
 ::GetSourceImage() const
-{
+  {
   const SourceImageType *sourceImage =
     dynamic_cast< const SourceImageType * >( this->ProcessObject::GetInput(1) );
 
   return sourceImage;
-}
+  }
 
 template< typename TInputImage, typename TSourceImage, typename TOutputImage >
 void
@@ -71,12 +71,12 @@ template< typename TInputImage, typename TSourceImage, typename TOutputImage >
 const typename PasteImageFilter< TInputImage, TSourceImage, TOutputImage >::InputImageType *
 PasteImageFilter< TInputImage, TSourceImage, TOutputImage >
 ::GetDestinationImage() const
-{
+  {
   const InputImageType *destinationImage =
     dynamic_cast< const InputImageType * >( this->ProcessObject::GetInput(0) );
 
   return destinationImage;
-}
+  }
 
 /**
  *
@@ -141,9 +141,9 @@ PasteImageFilter< TInputImage, TSourceImage, TOutputImage >
   itkDebugMacro(<< "Actually executing");
 
   // Get the input and output pointers
-  const InputImageType  *destPtr = this->GetInput();
+  const InputImageType * destPtr = this->GetInput();
   const SourceImageType *sourcePtr = this->GetSourceImage();
-  OutputImageType       *outputPtr = this->GetOutput();
+  OutputImageType *      outputPtr = this->GetOutput();
 
   // support progress methods/callbacks
   ProgressReporter progress( this, threadId, 1 );
@@ -201,13 +201,12 @@ PasteImageFilter< TInputImage, TSourceImage, TOutputImage >
     // transform the cropped index back into the source image
     InputImageIndexType sourceIndexInSourceImageCropped;
     sourceIndexInSourceImageCropped = sourceRegionInDestinationImageCropped.GetIndex()
-                                      + originalOffsetFromDestinationToSource;
+      + originalOffsetFromDestinationToSource;
 
     // set the values in the region
     sourceRegionInSourceImageCropped.SetIndex(sourceIndexInSourceImageCropped);
     sourceRegionInSourceImageCropped.SetSize( sourceRegionInDestinationImageCropped.GetSize() );
     }
-
 
   // There are three cases that we need to consider:
   //
@@ -252,18 +251,20 @@ PasteImageFilter< TInputImage, TSourceImage, TOutputImage >
     // copy the destination to the output then overwrite the
     // appropriate output pixels with the source.
 
-     if ( !( this->GetInPlace() && this->CanRunInPlace() ) )
-       {
-       // Copy destination to output
-       ImageAlgorithm::Copy( destPtr, outputPtr, outputRegionForThread, outputRegionForThread );
-       }
+    if ( !( this->GetInPlace() && this->CanRunInPlace() ) )
+      {
+      // Copy destination to output
+      ImageAlgorithm::Copy( destPtr, outputPtr, outputRegionForThread, outputRegionForThread );
+      }
 
-     // copy the cropped source region to output
-     ImageAlgorithm::Copy( sourcePtr, outputPtr, sourceRegionInSourceImageCropped, sourceRegionInDestinationImageCropped );
+    // copy the cropped source region to output
+    ImageAlgorithm::Copy( sourcePtr, outputPtr, sourceRegionInSourceImageCropped,
+                          sourceRegionInDestinationImageCropped );
 
-     progress.CompletedPixel();
+    progress.CompletedPixel();
     }
 }
+
 } // end namespace itk
 
 #endif

@@ -125,7 +125,7 @@ MeanSquareRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
 
   // Get moving image related information
   const DisplacementFieldPixelType itvec = this->GetDisplacementField()->GetPixel(index);
-  PointType                       mappedPoint;
+  PointType                        mappedPoint;
   this->GetFixedImage()->TransformIndexToPhysicalPoint(index, mappedPoint);
   for ( unsigned int j = 0; j < ImageDimension; j++ )
     {
@@ -163,10 +163,11 @@ MeanSquareRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
   for ( unsigned int j = 0; j < ImageDimension; j++ )
     {
     update[j] = speedValue * fixedGradient[j] * vnl_math_sqr(m_FixedImageSpacing[j])
-                / denominator * this->m_GradientStep;
+      / denominator * this->m_GradientStep;
     }
   return update;
 }
+
 } // end namespace itk
 
 #endif

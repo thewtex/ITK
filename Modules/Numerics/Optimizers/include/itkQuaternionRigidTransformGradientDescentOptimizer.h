@@ -48,7 +48,7 @@ namespace itk
  * \ingroup Numerics Optimizers
  * \ingroup ITKOptimizers
  */
-class QuaternionRigidTransformGradientDescentOptimizer:
+class QuaternionRigidTransformGradientDescentOptimizer :
   public GradientDescentOptimizer
 {
 public:
@@ -74,12 +74,14 @@ public:
 
 protected:
   QuaternionRigidTransformGradientDescentOptimizer() {}
-  virtual ~QuaternionRigidTransformGradientDescentOptimizer() {}
+  virtual
+  ~QuaternionRigidTransformGradientDescentOptimizer() {}
 
 private:
   //purposely not implemented
   QuaternionRigidTransformGradientDescentOptimizer(const Self &);
   void operator=(const Self &);
+
 };
 } // end namespace itk
 

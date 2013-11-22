@@ -24,18 +24,19 @@
 #include "itkGPUImage.h"
 #include "itkGPUReduction.h"
 
-int itkGPUReductionTest(int argc, char *argv[])
+int
+itkGPUReductionTest(int argc, char *argv[])
 {
   if (argc > 2)
-  {
+    {
     std::cout << "received " << argc << " arguments, but didn't expect any more than 1."
               << "first ignored argument: " << argv[2] << std::endl;
-  }
+    }
   int numPixels = 256;
   if (argc > 1)
-  {
+    {
     numPixels  = atoi(argv[1]);
-  }
+    }
 
   // create input
   typedef int ElementType;
@@ -43,36 +44,38 @@ int itkGPUReductionTest(int argc, char *argv[])
   itk::GPUReduction<ElementType>::Pointer summer = itk::GPUReduction<ElementType>::New();
   summer->InitializeKernel(numPixels);
   unsigned int bytes = numPixels * sizeof(ElementType);
-  ElementType*    h_idata = (ElementType*)malloc(bytes);
+  ElementType* h_idata = (ElementType*)malloc(bytes);
 
   for(int ii=0; ii<numPixels; ii++)
-  {
+    {
     h_idata[ii] = 1;
-  }
+    }
   summer->AllocateGPUInputBuffer(h_idata);
   summer->GPUGenerateData();
   int GPUsum = summer->GetGPUResult();
   summer->ReleaseGPUInputBuffer();
   int status = EXIT_FAILURE;
-  if (GPUsum == static_cast<int>(numPixels))
-  {
+  if (GPUsum == static_cast<int>(numPixels) )
+    {
     std::cout << "GPU reduction to sum passed, sum = " << GPUsum << ", numPixels = " << numPixels << std::endl;
     status = EXIT_SUCCESS;
-  }
+    }
   else
-  {
-    std::cout << "Expected sum to be " << numPixels << ", GPUReduction computed " << GPUsum << " which is wrong." << std::endl;
+    {
+    std::cout << "Expected sum to be " << numPixels << ", GPUReduction computed " << GPUsum << " which is wrong." <<
+    std::endl;
     status = EXIT_FAILURE;
-  }
+    }
   int CPUsum = summer->CPUGenerateData(h_idata, numPixels);
-  if (CPUsum == static_cast<int>(numPixels))
-  {
+  if (CPUsum == static_cast<int>(numPixels) )
+    {
     std::cout << "CPU reduction to sum passed, sum = " << CPUsum << ", numPixels = " << numPixels << std::endl;
-  }
+    }
   else
-  {
-    std::cout << "Expected CPU sum to be " << numPixels << ", GPUReduction computed " << CPUsum << " which is wrong." << std::endl;
+    {
+    std::cout << "Expected CPU sum to be " << numPixels << ", GPUReduction computed " << CPUsum << " which is wrong." <<
+    std::endl;
     status = EXIT_FAILURE;
-  }
+    }
   return status;
 }

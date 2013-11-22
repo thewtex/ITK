@@ -37,7 +37,7 @@ namespace itk
  */
 template< unsigned int VDimension = 3,
           typename TInput = Point< double, VDimension > >
-class SymmetricEllipsoidInteriorExteriorSpatialFunction:
+class SymmetricEllipsoidInteriorExteriorSpatialFunction :
   public InteriorExteriorSpatialFunction< VDimension, TInput >
 {
 public:
@@ -73,7 +73,8 @@ public:
 
 protected:
   SymmetricEllipsoidInteriorExteriorSpatialFunction();
-  virtual ~SymmetricEllipsoidInteriorExteriorSpatialFunction();
+  virtual
+  ~SymmetricEllipsoidInteriorExteriorSpatialFunction();
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -82,8 +83,9 @@ private:
                                                                    // not
                                                                    // implemented
   void operator=(const Self &);                                    //purposely
-                                                                   // not
-                                                                   // implemented
+
+  // not
+  // implemented
 
   /** The center of the ellipsoid. */
   InputType m_Center;

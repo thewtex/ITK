@@ -23,7 +23,8 @@
 #include "itkImageRegionConstIteratorWithIndex.h"
 
 #ifndef ITKV3_COMPATIBILITY
-#error "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkInverseDisplacementFieldImageFilter.h in ITKv4"
+#error \
+  "This file is only valid when ITKV3_COMPATIBILITY is turned on.  Users are encouraged to convert to itkInverseDisplacementFieldImageFilter.h in ITKv4"
 #endif
 
 namespace itk
@@ -67,7 +68,7 @@ namespace itk
  * \ingroup ITKV3Compatibility
  */
 template< typename TInputImage, typename TOutputImage >
-class InverseDeformationFieldImageFilter:
+class InverseDeformationFieldImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -99,7 +100,7 @@ public:
    * \todo Check that input and output images have the same number of
      * dimensions; this is required for consistency.  */
   typedef KernelTransform<
-    double, itkGetStaticConstMacro(ImageDimension) > KernelTransformType;
+      double, itkGetStaticConstMacro(ImageDimension) > KernelTransformType;
   typedef typename KernelTransformType::Pointer KernelTransformPointerType;
 
   /** Image size typedef. */

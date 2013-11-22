@@ -31,6 +31,7 @@ CannySegmentationLevelSetImageFilter< TInputImage, TFeatureImage,
 
   this->SetSegmentationFunction( m_CannyFunction.GetPointer() );
 }
+
 } // end namespace itk
 
 #endif

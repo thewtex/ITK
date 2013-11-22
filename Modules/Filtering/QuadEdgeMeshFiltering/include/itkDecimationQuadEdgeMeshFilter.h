@@ -29,7 +29,7 @@ namespace itk
  * \ingroup ITKQuadEdgeMeshFiltering
  */
 template< typename TInput, typename TOutput, typename TCriterion >
-class DecimationQuadEdgeMeshFilter:
+class DecimationQuadEdgeMeshFilter :
   public QuadEdgeMeshToQuadEdgeMeshFilter< TInput, TOutput >
 {
 public:
@@ -67,7 +67,8 @@ protected:
   CriterionPointer m_Criterion;
   SizeValueType    m_Iteration;
 
-  void GenerateData()
+  void
+  GenerateData()
   {
     this->CopyInputMeshToOutputMesh();
 
@@ -91,7 +92,8 @@ protected:
     this->GetOutput()->SqueezePointsIds();
   }
 
-  virtual void Initialize() {}
+  virtual void
+  Initialize() {}
   virtual void FillPriorityQueue() = 0;
 
   virtual void Extract() = 0;
@@ -102,7 +104,8 @@ protected:
 
   virtual bool IsCriterionSatisfied() = 0;
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  void
+  PrintSelf(std::ostream & os, Indent indent) const
   {
     this->Superclass::PrintSelf(os, indent);
     os << indent << "Criterion: " << m_Criterion << std::endl;
@@ -114,6 +117,7 @@ protected:
 private:
   DecimationQuadEdgeMeshFilter(const Self &);
   void operator=(const Self &);
+
 };
 }
 

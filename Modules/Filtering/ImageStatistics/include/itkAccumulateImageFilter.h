@@ -51,7 +51,7 @@ namespace itk
  * \ingroup ITKImageStatistics
  */
 template< typename TInputImage, typename TOutputImage >
-class AccumulateImageFilter:public ImageToImageFilter< TInputImage, TOutputImage >
+class AccumulateImageFilter : public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
   /** Standard class typedefs. */
@@ -110,7 +110,8 @@ public:
 
 protected:
   AccumulateImageFilter();
-  virtual ~AccumulateImageFilter() {}
+  virtual
+  ~AccumulateImageFilter() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Apply changes to the output image information. */

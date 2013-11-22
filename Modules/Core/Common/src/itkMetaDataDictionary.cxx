@@ -39,7 +39,8 @@ MetaDataDictionary
   *m_Dictionary = *( old.m_Dictionary );
 }
 
-MetaDataDictionary & MetaDataDictionary
+MetaDataDictionary &
+MetaDataDictionary
 ::operator=(const MetaDataDictionary & old)
 {
   if(this != &old)
@@ -83,13 +84,13 @@ const MetaDataObjectBase *
 MetaDataDictionary
 ::Get(const std::string &key) const
 {
-    if (!this->HasKey(key))
+  if (!this->HasKey(key) )
     {
-        itkGenericExceptionMacro(<< "Key '"<<key<<"' does not exist ");
+    itkGenericExceptionMacro(<< "Key '"<<key<<"' does not exist ");
     }
-    MetaDataObjectBase::Pointer entry = ( *m_Dictionary )[key];
-    const MetaDataObjectBase *  constentry = entry.GetPointer();
-    return constentry;
+  MetaDataObjectBase::Pointer entry = ( *m_Dictionary )[key];
+  const MetaDataObjectBase *  constentry = entry.GetPointer();
+  return constentry;
 }
 
 void

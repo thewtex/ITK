@@ -21,7 +21,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkHistogramToProbabilityImageFilter.h"
-int itkHistogramToProbabilityImageFilterTest1( int argc, char * argv [] )
+int
+itkHistogramToProbabilityImageFilterTest1( int argc, char * argv [] )
 {
 
   if( argc < 3 )
@@ -31,8 +32,7 @@ int itkHistogramToProbabilityImageFilterTest1( int argc, char * argv [] )
     return EXIT_FAILURE;
     }
 
-
-  const unsigned int                                  Dimension = 2;
+  const unsigned int Dimension = 2;
   typedef unsigned char                               PixelComponentType;
   typedef itk::Image< PixelComponentType, Dimension > ScalarImageType;
   typedef itk::ImageFileReader< ScalarImageType >     ReaderType;
@@ -53,17 +53,16 @@ int itkHistogramToProbabilityImageFilterTest1( int argc, char * argv [] )
 
   itk::MinimumMaximumImageFilter<ScalarImageType>::Pointer minmaxFilter
     = itk::MinimumMaximumImageFilter<ScalarImageType>::New();
-  minmaxFilter->SetInput(reader->GetOutput());
+  minmaxFilter->SetInput(reader->GetOutput() );
   minmaxFilter->Update();
   const ScalarImageType::PixelType imageMin = minmaxFilter->GetMinimum();
   const ScalarImageType::PixelType imageMax = minmaxFilter->GetMaximum();
-
 
   typedef itk::Statistics::ScalarImageToHistogramGenerator<ScalarImageType>
     HistogramGeneratorType;
   HistogramGeneratorType::Pointer histogramGenerator
     = HistogramGeneratorType::New();
-  histogramGenerator->SetInput(reader->GetOutput());
+  histogramGenerator->SetInput(reader->GetOutput() );
 
   const int NumberOfBins = static_cast<unsigned int>( imageMax - imageMin + 1 );
   histogramGenerator->SetNumberOfBins( NumberOfBins );
@@ -74,8 +73,7 @@ int itkHistogramToProbabilityImageFilterTest1( int argc, char * argv [] )
 
   histogramGenerator->Compute();
 
-
-  typedef HistogramGeneratorType::HistogramType  HistogramType;
+  typedef HistogramGeneratorType::HistogramType HistogramType;
   const HistogramType * histogram = histogramGenerator->GetOutput();
 
   typedef itk::HistogramToProbabilityImageFilter< HistogramType > HistogramToImageFilterType;
@@ -86,7 +84,7 @@ int itkHistogramToProbabilityImageFilterTest1( int argc, char * argv [] )
 
   typedef HistogramToImageFilterType::OutputImageType OutputImageType;
 
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   WriterType::Pointer writer = WriterType::New();
 
   writer->SetFileName( argv[2] );

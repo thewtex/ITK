@@ -24,25 +24,25 @@ namespace itk
 {
 template< typename TImage >
 ImageRegionIterator< TImage >
-::ImageRegionIterator():
+::ImageRegionIterator() :
   ImageRegionConstIterator< TImage >()
 {}
 
 template< typename TImage >
 ImageRegionIterator< TImage >
-::ImageRegionIterator(ImageType *ptr, const RegionType & region):
+::ImageRegionIterator(ImageType *ptr, const RegionType & region) :
   ImageRegionConstIterator< TImage >(ptr, region)
 {}
 
 template< typename TImage >
 ImageRegionIterator< TImage >
-::ImageRegionIterator(const ImageIterator< TImage > & it):
+::ImageRegionIterator(const ImageIterator< TImage > & it) :
   ImageRegionConstIterator< TImage >(it)
 {}
 
 template< typename TImage >
 ImageRegionIterator< TImage >
-::ImageRegionIterator(const ImageRegionConstIterator< TImage > & it):
+::ImageRegionIterator(const ImageRegionConstIterator< TImage > & it) :
   ImageRegionConstIterator< TImage >(it)
 {}
 
@@ -71,6 +71,7 @@ ImageRegionIterator< TImage >
 {
   return this->Superclass::End();
 }
+
 #endif
 } // end namespace itk
 

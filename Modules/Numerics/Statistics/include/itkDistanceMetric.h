@@ -44,7 +44,7 @@ namespace Statistics
  */
 
 template< typename TVector >
-class DistanceMetric:public FunctionBase< TVector, double  >
+class DistanceMetric : public FunctionBase< TVector, double  >
 {
 public:
   /** Standard typedefs */
@@ -89,7 +89,8 @@ public:
                           const MeasurementVectorType & x2) const = 0;
 
   /** Set method for the length of the measurement vector */
-  virtual void SetMeasurementVectorSize(MeasurementVectorSizeType s)
+  virtual void
+  SetMeasurementVectorSize(MeasurementVectorSizeType s)
   {
     // Test whether the vector type is resizable or not
     MeasurementVectorType m;
@@ -131,7 +132,8 @@ public:
 
 protected:
   DistanceMetric();
-  virtual ~DistanceMetric() {}
+  virtual
+  ~DistanceMetric() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

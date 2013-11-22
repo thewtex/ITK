@@ -40,6 +40,7 @@ void
 VoronoiDiagram2D< TCoordRepType >::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Number Of Seeds: "
      << m_NumberOfSeeds << std::endl;
 }
@@ -180,6 +181,7 @@ VoronoiDiagram2D< TCoordRepType >::InsertCells(void)
     this->SetCell(i, cellPtr);
     }
 }
+
 } //end namespace
 
 #endif

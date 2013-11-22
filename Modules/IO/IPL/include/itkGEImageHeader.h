@@ -94,5 +94,5 @@ struct GEImageHeader {
   short int imagesPerSlice;
   short int turboFactor; //This is only relevant for the geADW image format, but
                          // is put here for convenience
-};
+  };
 #endif

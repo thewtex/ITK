@@ -108,7 +108,7 @@ HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 template< typename TInputImage, typename TOutputImage >
 typename HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 ::RealType
- HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
+HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 ::GetSigma() const
 {
   return m_DerivativeFilterA->GetSigma();
@@ -316,7 +316,7 @@ HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
       // Deal with the 2D case.
       if ( numberOfSmoothingFilters > 0 )
         {
-        int temp_dim = static_cast< int >( ImageDimension ) - 3;
+        int                   temp_dim = static_cast< int >( ImageDimension ) - 3;
         GaussianFilterPointer lastFilter = m_SmoothingFilters[temp_dim];
         lastFilter->UpdateLargestPossibleRegion();
         derivativeImage = lastFilter->GetOutput();
@@ -375,6 +375,7 @@ HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << "NormalizeAcrossScale: " << m_NormalizeAcrossScale << std::endl;
 }
 

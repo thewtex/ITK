@@ -166,7 +166,6 @@ DiscreteGaussianImageFilter< TInputImage, TOutputImage >
   // Last filter convolves and changes type from real type to output type
   // Streaming filter forces the mini-pipeline to run in chunks
 
-
   typedef NeighborhoodOperatorImageFilter< InputImageType,
                                            RealOutputImageType, RealOutputPixelValueType > FirstFilterType;
   typedef NeighborhoodOperatorImageFilter< RealOutputImageType,
@@ -177,7 +176,7 @@ DiscreteGaussianImageFilter< TInputImage, TOutputImage >
                                            OutputImageType, RealOutputPixelValueType > SingleFilterType;
 
   typedef StreamingImageFilter< OutputImageType, OutputImageType >
-  StreamingFilterType;
+    StreamingFilterType;
 
   typedef typename FirstFilterType::Pointer        FirstFilterPointer;
   typedef typename IntermediateFilterType::Pointer IntermediateFilterPointer;
@@ -342,6 +341,7 @@ DiscreteGaussianImageFilter< TInputImage, TOutputImage >
   os << indent << "UseImageSpacing: " << m_UseImageSpacing << std::endl;
   os << indent << "InternalNumberOfStreamDivisions: " << m_InternalNumberOfStreamDivisions << std::endl;
 }
+
 } // end namespace itk
 
 #endif

@@ -27,7 +27,8 @@
 // It run a filter multiple times and expects the output to be the
 // same when run with the same parameters. The two output images
 // should be identical
-int itkCannyEdgeDetectionImageFilterTest2(int argc, char * argv[] )
+int
+itkCannyEdgeDetectionImageFilterTest2(int argc, char * argv[] )
 {
   if(argc < 4)
     {
@@ -48,25 +49,23 @@ int itkCannyEdgeDetectionImageFilterTest2(int argc, char * argv[] )
   itk::CannyEdgeDetectionImageFilter<InputImage, InputImage>::Pointer
     filter =
     itk::CannyEdgeDetectionImageFilter<InputImage, InputImage>::New();
-  filter->SetInput(input->GetOutput());
+  filter->SetInput(input->GetOutput() );
   filter->SetVariance(1.0f);
   filter->SetMaximumError(.01f);
 
   filter->SetUpperThreshold(25);
   filter->SetLowerThreshold(10);
 
-
   itk::RescaleIntensityImageFilter<InputImage, OutputImage>::Pointer
     rescale =
     itk::RescaleIntensityImageFilter<InputImage, OutputImage>::New();
-  rescale->SetInput(filter->GetOutput());
+  rescale->SetInput(filter->GetOutput() );
   rescale->SetOutputMinimum(0);
   rescale->SetOutputMaximum(255);
 
   itk::ImageFileWriter<OutputImage>::Pointer writer;
   writer = itk::ImageFileWriter<OutputImage>::New();
   writer->SetInput( rescale->GetOutput() );
-
 
   try
     {
@@ -88,12 +87,11 @@ int itkCannyEdgeDetectionImageFilterTest2(int argc, char * argv[] )
     writer->SetFileName( argv[3] );
     writer->Update();
 
-
     }
   catch(itk::ExceptionObject &err)
     {
-      (&err)->Print(std::cerr);
-      return EXIT_FAILURE;
+    (&err)->Print(std::cerr);
+    return EXIT_FAILURE;
     }
 
   return EXIT_SUCCESS;

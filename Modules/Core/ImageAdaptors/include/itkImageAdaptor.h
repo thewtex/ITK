@@ -52,7 +52,7 @@ template <typename TPixelType, unsigned int VImageDimension > class VectorImage;
  * \endwiki
  */
 template< typename TImage, typename TAccessor >
-class ImageAdaptor:public ImageBase< TImage::ImageDimension >
+class ImageAdaptor : public ImageBase< TImage::ImageDimension >
 {
 public:
   /** Dimension of the image.  This constant is used by functions that are
@@ -124,7 +124,6 @@ public:
    * */
   typedef typename Superclass::DirectionType DirectionType;
 
-
   /**
    * example usage:
    * typedef typename ImageAdaptorType::template Rebind< float >::Type OutputImageType;
@@ -133,9 +132,8 @@ public:
   template <typename UPixelType, unsigned int UImageDimension =  TImage::ImageDimension>
   struct Rebind
     {
-      typedef Image<UPixelType, UImageDimension>  Type;
+    typedef Image<UPixelType, UImageDimension> Type;
     };
-
 
   /** Set the region object that defines the size and starting index
    * for the largest possible region this image could represent.  This
@@ -187,7 +185,8 @@ public:
   virtual const RegionType & GetBufferedRegion() const;
 
   /** Allocate the image memory. Dimension and Size must be set a priori. */
-  inline void Allocate()
+  inline void
+  Allocate()
   {
     m_Image->Allocate();
   }
@@ -197,16 +196,25 @@ public:
   virtual void Initialize();
 
   /** Set a pixel. */
-  void SetPixel(const IndexType & index, const PixelType & value)
-  { m_PixelAccessor.Set(m_Image->GetPixel(index), value); }
+  void
+  SetPixel(const IndexType & index, const PixelType & value)
+  {
+    m_PixelAccessor.Set(m_Image->GetPixel(index), value);
+  }
 
   /** Get a pixel (read only version)  */
-  PixelType GetPixel(const IndexType & index) const
-  { return m_PixelAccessor.Get( m_Image->GetPixel(index) ); }
+  PixelType
+  GetPixel(const IndexType & index) const
+  {
+    return m_PixelAccessor.Get( m_Image->GetPixel(index) );
+  }
 
   /** Access a pixel. This version can only be an rvalue. */
-  PixelType operator[](const IndexType & index) const
-  { return m_PixelAccessor.Get( m_Image->GetPixel(index) ); }
+  PixelType
+  operator[](const IndexType & index) const
+  {
+    return m_PixelAccessor.Get( m_Image->GetPixel(index) );
+  }
 
   /** Get the OffsetTable from the adapted image */
   const OffsetValueType * GetOffsetTable() const;
@@ -221,11 +229,17 @@ public:
   typedef typename TImage::PixelContainerConstPointer PixelContainerConstPointer;
 
   /** Return a pointer to the container. */
-  PixelContainerPointer GetPixelContainer()
-  { return m_Image->GetPixelContainer(); }
+  PixelContainerPointer
+  GetPixelContainer()
+  {
+    return m_Image->GetPixelContainer();
+  }
 
-  const PixelContainer * GetPixelContainer() const
-  { return m_Image->GetPixelContainer(); }
+  const PixelContainer *
+  GetPixelContainer() const
+  {
+    return m_Image->GetPixelContainer();
+  }
 
   /** Set the container to use. Note that this does not cause the
    * DataObject to be modified. */
@@ -294,16 +308,25 @@ public:
   virtual ModifiedTimeType GetMTime() const;
 
   /** Return the Data Accesor object */
-  AccessorType & GetPixelAccessor(void)
-  { return m_PixelAccessor; }
+  AccessorType &
+  GetPixelAccessor(void)
+  {
+    return m_PixelAccessor;
+  }
 
   /** Return the Data Accesor object */
-  const AccessorType & GetPixelAccessor(void) const
-  { return m_PixelAccessor; }
+  const AccessorType &
+  GetPixelAccessor(void) const
+  {
+    return m_PixelAccessor;
+  }
 
   /** Sets the Data Accesor object */
-  void SetPixelAccessor(const AccessorType & accessor)
-  { m_PixelAccessor = accessor; }
+  void
+  SetPixelAccessor(const AccessorType & accessor)
+  {
+    m_PixelAccessor = accessor;
+  }
 
   /** Return the Data Accesor object */
   virtual void Update();
@@ -328,7 +351,8 @@ public:
    * Returns true if the resulting index is within the image, false otherwise.
    * \sa Transform */
   template< typename TCoordRep >
-  bool TransformPhysicalPointToContinuousIndex(
+  bool
+  TransformPhysicalPointToContinuousIndex(
     const Point< TCoordRep,
                  itkGetStaticConstMacro(ImageDimension) > & point,
     ContinuousIndex< TCoordRep,
@@ -342,7 +366,8 @@ public:
    * Returns true if the resulting index is within the image, false otherwise
    * \sa Transform */
   template< typename TCoordRep >
-  bool TransformPhysicalPointToIndex(
+  bool
+  TransformPhysicalPointToIndex(
     const Point< TCoordRep,
                  itkGetStaticConstMacro(ImageDimension) > & point,
     IndexType & index) const
@@ -355,7 +380,8 @@ public:
    * from a continuous index (in the index space)
    * \sa Transform */
   template< typename TCoordRep >
-  void TransformContinuousIndexToPhysicalPoint(
+  void
+  TransformContinuousIndexToPhysicalPoint(
     const ContinuousIndex< TCoordRep,
                            itkGetStaticConstMacro(ImageDimension) > & index,
     Point< TCoordRep,
@@ -370,7 +396,8 @@ public:
    *
    * \sa Transform */
   template< typename TCoordRep >
-  void TransformIndexToPhysicalPoint(
+  void
+  TransformIndexToPhysicalPoint(
     const IndexType & index,
     Point< TCoordRep,
            itkGetStaticConstMacro(ImageDimension) > & point) const
@@ -379,7 +406,8 @@ public:
   }
 
   template< typename TCoordRep >
-  void TransformLocalVectorToPhysicalVector(
+  void
+  TransformLocalVectorToPhysicalVector(
     const FixedArray< TCoordRep, itkGetStaticConstMacro(ImageDimension) > & inputGradient,
     FixedArray< TCoordRep, itkGetStaticConstMacro(ImageDimension) > & outputGradient) const
   {
@@ -387,7 +415,8 @@ public:
   }
 
   template< typename TCoordRep >
-  void TransformPhysicalVectorToLocalVector(
+  void
+  TransformPhysicalVectorToLocalVector(
     const FixedArray< TCoordRep, itkGetStaticConstMacro(ImageDimension) > & inputGradient,
     FixedArray< TCoordRep, itkGetStaticConstMacro(ImageDimension) > & outputGradient) const
   {
@@ -397,7 +426,8 @@ public:
 protected:
 
   ImageAdaptor();
-  virtual ~ImageAdaptor();
+  virtual
+  ~ImageAdaptor();
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
@@ -408,13 +438,15 @@ private:
   // a specialized method to update PixelAccessors for VectorImages,
   // to have the correct vector length of the image.
   template< typename TPixelType >
-    void UpdateAccessor( typename ::itk::VectorImage< TPixelType, ImageDimension > * itkNotUsed( dummy ) )
+  void
+  UpdateAccessor( typename::itk::VectorImage< TPixelType, ImageDimension > * itkNotUsed( dummy ) )
   {
     this->m_PixelAccessor.SetVectorLength( this->m_Image->GetNumberOfComponentsPerPixel() );
   }
 
   // The other image types don't expect an accessor which needs any updates
-  template< typename T > void UpdateAccessor( T  *itkNotUsed( dummy ) ) { }
+  template< typename T > void
+  UpdateAccessor( T  *itkNotUsed( dummy ) ) {}
 
   // Adapted image, most of the calls to ImageAdaptor
   // will be delegated to this image

@@ -20,21 +20,25 @@
 #include "itkCommand.h"
 #include "vnl/vnl_sample.h"
 
-
 // The following class is used to support callbacks
 // on the filter in the pipeline that follows later
 namespace
-{class ShowProgressObject
-{
+  {class ShowProgressObject
+  {
 public:
-  ShowProgressObject(itk::ProcessObject* o)
-    {m_Process = o;}
-  void ShowProgress()
-    {std::cout << "Progress " << m_Process->GetProgress() << std::endl;}
-  itk::ProcessObject::Pointer m_Process;
-};
-}
+    ShowProgressObject(itk::ProcessObject* o)
+    {
+      m_Process = o;
+    }
 
+    void
+    ShowProgress()
+    {
+      std::cout << "Progress " << m_Process->GetProgress() << std::endl;
+    }
+
+    itk::ProcessObject::Pointer m_Process;
+  };}
 
 #define MAXRUNS 5 // maximum number of runs
 
@@ -58,15 +62,17 @@ int testBinaryMinMaxCurvatureFlow(
  * We then test the ability of BinaryMinMaxCurvatureFlowImageFilter to denoise
  * the binary image.
  */
-int itkBinaryMinMaxCurvatureFlowImageFilterTest(int, char* [] )
+int
+itkBinaryMinMaxCurvatureFlowImageFilterTest(int, char* [] )
 {
 
-  double radius;
-  int numberOfRuns;
-  unsigned int niter[MAXRUNS];
+  double        radius;
+  int           numberOfRuns;
+  unsigned int  niter[MAXRUNS];
   unsigned long radii[MAXRUNS];
 
   itk::Size<2> size2D;
+
   size2D[0] = 64; size2D[1] = 64;
   radius = 20.0;
   numberOfRuns = 2;
@@ -74,7 +80,7 @@ int itkBinaryMinMaxCurvatureFlowImageFilterTest(int, char* [] )
   radii[0] = 1; radii[1] = 3;
 
   const int err2D = testBinaryMinMaxCurvatureFlow( size2D, 127.5, radius, numberOfRuns,
-    niter, radii );
+                                                   niter, radii );
 
   if ( err2D )
     {
@@ -84,16 +90,16 @@ int itkBinaryMinMaxCurvatureFlowImageFilterTest(int, char* [] )
 
 }
 
-
 template<unsigned int VImageDimension>
-int testBinaryMinMaxCurvatureFlow(
+int
+testBinaryMinMaxCurvatureFlow(
   itk::Size<VImageDimension> & size, // ND image size
   double threshold,
   double radius,                     // ND-sphere radius
   int numberOfRuns,                  // number of times to run the filter
   unsigned int niter[],              // number of iterations
   unsigned long radii[]              // stencil radius
-)
+  )
 {
 
   typedef float PixelType;
@@ -110,14 +116,13 @@ int testBinaryMinMaxCurvatureFlow(
    * Create an image containing a circle/sphere with intensity of 0
    * and background of 255 with added salt and pepper noise.
    */
-  double sqrRadius = vnl_math_sqr( radius );  // radius of the circle/sphere
-  double fractionNoise = 0.30;              // salt & pepper noise fraction
-  PixelType foreground = 0.0;               // intensity value of the foreground
-  PixelType background = 255.0;             // intensity value of the background
+  double    sqrRadius = vnl_math_sqr( radius ); // radius of the circle/sphere
+  double    fractionNoise = 0.30;               // salt & pepper noise fraction
+  PixelType foreground = 0.0;                   // intensity value of the foreground
+  PixelType background = 255.0;                 // intensity value of the background
 
   std::cout << "Create an image of circle/sphere with noise" << std::endl;
   typename ImageType::Pointer circleImage = ImageType::New();
-
 
   typename ImageType::RegionType region;
   region.SetSize( size );
@@ -127,7 +132,7 @@ int testBinaryMinMaxCurvatureFlow(
   circleImage->Allocate();
 
   for ( IteratorType circleIter( circleImage, circleImage->GetBufferedRegion() );
-    !circleIter.IsAtEnd(); ++circleIter )
+        !circleIter.IsAtEnd(); ++circleIter )
     {
     typename ImageType::IndexType index = circleIter.GetIndex();
     float value;
@@ -149,7 +154,7 @@ int testBinaryMinMaxCurvatureFlow(
     if ( vnl_sample_uniform( 0.0, 1.0 ) < fractionNoise )
       {
       value = vnl_sample_uniform( vnl_math_min(foreground,background),
-        vnl_math_max(foreground,background) );
+                                  vnl_math_max(foreground,background) );
       }
     circleIter.Set( value );
     }
@@ -166,13 +171,12 @@ int testBinaryMinMaxCurvatureFlow(
   denoiser->SetThreshold( threshold );
 
   // attach a progress watcher to the denoiser
-  ShowProgressObject progressWatch(denoiser);
+  ShowProgressObject                                    progressWatch(denoiser);
   itk::SimpleMemberCommand<ShowProgressObject>::Pointer command;
   command = itk::SimpleMemberCommand<ShowProgressObject>::New();
   command->SetCallbackFunction(&progressWatch,
                                &ShowProgressObject::ShowProgress);
   denoiser->AddObserver( itk::ProgressEvent(), command);
-
 
   typename ImageType::Pointer swapPointer = circleImage;
 
@@ -197,7 +201,6 @@ int testBinaryMinMaxCurvatureFlow(
     swapPointer->DisconnectPipeline();
     }
 
-
   /**
    * Check the quality of the output by comparing it against a
    * clean image of the circle/sphere.
@@ -211,7 +214,7 @@ int testBinaryMinMaxCurvatureFlow(
 
   unsigned long numPixelsWrong = 0;
   for (IteratorType outIter( swapPointer, swapPointer->GetBufferedRegion() );
-    !outIter.IsAtEnd(); ++outIter )
+       !outIter.IsAtEnd(); ++outIter )
     {
     typename ImageType::IndexType index = outIter.GetIndex();
     PixelType value = outIter.Get();
@@ -245,7 +248,7 @@ int testBinaryMinMaxCurvatureFlow(
     {
     std::cout << "Test failed." << std::endl;
     return EXIT_FAILURE;
-   }
+    }
 
   /**
    * Exercise other member functions here
@@ -253,9 +256,9 @@ int testBinaryMinMaxCurvatureFlow(
   denoiser->Print( std::cout );
   std::cout << "GetThreshold: " << denoiser->GetThreshold() << std::endl;
 
- /**
-  * Exercise error handling
-  */
+  /**
+   * Exercise error handling
+   */
   typedef itk::CurvatureFlowFunction<ImageType> WrongFunctionType;
   typename WrongFunctionType::Pointer wrongFunction = WrongFunctionType::New();
 

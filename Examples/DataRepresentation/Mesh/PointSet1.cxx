@@ -46,7 +46,8 @@
 #include "itkPointSet.h"
 // Software Guide : EndCodeSnippet
 
-int main(int, char *[])
+int
+main(int, char *[])
 {
   //  Software Guide : BeginLatex
   //
@@ -64,7 +65,6 @@ int main(int, char *[])
   // Software Guide : BeginCodeSnippet
   typedef itk::PointSet< unsigned short, 3 > PointSetType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -84,9 +84,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  PointSetType::Pointer  pointsSet = PointSetType::New();
+  PointSetType::Pointer pointsSet = PointSetType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -104,9 +103,8 @@ int main(int, char *[])
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef PointSetType::PointType     PointType;
+  typedef PointSetType::PointType PointType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -131,13 +129,11 @@ int main(int, char *[])
   p0[2] =  0.0;     //  z coordinate
   // Software Guide : EndCodeSnippet
 
-
   PointType p1;
 
   p1[0] =  1.0; // Point 1 = { 1,-1,0 }
   p1[1] = -1.0;
   p1[2] =  0.0;
-
 
   PointType p2; // Point 2 = { 1,1,0 }
   p2[0] =  1.0;
@@ -162,7 +158,6 @@ int main(int, char *[])
   pointsSet->SetPoint( 2, p2 );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   // It is possible to query the PointSet in order to determine how many points
@@ -177,7 +172,6 @@ int main(int, char *[])
   const unsigned int numberOfPoints = pointsSet->GetNumberOfPoints();
   std::cout << numberOfPoints << std::endl;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -194,14 +188,13 @@ int main(int, char *[])
 
   // Software Guide : BeginCodeSnippet
   PointType pp;
-  bool pointExists =  pointsSet->GetPoint( 1, & pp );
+  bool      pointExists =  pointsSet->GetPoint( 1, &pp );
 
   if( pointExists )
     {
     std::cout << "Point is = " << pp << std::endl;
     }
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //

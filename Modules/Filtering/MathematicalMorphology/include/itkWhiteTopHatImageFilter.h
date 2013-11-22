@@ -35,7 +35,7 @@ namespace itk
  * \ingroup ITKMathematicalMorphology
  */
 template< typename TInputImage, typename TOutputImage, typename TKernel >
-class WhiteTopHatImageFilter:
+class WhiteTopHatImageFilter :
   public KernelImageFilter< TInputImage, TOutputImage, TKernel >
 {
 public:

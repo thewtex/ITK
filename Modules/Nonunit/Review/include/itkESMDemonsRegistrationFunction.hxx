@@ -64,7 +64,7 @@ ESMDemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
     DefaultInterpolatorType::New();
 
   m_MovingImageInterpolator = itkDynamicCastInDebugMode< InterpolatorType * >
-    ( interp.GetPointer() );
+      ( interp.GetPointer() );
 
   m_MovingImageWarper = WarperType::New();
   m_MovingImageWarper->SetInterpolator(m_MovingImageInterpolator);
@@ -168,7 +168,7 @@ ESMDemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
       m_Normalizer += m_FixedImageSpacing[k] * m_FixedImageSpacing[k];
       }
     m_Normalizer *= m_MaximumUpdateStepLength * m_MaximumUpdateStepLength
-                    / static_cast< double >( ImageDimension );
+      / static_cast< double >( ImageDimension );
     }
   else
     {
@@ -214,7 +214,7 @@ ESMDemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
   PixelType         update;
   IndexType         FirstIndex = this->GetFixedImage()->GetLargestPossibleRegion().GetIndex();
   IndexType         LastIndex = this->GetFixedImage()->GetLargestPossibleRegion().GetIndex()
-                                + this->GetFixedImage()->GetLargestPossibleRegion().GetSize();
+    + this->GetFixedImage()->GetLargestPossibleRegion().GetSize();
 
   const IndexType index = it.GetIndex();
 
@@ -222,7 +222,7 @@ ESMDemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
   // Note: no need to check if the index is within
   // fixed image buffer. This is done by the external filter.
   const double fixedValue = static_cast< double >(
-    this->GetFixedImage()->GetPixel(index) );
+      this->GetFixedImage()->GetPixel(index) );
 
   // Get moving image related information
   // check if the point was mapped outside of the moving image using
@@ -319,7 +319,7 @@ ESMDemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
           {
           // backward difference
           warpedMovingGradient[dim] -= static_cast< double >(
-            m_MovingImageWarperOutput->GetPixel(tmpIndex) );
+              m_MovingImageWarperOutput->GetPixel(tmpIndex) );
 
           warpedMovingGradient[dim] /= m_FixedImageSpacing[dim];
           }
@@ -471,7 +471,7 @@ ESMDemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
   if ( m_NumberOfPixelsProcessed )
     {
     m_Metric = m_SumOfSquaredDifference
-               / static_cast< double >( m_NumberOfPixelsProcessed );
+      / static_cast< double >( m_NumberOfPixelsProcessed );
     m_RMSChange = vcl_sqrt( m_SumOfSquaredChange
                             / static_cast< double >( m_NumberOfPixelsProcessed ) );
     }
@@ -479,6 +479,7 @@ ESMDemonsRegistrationFunction< TFixedImage, TMovingImage, TDisplacementField >
 
   delete globalData;
 }
+
 } // end namespace itk
 
 #endif

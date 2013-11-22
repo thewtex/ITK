@@ -20,68 +20,64 @@
 #include <iostream>
 
 #define RoundTestHelperMacro( rndname, input, output )             \
-  if ( rndname( (input) ) != (output))                              \
+  if ( rndname( (input) ) != (output) )                              \
     {                                                               \
     std::cout << "Failure! " <<  #rndname << "(" << (int)(input) << ") expected "  \
               << (int)(output) << " but got " <<  (int)rndname( (input) )     \
-                << std::endl;                                       \
-      ok = false;                                                   \
+              << std::endl;                                       \
+    ok = false;                                                   \
     }
 
 namespace
 {
 template <typename T>
-bool TemplatedRoundTest( void )
+bool
+TemplatedRoundTest( void )
 {
-   bool ok = true;
+  bool ok = true;
 
-   const unsigned int numberOfElements = 15;
+  const unsigned int numberOfElements = 15;
 
   // input data for rounding methods
   float input[] =  {-8.4999f, -8.50f, -8.5001f,
-                     8.4999f,  8.50f,  8.5001f,
+                    8.4999f,  8.50f,  8.5001f,
                     -9.4999f, -9.50f, -9.5001f,
                     9.4999f,  9.50f,  9.5001f,
                     -0.4999f, -.50f, -.5001f};
 
   T roundOutput[] = { -8, -8, -9,
-                       8,  9,  9,
+                      8,  9,  9,
                       -9, -9, -10,
                       9, 10,  10,
                       0, 0, -1};
 
-
   T halftoevenOutput[] = { -8, -8, -9,
-                            8,  8,  9,
+                           8,  8,  9,
                            -9, -10, -10,
                            9, 10,  10,
                            0, 0, -1};
 
-
   T *halfupOutput = roundOutput;
-
 
   ////////
   // input data for floor and ceil methods
   float fcinput[] = { 8.0f,  8.9999f,  8.0001f,
-                     -8.0f, -8.9999f, -8.0001f,
+                      -8.0f, -8.9999f, -8.0001f,
                       9.0f,  9.9999f,  9.0001f,
                       -9.0f, -9.9999f, -9.0001f,
                       -1.0f, -0.9999f, -1.0001f};
 
-   T floorOutput[] =  {  8,  8,  8,
+  T floorOutput[] =  {  8,  8,  8,
                         -8, -9, -9,
-                         9,  9,  9,
-                         -9,-10,-10,
-                         -1,-1, -2};
-
+                        9,  9,  9,
+                        -9,-10,-10,
+                        -1,-1, -2};
 
   T ceilOutput[] =  {  8,  9,  9,
-                      -8, -8, -8,
+                       -8, -8, -8,
                        9, 10, 10,
                        -9, -9, -9,
                        -1, 0, -1};
-
 
   // Round
   for (unsigned int i = 0; i < numberOfElements; ++i)
@@ -96,7 +92,6 @@ bool TemplatedRoundTest( void )
   // RoundHalfIntegerToEven
   for (unsigned int i = 0; i < numberOfElements; ++i)
     {
-
 
     RoundTestHelperMacro( itk::Math::RoundHalfIntegerToEven<T>, (float)input[i], halftoevenOutput[i] );
 
@@ -134,16 +129,17 @@ bool TemplatedRoundTest( void )
 
     }
 
-
   return ok;
 }
 
 }
-int itkMathRoundTest2( int, char *[] )
+int
+itkMathRoundTest2( int, char *[] )
 {
   bool ok = true;
 
   std::cout << "Testing char type" << std::endl;
+
   ok &= TemplatedRoundTest<signed char>();
   std::cout << "Testing short type" << std::endl;
   ok &= TemplatedRoundTest<short>();

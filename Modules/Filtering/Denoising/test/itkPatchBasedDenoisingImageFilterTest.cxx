@@ -32,10 +32,11 @@
 #include "itkPatchBasedDenoisingImageFilter.h"
 
 template <typename ImageT>
-int doDenoising(const std::string & inputFileName, const std::string & outputFileName,
-                const int numIterations, const int numThreads,
-                const int numToSample, const float kernelBandwidthMultiplicationFactor,
-                const std::string & noiseModel, const float noiseModelFidelityWeight)
+int
+doDenoising(const std::string & inputFileName, const std::string & outputFileName,
+            const int numIterations, const int numThreads,
+            const int numToSample, const float kernelBandwidthMultiplicationFactor,
+            const std::string & noiseModel, const float noiseModelFidelityWeight)
 {
   typedef itk::ImageFileReader< ImageT > ReaderType;
 
@@ -44,7 +45,7 @@ int doDenoising(const std::string & inputFileName, const std::string & outputFil
   typedef typename FilterType::PatchWeightsType PatchType;
 
   typedef itk::Statistics::GaussianRandomSpatialNeighborSubsampler<
-    typename FilterType::PatchSampleType, typename ImageT::RegionType> SamplerType;
+      typename FilterType::PatchSampleType, typename ImageT::RegionType> SamplerType;
 
   typedef typename FilterType::OutputImageType OutputImageType;
 
@@ -54,22 +55,22 @@ int doDenoising(const std::string & inputFileName, const std::string & outputFil
   typename ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( inputFileName );
   try
-  {
+    {
     reader->Update();
-  }
+    }
   catch( itk::ExceptionObject & excp )
-  {
+    {
     std::cerr << "Problem encountered while reading image file : " << inputFileName << std::endl;
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   // create filter and initialize
   // give image to filter and run it
   // get filter output and write to file
 
   typename FilterType::Pointer filter = FilterType::New();
-  filter->SetInput(reader->GetOutput());
+  filter->SetInput(reader->GetOutput() );
 
   // patch radius is same for all dimensions of the image
   const unsigned int patchRadius = 4;
@@ -80,21 +81,21 @@ int doDenoising(const std::string & inputFileName, const std::string & outputFil
 
   // noise model to use
   if (noiseModel == "GAUSSIAN")
-  {
+    {
     filter->SetNoiseModel(FilterType::GAUSSIAN);
-  }
+    }
   else if (noiseModel == "RICIAN")
-  {
+    {
     filter->SetNoiseModel(FilterType::RICIAN);
-  }
+    }
   else if (noiseModel == "POISSON")
-  {
+    {
     filter->SetNoiseModel(FilterType::POISSON);
-  }
+    }
   else
-  {
+    {
     filter->SetNoiseModel(FilterType::NOMODEL);
-  }
+    }
   // stepsize or weight for smoothing term
   // Large stepsizes may cause instabilities.
   filter->SetSmoothingWeight(1);
@@ -141,19 +142,19 @@ int doDenoising(const std::string & inputFileName, const std::string & outputFil
   std::cout << "Filter prior to update:\n";
   filter->Print( std::cout );
   try
-  {
+    {
     filter->Update();
-  }
+    }
   catch (itk::ExceptionObject & excp)
-  {
+    {
     std::ostringstream itkmsg;                                            \
     itkmsg << "Error: In " __FILE__ ", line " << __LINE__ << "\n"
            << "Caught exception <" << excp
            << "> while running patch-based denoising image filter."
            << "\n\n";
-    ::itk::OutputWindowDisplayWarningText(itkmsg.str().c_str());
+    ::itk::OutputWindowDisplayWarningText(itkmsg.str().c_str() );
     return EXIT_FAILURE;
-  }
+    }
 
   // write the denoised image to file
   typename WriterType::Pointer writer = WriterType::New();
@@ -163,23 +164,24 @@ int doDenoising(const std::string & inputFileName, const std::string & outputFil
             << filter->GetOutput()->GetNumberOfComponentsPerPixel()
             << " to file." << std::endl;
   try
-  {
+    {
     writer->Update();
-  }
+    }
   catch( itk::ExceptionObject & excp )
-  {
+    {
     std::cerr << excp << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   return EXIT_SUCCESS;
 }
 
-int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
+int
+itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
 {
 
   if( argc < 3 )
-  {
+    {
     std::cerr << "Missing command line arguments" << std::endl;
     std::cerr << "Usage :  " << argv[0]
               << " inputImageFileName outputImageFileName"
@@ -189,7 +191,7 @@ int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
               << " [noiseModel] [noiseModelFidelityWeight]"
               << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   const std::string inFileName(argv[1]);
 
@@ -201,27 +203,27 @@ int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
 
   unsigned int numIterations = 1;
   if (argc > 5)
-  {
+    {
     numIterations = atoi(argv[5]);
-  }
+    }
 
   unsigned int numThreads = 1;
   if (argc > 6)
-  {
+    {
     numThreads = atoi(argv[6]);
-  }
+    }
 
   unsigned int numToSample = 1000;
   if (argc > 7)
-  {
+    {
     numToSample = atoi(argv[7]);
-  }
+    }
 
   float kernelBandwidthMultFactor = 1;
   if (argc > 8)
-  {
+    {
     kernelBandwidthMultFactor = atof(argv[8]);
-  }
+    }
 
   std::vector< std::string > modelChoices;
   modelChoices.push_back("GAUSSIAN");
@@ -233,36 +235,36 @@ int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
 
   float noiseModelFidelityWeight = 0.0;
   if (argc > 9)
-  {
+    {
     noiseModel = argv[9];
     bool validChoice = false;
     for (unsigned int ii = 0; ii < modelChoices.size(); ++ii)
-    {
-      if( noiseModel == modelChoices[ii])
       {
+      if( noiseModel == modelChoices[ii])
+        {
         validChoice = true;
+        }
       }
-    }
     if (!validChoice)
-    {
+      {
       std::cerr << noiseModel << " is not a valid noise model choice.  Please choose one of: ";
       for (unsigned int ii = 0; ii < modelChoices.size(); ++ii)
-      {
+        {
         std::cerr << modelChoices[ii] << " " << std::endl;
-      }
+        }
       return EXIT_FAILURE;
-    }
+      }
     if (argc > 10)
-    {
+      {
       noiseModelFidelityWeight = atof(argv[10]);
-    }
+      }
     else
-    {
+      {
       std::cerr << "Must also specify a noise model fidelity weight when a noise model is specified."
                 << std::endl;
       return EXIT_FAILURE;
+      }
     }
-  }
 
   typedef float PixelComponentType;
   //
@@ -279,7 +281,7 @@ int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
   // before testing these instantiations.
 //   typedef itk::VectorImage< PixelComponentType, 2 > TwoComponent2DImage;
 //   typedef itk::VectorImage< PixelComponentType, 3 > TwoComponent3DImage;
-  //
+//
   typedef itk::Image< ThreeComponentType, 2 > ThreeComponent2DImage;
   typedef itk::Image< ThreeComponentType, 3 > ThreeComponent3DImage;
   //
@@ -295,7 +297,7 @@ int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
                                             numIterations, numThreads,
                                             numToSample, kernelBandwidthMultFactor,
                                             noiseModel, noiseModelFidelityWeight);
-  }
+    }
 //   else if (numComponents == 2 && numDimensions == 2)
 //   {
 //     return doDenoising<TwoComponent2DImage>(inFileName, outFileName,
@@ -304,34 +306,34 @@ int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
 //                                             noiseModel, noiseModelFidelityWeight);
 //   }
   else if (numComponents == 3 && numDimensions == 2)
-  {
+    {
     return doDenoising<ThreeComponent2DImage>(inFileName, outFileName,
                                               numIterations, numThreads,
                                               numToSample, kernelBandwidthMultFactor,
                                               noiseModel, noiseModelFidelityWeight);
-  }
+    }
   else if (numComponents == 4 && numDimensions == 2)
-  {
+    {
     return doDenoising<FourComponent2DImage>(inFileName, outFileName,
                                              numIterations, numThreads,
                                              numToSample, kernelBandwidthMultFactor,
                                              noiseModel, noiseModelFidelityWeight);
-  }
+    }
   else if (numComponents == 6 && numDimensions == 2)
-  {
+    {
     return doDenoising<SixComponent2DImage>(inFileName, outFileName,
                                             numIterations, numThreads,
                                             numToSample, kernelBandwidthMultFactor,
                                             noiseModel, noiseModelFidelityWeight);
-  }
+    }
   //
   else if (numComponents == 1 && numDimensions == 3)
-  {
+    {
     return doDenoising<OneComponent3DImage>(inFileName, outFileName,
                                             numIterations, numThreads,
                                             numToSample, kernelBandwidthMultFactor,
                                             noiseModel, noiseModelFidelityWeight);
-  }
+    }
 //   else if (numComponents == 2 && numDimensions == 3)
 //   {
 //     return doDenoising<TwoComponent3DImage>(inFileName, outFileName,
@@ -340,35 +342,35 @@ int itkPatchBasedDenoisingImageFilterTest( int argc, char * argv [] )
 //                                             noiseModel, noiseModelFidelityWeight);
 //   }
   else if (numComponents == 3 && numDimensions == 3)
-  {
+    {
     return doDenoising<ThreeComponent3DImage>(inFileName, outFileName,
                                               numIterations, numThreads,
                                               numToSample, kernelBandwidthMultFactor,
                                               noiseModel, noiseModelFidelityWeight);
-  }
+    }
   else if (numComponents == 4 && numDimensions == 3)
-  {
+    {
     return doDenoising<FourComponent3DImage>(inFileName, outFileName,
                                              numIterations, numThreads,
                                              numToSample, kernelBandwidthMultFactor,
                                              noiseModel, noiseModelFidelityWeight);
-  }
+    }
   else if (numComponents == 6 && numDimensions == 3)
-  {
+    {
     return doDenoising<SixComponent3DImage>(inFileName, outFileName,
                                             numIterations, numThreads,
                                             numToSample, kernelBandwidthMultFactor,
                                             noiseModel, noiseModelFidelityWeight);
-  }
+    }
   else
-  {
+    {
     std::cout << "Combination of "
               << numComponents << " components and "
               << numDimensions << " dimensions "
               << "isn't supported in this test driver."
               << std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   // shouldn't reach this point, return failure here to keep the compiler happy
   return EXIT_FAILURE;

@@ -47,8 +47,7 @@ KernelTransform<TScalar, NDimensions>::KernelTransform() : Superclass(NDimension
 template <typename TScalar, unsigned int NDimensions>
 KernelTransform<TScalar, NDimensions>::
 ~KernelTransform()
-{
-}
+{}
 
 /**
  *
@@ -88,7 +87,7 @@ KernelTransform<TScalar, NDimensions>::SetTargetLandmarks(PointSetType *landmark
 template <typename TScalar, unsigned int NDimensions>
 void
 KernelTransform<TScalar, NDimensions>::ComputeG( const InputVectorType &,
-                                                     GMatrixType & itkNotUsed(gmatrix) ) const
+                                                 GMatrixType & itkNotUsed(gmatrix) ) const
 {
   itkExceptionMacro(<< "ComputeG(vector,gmatrix) must be reimplemented"
                     << " in subclasses of KernelTransform.");
@@ -114,7 +113,7 @@ const typename KernelTransform<TScalar, NDimensions>::GMatrixType
 template <typename TScalar, unsigned int NDimensions>
 void
 KernelTransform<TScalar, NDimensions>::ComputeDeformationContribution(const InputPointType  & thisPoint,
-                                                                          OutputPointType & result) const
+                                                                      OutputPointType & result) const
 {
   PointIdentifier numberOfLandmarks = this->m_SourceLandmarks
     ->GetNumberOfPoints();
@@ -141,7 +140,8 @@ KernelTransform<TScalar, NDimensions>::ComputeDeformationContribution(const Inpu
  *
  */
 template <typename TScalar, unsigned int NDimensions>
-void KernelTransform<TScalar, NDimensions>
+void
+KernelTransform<TScalar, NDimensions>
 ::ComputeD(void)
 {
   PointIdentifier numberOfLandmarks = this->m_SourceLandmarks
@@ -167,7 +167,8 @@ void KernelTransform<TScalar, NDimensions>
  *
  */
 template <typename TScalar, unsigned int NDimensions>
-void KernelTransform<TScalar, NDimensions>
+void
+KernelTransform<TScalar, NDimensions>
 ::ComputeWMatrix(void)
 {
   typedef vnl_svd<TScalar> SVDSolverType;
@@ -184,13 +185,14 @@ void KernelTransform<TScalar, NDimensions>
  *
  */
 template <typename TScalar, unsigned int NDimensions>
-void KernelTransform<TScalar, NDimensions>::ComputeL(void)
+void
+KernelTransform<TScalar, NDimensions>::ComputeL(void)
 {
   PointIdentifier numberOfLandmarks = this->m_SourceLandmarks
     ->GetNumberOfPoints();
 
   vnl_matrix<TScalar> O2(NDimensions * ( NDimensions + 1 ),
-                             NDimensions * ( NDimensions + 1 ), 0);
+                         NDimensions * ( NDimensions + 1 ), 0);
 
   this->ComputeP();
   this->ComputeK();
@@ -213,7 +215,8 @@ void KernelTransform<TScalar, NDimensions>::ComputeL(void)
  *
  */
 template <typename TScalar, unsigned int NDimensions>
-void KernelTransform<TScalar, NDimensions>::ComputeK(void)
+void
+KernelTransform<TScalar, NDimensions>::ComputeK(void)
 {
   PointIdentifier numberOfLandmarks = this->m_SourceLandmarks
     ->GetNumberOfPoints();
@@ -264,7 +267,8 @@ void KernelTransform<TScalar, NDimensions>::ComputeK(void)
  *
  */
 template <typename TScalar, unsigned int NDimensions>
-void KernelTransform<TScalar, NDimensions>::ComputeP()
+void
+KernelTransform<TScalar, NDimensions>::ComputeP()
 {
   PointIdentifier numberOfLandmarks = this->m_SourceLandmarks
     ->GetNumberOfPoints();
@@ -294,7 +298,8 @@ void KernelTransform<TScalar, NDimensions>::ComputeP()
  *
  */
 template <typename TScalar, unsigned int NDimensions>
-void KernelTransform<TScalar, NDimensions>::ComputeY(void)
+void
+KernelTransform<TScalar, NDimensions>::ComputeY(void)
 {
   PointIdentifier numberOfLandmarks = this->m_SourceLandmarks
     ->GetNumberOfPoints();
@@ -554,6 +559,7 @@ void
 KernelTransform<TScalar, NDimensions>::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   if( this->m_SourceLandmarks )
     {
     os << indent << "SourceLandmarks: " << std::endl;

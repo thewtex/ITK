@@ -22,7 +22,8 @@
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 
-int itkGrayscaleMorphologicalClosingImageFilterTest(int argc, char* argv [] )
+int
+itkGrayscaleMorphologicalClosingImageFilterTest(int argc, char* argv [] )
 {
   if( argc < 3 )
     {
@@ -39,20 +40,19 @@ int itkGrayscaleMorphologicalClosingImageFilterTest(int argc, char* argv [] )
   typedef unsigned char PixelType;
 
   // Declare the types of the images
-  typedef itk::Image<PixelType, Dimension>  ImageType;
+  typedef itk::Image<PixelType, Dimension> ImageType;
 
   // Declare the reader and writer
   typedef itk::ImageFileReader< ImageType > ReaderType;
   typedef itk::ImageFileWriter< ImageType > WriterType;
 
-
   // Declare the type for the structuring element
   typedef itk::BinaryBallStructuringElement<
-                            PixelType, Dimension> KernelType;
+      PixelType, Dimension> KernelType;
 
   // Declare the type for the morphology Filter
   typedef itk::GrayscaleMorphologicalClosingImageFilter<
-                           ImageType, ImageType, KernelType> FilterType;
+      ImageType, ImageType, KernelType> FilterType;
 
   // Create the reader and writer
   ReaderType::Pointer reader = ReaderType::New();
@@ -63,14 +63,14 @@ int itkGrayscaleMorphologicalClosingImageFilterTest(int argc, char* argv [] )
 
   // Create the filter
   FilterType::Pointer filter = FilterType::New();
-  FilterWatcher watcher(filter, "filter");
+  FilterWatcher       watcher(filter, "filter");
 
   // Connect the pipeline
   filter->SetInput( reader->GetOutput() );
   writer->SetInput( filter->GetOutput() );
 
   // Create the structuring element
-  KernelType ball;
+  KernelType           ball;
   KernelType::SizeType ballSize;
   ballSize[0] = 2;
   ballSize[1] = 2;

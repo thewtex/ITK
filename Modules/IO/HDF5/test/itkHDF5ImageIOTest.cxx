@@ -22,9 +22,11 @@
 #include "itkMetaDataObject.h"
 
 template <typename TPixel>
-int HDF5ReadWriteTest(const char *fileName)
+int
+HDF5ReadWriteTest(const char *fileName)
 {
   int success(EXIT_SUCCESS);
+
   typedef typename itk::Image<TPixel,3> ImageType;
   typename ImageType::RegionType imageRegion;
   typename ImageType::SizeType size;
@@ -48,7 +50,7 @@ int HDF5ReadWriteTest(const char *fileName)
   mat.SetIdentity();
   // 30deg rotation
   mat[1][1] =
-  mat[0][0] = 0.866025403784439;
+    mat[0][0] = 0.866025403784439;
   mat[0][1] = -0.5;
   mat[1][0] = 0.5;
   im->SetDirection(mat);
@@ -57,8 +59,8 @@ int HDF5ReadWriteTest(const char *fileName)
   im->SetOrigin(origin);
   //
   // add some unique metadata
-  itk::MetaDataDictionary & metaDict(im->GetMetaDataDictionary());
-  bool metaDataBool(false);
+  itk::MetaDataDictionary & metaDict(im->GetMetaDataDictionary() );
+  bool                      metaDataBool(false);
   itk::EncapsulateMetaData<bool>(metaDict,"TestBool",metaDataBool);
 
   char metaDataChar('c');
@@ -112,8 +114,8 @@ int HDF5ReadWriteTest(const char *fileName)
 
   //
   // fill image buffer
-  vnl_random randgen(12345678);
-  itk::ImageRegionIterator<ImageType> it(im,im->GetLargestPossibleRegion());
+  vnl_random                          randgen(12345678);
+  itk::ImageRegionIterator<ImageType> it(im,im->GetLargestPossibleRegion() );
   for(it.GoToBegin(); !it.IsAtEnd(); ++it)
     {
     TPixel pix;
@@ -123,8 +125,8 @@ int HDF5ReadWriteTest(const char *fileName)
   typename ImageType::Pointer im2;
   try
     {
-    itk::IOTestHelper::WriteImage<ImageType,itk::HDF5ImageIO>(im,std::string(fileName));
-    im2 = itk::IOTestHelper::ReadImage<ImageType>(std::string(fileName));
+    itk::IOTestHelper::WriteImage<ImageType,itk::HDF5ImageIO>(im,std::string(fileName) );
+    im2 = itk::IOTestHelper::ReadImage<ImageType>(std::string(fileName) );
     }
   catch(itk::ExceptionObject &err)
     {
@@ -134,21 +136,21 @@ int HDF5ReadWriteTest(const char *fileName)
     return EXIT_FAILURE;
     }
 
-  if(im->GetOrigin() != im2->GetOrigin())
+  if(im->GetOrigin() != im2->GetOrigin() )
     {
     std::cout << "Origin read "
               << im2->GetOrigin() << " doesn't match origin written"
               << im->GetOrigin() << std::endl;
     return EXIT_FAILURE;
     }
-  if(im->GetSpacing() != im2->GetSpacing())
+  if(im->GetSpacing() != im2->GetSpacing() )
     {
     std::cout << "Spacing read "
               << im2->GetSpacing() << " doesn't match spacing written"
               << im->GetSpacing() << std::endl;
     return EXIT_FAILURE;
     }
-  if(im->GetDirection() != im2->GetDirection())
+  if(im->GetDirection() != im2->GetDirection() )
     {
     std::cout << "Direction read "
               << im2->GetDirection() << " doesn't match direction written"
@@ -157,7 +159,7 @@ int HDF5ReadWriteTest(const char *fileName)
     }
   //
   // Check MetaData
-  itk::MetaDataDictionary & metaDict2(im2->GetMetaDataDictionary());
+  itk::MetaDataDictionary & metaDict2(im2->GetMetaDataDictionary() );
 
   bool metaDataBool2(false);
 
@@ -285,7 +287,7 @@ int HDF5ReadWriteTest(const char *fileName)
   itk::Array<double> metaDataDoubleArray2;
   metaDataDoubleArray2.Fill(itk::NumericTraits<double>::Zero);
   if(!itk::ExposeMetaData<itk::Array<double> >(metaDict2,"TestDoubleArray",
-                                             metaDataDoubleArray2) ||
+                                               metaDataDoubleArray2) ||
      metaDataDoubleArray2 != metaDataDoubleArray)
     {
     std::cerr << "Failure reading metaData " << "TestDoubleArray "
@@ -304,10 +306,10 @@ int HDF5ReadWriteTest(const char *fileName)
     success = EXIT_FAILURE;
     }
 
-  itk::ImageRegionIterator<ImageType> it2(im2,im2->GetLargestPossibleRegion());
+  itk::ImageRegionIterator<ImageType> it2(im2,im2->GetLargestPossibleRegion() );
   for(it.GoToBegin(),it2.GoToBegin(); !it.IsAtEnd() && !it2.IsAtEnd(); ++it,++it2)
     {
-    if(it.Value() != it2.Value())
+    if(it.Value() != it2.Value() )
       {
       std::cout << "Original Pixel (" << it.Value()
                 << ") doesn't match read-in Pixel ("
@@ -324,11 +326,12 @@ int
 itkHDF5ImageIOTest(int ac, char * av [] )
 {
   std::string prefix("");
+
   if(ac > 1)
     {
     prefix = *++av;
     --ac;
-    itksys::SystemTools::ChangeDirectory(prefix.c_str());
+    itksys::SystemTools::ChangeDirectory(prefix.c_str() );
     }
   itk::ObjectFactoryBase::RegisterFactory(itk::HDF5ImageIOFactory::New() );
 

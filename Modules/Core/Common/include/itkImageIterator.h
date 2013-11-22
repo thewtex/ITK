@@ -62,7 +62,7 @@ namespace itk
  * \ingroup ITKCommon
  */
 template< typename TImage >
-class ImageIterator:public ImageConstIterator< TImage >
+class ImageIterator : public ImageConstIterator< TImage >
 {
 public:
   /** Standard class typedefs. */
@@ -110,7 +110,8 @@ public:
   Self & operator=(const Self & it);
 
   /** Set the pixel value */
-  void Set(const PixelType & value) const
+  void
+  Set(const PixelType & value) const
   {
     // const_cast is needed here because m_Buffer is declared as a const
     // pointer in the superclass which is the ConstIterator.
@@ -121,7 +122,8 @@ public:
   /** Return a reference to the pixel
    * This method will provide the fastest access to pixel
    * data, but it will NOT support ImageAdaptors. */
-  PixelType & Value(void)
+  PixelType &
+  Value(void)
   {
     // const_cast is needed here because m_Buffer is declared as a const
     // pointer in the superclass which is the ConstIterator.
@@ -139,7 +141,8 @@ public:
   itkLegacyMacro(Self End(void) const);
 
   /** Get the image that this iterator walks. */
-  ImageType * GetImage() const
+  ImageType *
+  GetImage() const
   {
     // const_cast is needed here because m_Image is declared as a const pointer
     // in the base class which is the ConstIterator.
@@ -152,6 +155,7 @@ protected:
     const-correctness */
   ImageIterator(const ImageConstIterator< TImage > & it);
   Self & operator=(const ImageConstIterator< TImage > & it);
+
 };
 } // end namespace itk
 

@@ -28,7 +28,7 @@ namespace Statistics
 {
 
 template<typename TSample, typename TTargetVector, typename ScalarType>
-BatchSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>//,f>
+BatchSupervisedTrainingFunction<TSample,TTargetVector,ScalarType> //,f>
 ::BatchSupervisedTrainingFunction()
 {
   this->m_LearningRate = 0.1;  //0.5 multilayer test 0.1 perceptron
@@ -37,14 +37,16 @@ BatchSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>//,f>
 }
 
 template<typename TSample, typename TTargetVector, typename ScalarType>
-void BatchSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
+void
+BatchSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
 ::SetNumOfIterations(SizeValueType i)
 {
   this->SetIterations(i);
 }
 
 template<typename TSample, typename TTargetVector, typename ScalarType>
-void BatchSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
+void
+BatchSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
 ::Train(typename BatchSupervisedTrainingFunction<TSample, TTargetVector, ScalarType>::NetworkType* net,
         TSample* samples, TTargetVector* targets)
 {
@@ -53,8 +55,8 @@ void BatchSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
 
   InternalVectorType outputvector;
   InternalVectorType errorvector;
-  outputvector.SetSize(targets->GetMeasurementVectorSize());
-  errorvector.SetSize(targets->GetMeasurementVectorSize());
+  outputvector.SetSize(targets->GetMeasurementVectorSize() );
+  errorvector.SetSize(targets->GetMeasurementVectorSize() );
   //std::cout<<"Target dim ="<<targets->GetMeasurementVectorSize()<<std::endl;
   //typename Superclass::OutputVectorType outputvector;
   typename Superclass::VectorType inputvector;
@@ -79,7 +81,7 @@ void BatchSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
         }
 
       net->BackwardPropagate(this->m_PerformanceFunction
-        ->EvaluateDerivative(errorvector));
+                             ->EvaluateDerivative(errorvector) );
       }
     net->UpdateWeights(this->m_LearningRate);
     count++;
@@ -90,7 +92,7 @@ void BatchSupervisedTrainingFunction<TSample,TTargetVector,ScalarType>
     }
 #ifdef __OLD_CODE__
   if (this->m_PerformanceFunction->Evaluate(errorvector) < m_Threshold
-   && count < num_iterations)
+      && count < num_iterations)
     {
     std::cout << "Goal Met " << std::endl;
     }

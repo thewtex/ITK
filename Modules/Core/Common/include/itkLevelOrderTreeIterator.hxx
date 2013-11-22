@@ -25,7 +25,7 @@ namespace itk
 /** Constructor with end level specification */
 template< typename TTreeType >
 LevelOrderTreeIterator< TTreeType >
-::LevelOrderTreeIterator(TTreeType *tree, int endLevel, const TreeNodeType *start):
+::LevelOrderTreeIterator(TTreeType *tree, int endLevel, const TreeNodeType *start) :
   TreeIteratorBase< TTreeType >(tree, start)
 {
   m_StartLevel =  -1;
@@ -49,7 +49,7 @@ LevelOrderTreeIterator< TTreeType >
 /** Constructor with end level specification */
 template< typename TTreeType >
 LevelOrderTreeIterator< TTreeType >
-::LevelOrderTreeIterator(TTreeType *tree, int startLevel, int endLevel, const TreeNodeType *start):
+::LevelOrderTreeIterator(TTreeType *tree, int startLevel, int endLevel, const TreeNodeType *start) :
   TreeIteratorBase< TTreeType >(tree, start)
 {
   m_StartLevel = startLevel;
@@ -94,14 +94,15 @@ LevelOrderTreeIterator< TTreeType >::HasNext() const
 template< typename TTreeType >
 const typename LevelOrderTreeIterator< TTreeType >::ValueType &
 LevelOrderTreeIterator< TTreeType >::Next()
-{
+  {
   this->m_Position = const_cast< TreeNodeType * >( FindNextNode() );
   return this->m_Position->Get();
-}
+  }
 
 /** Get the start Level */
 template< typename TTreeType >
-int LevelOrderTreeIterator< TTreeType >::GetStartLevel() const
+int
+LevelOrderTreeIterator< TTreeType >::GetStartLevel() const
 {
   return m_StartLevel;
 }
@@ -118,7 +119,7 @@ LevelOrderTreeIterator< TTreeType >::GetEndLevel() const
 template< typename TTreeType >
 const typename LevelOrderTreeIterator< TTreeType >::TreeNodeType *
 LevelOrderTreeIterator< TTreeType >::FindNextNode() const
-{
+  {
   int                 level;
   const TreeNodeType *node;
 
@@ -138,7 +139,7 @@ LevelOrderTreeIterator< TTreeType >::FindNextNode() const
   while ( level < m_StartLevel );
 
   return node;
-}
+  }
 
 /** Return the current level */
 template< typename TTreeType >
@@ -183,7 +184,7 @@ LevelOrderTreeIterator< TTreeType >::GetLevel(const TreeNodeType *node) const
 template< typename TTreeType >
 const typename LevelOrderTreeIterator< TTreeType >::TreeNodeType *
 LevelOrderTreeIterator< TTreeType >::FindNextNodeHelp() const
-{
+  {
   if ( m_Queue.empty() )
     {
     return NULL;
@@ -214,17 +215,19 @@ LevelOrderTreeIterator< TTreeType >::FindNextNodeHelp() const
     currentNode = const_cast< TreeNodeType * >( FindNextNodeHelp() );
     }
   return currentNode;
-}
+  }
 
 /** Clone function */
 template< typename TTreeType >
-TreeIteratorBase< TTreeType > *LevelOrderTreeIterator< TTreeType >::Clone()
+TreeIteratorBase< TTreeType > *
+LevelOrderTreeIterator< TTreeType >::Clone()
 {
   LevelOrderTreeIterator< TTreeType > *clone =
     new LevelOrderTreeIterator< TTreeType >(const_cast< TTreeType * >( this->m_Tree ), m_StartLevel, m_EndLevel);
   *clone = *this;
   return clone;
 }
+
 } // end namespace itk
 
 #endif

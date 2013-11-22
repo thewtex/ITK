@@ -39,14 +39,14 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TKernel, typename THistogram >
-class MovingHistogramMorphologyImageFilter:
+class MovingHistogramMorphologyImageFilter :
   public MovingHistogramImageFilter< TInputImage, TOutputImage, TKernel, THistogram >
 {
 public:
   /** Standard class typedefs. */
   typedef MovingHistogramMorphologyImageFilter Self;
   typedef MovingHistogramImageFilter< TInputImage, TOutputImage, TKernel, THistogram >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -91,8 +91,11 @@ public:
 
   /** Return true if the vector based algorithm is used, and
    * false if the map based algorithm is used */
-  static bool GetUseVectorBasedAlgorithm()
-  { return THistogram::UseVectorBasedAlgorithm(); }
+  static bool
+  GetUseVectorBasedAlgorithm()
+  {
+    return THistogram::UseVectorBasedAlgorithm();
+  }
 
 protected:
   MovingHistogramMorphologyImageFilter();
@@ -113,7 +116,8 @@ private:
   MovingHistogramMorphologyImageFilter(const Self &); //purposely not
                                                       // implemented
   void operator=(const Self &);                       //purposely not
-                                                      // implemented
+
+  // implemented
 };                                                    // end of class
 } // end namespace itk
 

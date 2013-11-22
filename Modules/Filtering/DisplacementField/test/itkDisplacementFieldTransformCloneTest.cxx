@@ -23,7 +23,8 @@
 const double epsilon = 1e-10;
 
 template <typename TVector>
-bool testVector( const TVector & v1, const TVector & v2 )
+bool
+testVector( const TVector & v1, const TVector & v2 )
 {
   bool pass = true;
 
@@ -37,7 +38,8 @@ bool testVector( const TVector & v1, const TVector & v2 )
   return pass;
 }
 
-int itkDisplacementFieldTransformCloneTest(int, char *[])
+int
+itkDisplacementFieldTransformCloneTest(int, char *[])
 {
   //
   // Create a displacement field transform
@@ -68,31 +70,31 @@ int itkDisplacementFieldTransformCloneTest(int, char *[])
 
   DisplacementTransformType::Pointer displacementTransformClone =
     displacementTransform->Clone();
-  if(displacementTransformClone.IsNull())
+  if(displacementTransformClone.IsNull() )
     {
     std::cerr << "Failed down cast to displacement transform.";
     return EXIT_FAILURE;
     }
   if(!testVector(displacementTransform->GetFixedParameters(),
-                 displacementTransformClone->GetFixedParameters()))
+                 displacementTransformClone->GetFixedParameters() ) )
     {
     std::cerr << "fixed parameters of clone do not match original." << std::endl;
     }
   FieldType::ConstPointer originalField = displacementTransform->GetDisplacementField();
   FieldType::ConstPointer cloneField = displacementTransformClone->GetDisplacementField();
 
-  itk::ImageRegionConstIterator<FieldType> originalIt(originalField,originalField->GetLargestPossibleRegion());
-  itk::ImageRegionConstIterator<FieldType> cloneIt(cloneField,cloneField->GetLargestPossibleRegion());
+  itk::ImageRegionConstIterator<FieldType> originalIt(originalField,originalField->GetLargestPossibleRegion() );
+  itk::ImageRegionConstIterator<FieldType> cloneIt(cloneField,cloneField->GetLargestPossibleRegion() );
 
   for(; !originalIt.IsAtEnd() && !cloneIt.IsAtEnd(); ++originalIt, ++cloneIt)
     {
-    if(!testVector(originalIt.Value(),cloneIt.Value()))
+    if(!testVector(originalIt.Value(),cloneIt.Value() ) )
       {
       std::cerr << "Displacement Field voxel mismatch" << std::endl;
       return EXIT_FAILURE;
       }
     }
-  if(!originalIt.IsAtEnd() || !cloneIt.IsAtEnd())
+  if(!originalIt.IsAtEnd() || !cloneIt.IsAtEnd() )
     {
     std::cerr << "Displacment field size mismatch" << std::endl;
     }

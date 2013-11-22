@@ -35,7 +35,8 @@
 #include "itkEuclideanDistanceMetric.h"
 // Software Guide : EndCodeSnippet
 
-int main()
+int
+main()
 {
   // Software Guide : BeginLatex
   //
@@ -56,7 +57,7 @@ int main()
   for (unsigned int i = 0; i < 1000; ++i )
     {
     mv[0] = (float) i;
-    mv[1] = (float) ((1000 - i) / 2 );
+    mv[1] = (float) ( (1000 - i) / 2 );
     sample->PushBack( mv );
     }
   // Software Guide : EndCodeSnippet
@@ -97,7 +98,7 @@ int main()
     CentroidTreeGeneratorType;
 
   CentroidTreeGeneratorType::Pointer centroidTreeGenerator =
-                                         CentroidTreeGeneratorType::New();
+    CentroidTreeGeneratorType::New();
 
   centroidTreeGenerator->SetSample( sample );
   centroidTreeGenerator->SetBucketSize( 16 );
@@ -139,7 +140,7 @@ int main()
     }
 
   unsigned int partitionDimension;
-  float partitionValue;
+  float        partitionValue;
   root->GetParameters( partitionDimension, partitionValue);
   std::cout << "Dimension chosen to split the space = "
             << partitionDimension << std::endl;
@@ -180,7 +181,6 @@ int main()
   queryPoint[1] = 7.0;
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // Then we instantiate the type of a distance metric, create an object of
@@ -203,7 +203,6 @@ int main()
   distanceMetric->SetOrigin( origin );
   // Software Guide : EndCodeSnippet
 
-
   // Software Guide : BeginLatex
   //
   // We can now set the number of neighbors to be located and the point
@@ -212,7 +211,7 @@ int main()
   // Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  unsigned int numberOfNeighbors = 3;
+  unsigned int                           numberOfNeighbors = 3;
   TreeType::InstanceIdentifierVectorType neighbors;
   tree->Search( queryPoint, numberOfNeighbors, neighbors );
 
@@ -225,11 +224,10 @@ int main()
     std::cout << "[" << tree->GetMeasurementVector( neighbors[i] )
               << "] : "
               << distanceMetric->Evaluate(
-                  tree->GetMeasurementVector( neighbors[i] ))
+      tree->GetMeasurementVector( neighbors[i] ) )
               << std::endl;
     }
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -249,11 +247,10 @@ int main()
     std::cout << "[" << centroidTree->GetMeasurementVector( neighbors[i] )
               << "] : "
               << distanceMetric->Evaluate(
-                  centroidTree->GetMeasurementVector( neighbors[i]))
+      centroidTree->GetMeasurementVector( neighbors[i]) )
               << std::endl;
     }
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -277,11 +274,10 @@ int main()
     std::cout << "[" << tree->GetMeasurementVector( neighbors[i] )
               << "] : "
               << distanceMetric->Evaluate(
-                  tree->GetMeasurementVector( neighbors[i]))
+      tree->GetMeasurementVector( neighbors[i]) )
               << std::endl;
     }
   // Software Guide : EndCodeSnippet
-
 
   // Software Guide : BeginLatex
   //
@@ -301,7 +297,7 @@ int main()
     std::cout << "[" << centroidTree->GetMeasurementVector( neighbors[i] )
               << "] : "
               << distanceMetric->Evaluate(
-                  centroidTree->GetMeasurementVector( neighbors[i]))
+      centroidTree->GetMeasurementVector( neighbors[i]) )
               << std::endl;
     }
   // Software Guide : EndCodeSnippet

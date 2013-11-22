@@ -41,11 +41,10 @@
 #include "itkRescaleIntensityImageFilter.h"
 // Software Guide : EndCodeSnippet
 
-
 #include "itkImage.h"
 
-
-int main( int argc, char ** argv )
+int
+main( int argc, char ** argv )
 {
   // Verify the number of parameters in the command line
   if( argc < 4 )
@@ -57,7 +56,6 @@ int main( int argc, char ** argv )
     return EXIT_FAILURE;
     }
 
-
   //  Software Guide : BeginLatex
   //
   //  We read an image of \doxygen{CovariantVector} pixels and extract on of
@@ -68,19 +66,18 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef float                 ComponentType;
-  const   unsigned int          Dimension = 2;
+  typedef float ComponentType;
+  const   unsigned int Dimension = 2;
 
   typedef itk::CovariantVector< ComponentType,
-                                    Dimension  >      InputPixelType;
+                                Dimension  >      InputPixelType;
 
-  typedef unsigned short                              OutputPixelType;
+  typedef unsigned short OutputPixelType;
 
-  typedef itk::Image< InputPixelType,      Dimension >    InputImageType;
-  typedef itk::Image< ComponentType,       Dimension >    ComponentImageType;
-  typedef itk::Image< OutputPixelType,     Dimension >    OutputImageType;
+  typedef itk::Image< InputPixelType,      Dimension > InputImageType;
+  typedef itk::Image< ComponentType,       Dimension > ComponentImageType;
+  typedef itk::Image< OutputPixelType,     Dimension > OutputImageType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -90,10 +87,9 @@ int main( int argc, char ** argv )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::ImageFileReader< InputImageType  >  ReaderType;
-  typedef itk::ImageFileWriter< OutputImageType >  WriterType;
+  typedef itk::ImageFileReader< InputImageType  > ReaderType;
+  typedef itk::ImageFileWriter< OutputImageType > WriterType;
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -109,12 +105,11 @@ int main( int argc, char ** argv )
 
   // Software Guide : BeginCodeSnippet
   typedef itk::VectorIndexSelectionCastImageFilter<
-                                          InputImageType,
-                                          ComponentImageType    > FilterType;
+      InputImageType,
+      ComponentImageType    > FilterType;
 
   FilterType::Pointer componentExtractor = FilterType::New();
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -141,7 +136,6 @@ int main( int argc, char ** argv )
   componentExtractor->SetIndex( indexOfComponentToExtract );
   //  Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  The \doxygen{RescaleIntensityImageFilter} filter is instantiated here.
@@ -154,12 +148,11 @@ int main( int argc, char ** argv )
 
   //  Software Guide : BeginCodeSnippet
   typedef itk::RescaleIntensityImageFilter<
-                                  ComponentImageType,
-                                  OutputImageType >      RescaleFilterType;
+      ComponentImageType,
+      OutputImageType >      RescaleFilterType;
 
-  RescaleFilterType::Pointer  rescaler = RescaleFilterType::New();
+  RescaleFilterType::Pointer rescaler = RescaleFilterType::New();
   //  Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -179,7 +172,6 @@ int main( int argc, char ** argv )
   rescaler->SetOutputMaximum( itk::NumericTraits< OutputPixelType >::max() );
   //  Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Below, we create the reader and writer using the New() method and
@@ -197,12 +189,10 @@ int main( int argc, char ** argv )
   WriterType::Pointer writer = WriterType::New();
   // Software Guide : EndCodeSnippet
 
-
   // Here we recover the file names from the command line arguments
   //
   const char * inputFilename  = argv[1];
   const char * outputFilename = argv[3];
-
 
   //  Software Guide : BeginLatex
   //
@@ -221,7 +211,6 @@ int main( int argc, char ** argv )
   writer->SetFileName( outputFilename );
   // Software Guide : EndCodeSnippet
 
-
   //  Software Guide : BeginLatex
   //
   //  Below we connect the reader, filter and writer to form the data
@@ -234,7 +223,6 @@ int main( int argc, char ** argv )
   rescaler->SetInput( componentExtractor->GetOutput() );
   writer->SetInput( rescaler->GetOutput() );
   // Software Guide : EndCodeSnippet
-
 
   //  Software Guide : BeginLatex
   //
@@ -257,11 +245,10 @@ int main( int argc, char ** argv )
     }
   // Software Guide : EndCodeSnippet
 
-
   // Here We add another writer that will produce the non-normalized output
   // file
   //
-  typedef itk::ImageFileWriter< ComponentImageType >  ComponentWriterType;
+  typedef itk::ImageFileWriter< ComponentImageType > ComponentWriterType;
   ComponentWriterType::Pointer componentWriter = ComponentWriterType::New();
   componentWriter->SetInput( componentExtractor->GetOutput() );
   componentWriter->SetFileName( argv[2] );

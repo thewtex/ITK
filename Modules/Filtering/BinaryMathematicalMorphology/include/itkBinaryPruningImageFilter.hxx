@@ -48,10 +48,10 @@ typename BinaryPruningImageFilter<
   TInputImage, TOutputImage >::OutputImageType *
 BinaryPruningImageFilter< TInputImage, TOutputImage >
 ::GetPruning(void)
-{
+  {
   return dynamic_cast< OutputImageType * >(
-           this->ProcessObject::GetOutput(0) );
-}
+    this->ProcessObject::GetOutput(0) );
+  }
 
 /**
  *  Prepare data for computation
@@ -169,6 +169,7 @@ BinaryPruningImageFilter< TInputImage, TOutputImage >
   os << indent << "Pruning image: " << std::endl;
   os << indent << "Iteration: " << m_Iteration << std::endl;
 }
+
 } // end namespace itk
 
 #endif

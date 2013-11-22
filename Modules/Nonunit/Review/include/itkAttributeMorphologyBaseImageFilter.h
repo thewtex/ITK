@@ -60,7 +60,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage, typename TAttribute, typename TFunction >
-class AttributeMorphologyBaseImageFilter:
+class AttributeMorphologyBaseImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
@@ -143,7 +143,8 @@ protected:
     m_Lambda = 0;
   }
 
-  virtual ~AttributeMorphologyBaseImageFilter() {}
+  virtual
+  ~AttributeMorphologyBaseImageFilter() {}
   AttributeMorphologyBaseImageFilter(const Self &) {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
@@ -191,8 +192,8 @@ public:
     OffsetValueType Pos;
   };
 
-  GreyAndPos        * m_SortPixels;
-  OffsetValueType   * m_Parent;
+  GreyAndPos *      m_SortPixels;
+  OffsetValueType * m_Parent;
 #ifndef PAMI
   bool *m_Processed;
 #endif
@@ -203,7 +204,8 @@ public:
   {
 public:
     TFunction m_TFunction;
-    bool operator()(GreyAndPos const & l, GreyAndPos const & r) const
+    bool
+    operator()(GreyAndPos const & l, GreyAndPos const & r) const
     {
       if ( m_TFunction(l.Val, r.Val) )
         {
@@ -215,18 +217,21 @@ public:
         }
       return false;
     }
+
   };
 
 #ifdef PAMI
   // version from PAMI. Note - using the AuxData array rather than the
   // parent array to store area
-  void MakeSet(OffsetValueType x)
+  void
+  MakeSet(OffsetValueType x)
   {
     m_Parent[x] = ACTIVE;
     m_AuxData[x] = m_AttributeValuePerPixel;
   }
 
-  OffsetValueType FindRoot(OffsetValueType x)
+  OffsetValueType
+  FindRoot(OffsetValueType x)
   {
     if ( m_Parent[x] >= 0 )
       {
@@ -239,12 +244,14 @@ public:
       }
   }
 
-  bool Criterion(OffsetValueType x, OffsetValueType y)
+  bool
+  Criterion(OffsetValueType x, OffsetValueType y)
   {
     return ( ( m_Raw[x] == m_Raw[y] ) || ( m_AuxData[x] < m_Lambda ) );
   }
 
-  void Union(OffsetValueType n, OffsetValueType p)
+  void
+  Union(OffsetValueType n, OffsetValueType p)
   {
     OffsetValueType r = FindRoot(n);
 
@@ -264,13 +271,15 @@ public:
 
 #else
   // version from ISMM paper
-  void MakeSet(OffsetValueType x)
+  void
+  MakeSet(OffsetValueType x)
   {
     m_Parent[x] = ACTIVE;
     m_AuxData[x] = m_AttributeValuePerPixel;
   }
 
-  void Link(OffsetValueType x, OffsetValueType y)
+  void
+  Link(OffsetValueType x, OffsetValueType y)
   {
     if ( ( m_Parent[y] == ACTIVE ) && ( m_Parent[x] == ACTIVE ) )
       {
@@ -290,7 +299,8 @@ public:
     m_Parent[x] = y;
   }
 
-  OffsetValueType FindRoot(OffsetValueType x)
+  OffsetValueType
+  FindRoot(OffsetValueType x)
   {
     if ( m_Parent[x] >= 0 )
       {
@@ -303,12 +313,14 @@ public:
       }
   }
 
-  bool Equiv(OffsetValueType x, OffsetValueType y)
+  bool
+  Equiv(OffsetValueType x, OffsetValueType y)
   {
     return ( ( m_Raw[x] == m_Raw[y] ) || ( m_Parent[x] == ACTIVE ) );
   }
 
-  void Union(OffsetValueType n, OffsetValueType p)
+  void
+  Union(OffsetValueType n, OffsetValueType p)
   {
     OffsetValueType r = FindRoot(n);
 

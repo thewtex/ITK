@@ -43,6 +43,7 @@ DemonsRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "UseMovingImageGradient: ";
   os << m_UseMovingImageGradient << std::endl;
   os << indent << "Intensity difference threshold: "
@@ -174,6 +175,7 @@ DemonsRegistrationFilter< TFixedImage, TMovingImage, TDisplacementField >
 
   this->SetRMSChange( drfp->GetRMSChange() );
 }
+
 } // end namespace itk
 
 #endif

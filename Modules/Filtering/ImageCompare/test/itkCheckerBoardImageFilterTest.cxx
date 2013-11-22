@@ -18,36 +18,36 @@
 
 #include "itkCheckerBoardImageFilter.h"
 
-
-int itkCheckerBoardImageFilterTest(int, char* [] )
+int
+itkCheckerBoardImageFilterTest(int, char* [] )
 {
 
   // Define the dimension of the images
   const unsigned int myDimension = 3;
 
   // Declare the types of the images
-  typedef itk::Image<unsigned int, myDimension>  myImageType;
+  typedef itk::Image<unsigned int, myDimension> myImageType;
 
   // Declare the type of the index to access images
-  typedef itk::Index<myDimension>         myIndexType;
+  typedef itk::Index<myDimension> myIndexType;
 
   // Declare the type of the size
-  typedef itk::Size<myDimension>          mySizeType;
+  typedef itk::Size<myDimension> mySizeType;
 
   // Declare the type of the Region
-  typedef itk::ImageRegion<myDimension>        myRegionType;
+  typedef itk::ImageRegion<myDimension> myRegionType;
 
   // Declare the type for the filter
   typedef itk::CheckerBoardImageFilter<
-                               myImageType >   myFilterType;
+      myImageType >   myFilterType;
 
   // Declare the type of the arrays that define how many
   // checkers to have along every dimension.
-  typedef myFilterType::PatternArrayType       myPatternArrayType;
+  typedef myFilterType::PatternArrayType myPatternArrayType;
 
   // Declare the pointers to images
-  typedef myImageType::Pointer   myImageTypePointer;
-  typedef myFilterType::Pointer  myFilterTypePointer;
+  typedef myImageType::Pointer  myImageTypePointer;
+  typedef myFilterType::Pointer myFilterTypePointer;
 
   // Create two images
   myImageTypePointer inputImageA  = myImageType::New();
@@ -80,9 +80,8 @@ int itkCheckerBoardImageFilterTest(int, char* [] )
   inputImageB->SetRequestedRegion( region );
   inputImageB->Allocate();
 
-
   // Declare Iterator types apropriated for each image
-  typedef itk::ImageRegionIteratorWithIndex<myImageType>  myIteratorType;
+  typedef itk::ImageRegionIteratorWithIndex<myImageType> myIteratorType;
 
   // Create one iterator for Image A (this is a light object)
   myIteratorType it1( inputImageA, inputImageA->GetBufferedRegion() );
@@ -106,10 +105,8 @@ int itkCheckerBoardImageFilterTest(int, char* [] )
     ++it2;
     }
 
-
   // Create the Filter
   myFilterTypePointer filter = myFilterType::New();
-
 
   // Connect the input images
   filter->SetInput1( inputImageA );
@@ -124,7 +121,6 @@ int itkCheckerBoardImageFilterTest(int, char* [] )
 
   // Get the Smart Pointer to the Filter Output
   myImageTypePointer outputImage = filter->GetOutput();
-
 
   // Execute the filter
   filter->Update();

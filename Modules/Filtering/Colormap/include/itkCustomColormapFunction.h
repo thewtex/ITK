@@ -42,7 +42,7 @@ namespace Function
  * \ingroup ITKColormap
  */
 template< typename TScalar, typename TRGBPixel >
-class CustomColormapFunction:
+class CustomColormapFunction :
   public ColormapFunction< TScalar, TRGBPixel >
 {
 public:
@@ -63,35 +63,41 @@ public:
 
   virtual RGBPixelType operator()(const TScalar &) const;
 
-  void SetRedChannel(ChannelType red)
-    {
+  void
+  SetRedChannel(ChannelType red)
+  {
     m_RedChannel = red;
-    }
+  }
 
-  ChannelType GetRedChannel() const
-    {
+  ChannelType
+  GetRedChannel() const
+  {
     return m_RedChannel;
-    }
+  }
 
-  void SetGreenChannel(ChannelType green)
-    {
+  void
+  SetGreenChannel(ChannelType green)
+  {
     m_GreenChannel = green;
-    }
+  }
 
-  ChannelType GetGreenChannel() const
-    {
+  ChannelType
+  GetGreenChannel() const
+  {
     return m_GreenChannel;
-    }
+  }
 
-  void SetBlueChannel(ChannelType blue)
-    {
+  void
+  SetBlueChannel(ChannelType blue)
+  {
     m_BlueChannel = blue;
-    }
+  }
 
-  ChannelType GetBlueChannel() const
-    {
+  ChannelType
+  GetBlueChannel() const
+  {
     return m_BlueChannel;
-    }
+  }
 
 protected:
   CustomColormapFunction() {}
@@ -99,7 +105,7 @@ protected:
 
 private:
   CustomColormapFunction(const Self &); //purposely not implemented
-  void operator=(const Self &);        //purposely not implemented
+  void operator=(const Self &);         //purposely not implemented
 
   ChannelType m_RedChannel;
   ChannelType m_GreenChannel;

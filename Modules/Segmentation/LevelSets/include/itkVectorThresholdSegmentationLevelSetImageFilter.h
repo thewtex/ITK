@@ -88,7 +88,7 @@ namespace itk
 template< typename TInputImage,
           typename TFeatureImage,
           typename TOutputPixelType = float >
-class VectorThresholdSegmentationLevelSetImageFilter:
+class VectorThresholdSegmentationLevelSetImageFilter :
   public SegmentationLevelSetImageFilter< TInputImage, TFeatureImage, TOutputPixelType >
 {
 public:
@@ -118,36 +118,42 @@ public:
 
   /** Set/Get mean and covariance that will be used to calculate the speed
     function */
-  void SetMean(const MeanVectorType & mean)
+  void
+  SetMean(const MeanVectorType & mean)
   {
     m_ThresholdFunction->SetMean(mean);
     this->Modified();
   }
 
-  const MeanVectorType & GetMean() const
+  const MeanVectorType &
+  GetMean() const
   {
     return m_ThresholdFunction->GetMean();
   }
 
-  void SetCovariance(const CovarianceMatrixType & cov)
+  void
+  SetCovariance(const CovarianceMatrixType & cov)
   {
     m_ThresholdFunction->SetCovariance(cov);
     this->Modified();
   }
 
-  const CovarianceMatrixType & GetCovariance() const
+  const CovarianceMatrixType &
+  GetCovariance() const
   {
     return m_ThresholdFunction->GetCovariance();
   }
 
   /** Set/Get the threshold for the Mahanalobis Distance */
-  void SetThreshold(ScalarValueType thr)
+  void
+  SetThreshold(ScalarValueType thr)
   {
     m_ThresholdFunction->SetThreshold(thr);
     this->Modified();
   }
 
-  ScalarValueType GetThreshold()
+  ScalarValueType
+  GetThreshold()
   {
     return m_ThresholdFunction->GetThreshold();
   }

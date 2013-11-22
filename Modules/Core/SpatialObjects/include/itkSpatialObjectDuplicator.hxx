@@ -66,7 +66,6 @@ SpatialObjectDuplicator< TInputSpatialObject >
     return;
     }
 
-
   // Correct for extra reference count from CreateInstance().
   newSO->UnRegister();
 
@@ -157,11 +156,13 @@ SpatialObjectDuplicator< TInputSpatialObject >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Input SpatialObject: " << m_Input << std::endl;
   os << indent << "Output SpatialObject: " << m_Output << std::endl;
   os << indent << "Internal SpatialObject Time: "
      << m_InternalSpatialObjectTime << std::endl;
 }
+
 } // end namespace itk
 
 #endif

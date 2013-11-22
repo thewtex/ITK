@@ -19,7 +19,6 @@
 #include "itkGradientDescentOptimizer.h"
 #include "vnl/vnl_math.h"
 
-
 /**
  *  The objectif function is the quadratic form:
  *
@@ -40,25 +39,24 @@ class gradientCostFunction : public itk::SingleValuedCostFunction
 {
 public:
 
-  typedef gradientCostFunction            Self;
-  typedef itk::SingleValuedCostFunction   Superclass;
-  typedef itk::SmartPointer<Self>         Pointer;
-  typedef itk::SmartPointer<const Self>   ConstPointer;
+  typedef gradientCostFunction          Self;
+  typedef itk::SingleValuedCostFunction Superclass;
+  typedef itk::SmartPointer<Self>       Pointer;
+  typedef itk::SmartPointer<const Self> ConstPointer;
   itkNewMacro( Self );
   itkTypeMacro( gradientCostFunction, SingleValuedCostFunction );
 
   enum { SpaceDimension=2 };
 
-  typedef Superclass::ParametersType      ParametersType;
-  typedef Superclass::DerivativeType      DerivativeType;
-  typedef Superclass::MeasureType         MeasureType;
+  typedef Superclass::ParametersType ParametersType;
+  typedef Superclass::DerivativeType DerivativeType;
+  typedef Superclass::MeasureType    MeasureType;
 
   gradientCostFunction()
-  {
-  }
+  {}
 
-
-  MeasureType  GetValue( const ParametersType & parameters ) const
+  MeasureType
+  GetValue( const ParametersType & parameters ) const
   {
 
     double x = parameters[0];
@@ -76,8 +74,9 @@ public:
 
   }
 
-  void GetDerivative( const ParametersType & parameters,
-                            DerivativeType & derivative ) const
+  void
+  GetDerivative( const ParametersType & parameters,
+                 DerivativeType & derivative ) const
   {
 
     double x = parameters[0];
@@ -88,6 +87,7 @@ public:
     std::cout << y << ") = ";
 
     DerivativeType temp(SpaceDimension);
+
     temp.Fill( 0 );
     derivative = temp;
     derivative[0] = 3 * x + 2 * y -2;
@@ -97,44 +97,41 @@ public:
 
   }
 
-
-  unsigned int GetNumberOfParameters(void) const
-    {
+  unsigned int
+  GetNumberOfParameters(void) const
+  {
     return SpaceDimension;
-    }
+  }
 
 private:
 
-
 };
 
-int itkGradientDescentOptimizerTest(int, char* [] )
+int
+itkGradientDescentOptimizerTest(int, char* [] )
 {
   std::cout << "Gradient Descent Optimizer Test ";
   std::cout << std::endl << std::endl;
 
-  typedef  itk::GradientDescentOptimizer  OptimizerType;
+  typedef  itk::GradientDescentOptimizer OptimizerType;
 
-  typedef OptimizerType::ScalesType        ScalesType;
+  typedef OptimizerType::ScalesType ScalesType;
 
   // Declaration of a itkOptimizer
-  OptimizerType::Pointer  itkOptimizer = OptimizerType::New();
-
+  OptimizerType::Pointer itkOptimizer = OptimizerType::New();
 
   // Declaration of the CostFunction
   gradientCostFunction::Pointer costFunction = gradientCostFunction::New();
 
-
   itkOptimizer->SetCostFunction( costFunction.GetPointer() );
 
-
-  typedef gradientCostFunction::ParametersType    ParametersType;
+  typedef gradientCostFunction::ParametersType ParametersType;
 
   const unsigned int spaceDimension =
-                      costFunction->GetNumberOfParameters();
+    costFunction->GetNumberOfParameters();
 
   // We start not so far from  | 2 -2 |
-  ParametersType  initialPosition( spaceDimension );
+  ParametersType initialPosition( spaceDimension );
 
   initialPosition[0] =  100;
   initialPosition[1] = -100;
@@ -166,7 +163,7 @@ int itkGradientDescentOptimizerTest(int, char* [] )
   //
   // check results to see if it is within range
   //
-  bool pass = true;
+  bool   pass = true;
   double trueParameters[2] = { 2, -2 };
   for( unsigned int j = 0; j < 2; j++ )
     {
@@ -192,6 +189,5 @@ int itkGradientDescentOptimizerTest(int, char* [] )
 
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;
-
 
 }

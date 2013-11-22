@@ -85,13 +85,13 @@ TransformToDisplacementFieldSource< TOutputImage, TTransformPrecisionType >
  */
 template< typename TOutputImage, typename TTransformPrecisionType >
 const typename TransformToDisplacementFieldSource< TOutputImage,
-                                                  TTransformPrecisionType >
+                                                   TTransformPrecisionType >
 ::SizeType &
 TransformToDisplacementFieldSource< TOutputImage, TTransformPrecisionType >
 ::GetOutputSize()
-{
+  {
   return this->m_OutputRegion.GetSize();
-}
+  }
 
 /**
  * Set the output image index.
@@ -109,13 +109,13 @@ TransformToDisplacementFieldSource< TOutputImage, TTransformPrecisionType >
  */
 template< typename TOutputImage, typename TTransformPrecisionType >
 const typename TransformToDisplacementFieldSource< TOutputImage,
-                                                  TTransformPrecisionType >
+                                                   TTransformPrecisionType >
 ::IndexType &
 TransformToDisplacementFieldSource< TOutputImage, TTransformPrecisionType >
 ::GetOutputIndex()
-{
+  {
   return this->m_OutputRegion.GetIndex();
-}
+  }
 
 /**
  * Set the output image spacing.
@@ -126,9 +126,10 @@ TransformToDisplacementFieldSource< TOutputImage, TTransformPrecisionType >
 ::SetOutputSpacing(const double *spacing)
 {
   SpacingType s;
+
   for(unsigned int i = 0; i < TOutputImage::ImageDimension; ++i)
     {
-    s[i] = static_cast<typename TOutputImage::SpacePrecisionType>(spacing[i]);
+    s[i] = static_cast<SpacePrecisionType>(spacing[i]);
     }
 
   this->SetOutputSpacing(s);
@@ -242,7 +243,7 @@ TransformToDisplacementFieldSource< TOutputImage, TTransformPrecisionType >
     for ( unsigned int i = 0; i < ImageDimension; ++i )
       {
       deformation[i] = static_cast< PixelValueType >(
-        transformedPoint[i] - outputPoint[i] );
+          transformedPoint[i] - outputPoint[i] );
       }
 
     // Set it
@@ -300,9 +301,9 @@ TransformToDisplacementFieldSource< TOutputImage, TTransformPrecisionType >
   ++index[0];
   outputPtr->TransformIndexToPhysicalPoint(index, outputPointNeighbour);
   transformedPointNeighbour = this->m_Transform->TransformPoint(
-    outputPointNeighbour);
+      outputPointNeighbour);
   delta = transformedPointNeighbour - transformedPoint
-          - ( outputPointNeighbour - outputPoint );
+    - ( outputPointNeighbour - outputPoint );
 
   // loop over the vector image
   while ( !outIt.IsAtEnd() )
@@ -320,7 +321,7 @@ TransformToDisplacementFieldSource< TOutputImage, TTransformPrecisionType >
       for ( unsigned int i = 0; i < ImageDimension; ++i )
         {
         deformation[i] = static_cast< PixelValueType >(
-          transformedPoint[i] - outputPoint[i] );
+            transformedPoint[i] - outputPoint[i] );
         }
 
       // Set it
@@ -349,6 +350,7 @@ TransformToDisplacementFieldSource< TOutputImage, TTransformPrecisionType >
 
   // get pointer to the output
   OutputImagePointer outputPtr = this->GetOutput();
+
   if ( !outputPtr )
     {
     return;
@@ -381,6 +383,7 @@ TransformToDisplacementFieldSource< TOutputImage, TTransformPrecisionType >
 
   return latestTime;
 } // end GetMTime()
+
 } // end namespace itk
 
 #endif // end #ifndef _itkTransformToDisplacementFieldSource_hxx

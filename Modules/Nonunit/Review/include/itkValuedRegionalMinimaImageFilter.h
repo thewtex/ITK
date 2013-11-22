@@ -52,7 +52,7 @@ namespace itk
  */
 
 template< typename TInputImage, typename TOutputImage >
-class ValuedRegionalMinimaImageFilter:
+class ValuedRegionalMinimaImageFilter :
   public
   ValuedRegionalExtremaImageFilter< TInputImage, TOutputImage,
                                     std::less< typename TInputImage::PixelType >,
@@ -96,11 +96,13 @@ protected:
     this->SetMarkerValue( NumericTraits< typename TOutputImage::PixelType >::max() );
   }
 
-  virtual ~ValuedRegionalMinimaImageFilter() {}
+  virtual
+  ~ValuedRegionalMinimaImageFilter() {}
 
 private:
   ValuedRegionalMinimaImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);                  //purposely not implemented
+
 };                                               // end
                                                  // ValuedRegionalMinimaImageFilter
 } //end namespace itk

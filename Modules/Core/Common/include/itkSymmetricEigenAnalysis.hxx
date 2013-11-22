@@ -720,6 +720,7 @@ SymmetricEigenAnalysis< TMatrix, TVector, TEigenMatrix >::ComputeEigenValuesAndV
 
   return ierr;
 }
+
 }  // end namespace itk
 
 #endif

@@ -28,8 +28,7 @@ namespace fem
 template <typename TBaseClass>
 Element3DStrain<TBaseClass>
 ::Element3DStrain() : Superclass(), m_mat(0)
-{
-}
+{}
 
 // ////////////////////////////////////////////////////////////////////////
 /**
@@ -37,7 +36,8 @@ Element3DStrain<TBaseClass>
  */
 
 template <typename TBaseClass>
-void Element3DStrain<TBaseClass>
+void
+Element3DStrain<TBaseClass>
 ::GetStrainDisplacementMatrix(MatrixType & B, const MatrixType & shapeDgl) const
 {
   unsigned int p;
@@ -135,6 +135,7 @@ Element3DStrain<TBaseClass>
 ::PrintSelf(std::ostream& os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Materials: " << this->m_mat << std::endl;
 }
 

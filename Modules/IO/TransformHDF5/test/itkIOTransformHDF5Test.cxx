@@ -28,17 +28,17 @@
 #include "itksys/SystemTools.hxx"
 
 template<typename ScalarType>
-static int oneTest(const char *goodname,const char *badname)
+static int
+oneTest(const char *goodname,const char *badname)
 {
   unsigned int i;
+
   typedef typename itk::AffineTransform<ScalarType,4>  AffineTransformType;
   typedef typename itk::AffineTransform<ScalarType,10> AffineTransformTypeNotRegistered;
   typename AffineTransformType::Pointer        affine = AffineTransformType::New();
   typename AffineTransformType::InputPointType cor;
 
-
   itk::ObjectFactoryBase::RegisterFactory(itk::HDF5TransformIOFactory::New() );
-
 
   // Set it's parameters
   typename AffineTransformType::ParametersType p = affine->GetParameters();
@@ -80,7 +80,6 @@ static int oneTest(const char *goodname,const char *badname)
     return EXIT_FAILURE;
     }
 
-
   try
     {
     typename itk::TransformFileReaderTemplate<ScalarType>::TransformListType *list;
@@ -99,7 +98,6 @@ static int oneTest(const char *goodname,const char *badname)
     std::cout << "[FAILED]" << std::endl;
     return EXIT_FAILURE;
     }
-
 
   std::cout << "Creating bad writer" << std::endl;
   typename AffineTransformTypeNotRegistered::Pointer Bogus = AffineTransformTypeNotRegistered::New();
@@ -176,6 +174,7 @@ int
 secondTest()
 {
   std::filebuf fb;
+
   fb.open("IllegalTransform.txt",std::ios::out);
   std::ostream os(&fb);
   os << "#Insight Transform File V1.0"
@@ -217,7 +216,8 @@ secondTest()
   return EXIT_FAILURE;
 }
 
-int itkIOTransformHDF5Test(int argc, char* argv[])
+int
+itkIOTransformHDF5Test(int argc, char* argv[])
 {
   if (argc > 1)
     {
@@ -230,7 +230,7 @@ int itkIOTransformHDF5Test(int argc, char* argv[])
   int result4 =  secondTest<double>();
 
   return (
-          ( !( result1 == EXIT_SUCCESS && result2 == EXIT_SUCCESS) ) &&
-          ( !( result3 == EXIT_SUCCESS && result4 == EXIT_SUCCESS) )
-          );
+    ( !( result1 == EXIT_SUCCESS && result2 == EXIT_SUCCESS) ) &&
+    ( !( result3 == EXIT_SUCCESS && result4 == EXIT_SUCCESS) )
+    );
 }

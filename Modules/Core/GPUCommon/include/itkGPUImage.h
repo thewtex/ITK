@@ -103,21 +103,24 @@ public:
   const TPixel * GetBufferPointer() const;
 
   /** Return the Pixel Accessor object */
-  AccessorType GetPixelAccessor(void)
+  AccessorType
+  GetPixelAccessor(void)
   {
     m_DataManager->SetGPUBufferDirty();
     return Superclass::GetPixelAccessor();
   }
 
   /** Return the Pixel Accesor object */
-  const AccessorType GetPixelAccessor(void) const
+  const AccessorType
+  GetPixelAccessor(void) const
   {
     m_DataManager->UpdateCPUBuffer();
     return Superclass::GetPixelAccessor();
   }
 
   /** Return the NeighborhoodAccessor functor */
-  NeighborhoodAccessorFunctorType GetNeighborhoodAccessor()
+  NeighborhoodAccessorFunctorType
+  GetNeighborhoodAccessor()
   {
     m_DataManager->SetGPUBufferDirty();
     //return Superclass::GetNeighborhoodAccessor();
@@ -125,7 +128,8 @@ public:
   }
 
   /** Return the NeighborhoodAccessor functor */
-  const NeighborhoodAccessorFunctorType GetNeighborhoodAccessor() const
+  const NeighborhoodAccessorFunctorType
+  GetNeighborhoodAccessor() const
   {
     m_DataManager->UpdateCPUBuffer();
     //return Superclass::GetNeighborhoodAccessor();
@@ -135,23 +139,27 @@ public:
   void SetPixelContainer(PixelContainer *container);
 
   /** Return a pointer to the container. */
-  PixelContainer * GetPixelContainer()
+  PixelContainer *
+  GetPixelContainer()
   {
     m_DataManager->SetGPUBufferDirty(); return Superclass::GetPixelContainer();
   }
 
-  const PixelContainer * GetPixelContainer() const
+  const PixelContainer *
+  GetPixelContainer() const
   {
     m_DataManager->UpdateCPUBuffer();
     return Superclass::GetPixelContainer();
   }
 
-  void SetCurrentCommandQueue( int queueid )
+  void
+  SetCurrentCommandQueue( int queueid )
   {
     m_DataManager->SetCurrentCommandQueue( queueid );
   }
 
-  int  GetCurrentCommandQueueID() {
+  int
+  GetCurrentCommandQueueID() {
     return m_DataManager->GetCurrentCommandQueueID();
   }
 
@@ -166,9 +174,11 @@ public:
    * increment GPU's time stamp in GPUGenerateData() the
    * CPU's time stamp will be increased after that.
    */
-  void DataHasBeenGenerated()
+  void
+  DataHasBeenGenerated()
   {
     Superclass::DataHasBeenGenerated();
+
     if( m_DataManager->IsCPUBufferDirty() )
       {
       m_DataManager->Modified();
@@ -177,12 +187,14 @@ public:
 
   /** Graft the data and information from one GPUImage to another. */
   virtual void Graft(const DataObject *data);
+
   /** Whenever the image has been modified, set the GPU Buffer to dirty */
   virtual void Modified() const;
 
 protected:
   GPUImage();
-  virtual ~GPUImage();
+  virtual
+  ~GPUImage();
 
 private:
 
@@ -202,10 +214,13 @@ public:
   typedef itk::SmartPointer<const Self> ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
-  virtual const char* GetITKSourceVersion() const {
+  virtual const char*
+  GetITKSourceVersion() const {
     return ITK_SOURCE_VERSION;
   }
-  const char* GetDescription() const {
+
+  const char*
+  GetDescription() const {
     return "A Factory for GPUImage";
   }
 
@@ -216,7 +231,8 @@ public:
   itkTypeMacro(GPUImageFactory, itk::ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     GPUImageFactory::Pointer factory = GPUImageFactory::New();
 

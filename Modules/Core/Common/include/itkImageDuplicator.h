@@ -51,7 +51,7 @@ namespace itk
  * \endwiki
  */
 template< typename TInputImage >
-class ImageDuplicator:public Object
+class ImageDuplicator : public Object
 {
 public:
   /** Standard class typedefs. */
@@ -85,7 +85,8 @@ public:
 
 protected:
   ImageDuplicator();
-  virtual ~ImageDuplicator() {}
+  virtual
+  ~ImageDuplicator() {}
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:

@@ -25,7 +25,7 @@ namespace itk
 /** Constructor */
 template< unsigned int TPointDimension >
 VesselTubeSpatialObjectPoint< TPointDimension >
-::VesselTubeSpatialObjectPoint(void):Superclass()
+::VesselTubeSpatialObjectPoint(void) : Superclass()
 {
   m_Medialness = 0;
   m_Ridgeness = 0;
@@ -160,6 +160,7 @@ VesselTubeSpatialObjectPoint< TPointDimension >
 ::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
+
   os << indent << "Medialness: " << m_Medialness << std::endl;
   os << indent << "Ridgeness: " << m_Ridgeness << std::endl;
   os << indent << "Alpha1: " << m_Alpha1 << std::endl;
@@ -193,6 +194,7 @@ VesselTubeSpatialObjectPoint< TPointDimension >
     }
   return *this;
 }
+
 } // end namespace itk
 
 #endif

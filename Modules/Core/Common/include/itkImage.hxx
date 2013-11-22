@@ -157,6 +157,7 @@ Image< TPixel, VImageDimension >
   // use the GetLength() method which works with variable length arrays,
   // to make it work with as much pixel types as possible
   PixelType p;
+
   return NumericTraits< PixelType >::GetLength(p);
 }
 
@@ -175,6 +176,7 @@ Image< TPixel, VImageDimension >
 
   // m_Origin and m_Spacing are printed in the Superclass
 }
+
 } // end namespace itk
 
 #endif

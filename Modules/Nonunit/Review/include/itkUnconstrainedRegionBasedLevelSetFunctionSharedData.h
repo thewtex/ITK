@@ -58,14 +58,14 @@ namespace itk
  * \ingroup ITKReview
  */
 template< typename TInputImage, typename TFeatureImage, typename TSingleData >
-class UnconstrainedRegionBasedLevelSetFunctionSharedData:
+class UnconstrainedRegionBasedLevelSetFunctionSharedData :
   public RegionBasedLevelSetFunctionSharedData< TInputImage, TFeatureImage, TSingleData >
 {
 public:
 
   typedef UnconstrainedRegionBasedLevelSetFunctionSharedData Self;
   typedef RegionBasedLevelSetFunctionSharedData< TInputImage, TFeatureImage, TSingleData >
-  Superclass;
+    Superclass;
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
 
@@ -124,7 +124,8 @@ public:
   typedef typename Superclass::LevelSetDataPointerVector         LevelSetDataPointerVector;
   typedef typename Superclass::LevelSetDataPointerVectorIterator LevelSetDataPointerVectorIterator;
 
-  void PopulateListImage()
+  void
+  PopulateListImage()
   {
     ListPixelType L;
 
@@ -136,7 +137,7 @@ public:
   }
 
 protected:
-  UnconstrainedRegionBasedLevelSetFunctionSharedData():Superclass(){}
+  UnconstrainedRegionBasedLevelSetFunctionSharedData() : Superclass(){}
   ~UnconstrainedRegionBasedLevelSetFunctionSharedData(){}
 
 private:
@@ -144,8 +145,9 @@ private:
                                                                     // not
                                                                     // implemented
   void operator=(const Self &);                                     //purposely
-                                                                    // not
-                                                                    // implemented
+
+  // not
+  // implemented
 };
 } //end namespace itk
 

@@ -44,23 +44,29 @@ public:
 
   RGBToLuminance() {}
   ~RGBToLuminance() {}
-  bool operator!=(const RGBToLuminance &) const
+  bool
+  operator!=(const RGBToLuminance &) const
   {
     return false;
   }
 
-  bool operator==(const RGBToLuminance & other) const
+  bool
+  operator==(const RGBToLuminance & other) const
   {
     return !( *this != other );
   }
 
-  inline TOutput operator()(const TInput & A) const
-  { return static_cast< TOutput >( A.GetLuminance() ); }
+  inline TOutput
+  operator()(const TInput & A) const
+  {
+    return static_cast< TOutput >( A.GetLuminance() );
+  }
+
 };
 }
 
 template< typename TInputImage, typename TOutputImage >
-class RGBToLuminanceImageFilter:
+class RGBToLuminanceImageFilter :
   public
   UnaryFunctorImageFilter< TInputImage, TOutputImage,
                            Functor::RGBToLuminance<
@@ -71,9 +77,9 @@ public:
   /** Standard class typedefs. */
   typedef RGBToLuminanceImageFilter Self;
   typedef UnaryFunctorImageFilter<
-    TInputImage, TOutputImage,
-    Functor::RGBToLuminance< typename TInputImage::PixelType,
-                             typename TOutputImage::PixelType > >  Superclass;
+      TInputImage, TOutputImage,
+      Functor::RGBToLuminance< typename TInputImage::PixelType,
+                               typename TOutputImage::PixelType > >  Superclass;
 
   typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer< const Self > ConstPointer;
@@ -94,11 +100,13 @@ public:
 
 protected:
   RGBToLuminanceImageFilter() {}
-  virtual ~RGBToLuminanceImageFilter() {}
+  virtual
+  ~RGBToLuminanceImageFilter() {}
 
 private:
   RGBToLuminanceImageFilter(const Self &); //purposely not implemented
   void operator=(const Self &);            //purposely not implemented
+
 };
 } // end namespace itk
 

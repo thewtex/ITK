@@ -27,6 +27,7 @@
  *=========================================================================*/
 #ifndef __itkMRCImageIOFactory_h
 #define __itkMRCImageIOFactory_h
+#include "ITKIOMRCExport.h"
 
 #include "itkObjectFactoryBase.h"
 #include "itkImageIOBase.h"
@@ -44,8 +45,8 @@ namespace itk
  *
  * \ingroup ITKIOMRC
  */
-class MRCImageIOFactory
-  : public ObjectFactoryBase
+class ITKIOMRC_EXPORT MRCImageIOFactory
+  : public            ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -66,7 +67,8 @@ public:
   itkTypeMacro(MRCImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     MRCImageIOFactory::Pointer vtkFactory = MRCImageIOFactory::New();
 

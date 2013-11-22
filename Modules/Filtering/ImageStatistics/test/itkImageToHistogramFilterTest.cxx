@@ -21,15 +21,15 @@
 #include "itkSimpleFilterWatcher.h"
 #include "itkIntTypes.h"
 
-int itkImageToHistogramFilterTest( int , char * [] )
+int
+itkImageToHistogramFilterTest( int , char * [] )
 {
 
+  typedef unsigned char PixelComponentType;
 
-  typedef unsigned char                         PixelComponentType;
+  typedef itk::RGBPixel< PixelComponentType > RGBPixelType;
 
-  typedef itk::RGBPixel< PixelComponentType >   RGBPixelType;
-
-  const unsigned int                            Dimension = 3;
+  const unsigned int Dimension = 3;
 
   typedef itk::Image< RGBPixelType, Dimension > RGBImageType;
 
@@ -60,7 +60,7 @@ int itkImageToHistogramFilterTest( int , char * [] )
   itk::ImageRegionIteratorWithIndex< RGBImageType > it( image, region );
   it.GoToBegin();
 
-  RGBPixelType pixel;
+  RGBPixelType            pixel;
   RGBImageType::IndexType index;
 
   while( !it.IsAtEnd() )
@@ -73,15 +73,15 @@ int itkImageToHistogramFilterTest( int , char * [] )
     ++it;
     }
 
-  typedef itk::Statistics::ImageToHistogramFilter< RGBImageType >         HistogramFilterType;
-  typedef HistogramFilterType::HistogramMeasurementVectorType             HistogramMeasurementVectorType;
-  typedef HistogramFilterType::InputHistogramMeasurementVectorObjectType  InputHistogramMeasurementVectorObjectType;
-  typedef HistogramFilterType::InputBooleanObjectType                     InputBooleanObjectType;
-  typedef HistogramFilterType::HistogramSizeType                          HistogramSizeType;
-  typedef HistogramFilterType::HistogramType                              HistogramType;
+  typedef itk::Statistics::ImageToHistogramFilter< RGBImageType >        HistogramFilterType;
+  typedef HistogramFilterType::HistogramMeasurementVectorType            HistogramMeasurementVectorType;
+  typedef HistogramFilterType::InputHistogramMeasurementVectorObjectType InputHistogramMeasurementVectorObjectType;
+  typedef HistogramFilterType::InputBooleanObjectType                    InputBooleanObjectType;
+  typedef HistogramFilterType::HistogramSizeType                         HistogramSizeType;
+  typedef HistogramFilterType::HistogramType                             HistogramType;
 
   HistogramFilterType::Pointer filter = HistogramFilterType::New();
-  itk::SimpleFilterWatcher watcher(filter, "filter");
+  itk::SimpleFilterWatcher     watcher(filter, "filter");
 
   // Exercise the method NameOfClass();
   std::cout << filter->GetNameOfClass() << std::endl;
@@ -120,7 +120,6 @@ int itkImageToHistogramFilterTest( int , char * [] )
       }
     }
 
-
   filter->SetHistogramBinMinimum( histogramBinMinimum2 );
 
   // exercise the Get method which hides the decorator
@@ -135,7 +134,8 @@ int itkImageToHistogramFilterTest( int , char * [] )
       }
     }
 
-  InputHistogramMeasurementVectorObjectType::Pointer histogramBinMinimumObject = InputHistogramMeasurementVectorObjectType::New();
+  InputHistogramMeasurementVectorObjectType::Pointer histogramBinMinimumObject =
+    InputHistogramMeasurementVectorObjectType::New();
   histogramBinMinimumObject->Set( histogramBinMinimum1 );
   filter->SetHistogramBinMinimumInput( histogramBinMinimumObject );
   returnedHistogramBinMinimumObject = filter->GetHistogramBinMinimumInput();
@@ -180,7 +180,6 @@ int itkImageToHistogramFilterTest( int , char * [] )
       }
     }
 
-
   filter->SetHistogramBinMinimum( histogramBinMinimum1 );
 
   HistogramMeasurementVectorType histogramBinMaximum1( MeasurementVectorSize );
@@ -192,7 +191,6 @@ int itkImageToHistogramFilterTest( int , char * [] )
   histogramBinMaximum2[0] = 17;
   histogramBinMaximum2[1] = 17;
   histogramBinMaximum2[2] = 17;
-
 
   filter->SetHistogramBinMaximum( histogramBinMaximum1 );
 
@@ -216,7 +214,6 @@ int itkImageToHistogramFilterTest( int , char * [] )
       }
     }
 
-
   filter->SetHistogramBinMaximum( histogramBinMaximum2 );
   returnedHistogramBinMaximumObject = filter->GetHistogramBinMaximumInput();
   returnedHistogramBinMaximum = returnedHistogramBinMaximumObject->Get();
@@ -230,8 +227,8 @@ int itkImageToHistogramFilterTest( int , char * [] )
       }
     }
 
-
-  InputHistogramMeasurementVectorObjectType::Pointer histogramBinMaximumObject = InputHistogramMeasurementVectorObjectType::New();
+  InputHistogramMeasurementVectorObjectType::Pointer histogramBinMaximumObject =
+    InputHistogramMeasurementVectorObjectType::New();
 
   histogramBinMaximumObject->Set( histogramBinMaximum1 );
   filter->SetHistogramBinMaximumInput( histogramBinMaximumObject );
@@ -277,9 +274,7 @@ int itkImageToHistogramFilterTest( int , char * [] )
       }
     }
 
-
   filter->SetInput(  image  );
-
 
   filter->SetHistogramBinMaximum( histogramBinMaximum1 );
 
@@ -300,7 +295,6 @@ int itkImageToHistogramFilterTest( int , char * [] )
     return EXIT_FAILURE;
     }
 
-
   HistogramSizeType hsize( MeasurementVectorSize );
 
   hsize[0] = 127;  // number of bins for the Red   channel
@@ -315,7 +309,6 @@ int itkImageToHistogramFilterTest( int , char * [] )
   filter->SetHistogramSize( hsize );
   filter->SetMarginalScale( 10.0 );
   filter->Update();
-
 
   const HistogramType * histogram = filter->GetOutput();
 
@@ -333,13 +326,13 @@ int itkImageToHistogramFilterTest( int , char * [] )
   for( unsigned int bin=0; bin < histogramSize; bin++ )
     {
     if( histogram->GetFrequency( bin, channel ) != expectedFrequency )
-       {
-       std::cerr << "Error in bin= " << bin << " channel = " << channel << std::endl;
-       std::cerr << "Frequency was= " <<  histogram->GetFrequency( bin, channel ) << " Instead of the expected " << expectedFrequency << std::endl;
-       return EXIT_FAILURE;
-       }
+      {
+      std::cerr << "Error in bin= " << bin << " channel = " << channel << std::endl;
+      std::cerr << "Frequency was= " <<
+      histogram->GetFrequency( bin, channel ) << " Instead of the expected " << expectedFrequency << std::endl;
+      return EXIT_FAILURE;
+      }
     }
-
 
   // Now compute the histogram for the Green component
   hsize[0] =   1;  // number of bins for the Red   channel
@@ -360,7 +353,6 @@ int itkImageToHistogramFilterTest( int , char * [] )
     std::cout << histogram->GetFrequency( bin, channel ) << std::endl;
     }
 
-
   // Now compute the histogram for the Blue component
   hsize[0] =   1;  // number of bins for the Red   channel
   hsize[1] =   1;  // number of bins for the Green channel
@@ -379,7 +371,6 @@ int itkImageToHistogramFilterTest( int , char * [] )
     std::cout << "bin = " << bin << " frequency = ";
     std::cout << histogram->GetFrequency( bin, channel ) << std::endl;
     }
-
 
   // Now compute the joint histogram for the three components
   hsize[0] = 127;  // number of bins for the Red   channel

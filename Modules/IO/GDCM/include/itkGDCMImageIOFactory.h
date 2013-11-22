@@ -27,7 +27,7 @@ namespace itk
  * \brief Create instances of GDCMImageIO objects using an object factory.
  * \ingroup ITKIOGDCM
  */
-class GDCMImageIOFactory:public ObjectFactoryBase
+class GDCMImageIOFactory : public ObjectFactoryBase
 {
 public:
   /** Standard class typedefs. */
@@ -48,7 +48,8 @@ public:
   itkTypeMacro(GDCMImageIOFactory, ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory()
+  static void
+  RegisterOneFactory()
   {
     GDCMImageIOFactory::Pointer gdcmFactory = GDCMImageIOFactory::New();
 
@@ -62,6 +63,7 @@ protected:
 private:
   GDCMImageIOFactory(const Self &); //purposely not implemented
   void operator=(const Self &);     //purposely not implemented
+
 };
 } // end namespace itk
 

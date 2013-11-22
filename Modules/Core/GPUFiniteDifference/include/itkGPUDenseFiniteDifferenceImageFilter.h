@@ -100,8 +100,8 @@ public:
 
 protected:
   GPUDenseFiniteDifferenceImageFilter();
-  ~GPUDenseFiniteDifferenceImageFilter() {
-  }
+  ~GPUDenseFiniteDifferenceImageFilter() {}
+
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This method applies changes from the m_UpdateBuffer to the output using
@@ -121,7 +121,8 @@ protected:
 
   /** Method to allow subclasses to get direct access to the update
    * buffer */
-  virtual UpdateBufferType * GetUpdateBuffer() {
+  virtual UpdateBufferType *
+  GetUpdateBuffer() {
     return CPUSuperclass::GetUpdateBuffer();
   }
 

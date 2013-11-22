@@ -40,9 +40,9 @@ itkGPUKernelClassMacro(GPUMeanImageFilterKernel);
 
 template< typename TInputImage, typename TOutputImage >
 class GPUMeanImageFilter : //public GPUImageToImageFilter<
-                                      // TInputImage, TOutputImage,
-                                      // MeanImageFilter< TInputImage,
-                                      // TOutputImage > >
+  // TInputImage, TOutputImage,
+  // MeanImageFilter< TInputImage,
+  // TOutputImage > >
   public GPUBoxImageFilter< TInputImage, TOutputImage, MeanImageFilter< TInputImage, TOutputImage > >
 {
 public:
@@ -106,10 +106,13 @@ public:
   typedef SmartPointer<const Self>  ConstPointer;
 
   /** Class methods used to interface with the registered factories. */
-  virtual const char* GetITKSourceVersion() const {
+  virtual const char*
+  GetITKSourceVersion() const {
     return ITK_SOURCE_VERSION;
   }
-  const char* GetDescription() const {
+
+  const char*
+  GetDescription() const {
     return "A Factory for GPUMeanImageFilter";
   }
 
@@ -120,7 +123,8 @@ public:
   itkTypeMacro(GPUMeanImageFilterFactory, itk::ObjectFactoryBase);
 
   /** Register one factory of this type  */
-  static void RegisterOneFactory(void)
+  static void
+  RegisterOneFactory(void)
   {
     GPUMeanImageFilterFactory::Pointer factory = GPUMeanImageFilterFactory::New();
 

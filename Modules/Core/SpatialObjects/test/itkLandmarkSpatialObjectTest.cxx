@@ -22,7 +22,8 @@
 
 #include "itkLandmarkSpatialObject.h"
 
-int itkLandmarkSpatialObjectTest(int, char* [])
+int
+itkLandmarkSpatialObjectTest(int, char* [])
 {
   typedef itk::LandmarkSpatialObject<3> LandmarkType;
   typedef LandmarkType::Pointer         LandmarkPointer;
@@ -35,7 +36,7 @@ int itkLandmarkSpatialObjectTest(int, char* [])
 
   unsigned int i;
   for(i=0; i<10; i++)
-  {
+    {
     LandmarkPointType p;
     p.SetPosition(i,i+1,i+2);
     p.SetBlue(i);
@@ -43,7 +44,7 @@ int itkLandmarkSpatialObjectTest(int, char* [])
     p.SetRed(i+2);
     p.SetAlpha(i+3);
     list.push_back(p);
-  }
+    }
 
   // Create a Landmark Spatial Object
   LandmarkPointer landmark = LandmarkType::New();
@@ -61,14 +62,14 @@ int itkLandmarkSpatialObjectTest(int, char* [])
   landmark->Print(std::cout);
 
   if(landmark->GetPoints().size() != 10)
-  {
+    {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
-  }
+    }
   else
-  {
+    {
     std::cout<<"[PASSED]"<<std::endl;
-  }
+    }
 
   // Point consistency
   std::cout << "Point consistency: ";
@@ -76,11 +77,11 @@ int itkLandmarkSpatialObjectTest(int, char* [])
   LandmarkType::PointListType::const_iterator it = landmark->GetPoints().begin();
 
   i=0;
-  while(it != landmark->GetPoints().end())
+  while(it != landmark->GetPoints().end() )
     {
-    for(unsigned int d=0;d<3;d++)
+    for(unsigned int d=0; d<3; d++)
       {
-      if((*it).GetPosition()[d] != i+d)
+      if( (*it).GetPosition()[d] != i+d)
         {
         std::cout<<"[FAILED]"<<std::endl;
         return EXIT_FAILURE;
@@ -99,17 +100,17 @@ int itkLandmarkSpatialObjectTest(int, char* [])
   itk::Point<double,3> out;
   out[0]=0;out[1]=0;out[2]=0;
 
-  if(!landmark->IsInside(in,9999,NULL))
-  {
+  if(!landmark->IsInside(in,9999,NULL) )
+    {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
-  if(landmark->IsInside(out,9999,NULL))
-  {
+  if(landmark->IsInside(out,9999,NULL) )
+    {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
-  }
+    }
 
   std::cout<<"[PASSED]"<<std::endl;
 
@@ -118,28 +119,28 @@ int itkLandmarkSpatialObjectTest(int, char* [])
   it = landmark->GetPoints().begin();
 
   i=0;
-  while(it != landmark->GetPoints().end())
+  while(it != landmark->GetPoints().end() )
     {
-    for(unsigned int d=0;d<3;d++)
+    for(unsigned int d=0; d<3; d++)
       {
-      if((*it).GetBlue() != i)
+      if( (*it).GetBlue() != i)
         {
         std::cout<<"[FAILED]"<<std::endl;
         return EXIT_FAILURE;
         }
-      if((*it).GetGreen() != i+1)
-        {
-        std::cout<<"[FAILED]"<<std::endl;
-        return EXIT_FAILURE;
-        }
-
-      if((*it).GetRed() != i+2)
+      if( (*it).GetGreen() != i+1)
         {
         std::cout<<"[FAILED]"<<std::endl;
         return EXIT_FAILURE;
         }
 
-      if((*it).GetAlpha() != i+3)
+      if( (*it).GetRed() != i+2)
+        {
+        std::cout<<"[FAILED]"<<std::endl;
+        return EXIT_FAILURE;
+        }
+
+      if( (*it).GetAlpha() != i+3)
         {
         std::cout<<"[FAILED]"<<std::endl;
         return EXIT_FAILURE;
@@ -152,7 +153,7 @@ int itkLandmarkSpatialObjectTest(int, char* [])
 
   // Testing IsEvaluableAt()
   std::cout << "Testing IsEvaluableAt() : ";
-  if(!landmark->IsEvaluableAt(in,9999,NULL))
+  if(!landmark->IsEvaluableAt(in,9999,NULL) )
     {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;
@@ -162,7 +163,7 @@ int itkLandmarkSpatialObjectTest(int, char* [])
   // Testing ValueAt()
   std::cout << "Testing ValueAt() : ";
   double val = 0;
-  if(!landmark->ValueAt(in,val,9999,NULL))
+  if(!landmark->ValueAt(in,val,9999,NULL) )
     {
     std::cout<<"[FAILED]"<<std::endl;
     return EXIT_FAILURE;

@@ -28,7 +28,8 @@ namespace
 const double epsilon = 1e-10;
 
 template <typename TPoint>
-bool testPoint( const TPoint & p1, const TPoint & p2 )
+bool
+testPoint( const TPoint & p1, const TPoint & p2 )
 {
   bool pass = true;
 
@@ -43,7 +44,8 @@ bool testPoint( const TPoint & p1, const TPoint & p2 )
 }
 
 template <typename TMatrix>
-bool testMatrix( const TMatrix & m1, const TMatrix & m2 )
+bool
+testMatrix( const TMatrix & m1, const TMatrix & m2 )
 {
   unsigned int i, j;
   bool         pass = true;
@@ -62,7 +64,8 @@ bool testMatrix( const TMatrix & m1, const TMatrix & m2 )
 }
 
 template <typename TArray2D>
-bool testJacobian( const TArray2D & m1, const TArray2D & m2 )
+bool
+testJacobian( const TArray2D & m1, const TArray2D & m2 )
 {
   unsigned int i, j;
   bool         pass = true;
@@ -81,7 +84,8 @@ bool testJacobian( const TArray2D & m1, const TArray2D & m2 )
 }
 
 template <typename TVector>
-bool testVectorArray( const TVector & v1, const TVector & v2 )
+bool
+testVectorArray( const TVector & v1, const TVector & v2 )
 {
   bool pass = true;
 
@@ -99,7 +103,8 @@ bool testVectorArray( const TVector & v1, const TVector & v2 )
 
 /******/
 
-int itkCompositeTransformTest(int, char *[] )
+int
+itkCompositeTransformTest(int, char *[] )
 {
   const unsigned int NDimensions = 2;
 
@@ -147,7 +152,8 @@ int itkCompositeTransformTest(int, char *[] )
 
   /* Retrieve the transform and check that it's the same */
   std::cout << "Retrieve 1st transform." << std::endl;
-  AffineType::ConstPointer affineGet = dynamic_cast<AffineType const *>( compositeTransform->GetNthTransformConstPointer(0) );
+  AffineType::ConstPointer affineGet =
+    dynamic_cast<AffineType const *>( compositeTransform->GetNthTransformConstPointer(0) );
   if( affineGet.IsNull() )
     {
     std::cout << "Failed retrieving transform from queue." << std::endl;
@@ -249,12 +255,12 @@ int itkCompositeTransformTest(int, char *[] )
   affineTruth[0] = 13;
   affineTruth[1] = 24;
 
-  CompositeType::InputVectorType inputVector;
+  CompositeType::InputVectorType  inputVector;
   CompositeType::OutputVectorType outputVector;
   inputVector[0] = 0.4;
   inputVector[1] = 0.6;
 
-  CompositeType::InputCovariantVectorType inputCVector;
+  CompositeType::InputCovariantVectorType  inputCVector;
   CompositeType::OutputCovariantVectorType outputCVector;
   inputCVector[0] = 0.4;
   inputCVector[1] = 0.6;
@@ -375,8 +381,7 @@ int itkCompositeTransformTest(int, char *[] )
             << "  Truth: " << compositeTruthCVector << std::endl
             << "  Output: " << outputCVector << std::endl;
 
-
-  CompositeType::InputDiffusionTensor3DType inputTensor;
+  CompositeType::InputDiffusionTensor3DType  inputTensor;
   CompositeType::OutputDiffusionTensor3DType outputTensor;
   inputTensor[0] = 3.0;
   inputTensor[1] = 0.3;
@@ -394,7 +399,7 @@ int itkCompositeTransformTest(int, char *[] )
             << "  Truth: " << compositeTruthTensor << std::endl
             << "  Output: " << outputTensor << std::endl;
 
-  CompositeType::InputSymmetricSecondRankTensorType inputSTensor;
+  CompositeType::InputSymmetricSecondRankTensorType  inputSTensor;
   CompositeType::OutputSymmetricSecondRankTensorType outputSTensor;
   inputSTensor(1,0) = 0.5;
   inputSTensor(0,0) = 3.0;
@@ -744,7 +749,7 @@ int itkCompositeTransformTest(int, char *[] )
     compositeTransform->SetOnlyMostRecentTransformToOptimizeOn();
     CompositeType::ParametersType truth = compositeTransform->GetParameters();
     CompositeType::DerivativeType
-    update( compositeTransform->GetNumberOfParameters() );
+      update( compositeTransform->GetNumberOfParameters() );
     update.Fill(10);
     truth += update;
     compositeTransform->UpdateTransformParameters( update );
@@ -805,7 +810,8 @@ int itkCompositeTransformTest(int, char *[] )
     }
   if( compositeTransform->GetTransformsToOptimizeFlags().size() != 2 )
     {
-    std::cout << "ERROR: TransformsToOptimizeQueue is not length 2. It is " << compositeTransform->GetTransformsToOptimizeFlags().size() << std::endl;
+    std::cout << "ERROR: TransformsToOptimizeQueue is not length 2. It is " <<
+    compositeTransform->GetTransformsToOptimizeFlags().size() << std::endl;
     return EXIT_FAILURE;
     }
   if( compositeTransform->GetNthTransformToOptimize(0) != opt1 )
@@ -830,10 +836,10 @@ int itkCompositeTransformTest(int, char *[] )
   CompositeType::Pointer compositeTransform3 = CompositeType::New();
   CompositeType::Pointer compositeTransform4 = CompositeType::New();
 
-  typedef itk::TranslationTransform<double, NDimensions>  TranslationTransformType;
-  typedef TranslationTransformType::Pointer               TranslationTransformPointer;
-  typedef std::vector<TranslationTransformPointer>        TranslationTransformVector;
-  TranslationTransformVector  translationTransformVector(12);
+  typedef itk::TranslationTransform<double, NDimensions> TranslationTransformType;
+  typedef TranslationTransformType::Pointer              TranslationTransformPointer;
+  typedef std::vector<TranslationTransformPointer>       TranslationTransformVector;
+  TranslationTransformVector translationTransformVector(12);
   for( itk::SizeValueType n=0; n < 12; n++ )
     {
     translationTransformVector[n] = TranslationTransformType::New();
@@ -863,7 +869,8 @@ int itkCompositeTransformTest(int, char *[] )
   nestedCompositeTransform->AddTransform( compositeTransform4 );
   nestedCompositeTransform->AddTransform( translationTransformVector[11] );
 
-  std::cout << "Number of transforms before flattening = " << nestedCompositeTransform->GetNumberOfTransforms() << std::endl;
+  std::cout << "Number of transforms before flattening = " << nestedCompositeTransform->GetNumberOfTransforms() <<
+  std::endl;
   if( nestedCompositeTransform->GetNumberOfTransforms() != 5 )
     {
     std::cerr << "Error.  Should be 5." << std::endl;
@@ -871,7 +878,8 @@ int itkCompositeTransformTest(int, char *[] )
     }
 
   nestedCompositeTransform->FlattenTransformQueue();
-  std::cout << "Number of transforms after flattening = " << nestedCompositeTransform->GetNumberOfTransforms() << std::endl;
+  std::cout << "Number of transforms after flattening = " << nestedCompositeTransform->GetNumberOfTransforms() <<
+  std::endl;
   if( nestedCompositeTransform->GetNumberOfTransforms() != 12 )
     {
     std::cerr << "Error.  Should be 12." << std::endl;

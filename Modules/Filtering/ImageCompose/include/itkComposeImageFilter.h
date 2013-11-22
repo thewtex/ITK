@@ -54,29 +54,32 @@ namespace itk
  * \endwiki
  */
 
-template< typename TInputImage, typename TOutputImage=VectorImage<typename TInputImage::PixelType, TInputImage::ImageDimension> >
-class ComposeImageFilter:
+template< typename TInputImage, typename TOutputImage=
+            VectorImage<typename TInputImage::PixelType, TInputImage::ImageDimension> >
+class ComposeImageFilter :
   public ImageToImageFilter< TInputImage, TOutputImage >
 {
 public:
 
-  typedef ComposeImageFilter                               Self;
-  typedef SmartPointer< Self >                             Pointer;
-  typedef SmartPointer< const Self >                       ConstPointer;
-  typedef ImageToImageFilter< TInputImage, TOutputImage >  Superclass;
+  typedef ComposeImageFilter                              Self;
+  typedef SmartPointer< Self >                            Pointer;
+  typedef SmartPointer< const Self >                      ConstPointer;
+  typedef ImageToImageFilter< TInputImage, TOutputImage > Superclass;
   itkNewMacro(Self);
   itkTypeMacro(ComposeImageFilter, ImageToImageFilter);
 
   itkStaticConstMacro(Dimension, unsigned int, TInputImage::ImageDimension);
 
-  typedef TInputImage                          InputImageType;
-  typedef TOutputImage                         OutputImageType;
-  typedef typename InputImageType::PixelType   InputPixelType;
-  typedef typename OutputImageType::PixelType  OutputPixelType;
-  typedef typename InputImageType::RegionType  RegionType;
+  typedef TInputImage                         InputImageType;
+  typedef TOutputImage                        OutputImageType;
+  typedef typename InputImageType::PixelType  InputPixelType;
+  typedef typename OutputImageType::PixelType OutputPixelType;
+  typedef typename InputImageType::RegionType RegionType;
 
   void SetInput1(const InputImageType *image1);
+
   void SetInput2(const InputImageType *image2);
+
   void SetInput3(const InputImageType *image3);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
@@ -93,12 +96,11 @@ protected:
 
   virtual void BeforeThreadedGenerateData();
 
-  virtual void ThreadedGenerateData(const RegionType & outputRegionForThread, ThreadIdType);
+  virtual void ThreadedGenerateData(const RegionType &outputRegionForThread, ThreadIdType);
 
 private:
   ComposeImageFilter(const Self &); //purposely not implemented
-  void operator=(const Self &);           //purposely not implemented
-
+  void operator=(const Self &);     //purposely not implemented
 
   // we have to specialize the code for complex, because it provides no operator[]
   // method
@@ -106,21 +108,25 @@ private:
   typedef std::vector< InputIteratorType >           InputIteratorContainerType;
 
   template<typename T>
-  void ComputeOutputPixel(std::complex<T> & pix, InputIteratorContainerType & inputItContainer )
-    {
-    pix = std::complex<T>(inputItContainer[0].Get(), inputItContainer[1].Get());
+  void
+  ComputeOutputPixel(std::complex<T> & pix, InputIteratorContainerType & inputItContainer )
+  {
+    pix = std::complex<T>(inputItContainer[0].Get(), inputItContainer[1].Get() );
     ++( inputItContainer[0] );
     ++( inputItContainer[1] );
-    }
+  }
+
   template<typename TPixel>
-  void ComputeOutputPixel(TPixel & pix, InputIteratorContainerType & inputItContainer)
-    {
+  void
+  ComputeOutputPixel(TPixel & pix, InputIteratorContainerType & inputItContainer)
+  {
     for ( unsigned int i = 0; i < this->GetNumberOfInputs(); i++ )
       {
-      pix[i] = static_cast<typename NumericTraits<OutputPixelType>::ValueType >(inputItContainer[i].Get());
+      pix[i] = static_cast<typename NumericTraits<OutputPixelType>::ValueType >(inputItContainer[i].Get() );
       ++( inputItContainer[i] );
       }
-    }
+  }
+
 };
 }
 

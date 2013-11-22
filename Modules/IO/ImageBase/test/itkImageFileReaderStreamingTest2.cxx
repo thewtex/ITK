@@ -20,22 +20,22 @@
 #include "itkImageFileReader.h"
 #include "itkPipelineMonitorImageFilter.h"
 
-
 #include "itkTestingComparisonImageFilter.h"
 #include "itkExtractImageFilter.h"
 
-typedef unsigned char            PixelType;
-typedef itk::Image<PixelType,3>  ImageType;
-typedef ImageType::ConstPointer  ImageConstPointer;
+typedef unsigned char           PixelType;
+typedef itk::Image<PixelType,3> ImageType;
+typedef ImageType::ConstPointer ImageConstPointer;
 
 namespace { // local namespace
 
 // test is a sub region of the base line,
 // just the region defined by the test image is used to compare
-bool SameRegionImage( ImageConstPointer test, ImageConstPointer baseline )
+bool
+SameRegionImage( ImageConstPointer test, ImageConstPointer baseline )
 {
 
-  PixelType intensityTolerance = 0;
+  PixelType    intensityTolerance = 0;
   unsigned int radiusTolerance = 0;
   unsigned int numberOfPixelTolerance = 0;
 
@@ -45,26 +45,26 @@ bool SameRegionImage( ImageConstPointer test, ImageConstPointer baseline )
   extractor->SetExtractionRegion( test->GetLargestPossibleRegion() );
   extractor->SetInput( baseline );
 
-
   typedef itk::Testing::ComparisonImageFilter<ImageType,ImageType> DiffType;
   DiffType::Pointer diff = DiffType::New();
-  diff->SetValidInput( extractor->GetOutput());
+  diff->SetValidInput( extractor->GetOutput() );
   diff->SetTestInput(test);
   diff->SetDifferenceThreshold( intensityTolerance );
   diff->SetToleranceRadius( radiusTolerance );
   diff->UpdateLargestPossibleRegion();
 
-   unsigned long status = diff->GetNumberOfPixelsWithDifferences();
-   std::cout << "NumberOfPixelsWithDifferences: " << status << std::endl;
+  unsigned long status = diff->GetNumberOfPixelsWithDifferences();
+  std::cout << "NumberOfPixelsWithDifferences: " << status << std::endl;
 
-   if (status > numberOfPixelTolerance)
-     return false;
-   return true;
+  if (status > numberOfPixelTolerance)
+    return false;
+  return true;
 }
 
 }
 
-int itkImageFileReaderStreamingTest2(int argc, char* argv[])
+int
+itkImageFileReaderStreamingTest2(int argc, char* argv[])
 {
   if( argc < 2 )
     {
@@ -72,7 +72,7 @@ int itkImageFileReaderStreamingTest2(int argc, char* argv[])
     return EXIT_FAILURE;
     }
 
-  typedef itk::ImageFileReader<ImageType>      ReaderType;
+  typedef itk::ImageFileReader<ImageType> ReaderType;
 
   ReaderType::Pointer baselineReader = ReaderType::New();
   baselineReader->SetFileName( argv[1] );
@@ -84,20 +84,17 @@ int itkImageFileReaderStreamingTest2(int argc, char* argv[])
   streamingReader->SetFileName( argv[1] );
   streamingReader->UseStreamingOn();
 
-
   typedef itk::PipelineMonitorImageFilter<ImageType> MonitorFilter;
   MonitorFilter::Pointer monitor = MonitorFilter::New();
-  monitor->SetInput( streamingReader->GetOutput());
-
+  monitor->SetInput( streamingReader->GetOutput() );
 
   typedef itk::ExtractImageFilter<ImageType, ImageType> ExtractImageFilter;
   ExtractImageFilter::Pointer extractor = ExtractImageFilter::New();
   extractor->SetDirectionCollapseToSubmatrix();
   extractor->SetInput( monitor->GetOutput() );
 
-
   const ImageType::RegionType largestRegion = baselineReader->GetOutput()->GetLargestPossibleRegion();
-  ImageType::RegionType ioregion = baselineReader->GetOutput()->GetLargestPossibleRegion();
+  ImageType::RegionType       ioregion = baselineReader->GetOutput()->GetLargestPossibleRegion();
 
   streamingReader->Modified();
   ////////////////////////////////////////////////
@@ -113,7 +110,7 @@ int itkImageFileReaderStreamingTest2(int argc, char* argv[])
   std::cout << "=== Updating full IORegion ==" << std::endl;
   extractor->Update();
 
-  if (!monitor->VerifyAllInputCanStream(1))
+  if (!monitor->VerifyAllInputCanStream(1) )
     {
     std::cout << monitor;
     return EXIT_FAILURE;
@@ -138,7 +135,7 @@ int itkImageFileReaderStreamingTest2(int argc, char* argv[])
   extractor->UpdateLargestPossibleRegion();
   std::cout << "check\n";
 
-  if (!monitor->VerifyAllInputCanStream(1))
+  if (!monitor->VerifyAllInputCanStream(1) )
     {
     std::cout << monitor;
     return EXIT_FAILURE;
@@ -148,7 +145,6 @@ int itkImageFileReaderStreamingTest2(int argc, char* argv[])
     {
     return EXIT_FAILURE;
     }
-
 
   ////////////////////////////////////////////////
   // test 1xfullx1
@@ -163,7 +159,7 @@ int itkImageFileReaderStreamingTest2(int argc, char* argv[])
   std::cout << "=== Updating 1xfullx1 IORegion ==" << std::endl;
   extractor->UpdateLargestPossibleRegion();
 
-  if (!monitor->VerifyAllInputCanStream(1))
+  if (!monitor->VerifyAllInputCanStream(1) )
     {
     std::cout << monitor;
     return EXIT_FAILURE;
@@ -173,7 +169,6 @@ int itkImageFileReaderStreamingTest2(int argc, char* argv[])
     {
     return EXIT_FAILURE;
     }
-
 
   ////////////////////////////////////////////////
   // test 1x1xfull
@@ -185,10 +180,10 @@ int itkImageFileReaderStreamingTest2(int argc, char* argv[])
   ioregion.SetSize(2, largestRegion.GetSize()[2]);
 
   extractor->SetExtractionRegion( ioregion );
-    std::cout << "=== Updating 1x1xfull IORegion ==" << std::endl;
+  std::cout << "=== Updating 1x1xfull IORegion ==" << std::endl;
   extractor->UpdateLargestPossibleRegion();
 
-  if (!monitor->VerifyAllInputCanStream(1))
+  if (!monitor->VerifyAllInputCanStream(1) )
     {
     std::cout << monitor;
     return EXIT_FAILURE;
@@ -198,7 +193,6 @@ int itkImageFileReaderStreamingTest2(int argc, char* argv[])
     {
     return EXIT_FAILURE;
     }
-
 
   ////////////////////////////////////////////////
   // test fullx3x3
@@ -213,7 +207,7 @@ int itkImageFileReaderStreamingTest2(int argc, char* argv[])
   std::cout << "=== Updating fullx3x3 IORegion ==" << std::endl;
   extractor->UpdateLargestPossibleRegion();
 
-  if (!monitor->VerifyAllInputCanStream(1))
+  if (!monitor->VerifyAllInputCanStream(1) )
     {
     std::cout << monitor;
     return EXIT_FAILURE;
@@ -223,7 +217,6 @@ int itkImageFileReaderStreamingTest2(int argc, char* argv[])
     {
     return EXIT_FAILURE;
     }
-
 
   ////////////////////////////////////////////////
   // test 3xfullx3
@@ -238,7 +231,7 @@ int itkImageFileReaderStreamingTest2(int argc, char* argv[])
   std::cout << "=== Updating 3xfullx3 IORegion ==" << std::endl;
   extractor->UpdateLargestPossibleRegion();
 
-  if (!monitor->VerifyAllInputCanStream(1))
+  if (!monitor->VerifyAllInputCanStream(1) )
     {
     std::cout << monitor;
     return EXIT_FAILURE;
@@ -248,7 +241,6 @@ int itkImageFileReaderStreamingTest2(int argc, char* argv[])
     {
     return EXIT_FAILURE;
     }
-
 
   ////////////////////////////////////////////////
   // test 3x3xfull
@@ -260,10 +252,10 @@ int itkImageFileReaderStreamingTest2(int argc, char* argv[])
   ioregion.SetSize(2, largestRegion.GetSize()[2]);
 
   extractor->SetExtractionRegion( ioregion );
-    std::cout << "=== Updating 3x3xfull IORegion ==" << std::endl;
+  std::cout << "=== Updating 3x3xfull IORegion ==" << std::endl;
   extractor->UpdateLargestPossibleRegion();
 
-if (!monitor->VerifyAllInputCanStream(1))
+  if (!monitor->VerifyAllInputCanStream(1) )
     {
     std::cout << monitor;
     return EXIT_FAILURE;
@@ -273,7 +265,6 @@ if (!monitor->VerifyAllInputCanStream(1))
     {
     return EXIT_FAILURE;
     }
-
 
   return EXIT_SUCCESS;
 }

@@ -29,7 +29,8 @@
  *
  */
 
-int itkMIRegistrationFunctionTest(int, char* [] )
+int
+itkMIRegistrationFunctionTest(int, char* [] )
 {
 
 //------------------------------------------------------------
@@ -38,31 +39,31 @@ int itkMIRegistrationFunctionTest(int, char* [] )
 
   const unsigned int ImageDimension = 2;
 
-  typedef double                                PixelType;
-  typedef itk::Vector<double,ImageDimension>    DeformationPixelType;
+  typedef double                             PixelType;
+  typedef itk::Vector<double,ImageDimension> DeformationPixelType;
 
-  typedef double                   CoordinateRepresentationType;
+  typedef double CoordinateRepresentationType;
 
   //Allocate Images
-  typedef itk::Image<PixelType,ImageDimension>         MovingImageType;
-  typedef itk::Image<PixelType,ImageDimension>         FixedImageType;
+  typedef itk::Image<PixelType,ImageDimension> MovingImageType;
+  typedef itk::Image<PixelType,ImageDimension> FixedImageType;
   typedef itk::Image<DeformationPixelType,
-                               ImageDimension>         DisplacementFieldType;
+                     ImageDimension>         DisplacementFieldType;
 
   // Declare Gaussian Sources
-  typedef itk::GaussianImageSource< MovingImageType >  MovingImageSourceType;
-  typedef itk::GaussianImageSource< FixedImageType  >  FixedImageSourceType;
-  typedef MovingImageSourceType::Pointer               MovingImageSourcePointer;
-  typedef FixedImageSourceType::Pointer                FixedImageSourcePointer;
+  typedef itk::GaussianImageSource< MovingImageType > MovingImageSourceType;
+  typedef itk::GaussianImageSource< FixedImageType  > FixedImageSourceType;
+  typedef MovingImageSourceType::Pointer              MovingImageSourcePointer;
+  typedef FixedImageSourceType::Pointer               FixedImageSourcePointer;
 
   // Note: the following declarations are classical arrays
-  FixedImageType::SizeValueType fixedImageSize[]     = {  100,  100 };
+  FixedImageType::SizeValueType  fixedImageSize[]     = {  100,  100 };
   MovingImageType::SizeValueType movingImageSize[]    = {  100,  100 };
 
-  FixedImageType::SpacingValueType fixedImageSpacing[]  = { 1.0f, 1.0f };
+  FixedImageType::SpacingValueType  fixedImageSpacing[]  = { 1.0f, 1.0f };
   MovingImageType::SpacingValueType movingImageSpacing[] = { 1.0f, 1.0f };
 
-  FixedImageType::PointValueType fixedImageOrigin[]   = { 0.0f, 0.0f };
+  FixedImageType::PointValueType  fixedImageOrigin[]   = { 0.0f, 0.0f };
   MovingImageType::PointValueType movingImageOrigin[]  = { 0.0f, 0.0f };
 
   MovingImageSourceType::Pointer movingImageSource = MovingImageSourceType::New();
@@ -86,18 +87,16 @@ int itkMIRegistrationFunctionTest(int, char* [] )
   MovingImageType::Pointer movingImage = movingImageSource->GetOutput();
   FixedImageType::Pointer  fixedImage  = fixedImageSource->GetOutput();
 
-
 //-----------------------------------------------------------
 // Set up  the Metric
 //-----------------------------------------------------------
   typedef itk::MIRegistrationFunction<
-                                       FixedImageType,
-                                       MovingImageType,
-                                       DisplacementFieldType >
-                                                MetricFunctionType;
+      FixedImageType,
+      MovingImageType,
+      DisplacementFieldType >
+    MetricFunctionType;
 
-  MetricFunctionType::Pointer  metricFunction = MetricFunctionType::New();
-
+  MetricFunctionType::Pointer metricFunction = MetricFunctionType::New();
 
 //-----------------------------------------------------------
 // Plug the Images into the metricFunction

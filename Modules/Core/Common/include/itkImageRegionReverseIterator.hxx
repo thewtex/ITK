@@ -24,24 +24,24 @@ namespace itk
 {
 template< typename TImage >
 ImageRegionReverseIterator< TImage >
-::ImageRegionReverseIterator():
+::ImageRegionReverseIterator() :
   ImageRegionReverseConstIterator< TImage >()
 {}
 
 template< typename TImage >
 ImageRegionReverseIterator< TImage >
-::ImageRegionReverseIterator(ImageType *ptr, const RegionType & region):
+::ImageRegionReverseIterator(ImageType *ptr, const RegionType & region) :
   ImageRegionReverseConstIterator< TImage >(ptr, region)
 {}
 
 template< typename TImage >
 ImageRegionReverseIterator< TImage >
-::ImageRegionReverseIterator(const ImageConstIterator< TImage > & it):Superclass(it)
+::ImageRegionReverseIterator(const ImageConstIterator< TImage > & it) : Superclass(it)
 {}
 
 template< typename TImage >
 ImageRegionReverseIterator< TImage >
-::ImageRegionReverseIterator(const ImageRegionReverseConstIterator< TImage > & it):
+::ImageRegionReverseIterator(const ImageRegionReverseConstIterator< TImage > & it) :
   Superclass(it)
 {}
 
@@ -70,6 +70,7 @@ ImageRegionReverseIterator< TImage >
 {
   return this->Superclass::End();
 }
+
 #endif
 } // end namespace itk
 
