@@ -496,3 +496,62 @@ itk_add_test(NAME itkAutoCropLabelMapFilterTest2
     92
     163
     )
+
+itk_add_test(NAME itkBinaryShapeKeepNObjectsImageFilterTest1
+  COMMAND ITKLabelMapTestDriver
+  itkBinaryShapeKeepNObjectsLabelMapFilterTest1
+)
+
+itk_add_test(NAME itkBinaryStatisticsKeepNObjectsImageFilterTest1
+  COMMAND ITKLabelMapTestDriver
+  itkBinaryStatisticsKeepNObjectsLabelMapFilterTest1
+)
+itk_add_test(NAME itkBinaryStatisticsOpeningImageFilterTest1
+  COMMAND ITKLabelMapTestDriver
+  itkBinaryStatisticsOpeningImageFilterTest1
+)
+itk_add_test(NAME itkLabelShapeKeepNObjectsImageFilterTest1
+  COMMAND ITKLabelMapTestDriver
+  itkLabelShapeKeepNObjectsImageFilterTest1
+)
+itk_add_test(NAME itkLabelShapeOpeningImageFilterTest1
+  COMMAND ITKLabelMapTestDriver
+  itkLabelShapeOpeningImageFilterTest1
+)
+itk_add_test(NAME itkLabelStatisticsKeepNObjectsImageFilterTest1
+  COMMAND ITKLabelMapTestDriver
+  itkLabelStatisticsKeepNObjectsImageFilterTest1
+)
+itk_add_test(NAME itkLabelStatisticsOpeningImageFilterTest1
+  COMMAND ITKLabelMapTestDriver
+  itkLabelStatisticsOpeningImageFilterTest1
+)
+
+itk_add_test(NAME itkStatisticsOpeningLabelMapFilterTest1
+  COMMAND ITKLabelMapTestDriver
+  itkStatisticsOpeningLabelMapFilterTest1
+)
+itk_add_test(NAME itkStatisticsUniqueLabelMapFilterTest1
+  COMMAND ITKLabelMapTestDriver
+  itkStatisticsUniqueLabelMapFilterTest1
+)
+itk_add_test(NAME itkStatisticsRelabelLabelMapFilterTest1
+  COMMAND ITKLabelMapTestDriver
+  itkStatisticsRelabelLabelMapFilterTest1
+)
+itk_add_test(NAME itkStatisticsRelabelImageFilterTest1
+  COMMAND ITKLabelMapTestDriver
+  itkStatisticsRelabelImageFilterTest1
+)
+itk_add_test(NAME itkStatisticsKeepNObjectsLabelMapFilterTest1
+  COMMAND ITKLabelMapTestDriver
+  itkStatisticsKeepNObjectsLabelMapFilterTest1
+)
+itk_add_test(NAME itkShapeUniqueLabelMapFilterTest1
+  COMMAND ITKLabelMapTestDriver
+  itkShapeUniqueLabelMapFilterTest1
+)
+itk_add_test(NAME itkShapeRelabelImageFilterTest1
+  COMMAND ITKLabelMapTestDriver
+  itkShapeRelabelImageFilterTest1
+)
