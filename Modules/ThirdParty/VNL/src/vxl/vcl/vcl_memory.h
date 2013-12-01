@@ -29,7 +29,7 @@
 # include "iso/vcl_memory.h"
 
 # if VCL_INCLUDE_CXX_0X
-#  if VCL_MEMORY_HAS_SHARED_PTR
+#  if VCL_MEMORY_TR1_HAS_SHARED_PTR
 #   include "iso/vcl_memory_tr1.h"
 #  elif VCL_TR1_MEMORY_HAS_SHARED_PTR
 #   include "tr1/vcl_memory.h"
