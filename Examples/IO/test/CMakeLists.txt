@@ -31,6 +31,20 @@ if(ITK_BUILD_SHARED_LIBS)
 
 endif()
 
+# Test all the defualt ITK ImageIO factory registrations.
+# Please refer to CMake/UseITK.cmake for all the image IO registartion handeling.
+
+# Here is a list of the default image IO formats ( non-default and remote IO formats are not included. e.g. MINC, MGH and SCIF are not verified here)
+set (LIST_OF_IO_FORMATS "Nifti Nrrd Gipl HDF5 JPEG GDCM BMP LSM PNG TIFF VTK Stimulate BioRad Meta MRC")
+itk_add_test( NAME ImageIOFactoryRegisterTest
+    COMMAND ${ITK_TEST_DRIVER}
+    $<TARGET_FILE:IOFactoryRegistration>
+    )
+# The test output should contain the list of the ImageIOs.
+set_tests_properties (ImageIOFactoryRegisterTest
+  PROPERTIES PASS_REGULAR_EXPRESSION  ${LIST_OF_IO_FORMATS})
+
+
 if(ITK_VISIBLEHUMAN_DATA_ROOT)
   itk_add_test(NAME VisibleHumanStreamReadWriteTest
     COMMAND ${ITK_TEST_DRIVER}
