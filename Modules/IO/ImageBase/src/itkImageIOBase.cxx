@@ -558,60 +558,76 @@ ImageIOBase::IOPixelType ImageIOBase::GetPixelTypeFromString(const std::string &
     }
 }
 
-void ImageIOBase::OpenFileForReading(std::ifstream & os, const char *filename)
+void ImageIOBase::OpenFileForReading(std::ifstream & inputStream, const std::string & filename,
+                                     bool ascii)
 {
   // Make sure that we have a file to
-  if ( *filename == 0 )
+  if ( filename.empty() )
     {
-    itkExceptionMacro(<< "A FileName must be specified.");
+    itkExceptionMacro( << "A FileName must be specified." );
     }
 
   // Close file from any previous image
-  if ( os.is_open() )
+  if ( inputStream.is_open() )
     {
-    os.close();
+    inputStream.close();
     }
 
   // Open the new file for reading
-  itkDebugMacro(<< "Initialize: opening file " << filename);
+  itkDebugMacro( << "Initialize: opening file " << filename );
 
-  os.open(filename,  std::ios::in | std::ios::binary);
-  if ( os.fail() )
+  std::ios::openmode mode = std::ios::in;
+  if ( !ascii )
     {
-    itkExceptionMacro(<< "Could not open file for reading: " << filename);
+    mode |= std::ios::binary;
+    }
+
+  inputStream.open( filename.c_str(), mode );
+
+  if ( !inputStream.is_open() || inputStream.fail() )
+    {
+    itkExceptionMacro( << "Could not open file: "
+                       << filename << " for reading."
+                       << std::endl
+                       << "Reason: "
+                       << itksys::SystemTools::GetLastSystemError() );
     }
 }
 
-void ImageIOBase::OpenFileForWriting(std::ofstream & os, const char *filename, bool truncate)
+void ImageIOBase::OpenFileForWriting(std::ofstream & outputStream, const std::string & filename,
+                                     bool truncate, bool ascii)
 {
   // Make sure that we have a file to
-  if ( *filename == 0 )
+  if ( filename.empty() )
     {
-    itkExceptionMacro(<< "A FileName must be specified.");
+    itkExceptionMacro( << "A FileName must be specified." );
     }
 
   // Close file from any previous image
-  if ( os.is_open() )
+  if ( outputStream.is_open() )
     {
-    os.close();
+    outputStream.close();
     }
 
   // Open the new file for writing
-  itkDebugMacro(<< "Initialize: opening file " << filename);
+  itkDebugMacro( << "Initialize: opening file " << filename );
 
-  if ( truncate )
+  std::ios::openmode mode = std::ios::out;
+  mode |= ( truncate ? std::ios::trunc : std::ios::in );
+  if ( !ascii )
     {
-    // truncate
-    os.open(m_FileName.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
-    }
-  else
-    {
-    os.open(m_FileName.c_str(), std::ios::out | std::ios::binary | std::ios::in);
+    mode |= std::ios::binary;
     }
 
-  if ( os.fail() )
+  outputStream.open( filename.c_str(), mode );
+
+  if ( !outputStream.is_open() || outputStream.fail() )
     {
-    itkExceptionMacro(<< "Could not open file for writing: " << filename);
+    itkExceptionMacro( << "Could not open file: "
+                       << filename << " for writing."
+                       << std::endl
+                       << "Reason: "
+                       << itksys::SystemTools::GetLastSystemError() );
     }
 }
 

@@ -616,21 +616,34 @@ protected:
 
   /** \brief Opens a file for reading and random access
    *
+   * \param[out] inputStream is an istream presumed to be opened for reading
+   * \param[in] filename is the name of the file
+   * \param[in] ascii optional (default is false);
+   *                  if true then the file will be opened in ASCII mode,
+   *                  which generally only applies to Windows
+   *
    * The stream is closed if it's already opened. If an error is
    * encountered then an exception will be thrown.
    */
-  virtual void OpenFileForReading(std::ifstream & os, const char *filename);
+  virtual void OpenFileForReading(std::ifstream & inputStream, const std::string & filename,
+                                  bool ascii = false);
 
   /** \brief Opens a file for writing and random access
    *
-   * \param os is an ostream presumed to be opened for writing
-   * \param filename is the name of the file
-   * \param truncate if true then the file is truncated
+   * \param[out] outputStream is an ostream presumed to be opened for writing
+   * \param[in] filename is the name of the file
+   * \param[in] truncate optional (default is false);
+   *                     if true then the file is truncated,
+   *                     if false then the file is also opened for reading to facilitate seeking
+   * \param[in] ascii optional (default is false);
+   *                  if true then the file will be opened in ASCII mode,
+   *                  which generally only applies to Windows
    *
    * The stream is closed if it's already opened. If an error is
    * encountered then an exception will be thrown.
    */
-  virtual void OpenFileForWriting(std::ofstream & os, const char *filename, bool truncate);
+  virtual void OpenFileForWriting(std::ofstream & outputStream, const std::string & filename,
+                                  bool truncate = false, bool ascii = false);
 
   /** Convenient method to write a buffer as ASCII text. */
   virtual void WriteBufferAsASCII(std::ostream & os, const void *buffer,
