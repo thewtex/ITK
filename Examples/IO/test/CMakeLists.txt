@@ -31,6 +31,40 @@ if(ITK_BUILD_SHARED_LIBS)
 
 endif()
 
+# Test ITK ImageIO factory registrations.
+# Please refer to CMake/UseITK.cmake for all the image IO registartion handeling.
+
+# Internal default image IO modules (ITK_USE_DEFAULT_MODULES is ON, so all of
+# the default IOs should be registered)
+# The order needs to be consistent with the order of registration in CMake/UseITK.cmake.
+set (LIST_OF_DEFAULT_IMAGE_IO_FORMATS "Nifti Nrrd Gipl HDF5 JPEG GDCM BMP LSM PNG TIFF VTK Stimulate BioRad Meta MRC")
+set (List_IO_Factory_Description_First_Word ${LIST_OF_DEFAULT_IMAGE_IO_FORMATS})
+
+# internal non-default image IO modules: MINC
+set(module_name ITKIOMINC)
+if (${module_name}_ENABLED)
+  set (List_IO_Factory_Description_First_Word "${List_IO_Factory_Description_First_Word} MINC")
+endif()
+
+# for remote image IO  modules: MGHIO and SCIFIO
+set(module_name MGHIO)
+if (${module_name}_ENABLED)
+  set (List_IO_Factory_Description_First_Word "${List_IO_Factory_Description_First_Word} MGH")
+endif()
+set(module_name SCIFIO)
+if (${module_name}_ENABLED)
+  set (List_IO_Factory_Description_First_Word "${List_IO_Factory_Description_First_Word} SCIFIO")
+endif()
+
+itk_add_test( NAME ImageIOFactoryRegisterTest
+    COMMAND ${ITK_TEST_DRIVER}
+    $<TARGET_FILE:IOFactoryRegistration>
+    )
+# The test output should contain the list of the ImageIOs.
+set_tests_properties (ImageIOFactoryRegisterTest
+  PROPERTIES PASS_REGULAR_EXPRESSION  ${List_IO_Factory_Description_First_Word})
+
+
 if(ITK_VISIBLEHUMAN_DATA_ROOT)
   itk_add_test(NAME VisibleHumanStreamReadWriteTest
     COMMAND ${ITK_TEST_DRIVER}
