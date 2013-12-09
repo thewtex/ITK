@@ -19,8 +19,8 @@
 
 #include "itkVTKTetrahedralMeshReader.h"
 #include <fstream>
-#include <cstdio>
-#include <cstring>
+#include <stdio.h>
+#include <string.h>
 
 namespace itk
 {
@@ -28,7 +28,7 @@ namespace itk
 //
 // Constructor
 //
-template<typename TOutputMesh>
+template<class TOutputMesh>
 VTKTetrahedralMeshReader<TOutputMesh>
 ::VTKTetrahedralMeshReader()
 {
@@ -43,13 +43,13 @@ VTKTetrahedralMeshReader<TOutputMesh>
 //
 // Destructor
 //
-template<typename TOutputMesh>
+template<class TOutputMesh>
 VTKTetrahedralMeshReader<TOutputMesh>
 ::~VTKTetrahedralMeshReader()
 {
 }
 
-template<typename TOutputMesh>
+template<class TOutputMesh>
 void
 VTKTetrahedralMeshReader<TOutputMesh>
 ::GenerateData()
@@ -139,9 +139,9 @@ VTKTetrahedralMeshReader<TOutputMesh>
     std::string pointLine( line, strlen("POINTS "), line.length() );
     itkDebugMacro("pointLine " << pointLine );
 
-    unsigned long numberOfPoints = NumericTraits< unsigned long >::Zero;
+    PointIdentifier numberOfPoints = NumericTraits< PointIdentifier >::Zero;
 
-    if( sscanf(pointLine.c_str(),"%lu",&numberOfPoints) != 1 )
+    if( sscanf(pointLine.c_str(),"%ld",&numberOfPoints) != 1 )
       {
       itkExceptionMacro(<< "Error reading file: " << m_FileName
         << "\nFailed to read numberOfPoints.\n"
@@ -211,10 +211,10 @@ VTKTetrahedralMeshReader<TOutputMesh>
     // Read the number of cells
     //
 
-    unsigned long numberOfCells   = NumericTraits< unsigned long >::Zero;
-    unsigned long numberOfIndices = NumericTraits< unsigned long >::Zero;
+    CellIdentifier numberOfCells   = NumericTraits< CellIdentifier >::Zero;
+    CellIdentifier numberOfIndices = NumericTraits< CellIdentifier >::Zero;
 
-    if( sscanf( cellsLine.c_str(), "%lu %lu", &numberOfCells,
+    if( sscanf( cellsLine.c_str(), "%ld %ld", &numberOfCells,
         &numberOfIndices ) != 2 )
       {
       itkExceptionMacro(<< "Error reading file: " << m_FileName
@@ -264,7 +264,7 @@ VTKTetrahedralMeshReader<TOutputMesh>
           << "\nRead keyword DATA");
         }
 
-      unsigned long numberOfPointsFound;
+      PointIdentifier numberOfPointsFound;
       if( (numberOfPointsFound = sscanf( line.c_str(), "%lu %ld %ld %ld %ld", &numberOfCellPoints,
            &ids[0], &ids[1], &ids[2], &ids[3] )) != 5 )
         {
@@ -339,7 +339,7 @@ VTKTetrahedralMeshReader<TOutputMesh>
 
 
     unsigned int numberOfCellTypes = 0;
-    if( sscanf( cellsTypesLine.c_str(), "%u", &numberOfCellTypes) != 1 )
+    if( sscanf( cellsTypesLine.c_str(), "%d", &numberOfCellTypes) != 1 )
       {
       itkExceptionMacro(<< "Error reading file: " << m_FileName
         << "\nFailed to read numberOfCellTypes from subline2"
@@ -447,7 +447,7 @@ VTKTetrahedralMeshReader<TOutputMesh>
     inputFile.close();
 }
 
-template<typename TOutputMesh>
+template<class TOutputMesh>
 void
 VTKTetrahedralMeshReader<TOutputMesh>
 ::PrintSelf( std::ostream& os, Indent indent ) const
