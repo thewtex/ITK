@@ -76,9 +76,11 @@ public:
   typedef typename InputImageType::Pointer      InputImagePointer;
   typedef typename InputImageType::ConstPointer InputImageConstPointer;
 
-  typedef typename TOutputImage::OffsetType OutputOffsetType;
-  typedef typename TOutputImage::IndexType  OutputIndexType;
-  typedef typename TInputImage::IndexType   InputIndexType;
+  typedef typename TOutputImage::OffsetType  OutputOffsetType;
+  typedef typename TOutputImage::IndexType   OutputIndexType;
+  typedef typename TInputImage::IndexType    InputIndexType;
+  typedef typename TOutputImage::PixelType   OutputPixelType;
+  typedef typename TInputImage::PixelType    InputPixelType;
 
   /** Typedef to describe the output image region type. */
   typedef typename TOutputImage::RegionType OutputImageRegionType;
@@ -132,6 +134,8 @@ private:
 
   ShrinkFactorsType m_ShrinkFactors;
 
+  /** Round different pixel types. */
+  typedef typename NumericTraits< InputPixelType >::RealType AccumulatePixelType;
 };
 
 } // end namespace itk
