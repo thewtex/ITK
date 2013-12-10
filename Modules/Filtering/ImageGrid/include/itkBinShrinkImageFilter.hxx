@@ -91,6 +91,29 @@ BinShrinkImageFilter< TInputImage, TOutputImage >
   m_ShrinkFactors[i] = factor;
 }
 
+template< class TInputImage, class TOutputImage >
+template< class TOutputPixel, class TInputPixel >
+typename EnableIfC< IsSame< TOutputPixel, typename NumericTraits< TOutputPixel >::ValueType>::Value, TOutputPixel >::Type
+BinShrinkImageFilter< TInputImage, TOutputImage >
+::Round( const TInputPixel & input )
+{
+  return Math::Round< TOutputPixel >( input );
+}
+
+template< class TInputImage, class TOutputImage >
+template< class TOutputPixel, class TInputPixel >
+typename DisableIfC< IsSame< TOutputPixel, typename NumericTraits< TOutputPixel >::ValueType>::Value, TOutputPixel >::Type
+BinShrinkImageFilter< TInputImage, TOutputImage >
+::Round( const TInputPixel & input )
+{
+  TOutputPixel output;
+  for( SizeValueType component = 0; component < input.Size(); ++component )
+    {
+    output[component] = Math::Round< typename NumericTraits< TOutputPixel >::ValueType >( input[component] );
+    }
+  return output;
+}
+
 template <class TInputImage, class TOutputImage>
 void
 BinShrinkImageFilter<TInputImage,TOutputImage>
@@ -103,9 +126,9 @@ BinShrinkImageFilter<TInputImage,TOutputImage>
   InputImageConstPointer inputPtr = this->GetInput();
   OutputImagePointer     outputPtr = this->GetOutput();
 
-  typedef typename NumericTraits<typename TInputImage::PixelType>::RealType AccumulatePixelType;
-
-  typedef typename TOutputImage::PixelType OutputPixelType;
+  typedef typename TInputImage::PixelType                    InputPixelType;
+  typedef typename TOutputImage::PixelType                   OutputPixelType;
+  typedef typename NumericTraits< InputPixelType >::RealType AccumulatePixelType;
 
   typedef ImageScanlineConstIterator< TOutputImage > InputConstIteratorType;
   typedef ImageScanlineIterator< TOutputImage >      OutputIteratorType;
@@ -204,14 +227,29 @@ BinShrinkImageFilter<TInputImage,TOutputImage>
           }
         }
 
-      for ( size_t j = 0; j <ln; ++j)
+      if( NumericTraits< typename NumericTraits< OutputPixelType >::ValueType >::is_integer )
         {
-        assert(!outputIterator.IsAtEndOfLine() );
-        // this statement is made to work with RGB pixel types
-        accBuffer[j] = accBuffer[j] * inumSamples;
+        for ( size_t j = 0; j <ln; ++j)
+          {
+          assert(!outputIterator.IsAtEndOfLine() );
+          // this statement is made to work with RGB pixel types
+          accBuffer[j] = accBuffer[j] * inumSamples;
 
-        outputIterator.Set( static_cast<OutputPixelType>(accBuffer[j]) );
-        ++outputIterator;
+          outputIterator.Set( Round< OutputPixelType, AccumulatePixelType >( accBuffer[j] ) );
+          ++outputIterator;
+          }
+        }
+      else
+        {
+        for ( size_t j = 0; j <ln; ++j)
+          {
+          assert(!outputIterator.IsAtEndOfLine() );
+          // this statement is made to work with RGB pixel types
+          accBuffer[j] = accBuffer[j] * inumSamples;
+
+          outputIterator.Set( static_cast< OutputPixelType >( accBuffer[j] ) );
+          ++outputIterator;
+          }
         }
 
       outputIterator.NextLine();
