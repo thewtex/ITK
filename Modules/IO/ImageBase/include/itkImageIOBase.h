@@ -633,8 +633,7 @@ protected:
    * \param[out] outputStream is an ostream presumed to be opened for writing
    * \param[in] filename is the name of the file
    * \param[in] truncate optional (default is false);
-   *                     if true then the file is truncated,
-   *                     if false then the file is also opened for reading to facilitate seeking
+   *                     if true then the file is truncated
    * \param[in] ascii optional (default is false);
    *                  if true then the file will be opened in ASCII mode,
    *                  which generally only applies to Windows

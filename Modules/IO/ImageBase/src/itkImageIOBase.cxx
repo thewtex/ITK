@@ -613,7 +613,10 @@ void ImageIOBase::OpenFileForWriting(std::ofstream & outputStream, const std::st
   itkDebugMacro( << "Initialize: opening file " << filename );
 
   std::ios::openmode mode = std::ios::out;
-  mode |= ( truncate ? std::ios::trunc : std::ios::in );
+  if ( truncate )
+    {
+    mode |= std::ios::trunc;
+    }
   if ( !ascii )
     {
     mode |= std::ios::binary;
