@@ -92,10 +92,10 @@ public:
   /** Types derived from the base class */
   typedef typename Superclass::MatrixType          MatrixType;
   typedef typename Superclass::MatrixDecoratedType MatrixDecoratedType;
+  typedef typename Superclass::OutputType          OutputType;
 
   /** Types derived from the base class */
   typedef typename Superclass::MeasurementVectorDecoratedType MeasurementVectorDecoratedType;
-  typedef typename Superclass::OutputType                     OutputType;
 
 protected:
   WeightedCovarianceSampleFilter();

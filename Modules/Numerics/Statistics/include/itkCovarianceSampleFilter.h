@@ -98,6 +98,7 @@ public:
    * a ProcessObject's pipeline */
   typedef SimpleDataObjectDecorator< MatrixType > MatrixDecoratedType;
   const MatrixDecoratedType * GetCovarianceMatrixOutput() const;
+  typedef MatrixDecoratedType                     OutputType;
 
 
   /** Return the mean vector */
@@ -107,7 +108,6 @@ public:
    * a ProcessObject's pipeline */
   typedef SimpleDataObjectDecorator< MeasurementVectorRealType > MeasurementVectorDecoratedType;
   const MeasurementVectorDecoratedType * GetMeanOutput() const;
-  typedef MeasurementVectorDecoratedType                         OutputType;
 
 
   MeasurementVectorSizeType GetMeasurementVectorSize() const;
