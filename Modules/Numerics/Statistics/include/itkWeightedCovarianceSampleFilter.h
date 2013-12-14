@@ -104,11 +104,12 @@ protected:
 
   void GenerateData();
 
-  /** Compute covariance matrix with weights computed from a function */
-  void ComputeCovarianceMatrixWithWeightingFunction();
-
-  /** Compute covariance matrix with weights specified in an array */
-  void ComputeCovarianceMatrixWithWeights();
+  /** Compute weighted covariance matrix using array or function
+  *
+  * \param[in] useWeightingFunction If true, get weight from function;
+  * if false, get weight from array.
+  */
+  void ComputeWeightedCovarianceMatrix(bool useWeightingFunction);
 
 private:
   WeightedCovarianceSampleFilter(const Self &); //purposely not implemented

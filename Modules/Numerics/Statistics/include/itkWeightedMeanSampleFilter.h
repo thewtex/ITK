@@ -98,11 +98,12 @@ protected:
 
   void GenerateData();
 
-  // compute mean with weight array
-  void ComputeMeanWithWeights();
-
-  // compute mean using a weighting function
-  void ComputeMeanWithWeightingFunction();
+  /** Compute weighted mean using array or function
+   *
+   * \param[in] useWeightingFunction If true, get weight from function;
+   * if false, get weight from array.
+   */
+  void ComputeWeightedMean(bool useWeightingFunction);
 
 private:
   WeightedMeanSampleFilter(const Self &); //purposely not implemented
