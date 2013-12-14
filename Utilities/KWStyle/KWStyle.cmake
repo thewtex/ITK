@@ -105,6 +105,9 @@ if(ITK_USE_KWSTYLE)
         -gcc
       WORKING_DIRECTORY ${ITK_SOURCE_DIR}
       )
+    set_property(TEST KWStyleCodeTest
+      APPEND PROPERTY LABELS RUNS_LONG
+      )
     itk_add_test(NAME KWStyleExamplesTest
       COMMAND ${KWSTYLE_EXECUTABLE}
         ${KWSTYLE_COMMON_ARGUMENTS}
