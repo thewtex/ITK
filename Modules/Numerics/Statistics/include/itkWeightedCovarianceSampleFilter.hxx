@@ -60,7 +60,7 @@ WeightedCovarianceSampleFilter< TSample >
 
   if ( functionObject != NULL )
     {
-    this->ComputeCovarianceMatrixWithWeightingFunction();
+    this->ComputeWeightedCovarianceMatrix(true);
     return;
     }
 
@@ -70,7 +70,7 @@ WeightedCovarianceSampleFilter< TSample >
 
   if ( weightArrayObject != NULL )
     {
-    this->ComputeCovarianceMatrixWithWeights();
+    this->ComputeWeightedCovarianceMatrix(false);
     return;
     }
 
@@ -82,7 +82,7 @@ WeightedCovarianceSampleFilter< TSample >
 template< typename TSample >
 inline void
 WeightedCovarianceSampleFilter< TSample >
-::ComputeCovarianceMatrixWithWeightingFunction()
+::ComputeWeightedCovarianceMatrix(bool useWeightingFunction)
 {
   // set up input / output
   const SampleType *input = this->GetInput();
@@ -100,13 +100,29 @@ WeightedCovarianceSampleFilter< TSample >
     itkDynamicCastInDebugMode< MeasurementVectorDecoratedType * >( this->ProcessObject::GetOutput(1) );
 
   // calculate mean
-  const WeightingFunctionType * const weightingFunction = this->GetWeightingFunction();
+  const WeightingFunctionType * weightingFunction;
+  const WeightArrayType * weightsArray;
+  if ( useWeightingFunction )
+    {
+    weightingFunction = this->GetWeightingFunction();
+    }
+  else
+    {
+    weightsArray = &(this->GetWeights());
+    }
 
   typedef WeightedMeanSampleFilter< SampleType > WeightedMeanFilterType;
   typename WeightedMeanFilterType::Pointer meanFilter = WeightedMeanFilterType::New();
 
   meanFilter->SetInput( input );
-  meanFilter->SetWeightingFunction( weightingFunction );
+  if ( useWeightingFunction )
+    {
+    meanFilter->SetWeightingFunction( weightingFunction );
+    }
+  else
+    {
+    meanFilter->SetWeights( weightsArray );
+    }
   meanFilter->Update();
 
   const typename WeightedMeanFilterType::MeasurementVectorRealType mean = meanFilter->GetMean();
@@ -124,13 +140,22 @@ WeightedCovarianceSampleFilter< TSample >
   const typename SampleType::ConstIterator end = input->End();
 
   // fills the lower triangle and the diagonal cells in the covariance matrix
-  for (; iter != end; ++iter )
+  for ( unsigned int sampleVectorIndex = 0;
+        iter != end;
+        ++iter, ++sampleVectorIndex )
     {
     const MeasurementVectorType & measurement = iter.GetMeasurementVector();
 
     const typename SampleType::AbsoluteFrequencyType frequency = iter.GetFrequency();
 
-    const WeightValueType rawWeight = weightingFunction->Evaluate( measurement );
+    if ( useWeightingFunction )
+      {
+      rawWeight = weightingFunction->Evaluate( measurement );
+      }
+    else
+      {
+      rawWeight = weightsArray->GetElement( sampleVectorIndex );
+      }
 
     const WeightValueType weight = ( rawWeight * static_cast< WeightValueType >( frequency ) );
     totalWeight += weight;

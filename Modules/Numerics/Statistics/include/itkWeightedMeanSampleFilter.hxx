@@ -63,7 +63,7 @@ WeightedMeanSampleFilter< TSample >
 
   if ( functionObject != NULL )
     {
-    this->ComputeMeanWithWeightingFunction();
+    this->ComputeWeightedMean(true);
     return;
     }
 
@@ -73,7 +73,7 @@ WeightedMeanSampleFilter< TSample >
 
   if ( weightArrayObject != NULL )
     {
-    this->ComputeMeanWithWeights();
+    this->ComputeWeightedMean(false);
     return;
     }
 
@@ -84,7 +84,7 @@ WeightedMeanSampleFilter< TSample >
 template< typename TSample >
 void
 WeightedMeanSampleFilter< TSample >
-::ComputeMeanWithWeights()
+::ComputeWeightedMean(bool useWeightingFunction)
 {
   // set up input / output
   const SampleType *input = this->GetInput();
@@ -104,7 +104,17 @@ WeightedMeanSampleFilter< TSample >
   typedef CompensatedSummation< MeasurementRealType > MeasurementRealAccumulateType;
   std::vector< MeasurementRealAccumulateType > sum( measurementVectorSize );
 
-  const WeightArrayType & weightsArray = this->GetWeights();
+  const WeightingFunctionType * weightFunction;
+  const WeightArrayType * weightsArray;
+  // only one of these will be set
+  if ( useWeightingFunction )
+    {
+    weightFunction = this->GetWeightingFunction();
+    }
+  else
+    {
+    weightsArray = &(this->GetWeights());
+    }
 
   WeightValueType totalWeight = NumericTraits< WeightValueType >::Zero;
 
@@ -119,72 +129,15 @@ WeightedMeanSampleFilter< TSample >
 
     const typename SampleType::AbsoluteFrequencyType frequency = iter.GetFrequency();
 
-    const WeightValueType rawWeight = weightsArray[sampleVectorIndex];
-
-    const WeightValueType weight = ( rawWeight * static_cast< WeightValueType >( frequency ) );
-    totalWeight += weight;
-
-    for ( unsigned int dim = 0; dim < measurementVectorSize; dim++ )
+    WeightValueType rawWeight;
+    if ( useWeightingFunction )
       {
-      const MeasurementRealType component =
-        static_cast< MeasurementRealType >( measurement[dim] );
-
-      sum[dim] += ( component * weight );
+      rawWeight = weightFunction->Evaluate( measurement );
       }
-    }
-
-  if ( totalWeight > vnl_math::eps )
-    {
-    for ( unsigned int dim = 0; dim < measurementVectorSize; dim++ )
+    else
       {
-      output[dim] = ( sum[dim].GetSum() / static_cast< MeasurementRealType >( totalWeight ) );
+      rawWeight = weightsArray->GetElement(sampleVectorIndex);
       }
-    }
-  else
-    {
-    itkExceptionMacro("Total weight was too close to zero. Value = " << totalWeight );
-    }
-
-  decoratedOutput->Set( output );
-}
-
-template< typename TSample >
-void
-WeightedMeanSampleFilter< TSample >
-::ComputeMeanWithWeightingFunction()
-{
-  // set up input / output
-  const SampleType *input = this->GetInput();
-
-  const MeasurementVectorSizeType measurementVectorSize =
-    input->GetMeasurementVectorSize();
-
-  MeasurementVectorDecoratedType *decoratedOutput =
-    itkDynamicCastInDebugMode< MeasurementVectorDecoratedType * >(
-      this->ProcessObject::GetOutput(0) );
-
-  MeasurementVectorRealType output = decoratedOutput->Get();
-
-  NumericTraits<MeasurementVectorRealType>::SetLength( output, this->GetMeasurementVectorSize() );
-
-  // algorithm start
-  typedef CompensatedSummation< MeasurementRealType > MeasurementRealAccumulateType;
-  std::vector< MeasurementRealAccumulateType > sum( measurementVectorSize );
-
-  const WeightingFunctionType * const weightFunction = this->GetWeightingFunction();
-
-  WeightValueType totalWeight = NumericTraits< WeightValueType >::Zero;
-
-  typename SampleType::ConstIterator iter = input->Begin();
-  const typename SampleType::ConstIterator end = input->End();
-
-  for (; iter != end; ++iter )
-    {
-    const MeasurementVectorType & measurement = iter.GetMeasurementVector();
-
-    const typename SampleType::AbsoluteFrequencyType frequency = iter.GetFrequency();
-
-    const WeightValueType rawWeight = weightFunction->Evaluate( measurement );
 
     const WeightValueType weight = ( rawWeight * static_cast< WeightValueType >( frequency ) );
     totalWeight += weight;
