@@ -60,7 +60,7 @@ WeightedCovarianceSampleFilter< TSample >
 
   if ( functionObject != NULL )
     {
-    this->ComputeCovarianceMatrixWithWeightingFunction();
+    this->ComputeWeightedCovarianceMatrix( true );
     return;
     }
 
@@ -70,7 +70,7 @@ WeightedCovarianceSampleFilter< TSample >
 
   if ( weightArrayObject != NULL )
     {
-    this->ComputeCovarianceMatrixWithWeights();
+    this->ComputeWeightedCovarianceMatrix( false );
     return;
     }
 
@@ -82,7 +82,7 @@ WeightedCovarianceSampleFilter< TSample >
 template< typename TSample >
 inline void
 WeightedCovarianceSampleFilter< TSample >
-::ComputeCovarianceMatrixWithWeightingFunction()
+::ComputeWeightedCovarianceMatrix(bool useWeightingFunction)
 {
   // set up input / output
   const SampleType *input = this->GetInput();
@@ -100,114 +100,29 @@ WeightedCovarianceSampleFilter< TSample >
     itkDynamicCastInDebugMode< MeasurementVectorDecoratedType * >( this->ProcessObject::GetOutput(1) );
 
   // calculate mean
-  const WeightingFunctionType * const weightingFunction = this->GetWeightingFunction();
-
-  typedef WeightedMeanSampleFilter< SampleType > WeightedMeanFilterType;
-  typename WeightedMeanFilterType::Pointer meanFilter = WeightedMeanFilterType::New();
-
-  meanFilter->SetInput( input );
-  meanFilter->SetWeightingFunction( weightingFunction );
-  meanFilter->Update();
-
-  const typename WeightedMeanFilterType::MeasurementVectorRealType mean = meanFilter->GetMean();
-  decoratedMeanOutput->Set( mean );
-
-  // covariance algorithm
-  MeasurementVectorRealType diff;
-  NumericTraits<MeasurementVectorRealType>::SetLength( diff, measurementVectorSize );
-
-  WeightValueType totalWeight = NumericTraits< WeightValueType >::Zero;
-
-  WeightValueType totalSquaredWeight = NumericTraits< WeightValueType >::Zero;
-
-  typename SampleType::ConstIterator iter =      input->Begin();
-  const typename SampleType::ConstIterator end = input->End();
-
-  // fills the lower triangle and the diagonal cells in the covariance matrix
-  for (; iter != end; ++iter )
+  const WeightingFunctionType * weightingFunction;
+  const WeightArrayType * weightsArray;
+  if ( useWeightingFunction )
     {
-    const MeasurementVectorType & measurement = iter.GetMeasurementVector();
-
-    const typename SampleType::AbsoluteFrequencyType frequency = iter.GetFrequency();
-
-    const WeightValueType rawWeight = weightingFunction->Evaluate( measurement );
-
-    const WeightValueType weight = ( rawWeight * static_cast< WeightValueType >( frequency ) );
-    totalWeight += weight;
-    totalSquaredWeight += ( weight * weight );
-
-    for ( unsigned int dim = 0; dim < measurementVectorSize; ++dim )
-      {
-      const MeasurementRealType component =
-        static_cast< MeasurementRealType >( measurement[dim] );
-
-      diff[dim] = ( component - mean[dim] );
-      }
-
-    // updates the covariance matrix
-    for ( unsigned int row = 0; row < measurementVectorSize; ++row )
-      {
-      for ( unsigned int col = 0; col < row + 1; ++col )
-        {
-        output(row, col) +=
-          ( static_cast< MeasurementRealType >( weight ) * diff[row] * diff[col] );
-        }
-      }
-    }
-
-  // fills the upper triangle using the lower triangle
-  for ( unsigned int row = 1; row < measurementVectorSize; ++row )
-    {
-    for ( unsigned int col = 0; col < row; ++col )
-      {
-      output(col, row) = output(row, col);
-      }
-    }
-
-  const double normalizationFactor = ( totalWeight - ( totalSquaredWeight / totalWeight ) );
-
-  if( normalizationFactor > vnl_math::eps )
-    {
-    const double inverseNormalizationFactor = 1.0 / normalizationFactor;
-
-    output *= inverseNormalizationFactor;
+    weightingFunction = this->GetWeightingFunction();
     }
   else
     {
-    itkExceptionMacro("Normalization factor was too close to zero. Value = " << normalizationFactor );
+    weightsArray = &( this->GetWeights() );
     }
-
-  decoratedOutput->Set( output );
-}
-
-template< typename TSample >
-inline void
-WeightedCovarianceSampleFilter< TSample >
-::ComputeCovarianceMatrixWithWeights()
-{
-  // set up input / output
-  const SampleType *input = this->GetInput();
-
-  MeasurementVectorSizeType measurementVectorSize = input->GetMeasurementVectorSize();
-
-  MatrixDecoratedType *decoratedOutput =
-    itkDynamicCastInDebugMode< MatrixDecoratedType * >( this->ProcessObject::GetOutput(0) );
-
-  MatrixType output = decoratedOutput->Get();
-  output.SetSize( measurementVectorSize, measurementVectorSize );
-  output.Fill( NumericTraits< typename MatrixType::ValueType >::Zero );
-
-  MeasurementVectorDecoratedType *decoratedMeanOutput =
-    itkDynamicCastInDebugMode< MeasurementVectorDecoratedType * >( this->ProcessObject::GetOutput(1) );
-
-  // calculate mean
-  const WeightArrayType & weightsArray = this->GetWeights();
 
   typedef WeightedMeanSampleFilter< SampleType > WeightedMeanFilterType;
   typename WeightedMeanFilterType::Pointer meanFilter = WeightedMeanFilterType::New();
 
   meanFilter->SetInput( input );
-  meanFilter->SetWeights( weightsArray );
+  if ( useWeightingFunction )
+    {
+    meanFilter->SetWeightingFunction( weightingFunction );
+    }
+  else
+    {
+    meanFilter->SetWeights( *weightsArray );
+    }
   meanFilter->Update();
 
   const typename WeightedMeanFilterType::MeasurementVectorRealType mean = meanFilter->GetMean();
@@ -233,7 +148,15 @@ WeightedCovarianceSampleFilter< TSample >
 
     const typename SampleType::AbsoluteFrequencyType frequency = iter.GetFrequency();
 
-    const WeightValueType rawWeight = weightsArray[sampleVectorIndex];
+    WeightValueType rawWeight;
+    if ( useWeightingFunction )
+      {
+      rawWeight = weightingFunction->Evaluate( measurement );
+      }
+    else
+      {
+      rawWeight = weightsArray->GetElement( sampleVectorIndex );
+      }
 
     const WeightValueType weight = ( rawWeight * static_cast< WeightValueType >( frequency ) );
     totalWeight += weight;
