@@ -131,6 +131,10 @@ public:
   static void SetLength(std::vector< T > & m, const unsigned int s)
   {
     m.resize(s);
+    // since std::vector often holds types that have no NumericTraits::Zero,
+    // allow resize() to call the type's default constructor
+    m.clear();
+    m.resize(s)
   }
 
   /** Return the size of the vector. */
