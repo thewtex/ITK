@@ -239,11 +239,6 @@ public:
     this->m_Metric = metric;
     }
 
-  MetricPointer GetMetric() const
-    {
-    return this->m_Metric;
-    }
-
   void WriteHistogramFile( unsigned int iterationNumber )
   {
     std::string outputFileBase = "JointHistogram";
