@@ -36,6 +36,7 @@ ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
   this->m_NumberOfThreads = MultiThreader::GetGlobalDefaultNumberOfThreads();
   this->m_ScalesAreIdentity = false;
   this->m_WeightsAreIdentity = true;
+  this->m_DoEstimateScales = true;
 }
 
 //-------------------------------------------------------------------
@@ -54,26 +55,34 @@ ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
 
   os << indent << "Number of threads: " << this->m_NumberOfThreads << std::endl;
   os << indent << "Number of scales:  " << this->m_Scales.Size() << std::endl;
-  if( this->m_Scales.Size() > 0 )
+  if( this->GetScalesInitialized() )
     {
     os << indent << "m_Scales: " << this->m_Scales << std::endl;
     }
   else
     {
-    os << indent << "m_Scales is unset." << std::endl;
+    os << indent << "m_Scales: uninitialized." << std::endl;
     }
   os << indent << "m_ScalesAreIdentity: " << this->GetScalesAreIdentity() << std::endl;
-  if( this->m_Weights.Size() > 0 )
+  if( this->m_Metric.IsNotNull() )
     {
-    os << indent << "m_Weights: " << this->m_Weights << std::endl;
+    os << indent << "Metric: " << std::endl;
+    m_Metric->Print( os, indent.GetNextIndent() );
     }
   else
     {
-    os << indent << "m_Weights is unset. Treated as identity." << std::endl;
+    os << indent << "Metric is not set." << std::endl;
     }
-  os << indent << "m_WeightsAreIdentity: " << this->GetWeightsAreIdentity() << std::endl;
-  os << indent << "Metric: " << std::endl;
-  m_Metric->Print( os, indent.GetNextIndent() );
+  if( this->m_ScalesEstimator.IsNull() )
+    {
+    os << indent << "No ScalesEstimator set." << std::endl;
+    }
+  else
+    {
+    os << indent << "ScalesEstimator: " << std::endl;
+    this->m_ScalesEstimator->Print( os, indent.GetNextIndent() );
+    }
+  os << indent << "DoEstimateScales: " << this->m_DoEstimateScales << std::endl;
 }
 
 //-------------------------------------------------------------------
@@ -106,9 +115,18 @@ ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
     return;
     }
 
+  /* Estimate the parameter scales if requested. */
+  if ( this->m_DoEstimateScales && this->m_ScalesEstimator.IsNotNull() )
+    {
+    ScalesType scales;
+    this->m_ScalesEstimator->EstimateScales( scales );
+    this->SetScales( scales );
+    itkDebugMacro( "Estimated scales = " << this->m_Scales );
+    }
+
   /* Verify m_Scales. If m_Scales hasn't been set, initialize to all 1's. */
   typedef typename ScalesType::ValueType     SValueType;
-  if( this->m_Scales.Size() > 0 )
+  if( this->GetScalesInitialized() )
     {
     if( this->m_Scales.Size() != this->m_Metric->GetNumberOfLocalParameters() )
       {
@@ -125,7 +143,7 @@ ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
       {
       if( this->m_Scales[i] <= NumericTraits<SValueType>::epsilon() )
         {
-        itkExceptionMacro("m_Scales values must be > epsilon.");
+        itkExceptionMacro("m_Scales values must be > epsilon." << this->m_Scales);
         }
       /* Check if the scales are identity. Consider to be identity if
        * within a tolerance, to allow for automatically estimated scales
@@ -199,6 +217,13 @@ ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
   return this->GetCurrentMetricValue();
 }
 
+template<typename TInternalComputationValueType>
+bool
+ObjectToObjectOptimizerBaseTemplate<TInternalComputationValueType>
+::GetScalesInitialized( void ) const
+{
+  return m_Scales.Size() > 0;
+}
 }//namespace itk
 
 #endif

@@ -40,8 +40,11 @@ SingleValuedNonLinearVnlOptimizer
 SingleValuedNonLinearVnlOptimizer
 ::~SingleValuedNonLinearVnlOptimizer()
 {
-  delete m_CostFunctionAdaptor;
-  m_CostFunctionAdaptor = 0;
+  if ( m_CostFunctionAdaptor )
+    {
+    delete m_CostFunctionAdaptor;
+    m_CostFunctionAdaptor = 0;
+    }
 }
 
 void
@@ -53,7 +56,10 @@ SingleValuedNonLinearVnlOptimizer
     return;
     }
 
-  delete m_CostFunctionAdaptor;
+  if ( m_CostFunctionAdaptor )
+    {
+    delete m_CostFunctionAdaptor;
+    }
 
   m_CostFunctionAdaptor = adaptor;
 
