@@ -105,7 +105,7 @@ int itkImageSpatialObjectTest(int, char* [])
     }
   catch( itk::ExceptionObject & e )
     {
-    throw &e;
+    throw;
     }
 
   std::cout<<"ValueAt()...";
@@ -153,7 +153,7 @@ int itkImageSpatialObjectTest(int, char* [])
     }
   catch( itk::ExceptionObject & e )
     {
-    throw &e;
+    throw;
     }
 
   std::cout<<"ValueAt() with interpolator...";

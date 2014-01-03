@@ -306,7 +306,7 @@ void MultiThreader::SingleMethodExecute()
               {}
       }
     // rethrow
-    throw &excp;
+    throw;
     }
   catch ( std::exception & e )
     {
