@@ -23,6 +23,7 @@
 #include "itkMeshIOFactory.h"
 #include "itkOBJMeshIOFactory.h"
 #include "itkOFFMeshIOFactory.h"
+#include "itkSTLMeshIOFactory.h"
 #include "itkMutexLock.h"
 #include "itkMutexLockHolder.h"
 #include "itkVTKPolyDataMeshIOFactory.h"
@@ -108,6 +109,7 @@ MeshIOFactory
       ObjectFactoryBase::RegisterFactory( OBJMeshIOFactory::New() );
       ObjectFactoryBase::RegisterFactory( OFFMeshIOFactory::New() );
       ObjectFactoryBase::RegisterFactory( VTKPolyDataMeshIOFactory::New() );
+      ObjectFactoryBase::RegisterFactory( STLMeshIOFactory::New() );
 
       firstTime = false;
       }

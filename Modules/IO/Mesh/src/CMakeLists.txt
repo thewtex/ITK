@@ -13,6 +13,8 @@ set(ITKIOMesh_SRC
   itkOBJMeshIOFactory.cxx
   itkOFFMeshIO.cxx
   itkOFFMeshIOFactory.cxx
+  itkSTLMeshIO.cxx
+  itkSTLMeshIOFactory.cxx
   itkVTKPolyDataMeshIO.cxx
   itkVTKPolyDataMeshIOFactory.cxx
 )
