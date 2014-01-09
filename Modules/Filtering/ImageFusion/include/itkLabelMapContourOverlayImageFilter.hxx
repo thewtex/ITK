@@ -129,8 +129,7 @@ LabelMapContourOverlayImageFilter<TLabelMap, TFeatureImage, TOutputImage>
   typedef typename SliceKernelType::RadiusType RadiusType;
   RadiusType srad;
   srad.Fill(NumericTraits<typename RadiusType::SizeValueType>::Zero);
-  int j=0;
-  for( int i=0; i<ImageDimension; i++ )
+  for( unsigned int i=0, j=0; i<ImageDimension; i++ )
     {
     if( j != m_SliceDimension )
       {
