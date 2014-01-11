@@ -4,6 +4,7 @@ ITK: The Insight Toolkit for Segmentation and Registration
 Links
 -----
 
+
 * Homepage: http://www.itk.org
 * Download: http://www.itk.org/ITK/resources/software.html
 * Mailing List: http://www.itk.org/mailman/listinfo/insight-users
@@ -22,6 +23,7 @@ CT or MRI scanners. Registration is the task of aligning or developing
 correspondences between data. For example, in the medical environment, a
 CT scan may be aligned with a MRI scan in order to combine the information
 contained in both.
+
 
 The toolkit may be built from source using CMake (http://www.cmake.org).
 
