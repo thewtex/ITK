@@ -27,7 +27,8 @@ namespace itk
 /** Constructor */
 template<unsigned int TFixedDimension, unsigned int TMovingDimension, typename TVirtualImage, typename TInternalComputationValueType>
 ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, TInternalComputationValueType>
-::ObjectToObjectMultiMetricv4()
+::ObjectToObjectMultiMetricv4():
+  m_NumberOfValidPoints(0)
 {
   this->m_MetricQueue.clear();
 
