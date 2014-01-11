@@ -23,6 +23,7 @@ correspondences between data. For example, in the medical environment, a
 CT scan may be aligned with a MRI scan in order to combine the information
 contained in both.
 
+
 The toolkit may be built from source using CMake (http://www.cmake.org).
 
 
