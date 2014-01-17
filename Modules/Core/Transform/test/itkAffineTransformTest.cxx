@@ -19,14 +19,13 @@
 #include <iostream>
 
 #include "itkAffineTransform.h"
+#include "itkMath.h"
 
 typedef  itk::Matrix<double, 2, 2> Matrix2Type;
 typedef  itk::Vector<double, 2>    Vector2Type;
 
 namespace
 {
-
-const double epsilon = 1e-10;
 
 void PrintVector( const Vector2Type & v )
 {
@@ -35,6 +34,11 @@ void PrintVector( const Vector2Type & v )
     std::cout << v[i] << ", ";
     }
   std::cout << std::endl;
+}
+
+bool testValue( const double v1, const double v2 )
+{
+  return itk::Math::FloatAlmostEqual( v1, v2 );
 }
 
 template <typename TMatrix>
@@ -46,7 +50,7 @@ bool testMatrix( const TMatrix & m1, const TMatrix & m2 )
     {
     for( unsigned int j = 0; j < TMatrix::ColumnDimensions; j++ )
       {
-      if( vcl_fabs( m1[i][j] - m2[i][j] ) > epsilon )
+      if( ! testValue( m1[i][j], m2[i][j] ) )
         {
         pass = false;
         }
@@ -62,7 +66,7 @@ bool testVector( const TVector & v1, const TVector & v2 )
 
   for( unsigned int i = 0; i < TVector::Dimension; i++ )
     {
-    if( vcl_fabs( v1[i] - v2[i] ) > epsilon )
+    if( ! testValue( v1[i], v2[i] ) )
       {
       pass = false;
       }
@@ -83,17 +87,12 @@ bool testVariableVector( const TVector & v1, const TVector & v2 )
     }
   for( unsigned int i = 0; i < D1; i++ )
     {
-    if( vcl_fabs( v1[i] - v2[i] ) > epsilon )
+    if( ! testValue( v1[i], v2[i] ) )
       {
       pass = false;
       }
     }
   return pass;
-}
-
-bool testValue( const double v1, const double v2 )
-{
-  return vcl_fabs( v1 - v2 ) <= epsilon;
 }
 
 } // namespace
@@ -708,7 +707,7 @@ int itkAffineTransformTest(int, char *[])
     expectedParameters[3] = 1.0;
     for( unsigned int k = 0; k < transform->GetNumberOfParameters(); k++ )
       {
-      if( vcl_fabs( parameters2[k] - expectedParameters[k] ) > epsilon )
+      if( ! testValue( parameters2[k], expectedParameters[k] ) )
         {
         std::cout << "Test failed:" << std::endl;
         std::cout << "Results=" << parameters2 << std::endl;
@@ -727,7 +726,7 @@ int itkAffineTransformTest(int, char *[])
     parameters2 = transform->GetParameters();
     for( unsigned int k = 0; k < transform->GetNumberOfParameters(); k++ )
       {
-      if( vcl_fabs( parameters2[k] - expectedParameters[k] ) > epsilon )
+      if( ! testValue( parameters2[k], expectedParameters[k] ) )
         {
         std::cout << "Test failed:" << std::endl;
         std::cout << "Results=" << parameters2 << std::endl;
@@ -761,7 +760,7 @@ int itkAffineTransformTest(int, char *[])
     otherbis->Print( std::cout );
     for( unsigned int k = 0; k < transform->GetNumberOfParameters(); k++ )
       {
-      if( vcl_fabs( parameters2[k] - expectedParameters[k] ) > epsilon )
+      if( ! testValue( parameters2[k], expectedParameters[k] ) )
         {
         std::cout << "Test failed:" << std::endl;
         std::cout << "Results=" << parameters2 << std::endl;
@@ -772,7 +771,7 @@ int itkAffineTransformTest(int, char *[])
       }
     for( unsigned int k = 0; k < transform->GetNumberOfParameters(); k++ )
       {
-      if( vcl_fabs( parameters2bis[k] - expectedParameters[k] ) > epsilon )
+      if( ! testValue( parameters2bis[k], expectedParameters[k] ) )
         {
         std::cout << "Test failed:" << std::endl;
         std::cout << "Results=" << parameters2bis << std::endl;
