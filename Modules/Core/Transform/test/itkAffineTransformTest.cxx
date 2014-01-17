@@ -452,14 +452,14 @@ int itkAffineTransformTest(int, char *[])
 
   /* Transform a Covariant vector */
   itk::CovariantVector<double, 2> u4, v4, v4T;
-  u4[0] = 3;
-  u4[1] = 5;
+  u4[0] = .3;
+  u4[1] = .5;
   v4 = aff2->TransformCovariantVector(u4);
   std::cout << "Transform a Covariant vector:" << std::endl
             << v4[0] << " , " << v4[1] << std::endl;
 
-  v4T[0] = -379.16666666679;
-  v4T[1] = 604.16666666687;
+  v4T[0] = -37.916666666679;
+  v4T[1] = 60.416666666687;
   if( !testVector( v4, v4T ) )
     {
     std::cout << "Transform a covariant vector test failed." << std::endl;
@@ -470,14 +470,14 @@ int itkAffineTransformTest(int, char *[])
   itk::VariableLengthVector<double> l4, m4, m4T;
   l4.SetSize(2);
   m4T.SetSize(2);
-  l4[0] = 3;
-  l4[1] = 5;
+  l4[0] = .3;
+  l4[1] = .5;
   m4 = aff2->TransformCovariantVector(l4);
   std::cout << "Transform a variable length covariant vector:" << std::endl
             << m4[0] << " , " << m4[1] << std::endl;
 
-  m4T[0] = -379.16666666679;
-  m4T[1] = 604.16666666687;
+  m4T[0] = -37.916666666679;
+  m4T[1] = 60.416666666687;
   if( !testVariableVector( m4, m4T ) )
     {
     std::cout << "Transform a variable length covariant vector test failed." << std::endl;
