@@ -37,7 +37,17 @@
 #include "itkBSplineTransform.h"
 #include "itkCompositeTransform.h"
 
+//Transforms from Filtering/DisplacementField/include
+#include "itkBSplineExponentialDiffeomorphicTransform.h"
+#include "itkBSplineSmoothingOnUpdateDisplacementFieldTransform.h"
+#include "itkConstantVelocityFieldTransform.h"
 #include "itkDisplacementFieldTransform.h"
+#include "itkGaussianExponentialDiffeomorphicTransform.h"
+#include "itkGaussianSmoothingOnUpdateDisplacementFieldTransform.h"
+#include "itkGaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform.h"
+#include "itkTimeVaryingBSplineVelocityFieldTransform.h"
+#include "itkTimeVaryingVelocityFieldTransform.h"
+#include "itkVelocityFieldTransform.h"
 
 #if defined( ITKV3_COMPATIBILITY )
 #include "itkBSplineDeformableTransform.h"
@@ -238,6 +248,11 @@ void TransformFactoryBase::RegisterDefaultTransforms()
     TransformFactory< DisplacementFieldTransform<float, 3> >::RegisterTransform ();
     TransformFactory< DisplacementFieldTransform<double, 2> >::RegisterTransform ();
     TransformFactory< DisplacementFieldTransform<double, 3> >::RegisterTransform ();
+
+    TransformFactory< BSplineSmoothingOnUpdateDisplacementFieldTransform<float,2> >::RegisterTransform ();
+    TransformFactory< BSplineSmoothingOnUpdateDisplacementFieldTransform<float,3> >::RegisterTransform ();
+    TransformFactory< BSplineSmoothingOnUpdateDisplacementFieldTransform<double,2> >::RegisterTransform ();
+    TransformFactory< BSplineSmoothingOnUpdateDisplacementFieldTransform<double,3> >::RegisterTransform ();
     }
   TransformFactoryBasePrivate::DefaultTransformsRegistered = true;
 }
