@@ -136,12 +136,17 @@ throw ( ExceptionObject )
     itk::ImageRegionConstIteratorWithIndex<TFixedImage> fi(this->m_FixedImage, this->m_FixedImage->GetBufferedRegion() );
     while( !fi.IsAtEnd() )
       {
-      typename TFixedImage::PointType fixedSpacePhysicalPoint;
-      this->m_FixedImage->TransformIndexToPhysicalPoint(fi.GetIndex(), fixedSpacePhysicalPoint);
-      // A null mask implies entire space is to be used.
-      if( this->m_FixedImageMask.IsNull()
-          || this->m_FixedImageMask->IsInside(fixedSpacePhysicalPoint)
-          )
+      bool maskIsPresent = !(this->m_FixedImageMask.IsNull());
+      bool shouldCheckPixel = !maskIsPresent; // A null mask implies entire space is to be used.
+
+      if( maskIsPresent )
+        {
+        typename TFixedImage::PointType fixedSpacePhysicalPoint;
+        this->m_FixedImage->TransformIndexToPhysicalPoint(fi.GetIndex(), fixedSpacePhysicalPoint);
+        shouldCheckPixel = this->m_FixedImageMask->IsInside(fixedSpacePhysicalPoint  );
+        }
+
+      if( shouldCheckPixel )
         {
         const typename TFixedImage::PixelType currValue = fi.Get();
         this->m_FixedImageTrueMin = (m_FixedImageTrueMin < currValue) ? this->m_FixedImageTrueMin : currValue;
@@ -155,12 +160,17 @@ throw ( ExceptionObject )
                                                               this->m_MovingImage->GetBufferedRegion() );
       while( !mi.IsAtEnd() )
         {
-        typename TMovingImage::PointType movingSpacePhysicalPoint;
-        this->m_MovingImage->TransformIndexToPhysicalPoint(mi.GetIndex(), movingSpacePhysicalPoint);
-        // A null mask implies entire space is to be used.
-        if( this->m_MovingImageMask.IsNull()
-            || this->m_MovingImageMask->IsInside(movingSpacePhysicalPoint)
-            )
+        bool maskIsPresent = !(this->m_MovingImageMask.IsNull());
+        bool shouldCheckPixel = !maskIsPresent; // A null mask implies entire space is to be used.
+
+        if( maskIsPresent )
+          {
+          typename TMovingImage::PointType movingSpacePhysicalPoint;
+          this->m_MovingImage->TransformIndexToPhysicalPoint(mi.GetIndex(), movingSpacePhysicalPoint);
+          shouldCheckPixel = this->m_MovingImageMask->IsInside(movingSpacePhysicalPoint);
+          }
+
+        if( shouldCheckPixel )
           {
           const typename TMovingImage::PixelType currValue = mi.Get();
           this->m_MovingImageTrueMin = (m_MovingImageTrueMin < currValue) ? this->m_MovingImageTrueMin : currValue;
