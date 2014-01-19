@@ -77,16 +77,17 @@ public:
   /** Get the number of seed points. */
   itkGetConstMacro(NumberOfSeeds, unsigned int);
 
-  /** Input the seeds information, will overwrite if seeds already
-   * exists. */
+  /* Set the seed points. Specify the number of seeds as "num".
+     Will overwrite if seeds already exists. */
   void SetSeeds(int num, SeedsIterator begin);
 
-  /** Add more seeds at one time. */
+  /** Add more seeds. Specify the number of seeds to be added as "num". */
   void AddSeeds(int num, SeedsIterator begin);
 
+  /* Add one seed. */
   void AddOneSeed(PointType);
 
-  /** Sort the seeds by ____. */
+  /* Sort the seeds with their y, then x, coordinates. */
   void SortSeeds(void);
 
   /** Produce the output information. */
@@ -95,12 +96,12 @@ public:
   /** Update the Voronoi Diagram after adding seed(s). */
   void UpdateDiagram(void);
 
-  /** The boundary that enclose the whole voronoi diagram. */
+  /* Set the rectangle that encloses the whole Voronoi Diagram. */
   void SetBoundary(PointType vorsize);
 
   void SetOrigin(PointType vorsize);
 
-  /** Set the seeds points randomly. */
+  /** Set the seeds points randomly. Specify the number of seeds as "num". */
   void SetRandomSeeds(int num);
 
   /** Return the given indexed seed. */
@@ -123,6 +124,7 @@ private:
   OutputType   m_OutputVD;
   SeedsType    m_Seeds;
 
+  /* Compare point coordinates  in the y direction. */
   static bool comp(PointType arg1, PointType arg2);
 
   /** \class FortuneSite
@@ -205,6 +207,8 @@ public:
   FortuneEdge                m_DELETED;
   std::vector< FortuneSite > m_SeedSites;
 
+  /** Methods to convert the result from Fortune Algorithm into
+   *  itkMesh structure. */
   bool differentPoint(PointType p1, PointType p2);
 
   bool almostsame(CoordRepType p1, CoordRepType p2);
@@ -223,6 +227,8 @@ public:
 
   FortuneHalfEdge * ELgethash(int b);
 
+  /** Generate Voronoi Diagram using Fortune's Method. (Sweep Line)
+   *  Infomations are stored in m_VertexList, m_EdgeList and m_LineList. */
   bool right_of(FortuneHalfEdge *el, PointType *p);
 
   FortuneSite * getRightReg(FortuneHalfEdge *he);
