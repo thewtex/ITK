@@ -413,6 +413,13 @@ ObjectFactoryBase
           newfactory->m_LibraryHandle = (void *)lib;
           newfactory->m_LibraryPath = fullpath;
           newfactory->m_LibraryDate = 0; // unused for now...
+
+          // ObjectFactoryBase::RegisterFactory may raise an exception if
+          // a user enables StrictVersionChecking and a library in "path"
+          // is a conflicting version; this exception should be propagated
+          // to the user and not caught by ITK
+          // Do not edit the next comment line!
+          // coverity[fun_call_w_exception]
           if (!ObjectFactoryBase::RegisterFactory(newfactory))
             {
             DynamicLoader::CloseLibrary(lib);
