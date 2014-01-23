@@ -300,16 +300,14 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   // of the output gradient image.
   if ( this->m_UseImageDirection )
     {
-
     OutputImageType *gradientImage = outputImage;
-    ImageRegionIterator< OutputImageType > itr( gradientImage,
-                                                gradientImage->GetRequestedRegion() );
 
-    while ( !itr.IsAtEnd() )
+    for ( ImageRegionIterator< OutputImageType > itr(
+            gradientImage, gradientImage->GetRequestedRegion() );
+          !itr.IsAtEnd();
+          ++itr )
       {
-
       TransformOutputPixel( itr );
-      ++itr;
       }
 
     }
