@@ -20,4 +20,7 @@ set(KWSYS_INSTALL_COMPONENT_NAME_RUNTIME RuntimeLibraries)
 set(KWSYS_INSTALL_COMPONENT_NAME_DEVELOPMENT Development)
 
 add_subdirectory(KWSys)
+if(UNIX)
+  mark_as_advanced(EXECINFO_LIB)
+endif()
 itk_module_target(${KWSYS_NAMESPACE} NO_INSTALL)
