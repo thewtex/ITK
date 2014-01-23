@@ -136,16 +136,21 @@ throw ( ExceptionObject )
     itk::ImageRegionConstIteratorWithIndex<TFixedImage> fi(this->m_FixedImage, this->m_FixedImage->GetBufferedRegion() );
     while( !fi.IsAtEnd() )
       {
-      typename TFixedImage::PointType fixedSpacePhysicalPoint;
-      this->m_FixedImage->TransformIndexToPhysicalPoint(fi.GetIndex(), fixedSpacePhysicalPoint);
-      // A null mask implies entire space is to be used.
-      if( this->m_FixedImageMask.IsNull()
-          || this->m_FixedImageMask->IsInside(fixedSpacePhysicalPoint)
-          )
+      const bool maskIsPresent = !(this->m_FixedImageMask.IsNull());
+      bool shouldCheckPixelIntensity = !maskIsPresent; // A null mask implies entire space is to be used.
+
+      if( maskIsPresent )
         {
-        const typename TFixedImage::PixelType currValue = fi.Get();
-        this->m_FixedImageTrueMin = (m_FixedImageTrueMin < currValue) ? this->m_FixedImageTrueMin : currValue;
-        this->m_FixedImageTrueMax = (m_FixedImageTrueMax > currValue) ? this->m_FixedImageTrueMax : currValue;
+        typename TFixedImage::PointType fixedSpacePhysicalPoint;
+        this->m_FixedImage->TransformIndexToPhysicalPoint(fi.GetIndex(), fixedSpacePhysicalPoint);
+        shouldCheckPixelIntensity = this->m_FixedImageMask->IsInside(fixedSpacePhysicalPoint  );
+        }
+
+      if( shouldCheckPixelIntensity )
+        {
+        const PDFValueType currValue = fi.Get();
+        this->m_FixedImageTrueMin = std::min(m_FixedImageTrueMin, currValue);
+        this->m_FixedImageTrueMax = std::max(m_FixedImageTrueMax, currValue);
         }
       ++fi;
       }
@@ -155,16 +160,21 @@ throw ( ExceptionObject )
                                                               this->m_MovingImage->GetBufferedRegion() );
       while( !mi.IsAtEnd() )
         {
-        typename TMovingImage::PointType movingSpacePhysicalPoint;
-        this->m_MovingImage->TransformIndexToPhysicalPoint(mi.GetIndex(), movingSpacePhysicalPoint);
-        // A null mask implies entire space is to be used.
-        if( this->m_MovingImageMask.IsNull()
-            || this->m_MovingImageMask->IsInside(movingSpacePhysicalPoint)
-            )
+        const bool maskIsPresent = !(this->m_MovingImageMask.IsNull());
+        bool shouldCheckPixelIntensity = !maskIsPresent; // A null mask implies entire space is to be used.
+
+        if( maskIsPresent )
           {
-          const typename TMovingImage::PixelType currValue = mi.Get();
-          this->m_MovingImageTrueMin = (m_MovingImageTrueMin < currValue) ? this->m_MovingImageTrueMin : currValue;
-          this->m_MovingImageTrueMax = (m_MovingImageTrueMax > currValue) ? this->m_MovingImageTrueMax : currValue;
+          typename TMovingImage::PointType movingSpacePhysicalPoint;
+          this->m_MovingImage->TransformIndexToPhysicalPoint(mi.GetIndex(), movingSpacePhysicalPoint);
+          shouldCheckPixelIntensity = this->m_MovingImageMask->IsInside(movingSpacePhysicalPoint);
+          }
+
+        if( shouldCheckPixelIntensity )
+          {
+          const PDFValueType currValue = mi.Get();
+          this->m_MovingImageTrueMin = std::min(m_MovingImageTrueMin, currValue);
+          this->m_MovingImageTrueMax = std::max(m_MovingImageTrueMax, currValue);
           }
         ++mi;
         }
