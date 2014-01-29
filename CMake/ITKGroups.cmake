@@ -44,6 +44,7 @@ used by other ITK modules.")
 set(Nonunit_documentation "This group of modules are intended to make use of an
 extensive set of the toolkit modules.")
 
+
 # Set a module name list for each group
 foreach( group ${group_list} )
   set( ${group}_module_list )
@@ -57,6 +58,21 @@ foreach( group ${group_list} )
     endif()
   endforeach()
 endforeach()
+
+
+# For dashboard testing all the remote modules at once, the Remote group is created
+set(Remote_documentation "This group of modules are the remote ITK modules that are hosted on sepearte cod repositories.")
+
+# Set module name list for the Remote group
+set( Remote_module_list )
+file( GLOB_RECURSE _module_files ${ITK_SOURCE_DIR}/Modules/Remote/*.remote.cmake )
+foreach( _module_f ${_module_files} )
+  get_filename_component (_module_fn ${_module_f} NAME)
+  string( REGEX REPLACE  ".remote.cmake" "" _module_name ${_module_fn} )
+  list( APPEND Remote_module_list ${_module_name} )
+endforeach()
+
+list( APPEND group_list "Remote")
 
 #------------------------------------------------
 #------------------------------------------------

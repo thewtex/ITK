@@ -92,6 +92,14 @@ endif()
 # Provide module selections by groups
 include(${ITK_SOURCE_DIR}/CMake/ITKGroups.cmake)
 
+# Enable ITKGroup_Remote to turn on all remote modules at once
+if(${ITKGroup_Remote})
+  message("remote modules: ${Remote_module_list}")
+  foreach(itk-module ${Remote_module_list})
+    set(Module_${itk-module} ON CACHE BOOL "Request building ${itk-module}" FORCE )
+  endforeach()
+endif()
+
 # Provide an option for each module.
 foreach(itk-module ${ITK_MODULES_ALL})
   if(NOT ${itk-module}_IS_TEST)
