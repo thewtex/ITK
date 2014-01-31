@@ -126,7 +126,11 @@ public:
   virtual const MeasureType & GetValue() const;
 
   /** Set current parameters scaling. */
-  itkSetMacro( Scales, ScalesType );
+  //itkSetMacro( Scales, ScalesType );
+  virtual void SetScales(const ScalesType & scales)
+  {
+  this->m_Scales = scales;
+  }
 
   /** Get current parameters scaling. */
   itkGetConstReferenceMacro( Scales, ScalesType );
