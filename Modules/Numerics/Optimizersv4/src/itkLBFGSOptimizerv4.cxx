@@ -20,15 +20,15 @@
 namespace itk
 {
 LBFGSOptimizerv4
-::LBFGSOptimizerv4():
-m_OptimizerInitialized(false),
-m_VnlOptimizer(0),
-m_Trace(false),
-m_Verbose(false),
-m_MaximumNumberOfFunctionEvaluations(2000),
-m_GradientConvergenceTolerance(1e-5),
-m_LineSearchAccuracy(0.9),
-m_DefaultStepLength(1.0)
+  ::LBFGSOptimizerv4():
+  m_OptimizerInitialized(false),
+  m_VnlOptimizer(0),
+  m_Trace(false),
+  m_MaximumNumberOfFunctionEvaluations(2000),
+  m_GradientConvergenceTolerance(1e-5),
+  m_Verbose(false),
+  m_LineSearchAccuracy(0.9),
+  m_DefaultStepLength(1.0)
 {
 }
 

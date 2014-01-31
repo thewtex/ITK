@@ -151,18 +151,20 @@ protected:
   void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef Superclass::CostFunctionAdaptorType CostFunctionAdaptorType;
-private:
-  LBFGSOptimizerv4(const Self &); //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
 
   bool                       m_OptimizerInitialized;
   InternalOptimizerType *    m_VnlOptimizer;
   mutable std::ostringstream m_StopConditionDescription;
 
   bool         m_Trace;
-  bool         m_Verbose;
   unsigned int m_MaximumNumberOfFunctionEvaluations;
   double       m_GradientConvergenceTolerance;
+
+private:
+  LBFGSOptimizerv4(const Self &); //purposely not implemented
+  void operator=(const Self &); //purposely not implemented
+
+  bool         m_Verbose;
   double       m_LineSearchAccuracy;
   double       m_DefaultStepLength;
 };
