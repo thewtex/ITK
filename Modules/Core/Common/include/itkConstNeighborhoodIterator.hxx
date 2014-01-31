@@ -148,7 +148,7 @@ typename ConstNeighborhoodIterator< TImage, TBoundaryCondition >::OffsetType
 ConstNeighborhoodIterator< TImage, TBoundaryCondition >
 ::ComputeInternalIndex(NeighborIndexType n) const
 {
-  OffsetType    ans;
+  OffsetType    ans = OffsetType();
   long          D = (long)Dimension;
   unsigned long r;
 
