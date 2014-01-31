@@ -4,6 +4,6 @@
 # compiler fixes and bug fixes
 set(DCMTK_GIT_REPOSITORY "http://github.com/InsightSoftwareConsortium/DCMTK.git")
 # this is a specific tag.  It corresponds to the symbolic tag
-# 20130129_DCMTK_PATCHES_FOR_ITK which incorporates changes needed to build and deploy
+# 20131114_DCMTK_PATCHES_FOR_ITK which incorporates changes needed to build and deploy
 # with ITK
-set(DCMTK_GIT_TAG "257e800c42f40ff3207a9242fa225c850c56dd07")
+set(DCMTK_GIT_TAG "840cf5f158ca837ec398df3d6287ae953ff3bfce")
