@@ -146,18 +146,19 @@ ConstNeighborhoodIterator< TImage, TBoundaryCondition >
 template< typename TImage, typename TBoundaryCondition >
 typename ConstNeighborhoodIterator< TImage, TBoundaryCondition >::OffsetType
 ConstNeighborhoodIterator< TImage, TBoundaryCondition >
-::ComputeInternalIndex(NeighborIndexType n) const
+::ComputeInternalIndex(const NeighborIndexType n) const
 {
-  OffsetType    ans;
-  long          D = (long)Dimension;
-  unsigned long r;
-
-  r = (unsigned long)n;
-  for ( long i = D - 1; i >= 0; --i )
+  OffsetValueType r = static_cast<OffsetValueType>(n);
+  OffsetType ans;
+  DimensionValueType axisIndex=Dimension;
+  do
     {
-    ans[i] = static_cast< OffsetValueType >( r / this->GetStride(i) );
-    r = r % this->GetStride(i);
+    --axisIndex;
+    const OffsetValueType & strideValue = this->GetStride(axisIndex);
+    ans[axisIndex] = r / strideValue;
+    r = r % strideValue;
     }
+  while( axisIndex != 0 );
   return ans;
 }
 
@@ -166,9 +167,8 @@ typename ConstNeighborhoodIterator< TImage, TBoundaryCondition >::RegionType
 ConstNeighborhoodIterator< TImage, TBoundaryCondition >
 ::GetBoundingBoxAsImageRegion() const
 {
+  const IndexValueType &zero = NumericTraits< IndexValueType >::Zero;
   RegionType ans;
-
-  IndexValueType zero = NumericTraits< IndexValueType >::Zero;
   ans.SetIndex( this->GetIndex(zero) );
   ans.SetSize( this->GetSize() );
 
@@ -411,8 +411,9 @@ ConstNeighborhoodIterator< TImage, TBoundaryCondition >
   m_NeedToUseBoundaryCondition = false;
   for ( DimensionValueType i = 0; i < Dimension; ++i )
     {
-    OffsetValueType overlapLow = static_cast< OffsetValueType >( ( rStart[i] - static_cast<OffsetValueType>( this->GetRadius(i) ) ) - bStart[i] );
-    OffsetValueType overlapHigh = static_cast< OffsetValueType >( ( bStart[i] + bSize[i] )
+    const OffsetValueType overlapLow = static_cast< OffsetValueType >( ( rStart[i]
+                                       - static_cast<OffsetValueType>( this->GetRadius(i) ) ) - bStart[i] );
+    const OffsetValueType overlapHigh = static_cast< OffsetValueType >( ( bStart[i] + bSize[i] )
                                        - ( rStart[i] + rSize[i] + static_cast<OffsetValueType>( this->GetRadius(i) ) ) );
 
     if ( overlapLow < 0 ) // out of bounds condition, define a region of
