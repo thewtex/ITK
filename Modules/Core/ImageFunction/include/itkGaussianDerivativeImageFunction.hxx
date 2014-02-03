@@ -284,7 +284,7 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
   for ( unsigned int ii = 0; ii < itkGetStaticConstMacro(ImageDimension2); ++ii )
     {
     // Apply each gaussian kernel to a subset of the image
-    InputPixelType value = static_cast< double >( this->GetInputImage()->GetPixel(index) );
+    double value = static_cast< double >( this->GetInputImage()->GetPixel(index) );
 
     // gaussian blurring first
     for ( unsigned int direction = 0; direction < itkGetStaticConstMacro(ImageDimension2); ++direction )
@@ -296,7 +296,7 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
         TOutput      centerval = m_OperatorArray[idx].GetCenterValue();
         m_OperatorArray[idx][center] = 0;
         m_OperatorImageFunction->SetOperator(m_OperatorArray[idx]);
-        value = m_OperatorImageFunction->EvaluateAtIndex(index) + centerval * value;
+        value *= m_OperatorImageFunction->EvaluateAtIndex(index) + centerval;
         }
       }
 
@@ -306,7 +306,7 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
     TOutput    centerval = m_OperatorArray[idx].GetCenterValue();
     m_OperatorArray[idx][center] = 0;
     m_OperatorImageFunction->SetOperator(m_OperatorArray[idx]);
-    value = m_OperatorImageFunction->EvaluateAtIndex(index) + centerval * value;
+    value *= m_OperatorImageFunction->EvaluateAtIndex(index) + centerval;
 
     gradient[ii] = value;
     }
