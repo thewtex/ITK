@@ -168,8 +168,6 @@ public:
 // Software Guide : EndLatex
 
 // Software Guide : BeginCodeSnippet
-namespace
-{
 class HistogramWriter
 {
 public:
@@ -383,7 +381,6 @@ private:
   // Software Guide : EndCodeSnippet
   std::string   m_OutputFile;
 };
-} // end anonymous namespace
 
 
 // Command - observer invoked after every iteration of the optimizer
