@@ -284,7 +284,7 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
   for ( unsigned int ii = 0; ii < itkGetStaticConstMacro(ImageDimension2); ++ii )
     {
     // Apply each gaussian kernel to a subset of the image
-    InputPixelType value = static_cast< double >( this->GetInputImage()->GetPixel(index) );
+    double value = static_cast< double >( this->GetInputImage()->GetPixel(index) );
 
     // gaussian blurring first
     for ( unsigned int direction = 0; direction < itkGetStaticConstMacro(ImageDimension2); ++direction )
