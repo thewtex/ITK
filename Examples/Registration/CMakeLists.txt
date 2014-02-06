@@ -13,6 +13,9 @@ target_link_libraries(ImageRegistration6 ${ITK_LIBRARIES})
 add_executable(ImageRegistration8 ImageRegistration8.cxx )
 target_link_libraries(ImageRegistration8 ${ITK_LIBRARIES})
 
+add_executable(ImageRegistration8v4 ImageRegistration8v4.cxx )
+target_link_libraries(ImageRegistration8v4 ${ITK_LIBRARIES})
+
 add_executable(ImageRegistration9 ImageRegistration9.cxx )
 target_link_libraries(ImageRegistration9 ${ITK_LIBRARIES})
 
