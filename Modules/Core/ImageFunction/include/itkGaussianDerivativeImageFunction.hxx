@@ -284,7 +284,8 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
   for ( unsigned int ii = 0; ii < itkGetStaticConstMacro(ImageDimension2); ++ii )
     {
     // Apply each gaussian kernel to a subset of the image
-    InputPixelType value = static_cast< double >( this->GetInputImage()->GetPixel(index) );
+    typedef typename NumericTraits< typename OutputType::ComponentType >::RealType OutputRealType;
+    OutputRealType value = static_cast< OutputRealType >( this->GetInputImage()->GetPixel(index) );
 
     // gaussian blurring first
     for ( unsigned int direction = 0; direction < itkGetStaticConstMacro(ImageDimension2); ++direction )
@@ -308,7 +309,7 @@ GaussianDerivativeImageFunction< TInputImage, TOutput >
     m_OperatorImageFunction->SetOperator(m_OperatorArray[idx]);
     value = m_OperatorImageFunction->EvaluateAtIndex(index) + centerval * value;
 
-    gradient[ii] = value;
+    gradient[ii] = static_cast< OutputType >( value );
     }
 
   return gradient;
