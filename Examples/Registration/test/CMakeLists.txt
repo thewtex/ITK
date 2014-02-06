@@ -148,6 +148,20 @@ itk_add_test(NAME ImageRegistration8Test COMMAND ${ITK_TEST_DRIVER}
 )
 set_property(TEST ImageRegistration8Test APPEND PROPERTY LABELS RUNS_LONG)
 
+itk_add_test(NAME ImageRegistration8v4Test COMMAND ${ITK_TEST_DRIVER}
+  --compare DATA{${BASELINE}/ImageRegistration8v4RegisteredSlice.png}
+            ${TEMP}/ImageRegistration8v4RegisteredSlice.png
+  $<TARGET_FILE:ImageRegistration8v4>
+        DATA{../../Data/BrainWeb/brainweb1e1a10f20.mha}
+        DATA{../../Data/BrainWeb/brainweb1e1a10f20Rot10Tx15.mha}
+        ${TEMP}/ImageRegistration8v4Output.mhd
+        ${TEMP}/ImageRegistration8v4DifferenceBefore.mhd
+        ${TEMP}/ImageRegistration8v4DifferenceAfter.mhd
+        ${TEMP}/ImageRegistration8v4Output.png
+        ${TEMP}/ImageRegistration8v4DifferenceBefore.png
+        ${TEMP}/ImageRegistration8v4DifferenceAfter.png
+        ${TEMP}/ImageRegistration8v4RegisteredSlice.png
+)
 
 if( ${CMAKE_BUILD_TYPE} MATCHES "Release")
   # This test is computationally demanding.
