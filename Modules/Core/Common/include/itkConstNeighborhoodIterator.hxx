@@ -148,12 +148,22 @@ typename ConstNeighborhoodIterator< TImage, TBoundaryCondition >::OffsetType
 ConstNeighborhoodIterator< TImage, TBoundaryCondition >
 ::ComputeInternalIndex(const NeighborIndexType n) const
 {
-  OffsetType    ans;
-  long          D = (long)Dimension;
-  unsigned long r;
-
-  r = (unsigned long)n;
-  for ( long i = D - 1; i >= 0; --i )
+  if( Dimension > 0 ) // This must always be true, but is needed to avoid compiler false positive warning
+    {
+    itkStaticConstMacro(MaxiumDimensionToProcess, DimensionValueType, Dimension - 1);
+    OffsetValueType r = static_cast<OffsetValueType>(n);
+    OffsetType ans;
+    DimensionValueType axisIndex = MaxiumDimensionToProcess;
+    do
+      {
+      const OffsetValueType & strideValue = this->GetStride(axisIndex);
+      ans[axisIndex] = r / strideValue;
+      r = r % strideValue;
+      --axisIndex;
+      } while ( axisIndex != 0 );
+    return ans;
+    }
+  else // This can never happen!
     {
     ans[i] = static_cast< OffsetValueType >( r / this->GetStride(i) );
     r = r % this->GetStride(i);
