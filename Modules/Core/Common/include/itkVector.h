@@ -110,8 +110,9 @@ public:
   /** Default constructor and copy constructors. */
   Vector():BaseArray() {}
 
-  /** Constructor to initialize entire vector to one value. */
-  Vector(const ValueType & r);
+  /** Constructor to initialize entire vector to one value,
+   * if explicitly invoked. */
+  explicit Vector(const ValueType & r);
 
   /** Pass-through constructor for the Array base class. */
   template< typename TVectorValueType >
