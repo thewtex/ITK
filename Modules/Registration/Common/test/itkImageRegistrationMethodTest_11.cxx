@@ -31,8 +31,6 @@
 int itkImageRegistrationMethodTest_11(int, char* [] )
 {
 
-  bool pass = true;
-
   const unsigned int dimension = 3;
 
   // Fixed Image Type
@@ -80,14 +78,6 @@ int itkImageRegistrationMethodTest_11(int, char* [] )
   registration->SetInterpolator(  interpolator  );
 
 
-  if( !pass )
-    {
-    std::cout << "Test failed." << std::endl;
-    return EXIT_FAILURE;
-    }
-
   std::cout << "Test passed." << std::endl;
   return EXIT_SUCCESS;
-
-
 }
