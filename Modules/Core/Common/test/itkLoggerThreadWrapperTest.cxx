@@ -207,6 +207,9 @@ int itkLoggerThreadWrapperTest( int argc, char * argv[] )
     logger->SetPriorityLevel(itk::LoggerBase::INFO);
     logger->SetLevelForFlushing(itk::LoggerBase::CRITICAL);
 
+    // Exercising PrintSelf()
+    logger->Print(std::cout);
+
     std::cout << "  Adding console and file stream LogOutputs" << std::endl;
     logger->AddLogOutput(coutput);
     logger->AddLogOutput(foutput);
@@ -246,6 +249,12 @@ int itkLoggerThreadWrapperTest( int argc, char * argv[] )
     threader->SetNumberOfThreads(numthreads);
     threader->SetSingleMethod(ThreadedGenerateLogMessages2, &threadData);
     threader->SingleMethodExecute();
+    logger->Flush();
+    std::cout << "Ended multi-threaded portion of test." << std::endl;
+
+    std::cout << "Testing SetDelay method" << std::endl;
+    logger->SetDelay(1);
+    logger->Write(itk::LoggerBase::DEBUG, "DEBUG message to tests SetDelay.\n");
     logger->Flush();
     std::cout << "Ended multi-threaded portion of test." << std::endl;
 
