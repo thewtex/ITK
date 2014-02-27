@@ -78,10 +78,11 @@ itkStoppingCriterionBase.cxx
 itkCompensatedSummation.cxx
 itkArrayOutputSpecialization.cxx
 itkNumberToString.cxx
+itkSmartPointerForwardReferenceProcessObject.cxx
 )
 
 if(WIN32)
-   set(ITKCommon_SRCS ${ITKCommon_SRCS};itkWin32OutputWindow.cxx;itkSmartPointerForwardReferenceProcessObject.cxx)
+   set(ITKCommon_SRCS ${ITKCommon_SRCS};itkWin32OutputWindow.cxx)
 endif()
 
 # Prevent optimization from affecting the floating point calculation.
