@@ -254,6 +254,17 @@ operator*(const T & scalar, const Vector< T, NVectorDimension > & v)
 {
   return v * scalar;
 }
+// purposely unimplemented version to prevent unbounded recursion in
+// the operator* directly above.
+template< typename T1, typename T2, unsigned int NVectorDimension >
+inline
+Vector< T1, NVectorDimension >
+operator*(const Vector< T1, NVectorDimension> & ,
+          const Vector< T2, NVectorDimension > &)
+{
+  typename Vector<T1,NVectorDimension>::Multiply_Vector_By_Vector_Is_Illegal  x;
+}
+
 
 /** Print content to an ostream */
 template< typename T, unsigned int NVectorDimension >

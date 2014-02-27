@@ -246,6 +246,17 @@ operator*(const T & scalar, const CovariantVector< T, NVectorDimension > & v)
   return v * scalar;
 }
 
+// purposely unimplemented version to prevent unbounded recursion in
+// the operator* directly above.
+template< typename T1, typename T2, unsigned int NVectorDimension >
+inline
+CovariantVector< T1, NVectorDimension >
+operator*(const CovariantVector< T1, NVectorDimension> &,
+          const CovariantVector< T2, NVectorDimension > &)
+{
+  typename CovariantVector<T1,NVectorDimension>::Multiply_CovariantVector_By_CovariantVector_Is_Illegal x;
+}
+
 /** Performs the scalar product of a covariant with a contravariant.
  * This scalar product is invariant under affine transformations */
 template< typename T, unsigned int NVectorDimension >
