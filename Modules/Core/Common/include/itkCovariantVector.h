@@ -21,6 +21,7 @@
 #include "itkIndent.h"
 #include "itkVector.h"
 #include "vnl/vnl_vector_ref.h"
+#include "itkStaticAssert.h"
 
 namespace itk
 {
@@ -244,6 +245,17 @@ CovariantVector< T, NVectorDimension >
 operator*(const T & scalar, const CovariantVector< T, NVectorDimension > & v)
 {
   return v * scalar;
+}
+
+// purposely unimplemented version to prevent unbounded recursion in
+// the operator* directly above.
+template< typename T1, typename T2, unsigned int NVectorDimension >
+inline
+CovariantVector< T1, NVectorDimension >
+operator*(const CovariantVector< T1, NVectorDimension> &,
+          const CovariantVector< T2, NVectorDimension > &)
+{
+  ITKStaticAssert(false,"Multiplying a CovariantVector by a CovariantVector is illegal");
 }
 
 /** Performs the scalar product of a covariant with a contravariant.

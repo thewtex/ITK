@@ -19,7 +19,6 @@
 #define __itkVector_h
 
 #include "itkFixedArray.h"
-
 #include "vnl/vnl_vector_ref.h" // GetVnlVector method return
 
 namespace itk
@@ -254,6 +253,17 @@ operator*(const T & scalar, const Vector< T, NVectorDimension > & v)
 {
   return v * scalar;
 }
+// purposely unimplemented version to prevent unbounded recursion in
+// the operator* directly above.
+template< typename T1, typename T2, unsigned int NVectorDimension >
+inline
+Vector< T1, NVectorDimension >
+operator*(const Vector< T1, NVectorDimension> & ,
+          const Vector< T2, NVectorDimension > &)
+{
+  ITKStaticAssert(false,"Multiplying a Vector by a Vector is illegal");
+}
+
 
 /** Print content to an ostream */
 template< typename T, unsigned int NVectorDimension >

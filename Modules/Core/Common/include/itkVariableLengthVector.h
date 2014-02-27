@@ -19,6 +19,7 @@
 #define __itkVariableLengthVector_h
 
 #include "itkNumericTraits.h"
+#include "itkStaticAssert.h"
 
 namespace itk
 {
@@ -494,6 +495,15 @@ VariableLengthVector< TValue >
 operator*(const T & scalar, const VariableLengthVector< TValue > & v)
 {
   return v * scalar;
+}
+
+template< typename TScalar1, typename TScalar2 >
+inline
+VariableLengthVector< TScalar1 >
+operator*(const VariableLengthVector< TScalar1 > & ,
+          const VariableLengthVector< TScalar2 > & )
+{
+  ITKStaticAssert(false,"Multiplying a VariableLengthVector by a VariableLengthVector is illegal");
 }
 
 template< typename TValue >

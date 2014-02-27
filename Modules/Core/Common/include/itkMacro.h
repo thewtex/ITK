@@ -658,6 +658,7 @@ TTarget itkDynamicCastInDebugMode(TSource x)
 #else
   return static_cast<TTarget>(x);
 #endif
+}
 
 //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1089,6 +1090,21 @@ class kernel                  \
     return kernel::GetOpenCLSource();  \
   }
 
-}
+#ifdef SITK_HAS_CXX11_STATIC_ASSERT
+// utilize the c++11 static_assert if available
+#define ITKStaticAssert( expr, str) static_assert( expr, str )
+#else
+
+template<bool> struct StaticAssertFailure;
+template<> struct StaticAssertFailure<true>{ enum { Value = 1 }; };
+
+#define BOOST_JOIN( X, Y ) BOOST_DO_JOIN( X, Y )
+#define BOOST_DO_JOIN( X, Y ) BOOST_DO_JOIN2(X,Y)
+#define BOOST_DO_JOIN2( X, Y ) X##Y
+
+#define ITKStaticAssert( expr, str ) enum { BOOST_JOIN( static_assert_typedef, __LINE__) = sizeof( StaticAssertFailure<((expr) == 0 ? false : true )> ) };
+
+
+#endif
 
 #endif //end of itkMacro.h
