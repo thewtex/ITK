@@ -20,6 +20,7 @@
 
 #include "itkIndent.h"
 #include "itkVector.h"
+#include "itkIsSame.h"
 #include "vnl/vnl_vector_ref.h"
 
 namespace itk
@@ -238,11 +239,14 @@ public:
 
 /** Premultiply Operator for product of a vector and a scalar.
  *  CovariantVector< T, N >  =  T * CovariantVector< T,N > */
-template< typename T, unsigned int NVectorDimension >
+template< typename T, typename T2, unsigned int NVectorDimension >
 inline
-CovariantVector< T, NVectorDimension >
-operator*(const T & scalar, const CovariantVector< T, NVectorDimension > & v)
+CovariantVector< T2, NVectorDimension >
+operator*(const T & scalar, const CovariantVector< T2, NVectorDimension > & v)
 {
+  const bool sameclass(IsSame<T,CovariantVector<T2,NVectorDimension> >::Value);
+  ITKStaticAssert(!sameclass,
+                  "Multiply a CovariantVector by a CovariantVector is illegal");
   return v * scalar;
 }
 

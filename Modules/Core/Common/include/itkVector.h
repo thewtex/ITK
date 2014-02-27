@@ -19,7 +19,7 @@
 #define __itkVector_h
 
 #include "itkFixedArray.h"
-
+#include "itkIsSame.h"
 #include "vnl/vnl_vector_ref.h" // GetVnlVector method return
 
 namespace itk
@@ -247,11 +247,14 @@ public:
 
 /** Premultiply Operator for product of a vector and a scalar.
  *  Vector< T, N >  =  T * Vector< T,N > */
-template< typename T, unsigned int NVectorDimension >
+template< typename T, typename T2, unsigned int NVectorDimension >
 inline
-Vector< T, NVectorDimension >
-operator*(const T & scalar, const Vector< T, NVectorDimension > & v)
+Vector< T2, NVectorDimension >
+operator*(const T & scalar, const Vector< T2, NVectorDimension > & v)
 {
+  const bool sameclass(IsSame<T,Vector<T2,NVectorDimension> >::Value);
+  ITKStaticAssert(!sameclass,
+                  "Multiply a vector by a vector is illegal");
   return v * scalar;
 }
 

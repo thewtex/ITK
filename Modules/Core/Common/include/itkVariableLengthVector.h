@@ -19,6 +19,7 @@
 #define __itkVariableLengthVector_h
 
 #include "itkNumericTraits.h"
+#include "itkIsSame.h"
 
 namespace itk
 {
@@ -493,8 +494,12 @@ inline
 VariableLengthVector< TValue >
 operator*(const T & scalar, const VariableLengthVector< TValue > & v)
 {
+  const bool sameclass(IsSame<T,VariableLengthVector<TValue> >::Value);
+  ITKStaticAssert(!sameclass,
+                  "Multiply a VariableLengthVector by a VariableLengthVector is illegal");
   return v * scalar;
 }
+
 
 template< typename TValue >
 std::ostream & operator<<(std::ostream & os, const VariableLengthVector< TValue > & arr)

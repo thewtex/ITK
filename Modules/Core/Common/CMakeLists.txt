@@ -51,6 +51,10 @@ try_compile( ITK_HAS_CPP11_ALIGNAS
   ${ITK_BINARY_DIR}/CMakeTmp
   ${CMAKE_CURRENT_SOURCE_DIR}/CMake/itkCheckHasCPP11Alignas.cxx )
 
+try_compile( ITK_HAS_CXX11_STATIC_ASSERT
+  ${ITK_BINARY_DIR}/CMakeTmp
+  ${CMAKE_CURRENT_SOURCE_DIR}/CMake/itkCheckHasCxx11StaticAssert.cxx )
+
 # check of the optional TR1 type_traits, alternative boost
 # implementation could also be searched for
 include(CheckIncludeFileCXX)

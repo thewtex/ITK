@@ -84,6 +84,10 @@
 // itk::ImageBase are float instead of double
 #cmakedefine ITK_USE_FLOAT_SPACE_PRECISION
 
+//
+// defined if Cxx11 static_assert is available
+#cmakedefine ITK_HAS_CXX11_STATIC_ASSERT
+
 /*
  * Every exception may define a string with the function name for each
  * instantiated template. This can add a substantial number of symbols
