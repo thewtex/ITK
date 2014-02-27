@@ -703,7 +703,7 @@ TTarget itkDynamicCastInDebugMode(TSource x)
 #else
   return static_cast<TTarget>(x);
 #endif
-
+}
 //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //  !!  The ITK Get/Set Macros for various types !!
@@ -1136,7 +1136,4 @@ class kernel                  \
   {                                 \
     return kernel::GetOpenCLSource();  \
   }
-
-}
-
 #endif //end of itkMacro.h

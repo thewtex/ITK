@@ -496,6 +496,15 @@ operator*(const T & scalar, const VariableLengthVector< TValue > & v)
   return v * scalar;
 }
 
+template< typename TScalar1, typename TScalar2 >
+inline
+VariableLengthVector< TScalar1 >
+operator*(const VariableLengthVector< TScalar1 > & ,
+          const VariableLengthVector< TScalar2 > & )
+{
+  typename VariableLengthVector<TScalar1>::Multliply_VariableLengthVector_By_VariableLengthVector_Is_Illegal x;
+}
+
 template< typename TValue >
 std::ostream & operator<<(std::ostream & os, const VariableLengthVector< TValue > & arr)
 {
