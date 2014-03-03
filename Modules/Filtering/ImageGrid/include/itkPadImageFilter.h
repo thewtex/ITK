@@ -28,8 +28,8 @@ namespace itk
  * \brief Increase the image size by padding. Superclass for filters that fill
  * in extra pixels.
  *
- *
  * \image html PadImageFilter.png "Visual explanation of padding regions."
+ * \image html BinShrinkGrid.png "The change in image geometry after padding."
  *
  * PadImageFilter changes the image boundary of an image by padding each
  * dimension with subclass defined algorithms.  The number of pixels to pad

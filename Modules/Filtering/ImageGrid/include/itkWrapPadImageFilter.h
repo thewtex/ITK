@@ -37,6 +37,7 @@ namespace itk
  * output must be specified.
  *
  * \image html WrapPadImageFilter.png "Visual explanation of padding regions."
+ * \image html BinShrinkGrid.png "The change in image geometry after padding."
  *
  * This filter is implemented as a multithreaded filter.  It provides a
  * ThreadedGenerateData() method for its implementation.
