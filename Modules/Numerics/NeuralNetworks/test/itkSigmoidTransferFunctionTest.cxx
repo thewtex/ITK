@@ -53,7 +53,7 @@ public:
 
     typedef SigmoidTransferFunction<ScalarType> SigmoidTFType;
 
-    SigmoidTFType::Pointer sigmoidTF = SigmoidTFType::New();
+    typename SigmoidTFType::Pointer sigmoidTF = SigmoidTFType::New();
 
     sigmoidTF->SetAlpha(alpha);
     sigmoidTF->SetBeta(beta);
@@ -84,7 +84,7 @@ protected:
 }
 }
 
-int itkSigmoidTransferFunctionTest( int argc, char* argv[] )
+int itkSigmoidTransferFunctionTest( int itkNotUsed(argc), char* itkNotUsed(argv[]) )
 {
 
   typedef int ScalarType;
@@ -188,5 +188,7 @@ int itkSigmoidTransferFunctionTest( int argc, char* argv[] )
     max,
     expectedVal,
     expectedDerivVal );
+
+  return EXIT_SUCCESS;
 
 }
