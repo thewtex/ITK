@@ -30,8 +30,12 @@ itkAdaptiveHistogramEqualizationImageFilterTest.cxx
 itkGetAverageSliceImageFilterTest.cxx
 itkBinaryProjectionImageFilterTest.cxx
 itkProjectionImageFilterTest.cxx
-
 itkLabelOverlapMeasuresImageFilterTest.cxx
+itkAdditiveGaussianNoiseImageFilterTest2.cxx
+itkShotNoiseImageFilterTest2.cxx
+itkSpeckleNoiseImageFilterTest2.cxx
+itkSaltAndPepperNoiseImageFilterTest2.cxx
+itkPeakSignalToNoiseRatioCalculatorTest.cxx
 )
 
 CreateTestDriver(ITKImageStatistics  "${ITKImageStatistics-Test_LIBRARIES}" "${ITKImageStatisticsTests}")
@@ -167,9 +171,30 @@ itk_add_test(NAME itkProjectionImageFilterTest1
     --compare DATA{${ITK_DATA_ROOT}/Baseline/BasicFilters/HeadMRVolumeBinaryProjection100.tif}
               ${ITK_TEST_OUTPUT_DIR}/HeadMRVolumeProjection100.tif
     itkProjectionImageFilterTest DATA{${ITK_DATA_ROOT}/Input/HeadMRVolume.mhd,HeadMRVolume.raw} ${ITK_TEST_OUTPUT_DIR}/HeadMRVolumeProjection100.tif 100 0)
-
 itk_add_test( NAME itkLabelOverlapMeasuresImageFilterTest
       COMMAND ITKImageStatisticsTestDriver
       itkLabelOverlapMeasuresImageFilterTest 2
           DATA{Input/sourceImage.nii.gz}
           DATA{Input/targetImage.nii.gz} )
+itk_add_test(NAME itkAdditiveGaussianNoiseImageFilterTest2
+  COMMAND ITKImageStatisticsTestDriver
+  itkAdditiveGaussianNoiseImageFilterTest2
+   DATA{${ITK_DATA_ROOT}/Input/cthead1.png} ${ITK_TEST_OUTPUT_DIR}/itkAddativeGaussianNoiseImageFilterTest2.png 29.85 0)
+itk_add_test(NAME itkShotNoiseImageFilterTest2
+  COMMAND ITKImageStatisticsTestDriver
+  itkShotNoiseImageFilterTest2
+   DATA{${ITK_DATA_ROOT}/Input/cthead1.png}
+      ${ITK_TEST_OUTPUT_DIR}/itkShotNoiseImageFilterTest2.png
+      0.105 )
+itk_add_test(NAME itkSpeckleNoiseImageFilterTest2
+  COMMAND ITKImageStatisticsTestDriver
+  itkSpeckleNoiseImageFilterTest2
+   DATA{${ITK_DATA_ROOT}/Input/cthead1.png}
+      ${ITK_TEST_OUTPUT_DIR}/itkSpeckleNoiseFilterTest2.png
+      0.261)
+itk_add_test(NAME itkSaltAndPepperNoiseImageFilterTest2
+  COMMAND ITKImageStatisticsTestDriver
+  itkSaltAndPepperNoiseImageFilterTest2
+   DATA{${ITK_DATA_ROOT}/Input/cthead1.png}
+      ${ITK_TEST_OUTPUT_DIR}/itkSaltAndPepperNoiseImageFilterTest2.png
+      0.0257)
