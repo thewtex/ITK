@@ -30,7 +30,6 @@ itkAdaptiveHistogramEqualizationImageFilterTest.cxx
 itkGetAverageSliceImageFilterTest.cxx
 itkBinaryProjectionImageFilterTest.cxx
 itkProjectionImageFilterTest.cxx
-
 itkLabelOverlapMeasuresImageFilterTest.cxx
 )
 
@@ -167,7 +166,6 @@ itk_add_test(NAME itkProjectionImageFilterTest1
     --compare DATA{${ITK_DATA_ROOT}/Baseline/BasicFilters/HeadMRVolumeBinaryProjection100.tif}
               ${ITK_TEST_OUTPUT_DIR}/HeadMRVolumeProjection100.tif
     itkProjectionImageFilterTest DATA{${ITK_DATA_ROOT}/Input/HeadMRVolume.mhd,HeadMRVolume.raw} ${ITK_TEST_OUTPUT_DIR}/HeadMRVolumeProjection100.tif 100 0)
-
 itk_add_test( NAME itkLabelOverlapMeasuresImageFilterTest
       COMMAND ITKImageStatisticsTestDriver
       itkLabelOverlapMeasuresImageFilterTest 2
