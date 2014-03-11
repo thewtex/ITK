@@ -1,8 +1,8 @@
 
 ###############################################################################
-# configure python
+# configure python (require at least python 2.6)
 find_package(PythonLibs)
-find_package(PythonInterp)
+find_package(PythonInterp 2.6 REQUIRED)
 mark_as_advanced(PYTHON_EXECUTABLE)
 include_directories(${PYTHON_INCLUDE_PATH})
 
