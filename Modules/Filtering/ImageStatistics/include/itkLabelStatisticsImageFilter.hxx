@@ -221,6 +221,7 @@ LabelStatisticsImageFilter< TInputImage, TLabelImage >
 {
   RealType       value;
   LabelPixelType label;
+  typename HistogramType::IndexType hIndex;
 
   ImageRegionConstIteratorWithIndex< TInputImage > it (this->GetInput(),
                                                        outputRegionForThread);
@@ -291,7 +292,8 @@ LabelStatisticsImageFilter< TInputImage, TLabelImage >
       typename HistogramType::MeasurementVectorType meas;
       meas.SetSize(1);
       meas[0] = value;
-      ( *mapIt ).second.m_Histogram->IncreaseFrequencyOfMeasurement(meas, 1);
+      ( *mapIt ).second.m_Histogram->GetIndex(meas, hIndex);
+      ( *mapIt ).second.m_Histogram->IncreaseFrequencyOfIndex(hIndex, 1);
       }
 
     ++it;

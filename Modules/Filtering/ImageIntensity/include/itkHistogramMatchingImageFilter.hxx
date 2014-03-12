@@ -425,6 +425,8 @@ HistogramMatchingImageFilter< TInputImage, TOutputImage, THistogramMeasurement >
   measurement[0] = NumericTraits< MeasurementType >::Zero;
 
     {
+    typename HistogramType::IndexType index;
+
     // put each image pixel into the histogram
     typedef ImageRegionConstIterator< InputImageType > ConstIterator;
     ConstIterator iter( image, image->GetBufferedRegion() );
@@ -439,7 +441,8 @@ HistogramMatchingImageFilter< TInputImage, TOutputImage, THistogramMeasurement >
         {
         // add sample to histogram
         measurement[0] = value;
-        histogram->IncreaseFrequencyOfMeasurement(measurement, 1);
+        histogram->GetIndex( measurement, index );
+        histogram->IncreaseFrequencyOfIndex( index, 1 );
         }
       ++iter;
       }

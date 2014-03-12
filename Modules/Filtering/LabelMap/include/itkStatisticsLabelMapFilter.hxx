@@ -67,7 +67,8 @@ StatisticsLabelMapFilter< TImage, TFeatureImage >
 
   typedef typename LabelObjectType::HistogramType HistogramType;
 
-  typename HistogramType::SizeType histogramSize;
+  typename HistogramType::IndexType histogramIndex;
+  typename HistogramType::SizeType  histogramSize;
   histogramSize.SetSize(1);
   histogramSize.Fill(m_NumberOfBins);
 
@@ -112,7 +113,8 @@ StatisticsLabelMapFilter< TImage, TFeatureImage >
     const IndexType & idx = it.GetIndex();
     const FeatureImagePixelType & v = featureImage->GetPixel(idx);
     mv[0] = v;
-    histogram->IncreaseFrequencyOfMeasurement(mv, 1);
+    histogram->GetIndex(mv, histogramIndex);
+    histogram->IncreaseFrequencyOfIndex(histogramIndex, 1);
 
     // update min and max
     if ( v <= min )
