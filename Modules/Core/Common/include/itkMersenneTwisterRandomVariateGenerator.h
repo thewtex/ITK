@@ -211,7 +211,7 @@ protected:
     os << indent << "State vector: " << state << std::endl;
     os << indent;
     register const IntegerType *s = state;
-    register int                i = StateVectorLength;
+    int                         i = StateVectorLength;
     for (; i--; os << *s++ << "\t" ) {}
     os << std::endl;
 
@@ -312,11 +312,11 @@ MersenneTwisterRandomVariateGenerator::reload()
   // matthew dot bellew at home dot com
 
   // get rid of VS warning
-  register int index = static_cast< int >(
+  int index = static_cast< int >(
     M - MersenneTwisterRandomVariateGenerator::StateVectorLength );
 
-  register IntegerType *p = state;
-  register int          i;
+  IntegerType *p = state;
+  int          i;
 
   for ( i = MersenneTwisterRandomVariateGenerator::StateVectorLength - M; i--; ++p )
     {
@@ -347,7 +347,7 @@ MersenneTwisterRandomVariateGenerator::SetSeed(
   Initialize(19650218UL);
   register IntegerType i = 1;
   register IntegerType j = 0;
-  register int         k;
+  int         k;
   if ( StateVectorLength > seedLength )
     {
     k = StateVectorLength;
