@@ -21,10 +21,9 @@
 #include "itkFlatStructuringElement.h"
 #include <cmath>
 #include <vector>
-
-#ifndef M_PI
-#define M_PI vnl_math::pi
-#endif
+#include <iomanip>
+#define LOC_M_PI vnl_math::pi
+//#endif
 
 #include "itkImage.h"
 #include "itkImageRegionIterator.h"
@@ -92,32 +91,32 @@ FlatStructuringElement< VDimension >
   // sides, each side with length k, where k is the structuring
   // element length. Therefore the value of k we need to produce the
   // radius we want is: (M_PI * rr * 2)/(2*lines)
-  float k1 = ( M_PI * (float)radius[0] ) / ( (float)lines );
-  float k2 = ( M_PI * (float)radius[1] ) / ( (float)lines );
-  //std::cout << "k= " << k << std::endl;
-  float theta, step;
-  step = M_PI / lines;
-  theta = 0;
+  double k1 = ( LOC_M_PI * (float)radius[0] ) / ( (float)lines );
+  double k2 = ( LOC_M_PI * (float)radius[1] ) / ( (float)lines );
+  std::cout << std::setprecision(9)<< "k= " << k1 << " " << k2 << std::endl;
+  double theta, step;
+  step = LOC_M_PI / lines;
+  theta = 0.0;
   // just to ensure that we get the last one
-  while ( theta <= M_PI / 2.0 + 0.0001 )
+  while ( theta <= LOC_M_PI / 2.0 + 0.0001 )
     {
     LType2 O;
-    O[0] = k1 * vcl_cos(theta);
-    O[1] = k2 * vcl_sin(theta);
+    O[0] = (float)(k1 * vcl_cos(theta));
+    O[1] = (float)(k2 * vcl_sin(theta));
     if ( !res.CheckParallel(O) )
       {
-      //std::cout << O << std::endl;
+      std::cout << std::setprecision(9)<< O << std::endl;
       res.AddLine(O);
       }
-    O[0] = k1 * vcl_cos(-theta);
-    O[1] = k2 * vcl_sin(-theta);
+    O[0] = (float)(k1 * vcl_cos(-theta));
+    O[1] = (float)(k2 * vcl_sin(-theta));
     if ( !res.CheckParallel(O) )
       {
-      //std::cout << O << std::endl;
+      std::cout << std::setprecision(9)<< O << std::endl;
       res.AddLine(O);
       }
     theta += step;
-    //std::cout << "theta1 = " << theta << " " << M_PI/2.0 << std::endl;
+    std::cout << std::setprecision(9) << "theta1 = " << theta << " " << LOC_M_PI/2.0 << std::endl;
     }
 
   res.ComputeBufferFromLines();
