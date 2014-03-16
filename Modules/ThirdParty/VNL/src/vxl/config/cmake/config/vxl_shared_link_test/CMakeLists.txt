@@ -1,5 +1,6 @@
 # vxl/config/cmake/config/vxl_shared_link_test/CMakeLists.txt
 #
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 IF(POLICY CMP0025)
   CMAKE_POLICY(SET CMP0025 NEW)
 ENDIF()
