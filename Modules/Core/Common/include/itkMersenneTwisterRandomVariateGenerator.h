@@ -33,7 +33,8 @@ namespace Statistics
 /** \class MersenneTwisterRandomVariateGenerator
  * \brief MersenneTwisterRandom random variate generator
  *
- * \warning This class is NOT reentrant.
+ * \warning This classes instance methods are NOT reentrant thread
+ * safe, but static methods are.
  *
  * This notice was included with the original implementation.
  * The only changes made were to obfuscate the author's email addresses.
@@ -249,7 +250,10 @@ protected:
 
   static IntegerType hash(vcl_time_t t, vcl_clock_t c);
 
-  static Pointer m_Instance;
+private:
+
+  /** Internal method to actually create a new object. */
+  static Pointer CreateInstance();
 };  // end of class
 
 // Declare inlined functions.... (must be declared in the header)
