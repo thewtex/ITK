@@ -85,10 +85,13 @@ int itkRealTimeClockTest( int, char * [] )
         }
       }
 
+    // Print current time of day
+    std::cout << "Current time of day: " << clock->GetCurrentDateAndTime() << std::endl;
+
     }
   catch(...)
     {
-    std::cerr << "Exception catched !!" << std::endl;
+    std::cerr << "Exception caught !!" << std::endl;
     return EXIT_FAILURE;
     }
 
