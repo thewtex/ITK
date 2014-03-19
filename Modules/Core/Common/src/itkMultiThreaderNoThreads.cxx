@@ -128,13 +128,13 @@ void MultiThreader::TerminateThread(ThreadIdType ThreadID)
 
 void
 MultiThreader
-::WaitForSingleMethodThread(ThreadProcessIDType threadHandle)
+::WaitForSingleMethodThread(ThreadProcessIdType threadHandle)
 {
   // No threading library specified.  Do nothing.  No joining or waiting
   // necessary.
 }
 
-ThreadProcessIDType
+ThreadProcessIdType
 MultiThreader
 ::DispatchSingleMethodThread(MultiThreader::ThreadInfoStruct *threadInfo)
 {
