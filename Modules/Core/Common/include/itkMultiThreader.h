@@ -31,6 +31,7 @@
 #include "itkMutexLock.h"
 #include "itkThreadSupport.h"
 #include "itkIntTypes.h"
+#include "itkThreadPoolFactory.h"
 
 namespace itk
 {
@@ -50,14 +51,14 @@ namespace itk
  * \ingroup ITKCommon
  */
 
-class ITKCommon_EXPORT MultiThreader:public Object
+class ITKCommon_EXPORT MultiThreader : public Object
 {
 public:
   /** Standard class typedefs. */
-  typedef MultiThreader              Self;
-  typedef Object                     Superclass;
-  typedef SmartPointer< Self >       Pointer;
-  typedef SmartPointer< const Self > ConstPointer;
+  typedef MultiThreader            Self;
+  typedef Object                   Superclass;
+  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer<const Self> ConstPointer;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -120,6 +121,14 @@ public:
   /** Terminate the thread that was created with a SpawnThreadExecute() */
   void TerminateThread(ThreadIdType thread_id);
 
+  /** Set the ThreadPool used by this MultiThreader. If not set, 
+    * the default ThreadPool will be used. Currently ThreadPool 
+    * is only used in SingleMethodExecute. */
+  itkSetObjectMacro(Threadpool, ThreadPool);
+  
+  /** Get the ThreadPool used by this MultiThreader */
+  itkGetObjectMacro(Threadpool, ThreadPool);
+
   /** This is the structure that is passed to the thread that is
    * created from the SingleMethodExecute, MultipleMethodExecute or
    * the SpawnThread method. It is passed in as a void *, and it is up
@@ -134,7 +143,8 @@ public:
 #ifdef ThreadInfoStruct
 #undef ThreadInfoStruct
 #endif
-  struct ThreadInfoStruct {
+  struct ThreadInfoStruct
+    {
     ThreadIdType ThreadID;
     ThreadIdType NumberOfThreads;
     int *ActiveFlag;
@@ -142,7 +152,7 @@ public:
     void *UserData;
     ThreadFunctionType ThreadFunction;
     enum { SUCCESS, ITK_EXCEPTION, ITK_PROCESS_ABORTED_EXCEPTION, STD_EXCEPTION, UNKNOWN } ThreadExitCode;
-  };
+    };
 
 protected:
   MultiThreader();
@@ -150,8 +160,13 @@ protected:
   void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
-  MultiThreader(const Self &);  //purposely not implemented
-  void operator=(const Self &); //purposely not implemented
+  MultiThreader(const Self &);  // purposely not implemented
+  void operator=(const Self &); // purposely not implemented
+
+  //Thread pool instance and factory
+  ThreadPool::Pointer m_Threadpool;
+  //ThreadPool & m_Threadpool;
+  ThreadPoolFactory m_Threadpoolfactory;
 
   /** An array of thread info containing a thread id
    *  (0, 1, 2, .. ITK_MAX_THREADS-1), the thread count, and a pointer
