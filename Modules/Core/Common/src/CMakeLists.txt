@@ -79,6 +79,7 @@ itkCompensatedSummation.cxx
 itkArrayOutputSpecialization.cxx
 itkNumberToString.cxx
 itkSmartPointerForwardReferenceProcessObject.cxx
+itkThreadPoolFactory.cxx
 )
 
 if(WIN32)
