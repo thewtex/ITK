@@ -173,6 +173,7 @@ itkImageRegionSplitterDirectionTest.cxx
 itkImageRegionSplitterMultidimensionalTest.cxx
 itkSimpleFastMutexLockTest.cxx
 itkMetaDataObjectTest.cxx
+itkThreadPoolTest.cxx
 )
 
 CreateTestDriver(ITKCommon1 "${ITKCommon_LIBRARIES}" "${ITKCommon1Tests}" itkFloatingPointExceptionsExtern.cxx)
@@ -493,3 +494,4 @@ itk_add_test(NAME itkSimpleFastMutexLockTest COMMAND ITKCommon2TestDriver itkSim
 set_tests_properties(itkSimpleFastMutexLockTest PROPERTIES TIMEOUT 5)
 
 itk_add_test(NAME itkMetaDataObjectTest COMMAND ITKCommon2TestDriver itkMetaDataObjectTest)
+itk_add_test(NAME itkThreadPoolTest COMMAND ITKCommon2TestDriver itkThreadPoolTest 100)

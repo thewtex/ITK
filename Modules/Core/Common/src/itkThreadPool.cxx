@@ -1,0 +1,393 @@
+/*=========================================================================
+ *
+ *  Copyright Insight Software Consortium
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0.txt
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ *=========================================================================*/
+
+
+#include "itkThreadPool.h"
+
+#if defined(ITK_USE_PTHREADS)
+#include "itkPThreadPool.hxx"
+#elif defined(ITK_USE_WIN32_THREADS)
+#include "itkWinThreadPool.hxx"
+#endif
+
+#include <algorithm>
+
+namespace itk
+{
+SimpleFastMutexLock ThreadPool::m_ThreadIdHandlePairingQueueMutex;
+SimpleFastMutexLock ThreadPool::m_NumberOfPendingJobsToBeRunMutex;
+SimpleFastMutexLock ThreadPool::m_ThreadPoolInstanceMutex;
+
+ThreadPool* ThreadPool::m_ThreadPoolInstance = ITK_NULLPTR;
+
+ThreadPool *
+ThreadPool
+::GetThreadPool()
+{
+    {
+    MutexLockHolder<SimpleFastMutexLock> mutexHolderAct(m_ThreadPoolInstanceMutex);
+    if( m_ThreadPoolInstance == ITK_NULLPTR )
+      {
+      //Create thread pool if it does not exist
+      m_ThreadPoolInstance = new ThreadPool();
+      }
+    }
+  return m_ThreadPoolInstance;
+}
+
+ThreadPool
+::ThreadPool() :
+  m_ScheduleForDestruction(false),
+  m_ThreadCount(0),
+  m_NumberOfPendingJobsToBeRun(0),
+  m_IdCounter(1)
+{
+  m_ThreadIdHandleList = NULL;
+#if !defined(ITK_HAS_TR1_UNORDERED_MAP)
+  m_WorkerQueue.reserve(1000);
+  m_ThreadIdHandlePairingQueue.reserve(1000);
+#endif
+#if !defined(ITK_HAS_TR1_UNORDERED_SET)
+  m_ActiveJobIds.reserve(1000);
+  m_ThreadHandles.reserve(1000);
+#endif
+}
+
+void ThreadPool
+::InitializeThreads(unsigned int maximumThreads)
+{
+  if( maximumThreads == 0 )
+    {
+    maximumThreads = 1;
+    }
+  for( unsigned int i = 0; i < maximumThreads; ++i )
+    {
+    AddThread();
+    }
+}
+
+ThreadPool
+::~ThreadPool()
+{
+  itkDebugMacro(<< std::endl << "Thread pool being destroyed" << std::endl);
+}
+
+/*
+  Once wait thread is called we will look for the threadhandle's job id
+  if it is JOB_THREADHANDLE_IS_FREE it means it is done -
+  if it is +ve it means it is running
+
+  if it is JOB_THREADHANDLE_IS_FREE / done set the jid to
+  JOB_THREADHANDLE_IS_DONE which means that now assign work can
+  assign further work to this thread
+  */
+bool
+ThreadPool
+::WaitForJobOnThreadHandle(ThreadProcessIdType threadHandle)
+{
+  try
+    {
+    itkDebugMacro(<< "Waiting for thread with threadHandle " << threadHandle);
+
+    if(GetSemaphoreForThreadWait(threadHandle)->SemaphoreWait() != 0 )
+      {
+      itkExceptionMacro(<<"Error in semaphore wait");
+      }
+
+      {
+      MutexLockHolder<SimpleFastMutexLock> threadStructMutexHolder(m_ThreadIdHandlePairingQueueMutex);
+      ThreadIdHandlePairingContainerType::const_iterator tpIter = m_ThreadIdHandlePairingQueue.begin();
+      ThreadIdHandlePairingContainerType::const_iterator end = m_ThreadIdHandlePairingQueue.end();
+      for(;tpIter != end; ++tpIter)
+        {
+        if(CompareThreadHandles(tpIter->m_ThreadProcessHandle, threadHandle))
+          {
+          if(tpIter->m_ThreadNumericId == JOB_THREADHANDLE_IS_FREE)
+            {
+            itkDebugMacro(<< "Wait ended for thread with threadHandle " << threadHandle);
+            break;
+            }
+          }
+        }
+      if(tpIter == end)
+        {
+        itkExceptionMacro(<< "can't find ThreadIdHandlePairing object for thread handle"
+                          << threadHandle);
+        }
+      }     // mutex
+    }
+  catch( std::exception & itkDebugStatement( e ) )
+    {
+    m_ExceptionOccured = true;
+    itkDebugMacro(<< "Exception occured while waiting for thread with threadHandle : "
+                  << threadHandle << std::endl << e.what());
+    }
+  return true;
+}
+
+template <typename TVectorType>
+void RemoveStdVectorElement( TVectorType & inVector, typename TVectorType::size_type indexToRemove)
+{
+#if __cplusplus >= 201103L // ONLY C++11  //
+                           // http://stackoverflow.com/questions/4442477/remove-ith-item-from-c-stdvector
+  inVector[indexToRemove] = std::move(inVector.back() );
+  inVector.pop_back();
+#else
+  std::swap( inVector[indexToRemove], inVector.back()  );
+  inVector.pop_back();
+#endif
+}
+
+void
+ThreadPool
+::RemoveActiveId(int id)
+{
+  try
+    {
+    MutexLockHolder<SimpleFastMutexLock> vMutex(m_ThreadIdHandlePairingQueueMutex);
+    // setting ThreadJobStruct
+    for(ThreadIdHandlePairingContainerType::iterator it =
+          m_ThreadIdHandlePairingQueue.begin(),
+          end = m_ThreadIdHandlePairingQueue.end();
+        it != end; ++it)
+      {
+      if( it->m_ThreadNumericId == id )
+        {
+        // set this to JOB_THREADHANDLE_IS_DONE so that now the thread
+        // is in wait state
+        it->m_ThreadNumericId = JOB_THREADHANDLE_IS_FREE;
+        break;
+        }
+      }
+    ThreadJobIdsContainerType::iterator idIt = this->m_ActiveJobIds.find(id);
+    if( idIt != this->m_ActiveJobIds.end() )
+      {
+      this->m_ActiveJobIds.erase(idIt);
+      }
+    else
+      {
+      itkDebugMacro(<< "Error occured, couldnt find id : " << id );
+      itkExceptionMacro(
+        << "Error occured in RemoveActiveId, couldnt find id in ActiveThreadIds queue to erase.");
+      }
+
+    // Delete from worker queue
+    ThreadJobContainerType::iterator newJob = this->m_WorkerQueue.find(id);
+    if(newJob == this->m_WorkerQueue.end())
+      {
+      itkExceptionMacro(<< "Error occured, couldnt find id in WorkerQueue to mark executed. Id is : "
+                        << id << std::endl );
+      }
+    this->m_WorkerQueue.erase(newJob);
+    }
+  catch( std::exception & e )
+    {
+    itkExceptionMacro(<< e.what() );
+    }
+  {
+  MutexLockHolder<SimpleFastMutexLock> mutexHolder(m_NumberOfPendingJobsToBeRunMutex);
+  this->m_NumberOfPendingJobsToBeRun--;
+  }
+}
+
+void
+ThreadPool
+::AddNodeToThreadIdHandleList(ThreadIdHandlePair *head, ThreadProcessIdType handle, ThreadIdType id)
+{
+  ThreadIdHandlePair *node = head;
+
+  while(node->m_Next != NULL)
+    {
+    node = node->m_Next;
+    }
+  //now here node-> m_Next is null
+  node->m_Next = new ThreadIdHandlePair(handle, id);
+  node->m_Next->m_Next = NULL;
+}
+
+ThreadPool::ThreadSemaphorePair*
+ThreadPool
+::GetSemaphore(ThreadSemHandlePairingQueueType &q, ThreadProcessIdType threadHandle)
+{
+  MutexLockHolder<SimpleFastMutexLock> threadStructMutexHolder(m_ThreadIdHandlePairingQueueMutex);
+  ThreadSemHandlePairingQueueType::iterator it = q.begin();
+  ThreadSemHandlePairingQueueType::iterator end = q.end();
+  for(; it != end; ++it)
+    {
+    if(CompareThreadHandles((*it)->m_ThreadProcessHandle, threadHandle))
+      {
+      break;
+      }
+    }
+  if(it == end)
+    {
+    itkExceptionMacro(<< "Error occured finding semaphore for thread handle " << threadHandle);
+    }
+  return *it;
+
+}
+
+ThreadPool::ThreadSemaphorePair *
+ThreadPool
+::GetSemaphoreForThreadWait(ThreadProcessIdType threadHandle)
+{
+  return this->GetSemaphore(this->m_ThreadSemHandlePairingForWaitQueue, threadHandle);
+}
+
+ThreadPool::ThreadSemaphorePair *
+ThreadPool
+::GetSemaphoreForThread(ThreadProcessIdType threadHandle)
+{
+  return this->GetSemaphore(m_ThreadSemHandlePairingQueue,threadHandle);
+}
+
+// TODO: Do we want to return a reference to the job in the work queue
+//      This is returning a copy of the ThreadJob from the Queue rather
+//      than a reference to the the job on the Queue.
+ThreadJob ThreadPool
+::FetchWork(ThreadProcessIdType threadHandle)
+{
+  int  workId = JOB_THREADHANDLE_IS_DONE;
+
+  ThreadJobContainerType::iterator newJob;
+  if(GetSemaphoreForThread(threadHandle)->SemaphoreWait() != 0 )
+    {
+    itkExceptionMacro(<<"Error in semaphore wait");
+    }
+
+  {
+  MutexLockHolder<SimpleFastMutexLock> threadStructMutexHolder(m_ThreadIdHandlePairingQueueMutex);
+
+  ThreadIdHandlePairingContainerType::const_iterator tpIter = m_ThreadIdHandlePairingQueue.begin();
+  ThreadIdHandlePairingContainerType::iterator end = m_ThreadIdHandlePairingQueue.end();
+  for(; tpIter != end; ++tpIter)
+    {
+    if(CompareThreadHandles(tpIter->m_ThreadProcessHandle,threadHandle))
+      {
+      break;
+      }
+    }
+  if(tpIter == end)
+    {
+    itkExceptionMacro(<< "Can't find thread with handle "
+                      << threadHandle);
+    }
+
+  workId = tpIter->m_ThreadNumericId;
+  newJob = this->m_WorkerQueue.find(workId);
+
+  if(newJob != this->m_WorkerQueue.end())
+    {
+    newJob->second.m_Assigned = true;
+    newJob->second.m_Id = workId;
+    }
+  } // mutex
+
+  if(newJob == this->m_WorkerQueue.end())
+    {
+    itkExceptionMacro(<< "no job found to run " << std::endl );
+    }
+  return newJob->second;
+}
+
+ThreadPool::ThreadProcessStatusPair *
+ThreadPool
+::FindThreadToRun()
+{
+  ThreadProcessStatusPair *returnValue(ITK_NULLPTR);
+  //
+  // loop twice, if necesary.
+  // 1st pass, find free thread. if none
+  // found, add thread.
+  // second pass if thread was added, find just-added thread.
+  // if AddThread fails, end outer loop and throw exception.
+  for(unsigned j = 0; j < 2 && returnValue == ITK_NULLPTR; ++j)
+    {
+    for(ThreadIdHandlePairingContainerType::iterator tpIter = m_ThreadIdHandlePairingQueue.begin(),
+          end = m_ThreadIdHandlePairingQueue.end();
+        tpIter != end; ++tpIter)
+      {
+      // only if it is JOB_THREADHANDLE_IS_FREE or just added thread you
+      // assign it a job
+      if( tpIter->m_ThreadNumericId <= JOB_THREADHANDLE_IS_FREE )
+        {
+        // assign the job id to the thread now
+        returnValue = &(*tpIter);
+        break;  // break because we dont want to keep assigning
+        }
+      }
+    if(returnValue == ITK_NULLPTR)
+      {
+      this->AddThread();
+      itkDebugMacro(<< "Added a new thread"  );
+      }
+    }
+  if(returnValue == ITK_NULLPTR)
+    {
+    itkExceptionMacro(<< "Unable to find thread to run");
+    }
+  return returnValue;
+}
+
+ThreadProcessIdType
+ThreadPool
+::AssignWork(ThreadJob threadJob)
+{
+#if defined(__APPLE__)
+  ThreadProcessIdType returnValue = NULL; // TODO:  This is being returned
+#elif defined(_WIN32) || defined(_WIN64)
+  ThreadProcessIdType returnValue = NULL; // TODO:  This is being returned
+#else
+  ThreadProcessIdType returnValue = pthread_self();
+#endif
+  try
+    {
+      {
+      MutexLockHolder<SimpleFastMutexLock> mutexHolder(m_NumberOfPendingJobsToBeRunMutex);
+      m_NumberOfPendingJobsToBeRun++;
+      }
+      {
+      MutexLockHolder<SimpleFastMutexLock> mutexHolderSync(m_ThreadIdHandlePairingQueueMutex);
+      ThreadProcessStatusPair *threadToRun = this->FindThreadToRun();
+
+      // adding to queue
+      threadJob.m_Id = this->m_IdCounter++;
+      ThreadJobContainerPairType toInsert(threadJob.m_Id,threadJob);
+      this->m_WorkerQueue.insert(toInsert);
+
+      m_ActiveJobIds.insert(threadJob.m_Id );
+
+      // now put the job id in the ThreadJobStruct vector
+      threadToRun->m_ThreadNumericId = threadJob.m_Id;
+      returnValue = threadToRun->m_ThreadProcessHandle;
+      }
+    if(GetSemaphoreForThread(returnValue)->SemaphorePost() != 0 )
+      {
+      itkExceptionMacro(<<"Error in semaphore post");
+      }
+    }
+  catch( std::exception& e )
+    {
+    itkDebugMacro(<< std::endl << "Failed to assign work. \n" << e.what() << std::endl );
+    m_ExceptionOccured = true;
+    itkExceptionMacro(<< e.what() );
+    }
+  return returnValue;
+}
+
+}
