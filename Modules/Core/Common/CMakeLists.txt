@@ -57,6 +57,12 @@ include(CheckIncludeFileCXX)
 check_include_file_cxx( tr1/type_traits ITK_HAS_STLTR1_TR1_TYPE_TRAITS )
 check_include_file_cxx( type_traits ITK_HAS_STLTR1_TYPE_TRAITS )
 
+# Check for C++11 unordered_map & unordered_set
+check_include_file_cxx( unordered_map ITK_HAS_UNORDERED_MAP)
+check_include_file_cxx( tr1/unordered_map ITK_HAS_TR1_UNORDERED_MAP)
+check_include_file_cxx( unordered_set ITK_HAS_UNORDERED_SET)
+check_include_file_cxx( tr1/unordered_set ITK_HAS_TR1_UNORDERED_SET)
+
 # Check for C++11 type_traits
 try_compile( ITK_HAS_CPP11_TYPETRAITS
   ${ITK_BINARY_DIR}/CMakeTmp
@@ -66,6 +72,7 @@ try_compile( ITK_HAS_GNU_ATTRIBUTE_ALIGNED
   ${ITK_BINARY_DIR}/CMakeTmp
   ${CMAKE_CURRENT_SOURCE_DIR}/CMake/itkCheckHasGNUAttributeAligned.cxx
   CMAKE_FLAGS "-DCMAKE_BUILD_TYPE:STRING=Debug" )
+
 
 configure_file(src/itkConfigure.h.in itkConfigure.h)
 
