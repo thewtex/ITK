@@ -79,6 +79,14 @@
 #cmakedefine ITK_HAS_GNU_ATTRIBUTE_ALIGNED
 // defined if the STL implementation includes std::copy_n
 #cmakedefine ITK_HAS_STD_COPY_N
+// defined if unordered_map exists
+#cmakedefine ITK_HAS_UNORDERED_MAP
+// defined if tr1/unordered_map exists
+#cmakedefine ITK_HAS_TR1_UNORDERED_MAP
+// defined if unordered_set exists
+#cmakedefine ITK_HAS_UNORDERED_SET
+// defined if tr1/unordered_set exists
+#cmakedefine ITK_HAS_TR1_UNORDERED_SET
 
 // defined if the spacing/origin/direction parameters in
 // itk::ImageBase are float instead of double
@@ -127,7 +135,6 @@
 #if ITK_CMAKEDEFINE_VAR_@HAVE_EMMINTRIN_H@
 # define ITK_HAVE_EMMINTRIN_H
 #endif /* HAVE_EMMINTRIN_H */
-
 
 #undef ITK_CMAKEDEFINE_VAR_1
 #undef ITK_CMAKEDEFINE_VAR_
