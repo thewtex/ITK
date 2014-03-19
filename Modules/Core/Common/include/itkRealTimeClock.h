@@ -50,7 +50,7 @@ public:
   /** Method for creation through the object factory */
   itkNewMacro(Self);
 
-  /** Define the type for the timestap */
+  /** Define the type for the timestamp */
   typedef double TimeStampType;
 
   /** Define the type for the frequency of the clock */
@@ -64,6 +64,11 @@ public:
 
   /** Get the time as a RealTimeStamp type. */
   RealTimeStamp GetRealTimeStamp() const;
+
+  /** Get current date and time as Ddd Mmm Date hh:mm:ss yyyy
+   * example: Fri Dec 19 14:34:58 2003
+   */
+  std::string GetCurrentDateAndTime( void ) const;
 
 protected:
 

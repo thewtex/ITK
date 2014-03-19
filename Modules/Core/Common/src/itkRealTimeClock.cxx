@@ -25,6 +25,7 @@
 #endif  // defined(WIN32) || defined(_WIN32)
 
 #include "vnl/vnl_math.h"
+#include <time.h>
 
 namespace itk
 {
@@ -141,6 +142,17 @@ RealTimeClock::GetRealTimeStamp() const
   RealTimeStamp value( static_cast<RealTimeStamp::SecondsCounterType>(tval.tv_sec), static_cast<RealTimeStamp::MicroSecondsCounterType>(tval.tv_usec) );
   return value;
 #endif  // defined(WIN32) || defined(_WIN32)
+}
+
+/** Returns current date and time as a string */
+std::string RealTimeClock::GetCurrentDateAndTime( void ) const
+{
+  time_t rawtime;
+  struct tm * timeinfo;
+
+  time( &rawtime );
+  timeinfo = localtime( &rawtime );
+  return std::string( asctime( timeinfo ) );
 }
 
 /** Print the object */
