@@ -1138,5 +1138,10 @@ class kernel                  \
   }
 
 }
+/*
+  Defining a simple debug print statement which can be used
+  in a static method too
+*/
+#define itkDebugPrint( themessage ) std::cout << themessage << std::endl
 
 #endif //end of itkMacro.h
