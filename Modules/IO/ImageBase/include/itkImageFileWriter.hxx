@@ -150,21 +150,32 @@ ImageFileWriter< TInputImage >
     {
     ImageFileWriterException e(__FILE__, __LINE__);
     std::ostringstream       msg;
-    msg << " Could not create IO object for file "
+    msg << " Could not create IO object for writing file "
         << m_FileName.c_str() << std::endl;
     msg << "  Tried to create one of the following:" << std::endl;
+    std::list< LightObject::Pointer > allobjects =
+      ObjectFactoryBase::CreateAllInstance("itkImageIOBase");
+    unsigned int found = 0;
+    for ( std::list< LightObject::Pointer >::iterator i = allobjects.begin();
+          i != allobjects.end(); ++i )
       {
-      std::list< LightObject::Pointer > allobjects =
-        ObjectFactoryBase::CreateAllInstance("itkImageIOBase");
-      for ( std::list< LightObject::Pointer >::iterator i = allobjects.begin();
-            i != allobjects.end(); ++i )
-        {
-        ImageIOBase *io = dynamic_cast< ImageIOBase * >( i->GetPointer() );
-        msg << "    " << io->GetNameOfClass() << std::endl;
-        }
+      ImageIOBase *io = dynamic_cast< ImageIOBase * >( i->GetPointer() );
+      msg << "    " << io->GetNameOfClass() << std::endl;
+      ++found;
       }
-    msg << "  You probably failed to set a file suffix, or" << std::endl;
-    msg << "    set the suffix to an unsupported type." << std::endl;
+    if (found > 0)
+      {
+      msg << "  You probably failed to set a file suffix, or" << std::endl;
+      msg << "    set the suffix to an unsupported type." << std::endl;
+      }
+    else
+      {
+      msg << "  There are no registered IO factories. You probably built your project without using cmake" << std::endl;
+      msg << "  You can register the IO factories you need with: " << std::endl;
+      msg << "    #include \"itkXXXImageIOFactory.h\"" << std::endl;
+      msg << "    itk::XXXImageIOFactory::RegisterOneFactory();" << std::endl;
+      msg << "     where XXX is e.g. Nifti, PNG, Meta..." << std::endl;
+      }
     e.SetDescription( msg.str().c_str() );
     e.SetLocation(ITK_LOCATION);
     throw e;
