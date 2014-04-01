@@ -58,6 +58,9 @@ ScalarImageToCooccurrenceMatrixFilter< TImageType,
 
   this->m_NumberOfBinsPerAxis = DefaultBinsPerAxis;
   this->m_Normalize = false;
+
+  this->m_RegionSet = false;
+  this->m_Region = RegionType();
 }
 
 template< typename TImageType, typename THistogramFrequencyContainer >
@@ -185,11 +188,11 @@ ScalarImageToCooccurrenceMatrixFilter< TImageType,
   // Now fill in the histogram
   if ( maskImage != NULL )
     {
-    this->FillHistogramWithMask(radius, input->GetRequestedRegion(), maskImage);
+    this->FillHistogramWithMask(radius, m_Region, maskImage);
     }
   else
     {
-    this->FillHistogram( radius, input->GetRequestedRegion() );
+    this->FillHistogram( radius, m_Region );
     }
 
   // Normalizse the histogram if requested

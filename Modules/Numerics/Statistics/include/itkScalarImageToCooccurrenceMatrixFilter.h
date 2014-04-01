@@ -169,6 +169,14 @@ public:
   itkSetMacro(InsidePixelValue, PixelType);
   itkGetConstMacro(InsidePixelValue, PixelType);
 
+  /** We provide an option to explicitly set the region, rather than the
+    default of the input image RequestedRegion. */
+  void SetRegion(RegionType const & region)
+  {
+    m_RegionSet = true;
+    m_Region = region;
+  }
+
 protected:
   ScalarImageToCooccurrenceMatrixFilter();
   virtual ~ScalarImageToCooccurrenceMatrixFilter() {}
@@ -184,6 +192,15 @@ protected:
   typedef ProcessObject::DataObjectPointerArraySizeType DataObjectPointerArraySizeType;
   using Superclass::MakeOutput;
   virtual DataObjectPointer MakeOutput(DataObjectPointerArraySizeType idx);
+
+  virtual void GenerateInputRequestedRegion()
+  {
+    if (!m_RegionSet)
+    {
+      // We should preserve the input requested region
+      m_Region = GetInput()->GetRequestedRegion();
+    }
+  }
 
   /** This method causes the filter to generate its output. */
   virtual void GenerateData();
