@@ -132,6 +132,15 @@ public:
   itkSetMacro( Opacity, double );
   itkGetConstReferenceMacro( Opacity, double );
 
+  /** Set/Get the overlay functor - defaults to a reasonable set of colours
+  */
+  virtual void SetOverlayFunctor(const FunctorType& functor)
+  {
+    m_OverlayFunctor = functor;
+    this->Modified();
+  }
+  itkGetConstReferenceMacro(OverlayFunctor, FunctorType);
+
 protected:
   LabelMapOverlayImageFilter();
   ~LabelMapOverlayImageFilter() {};
@@ -160,6 +169,7 @@ private:
 
   double                    m_Opacity;
   typename Barrier::Pointer m_Barrier;
+  FunctorType               m_OverlayFunctor;
 
 }; // end of class
 
