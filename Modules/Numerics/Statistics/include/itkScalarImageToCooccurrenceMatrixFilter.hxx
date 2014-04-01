@@ -138,12 +138,69 @@ ScalarImageToCooccurrenceMatrixFilter< TImageType,
 template< typename TImageType, typename THistogramFrequencyContainer >
 void
 ScalarImageToCooccurrenceMatrixFilter< TImageType,
+THistogramFrequencyContainer >::GenerateInputRequestedRegion(void)
+{
+  // get pointer to the input image
+  ImageType *input = const_cast<ImageType *>(this->GetInput());
+  if (!input)
+    {
+    return;
+    }
+
+  // Next, find the minimum radius that encloses all the offsets.
+  unsigned int minRadius = 0;
+  typename OffsetVector::ConstIterator offsets;
+  for (offsets = m_Offsets->Begin(); offsets != m_Offsets->End(); offsets++)
+    {
+    for (unsigned int i = 0; i < offsets.Value().GetOffsetDimension(); i++)
+      {
+      unsigned int distance = vnl_math_abs(offsets.Value()[i]);
+      if (distance > minRadius)
+        {
+        minRadius = distance;
+        }
+      }
+    }
+
+  RadiusType radius;
+  radius.Fill(minRadius);
+
+  // store the original requested region so we know what to GenerateData for
+  m_OriginalRequestedRegion = input->GetRequestedRegion();
+
+  // pad the input requested region by the radius
+  RegionType inputRequestedRegion = input->GetRequestedRegion();
+  inputRequestedRegion.PadByRadius(radius);
+
+  // crop the input requested region at the input's largest possible region
+  if (inputRequestedRegion.Crop(input->GetLargestPossibleRegion()))
+    {
+    input->SetRequestedRegion(inputRequestedRegion);
+    }
+  else
+    {
+    // Couldn't crop the region (requested region is outside the largest
+    // possible region).  Throw an exception.
+
+    // store what we tried to request (prior to trying to crop)
+    input->SetRequestedRegion(inputRequestedRegion);
+
+    // build an exception
+    InvalidRequestedRegionError e(__FILE__, __LINE__);
+    e.SetLocation(ITK_LOCATION);
+    e.SetDescription("Requested region is entirely outside the largest possible region.");
+    e.SetDataObject(input);
+    throw e;
+    }
+}
+
+template< typename TImageType, typename THistogramFrequencyContainer >
+void
+ScalarImageToCooccurrenceMatrixFilter< TImageType,
                                        THistogramFrequencyContainer >::GenerateData(void)
 {
   HistogramType *output =
     static_cast< HistogramType * >( this->ProcessObject::GetOutput(0) );
-
-  const ImageType *input = this->GetInput();
 
   // At this point input must be non-NULL because the ProcessObject
   // checks the number of required input to be non-NULL pointers before
@@ -185,11 +242,11 @@ ScalarImageToCooccurrenceMatrixFilter< TImageType,
   // Now fill in the histogram
   if ( maskImage != NULL )
     {
-    this->FillHistogramWithMask(radius, input->GetRequestedRegion(), maskImage);
+    this->FillHistogramWithMask(radius, m_OriginalRequestedRegion, maskImage);
     }
   else
     {
-    this->FillHistogram( radius, input->GetRequestedRegion() );
+    this->FillHistogram(radius, m_OriginalRequestedRegion);
     }
 
   // Normalizse the histogram if requested

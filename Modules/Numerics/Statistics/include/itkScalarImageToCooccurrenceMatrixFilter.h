@@ -185,6 +185,8 @@ protected:
   using Superclass::MakeOutput;
   virtual DataObjectPointer MakeOutput(DataObjectPointerArraySizeType idx);
 
+  virtual void GenerateInputRequestedRegion();
+
   /** This method causes the filter to generate its output. */
   virtual void GenerateData();
 
@@ -207,6 +209,8 @@ private:
   bool                  m_Normalize;
 
   PixelType m_InsidePixelValue;
+
+  RegionType m_OriginalRequestedRegion;
 };
 } // end of namespace Statistics
 } // end of namespace itk
