@@ -33,6 +33,10 @@ namespace itk
  * to the background; the filter will assign the labels consecutively by
  * skipping the background value.
  *
+ * By default this filter reverses the order of that label objects in
+ * the label map. Set the ReverseOrdering parameter to true to
+ * preserve the ordering.
+ *
  * This implementation was taken from the Insight Journal paper:
  * http://hdl.handle.net/1926/584  or
  * http://www.insight-journal.org/browse/publication/176
@@ -71,17 +75,6 @@ public:
 
   /** Runtime information support. */
   itkTypeMacro(RelabelLabelMapFilter, AttributeRelabelLabelMapFilter);
-
-#ifdef ITK_USE_CONCEPT_CHECKING
-  // Begin concept checking
-/*  itkConceptMacro(InputEqualityComparableCheck,
-    (Concept::EqualityComparable<InputImagePixelType>));
-  itkConceptMacro(IntConvertibleToInputCheck,
-    (Concept::Convertible<int, InputImagePixelType>));
-  itkConceptMacro(InputOStreamWritableCheck,
-    (Concept::OStreamWritable<InputImagePixelType>));*/
-// End concept checking
-#endif
 
 protected:
   RelabelLabelMapFilter()
