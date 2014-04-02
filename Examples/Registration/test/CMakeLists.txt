@@ -59,29 +59,17 @@ itk_add_test(NAME ImageRegistration4Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration4Test.png 0
         ${TEMP}/ImageRegistration4BeforeTest.png
         ${TEMP}/ImageRegistration4AfterTest.png
-        24 10000 1
+        24
 )
 
 itk_add_test(NAME ImageRegistration4Test2 COMMAND ${ITK_TEST_DRIVER}
-  --compare DATA{${BASELINE}/ImageRegistration4Test.png}
-            ${TEMP}/ImageRegistration4Test2.png
   $<TARGET_FILE:ImageRegistration4>
-        ${ITK_SOURCE_DIR}/Examples/Data/BrainT1SliceBorder20.png
-        ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceShifted13x17y.png
+        ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20Mask.png
+        ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20Mask.png
         ${TEMP}/ImageRegistration4Test2.png 0
-        ${TEMP}/ImageRegistration4BeforeTest.png
-        ${TEMP}/ImageRegistration4AfterTest.png
-        24 10000 0
-)
-
-itk_add_test(NAME ImageRegistration4Test3 COMMAND ${ITK_TEST_DRIVER}
-  $<TARGET_FILE:ImageRegistration4>
-        ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20Mask.png
-        ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20Mask.png
-        ${TEMP}/ImageRegistration4Test3.png 0
-        ${TEMP}/ImageRegistration4BeforeTest3.png
-        ${TEMP}/ImageRegistration4AfterTest3.png
-        5 10000 0
+        ${TEMP}/ImageRegistration4BeforeTest2.png
+        ${TEMP}/ImageRegistration4AfterTest2.png
+        5
 )
 
 itk_add_test(NAME ImageRegistration5Test1 COMMAND ${ITK_TEST_DRIVER}
