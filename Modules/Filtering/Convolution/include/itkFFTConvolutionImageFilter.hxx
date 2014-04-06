@@ -331,7 +331,8 @@ FFTConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPre
   typedef ExtractImageFilter< InternalImageType, OutputImageType > ExtractFilterType;
 
   typename ExtractFilterType::Pointer extractFilter = ExtractFilterType::New();
-  extractFilter->SetDirectionCollapseToIdentity();
+  //WRONG extractFilter->SetDirectionCollapseToIdentity();
+  extractFilter->SetDirectionCollapseToSubmatrix();
   extractFilter->InPlaceOn();
   extractFilter->GraftOutput( this->GetOutput() );
 
@@ -353,9 +354,20 @@ FFTConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPre
   progress->RegisterInternalFilter( extractFilter, progressWeight );
   extractFilter->Update();
 
+  typename OutputImageType::Pointer extractedImage = extractFilter->GetOutput();
+  extractedImage->DisconnectPipeline();
+
+  // Copy the meta data to match input image.
+  // NOTE:  Can not use CopyInformation because the padded output image may
+  //        not have the same "LargestPossibleRegion" as the input image.
+  extractedImage->SetSpacing( this->GetInput()->GetSpacing() );
+  extractedImage->SetOrigin( this->GetInput()->GetOrigin() );
+  extractedImage->SetDirection( this->GetInput()->GetDirection() );
+  extractedImage->SetNumberOfComponentsPerPixel( this->GetInput()->GetNumberOfComponentsPerPixel() );
+
   // Graft the output of the crop filter back onto this
   // filter's output.
-  this->GraftOutput( extractFilter->GetOutput() );
+  this->GraftOutput( extractedImage );
 }
 
 template< typename TInputImage, typename TKernelImage, typename TOutputImage, typename TInternalPrecision >
