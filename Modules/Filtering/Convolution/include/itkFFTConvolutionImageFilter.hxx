@@ -331,7 +331,7 @@ FFTConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPre
   typedef ExtractImageFilter< InternalImageType, OutputImageType > ExtractFilterType;
 
   typename ExtractFilterType::Pointer extractFilter = ExtractFilterType::New();
-  extractFilter->SetDirectionCollapseToIdentity();
+  extractFilter->SetDirectionCollapseToSubmatrix();
   extractFilter->InPlaceOn();
   extractFilter->GraftOutput( this->GetOutput() );
 
@@ -353,9 +353,23 @@ FFTConvolutionImageFilter< TInputImage, TKernelImage, TOutputImage, TInternalPre
   progress->RegisterInternalFilter( extractFilter, progressWeight );
   extractFilter->Update();
 
+  // Store the output origin and region computed in GenerateOutputInformation so that they can be reset after the Graft.
+  typename itk::Image<float,ImageDimension>::PointType outputOrigin = this->GetOutput()->GetOrigin();
+  OutputRegionType validRegion = this->GetOutput()->GetLargestPossibleRegion();
+
+  typename OutputImageType::Pointer extractedImage = extractFilter->GetOutput();
+  extractedImage->DisconnectPipeline();
+
+  // Copy the meta data to match input image.
+  extractedImage->CopyInformation( this->GetInput() );
+  // The padded output image may not have the same "LargestPossibleRegion" as the input image.
+  // Reset the origin and region to the correct values.
+  extractedImage->SetOrigin( outputOrigin );
+  extractedImage->SetLargestPossibleRegion( validRegion );
+
   // Graft the output of the crop filter back onto this
   // filter's output.
-  this->GraftOutput( extractFilter->GetOutput() );
+  this->GraftOutput( extractedImage );
 }
 
 template< typename TInputImage, typename TKernelImage, typename TOutputImage, typename TInternalPrecision >
