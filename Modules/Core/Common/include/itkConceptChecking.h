@@ -589,15 +589,15 @@ struct SameDimension {
 template< typename T >
 struct HasNumericTraits {
   struct Constraints {
+    typedef typename NumericTraits< T >::ValueType      ValueType;
+    typedef typename NumericTraits< T >::PrintType      PrintType;
+    typedef typename NumericTraits< T >::AbsType        AbsType;
+    typedef typename NumericTraits< T >::AccumulateType AccumulateType;
+    typedef typename NumericTraits< T >::RealType       RealType;
+    typedef typename NumericTraits< T >::ScalarRealType ScalarRealType;
+    typedef typename NumericTraits< T >::FloatType      FloatType;
     void constraints()
     {
-      typedef typename NumericTraits< T >::ValueType      ValueType;
-      typedef typename NumericTraits< T >::PrintType      PrintType;
-      typedef typename NumericTraits< T >::AbsType        AbsType;
-      typedef typename NumericTraits< T >::AccumulateType AccumulateType;
-      typedef typename NumericTraits< T >::RealType       RealType;
-      typedef typename NumericTraits< T >::ScalarRealType ScalarRealType;
-      typedef typename NumericTraits< T >::FloatType      FloatType;
       T    a;
       bool b;
 
@@ -623,9 +623,9 @@ struct HasNumericTraits {
 template< typename T >
 struct HasPixelTraits {
   struct Constraints {
+    typedef typename PixelTraits< T >::ValueType ValueType;
     void constraints()
     {
-      typedef typename PixelTraits< T >::ValueType ValueType;
       unsigned int a = PixelTraits< T >::Dimension;
       Detail::IgnoreUnusedVariable(a);
     }
@@ -638,9 +638,9 @@ struct HasPixelTraits {
 template< typename T >
 struct HasValueType {
   struct Constraints {
+    typedef typename T::ValueType ValueType;
     void constraints()
     {
-      typedef typename T::ValueType ValueType;
     }
   };
 
@@ -653,9 +653,7 @@ struct HasZero {
   struct Constraints {
     void constraints()
     {
-      T a;
-
-      a = NumericTraits< T >::Zero;
+      T a = NumericTraits< T >::Zero;
       Detail::IgnoreUnusedVariable(a);
     }
   };
