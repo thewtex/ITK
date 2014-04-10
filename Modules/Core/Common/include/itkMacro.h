@@ -490,6 +490,15 @@ itkTypeMacro(newexcp, parentexcp);                                              
   typedef oldtype newtype
 #endif
 
+//
+// #pragma GCC diagnostic push and #pragma GCC diagnostic pop were
+// added in gcc 4.6.
+//
+#if defined( __GNUC__ ) && ( __GNUC__ >= 4 ) && (__GNUC_MINOR__ >= 6)
+#define ITK_GCC_HAS_PRAGMAS
+#endif
+
+
 //=============================================================================
 /* Define a common way of declaring a templated function as a friend inside a class.
   - ITK_FRIEND_TEMPLATE_FUNCTION_ARGUMENTS(T)
