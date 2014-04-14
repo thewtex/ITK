@@ -32,8 +32,7 @@ int itkIsolatedConnectedImageFilterTest(int ac, char* av[] )
 
   typedef unsigned char            PixelType;
   typedef itk::Image<PixelType, 2> myImage;
-  itk::ImageFileReader<myImage>::Pointer input
-    = itk::ImageFileReader<myImage>::New();
+  itk::ImageFileReader<myImage>::Pointer input = itk::ImageFileReader<myImage>::New();
   input->SetFileName(av[1]);
 
   // Create a filter
@@ -46,14 +45,8 @@ int itkIsolatedConnectedImageFilterTest(int ac, char* av[] )
 
   FilterType::IndexType seed1;
 
-  seed1[0] = atoi(av[4]); seed1[1] = atoi(av[5]);
-  filter->SetSeed1(seed1); // deprecated method
-
-  seed1[0] = atoi(av[6]); seed1[1] = atoi(av[7]);
-  filter->SetSeed2(seed1); // deprecated method
-
-  // Add additional seeds
-  for (int i=8; i<ac; i+=4)
+  // Add seeds
+  for (int i=4; i<ac; i+=4)
     {
     seed1[0] = atoi(av[i]); seed1[1] = atoi(av[i+1]);
     filter->AddSeed1(seed1);
