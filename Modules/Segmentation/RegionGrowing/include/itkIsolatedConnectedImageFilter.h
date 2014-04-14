@@ -105,26 +105,27 @@ public:
 
   void PrintSelf(std::ostream & os, Indent indent) const;
 
+  /** Add seed point 1. This seed will be isolated from Seed2 (if possible).
+   *  All pixels connected to this seed will be replaced with ReplaceValue. */
+  void AddSeed1(const IndexType & seed);
+
   /** Set seed point 1. This seed will be isolated from Seed2 (if possible).
    *  All pixels connected to this seed will be replaced with ReplaceValue.
-   *  This method is deprecated, please use AddSeed() */
+   *  This method is deprecated, please use AddSeed1(). */
   void SetSeed1(const IndexType & seed);
 
   /** Clear all the seeds1. */
   void ClearSeeds1();
 
-  /** Add seed point 1. */
-  void AddSeed1(const IndexType & seed);
+  /** Add seed point 2. This seed will be isolated from Seed1 (if possible). */
+  void AddSeed2(const IndexType & seed);
 
   /** Set seed point 2. This seed will be isolated from Seed1 (if possible).
-   *  This method is deprecated, please use AddSeed() */
+   *  This method is deprecated, please use AddSeed2(). */
   void SetSeed2(const IndexType & seed);
 
   /** Clear all the seeds2. */
   void ClearSeeds2();
-
-  /** Add seed point 2. */
-  void AddSeed2(const IndexType & seed);
 
   /** Method to access seed container */
   virtual const SeedsContainerType &GetSeeds1() const;
