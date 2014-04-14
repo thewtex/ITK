@@ -223,7 +223,7 @@ InvertDisplacementFieldImageFilter<TInputImage, TOutputImage>
         {
         scaledNorm += vnl_math_sqr( displacement[d] * inverseSpacing[d] );
         }
-      scaledNorm = vcl_sqrt( scaledNorm );
+      scaledNorm = std::sqrt( scaledNorm );
 
       this->m_MeanErrorNorm += scaledNorm;
       if( this->m_MaxErrorNorm < scaledNorm )
