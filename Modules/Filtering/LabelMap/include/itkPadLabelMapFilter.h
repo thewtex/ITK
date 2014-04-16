@@ -116,7 +116,7 @@ protected:
 
   virtual void GenerateOutputInformation();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   PadLabelMapFilter(const Self &); //purposely not implemented

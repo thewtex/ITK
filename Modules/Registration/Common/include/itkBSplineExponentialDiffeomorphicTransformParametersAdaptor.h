@@ -117,7 +117,7 @@ protected:
   BSplineExponentialDiffeomorphicTransformParametersAdaptor();
   ~BSplineExponentialDiffeomorphicTransformParametersAdaptor();
 
-  void PrintSelf( std::ostream & os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
   BSplineExponentialDiffeomorphicTransformParametersAdaptor( const Self & ); //purposely not implemented

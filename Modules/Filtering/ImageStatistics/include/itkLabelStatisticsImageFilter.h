@@ -328,7 +328,7 @@ public:
 protected:
   LabelStatisticsImageFilter();
   ~LabelStatisticsImageFilter(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Pass the input through unmodified. Do this by Grafting in the
     AllocateOutputs method. */
@@ -347,7 +347,7 @@ protected:
                              ThreadIdType threadId);
 
   // Override since the filter produces all of its output
-  void EnlargeOutputRequestedRegion(DataObject *data);
+  virtual void EnlargeOutputRequestedRegion(DataObject *data);
 
 private:
   LabelStatisticsImageFilter(const Self &); //purposely not implemented

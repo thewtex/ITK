@@ -131,12 +131,12 @@ public:
   /** Initialize the histogram, generating the offset table and
    * preparing the frequency container. Subclasses should call this
    * method in their Initialize() method. */
-  void Initialize(const SizeType & size);
+  virtual void Initialize(const SizeType & size);
 
   /** Initialize the histogram using equal size bins. To assign bin's
    * min and max values along each dimension use SetBinMin() and
    * SetBinMax() functions. */
-  void Initialize(const SizeType & size, MeasurementVectorType & lowerBound,
+  virtual void Initialize(const SizeType & size, MeasurementVectorType & lowerBound,
                   MeasurementVectorType & upperBound);
 
   /** Initialize the values of the histogram bins to zero */
@@ -335,7 +335,7 @@ public:
   virtual void Graft(const DataObject *);
 
 protected:
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 public:
 

@@ -142,7 +142,7 @@ protected:
   ShapePriorMAPCostFunctionBase();
   virtual ~ShapePriorMAPCostFunctionBase() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   ShapeFunctionPointer m_ShapeFunction;
   NodeContainerPointer m_ActiveRegion;

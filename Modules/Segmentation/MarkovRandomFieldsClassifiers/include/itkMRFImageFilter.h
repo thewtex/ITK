@@ -319,7 +319,7 @@ public:
 protected:
   MRFImageFilter();
   ~MRFImageFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Allocate memory for labelled images. */
   void Allocate();

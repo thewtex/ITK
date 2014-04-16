@@ -222,7 +222,7 @@ protected:
   ~ScaleTransform();
 
   /** Print contents of an ScaleTransform */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   ScaleTransform(const Self & other);   // purposely not implemented

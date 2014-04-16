@@ -84,7 +84,7 @@ public:
 
   /** Set/Get the input video pointer */
   using Superclass::SetInput;
-  void SetInput( const VideoStreamType* input );
+  virtual void SetInput( const VideoStreamType* input );
   const VideoStreamType* GetInput();
 
   /** Manually set the VideoIO to use */
@@ -112,7 +112,7 @@ protected:
 
   VideoFileWriter();
   virtual ~VideoFileWriter();
-  void PrintSelf(std::ostream &os, Indent indent) const;
+  virtual void PrintSelf(std::ostream &os, Indent indent) const;
 
   /** Initialize output parameters */
   bool InitializeOutputParameters();

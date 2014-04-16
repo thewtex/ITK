@@ -144,9 +144,9 @@ public:
 protected:
   MaskFeaturePointSelectionFilter();
   ~MaskFeaturePointSelectionFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Compute the connectivity offsets so that points can be excluded during
    * the execution of the filter. This method must be called after invoking

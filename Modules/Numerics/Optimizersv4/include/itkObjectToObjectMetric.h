@@ -282,7 +282,7 @@ protected:
   ObjectToObjectMetric();
   virtual ~ObjectToObjectMetric();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Verify that virtual domain and displacement field are the same size
    * and in the same physical space. */

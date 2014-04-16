@@ -139,7 +139,7 @@ protected:
   BYUMeshIO();
   virtual ~BYUMeshIO(){}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   BYUMeshIO(const Self &);      // purposely not implemented

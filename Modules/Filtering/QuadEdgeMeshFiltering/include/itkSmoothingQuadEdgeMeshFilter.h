@@ -86,7 +86,7 @@ public:
 protected:
   SmoothingQuadEdgeMeshFilter();
   ~SmoothingQuadEdgeMeshFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   CoefficientsComputation *m_CoefficientsMethod;
 
@@ -100,7 +100,7 @@ protected:
 
   OutputCoordType m_RelaxationFactor;
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   SmoothingQuadEdgeMeshFilter(const Self &);

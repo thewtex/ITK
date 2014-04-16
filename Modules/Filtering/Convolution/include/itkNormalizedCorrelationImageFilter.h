@@ -142,7 +142,7 @@ protected:
    * region is expanded by the radius of the template.  If the request
    * extends past the LargestPossibleRegion for the input, the request
    * is cropped by the LargestPossibleRegion. */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** NormalizedCorrelationImageFilter can be implemented as a
    * multithreaded filter.  Therefore, this implementation provides a
@@ -159,7 +159,7 @@ protected:
                             ThreadIdType threadId);
 
   /** Standard PrintSelf method */
-  void PrintSelf(std::ostream & os, Indent indent) const
+  virtual void PrintSelf(std::ostream & os, Indent indent) const
   {  Superclass::PrintSelf(os, indent); }
 
 private:

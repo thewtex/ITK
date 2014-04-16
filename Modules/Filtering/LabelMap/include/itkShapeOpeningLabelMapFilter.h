@@ -117,7 +117,7 @@ protected:
   ShapeOpeningLabelMapFilter();
   ~ShapeOpeningLabelMapFilter() {}
 
-  void GenerateData();
+  virtual void GenerateData();
 
   template< typename TAttributeAccessor >
   void TemplatedGenerateData(const TAttributeAccessor & accessor)
@@ -160,7 +160,7 @@ protected:
       }
   }
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   double m_Lambda;
 

@@ -290,16 +290,16 @@ protected:
                              const NodeType& iNode ) = 0;
 
   /** \brief   */
-  void Initialize( OutputDomainType* oDomain );
+  virtual void Initialize( OutputDomainType* oDomain );
 
   /**    */
   virtual void InitializeOutput( OutputDomainType* oDomain ) = 0;
 
   /**    */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** \brief PrintSelf method  */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   FastMarchingBase( const Self& );

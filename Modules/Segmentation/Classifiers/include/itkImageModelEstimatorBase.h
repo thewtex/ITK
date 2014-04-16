@@ -126,12 +126,12 @@ public:
 
   /** Define a virtual function to perform model generation from the input data
    */
-  void Update();
+  virtual void Update();
 
 protected:
   ImageModelEstimatorBase();
   ~ImageModelEstimatorBase();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void GenerateData();
 

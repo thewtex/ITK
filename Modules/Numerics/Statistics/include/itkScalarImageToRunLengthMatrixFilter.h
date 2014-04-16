@@ -209,7 +209,7 @@ public:
 
   /** Method to set the input image */
   using Superclass::SetInput;
-  void SetInput( const ImageType *image );
+  virtual void SetInput( const ImageType *image );
 
   /** Method to get the input image */
   const ImageType * GetInput() const;
@@ -233,7 +233,7 @@ public:
 protected:
   ScalarImageToRunLengthMatrixFilter();
   virtual ~ScalarImageToRunLengthMatrixFilter() {};
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /** Standard itk::ProcessObject subclass method. */
   typedef DataObject::Pointer DataObjectPointer;

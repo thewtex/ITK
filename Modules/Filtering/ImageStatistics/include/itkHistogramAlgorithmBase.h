@@ -69,7 +69,7 @@ public:
    * should therefore not have an Update() method.
    * It is included for backwards compatibility. */
 #if ! defined ( ITK_FUTURE_LEGACY_REMOVE )
-  void Update()
+  virtual void Update()
   {
     this->Compute();
   }
@@ -78,7 +78,7 @@ public:
 protected:
   HistogramAlgorithmBase();
   virtual ~HistogramAlgorithmBase() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void Compute() = 0;
 

@@ -143,7 +143,7 @@ protected:
                                          IndexValueType regionIndex[],
                                          SizeValueType regionSize[] ) const = 0;
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   ImageRegionSplitterBase(const ImageRegionSplitterBase &); //purposely not implemented

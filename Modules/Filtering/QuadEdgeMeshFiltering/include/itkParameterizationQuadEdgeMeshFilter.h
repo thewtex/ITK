@@ -117,7 +117,7 @@ protected:
 
   ParameterizationQuadEdgeMeshFilter();
   virtual ~ParameterizationQuadEdgeMeshFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   CoefficientsComputation *m_CoefficientsMethod;
 
@@ -171,7 +171,7 @@ protected:
                           VectorType & oX,
                           VectorType & oY);
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
 

@@ -115,7 +115,7 @@ public:
 protected:
   MeanImageFunction();
   ~MeanImageFunction(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   MeanImageFunction(const Self &); //purposely not implemented

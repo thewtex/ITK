@@ -217,7 +217,7 @@ public:
 protected:
   BSplineControlPointImageFilter();
   virtual ~BSplineControlPointImageFilter();
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /**
    * Multi-threaded function which generates the output sampled B-spline object.

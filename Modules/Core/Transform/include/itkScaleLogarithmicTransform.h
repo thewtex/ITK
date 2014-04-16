@@ -111,7 +111,7 @@ protected:
   ~ScaleLogarithmicTransform();
 
   /** Print contents of an ScaleLogarithmicTransform */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   ScaleLogarithmicTransform(const Self & other); // purposely not implemented

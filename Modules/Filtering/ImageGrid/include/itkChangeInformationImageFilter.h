@@ -214,13 +214,13 @@ public:
   virtual void GenerateInputRequestedRegion();
 
   /** Copy the input buffer. */
-  void GenerateData();
+  virtual void GenerateData();
 
 protected:
   ChangeInformationImageFilter();
   //~ChangeInformationImageFilter() {} default implementation ok
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Override VeriyInputInformation() since this filter's inputs do
    * not need to occoupy the same physical space.

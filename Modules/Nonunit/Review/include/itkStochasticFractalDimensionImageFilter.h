@@ -97,9 +97,9 @@ protected:
   StochasticFractalDimensionImageFilter();
   ~StochasticFractalDimensionImageFilter();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   StochasticFractalDimensionImageFilter(const Self &); //purposely not

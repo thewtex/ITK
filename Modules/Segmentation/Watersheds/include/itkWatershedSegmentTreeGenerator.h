@@ -140,7 +140,7 @@ public:
   }
 
   /** Standard non-threaded itk pipeline method */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Get/Set a boolean flag indicating whether or not to pre-merge the
     segments marked  as equivalent in the EquivalencyTable.  This is only
@@ -197,7 +197,7 @@ protected:
   virtual ~SegmentTreeGenerator() {}
   SegmentTreeGenerator(const Self &) {}
   void operator=(const Self &) {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generates an initial list of all potentential merges in
    * the segment table.   */
@@ -210,9 +210,9 @@ protected:
   void MergeEquivalencies();
 
   /** Methods required by the itk pipeline */
-  void GenerateOutputRequestedRegion(DataObject *output);
+  virtual void GenerateOutputRequestedRegion(DataObject *output);
 
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
 private:
   bool   m_Merge;

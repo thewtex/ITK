@@ -105,7 +105,7 @@ public:
 
   /** Set/Get the image input of this writer.  */
   using Superclass::SetInput;
-  void SetInput(const InputImageType *input);
+  virtual void SetInput(const InputImageType *input);
 
   const InputImageType * GetInput(void);
 
@@ -196,10 +196,10 @@ public:
 protected:
   ImageFileWriter();
   ~ImageFileWriter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Does the real work. */
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
 private:
   ImageFileWriter(const Self &); //purposely not implemented

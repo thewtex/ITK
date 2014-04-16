@@ -68,9 +68,9 @@ public:
 protected:
   PathToChainCodePathFilter();
   virtual ~PathToChainCodePathFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
 private:
   PathToChainCodePathFilter(const Self &); //purposely not implemented

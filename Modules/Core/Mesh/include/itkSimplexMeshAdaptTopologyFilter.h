@@ -252,14 +252,14 @@ protected:
 
   void operator=(const Self &) {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void GenerateData();
 
   /**
    * Initialize this filters containers
    */
-  void Initialize();
+  virtual void Initialize();
 
   /**
    * Method computes and evaluates cell propeties,

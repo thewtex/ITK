@@ -65,7 +65,7 @@ public:
   typedef TOutput                               OutputType;
   typedef SimpleDataObjectDecorator<OutputType> DecoratedOutputType;
 
-  void SetInput( const HistogramType * input )
+  virtual void SetInput( const HistogramType * input )
   {
     // Process object is not const-correct so the const_cast is required here
     this->ProcessObject::SetNthInput( 0, const_cast< HistogramType * >( input ) );

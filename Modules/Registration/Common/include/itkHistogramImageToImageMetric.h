@@ -79,7 +79,7 @@ public:
   typedef typename HistogramType::Pointer               HistogramPointer;
 
   /** Initializes the metric. */
-  void Initialize()
+  virtual void Initialize()
   throw ( ExceptionObject );
 
   /** Define the transform and thereby the parameter space of the metric
@@ -201,7 +201,7 @@ protected:
   virtual MeasureType EvaluateMeasure(HistogramType & histogram) const = 0;
 
   /** PrintSelf function */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   HistogramImageToImageMetric(const Self &); //purposely not implemented

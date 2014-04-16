@@ -120,13 +120,13 @@ public:
 protected:
   LaplacianRecursiveGaussianImageFilter();
   virtual ~LaplacianRecursiveGaussianImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate Data */
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
   // Override since the filter produces the entire dataset
-  void EnlargeOutputRequestedRegion(DataObject *output);
+  virtual void EnlargeOutputRequestedRegion(DataObject *output);
 
 private:
   LaplacianRecursiveGaussianImageFilter(const Self &); //purposely not

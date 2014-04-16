@@ -151,7 +151,7 @@ protected:
   TimeVaryingVelocityFieldIntegrationImageFilter();
   ~TimeVaryingVelocityFieldIntegrationImageFilter();
 
-  void PrintSelf( std::ostream & os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
   virtual void GenerateOutputInformation();
 

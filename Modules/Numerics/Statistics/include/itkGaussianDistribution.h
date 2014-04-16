@@ -233,7 +233,7 @@ protected:
   GaussianDistribution(void);
   virtual ~GaussianDistribution(void) {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   GaussianDistribution(const Self &); //purposely not implemented

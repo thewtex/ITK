@@ -122,7 +122,7 @@ public:
 protected:
   IPLCommonImageIO();
   ~IPLCommonImageIO();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   int AddElementToList(char const *const filename,
                        const float sliceLocation,

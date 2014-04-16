@@ -127,7 +127,7 @@ protected:
   ImageSpatialObject();
   virtual ~ImageSpatialObject();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   int *       m_SlicePosition;
   std::string m_PixelType;

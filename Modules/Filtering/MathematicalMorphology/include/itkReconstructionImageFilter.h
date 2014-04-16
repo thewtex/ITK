@@ -139,17 +139,17 @@ public:
 protected:
   ReconstructionImageFilter();
   ~ReconstructionImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** ValuedRegionalExtremaImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** ValuedRegionalExtremaImageFilter will produce the entire output. */
-  void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
+  virtual void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
 
-  void GenerateData();
+  virtual void GenerateData();
 
   /**
    * the value of the border - used in boundary condition.

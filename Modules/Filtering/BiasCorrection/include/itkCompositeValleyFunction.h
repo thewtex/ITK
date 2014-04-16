@@ -164,7 +164,7 @@ protected:
   }
 
   /** calculate and save energy values  */
-  void Initialize();
+  virtual void Initialize();
 
 private:
   /** Storage for tissue classes' statistics. */

@@ -119,7 +119,7 @@ protected:
 
   virtual void CleanPoints();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   CleanQuadEdgeMeshFilter(const Self &); // purposely not implemented

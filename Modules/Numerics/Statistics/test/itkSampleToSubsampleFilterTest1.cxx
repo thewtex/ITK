@@ -41,13 +41,13 @@ public:
 protected:
   SubsamplerTester() {}
   virtual ~SubsamplerTester() {}
-  void PrintSelf(std::ostream& os, Indent indent) const
+  virtual void PrintSelf(std::ostream& os, Indent indent) const
     {
     this->Superclass::PrintSelf(os,indent);
     os << "Superclass = " <<  this->Superclass::GetNameOfClass() << std::endl;
     }
 
-  void GenerateData()
+  virtual void GenerateData()
     {
     }
 

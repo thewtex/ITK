@@ -111,10 +111,10 @@ public:
 protected:
   RecursiveMultiResolutionPyramidImageFilter();
   ~RecursiveMultiResolutionPyramidImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate the output data. */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   RecursiveMultiResolutionPyramidImageFilter(const Self &); //purposely not

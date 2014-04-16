@@ -59,7 +59,7 @@ public:
     m_Parameters.Fill( 0 );
   }
 
-  void Initialize(void) throw ( itk::ExceptionObject ) {}
+  virtual void Initialize(void) throw ( itk::ExceptionObject ) {}
 
   virtual void GetDerivative( DerivativeType & derivative ) const
     {

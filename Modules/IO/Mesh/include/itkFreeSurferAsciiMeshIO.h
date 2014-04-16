@@ -154,7 +154,7 @@ protected:
   FreeSurferAsciiMeshIO();
   virtual ~FreeSurferAsciiMeshIO(){}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void OpenFile();
 

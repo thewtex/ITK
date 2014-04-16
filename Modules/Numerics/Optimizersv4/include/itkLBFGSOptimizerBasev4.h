@@ -109,7 +109,7 @@ public:
 protected:
   LBFGSOptimizerBasev4();
   virtual ~LBFGSOptimizerBasev4();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef Superclass::CostFunctionAdaptorType CostFunctionAdaptorType;
 

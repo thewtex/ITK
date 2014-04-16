@@ -546,7 +546,7 @@ protected:
   FEMRegistrationFilter();
   ~FEMRegistrationFilter();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This function generates a regular mesh of ElementsPerSide^D size */
   void CreateMesh(unsigned int ElementsPerSide, SolverType *solver);

@@ -214,7 +214,7 @@ protected:
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Starts the image modelling process */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Allocate memory for the output model. */
   void Allocate();

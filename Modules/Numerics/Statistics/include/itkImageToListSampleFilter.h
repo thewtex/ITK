@@ -90,7 +90,7 @@ public:
 
   /** Method to set/get the image */
   using Superclass::SetInput;
-  void SetInput(const ImageType *image);
+  virtual void SetInput(const ImageType *image);
 
   const ImageType * GetInput() const;
 
@@ -114,7 +114,7 @@ public:
 protected:
   ImageToListSampleFilter();
   virtual ~ImageToListSampleFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Standard itk::ProcessObject subclass method. */
   typedef DataObject::Pointer                           DataObjectPointer;

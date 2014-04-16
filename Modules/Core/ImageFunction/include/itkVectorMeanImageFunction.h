@@ -114,7 +114,7 @@ public:
 protected:
   VectorMeanImageFunction();
   ~VectorMeanImageFunction(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   VectorMeanImageFunction(const Self &); //purposely not implemented

@@ -267,7 +267,7 @@ private:
 protected:
   Subsample();
   virtual ~Subsample() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   Subsample(const Self &);      //purposely not implemented

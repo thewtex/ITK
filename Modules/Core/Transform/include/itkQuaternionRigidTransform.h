@@ -143,7 +143,7 @@ protected:
 
   const InverseMatrixType & GetInverseMatrix(void) const;
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   QuaternionRigidTransform(const Self &); // purposely not implemented

@@ -85,7 +85,7 @@ public:
     return sum;
     }
 
-  void PrintSelf(std::ostream& os, Indent indent) const
+  virtual void PrintSelf(std::ostream& os, Indent indent) const
     {
     Superclass::PrintSelf(os,indent);
     os << indent << m_Values.size() << std::endl;

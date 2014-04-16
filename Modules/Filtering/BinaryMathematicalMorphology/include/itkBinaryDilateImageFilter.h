@@ -125,9 +125,9 @@ public:
 protected:
   BinaryDilateImageFilter();
   virtual ~BinaryDilateImageFilter(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
   // type inherited from the superclass
   typedef typename Superclass::NeighborIndexContainer NeighborIndexContainer;

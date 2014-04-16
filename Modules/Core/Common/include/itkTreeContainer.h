@@ -111,7 +111,7 @@ protected:
 
   int m_DefaultChildrenCount;
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 };
 } // namespace itk
 

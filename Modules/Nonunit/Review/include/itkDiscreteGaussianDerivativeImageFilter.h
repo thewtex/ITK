@@ -197,7 +197,7 @@ protected:
   }
 
   virtual ~DiscreteGaussianDerivativeImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** DiscreteGaussianDerivativeImageFilter needs a larger input requested region
    * than the output requested region (larger by the size of the
@@ -212,7 +212,7 @@ protected:
    * calculations to an NeighborhoodOperatorImageFilter.  Since the
    * NeighborhoodOperatorImageFilter is multithreaded, this filter is
    * multithreaded by default. */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
 

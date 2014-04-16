@@ -261,7 +261,7 @@ protected:
   //  /** Constructor for use by New() method. */
   SimplexMesh();
   virtual ~SimplexMesh();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
    * The map stores a SimplexMeshGeometry object for each mesh point

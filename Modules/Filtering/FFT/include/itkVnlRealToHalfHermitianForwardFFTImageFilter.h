@@ -83,7 +83,7 @@ protected:
   VnlRealToHalfHermitianForwardFFTImageFilter() {}
   ~VnlRealToHalfHermitianForwardFFTImageFilter() {}
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   VnlRealToHalfHermitianForwardFFTImageFilter(const Self &); // purposely not implemented

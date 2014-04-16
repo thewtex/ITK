@@ -158,7 +158,7 @@ protected:
   ImageSeriesReader():m_ImageIO(0), m_ReverseOrder(false),
     m_UseStreaming(true), m_MetaDataDictionaryArrayUpdate(true) {}
   ~ImageSeriesReader();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Does the real work. */
   virtual void GenerateData();

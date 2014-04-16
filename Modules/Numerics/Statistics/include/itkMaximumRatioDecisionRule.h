@@ -101,7 +101,7 @@ public:
 protected:
   MaximumRatioDecisionRule();
   virtual ~MaximumRatioDecisionRule() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   MaximumRatioDecisionRule(const Self &); //purposely not implemented

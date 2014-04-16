@@ -118,7 +118,7 @@ public:
   itkGetConstReferenceMacro(Maximum, InputPixelType);
 
   /** Print internal ivars */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Process to execute before entering the multithreaded section */
   void BeforeThreadedGenerateData(void);

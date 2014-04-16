@@ -84,7 +84,7 @@ protected:
   virtual ~XMLFileOutputWindow();
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void Initialize();
+  virtual void Initialize();
 
   virtual void DisplayXML(const char *, const char *);
 

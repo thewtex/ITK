@@ -121,13 +121,13 @@ public:
   }
 
   /** Runs this k-d tree construction algorithm. */
-  void Update()
+  virtual void Update()
   {
     this->GenerateData();
   }
 
   /** Runs this k-d tree construction algorithm. */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Get macro to get the length of the measurement vectors that are being
    * held in the 'sample' that is passed to this class */
@@ -140,7 +140,7 @@ protected:
   /** Destructor */
   virtual ~KdTreeGenerator() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Returns the smart pointer to the internal Subsample object. */
   SubsamplePointer GetSubsample()

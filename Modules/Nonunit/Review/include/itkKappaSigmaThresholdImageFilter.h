@@ -143,11 +143,11 @@ public:
 protected:
   KappaSigmaThresholdImageFilter();
   ~KappaSigmaThresholdImageFilter(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
-  void GenerateData();
+  virtual void GenerateData();
 
   typedef typename TInputImage::SizeType    InputSizeType;
   typedef typename TInputImage::IndexType   InputIndexType;

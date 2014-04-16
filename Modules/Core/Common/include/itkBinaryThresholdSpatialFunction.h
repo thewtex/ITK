@@ -91,7 +91,7 @@ protected:
 
   BinaryThresholdSpatialFunction();
   ~BinaryThresholdSpatialFunction();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   FunctionOutputType m_LowerThreshold;
   FunctionOutputType m_UpperThreshold;

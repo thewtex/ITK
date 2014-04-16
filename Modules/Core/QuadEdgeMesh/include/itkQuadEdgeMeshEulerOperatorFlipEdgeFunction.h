@@ -76,7 +76,7 @@ protected:
   QuadEdgeMeshEulerOperatorFlipEdgeFunction();
   ~QuadEdgeMeshEulerOperatorFlipEdgeFunction(){}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   EdgeStatusType m_EdgeStatus;
 

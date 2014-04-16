@@ -57,7 +57,7 @@ public:
   /** Creates a new system variable used to implement the barrier.  The
       argument to this method is the number of threads that must Wait() on the
       barrier before it is cleared. */
-  void Initialize(unsigned int);
+  virtual void Initialize(unsigned int);
 
   /** A thread calling this method waits until m_NumberOfThreads have called
    *  Wait() on the barrier.  When the final expected thread calls Wait(), all

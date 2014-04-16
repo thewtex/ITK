@@ -102,7 +102,7 @@ protected:
   QuadEdgeMeshEulerOperatorJoinVertexFunction();
   ~QuadEdgeMeshEulerOperatorJoinVertexFunction() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   PointIdentifier m_OldPointID;
 

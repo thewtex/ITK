@@ -77,7 +77,7 @@ public:
    * to be removed from ITK. You should GraftOutput() and possible
    * DataObject::DisconnectPipeline() to properly change the output. */
   using Superclass::SetOutput;
-  void SetOutput(TOutputMesh *output);
+  virtual void SetOutput(TOutputMesh *output);
 
   /** Graft the specified DataObject onto this ProcessObject's output.
    * This method grabs a handle to the specified DataObject's bulk
@@ -144,12 +144,12 @@ public:
 protected:
   MeshSource();
   virtual ~MeshSource() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Requested region of Mesh is specified as i of N unstructured regions.
    * Since all DataObjects should be able to set the requested region in
    * unstructured form, just copy output->RequestedRegion all inputs. */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
 private:
   MeshSource(const Self &);     //purposely not implemented

@@ -139,7 +139,7 @@ public:
   /** Get the number of metrics */
   SizeValueType GetNumberOfMetrics() const;
 
-  void Initialize(void) throw ( itk::ExceptionObject );
+  virtual void Initialize(void) throw ( itk::ExceptionObject );
 
   /** Set each of the component metrics to use this moving transform. */
   virtual void SetMovingTransform( MovingTransformType * );
@@ -180,7 +180,7 @@ protected:
 
   ObjectToObjectMultiMetricv4();
   virtual ~ObjectToObjectMultiMetricv4();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
 

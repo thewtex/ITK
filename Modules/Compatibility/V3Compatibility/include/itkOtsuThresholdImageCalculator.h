@@ -99,7 +99,7 @@ public:
 protected:
   OtsuThresholdImageCalculator();
   virtual ~OtsuThresholdImageCalculator() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   OtsuThresholdImageCalculator(const Self &); //purposely not implemented

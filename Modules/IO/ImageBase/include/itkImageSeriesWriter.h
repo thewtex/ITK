@@ -110,7 +110,7 @@ public:
 
   /** Set/Get the image input of this writer.  */
   using Superclass::SetInput;
-  void SetInput(const InputImageType *input);
+  virtual void SetInput(const InputImageType *input);
 
   const InputImageType * GetInput(void);
 
@@ -200,10 +200,10 @@ public:
 protected:
   ImageSeriesWriter();
   ~ImageSeriesWriter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Does the real work. */
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
   /** Transition method used for DEPRECATING old functionality.
    *  This method should be removed after release ITK 1.8 */

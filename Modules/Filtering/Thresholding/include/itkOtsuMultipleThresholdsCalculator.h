@@ -95,7 +95,7 @@ public:
 protected:
   OtsuMultipleThresholdsCalculator();
   virtual ~OtsuMultipleThresholdsCalculator() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Increment the thresholds of one position */
   bool IncrementThresholds(InstanceIdentifierVectorType & thresholdIds,

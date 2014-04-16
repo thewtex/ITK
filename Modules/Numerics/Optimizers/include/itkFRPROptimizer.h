@@ -85,7 +85,7 @@ protected:
   FRPROptimizer();
   virtual ~FRPROptimizer();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Get the value of the n-dimensional cost function at this scalar step
    * distance along the current line direction from the current line origin.

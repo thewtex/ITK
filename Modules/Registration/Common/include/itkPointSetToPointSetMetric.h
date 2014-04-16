@@ -125,7 +125,7 @@ public:
 protected:
   PointSetToPointSetMetric();
   virtual ~PointSetToPointSetMetric() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   FixedPointSetConstPointer m_FixedPointSet;
 

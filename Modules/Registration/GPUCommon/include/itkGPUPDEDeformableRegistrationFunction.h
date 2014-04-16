@@ -146,7 +146,7 @@ protected:
   {
   }
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  virtual void PrintSelf(std::ostream & os, Indent indent) const
   {
     Superclass::PrintSelf(os, indent);
     os << indent << "MovingImage: ";

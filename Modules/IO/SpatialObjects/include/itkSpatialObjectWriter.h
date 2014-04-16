@@ -60,7 +60,7 @@ public:
   itkTypeMacro(SpatialObjectWriter, Object);
 
   /** Load a tube file. */
-  void Update(void);
+  virtual void Update(void);
 
   /** Set the filename  */
   itkSetStringMacro(FileName);
@@ -69,9 +69,9 @@ public:
   itkGetStringMacro(FileName);
 
   /** Set the Input  */
-  void SetInput(SpatialObjectType *input){ m_SpatialObject = input; }
+  virtual void SetInput(SpatialObjectType *input){ m_SpatialObject = input; }
 
-  void SetInput(SceneType *input){ m_Scene = input; }
+  virtual void SetInput(SceneType *input){ m_Scene = input; }
 
   itkSetMacro(BinaryPoints, bool);
   itkGetConstMacro(BinaryPoints, bool);

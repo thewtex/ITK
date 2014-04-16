@@ -118,12 +118,12 @@ protected:
   GridForwardWarpImageFilter();
   ~GridForwardWarpImageFilter() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
    * GenerateData()
    */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   GridForwardWarpImageFilter(const Self &); //purposely not implemented

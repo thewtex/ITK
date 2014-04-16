@@ -106,7 +106,7 @@ public:
 protected:
   MRCImageIO();
   // ~MRCImageIO(); // default works
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Overloaded to return the actually header size of the file
    * specified. The header must be read before this methods is

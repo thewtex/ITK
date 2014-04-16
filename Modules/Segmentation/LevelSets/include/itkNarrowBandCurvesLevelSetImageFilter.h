@@ -161,7 +161,7 @@ protected:
 
   /** Overridden from Superclass to handle the case when Propagation
    *  Scaling is zero.*/
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   CurvesFunctionPointer m_CurvesFunction;

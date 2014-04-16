@@ -109,7 +109,7 @@ protected:
   /**-PROTECTED METHODS------------------------------------------------------*/
   VideoFileReader();
   virtual ~VideoFileReader();
-  void PrintSelf(std::ostream &os, Indent indent) const;
+  virtual void PrintSelf(std::ostream &os, Indent indent) const;
 
   /** Override TemporalStreamingGenerateData to generate output a single frame.
    * We don't override ThreadedGenerateData because we read whole frames one at

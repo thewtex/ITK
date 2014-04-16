@@ -110,9 +110,9 @@ public:
 
   /** Set/Get the image input of this process object.  */
   using Superclass::SetInput;
-  void SetInput( InputImageType *image);
+  virtual void SetInput( InputImageType *image);
 
-  void SetInput( unsigned int, InputImageType *image);
+  virtual void SetInput( unsigned int, InputImageType *image);
 
   InputImageType * GetInput(void);
 
@@ -144,7 +144,7 @@ public:
 protected:
   ImageToRectilinearFEMObjectFilter();
   virtual ~ImageToRectilinearFEMObjectFilter() { }
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
   /** Method invoked by the pipeline in order to trigger mesh generation */
   void  GenerateData();

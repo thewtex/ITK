@@ -70,7 +70,7 @@ public:
 
   /** Method to set/get the sample */
   using Superclass::SetInput;
-  void SetInput(const SampleType *sample);
+  virtual void SetInput(const SampleType *sample);
 
   const SampleType *  GetInput() const;
 
@@ -98,7 +98,7 @@ protected:
 
   StandardDeviationPerComponentSampleFilter();
   virtual ~StandardDeviationPerComponentSampleFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** DataObject pointer */
   typedef DataObject::Pointer DataObjectPointer;
@@ -107,7 +107,7 @@ protected:
   using Superclass::MakeOutput;
   virtual DataObjectPointer MakeOutput(DataObjectPointerArraySizeType idx);
 
-  void GenerateData();
+  virtual void GenerateData();
 
   MeasurementVectorSizeType GetMeasurementVectorSize() const;
 

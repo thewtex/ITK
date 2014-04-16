@@ -303,7 +303,7 @@ public:
 protected:
   KLMRegionGrowImageFilter();
   ~KLMRegionGrowImageFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
    * Standard pipeline method.

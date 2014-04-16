@@ -67,7 +67,7 @@ public:
 
   /** Set the mesh input of this process object.  */
   using Superclass::SetInput;
-  void SetInput(const InputMeshType *input);
+  virtual void SetInput(const InputMeshType *input);
 
   /** Get the mesh input of this process object.  */
   const InputMeshType * GetInput(void) const;

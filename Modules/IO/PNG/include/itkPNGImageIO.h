@@ -83,7 +83,7 @@ public:
 protected:
   PNGImageIO();
   ~PNGImageIO();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void WriteSlice(const std::string & fileName, const void *buffer);
 

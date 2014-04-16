@@ -129,10 +129,10 @@ public:
 protected:
   FFTNormalizedCorrelationImageFilter() {}
   virtual ~FFTNormalizedCorrelationImageFilter() {}
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
   /** Standard pipeline method.*/
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   FFTNormalizedCorrelationImageFilter(const Self&); //purposely not implemented

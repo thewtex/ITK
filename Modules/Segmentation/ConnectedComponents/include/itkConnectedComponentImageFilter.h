@@ -169,7 +169,7 @@ protected:
   }
 
   virtual ~ConnectedComponentImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
    * Standard pipeline methods.
@@ -183,13 +183,13 @@ protected:
   /** ConnectedComponentImageFilter needs the entire input. Therefore
    * it must provide an implementation GenerateInputRequestedRegion().
    * \sa ProcessObject::GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** ConnectedComponentImageFilter will produce all of the output.
    * Therefore it must provide an implementation of
    * EnlargeOutputRequestedRegion().
    * \sa ProcessObject::EnlargeOutputRequestedRegion() */
-  void EnlargeOutputRequestedRegion( DataObject * itkNotUsed(output) );
+  virtual void EnlargeOutputRequestedRegion( DataObject * itkNotUsed(output) );
 
   bool m_FullyConnected;
 

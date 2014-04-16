@@ -119,7 +119,7 @@ protected:
 
   void operator=(const Self &) {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
    * Override from ProcessObject
@@ -129,7 +129,7 @@ protected:
   /**
    * Initializes all necessary datastructures
    */
-  void Initialize();
+  virtual void Initialize();
 
   /**
    * Method inserts the new computed simplex points into the output mesh

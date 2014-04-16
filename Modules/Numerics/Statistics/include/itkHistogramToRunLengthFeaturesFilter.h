@@ -89,7 +89,7 @@ public:
 
   /** Method to Set/Get the input Histogram */
   using Superclass::SetInput;
-  void SetInput ( const HistogramType * histogram );
+  virtual void SetInput( const HistogramType * histogram );
   const HistogramType * GetInput() const;
 
   /** Smart Pointer type to a DataObject. */
@@ -161,14 +161,14 @@ public:
 protected:
   HistogramToRunLengthFeaturesFilter();
   ~HistogramToRunLengthFeaturesFilter() {};
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
   /** Make a DataObject to be used for output output. */
   typedef ProcessObject::DataObjectPointerArraySizeType DataObjectPointerArraySizeType;
   using Superclass::MakeOutput;
   virtual DataObjectPointer MakeOutput( DataObjectPointerArraySizeType );
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   HistogramToRunLengthFeaturesFilter(const Self&); //purposely not implemented

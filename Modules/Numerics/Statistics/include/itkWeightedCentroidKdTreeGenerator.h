@@ -94,7 +94,7 @@ protected:
   /** Destructor */
   virtual ~WeightedCentroidKdTreeGenerator() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Nonterminal node generation routine */
   virtual KdTreeNodeType * GenerateNonterminalNode(unsigned int beginIndex,

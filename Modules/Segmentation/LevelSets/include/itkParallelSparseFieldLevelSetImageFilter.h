@@ -430,7 +430,7 @@ protected:
 
   /** Constructs the sparse field layers and initializes their values. Also
    *  creates data structures that are NOT local to a thread. */
-  void Initialize();
+  virtual void Initialize();
 
   /** Constructs the active layer and initialize the first layers inside and
    *  outside of the active layer.  The active layer defines the position of the

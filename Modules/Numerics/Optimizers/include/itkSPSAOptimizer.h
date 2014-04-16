@@ -202,7 +202,7 @@ protected:
   virtual ~SPSAOptimizer() {}
 
   /** PrintSelf method. */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Variables updated during optimization */
   DerivativeType m_Gradient;

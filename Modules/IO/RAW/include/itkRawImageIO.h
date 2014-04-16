@@ -134,7 +134,7 @@ public:
 protected:
   RawImageIO();
   ~RawImageIO();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   //void ComputeInternalFileName(unsigned long slice);
 

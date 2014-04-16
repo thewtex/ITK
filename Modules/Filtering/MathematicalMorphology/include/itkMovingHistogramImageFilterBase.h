@@ -141,7 +141,7 @@ protected:
   MovingHistogramImageFilterBase();
   ~MovingHistogramImageFilterBase() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void GetDirAndOffset(const IndexType LineStart,
                        const IndexType PrevLineStart,

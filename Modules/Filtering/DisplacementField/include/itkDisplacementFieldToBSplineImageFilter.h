@@ -206,10 +206,10 @@ protected:
   virtual ~DisplacementFieldToBSplineImageFilter();
 
   /** Standard print self function **/
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /** preprocessing function */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   DisplacementFieldToBSplineImageFilter( const Self& ); //purposely not implemented

@@ -89,7 +89,7 @@ public:
   itkGetModifiableObjectMacro(Points, PointsContainer );
 
   /** Compute the kd-tree that will facilitate the querying the points. */
-  void Initialize();
+  virtual void Initialize();
 
   /** Find the closest point */
   PointIdentifier FindClosestPoint( const PointType &query ) const;

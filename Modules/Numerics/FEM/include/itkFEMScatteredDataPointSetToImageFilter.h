@@ -269,11 +269,11 @@ protected:
   void InitializeLoads(FEMObjectType * femObject);
 
   /** Run the solver and call ProduceDeformationField to produce deformation field */
-  void GenerateData();
+  virtual void GenerateData();
 
   void ProduceDeformationField();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
 

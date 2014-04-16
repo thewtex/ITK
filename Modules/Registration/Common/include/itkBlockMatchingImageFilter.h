@@ -178,7 +178,7 @@ protected:
   BlockMatchingImageFilter();
   ~BlockMatchingImageFilter();
 
-  void PrintSelf( std::ostream & os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
   /** Static function used as a "callback" by the MultiThreader.  The threading
    * library will call this routine for each thread, which will delegate the

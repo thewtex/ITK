@@ -61,10 +61,10 @@ public:
 
   /** Set the input in the form of an itk::Image */
   using Superclass::SetInput;
-  void SetInput(const InputImageType *);
+  virtual void SetInput(const InputImageType *);
 
   /** This call delegate the update to the importer */
-  void Update();
+  virtual void Update();
 
 protected:
   ImageToRGBVTKImageFilter();

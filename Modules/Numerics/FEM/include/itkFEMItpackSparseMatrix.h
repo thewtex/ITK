@@ -203,7 +203,7 @@ private:
   friend class LinearSystemWrapperItpack;
 
   /** initialize matrix */
-  void Initialize();
+  virtual void Initialize();
 
   /** unfinalize matrix */
   void UnFinalize();

@@ -117,7 +117,7 @@ public:
   itkTypeMacro(Semaphore, LightObject);
 
   /** Initialize the semaphore with a count of value. */
-  void Initialize(unsigned int value);
+  virtual void Initialize(unsigned int value);
 
   /** Increment the semaphore count, unblocking up to one thread that may be
       blocked in the down() method.  */

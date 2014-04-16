@@ -134,9 +134,9 @@ protected:
   void BeforeThreadedGenerateData(void);
 
   /** Print internal ivars */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateOutputInformation();
+  virtual void GenerateOutputInformation();
 
 private:
   LabelOverlayImageFilter(const Self &); //purposely not implemented

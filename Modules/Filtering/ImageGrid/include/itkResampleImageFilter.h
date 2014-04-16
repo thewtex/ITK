@@ -294,7 +294,7 @@ protected:
   ResampleImageFilter();
   ~ResampleImageFilter() {
   }
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Override VeriyInputInformation() since this filter's inputs do
    * not need to occoupy the same physical space.

@@ -79,7 +79,7 @@ public:
 protected:
   TorusInteriorExteriorSpatialFunction();
   virtual ~TorusInteriorExteriorSpatialFunction();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   TorusInteriorExteriorSpatialFunction(const Self &); //purposely not

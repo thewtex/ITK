@@ -65,7 +65,7 @@ public:
   OptimizerParameters( const ArrayType& array );
 
   /** Initialize. Initialization called by constructors. */
-  void Initialize();
+  virtual void Initialize();
 
   /** Set a new data pointer for the parameter data, pointing it to a different
    * memory block. The size of the new memory block must equal the current

@@ -98,7 +98,7 @@ protected:
 
   AffineGeometryFrame();
   virtual ~AffineGeometryFrame();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** used in clone to initialize the newly created geometry */
   virtual void InitializeGeometry(Self *newGeometry) const;

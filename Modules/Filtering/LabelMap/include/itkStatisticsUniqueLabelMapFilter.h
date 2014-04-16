@@ -83,7 +83,7 @@ protected:
   StatisticsUniqueLabelMapFilter();
   ~StatisticsUniqueLabelMapFilter() {}
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   StatisticsUniqueLabelMapFilter(const Self &); //purposely not implemented

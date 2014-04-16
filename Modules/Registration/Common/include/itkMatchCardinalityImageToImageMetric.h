@@ -130,7 +130,7 @@ public:
 protected:
   MatchCardinalityImageToImageMetric();
   virtual ~MatchCardinalityImageToImageMetric() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
    * Non-const version of GetValue().  This is a hack around various

@@ -309,7 +309,7 @@ public:
 protected:
   WindowedSincInterpolateImageFunction();
   virtual ~WindowedSincInterpolateImageFunction();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   WindowedSincInterpolateImageFunction(const Self &); //not implemented

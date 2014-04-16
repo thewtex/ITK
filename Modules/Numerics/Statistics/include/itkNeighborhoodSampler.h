@@ -75,9 +75,9 @@ public:
 protected:
   NeighborhoodSampler();
   virtual ~NeighborhoodSampler();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   NeighborhoodSampler(const Self &); //purposely not implemented

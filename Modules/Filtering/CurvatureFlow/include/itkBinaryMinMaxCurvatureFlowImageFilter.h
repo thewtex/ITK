@@ -117,7 +117,7 @@ protected:
 protected:
   BinaryMinMaxCurvatureFlowImageFilter();
   ~BinaryMinMaxCurvatureFlowImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Initialize the state of filter and equation before each iteration.
    * Progress feeback is implemented as part of this method. */

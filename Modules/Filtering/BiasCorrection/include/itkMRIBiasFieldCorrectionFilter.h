@@ -441,7 +441,7 @@ public:
    * intensity values, tissue classes' statistics values and the optimizer's
    * initial radius NOTE: If the tissue class statistics values (mean and
    * sigma values) then it will throw exception. */
-  void Initialize()
+  virtual void Initialize()
   throw ( ExceptionObject );
 
   /** Optimizes the bias field only using the image data that are in
@@ -463,7 +463,7 @@ public:
 protected:
   MRIBiasFieldCorrectionFilter();
   virtual ~MRIBiasFieldCorrectionFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Checks if the mask image's dimensionality and size matches with
    * those of the input image */
@@ -518,7 +518,7 @@ protected:
   void AdjustSlabRegions(SlabRegionVectorType & slabs,
                          OutputImageRegionType requestedRegion);
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   MRIBiasFieldCorrectionFilter(const Self &); //purposely not implemented

@@ -151,7 +151,7 @@ protected:
   ~DeformableSimplexMesh3DGradientConstraintForceFilter();
   DeformableSimplexMesh3DGradientConstraintForceFilter(const Self &) {}
   void operator=(const Self &){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
    * Compute the external force component

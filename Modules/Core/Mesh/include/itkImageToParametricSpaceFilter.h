@@ -82,10 +82,10 @@ public:
                       TOutputMesh::PointDimension);
 
   /** Some typedefs associated with the output mesh. */
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
   /** Prepare the output. */
-  void GenerateOutputInformation(void);
+  virtual void GenerateOutputInformation(void);
 
   /** Select if the indices of input image pixels will be
    * stored as data at each one of the mesh points.
@@ -97,7 +97,7 @@ public:
 protected:
   ImageToParametricSpaceFilter();
   ~ImageToParametricSpaceFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   //purposely not implemented

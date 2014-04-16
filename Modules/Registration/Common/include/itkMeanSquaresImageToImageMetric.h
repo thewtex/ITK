@@ -105,7 +105,7 @@ protected:
 
   MeanSquaresImageToImageMetric();
   virtual ~MeanSquaresImageToImageMetric();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
 

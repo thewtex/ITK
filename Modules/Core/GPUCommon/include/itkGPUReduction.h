@@ -91,7 +91,7 @@ public:
 protected:
   GPUReduction();
   ~GPUReduction();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** GPU kernel manager for GPUFiniteDifferenceFunction class */
   GPUKernelManager::Pointer m_GPUKernelManager;

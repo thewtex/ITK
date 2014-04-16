@@ -174,7 +174,7 @@ protected:
 
   /** Overridden from ProcessObject to set certain values before starting the
     * finite difference solver and then create an appropriate output */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   AntiAliasBinaryImageFilter(const Self &); //purposely not implemented

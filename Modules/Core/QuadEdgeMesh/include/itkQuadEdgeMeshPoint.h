@@ -93,7 +93,7 @@ public:
   int GetValence() const;
 
 protected:
-  void Initialize();
+  virtual void Initialize();
 
 protected:
   TQuadEdge *m_Edge;  /**< Entry edge for this point into an Onext ring */

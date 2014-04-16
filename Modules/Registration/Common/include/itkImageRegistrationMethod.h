@@ -214,7 +214,7 @@ public:
 protected:
   ImageRegistrationMethod();
   virtual ~ImageRegistrationMethod() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
   /** Method invoked by the pipeline in order to trigger the computation of
    * the registration. */
   void  GenerateData();

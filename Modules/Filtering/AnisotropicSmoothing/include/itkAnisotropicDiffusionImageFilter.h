@@ -136,7 +136,7 @@ public:
 protected:
   AnisotropicDiffusionImageFilter();
   ~AnisotropicDiffusionImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Supplies the halting criteria for this class of filters.  The
    * algorithm will stop after a user-specified number of iterations. */

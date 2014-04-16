@@ -220,10 +220,10 @@ public:
 protected:
   MultiResolutionPyramidImageFilter();
   ~MultiResolutionPyramidImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate the output data. */
-  void GenerateData();
+  virtual void GenerateData();
 
   double m_MaximumError;
 

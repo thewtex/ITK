@@ -72,7 +72,7 @@ protected:
     m_OtsuMultipleThresholdsCalculator = OtsuMultipleThresholdsCalculator<THistogram>::New();
   }
   virtual ~OtsuThresholdCalculator() {};
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
 private:
   OtsuThresholdCalculator(const Self&); //purposely not implemented

@@ -83,13 +83,13 @@ public:
 protected:
   ReflectImageFilter();
   virtual ~ReflectImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This method implements the actual reflection of the image.
    *
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
 private:
   ReflectImageFilter(const Self &); //purposely not implemented

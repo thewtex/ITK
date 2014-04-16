@@ -122,7 +122,7 @@ public:
 protected:
   KappaStatisticImageToImageMetric();
   virtual ~KappaStatisticImageToImageMetric() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   KappaStatisticImageToImageMetric(const Self &); //purposely not implemented

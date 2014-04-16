@@ -184,7 +184,7 @@ protected:
   virtual ~BilateralImageFilter() {}
 
   /** PrintSelf. */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Do some setup before the ThreadedGenerateData */
   void BeforeThreadedGenerateData();

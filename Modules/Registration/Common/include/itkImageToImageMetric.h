@@ -318,7 +318,7 @@ protected:
   ImageToImageMetric();
   virtual ~ImageToImageMetric();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** \class FixedImageSamplePoint
    * A fixed image spatial sample consists of the fixed domain point

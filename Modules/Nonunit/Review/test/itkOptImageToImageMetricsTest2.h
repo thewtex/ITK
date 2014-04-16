@@ -113,7 +113,7 @@ public:
     m_Metric = metric;
     }
 
-  void Initialize()
+  virtual void Initialize()
     {
     // Do stuff on m_Metric
     m_Metric->UseAllPixelsOn();

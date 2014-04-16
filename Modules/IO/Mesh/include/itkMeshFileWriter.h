@@ -153,7 +153,7 @@ public:
 protected:
   MeshFileWriter();
   ~MeshFileWriter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   template< typename Output >
   void CopyPointsToBuffer(Output *data);

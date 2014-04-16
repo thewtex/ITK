@@ -134,12 +134,12 @@ protected:
   ExponentialDisplacementFieldImageFilter();
   virtual ~ExponentialDisplacementFieldImageFilter() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
    * GenerateData()
    */
-  void GenerateData();
+  virtual void GenerateData();
 
   typedef typename InputImageType::RegionType RegionType;
 

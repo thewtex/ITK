@@ -148,13 +148,13 @@ public:
 protected:
   DeformationFieldSource();
   ~DeformationFieldSource() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
    * GenerateData() computes the internal KernelBase spline and resamples
    * the deformation field.
    */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Subsample the input deformation field and generate the
    *  landmarks for the kernel base spline

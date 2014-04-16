@@ -95,7 +95,7 @@ public:
   unsigned int GetNumberOfValues() const;
 
   /** Initialize the arrays. */
-  void Initialize(unsigned int rangeDimension);
+  virtual void Initialize(unsigned int rangeDimension);
 
   /** Set the original data array. */
   void SetOriginalDataArray(MeasureType *setOriginalDataArray);
@@ -104,7 +104,7 @@ protected:
   CumulativeGaussianCostFunction();
   virtual ~CumulativeGaussianCostFunction();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
 

@@ -100,7 +100,7 @@ protected:
   MiniPipelineSeparableImageFilter();
   ~MiniPipelineSeparableImageFilter() {}
 
-  void GenerateData();
+  virtual void GenerateData();
 
   typename FilterType::Pointer m_Filters[ImageDimension];
   typename CastType::Pointer m_Cast;

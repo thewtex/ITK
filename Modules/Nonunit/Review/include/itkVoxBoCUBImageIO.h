@@ -88,7 +88,7 @@ public:
 
   VoxBoCUBImageIO();
   ~VoxBoCUBImageIO();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   VoxBoCUBImageIO(const Self &); //purposely not implemented

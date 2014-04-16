@@ -268,7 +268,7 @@ public:
 protected:
   PointSetToPointSetMetricv4();
   virtual ~PointSetToPointSetMetricv4();
-  void PrintSelf( std::ostream & os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
   typename FixedPointSetType::ConstPointer                m_FixedPointSet;
   mutable typename FixedTransformedPointSetType::Pointer  m_FixedTransformedPointSet;

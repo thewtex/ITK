@@ -147,7 +147,7 @@ public:
 protected:
   LBFGSBOptimizerv4();
   virtual ~LBFGSBOptimizerv4();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Internal optimizer type. */
   typedef   vnl_lbfgsb   InternalOptimizerType;

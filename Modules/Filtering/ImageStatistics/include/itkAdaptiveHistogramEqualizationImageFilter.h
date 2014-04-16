@@ -117,12 +117,12 @@ protected:
   }
 
   virtual ~AdaptiveHistogramEqualizationImageFilter(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
    * Standard pipeline method
    */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   AdaptiveHistogramEqualizationImageFilter(const Self &); //purposely not

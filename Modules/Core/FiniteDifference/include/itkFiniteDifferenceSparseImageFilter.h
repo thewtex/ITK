@@ -115,7 +115,7 @@ public:
 protected:
   FiniteDifferenceSparseImageFilter();
   ~FiniteDifferenceSparseImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This method splits the active pixels of the sparse image into equal size
    *  lists for multi-threading. These lists remain constant throughout the

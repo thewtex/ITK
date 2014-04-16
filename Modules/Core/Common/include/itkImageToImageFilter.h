@@ -325,9 +325,9 @@ protected:
    * the versions from ProcessObject to avoid warnings about hiding
    * methods from the superclass.
    */
-  void PushBackInput(const DataObject *input)
+  virtual void PushBackInput(const DataObject *input)
   { Superclass::PushBackInput(input); }
-  void PushFrontInput(const DataObject *input)
+  virtual void PushFrontInput(const DataObject *input)
   { Superclass::PushFrontInput(input); }
 
 private:

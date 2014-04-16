@@ -69,7 +69,7 @@ public:
 
   /** Connects the input image for which the histogram is going to be computed
     */
-  void SetInput(const ImageType *);
+  virtual void SetInput(const ImageType *);
 
   /** Return the histogram. o
    \warning This output is only valid after the Compute() method has been invoked
@@ -91,7 +91,7 @@ public:
 protected:
   ScalarImageToHistogramGenerator();
   virtual ~ScalarImageToHistogramGenerator() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
 

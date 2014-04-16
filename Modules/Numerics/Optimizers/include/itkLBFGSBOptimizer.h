@@ -180,7 +180,7 @@ public:
 protected:
   LBFGSBOptimizer();
   virtual ~LBFGSBOptimizer();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef Superclass::CostFunctionAdaptorType CostFunctionAdaptorType;
 

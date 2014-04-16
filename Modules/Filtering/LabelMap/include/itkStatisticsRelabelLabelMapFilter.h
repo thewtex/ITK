@@ -88,7 +88,7 @@ protected:
   StatisticsRelabelLabelMapFilter();
   ~StatisticsRelabelLabelMapFilter() {}
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   StatisticsRelabelLabelMapFilter(const Self &); //purposely not implemented

@@ -268,15 +268,15 @@ public:
 protected:
   OrientImageFilter();
   ~OrientImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** OrientImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** OrientImageFilter will produce the entire output. */
-  void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
+  virtual void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
 
   /*** Member functions used by GenerateData: */
   void DeterminePermutationsAndFlips(const SpatialOrientation::ValidCoordinateOrientationFlags fixed_orient,
@@ -288,7 +288,7 @@ protected:
 
   /** Single-threaded version of GenerateData.  This filter delegates
    * to PermuteAxesImageFilter and FlipImageFilter. */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   OrientImageFilter(const Self &); //purposely not implemented

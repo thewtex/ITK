@@ -127,7 +127,7 @@ protected:
   FileListVideoIO();
   ~FileListVideoIO();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Reset member variables to empty state closed */
   void ResetMembers();

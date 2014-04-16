@@ -94,7 +94,7 @@ public:
 protected:
   TestImageFunction(){};
   ~TestImageFunction(){};
-  void PrintSelf(std::ostream & os, Indent indent) const
+  virtual void PrintSelf(std::ostream & os, Indent indent) const
    {
    this->Superclass::PrintSelf(os, indent);
    }

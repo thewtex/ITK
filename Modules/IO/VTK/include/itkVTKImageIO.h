@@ -106,7 +106,7 @@ protected:
   VTKImageIO();
   ~VTKImageIO();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void InternalReadImageInformation(std::ifstream & file);
 

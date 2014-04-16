@@ -331,7 +331,7 @@ private:
 protected:
   JointDomainImageToListSampleAdaptor();
   virtual ~JointDomainImageToListSampleAdaptor() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   JointDomainImageToListSampleAdaptor(const Self &); //purposely not implemented

@@ -103,7 +103,7 @@ public:
   typedef typename NumericTraits<
     InputImagePixelType >::RealType InputRealType;
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Set seed point 1. This seed will be isolated from Seed2 (if possible).
    *  All pixels connected to this seed will be replaced with ReplaceValue.
@@ -202,12 +202,12 @@ protected:
   bool m_ThresholdingFailed;
 
   // Override since the filter needs all the data for the algorithm
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   // Override since the filter produces the entire dataset
-  void EnlargeOutputRequestedRegion(DataObject *output);
+  virtual void EnlargeOutputRequestedRegion(DataObject *output);
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   IsolatedConnectedImageFilter(const Self &); //purposely not implemented

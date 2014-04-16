@@ -99,7 +99,7 @@ public:
 protected:
   NormalizedCorrelationImageToImageMetric();
   virtual ~NormalizedCorrelationImageToImageMetric() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   NormalizedCorrelationImageToImageMetric(const Self &); //purposely not

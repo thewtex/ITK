@@ -138,10 +138,10 @@ protected:
   virtual ~InvertDisplacementFieldImageFilter();
 
   /** Standard print self function **/
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /** preprocessing function */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Multithreaded function which generates the output field. */
   void ThreadedGenerateData( const RegionType &, ThreadIdType );

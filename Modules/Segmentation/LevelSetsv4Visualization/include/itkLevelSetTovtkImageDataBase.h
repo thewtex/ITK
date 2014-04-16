@@ -48,7 +48,7 @@ public:
 
   virtual vtkImageData* GetOutput() const = 0;
 
-  void Update();
+  virtual void Update();
 
 protected:
   LevelSetTovtkImageDataBase();

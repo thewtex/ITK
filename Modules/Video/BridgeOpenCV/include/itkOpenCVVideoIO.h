@@ -125,7 +125,7 @@ protected:
   OpenCVVideoIO();
   ~OpenCVVideoIO();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Update the local members from the internal capture */
   void UpdateReaderProperties();

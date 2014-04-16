@@ -159,11 +159,11 @@ protected:
   SliceBySliceImageFilter();
   ~SliceBySliceImageFilter() {}
 
-  void VerifyInputInformation();
+  virtual void VerifyInputInformation();
 
-  void GenerateData();
+  virtual void GenerateData();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void GenerateInputRequestedRegion();
 

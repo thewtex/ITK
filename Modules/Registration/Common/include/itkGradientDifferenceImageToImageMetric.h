@@ -146,7 +146,7 @@ public:
 protected:
   GradientDifferenceImageToImageMetric();
   virtual ~GradientDifferenceImageToImageMetric() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Compute the range of the moved image gradients. */
   void ComputeMovedGradientRange(void) const;

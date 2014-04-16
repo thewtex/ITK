@@ -87,11 +87,11 @@ public:
   itkNewMacro(Self);
 
   /** Standard process object method.  This filter is not multithreaded. */
-  void GenerateData();
+  virtual void GenerateData();
 
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
-  void EnlargeOutputRequestedRegion(DataObject *);
+  virtual void EnlargeOutputRequestedRegion(DataObject *);
 
   /** Neighborhood iterator type */
   typedef ConstNeighborhoodIterator< TInputImage >
@@ -109,7 +109,7 @@ public:
 protected:
   TobogganImageFilter();
   ~TobogganImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   TobogganImageFilter(const Self &); //purposely not implemented

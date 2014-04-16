@@ -166,7 +166,7 @@ public:
   itkNewMacro(Self);
 
   /** Print internal ivars */
-  void PrintSelf(std::ostream & os, Indent indent) const
+  virtual void PrintSelf(std::ostream & os, Indent indent) const
   { this->Superclass::PrintSelf(os, indent); }
 
   /** Set the dimension of the tensor. (For example the SymmetricSecondRankTensor

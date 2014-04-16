@@ -162,7 +162,7 @@ public:
 protected:
   RGBGibbsPriorFilter();
   ~RGBGibbsPriorFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void Allocate(); /** allocate memory space for the filter. */
 

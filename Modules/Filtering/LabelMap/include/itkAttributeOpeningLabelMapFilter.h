@@ -105,9 +105,9 @@ protected:
   AttributeOpeningLabelMapFilter();
   ~AttributeOpeningLabelMapFilter() {};
 
-  void GenerateData();
+  virtual void GenerateData();
 
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
 private:
   AttributeOpeningLabelMapFilter(const Self&); //purposely not implemented

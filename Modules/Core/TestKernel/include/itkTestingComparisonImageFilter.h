@@ -105,7 +105,7 @@ protected:
   ComparisonImageFilter();
   virtual ~ComparisonImageFilter() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** ComparisonImageFilter can be implemented as a multithreaded
    * filter.  Therefore, this implementation provides a

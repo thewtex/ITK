@@ -124,10 +124,10 @@ protected:
   /** LabelMapToBinaryImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** LabelMapToBinaryImageFilter will produce the entire output. */
-  void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
+  virtual void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
 
   virtual void BeforeThreadedGenerateData();
 
@@ -135,7 +135,7 @@ protected:
 
   virtual void ThreadedProcessLabelObject(LabelObjectType *labelObject);
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   LabelMapToBinaryImageFilter(const Self &); //purposely not implemented

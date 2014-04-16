@@ -118,7 +118,7 @@ protected:
   DenseFiniteDifferenceImageFilter()
   { m_UpdateBuffer = UpdateBufferType::New(); }
   ~DenseFiniteDifferenceImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** A simple method to copy the data from the input to the output.  ( Supports
    * "read-only" image adaptors in the case where the input image type converts

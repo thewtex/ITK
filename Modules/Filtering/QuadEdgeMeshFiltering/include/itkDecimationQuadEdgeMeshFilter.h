@@ -67,7 +67,7 @@ protected:
   CriterionPointer m_Criterion;
   SizeValueType    m_Iteration;
 
-  void GenerateData()
+  virtual void GenerateData()
   {
     this->CopyInputMeshToOutputMesh();
 
@@ -102,7 +102,7 @@ protected:
 
   virtual bool IsCriterionSatisfied() = 0;
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  virtual void PrintSelf(std::ostream & os, Indent indent) const
   {
     this->Superclass::PrintSelf(os, indent);
     os << indent << "Criterion: " << m_Criterion << std::endl;

@@ -102,9 +102,9 @@ protected:
   AttributeUniqueLabelMapFilter();
   ~AttributeUniqueLabelMapFilter() {};
 
-  void GenerateData();
+  virtual void GenerateData();
 
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
   bool m_ReverseOrdering;
 

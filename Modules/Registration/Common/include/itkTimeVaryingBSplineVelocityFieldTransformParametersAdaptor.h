@@ -189,7 +189,7 @@ protected:
   TimeVaryingBSplineVelocityFieldTransformParametersAdaptor();
   ~TimeVaryingBSplineVelocityFieldTransformParametersAdaptor();
 
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
 private:
   TimeVaryingBSplineVelocityFieldTransformParametersAdaptor( const Self & ); //purposely not implemented

@@ -148,13 +148,13 @@ public:
 protected:
   ImageClassifierFilter();
   virtual ~ImageClassifierFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   ImageClassifierFilter(const Self &); //purposely not implemented
   void operator=(const Self &);        //purposely not implemented
 
   /** Starts the classification process */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
 

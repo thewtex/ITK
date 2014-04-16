@@ -145,7 +145,7 @@ protected:
   void operator=(const Self &);                         //purposely not
                                                         // implemented
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
 

@@ -149,7 +149,7 @@ protected:
   virtual ~ScalableAffineTransform();
 
   /** Print contents of an ScalableAffineTransform */
-  void PrintSelf(std::ostream & s, Indent indent) const;
+  virtual void PrintSelf(std::ostream & s, Indent indent) const;
 
   void SetVarScale(const double *scale)
   { for ( int i = 0; i < InputSpaceDimension; i++ ) { m_Scale[i] = scale[i]; } }

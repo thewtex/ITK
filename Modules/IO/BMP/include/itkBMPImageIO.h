@@ -83,7 +83,7 @@ public:
 
   BMPImageIO();
   ~BMPImageIO();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   BMPImageIO(const Self &);     //purposely not implemented

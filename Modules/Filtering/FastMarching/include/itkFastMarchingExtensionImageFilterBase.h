@@ -128,7 +128,7 @@ public:
 protected:
   FastMarchingExtensionImageFilterBase();
   ~FastMarchingExtensionImageFilterBase(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void InitializeOutput(OutputImageType *);
 

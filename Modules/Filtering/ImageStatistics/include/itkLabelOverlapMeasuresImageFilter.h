@@ -180,7 +180,7 @@ public:
 protected:
   LabelOverlapMeasuresImageFilter();
   ~LabelOverlapMeasuresImageFilter(){};
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /**
    * Pass the input through unmodified. Do this by setting the output to the
@@ -197,7 +197,7 @@ protected:
   void ThreadedGenerateData( const RegionType&, ThreadIdType );
 
   // Override since the filter produces all of its output
-  void EnlargeOutputRequestedRegion( DataObject *data );
+  virtual void EnlargeOutputRequestedRegion( DataObject *data );
 
 private:
   LabelOverlapMeasuresImageFilter( const Self& ); //purposely not implemented

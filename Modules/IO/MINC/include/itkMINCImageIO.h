@@ -113,7 +113,7 @@ public:
 protected:
   MINCImageIO();
   ~MINCImageIO();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void WriteSlice(std::string & fileName, const void *buffer);
 

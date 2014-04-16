@@ -109,7 +109,7 @@ protected:
   // See superclass for doxygen documentation
   //
   // Override since the filter produces all of its output
-  void EnlargeOutputRequestedRegion(DataObject *data);
+  virtual void EnlargeOutputRequestedRegion(DataObject *data);
 
 private:
   HashImageFilter(const Self &); //purposely not implemented

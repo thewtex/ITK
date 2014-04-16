@@ -172,7 +172,7 @@ public:
 protected:
   BoundingBox();
   virtual ~BoundingBox();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef typename PointsContainer::ConstIterator ConstIterator;
 

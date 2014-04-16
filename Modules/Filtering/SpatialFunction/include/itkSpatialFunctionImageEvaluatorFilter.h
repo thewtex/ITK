@@ -90,7 +90,7 @@ protected:
   virtual ~SpatialFunctionImageEvaluatorFilter() {}
 
   /** Method for evaluating the implicit function over the image. */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   SpatialFunctionImageEvaluatorFilter(const Self &); //purposely not implemented

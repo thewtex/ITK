@@ -111,10 +111,10 @@ public:
 
   /** Creates an image twice the size of the input image with spacing half the
     * input image. */
-  void GenerateOutputInformation();
+  virtual void GenerateOutputInformation();
 
   /** This filter requires all of the input image */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -125,13 +125,13 @@ public:
 
 protected:
 
-  void GenerateData();
+  virtual void GenerateData();
 
-  void EnlargeOutputRequestedRegion(DataObject *output);
+  virtual void EnlargeOutputRequestedRegion(DataObject *output);
 
   BSplineUpsampleImageFilter();
   virtual ~BSplineUpsampleImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   BSplineUpsampleImageFilter(const Self &); //purposely not implemented

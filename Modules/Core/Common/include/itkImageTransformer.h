@@ -228,9 +228,9 @@ protected:
    * methods from the superclass.
    * NOTE: The same code resides in ImageToImageFilter
    */
-  void PushBackInput(const DataObject *input)
+  virtual void PushBackInput(const DataObject *input)
   { Superclass::PushBackInput(input); }
-  void PushFrontInput(const DataObject *input)
+  virtual void PushFrontInput(const DataObject *input)
   { Superclass::PushFrontInput(input); }
 
   /** Internal structure used for passing image data into the threading library

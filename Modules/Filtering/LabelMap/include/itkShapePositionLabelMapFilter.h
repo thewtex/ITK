@@ -130,7 +130,7 @@ protected:
     labelObject->AddIndex( idx );
   }
 
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
   AttributeType m_Attribute;
 

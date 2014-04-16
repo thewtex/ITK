@@ -114,7 +114,7 @@ public:
 protected:
   MinimumMaximumImageFilter();
   virtual ~MinimumMaximumImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Pass the input through unmodified. Do this by Grafting in the
     AllocateOutputs method. */
@@ -133,10 +133,10 @@ protected:
                              ThreadIdType threadId);
 
   // Override since the filter needs all the data for the algorithm
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   // Override since the filter produces all of its output
-  void EnlargeOutputRequestedRegion(DataObject *data);
+  virtual void EnlargeOutputRequestedRegion(DataObject *data);
 
 private:
   MinimumMaximumImageFilter(const Self &); //purposely not implemented

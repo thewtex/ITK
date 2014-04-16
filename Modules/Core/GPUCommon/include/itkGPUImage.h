@@ -166,7 +166,7 @@ public:
    * increment GPU's time stamp in GPUGenerateData() the
    * CPU's time stamp will be increased after that.
    */
-  void DataHasBeenGenerated()
+  virtual void DataHasBeenGenerated()
   {
     Superclass::DataHasBeenGenerated();
     if( m_DataManager->IsCPUBufferDirty() )

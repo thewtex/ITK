@@ -293,7 +293,7 @@ public:
 protected:
   ImageToListSampleAdaptor();
   virtual ~ImageToListSampleAdaptor() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   ImageToListSampleAdaptor(const Self &); //purposely not implemented

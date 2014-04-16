@@ -86,7 +86,7 @@ public:
 protected:
   ElasticBodyReciprocalSplineKernelTransform();
   virtual ~ElasticBodyReciprocalSplineKernelTransform();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef typename Superclass::GMatrixType GMatrixType;
   /** Compute G(x)

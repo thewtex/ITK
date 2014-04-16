@@ -67,7 +67,7 @@ public:
   const ParametersType & GetParameters() const
   { return m_Parameters; }
 
-  void Initialize(void) throw ( itk::ExceptionObject ) {}
+  virtual void Initialize(void) throw ( itk::ExceptionObject ) {}
 
   ParametersType  m_Parameters;
 

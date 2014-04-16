@@ -109,7 +109,7 @@ protected:
   VTKPolyDataMeshIO();
   virtual ~VTKPolyDataMeshIO() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   template< typename T >
   void UpdateCellInformation(T *buffer)

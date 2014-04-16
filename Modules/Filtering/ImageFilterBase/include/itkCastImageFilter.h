@@ -133,7 +133,7 @@ protected:
   CastImageFilter();
   // virtual ~CastImageFilter() {} default OK
 
-  void GenerateData();
+  virtual void GenerateData();
 
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId);
 

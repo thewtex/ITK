@@ -180,7 +180,7 @@ protected:
   TransformToDeformationFieldSource(void);
   ~TransformToDeformationFieldSource(void) {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** TransformToDeformationFieldSource can be implemented as a multithreaded
    * filter.

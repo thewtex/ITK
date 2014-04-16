@@ -143,10 +143,10 @@ public:
 protected:
   GradientMagnitudeRecursiveGaussianImageFilter();
   virtual ~GradientMagnitudeRecursiveGaussianImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate Data */
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
   /** GradientMagnitudeRecursiveGaussianImageFilter needs all of the
    * input to produce an output. Therefore,
@@ -159,7 +159,7 @@ protected:
   /** GradientMagnitudeRecursiveGaussianImageFilter produces all of
    * the output.  Therefore, it needs to provide an implementation of
    * EnlargeOutputRequestedRegion(). */
-  void EnlargeOutputRequestedRegion(DataObject *output);
+  virtual void EnlargeOutputRequestedRegion(DataObject *output);
 
 private:
   GradientMagnitudeRecursiveGaussianImageFilter(const Self &); //purposely not

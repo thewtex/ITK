@@ -80,7 +80,7 @@ public:
 protected:
   AnchorErodeDilateImageFilter();
   ~AnchorErodeDilateImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Multi-thread version GenerateData. */
   void  ThreadedGenerateData(const InputImageRegionType & outputRegionForThread,

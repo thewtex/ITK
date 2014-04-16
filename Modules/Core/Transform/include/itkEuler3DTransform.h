@@ -122,7 +122,7 @@ protected:
   {
   }
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Set values of angles directly without recomputing other parameters. */
   void SetVarRotation(ScalarType angleX, ScalarType angleY, ScalarType angleZ);

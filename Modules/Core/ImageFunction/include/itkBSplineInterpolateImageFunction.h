@@ -352,7 +352,7 @@ protected:
 
   BSplineInterpolateImageFunction();
   ~BSplineInterpolateImageFunction();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   // These are needed by the smoothing spline routine.
   // temp storage for processing of Coefficients

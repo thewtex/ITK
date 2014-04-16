@@ -127,9 +127,9 @@ public:
 protected:
   MorphologicalGradientImageFilter();
   ~MorphologicalGradientImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   MorphologicalGradientImageFilter(const Self &); //purposely not implemented

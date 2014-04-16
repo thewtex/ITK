@@ -149,7 +149,7 @@ public:
   itkGetConstMacro(Artery, bool);
 
   /** Copy the information from another SpatialObject */
-  void CopyInformation(const DataObject *data);
+  virtual void CopyInformation(const DataObject *data);
 
 protected:
   PointListType m_Points;

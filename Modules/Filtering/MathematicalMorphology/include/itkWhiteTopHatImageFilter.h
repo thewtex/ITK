@@ -98,9 +98,9 @@ public:
 protected:
   WhiteTopHatImageFilter();
   ~WhiteTopHatImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   WhiteTopHatImageFilter(const Self &); //purposely not implemented

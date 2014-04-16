@@ -126,7 +126,7 @@ public:
 protected:
   DelaunayConformingQuadEdgeMeshFilter();
   virtual ~DelaunayConformingQuadEdgeMeshFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   OutputEdgeCellListType m_ListOfConstrainedEdges;
   PriorityQueuePointer   m_PriorityQueue;
@@ -135,7 +135,7 @@ protected:
   SizeValueType           m_NumberOfEdgeFlips;
   FlipEdgeFunctionPointer m_FlipEdge;
 
-  void GenerateData();
+  virtual void GenerateData();
 
   void InitializePriorityQueue();
 

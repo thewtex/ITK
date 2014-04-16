@@ -147,7 +147,7 @@ public:
 protected:
   MeanSquareRegistrationFunction();
   ~MeanSquareRegistrationFunction() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** FixedImage image neighborhood iterator type. */
   typedef ConstNeighborhoodIterator< FixedImageType > FixedImageNeighborhoodIteratorType;

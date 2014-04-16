@@ -96,7 +96,7 @@ public:
 protected:
   JoinSeriesImageFilter();
   ~JoinSeriesImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Override VeriyInputInformation() to add the additional check
    * that all inputs have the same number of components.

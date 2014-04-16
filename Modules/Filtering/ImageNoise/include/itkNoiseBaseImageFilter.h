@@ -63,7 +63,7 @@ protected:
 
   virtual ~NoiseBaseImageFilter() = 0;
 
-  void PrintSelf(std::ostream &os, Indent indent) const;
+  virtual void PrintSelf(std::ostream &os, Indent indent) const;
 
   inline static uint32_t Hash(uint32_t a, uint32_t b)
   {

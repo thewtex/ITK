@@ -132,7 +132,7 @@ protected:
   }
 
   virtual ~ExtractOrthogonalSwath2DImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   //--------------------------------------------------------------------------
   //

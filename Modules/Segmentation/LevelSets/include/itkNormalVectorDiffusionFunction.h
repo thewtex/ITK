@@ -135,7 +135,7 @@ public:
 protected:
   NormalVectorDiffusionFunction();
   ~NormalVectorDiffusionFunction() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** The method called in anisotropic diffusion to inhibit diffusion across
       areas with large curvature. */

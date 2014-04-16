@@ -273,7 +273,7 @@ private:
   void Print(std::ostream & os);
 
 protected:
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   double LegendreSum(const double x, int n,
                      const CoefficientArrayType & coef,

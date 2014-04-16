@@ -107,7 +107,7 @@ public:
 protected:
   ErodeObjectMorphologyImageFilter();
   ~ErodeObjectMorphologyImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Apply the kernel to the neighborhood given.
    *

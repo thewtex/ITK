@@ -162,7 +162,7 @@ public:
 protected:
   BayesianClassifierInitializationImageFilter();
   virtual ~BayesianClassifierInitializationImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Initialize the membership functions. This will be called only if the membership
    * function hasn't already been set. This method initializes membership functions

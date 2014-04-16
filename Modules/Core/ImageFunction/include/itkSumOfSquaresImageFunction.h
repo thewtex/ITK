@@ -125,7 +125,7 @@ public:
 protected:
   SumOfSquaresImageFunction();
   ~SumOfSquaresImageFunction(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   SumOfSquaresImageFunction(const Self &); //purposely not implemented

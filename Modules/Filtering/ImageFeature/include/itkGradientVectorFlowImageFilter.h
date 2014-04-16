@@ -122,7 +122,7 @@ public:
 protected:
   GradientVectorFlowImageFilter();
   ~GradientVectorFlowImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void GenerateData();
 

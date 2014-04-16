@@ -144,7 +144,7 @@ public:
 protected:
   VectorCentralDifferenceImageFunction();
   ~VectorCentralDifferenceImageFunction(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   VectorCentralDifferenceImageFunction(const Self &); //purposely not

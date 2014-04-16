@@ -228,7 +228,7 @@ public:
 protected:
   ExtractSliceImageFilter();
   ~ExtractSliceImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** ExtractSliceImageFilter can produce an image which is a different
    * resolution than its input image.  As such, ExtractSliceImageFilter

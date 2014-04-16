@@ -110,7 +110,7 @@ public:
 protected:
   OrthogonallyCorrected2DParametricPath();
   ~OrthogonallyCorrected2DParametricPath(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   OrthogonallyCorrected2DParametricPath(const Self &); //purposely not

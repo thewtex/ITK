@@ -127,7 +127,7 @@ public:
 protected:
   SimpleContourExtractorImageFilter();
   virtual ~SimpleContourExtractorImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** SimpleContourExtractorImageFilter can be implemented as a
      * multithreaded filter. Therefore, this implementation provides a

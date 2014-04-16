@@ -69,7 +69,7 @@ protected:
   GaussianExponentialDiffeomorphicTransformParametersAdaptor();
   ~GaussianExponentialDiffeomorphicTransformParametersAdaptor();
 
-  void PrintSelf( std::ostream & os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
   GaussianExponentialDiffeomorphicTransformParametersAdaptor( const Self & ); //purposely not implemented

@@ -120,7 +120,7 @@ protected:
   MeshSpatialObject();
   virtual ~MeshSpatialObject();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 };
 } // end of namespace itk
 

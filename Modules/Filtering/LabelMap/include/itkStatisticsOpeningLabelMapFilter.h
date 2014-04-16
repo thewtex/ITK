@@ -88,7 +88,7 @@ protected:
   StatisticsOpeningLabelMapFilter();
   ~StatisticsOpeningLabelMapFilter() {}
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   StatisticsOpeningLabelMapFilter(const Self &); //purposely not implemented

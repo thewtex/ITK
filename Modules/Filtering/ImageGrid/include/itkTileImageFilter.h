@@ -131,11 +131,11 @@ protected:
   TileImageFilter();
   // ~TileImageFilter(){} default implementation ok
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
-  void GenerateOutputInformation();
+  virtual void GenerateOutputInformation();
 
   void  GenerateData();
 

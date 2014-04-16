@@ -209,7 +209,7 @@ public:
 protected:
   CentralDifferenceImageFunction();
   ~CentralDifferenceImageFunction(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   CentralDifferenceImageFunction(const Self &); //purposely not implemented

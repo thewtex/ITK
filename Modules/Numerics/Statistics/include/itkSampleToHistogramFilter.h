@@ -136,7 +136,7 @@ protected:
   SampleToHistogramFilter();
   virtual ~SampleToHistogramFilter();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Make a DataObject of the correct type to used as the specified
    * output. This method

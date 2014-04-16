@@ -99,7 +99,7 @@ public:
 protected:
   DistanceToCentroidMembershipFunction(void);
   virtual ~DistanceToCentroidMembershipFunction(void) {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Return a copy of the current membership function */
   virtual typename LightObject::Pointer InternalClone() const;

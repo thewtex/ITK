@@ -103,7 +103,7 @@ public:
   itkGetStringMacro(FileName);
 
   /** Read NeuralNetwork */
-  void Update(void);
+  virtual void Update(void);
 
   TNetwork * GetOutput() const;
 

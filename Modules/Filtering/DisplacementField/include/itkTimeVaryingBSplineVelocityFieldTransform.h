@@ -170,7 +170,7 @@ public:
 protected:
   TimeVaryingBSplineVelocityFieldTransform();
   virtual ~TimeVaryingBSplineVelocityFieldTransform();
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
 private:
   TimeVaryingBSplineVelocityFieldTransform( const Self& ); //purposely not implementen

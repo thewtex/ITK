@@ -89,7 +89,7 @@ public:
   void SetInput2(const PolylineType *polyline);
 
   /* Generate Data */
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking

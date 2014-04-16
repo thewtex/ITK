@@ -149,7 +149,7 @@ protected:
   }
 
   /** ITK print mechanism */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Explicitly handle temporal regions in EnlargeRequestedRegion. The default
    * implementation makes sure that the output requested temporal region is

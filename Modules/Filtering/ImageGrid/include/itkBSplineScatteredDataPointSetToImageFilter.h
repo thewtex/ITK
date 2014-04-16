@@ -321,7 +321,7 @@ protected:
   BSplineScatteredDataPointSetToImageFilter();
   virtual ~BSplineScatteredDataPointSetToImageFilter();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void ThreadedGenerateData( const RegionType &, ThreadIdType );
 
@@ -331,7 +331,7 @@ protected:
 
   unsigned int SplitRequestedRegion( unsigned int, unsigned int, RegionType & );
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
 

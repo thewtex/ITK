@@ -232,9 +232,9 @@ protected:
   }
 
   virtual ~STAPLEImageFilter() {}
-  void GenerateData();
+  virtual void GenerateData();
 
-  void PrintSelf(std::ostream &, Indent) const;
+  virtual void PrintSelf(std::ostream &, Indent) const;
 
 private:
   STAPLEImageFilter(const Self &); //purposely not implemented

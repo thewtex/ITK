@@ -127,7 +127,7 @@ public:
   }
 
   /** Standard non-threaded pipeline method */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Set/Get the percentage of the maximum saliency level
    * to merge to. */
@@ -144,12 +144,12 @@ protected:
   virtual ~Relabeler() {}
   Relabeler(const Self &) {}
   void operator=(const Self &) {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   double m_FloodLevel;
-  void GenerateOutputRequestedRegion(DataObject *output);
+  virtual void GenerateOutputRequestedRegion(DataObject *output);
 
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 };
 } // end namespace watershed
 } // end namespace itk

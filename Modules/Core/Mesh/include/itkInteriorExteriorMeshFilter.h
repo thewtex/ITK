@@ -84,7 +84,7 @@ public:
 protected:
   InteriorExteriorMeshFilter();
   ~InteriorExteriorMeshFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate requested data. */
   virtual void GenerateData(void);

@@ -112,7 +112,7 @@ public:
 protected:
   MedianImageFunction();
   ~MedianImageFunction(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   MedianImageFunction(const Self &); //purposely not implemented

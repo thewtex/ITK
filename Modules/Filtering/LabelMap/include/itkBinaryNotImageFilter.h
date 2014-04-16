@@ -128,7 +128,7 @@ protected:
     }
   virtual ~BinaryNotImageFilter() {}
 
-  void PrintSelf(std::ostream& os, Indent indent) const
+  virtual void PrintSelf(std::ostream& os, Indent indent) const
     {
     Superclass::PrintSelf(os,indent);
 
@@ -144,7 +144,7 @@ protected:
                     << std::endl;
     }
 
-  void GenerateData()
+  virtual void GenerateData()
     {
     this->GetFunctor().m_ForegroundValue = m_ForegroundValue;
     this->GetFunctor().m_BackgroundValue = m_BackgroundValue;

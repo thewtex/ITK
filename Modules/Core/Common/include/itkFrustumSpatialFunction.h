@@ -99,7 +99,7 @@ public:
 protected:
   FrustumSpatialFunction();
   virtual ~FrustumSpatialFunction();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   FrustumSpatialFunction(const Self &); //purposely not implemented

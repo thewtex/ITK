@@ -78,7 +78,7 @@ public:
 protected:
   NrrdImageIO();
   ~NrrdImageIO();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Utility functions for converting between enumerated data type
       representations */

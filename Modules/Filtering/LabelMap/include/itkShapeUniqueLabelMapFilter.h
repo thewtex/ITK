@@ -107,7 +107,7 @@ protected:
   ShapeUniqueLabelMapFilter();
   ~ShapeUniqueLabelMapFilter() {}
 
-  void GenerateData();
+  virtual void GenerateData();
 
   template< typename TAttributeAccessor >
   void TemplatedGenerateData(const TAttributeAccessor & accessor)
@@ -313,7 +313,7 @@ protected:
       }
   }
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   AttributeType m_Attribute;
 

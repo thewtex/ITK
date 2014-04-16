@@ -63,7 +63,7 @@ public:
   itkTypeMacro(SpatialObjectReader, Object);
 
   /** Load a scene file. */
-  void Update(void);
+  virtual void Update(void);
 
   /** Set the filename  */
   itkSetStringMacro(FileName);

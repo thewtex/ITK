@@ -100,9 +100,9 @@ public:
 protected:
   WeightedCovarianceSampleFilter();
   virtual ~WeightedCovarianceSampleFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Compute covariance matrix with weights computed from a function */
   void ComputeCovarianceMatrixWithWeightingFunction();

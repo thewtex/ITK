@@ -122,7 +122,7 @@ public:
 protected:
   BinaryMedianImageFilter();
   virtual ~BinaryMedianImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** BinaryMedianImageFilter can be implemented as a multithreaded filter.
    * Therefore, this implementation provides a ThreadedGenerateData()

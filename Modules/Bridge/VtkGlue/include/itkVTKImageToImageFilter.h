@@ -64,7 +64,7 @@ public:
   typedef typename    OutputImageType::ConstPointer OutputImagePointer;
 
   /** Set the input in the form of a vtkImageData */
-  void SetInput( vtkImageData * );
+  virtual void SetInput( vtkImageData * );
   using Superclass::SetInput;
 
   /** Return the internal VTK image exporter filter.

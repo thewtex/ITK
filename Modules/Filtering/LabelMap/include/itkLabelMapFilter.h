@@ -92,10 +92,10 @@ public:
   /** LabelMapFilter requires the entire input to be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** LabelMapFilter will produce the entire output. */
-  void EnlargeOutputRequestedRegion( DataObject * itkNotUsed(output) );
+  virtual void EnlargeOutputRequestedRegion( DataObject * itkNotUsed(output) );
 
 protected:
   LabelMapFilter();

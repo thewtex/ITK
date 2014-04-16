@@ -75,7 +75,7 @@ public:
 protected:
   YenThresholdCalculator() {};
   virtual ~YenThresholdCalculator() {};
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
 private:
   YenThresholdCalculator(const Self&); //purposely not implemented

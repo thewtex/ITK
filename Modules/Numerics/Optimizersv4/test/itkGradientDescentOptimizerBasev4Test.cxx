@@ -74,9 +74,9 @@ public:
     return false;
     }
 
-  void Initialize(void) throw ( itk::ExceptionObject ) {}
+  virtual void Initialize(void) throw ( itk::ExceptionObject ) {}
 
-  void PrintSelf(std::ostream& os, itk::Indent indent) const
+  virtual void PrintSelf(std::ostream& os, itk::Indent indent) const
   { Superclass::PrintSelf( os, indent ); }
 
 protected:

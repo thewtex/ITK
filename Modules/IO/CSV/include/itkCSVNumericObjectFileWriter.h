@@ -87,13 +87,13 @@ public:
   itkSetMacro(FieldDelimiterCharacter,char);
 
   /** Set the input object if the matrix is of vnl_matrix type or Array2D. */
-  void SetInput(const vnlMatrixType* obj);
+  virtual void SetInput(const vnlMatrixType* obj);
 
   /** Set the input object if the matrix is of vnl_matrix_fixed type. */
-  void SetInput(const vnlFixedMatrixType* obj);
+  virtual void SetInput(const vnlFixedMatrixType* obj);
 
   /** Set the input object if the matrix is of itkMatrixType. */
-  void SetInput(const itkMatrixType* obj);
+  virtual void SetInput(const itkMatrixType* obj);
 
   void ColumnHeadersPushBack(const std::string & );
   void RowHeadersPushBack(const std::string & );
@@ -114,7 +114,7 @@ protected:
 
   CSVNumericObjectFileWriter();
   virtual ~CSVNumericObjectFileWriter() {}
-  void PrintSelf(std::ostream &os, Indent indent) const;
+  virtual void PrintSelf(std::ostream &os, Indent indent) const;
 
 private:
   std::string               m_FileName;

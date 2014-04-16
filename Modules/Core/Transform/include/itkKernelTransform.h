@@ -221,7 +221,7 @@ public:
 protected:
   KernelTransform();
   virtual ~KernelTransform();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 public:
   /** 'G' matrix typedef. */

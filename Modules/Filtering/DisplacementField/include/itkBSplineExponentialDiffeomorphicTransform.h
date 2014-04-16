@@ -157,7 +157,7 @@ protected:
   BSplineExponentialDiffeomorphicTransform();
   virtual ~BSplineExponentialDiffeomorphicTransform();
 
-  void PrintSelf( std::ostream &, Indent ) const;
+  virtual void PrintSelf( std::ostream &, Indent ) const;
 
 private:
   BSplineExponentialDiffeomorphicTransform( const Self& ); //purposely not implemented

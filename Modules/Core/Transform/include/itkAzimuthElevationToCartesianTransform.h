@@ -209,7 +209,7 @@ protected:
   virtual ~AzimuthElevationToCartesianTransform();
 
   /** Print contents of an AzimuthElevationTransform. */
-  void PrintSelf(std::ostream & s, Indent indent) const;
+  virtual void PrintSelf(std::ostream & s, Indent indent) const;
 
 private:
   AzimuthElevationToCartesianTransform(const Self &); // purposely not

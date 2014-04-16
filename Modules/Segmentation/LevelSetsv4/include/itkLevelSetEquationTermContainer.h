@@ -102,7 +102,7 @@ public:
   TermType* GetTerm( const std::string& iName );
 
   /** \todo  */
-  void Initialize( const LevelSetInputIndexType& iP );
+  virtual void Initialize( const LevelSetInputIndexType& iP );
 
   /** Supply the update at a given pixel location to update the term parameters */
   void UpdatePixel( const LevelSetInputIndexType& iP,
@@ -119,7 +119,7 @@ public:
                                    const LevelSetDataType& iData );
 
   /** Update the term parameters at end of iteration */
-  void Update();
+  virtual void Update();
 
   /** Return the CFL contribution of the current term */
   LevelSetOutputRealType ComputeCFLContribution() const;

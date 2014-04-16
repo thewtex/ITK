@@ -122,7 +122,7 @@ protected:
   MaskedRankImageFilter();
   ~MaskedRankImageFilter() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void ConfigureHistogram( HistogramType & histogram );
 

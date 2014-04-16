@@ -122,7 +122,7 @@ protected:
   GiftiMeshIO();
   virtual ~GiftiMeshIO();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   template< typename TInput, typename TOutput >
   void ConvertBuffer(TInput *input, TOutput *output, SizeValueType numberOfElements)

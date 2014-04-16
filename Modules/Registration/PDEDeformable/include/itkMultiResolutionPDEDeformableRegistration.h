@@ -236,7 +236,7 @@ protected:
   MultiResolutionPDEDeformableRegistration();
   // ~MultiResolutionPDEDeformableRegistration() {} default implementation ok
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate output data by performing the registration
    * at each resolution level. */

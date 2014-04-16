@@ -57,7 +57,7 @@ public:
 protected:
   MeshSourceGraftOutputFilter();
   ~MeshSourceGraftOutputFilter() {};
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
   /** Generate Requested Data */
   virtual void GenerateData( void );

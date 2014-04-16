@@ -173,7 +173,7 @@ protected:
   ~RayCastInterpolateImageFunction(){}
 
   /// Print the object
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /// Transformation used to calculate the new focal point position
   TransformPointer m_Transform;

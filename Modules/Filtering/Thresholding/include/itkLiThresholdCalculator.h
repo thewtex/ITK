@@ -75,7 +75,7 @@ public:
 protected:
   LiThresholdCalculator() {};
   virtual ~LiThresholdCalculator() {};
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
 private:
   LiThresholdCalculator(const Self&); //purposely not implemented

@@ -173,7 +173,7 @@ public:
 protected:
   PathSource();
   virtual ~PathSource() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   // Inherit the empty ProcessObject::GenerateData()
 

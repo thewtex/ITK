@@ -90,7 +90,7 @@ protected:
   TransformParametersAdaptor() {}
   ~TransformParametersAdaptor() {}
 
-  void PrintSelf( std::ostream & os, Indent itkNotUsed( indent ) ) const
+  virtual void PrintSelf( std::ostream & os, Indent itkNotUsed( indent ) ) const
   {
     os << "Fixed parameters: " << this->m_RequiredFixedParameters << std::endl;
   }

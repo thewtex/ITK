@@ -198,7 +198,7 @@ public:
 protected:
   ParticleSwarmOptimizerBase();
   virtual ~ParticleSwarmOptimizerBase();
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream& os, Indent indent ) const;
   void PrintParamtersType(  const ParametersType& x, std::ostream& os ) const;
 
   /**

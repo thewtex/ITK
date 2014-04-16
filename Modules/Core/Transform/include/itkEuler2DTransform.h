@@ -120,7 +120,7 @@ protected:
   Euler2DTransform();
   ~Euler2DTransform(){}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   Euler2DTransform(const Self &); //purposely not implemented

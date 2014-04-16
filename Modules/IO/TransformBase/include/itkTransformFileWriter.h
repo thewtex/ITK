@@ -70,7 +70,7 @@ public:
   bool GetAppendMode();
 
   /** Set/Get the input transform to write */
-  void SetInput(const Object *transform);
+  virtual void SetInput(const Object *transform);
 
   const TransformType * GetInput();
 
@@ -78,13 +78,13 @@ public:
   void AddTransform(const Object *transform);
 
   /** Write out the transform */
-  void Update();
+  virtual void Update();
 
 protected:
 
   TransformFileWriterTemplate(const Self &); //purposely not implemented
   void operator=(const Self &);      //purposely not implemented
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   TransformFileWriterTemplate();
   virtual ~TransformFileWriterTemplate();

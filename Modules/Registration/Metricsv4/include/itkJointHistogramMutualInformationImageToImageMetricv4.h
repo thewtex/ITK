@@ -185,7 +185,7 @@ protected:
     JointHistogramMutualInformationSparseGetValueAndDerivativeThreaderType;
 
   /** Standard PrintSelf method. */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Count of the number of valid histogram points. */
   SizeValueType   m_JointHistogramTotalCount;

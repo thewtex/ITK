@@ -118,7 +118,7 @@ protected:
   EigenAnalysis2DImageFilter();
   virtual ~EigenAnalysis2DImageFilter() {}
 
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
 private:
   EigenAnalysis2DImageFilter(const Self &); //purposely not implemented

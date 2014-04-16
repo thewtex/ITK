@@ -147,7 +147,7 @@ protected:
   }
 
   /** Print contents of a VersorTransform */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Compute Matrix
    *  Compute the components of the rotation matrix in the superclass */

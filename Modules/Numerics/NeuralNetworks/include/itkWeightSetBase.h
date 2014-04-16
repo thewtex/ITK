@@ -53,7 +53,7 @@ public:
   typedef ValueType*                             ValuePointer;
   typedef const ValueType*                       ValueConstPointer;
 
-  void Initialize();
+  virtual void Initialize();
 
   ValueType RandomWeightValue(ValueType low, ValueType high);
 

@@ -117,7 +117,7 @@ public:
   void Squeeze(void);
 
   /** Tell the container to release any of its allocated memory. */
-  void Initialize(void);
+  virtual void Initialize(void);
 
   /** These methods allow to define whether upon destruction of this class
    *  the memory buffer should be released or not.  Setting it to true
@@ -139,7 +139,7 @@ protected:
   /** PrintSelf routine. Normally this is a protected internal method. It is
    * made public here so that Image can call this method.  Users should not
    * call this method but should call Print() instead. */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual TElement * AllocateElements(ElementIdentifier size) const;
 

@@ -101,7 +101,7 @@ public:
    */
   itkGetConstMacro( EvaluationKNeighborhood, unsigned int );
 
-  void Initialize( void ) throw ( ExceptionObject );
+  virtual void Initialize( void ) throw ( ExceptionObject );
 
   /** Clone method will clone the existing instance of this type,
    *  including its internal member variables. */
@@ -112,7 +112,7 @@ protected:
   virtual ~ExpectationBasedPointSetToPointSetMetricv4();
 
   /** PrintSelf function */
-  void PrintSelf( std::ostream & os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
   ExpectationBasedPointSetToPointSetMetricv4( const Self & ); //purposely not implemented

@@ -111,7 +111,7 @@ public:
 protected:
   ConstantPadImageFilter();
   ~ConstantPadImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   ConstantPadImageFilter(const Self &); //purposely not implemented

@@ -102,7 +102,7 @@ protected:
   GPUDenseFiniteDifferenceImageFilter();
   ~GPUDenseFiniteDifferenceImageFilter() {
   }
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This method applies changes from the m_UpdateBuffer to the output using
    * the GPU.  "dt" is the time step to use for the update of each pixel. */

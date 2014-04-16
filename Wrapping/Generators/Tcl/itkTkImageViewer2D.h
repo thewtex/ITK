@@ -58,7 +58,7 @@ public:
   void SetCanvasName(const char* name);
   const char* GetCanvasName() const;
 
-  void SetInput(InputImageType* input);
+  virtual void SetInput(InputImageType* input);
   InputImageType* GetInput();
 
   void Draw();

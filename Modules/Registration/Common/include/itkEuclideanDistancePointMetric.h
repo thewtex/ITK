@@ -110,7 +110,7 @@ protected:
   virtual ~EuclideanDistancePointMetric() {}
 
   /** PrintSelf function */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   EuclideanDistancePointMetric(const Self &); //purposely not implemented

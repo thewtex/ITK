@@ -56,7 +56,7 @@ public:
   void SetBuffer(void *_buffer);
 
   /** Read the Array in MetaIO format */
-  void Update();
+  virtual void Update();
 
   /** Return the MetaIO type that corresponds to the element type */
   MET_ValueEnumType GetDataType(void) const
@@ -243,7 +243,7 @@ protected:
 
   MetaArrayReader();
   virtual ~MetaArrayReader();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
 

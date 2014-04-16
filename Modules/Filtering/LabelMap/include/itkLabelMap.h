@@ -448,7 +448,7 @@ public:
 protected:
   LabelMap();
   virtual ~LabelMap() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   LabelMap(const Self &);       //purposely not implemented

@@ -230,7 +230,7 @@ public:
 protected:
   ExtractImageFilter();
   ~ExtractImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** ExtractImageFilter can produce an image which is a different
    * resolution than its input image.  As such, ExtractImageFilter
@@ -270,7 +270,7 @@ protected:
   /** Overridden to check if there is no work to be done, before
    * calling superclass' implementation.
    */
-  void GenerateData();
+  virtual void GenerateData();
 
   InputImageRegionType m_ExtractionRegion;
 

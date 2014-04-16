@@ -86,11 +86,11 @@ public:
 protected:
   CyclicShiftImageFilter();
   ~CyclicShiftImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This filter needs the entire input be available so it needs to
    * provide an implementation of GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** This filter can be threaded. */
   void  ThreadedGenerateData(const OutputImageRegionType &

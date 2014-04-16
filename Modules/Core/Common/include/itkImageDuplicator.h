@@ -81,12 +81,12 @@ public:
   itkGetModifiableObjectMacro(Output, ImageType);
 
   /** Compute of the input image. */
-  void Update(void);
+  virtual void Update(void);
 
 protected:
   ImageDuplicator();
   virtual ~ImageDuplicator() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   ImageDuplicator(const Self &); //purposely not implemented

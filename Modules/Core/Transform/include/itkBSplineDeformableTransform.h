@@ -309,7 +309,7 @@ public:
 
 protected:
   /** Print contents of an BSplineDeformableTransform. */
-  void PrintSelf( std::ostream & os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
   BSplineDeformableTransform();
   virtual ~BSplineDeformableTransform();

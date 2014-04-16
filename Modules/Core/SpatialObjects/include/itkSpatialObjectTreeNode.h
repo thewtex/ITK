@@ -78,7 +78,7 @@ protected:
   /** Constructor */
   SpatialObjectTreeNode();
   virtual ~SpatialObjectTreeNode(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   TransformPointer m_NodeToParentNodeTransform;
   TransformPointer m_NodeToWorldTransform;

@@ -120,14 +120,14 @@ public:
                       TOutputMesh::PointDimension);
 
   /** Some typedefs associated with the output mesh. */
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
   /** Some typedefs associated with the output mesh. */
-  void GenerateOutputInformation(void);
+  virtual void GenerateOutputInformation(void);
 
   /** accept the input image */
   using Superclass::SetInput;
-  void SetInput(const InputImageType *inputImage);
+  virtual void SetInput(const InputImageType *inputImage);
 
   /** Set/Get the width of the narrowband. This is the
       maximum distance from the binary mask edges to
@@ -139,7 +139,7 @@ public:
 protected:
   BinaryMaskToNarrowBandPointSetFilter();
   ~BinaryMaskToNarrowBandPointSetFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   //purposely not implemented purposely

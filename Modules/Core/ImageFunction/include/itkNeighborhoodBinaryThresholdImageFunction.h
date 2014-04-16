@@ -110,7 +110,7 @@ public:
 protected:
   NeighborhoodBinaryThresholdImageFunction();
   ~NeighborhoodBinaryThresholdImageFunction(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   NeighborhoodBinaryThresholdImageFunction(const Self &); //purposely not

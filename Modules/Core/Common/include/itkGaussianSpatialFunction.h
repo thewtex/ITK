@@ -81,7 +81,7 @@ public:
 protected:
   GaussianSpatialFunction();
   virtual ~GaussianSpatialFunction();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   GaussianSpatialFunction(const Self &); //purposely not implemented

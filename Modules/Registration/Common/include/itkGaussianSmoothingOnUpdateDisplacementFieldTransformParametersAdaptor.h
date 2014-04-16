@@ -69,7 +69,7 @@ protected:
   GaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor();
   ~GaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor();
 
-  void PrintSelf( std::ostream & os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
   GaussianSmoothingOnUpdateDisplacementFieldTransformParametersAdaptor( const Self & ); //purposely not implemented

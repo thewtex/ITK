@@ -153,7 +153,7 @@ public:
 protected:
   MahalanobisDistanceThresholdImageFunction();
   ~MahalanobisDistanceThresholdImageFunction(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   MahalanobisDistanceThresholdImageFunction(const Self &); //purposely not

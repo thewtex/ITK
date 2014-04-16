@@ -118,7 +118,7 @@ protected:
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate Voronoi Diagram based on the current list of seeds. */
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
 private:
   VoronoiDiagram2DGenerator(const Self &); //purposely not implemented

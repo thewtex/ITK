@@ -150,7 +150,7 @@ protected:
                              outputRegionForThread,
                              ThreadIdType threadId);
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void pushHistogram(HistogramType & histogram,
                      const OffsetListType *addedList,

@@ -250,7 +250,7 @@ protected:
   VectorContainerToListSampleAdaptor();
 
   virtual ~VectorContainerToListSampleAdaptor() {}
-  void PrintSelf( std::ostream & os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
   VectorContainerToListSampleAdaptor( const Self &  ); //purposely not implemented

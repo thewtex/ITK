@@ -120,7 +120,7 @@ public:
 protected:
   ImageToHistogramFilter();
   virtual ~ImageToHistogramFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void BeforeThreadedGenerateData(void);
   void ThreadedGenerateData(const RegionType & inputRegionForThread, ThreadIdType threadId);

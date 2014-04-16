@@ -72,7 +72,7 @@ public:
   itkGetConstMacro(GPUEnabled, bool);
   itkBooleanMacro(GPUEnabled);
 
-  void GenerateData();
+  virtual void GenerateData();
 
   virtual void GraftOutput(DataObject *output);
 

@@ -156,7 +156,7 @@ protected:
   mutable MeasureType m_AverageFix;
   mutable MeasureType m_AverageMov;
 
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
 private:
   CorrelationImageToImageMetricv4(const Self &); //purposely not implemented

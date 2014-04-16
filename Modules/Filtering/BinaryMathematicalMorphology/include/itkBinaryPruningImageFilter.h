@@ -125,10 +125,10 @@ public:
 protected:
   BinaryPruningImageFilter();
   virtual ~BinaryPruningImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Compute thinning Image. */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Prepare data. */
   void PrepareData();

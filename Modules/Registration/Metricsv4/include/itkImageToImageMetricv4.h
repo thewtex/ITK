@@ -645,7 +645,7 @@ protected:
   ImageToImageMetricv4();
   virtual ~ImageToImageMetricv4();
 
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
 private:
   /** Map the fixed point set samples to the virtual domain */

@@ -133,7 +133,7 @@ protected:
   virtual void BeforeThreadedGenerateData();
   void ThreadedGenerateData(const OutputImageRegionType& outputRegionForThread, ThreadIdType threadId );
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   FFTWComplexToComplexImageFilter(const Self&); //purposely not implemented

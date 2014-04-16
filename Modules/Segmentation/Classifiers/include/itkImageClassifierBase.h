@@ -140,13 +140,13 @@ public:
 protected:
   ImageClassifierBase();
   ~ImageClassifierBase();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Allocate memory for the classified image. */
   void Allocate();
 
   /** Starts the classification process */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   ImageClassifierBase(const Self &); //purposely not implemented

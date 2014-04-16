@@ -86,9 +86,9 @@ public:
 protected:
   SphereMeshSource();
   ~SphereMeshSource() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
   /** model center */
   OPointType m_Center;

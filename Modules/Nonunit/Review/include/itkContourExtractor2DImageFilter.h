@@ -147,7 +147,7 @@ public:
 
   /** Control whether the largest possible input region is used, or if a
     * custom requested region is to be used. */
-  void SetRequestedRegion(const InputRegionType region);
+  virtual void SetRequestedRegion(const InputRegionType region);
 
   itkGetConstReferenceMacro(RequestedRegion, InputRegionType);
   void ClearRequestedRegion();
@@ -174,9 +174,9 @@ protected:
 
   ContourExtractor2DImageFilter();
   virtual ~ContourExtractor2DImageFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
   /** ContourExtractor2DImageFilter manually controls the input requested
     * region via SetRequestedRegion and ClearRequestedRegion, so it must

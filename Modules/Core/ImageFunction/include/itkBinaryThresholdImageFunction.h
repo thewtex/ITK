@@ -141,7 +141,7 @@ public:
 protected:
   BinaryThresholdImageFunction();
   ~BinaryThresholdImageFunction(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   BinaryThresholdImageFunction(const Self &); //purposely not implemented

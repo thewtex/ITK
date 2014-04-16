@@ -163,7 +163,7 @@ protected:
 
   /** Overridden from Superclass to handle the case when PropagationScaling is
     zero.*/
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   GeodesicActiveContourFunctionPointer m_GeodesicActiveContourFunction;

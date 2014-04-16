@@ -86,7 +86,7 @@ public:
   itkGetModifiableObjectMacro(OutputLevelSet, LevelSetType );
 
   /** Update function for initializing and computing the output level set */
-  void Update();
+  virtual void Update();
 
   /** Set/Get the sparse levet set image */
   itkSetObjectMacro( InputLevelSet, LevelSetType );

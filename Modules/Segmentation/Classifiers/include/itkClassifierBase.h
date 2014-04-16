@@ -145,12 +145,12 @@ public:
   unsigned int AddMembershipFunction(MembershipFunctionType *function);
 
   /** Starts the classification process */
-  void Update();
+  virtual void Update();
 
 protected:
   ClassifierBase();
   ~ClassifierBase();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** The real classification logic implementaion. All the subclasses
    * of this class should implement this method. */

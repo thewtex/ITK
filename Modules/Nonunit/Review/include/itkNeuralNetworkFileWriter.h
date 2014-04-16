@@ -106,12 +106,12 @@ public:
 
   /** Set/Get the input transform to write */
   //Avoiding VS6 compiler error void SetInput( const TNetwork* network );
-  void SetInput(TNetwork *network);
+  virtual void SetInput(TNetwork *network);
 
   const TNetwork * GetInput() const;
 
   /** Read NeuralNetwork */
-  void Update(void);
+  virtual void Update(void);
 
 #ifdef IGNORE
 #undef IGNORE

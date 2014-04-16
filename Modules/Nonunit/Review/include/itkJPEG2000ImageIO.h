@@ -109,7 +109,7 @@ protected:
   JPEG2000ImageIO();
   ~JPEG2000ImageIO();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   JPEG2000ImageIO(const Self &); //purposely not implemented

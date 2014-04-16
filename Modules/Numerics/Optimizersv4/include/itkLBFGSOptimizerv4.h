@@ -79,7 +79,7 @@ public:
 protected:
   LBFGSOptimizerv4();
   virtual ~LBFGSOptimizerv4();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** InternalParameters typedef. */
   typedef vnl_vector< double >  InternalParametersType;

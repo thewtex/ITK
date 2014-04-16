@@ -77,7 +77,7 @@ protected:
   virtual ~FileOutputWindow();
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void Initialize();
+  virtual void Initialize();
 
   std::ofstream *m_Stream;
 

@@ -114,7 +114,7 @@ public:
 protected:
   ConicShellInteriorExteriorSpatialFunction();
   virtual ~ConicShellInteriorExteriorSpatialFunction();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   ConicShellInteriorExteriorSpatialFunction(const Self &); //not implemented

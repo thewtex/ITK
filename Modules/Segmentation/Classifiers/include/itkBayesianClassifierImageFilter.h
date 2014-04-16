@@ -207,7 +207,7 @@ protected:
 
   BayesianClassifierImageFilter();
   virtual ~BayesianClassifierImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Here is where the classification is computed. */
   virtual void GenerateData();

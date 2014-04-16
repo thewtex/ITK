@@ -111,7 +111,7 @@ protected:
   virtual void GenerateInputRequestedRegion();
 
   /** This filter uses a minipipeline to compute the output. */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** The kernel needs padding if any of the sizes of its dimensions is
    * even. This method checks for this condition. */

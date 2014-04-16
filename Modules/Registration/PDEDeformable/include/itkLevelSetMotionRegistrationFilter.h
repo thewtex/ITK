@@ -181,7 +181,7 @@ public:
 protected:
   LevelSetMotionRegistrationFilter();
   ~LevelSetMotionRegistrationFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Initialize the state of filter and equation before each iteration. */
   virtual void InitializeIteration();

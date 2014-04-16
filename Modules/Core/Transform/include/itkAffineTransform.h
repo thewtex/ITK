@@ -297,7 +297,7 @@ protected:
   virtual ~AffineTransform();
 
   /** Print contents of an AffineTransform */
-  void PrintSelf(std::ostream & s, Indent indent) const;
+  virtual void PrintSelf(std::ostream & s, Indent indent) const;
 
 private:
 

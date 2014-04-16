@@ -119,7 +119,7 @@ public:
 protected:
   ParametricPath();
   ~ParametricPath(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Default 1D input increment amount to trace along the path.  Also, the
    * value used by the defualt implementation of EvaluateDerivative() for

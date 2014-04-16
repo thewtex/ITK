@@ -142,10 +142,10 @@ public:
 
   /** Overloaded to ensure that output is sized the same as the coordinate inputs
     * and not the size of the input image. */
-  void GenerateOutputInformation();
+  virtual void GenerateOutputInformation();
 
   /**  Overloaded to set the input image to the largest possible region */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -158,7 +158,7 @@ protected:
   InterpolateImagePointsFilter();
   // ~InterpolateImagePointsFilter(){} default implemnetation ok
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Main function for calculating interpolated values at each coordinate
     * set.  Access is through the update() call. */

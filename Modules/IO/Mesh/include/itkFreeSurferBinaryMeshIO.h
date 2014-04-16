@@ -168,7 +168,7 @@ protected:
   FreeSurferBinaryMeshIO();
   virtual ~FreeSurferBinaryMeshIO(){}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void OpenFile();
 

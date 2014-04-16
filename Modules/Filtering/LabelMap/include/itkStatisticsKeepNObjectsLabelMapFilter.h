@@ -89,7 +89,7 @@ protected:
   StatisticsKeepNObjectsLabelMapFilter();
   ~StatisticsKeepNObjectsLabelMapFilter() {}
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   StatisticsKeepNObjectsLabelMapFilter(const Self &); //purposely not

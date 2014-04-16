@@ -161,7 +161,7 @@ protected:
   /**
    * Standard pipeline method.
    */
-  void GenerateData();
+  virtual void GenerateData();
 };
 } // end namespace itk
 

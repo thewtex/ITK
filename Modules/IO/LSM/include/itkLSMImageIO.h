@@ -86,7 +86,7 @@ public:
 protected:
   LSMImageIO();
   ~LSMImageIO();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   LSMImageIO(const Self &);     //purposely not implemented

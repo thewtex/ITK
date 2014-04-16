@@ -106,7 +106,7 @@ protected:
 
   /** Sets the output requested region to the largest possible output
    * region. */
-  void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
+  virtual void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
 
 private:
   HalfHermitianToRealInverseFFTImageFilter(const Self &); // purposely not implemented

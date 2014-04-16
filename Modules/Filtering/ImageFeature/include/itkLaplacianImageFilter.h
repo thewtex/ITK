@@ -136,9 +136,9 @@ protected:
    * calculations to an NeighborhoodOperatorImageFilter.  Since the
    * NeighborhoodOperatorImageFilter is multithreaded, this filter is
    * multithreaded by default.   */
-  void GenerateData();
+  virtual void GenerateData();
 
-  void PrintSelf(std::ostream &, Indent) const;
+  virtual void PrintSelf(std::ostream &, Indent) const;
 
 private:
   LaplacianImageFilter(const Self &); //purposely not implemented

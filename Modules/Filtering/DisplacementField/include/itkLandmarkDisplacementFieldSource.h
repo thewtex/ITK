@@ -143,13 +143,13 @@ public:
 protected:
   LandmarkDisplacementFieldSource();
   ~LandmarkDisplacementFieldSource() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /**
    * GenerateData() computes the internal KernelBase spline and resamples
    * the displacement field.
    */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Subsample the input displacement field and generate the
    *  landmarks for the kernel base spline

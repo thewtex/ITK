@@ -330,7 +330,7 @@ private:
    * Tell the container to release any memory it may have allocated and
    * return itself to its initial state.
    */
-  void Initialize(void);
+  virtual void Initialize(void);
 };
 } // end namespace itk
 

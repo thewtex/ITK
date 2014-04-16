@@ -202,10 +202,10 @@ public:
 protected:
   HistogramThresholdImageFilter();
   ~HistogramThresholdImageFilter(){};
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
-  void GenerateInputRequestedRegion();
-  void GenerateData ();
+  virtual void GenerateInputRequestedRegion();
+  virtual void GenerateData();
 
   OutputPixelType     m_InsideValue;
   OutputPixelType     m_OutsideValue;

@@ -79,7 +79,7 @@ public:
 protected:
   SolverHyperbolic();
   virtual ~SolverHyperbolic() { }
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
   /**
    * Initialize the linear system wrapper.

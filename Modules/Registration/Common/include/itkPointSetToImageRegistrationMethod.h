@@ -146,7 +146,7 @@ public:
   itkGetConstReferenceMacro(LastTransformParameters, ParametersType);
 
   /** Initialize by setting the interconnects between the components. */
-  void Initialize()
+  virtual void Initialize()
   throw ( ExceptionObject );
 
   /** Returns the transform resulting from the registration process  */
@@ -181,7 +181,7 @@ public:
 protected:
   PointSetToImageRegistrationMethod();
   virtual ~PointSetToImageRegistrationMethod() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Method invoked by the pipeline in order to trigger the computation of
    * the registration. */

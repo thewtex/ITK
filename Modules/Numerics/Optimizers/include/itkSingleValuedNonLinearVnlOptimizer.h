@@ -104,7 +104,7 @@ protected:
   CostFunctionAdaptorType * GetNonConstCostFunctionAdaptor(void) const;
 
   /** Print out internal state */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   /** Callback function for the Command Observer */

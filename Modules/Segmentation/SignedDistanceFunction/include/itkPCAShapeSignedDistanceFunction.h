@@ -171,7 +171,7 @@ protected:
   PCAShapeSignedDistanceFunction();
   ~PCAShapeSignedDistanceFunction(){}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   PCAShapeSignedDistanceFunction(const Self &); //purposely not implemented

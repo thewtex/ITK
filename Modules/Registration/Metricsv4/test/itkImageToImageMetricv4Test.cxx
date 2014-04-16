@@ -160,7 +160,7 @@ protected:
     }
   virtual ~ImageToImageMetricv4TestMetric() {}
 
-  void PrintSelf(std::ostream& stream, itk::Indent indent) const
+  virtual void PrintSelf(std::ostream& stream, itk::Indent indent) const
   {
     Superclass::PrintSelf( stream, indent );
   }

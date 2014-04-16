@@ -92,14 +92,14 @@ public:
 protected:
   GaussianMixtureModelComponent();
   virtual ~GaussianMixtureModelComponent() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Returns the sum of squared changes in parameters between
    * iterations */
   double CalculateParametersChange();
 
   /** Computes the new distribution parameters */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   typename NativeMembershipFunctionType::Pointer m_GaussianMembershipFunction;

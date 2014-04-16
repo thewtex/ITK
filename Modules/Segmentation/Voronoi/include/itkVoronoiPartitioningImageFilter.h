@@ -93,7 +93,7 @@ public:
 protected:
   VoronoiPartitioningImageFilter();
   ~VoronoiPartitioningImageFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   // Classify all the voronoi cells as interior , exterior or boundary.
   virtual void ClassifyDiagram(void);

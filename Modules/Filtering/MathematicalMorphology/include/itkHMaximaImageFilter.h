@@ -120,18 +120,18 @@ public:
 protected:
   HMaximaImageFilter();
   ~HMaximaImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** HMaximaImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** HMaximaImageFilter will produce the entire output. */
-  void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
+  virtual void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
 
   /** Single-threaded version of GenerateData. */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   HMaximaImageFilter(const Self &); //purposely not implemented

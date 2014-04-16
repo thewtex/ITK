@@ -129,7 +129,7 @@ public:
 protected:
   SymmetricForcesDemonsRegistrationFilter();
   ~SymmetricForcesDemonsRegistrationFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Initialize the state of filter and equation before each iteration. */
   virtual void InitializeIteration();

@@ -90,7 +90,7 @@ protected:
   virtual ~PeakSignalToNoiseRatioCalculator() {
   }
 
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
 private:
   PeakSignalToNoiseRatioCalculator(const Self&); //purposely not implemented

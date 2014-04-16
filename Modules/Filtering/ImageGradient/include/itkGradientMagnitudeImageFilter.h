@@ -128,7 +128,7 @@ protected:
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,
                             ThreadIdType threadId);
 
-  void PrintSelf(std::ostream &, Indent) const;
+  virtual void PrintSelf(std::ostream &, Indent) const;
 
 private:
   GradientMagnitudeImageFilter(const Self &); //purposely not implemented

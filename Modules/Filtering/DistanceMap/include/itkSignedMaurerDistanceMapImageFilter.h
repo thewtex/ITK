@@ -160,9 +160,9 @@ protected:
 
   virtual ~SignedMaurerDistanceMapImageFilter();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
   unsigned int SplitRequestedRegion(unsigned int i, unsigned int num,
     OutputImageRegionType & splitRegion);

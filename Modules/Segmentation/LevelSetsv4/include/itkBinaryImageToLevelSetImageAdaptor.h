@@ -89,7 +89,7 @@ public:
   /**
    * Input is a binary image m_InputImage
    * Output is a WhitakerSparseLevelSetImagePointer  */
-  void Initialize();
+  virtual void Initialize();
 
 protected:
   /** Constructor */
@@ -239,7 +239,7 @@ public:
 
   typedef typename Superclass::NeighborhoodIteratorType NeighborhoodIteratorType;
 
-  void Initialize();
+  virtual void Initialize();
 
 protected:
   /** Constructor */
@@ -329,7 +329,7 @@ public:
 
   typedef typename Superclass::NeighborhoodIteratorType NeighborhoodIteratorType;
 
-  void Initialize();
+  virtual void Initialize();
 
 protected:
   /** Constructor */
@@ -411,7 +411,7 @@ public:
 
   typedef typename Superclass::NeighborhoodIteratorType NeighborhoodIteratorType;
 
-  void Initialize();
+  virtual void Initialize();
 
 protected:
   /** Constructor */

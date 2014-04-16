@@ -350,7 +350,7 @@ private:
   /**
    * Clear the elements. The final size will be zero.
    */
-  void Initialize(void);
+  virtual void Initialize(void);
 };
 } // end namespace itk
 

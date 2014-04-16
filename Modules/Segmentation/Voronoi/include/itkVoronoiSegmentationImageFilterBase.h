@@ -216,7 +216,7 @@ protected:
   ~VoronoiSegmentationImageFilterBase();
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData(void); //general pipeline function.
+  virtual void GenerateData(void); //general pipeline function.
 
   SizeType m_Size;
   int      m_NumberOfSeeds;

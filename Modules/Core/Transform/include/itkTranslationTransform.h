@@ -222,7 +222,7 @@ protected:
   TranslationTransform();
   ~TranslationTransform();
   /** Print contents of an TranslationTransform. */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   TranslationTransform(const Self &); // purposely not implemented

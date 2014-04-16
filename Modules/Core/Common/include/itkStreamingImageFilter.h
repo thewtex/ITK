@@ -115,7 +115,7 @@ public:
 protected:
   StreamingImageFilter();
   ~StreamingImageFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   StreamingImageFilter(const StreamingImageFilter &); //purposely not

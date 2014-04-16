@@ -143,7 +143,7 @@ public:
     m_Metric = metric;
     }
 
-  void Initialize()
+  virtual void Initialize()
     {
     // Do stuff on m_Metric
     m_Metric->UseAllPixelsOn();
@@ -167,7 +167,7 @@ public:
     m_Metric = metric;
     }
 
-  void Initialize()
+  virtual void Initialize()
     {
     // Do stuff on m_Metric
     m_Metric->SetNumberOfHistogramBins( 50 );
@@ -192,7 +192,7 @@ public:
     m_Metric = metric;
     }
 
-  void Initialize()
+  virtual void Initialize()
     {
     // Do stuff on m_Metric
     m_Metric->SetNumberOfSpatialSamples( 400 );

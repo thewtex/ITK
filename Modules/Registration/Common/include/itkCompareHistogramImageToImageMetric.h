@@ -129,7 +129,7 @@ public:
 
   /** Forms the histogram of the training images to prepare to evaluate the
    * metric. Must set all parameters first. */
-  void Initialize()
+  virtual void Initialize()
   throw ( ExceptionObject );
 
 protected:
@@ -137,7 +137,7 @@ protected:
       create instances. */
   CompareHistogramImageToImageMetric();
   virtual ~CompareHistogramImageToImageMetric(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Form the Histogram for the Training data */
   void FormTrainingHistogram()

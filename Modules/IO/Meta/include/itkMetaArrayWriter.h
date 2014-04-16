@@ -152,13 +152,13 @@ public:
   void ConvertTo(MET_ValueEnumType _metaElementType);
 
   /** Write out the array */
-  void Update();
+  virtual void Update();
 
 protected:
 
   MetaArrayWriter();
   virtual ~MetaArrayWriter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
 

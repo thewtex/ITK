@@ -216,7 +216,7 @@ protected:
 
   void ComputeValueAndDerivative( const PointType & samplePoint, MeasureType &value, LocalDerivativeType &derivativeReturn, bool calcValue, bool calcDerivative ) const;
 
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
 private:
   //purposely not implemented

@@ -102,7 +102,7 @@ public:
 protected:
   LinearInterpolateImageFunction();
   ~LinearInterpolateImageFunction();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   LinearInterpolateImageFunction(const Self &); //purposely not implemented

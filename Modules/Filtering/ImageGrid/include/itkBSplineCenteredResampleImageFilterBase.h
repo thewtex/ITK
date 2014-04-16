@@ -105,7 +105,7 @@ protected:
 protected:
   BSplineCenteredResampleImageFilterBase();
   virtual ~BSplineCenteredResampleImageFilterBase() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   BSplineCenteredResampleImageFilterBase(const Self &); //purposely not

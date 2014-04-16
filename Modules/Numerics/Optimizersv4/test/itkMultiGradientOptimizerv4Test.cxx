@@ -65,7 +65,7 @@ public:
     m_Parameters(NULL)
   {}
 
-  void Initialize(void) throw ( itk::ExceptionObject ) {}
+  virtual void Initialize(void) throw ( itk::ExceptionObject ) {}
 
   virtual void GetDerivative( DerivativeType & derivative ) const
     {
@@ -170,7 +170,7 @@ public:
     m_Parameters(NULL)
   {}
 
-  void Initialize(void) throw ( itk::ExceptionObject ) {}
+  virtual void Initialize(void) throw ( itk::ExceptionObject ) {}
 
   virtual void GetDerivative( DerivativeType & derivative ) const
     {

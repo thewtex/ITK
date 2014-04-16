@@ -460,7 +460,7 @@ protected:
   virtual ~MatrixOffsetTransformBase();
 
   /** Print contents of an MatrixOffsetTransformBase */
-  void PrintSelf(std::ostream & s, Indent indent) const;
+  virtual void PrintSelf(std::ostream & s, Indent indent) const;
 
   const InverseMatrixType & GetVarInverseMatrix(void) const
   {

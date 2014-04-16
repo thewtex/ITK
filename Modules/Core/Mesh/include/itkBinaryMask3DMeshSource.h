@@ -147,9 +147,9 @@ public:
 protected:
   BinaryMask3DMeshSource();
   ~BinaryMask3DMeshSource();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
 
   bool       m_RegionOfInterestProvidedByUser;

@@ -250,7 +250,7 @@ protected:
   WarpImageFilter();
   // ~WarpImageFilter() {} default implementation is ok
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** WarpImageFilter is implemented as a multi-threaded filter.
    * As such, it needs to provide and implementation for

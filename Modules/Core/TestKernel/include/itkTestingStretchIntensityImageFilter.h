@@ -99,7 +99,7 @@ protected:
   void BeforeThreadedGenerateData(void);
 
   /** Print internal ivars */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef typename Superclass::OutputImageRegionType    OutputImageRegionType;
   typedef typename TInputImage::RegionType              InputImageRegionType;

@@ -103,7 +103,7 @@ protected:
 
   virtual ~GPUDiscreteGaussianImageFilter() {
   }
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Standard GPU pipeline method. */
   void GPUGenerateData();

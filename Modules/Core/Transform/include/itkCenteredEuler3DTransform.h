@@ -121,7 +121,7 @@ protected:
   /**
    * Print contents of an CenteredEuler3DTransform
    */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   CenteredEuler3DTransform(const Self &); // purposely not implemented

@@ -221,9 +221,9 @@ public:
 
 protected:
   CannyEdgeDetectionImageFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
   typedef DiscreteGaussianImageFilter< InputImageType, OutputImageType >
   GaussianImageFilterType;

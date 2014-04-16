@@ -110,7 +110,7 @@ public:
   virtual bool IsInside(const PointType & point) const;
 
 protected:
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   PolygonSpatialObject(const Self &); //purposely not implemented

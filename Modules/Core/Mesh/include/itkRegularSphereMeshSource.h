@@ -93,9 +93,9 @@ public:
 protected:
   RegularSphereMeshSource();
   ~RegularSphereMeshSource() {}
-  void PrintSelf(std::ostream & os, itk::Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, itk::Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
   PointType Divide(const PointType & p1, const PointType & p2) const;
 

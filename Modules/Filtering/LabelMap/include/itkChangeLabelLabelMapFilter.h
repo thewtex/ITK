@@ -96,9 +96,9 @@ protected:
   ChangeLabelLabelMapFilter();
   ~ChangeLabelLabelMapFilter() {}
 
-  void GenerateData();
+  virtual void GenerateData();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   ChangeMapType m_MapOfLabelToBeReplaced;
 

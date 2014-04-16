@@ -67,7 +67,7 @@ protected:
   }
   ~GPUAnisotropicDiffusionImageFilter() {
   }
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Prepare for the iteration process. */
   virtual void InitializeIteration();

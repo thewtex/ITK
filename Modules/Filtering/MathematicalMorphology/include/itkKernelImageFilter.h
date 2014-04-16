@@ -94,7 +94,7 @@ protected:
   KernelImageFilter();
   ~KernelImageFilter() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** kernel or structuring element to use. */
   KernelType m_Kernel;

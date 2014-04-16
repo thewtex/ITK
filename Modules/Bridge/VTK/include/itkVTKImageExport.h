@@ -78,13 +78,13 @@ public:
 #endif
   /** Set the input image of this image exporter. */
   using Superclass::SetInput;
-  void SetInput(const InputImageType *);
+  virtual void SetInput(const InputImageType *);
   InputImageType * GetInput(void);
 
 protected:
   VTKImageExport();
   ~VTKImageExport() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef typename InputImageType::Pointer    InputImagePointer;
   typedef typename InputImageType::RegionType InputRegionType;

@@ -122,10 +122,10 @@ protected:
    * pipeline execution model.
    *
    * \sa ProcessObject::GenerateInputRequestedRegion()  */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** This filter uses a minipipeline to compute the output. */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Prepare the input images for operations in the Fourier
    * domain. This includes resizing the input and kernel images,

@@ -128,7 +128,7 @@ protected:
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Starts the image modelling process */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   ImageGaussianModelEstimator(const Self &); //purposely not implemented

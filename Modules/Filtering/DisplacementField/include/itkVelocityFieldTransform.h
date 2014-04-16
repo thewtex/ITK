@@ -183,7 +183,7 @@ protected:
 
   VelocityFieldTransform();
   virtual ~VelocityFieldTransform();
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /** Clone the current transform */
   virtual typename LightObject::Pointer InternalClone() const;

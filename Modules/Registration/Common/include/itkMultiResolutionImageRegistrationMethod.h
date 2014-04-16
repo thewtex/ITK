@@ -231,7 +231,7 @@ public:
 protected:
   MultiResolutionImageRegistrationMethod();
   virtual ~MultiResolutionImageRegistrationMethod() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Method invoked by the pipeline in order to trigger the computation of
    * the registration. */
@@ -241,7 +241,7 @@ protected:
       This method is executed at every level of the pyramid with the
       values corresponding to this resolution
    */
-  void Initialize()
+  virtual void Initialize()
   throw ( ExceptionObject );
 
   /** Compute the size of the fixed region for each level of the pyramid. */

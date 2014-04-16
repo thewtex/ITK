@@ -320,7 +320,7 @@ public:
 
   /** Turn on/off a flag to control whether this object's data is released
    * after being used by a filter.  */
-  void SetReleaseDataFlag(bool flag)
+  virtual void SetReleaseDataFlag(bool flag)
   {
     m_ReleaseDataFlag = flag;
   }
@@ -481,7 +481,7 @@ public:
 protected:
   DataObject();
   ~DataObject();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Propagate a call to ResetPipeline(). Called only from ProcessObject. */
   virtual void PropagateResetPipeline();

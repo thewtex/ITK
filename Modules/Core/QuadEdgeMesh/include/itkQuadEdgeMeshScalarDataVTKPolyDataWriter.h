@@ -86,7 +86,7 @@ protected:
   std::string m_CellDataName;
   std::string m_PointDataName;
 
-  void GenerateData();
+  virtual void GenerateData();
 
   void WriteCellData();
 

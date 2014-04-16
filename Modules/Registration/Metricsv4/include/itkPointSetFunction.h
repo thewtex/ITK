@@ -108,7 +108,7 @@ public:
 protected:
   PointSetFunction();
   virtual ~PointSetFunction();
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
   /** Const pointer to the input image. */
   InputPointSetConstPointer                             m_PointSet;

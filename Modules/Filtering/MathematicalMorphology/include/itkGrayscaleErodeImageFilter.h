@@ -132,9 +132,9 @@ public:
 protected:
   GrayscaleErodeImageFilter();
   ~GrayscaleErodeImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   GrayscaleErodeImageFilter(const Self &); //purposely not implemented

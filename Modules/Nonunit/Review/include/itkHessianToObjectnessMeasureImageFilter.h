@@ -133,7 +133,7 @@ public:
 protected:
   HessianToObjectnessMeasureImageFilter();
   ~HessianToObjectnessMeasureImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void BeforeThreadedGenerateData(void);
 

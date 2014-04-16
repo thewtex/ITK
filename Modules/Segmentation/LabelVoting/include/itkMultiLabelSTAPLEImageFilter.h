@@ -265,18 +265,18 @@ protected:
   }
   virtual ~MultiLabelSTAPLEImageFilter() {}
 
-  void GenerateData();
+  virtual void GenerateData();
 
-  void PrintSelf(std::ostream&, Indent) const;
+  virtual void PrintSelf(std::ostream&, Indent) const;
 
   /** Determine maximum value among all input images' pixels */
   typename TInputImage::PixelType ComputeMaximumInputValue();
 
   // Override since the filter needs all the data for the algorithm
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   // Override since the filter produces all of its output
-  void EnlargeOutputRequestedRegion( DataObject * );
+  virtual void EnlargeOutputRequestedRegion( DataObject * );
 
 private:
   MultiLabelSTAPLEImageFilter(const Self&); //purposely not implemented

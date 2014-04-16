@@ -129,7 +129,7 @@ protected:
   virtual ~ComposeDisplacementFieldsImageFilter();
 
   /** Standard print self function **/
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /** preprocessing function */
   void BeforeThreadedGenerateData();

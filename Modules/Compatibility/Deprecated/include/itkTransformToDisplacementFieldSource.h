@@ -174,7 +174,7 @@ protected:
   TransformToDisplacementFieldSource(void);
   ~TransformToDisplacementFieldSource(void) {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** TransformToDisplacementFieldSource can be implemented as a multithreaded
    * filter.

@@ -89,7 +89,7 @@ public:
    * Function called by Update() or end-users to write the input DOM object
    * to an output stream such as file, string, console, etc.
    */
-  void Update( std::ostream& os, std::string indent = "" );
+  virtual void Update( std::ostream& os, std::string indent = "" );
 
   /**
    * Function called by end-users to write the input DOM object to the output XML file.

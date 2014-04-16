@@ -124,17 +124,17 @@ public:
 protected:
   OpeningByReconstructionImageFilter();
   ~OpeningByReconstructionImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** OpeningByReconstructionImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** OpeningByReconstructionImageFilter will produce the entire output. */
-  void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
+  virtual void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   OpeningByReconstructionImageFilter(const Self &); //purposely not implemented

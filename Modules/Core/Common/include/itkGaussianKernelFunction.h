@@ -60,7 +60,7 @@ public:
 protected:
   GaussianKernelFunction(): m_Factor(  NumericTraits< TRealValueType >::One / vcl_sqrt(static_cast< TRealValueType >(2.0 * vnl_math::pi )) ) {};
   virtual ~GaussianKernelFunction() {};
-  void PrintSelf(std::ostream & os, Indent indent) const
+  virtual void PrintSelf(std::ostream & os, Indent indent) const
   { Superclass::PrintSelf(os, indent); }
 
 private:

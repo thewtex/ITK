@@ -125,7 +125,7 @@ protected:
   ScalarValueType m_OtherPropagationWeight;
 
   LevelSetFunctionWithRefitTerm ();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Computes the curvature of a level set neighbothood in a way that matches
       the curvature computation from normal vectors. */

@@ -117,7 +117,7 @@ public:
 protected:
   GaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform();
   virtual ~GaussianSmoothingOnUpdateTimeVaryingVelocityFieldTransform();
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /** Track when the temporary displacement field used during smoothing
    * was last modified/initialized. We only want to change it if the

@@ -111,7 +111,7 @@ public:
   ProjPlanePointType TransformProjectPoint(PointType inputPoint);
 
   /* Generate Data */
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -123,7 +123,7 @@ public:
 protected:
   PolylineMaskImageFilter();
   virtual ~PolylineMaskImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   PolylineMaskImageFilter(const Self &); //purposely not implemented

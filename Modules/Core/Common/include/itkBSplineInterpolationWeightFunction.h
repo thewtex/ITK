@@ -107,7 +107,7 @@ public:
 protected:
   BSplineInterpolationWeightFunction();
   ~BSplineInterpolationWeightFunction() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   BSplineInterpolationWeightFunction(const Self &); //purposely not implemented

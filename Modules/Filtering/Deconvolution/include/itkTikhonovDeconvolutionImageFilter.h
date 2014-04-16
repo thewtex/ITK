@@ -105,7 +105,7 @@ protected:
   ~TikhonovDeconvolutionImageFilter() {}
 
   /** This filter uses a minipipeline to compute the output. */
-  void GenerateData();
+  virtual void GenerateData();
 
   virtual void PrintSelf(std::ostream & os, Indent indent) const;
 

@@ -173,7 +173,7 @@ protected:
     this->Initialize();
   }
 
-  void Initialize()
+  virtual void Initialize()
   {
     if( m_TargetCondition == OneTarget )
       {

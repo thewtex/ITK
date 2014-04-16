@@ -72,7 +72,7 @@ public:
 protected:
   ParametricSpaceToImageSpaceMeshFilter();
   ~ParametricSpaceToImageSpaceMeshFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate requested data. */
   virtual void GenerateData(void);

@@ -95,9 +95,9 @@ public:
 protected:
   GaborImageSource();
   // ~GaborImageSource(); default implementation ok
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   GaborImageSource(const GaborImageSource &); //purposely not implemented

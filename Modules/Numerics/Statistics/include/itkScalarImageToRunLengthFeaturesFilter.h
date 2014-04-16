@@ -150,7 +150,7 @@ public:
   /** Connects the input image for which the features are going to be computed
     */
   using Superclass::SetInput;
-  void SetInput(const ImageType *);
+  virtual void SetInput(const ImageType *);
 
   const ImageType * GetInput() const;
 
@@ -196,7 +196,7 @@ public:
 protected:
   ScalarImageToRunLengthFeaturesFilter();
   virtual ~ScalarImageToRunLengthFeaturesFilter() {}
-  void PrintSelf( std::ostream & os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
   void FastCompute();
 

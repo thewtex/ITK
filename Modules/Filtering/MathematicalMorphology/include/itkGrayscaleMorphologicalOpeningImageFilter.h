@@ -131,9 +131,9 @@ public:
 protected:
   GrayscaleMorphologicalOpeningImageFilter();
   ~GrayscaleMorphologicalOpeningImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   GrayscaleMorphologicalOpeningImageFilter(const Self &); //purposely not

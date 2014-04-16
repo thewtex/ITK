@@ -172,7 +172,7 @@ public:
   { this->ProcessObject::SetNthOutput(2, b); }
 
   /** Standard non-threaded pipeline execution method. */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** This method is necessary until the streaming mechanisms of the Itk
    * pipeline are full fleshed out.  It is only used for streaming
@@ -267,7 +267,7 @@ protected:
   Segmenter();
   Segmenter(const Self &) {}
   virtual ~Segmenter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void operator=(const Self &) {}
 
@@ -278,11 +278,11 @@ protected:
   /** This method asks for an image region that is one pixel larger
    * at each boundary than the region being processed.  This single pixel
    * expansion represents an overlap with adjacent image chunks   */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
-  void GenerateOutputRequestedRegion(DataObject *output);
+  virtual void GenerateOutputRequestedRegion(DataObject *output);
 
-  void UpdateOutputInformation();
+  virtual void UpdateOutputInformation();
 
   /**  Allocates boundary structure information and sets the
    * boundary data to null values.   */

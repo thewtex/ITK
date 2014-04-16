@@ -240,7 +240,7 @@ public:
 protected:
   WarpVectorImageFilter();
   ~WarpVectorImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** WarpVectorImageFilter is implemented as a multi-threaded filter.
    * As such, it needs to provide and implementation for

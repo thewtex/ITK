@@ -524,7 +524,7 @@ public:
 protected:
   ImageIOBase();
   ~ImageIOBase();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual const ImageRegionSplitterBase* GetImageRegionSplitter(void) const;
 

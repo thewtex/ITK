@@ -62,12 +62,12 @@ public:
   itkGetModifiableObjectMacro(Output, SpatialObjectType);
 
   /** Compute of the input SpatialObject. */
-  void Update(void);
+  virtual void Update(void);
 
 protected:
   SpatialObjectDuplicator();
   virtual ~SpatialObjectDuplicator() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   void CopyObject(const InternalSpatialObjectType *source,
                   InternalSpatialObjectType *destination);

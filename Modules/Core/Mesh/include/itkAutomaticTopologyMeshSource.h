@@ -384,7 +384,7 @@ protected:
   AutomaticTopologyMeshSource();
   ~AutomaticTopologyMeshSource();
 
-  void GenerateData() {}  // GenerateData is a no-op, since the entries
+  virtual void GenerateData() {}  // GenerateData is a no-op, since the entries
                           // are controlled manually
 
 private:

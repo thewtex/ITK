@@ -110,7 +110,7 @@ public:
 protected:
   FiniteDifferenceSparseImageFunction() {}
   ~FiniteDifferenceSparseImageFunction() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   FiniteDifferenceSparseImageFunction(const Self &); //purposely not implemented

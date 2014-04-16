@@ -107,9 +107,9 @@ protected:
   }
 
   ~CropImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateOutputInformation();
+  virtual void GenerateOutputInformation();
 
 private:
   CropImageFilter(const Self &); //purposely not implemented

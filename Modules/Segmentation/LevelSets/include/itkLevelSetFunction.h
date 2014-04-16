@@ -300,7 +300,7 @@ protected:
   }
 
   virtual ~LevelSetFunction() {}
-  void PrintSelf(std::ostream & s, Indent indent) const;
+  virtual void PrintSelf(std::ostream & s, Indent indent) const;
 
   /** Constants used in the time step calculation. */
   static double m_WaveDT;

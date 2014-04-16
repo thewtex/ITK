@@ -169,7 +169,7 @@ public:
 protected:
   PointSetToImageMetric();
   virtual ~PointSetToImageMetric() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   mutable SizeValueType m_NumberOfPixelsCounted;
 

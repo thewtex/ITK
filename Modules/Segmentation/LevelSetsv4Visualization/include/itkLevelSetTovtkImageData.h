@@ -68,7 +68,7 @@ protected:
   LevelSetTovtkImageData();
   virtual ~LevelSetTovtkImageData();
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   LevelSetTovtkImageData( const Self& );
@@ -107,7 +107,7 @@ protected:
   LevelSetTovtkImageData();
   virtual ~LevelSetTovtkImageData();
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   LevelSetTovtkImageData( const Self& );
@@ -151,7 +151,7 @@ protected:
   LevelSetTovtkImageData();
   virtual ~LevelSetTovtkImageData();
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   LevelSetTovtkImageData( const Self& );
@@ -201,7 +201,7 @@ protected:
   LevelSetTovtkImageData();
   virtual ~LevelSetTovtkImageData();
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   LevelSetTovtkImageData( const Self& );

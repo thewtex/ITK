@@ -77,7 +77,7 @@ public:
 
   /** Method to set the sample */
   using Superclass::SetInput;
-  void SetInput(const SampleType *sample);
+  virtual void SetInput(const SampleType *sample);
 
   /** Method to get the sample */
   const SampleType * GetInput() const;
@@ -98,7 +98,7 @@ public:
 protected:
   MeanSampleFilter();
   virtual ~MeanSampleFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** DataObject pointer */
   typedef DataObject::Pointer DataObjectPointer;
@@ -107,7 +107,7 @@ protected:
   using Superclass::MakeOutput;
   virtual DataObjectPointer MakeOutput(DataObjectPointerArraySizeType idx);
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   MeanSampleFilter(const Self &); //purposely not implemented

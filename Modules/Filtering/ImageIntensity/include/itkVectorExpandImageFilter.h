@@ -167,7 +167,7 @@ protected:
 
   VectorExpandImageFilter();
   ~VectorExpandImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** VectorExpandImageFilter is implemented as a multithreaded filter.
    * Therefore, this implementation provides a ThreadedGenerateData() routine

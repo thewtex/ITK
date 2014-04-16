@@ -228,7 +228,7 @@ protected:
   /** State that the filter is in, i.e. UNINITIALIZED or INITIALIZED */
   bool m_IsInitialized;
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This method allocates a temporary update container in the subclass. */
   virtual void AllocateUpdateBuffer() = 0;

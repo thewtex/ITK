@@ -171,7 +171,7 @@ public:
 protected:
   MeshFileReader();
   ~MeshFileReader(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Convert a block of pixels from one type to another. */
   template< typename T >

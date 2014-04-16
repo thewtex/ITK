@@ -112,7 +112,7 @@ public:
   itkNewMacro(Self);
 
   /** generate random number table */
-  void Initialize(int randomSeed);
+  virtual void Initialize(int randomSeed);
 
   /** get a variate using FastNorm function */
   double GetVariate();

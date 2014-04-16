@@ -116,7 +116,7 @@ public:
   itkSetMacro( TrialValue, OutputPixelType );
 
   /** \brief Perform the conversion. */
-  void Update();
+  virtual void Update();
 
 protected:
 

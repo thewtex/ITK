@@ -116,7 +116,7 @@ public:
 protected:
   LightProcessObject();
   ~LightProcessObject();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This method causes the filter to generate its output. */
   virtual void GenerateData() {}

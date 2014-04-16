@@ -108,11 +108,11 @@ protected:
   ConvolutionImageFilterBase();
   ~ConvolutionImageFilterBase() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** The largest possible output region may differ from the largest
    * possible input region. */
-  void GenerateOutputInformation();
+  virtual void GenerateOutputInformation();
 
   /** Get the valid region of the convolution. */
   OutputRegionType GetValidRegion() const;

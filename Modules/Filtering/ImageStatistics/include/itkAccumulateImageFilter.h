@@ -111,7 +111,7 @@ public:
 protected:
   AccumulateImageFilter();
   virtual ~AccumulateImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Apply changes to the output image information. */
   virtual void GenerateOutputInformation();
@@ -123,7 +123,7 @@ protected:
    *
    * \sa ImageToImageFilter::ThreadedGenerateData(),
    *     ImageToImageFilter::GenerateData()  */
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
 private:
   AccumulateImageFilter(const Self &); //purposely not implemented

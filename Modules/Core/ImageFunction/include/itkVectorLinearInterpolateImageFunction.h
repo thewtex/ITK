@@ -94,7 +94,7 @@ public:
 protected:
   VectorLinearInterpolateImageFunction();
   ~VectorLinearInterpolateImageFunction(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   VectorLinearInterpolateImageFunction(const Self &); //purposely not

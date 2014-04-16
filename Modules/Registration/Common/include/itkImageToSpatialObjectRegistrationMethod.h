@@ -198,14 +198,14 @@ public:
 protected:
   ImageToSpatialObjectRegistrationMethod();
   virtual ~ImageToSpatialObjectRegistrationMethod() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Method invoked by the pipeline in order to trigger the computation of
    * the registration. */
   void  GenerateData();
 
   /** Initialize by setting the interconnects between the components. */
-  void Initialize()
+  virtual void Initialize()
   throw ( ExceptionObject );
 
   ParametersType m_InitialTransformParameters;

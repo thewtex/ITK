@@ -91,7 +91,7 @@ protected:
   CostFunctionAdaptorType * GetNonConstCostFunctionAdaptor(void) const;
 
   /** Print out internal state */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   /** The purpose of this method is to get around the lack of iteration reporting

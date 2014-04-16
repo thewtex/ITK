@@ -112,7 +112,7 @@ public:
 protected:
   InterpolateImageFilter();
   ~InterpolateImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** InterpolateImageFilter can be implemented as a multithreaded filter. */
   void ThreadedGenerateData(const OutputImageRegionType & outputRegionForThread,

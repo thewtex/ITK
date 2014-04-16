@@ -120,16 +120,16 @@ protected:
   ~DirectFourierReconstructionImageToImageFilter() {}
 
   /** Output class information */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate metadata for output image */
-  void GenerateOutputInformation();
+  virtual void GenerateOutputInformation();
 
   /** Calculate the required input region */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** Actual filter computation */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   /** Const slice iterator type of the input image */

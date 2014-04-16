@@ -140,10 +140,10 @@ public:
   itkStaticConstMacro(StateVectorLength, IntegerType, 624);
 
   /** initialize with a simple IntegerType */
-  void Initialize(const IntegerType oneSeed);
+  virtual void Initialize(const IntegerType oneSeed);
 
   /* Initialize with clock time */
-  void Initialize();
+  virtual void Initialize();
 
   /** Get a random variate in the range [0, 1] */
   double GetVariateWithClosedRange();

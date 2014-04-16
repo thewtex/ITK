@@ -165,11 +165,11 @@ protected:
   SimplexMeshToTriangleMeshFilter(const Self &) {}
   void operator=(const Self &) {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void GenerateData();
 
-  void Initialize();
+  virtual void Initialize();
 
   /** creates dual triangles for all simplex cells */
   void CreateTriangles();

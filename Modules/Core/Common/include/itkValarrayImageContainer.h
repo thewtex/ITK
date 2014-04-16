@@ -128,7 +128,7 @@ public:
   { this->ValarrayType::resize( this->ValarrayType::size() ); }
 
   /** Tell the container to release any of its allocated memory. */
-  void Initialize(void)
+  virtual void Initialize(void)
   { this->ValarrayType::resize(0); }
 
   /** Tell the container to release any of its allocated memory. */

@@ -159,7 +159,7 @@ protected:
   }
 
   ~ZeroCrossingBasedEdgeDetectionImageFilter(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Standard pipeline method. While this class does not implement a
    * ThreadedGenerateData(), its GenerateData() delegates all
@@ -167,7 +167,7 @@ protected:
    * a LaplacianImageFilter and a ZeroCrossingImageFilter.  Since these
    * filters are multithreaded, this filter is multithreaded by default.
    */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   ZeroCrossingBasedEdgeDetectionImageFilter(const Self &); //purposely not implemented

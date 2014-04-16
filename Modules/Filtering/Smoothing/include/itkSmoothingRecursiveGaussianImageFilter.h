@@ -153,10 +153,10 @@ public:
 protected:
   SmoothingRecursiveGaussianImageFilter();
   virtual ~SmoothingRecursiveGaussianImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate Data */
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
   /** SmoothingRecursiveGaussianImageFilter needs all of the input to produce an
    * output. Therefore, SmoothingRecursiveGaussianImageFilter needs to provide
@@ -166,7 +166,7 @@ protected:
   virtual void GenerateInputRequestedRegion();
 
   // Override since the filter produces the entire dataset
-  void EnlargeOutputRequestedRegion(DataObject *output);
+  virtual void EnlargeOutputRequestedRegion(DataObject *output);
 
 private:
   SmoothingRecursiveGaussianImageFilter(const Self &); //purposely not

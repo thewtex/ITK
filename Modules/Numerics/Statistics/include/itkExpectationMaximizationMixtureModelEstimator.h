@@ -151,7 +151,7 @@ public:
   unsigned int GetNumberOfComponents() const;
 
   /** Runs the optimization process. */
-  void Update();
+  virtual void Update();
 
   /** Termination status after running optimization */
   enum TERMINATION_CODE { CONVERGED = 0, NOT_CONVERGED = 1 };
@@ -170,7 +170,7 @@ public:
 protected:
   ExpectationMaximizationMixtureModelEstimator();
   virtual ~ExpectationMaximizationMixtureModelEstimator() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   bool CalculateDensities();
 
@@ -181,7 +181,7 @@ protected:
   bool UpdateProportions();
 
   /** Starts the estimation process */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   /** Target data sample pointer*/

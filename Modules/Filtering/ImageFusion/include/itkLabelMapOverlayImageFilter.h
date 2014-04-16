@@ -153,10 +153,10 @@ protected:
   /** LabelMapOverlayImageFilter needs the entire input be
    * available. Thus, it needs to provide an implementation of
    * GenerateInputRequestedRegion(). */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** LabelMapOverlayImageFilter will produce the entire output. */
-  void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
+  virtual void EnlargeOutputRequestedRegion(DataObject *itkNotUsed(output));
 
   virtual void BeforeThreadedGenerateData();
 
@@ -166,7 +166,7 @@ protected:
 
   virtual void GenerateOutputInformation();
 
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
 private:
   LabelMapOverlayImageFilter(const Self&); //purposely not implemented

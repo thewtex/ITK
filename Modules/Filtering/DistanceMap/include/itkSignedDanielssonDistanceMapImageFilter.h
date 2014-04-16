@@ -217,10 +217,10 @@ public:
 protected:
   SignedDanielssonDistanceMapImageFilter();
   virtual ~SignedDanielssonDistanceMapImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Compute Danielsson distance map and Voronoi Map. */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   SignedDanielssonDistanceMapImageFilter(const Self &); //purposely not

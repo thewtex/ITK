@@ -161,7 +161,7 @@ public:
 protected:
   DCMTKSeriesFileNames();
   ~DCMTKSeriesFileNames();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   DCMTKSeriesFileNames(const Self &); //purposely not implemented

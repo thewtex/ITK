@@ -114,7 +114,7 @@ public:
 protected:
   DICOMImageIO2();
   virtual ~DICOMImageIO2();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   itkdicomparser::DICOMParser    *m_Parser;
   itkdicomparser::DICOMAppHelper *m_AppHelper;

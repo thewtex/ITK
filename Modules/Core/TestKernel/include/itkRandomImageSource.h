@@ -127,7 +127,7 @@ public:
 protected:
   RandomImageSource();
   ~RandomImageSource();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void
   ThreadedGenerateData(const OutputImageRegionType &

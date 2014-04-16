@@ -305,7 +305,7 @@ public:
 
   /** SetInput will set the 0th input */
   using Superclass::SetInput;
-  void SetInput(TemporalDataObject* tdo)
+  virtual void SetInput(TemporalDataObject* tdo)
   {
     this->ProcessObject::SetNthInput(0, tdo);
   }

@@ -122,7 +122,7 @@ public:
 protected:
   ExhaustiveOptimizer();
   virtual ~ExhaustiveOptimizer() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Advance to the next grid position. */
   void AdvanceOneStep(void);

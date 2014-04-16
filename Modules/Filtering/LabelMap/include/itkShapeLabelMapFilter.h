@@ -131,7 +131,7 @@ protected:
 
   virtual void AfterThreadedGenerateData();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   ShapeLabelMapFilter(const Self &); //purposely not implemented

@@ -201,7 +201,7 @@ protected:
   typedef MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< ThreadedIndexedContainerPartitioner, Superclass, Self >
     MattesMutualInformationSparseGetValueAndDerivativeThreaderType;
 
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
   typedef typename JointPDFType::IndexType             JointPDFIndexType;
   typedef typename JointPDFType::PixelType             JointPDFValueType;

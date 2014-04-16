@@ -106,12 +106,12 @@ public:
   itkGetConstMacro(NumberOfPixels, SizeValueType);
 
   /** Compute of the input image. */
-  void Update(void);
+  virtual void Update(void);
 
 protected:
   SpatialObjectToImageStatisticsCalculator();
   virtual ~SpatialObjectToImageStatisticsCalculator() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   bool ComputeStatistics();
 

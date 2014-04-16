@@ -161,7 +161,7 @@ public:
    * best response */
   const ScalesImageType * GetScalesOutput() const;
 
-  void EnlargeOutputRequestedRegion(DataObject *);
+  virtual void EnlargeOutputRequestedRegion(DataObject *);
 
   /** Methods to turn on/off flag to generate an image with scale values at
    *  each pixel for the best vesselness response */
@@ -183,10 +183,10 @@ public:
 protected:
   MultiScaleHessianBasedMeasureImageFilter();
   ~MultiScaleHessianBasedMeasureImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Generate Data */
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
 private:
   void UpdateMaximumResponse(double sigma);

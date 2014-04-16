@@ -136,7 +136,7 @@ public:
    * initialRadius: search radius in parameter space
    * grow: search radius grow factor
    * shrink: searhc radius shrink factor */
-  void Initialize(double initialRadius, double grow = -1, double shrink = -1);
+  virtual void Initialize(double initialRadius, double grow = -1, double shrink = -1);
 
   /** Return Current Value */
   itkGetConstReferenceMacro(CurrentCost, MeasureType);
@@ -171,7 +171,7 @@ protected:
   OnePlusOneEvolutionaryOptimizer();
   OnePlusOneEvolutionaryOptimizer(const OnePlusOneEvolutionaryOptimizer &);
   virtual ~OnePlusOneEvolutionaryOptimizer();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
 

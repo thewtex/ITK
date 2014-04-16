@@ -157,7 +157,7 @@ public:
 protected:
   ImageFileReader();
   ~ImageFileReader();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Convert a block of pixels from one type to another. */
   void DoConvertBuffer(void *buffer, size_t numberOfPixels);

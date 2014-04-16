@@ -141,7 +141,7 @@ protected:
   PowellOptimizer();
   PowellOptimizer(const PowellOptimizer &);
   virtual ~PowellOptimizer();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   itkSetMacro(CurrentCost, double);
 

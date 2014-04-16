@@ -89,7 +89,7 @@ public:
   itkTypeMacro(CompositeExampleImageFilter, ImageToImageFilter);
 
   /** Display */
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
 //  Software Guide : BeginLatex
 //
@@ -128,7 +128,7 @@ protected:
   typedef RescaleIntensityImageFilter< TImageType, TImageType >  RescalerType;
 //  Software Guide : EndCodeSnippet
 
-    void GenerateData();
+    virtual void GenerateData();
 
 private:
 

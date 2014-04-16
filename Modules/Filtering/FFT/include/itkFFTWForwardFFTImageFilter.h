@@ -113,7 +113,7 @@ protected:
 
   virtual void UpdateOutputData(DataObject *output);
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   FFTWForwardFFTImageFilter(const Self&); // purposely not implemented

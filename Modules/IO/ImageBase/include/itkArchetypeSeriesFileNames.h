@@ -104,7 +104,7 @@ public:
 protected:
   ArchetypeSeriesFileNames();
   ~ArchetypeSeriesFileNames() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Method that actually does the archetype matching/grouping */
   void Scan();

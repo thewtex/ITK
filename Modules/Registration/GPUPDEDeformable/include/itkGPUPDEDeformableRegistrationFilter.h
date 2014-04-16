@@ -169,7 +169,7 @@ protected:
   GPUPDEDeformableRegistrationFilter();
   ~GPUPDEDeformableRegistrationFilter() {
   }
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** A simple method to copy the data from the input to the output.
    * If the input does not exist, a zero field is written to the output. */

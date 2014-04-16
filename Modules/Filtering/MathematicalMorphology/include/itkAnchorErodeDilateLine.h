@@ -48,7 +48,7 @@ public:
     m_Size = size;
   }
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   AnchorErodeDilateLine();
   ~AnchorErodeDilateLine()

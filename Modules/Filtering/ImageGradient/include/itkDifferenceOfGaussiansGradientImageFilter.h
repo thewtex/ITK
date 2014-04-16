@@ -86,10 +86,10 @@ public:
 protected:
   DifferenceOfGaussiansGradientImageFilter();
   virtual ~DifferenceOfGaussiansGradientImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Method for evaluating the implicit function over the image. */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   DifferenceOfGaussiansGradientImageFilter(const Self &); //purposely not

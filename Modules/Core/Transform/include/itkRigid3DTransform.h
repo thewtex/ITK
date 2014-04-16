@@ -204,7 +204,7 @@ protected:
   /**
    * Print contents of an Rigid3DTransform
    */
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   Rigid3DTransform(const Self &); //purposely not implemented

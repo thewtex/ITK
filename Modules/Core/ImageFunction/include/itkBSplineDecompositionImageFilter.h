@@ -123,15 +123,15 @@ public:
 protected:
   BSplineDecompositionImageFilter();
   virtual ~BSplineDecompositionImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
   /** This filter requires all of the input image. */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** This filter must produce all of its output at once. */
-  void EnlargeOutputRequestedRegion(DataObject *output);
+  virtual void EnlargeOutputRequestedRegion(DataObject *output);
 
   /** These are needed by the smoothing spline routine. */
   std::vector< CoeffType >           m_Scratch;   // temp storage for processing

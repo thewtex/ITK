@@ -71,7 +71,7 @@ public:
 protected:
   TriangleThresholdCalculator() {};
   virtual ~TriangleThresholdCalculator() {};
-  void GenerateData(void);
+  virtual void GenerateData(void);
 
 private:
   TriangleThresholdCalculator(const Self&); //purposely not implemented

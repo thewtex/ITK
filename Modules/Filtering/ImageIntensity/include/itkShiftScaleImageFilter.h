@@ -107,7 +107,7 @@ public:
 protected:
   ShiftScaleImageFilter();
   ~ShiftScaleImageFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Initialize some accumulators before the threads run. */
   void BeforeThreadedGenerateData();

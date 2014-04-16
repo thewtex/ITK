@@ -406,7 +406,7 @@ protected:
 
   DisplacementFieldTransform();
   virtual ~DisplacementFieldTransform();
-  void PrintSelf( std::ostream& os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream& os, Indent indent ) const;
 
   /** The displacement field and its inverse (if it exists). */
   typename DisplacementFieldType::Pointer      m_DisplacementField;

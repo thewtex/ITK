@@ -213,7 +213,7 @@ public:
 protected:
   ImageFunction();
   ~ImageFunction() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Const pointer to the input image. */
   InputImageConstPointer m_Image;

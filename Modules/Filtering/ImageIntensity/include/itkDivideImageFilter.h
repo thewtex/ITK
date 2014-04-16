@@ -131,7 +131,7 @@ protected:
   DivideImageFilter() {}
   virtual ~DivideImageFilter() {}
 
-  void GenerateData()
+  virtual void GenerateData()
     {
     const typename Superclass::DecoratedInput2ImagePixelType *input
        = dynamic_cast< const typename Superclass::DecoratedInput2ImagePixelType * >(

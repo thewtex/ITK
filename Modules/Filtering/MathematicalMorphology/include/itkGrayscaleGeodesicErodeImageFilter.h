@@ -153,7 +153,7 @@ public:
 protected:
   GrayscaleGeodesicErodeImageFilter();
   ~GrayscaleGeodesicErodeImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** GrayscaleGeodesicErodeImageFilter needs to request enough of the
    * marker image to account for the elementary structuring element.
@@ -161,13 +161,13 @@ protected:
    * the filter is configured to run a single iteration or until
    * convergence, this method may request all of the marker and mask
    * image be provided. */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   /** This filter will enlarge the output requested region to produce
    * all of the output if the filter is configured to run to
    * convergence.
    * \sa ProcessObject::EnlargeOutputRequestedRegion() */
-  void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
+  virtual void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
 
   /** Single-threaded version of GenerateData.  This version is used
    * when the filter is configured to run to convergence. This method
@@ -175,7 +175,7 @@ protected:
    * configured to run a single iteration.  Otherwise, it will
    * delegate to a separate instance to run each iteration until the
    * filter converges. */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Multi-thread version GenerateData. This version is used when the
    * filter is configured to run a single iteration. When the filter

@@ -101,16 +101,16 @@ public:
 
   /** dummy method that calls the GenerateData method to
    * produce the eigen vectors and values. */
-  void Update()
+  virtual void Update()
   { this->GenerateData(); }
 
 protected:
   SymmetricEigenSystem();
   virtual ~SymmetricEigenSystem();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Produces the eigen vectors and values. */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   SymmetricEigenSystem(const Self &); //purposely not implemented

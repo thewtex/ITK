@@ -186,7 +186,7 @@ protected:
   FiniteDifferenceFunction();
   ~FiniteDifferenceFunction() {}
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   RadiusType m_Radius;
   PixelRealType m_ScaleCoefficients[ImageDimension];

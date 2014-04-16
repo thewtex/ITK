@@ -111,7 +111,7 @@ public:
   }
 
   /** Standard non-threaded pipeline method */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Standard itk::ProcessObject subclass method. */
   typedef ProcessObject::DataObjectPointerArraySizeType DataObjectPointerArraySizeType;
@@ -131,10 +131,10 @@ protected:
   virtual ~BoundaryResolver() {}
   BoundaryResolver(const Self &) {}
   void operator=(const Self &) {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   unsigned short m_Face;
-  void GenerateOutputRequestedRegion(DataObject *output);
+  virtual void GenerateOutputRequestedRegion(DataObject *output);
 };
 } // end namespace watershed
 } // end namespace itk

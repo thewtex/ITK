@@ -98,7 +98,7 @@ public:
 protected:
   VotingBinaryHoleFillingImageFilter();
   virtual ~VotingBinaryHoleFillingImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Make protected the methods SetBirthThreshold() and
    * SetSurvivalThreshold() so users of this filter do not have access to

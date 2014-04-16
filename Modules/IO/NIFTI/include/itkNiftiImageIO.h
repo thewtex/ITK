@@ -105,7 +105,7 @@ public:
 protected:
   NiftiImageIO();
   ~NiftiImageIO();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual bool GetUseLegacyModeForTwoFileWriting(void) const { return false; }
 

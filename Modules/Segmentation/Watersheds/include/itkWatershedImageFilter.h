@@ -186,12 +186,12 @@ public:
   itkNewMacro(Self);
 
   /** Standard process object method.  This filter is not multithreaded. */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Overloaded to link the input to this filter with the input of the
       mini-pipeline */
   using Superclass::SetInput;
-  void SetInput(const InputImageType *input)
+  virtual void SetInput(const InputImageType *input)
   {
     // if the input is changed, we'll need to clear the cached tree
     // when we execute
@@ -241,7 +241,7 @@ public:
   }
 
   // Override since the filter produces all of its output
-  void EnlargeOutputRequestedRegion(DataObject *data);
+  virtual void EnlargeOutputRequestedRegion(DataObject *data);
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -259,7 +259,7 @@ public:
 protected:
   WatershedImageFilter();
   virtual ~WatershedImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** An opportunity to Allocate/Deallocate bulk data.
    */

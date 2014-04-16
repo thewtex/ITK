@@ -107,13 +107,13 @@ protected:
 
   virtual void ThreadedProcessLabelObject(LabelObjectType *labelObject);
 
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
-  void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
+  virtual void EnlargeOutputRequestedRegion( DataObject *itkNotUsed(output) );
 
   virtual void GenerateOutputInformation();
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   ChangeRegionLabelMapFilter(const Self &); //purposely not implemented

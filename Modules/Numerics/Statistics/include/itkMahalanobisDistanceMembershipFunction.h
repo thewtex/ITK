@@ -122,7 +122,7 @@ public:
 protected:
   MahalanobisDistanceMembershipFunction(void);
   virtual ~MahalanobisDistanceMembershipFunction(void) {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   MeanVectorType       m_Mean;               // mean

@@ -126,7 +126,7 @@ protected:
 
   GaussianSmoothingOperatorType                   m_GaussianSmoothingOperator;
 
-  void PrintSelf( std::ostream &, Indent ) const;
+  virtual void PrintSelf( std::ostream &, Indent ) const;
 
 private:
   GaussianExponentialDiffeomorphicTransform( const Self& ); //purposely not implemented

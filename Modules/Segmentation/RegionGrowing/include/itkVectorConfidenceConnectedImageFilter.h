@@ -96,7 +96,7 @@ public:
 
   typedef  typename DistanceThresholdFunctionType::Pointer DistanceThresholdFunctionPointer;
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Set seed point. This method is deprecated, please use AddSeed() */
   void SetSeed(const IndexType & seed);
@@ -150,12 +150,12 @@ protected:
   VectorConfidenceConnectedImageFilter();
 
   // Override since the filter needs all the data for the algorithm
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
   // Override since the filter produces the entire dataset
-  void EnlargeOutputRequestedRegion(DataObject *output);
+  virtual void EnlargeOutputRequestedRegion(DataObject *output);
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   VectorConfidenceConnectedImageFilter(const Self &); //purposely not

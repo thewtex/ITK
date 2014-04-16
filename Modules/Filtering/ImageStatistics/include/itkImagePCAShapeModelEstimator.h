@@ -155,7 +155,7 @@ protected:
   virtual void GenerateInputRequestedRegion();
 
   /** Starts the image modelling process */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
 

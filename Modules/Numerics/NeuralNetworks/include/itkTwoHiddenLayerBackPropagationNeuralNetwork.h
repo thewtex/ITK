@@ -72,7 +72,7 @@ public:
 
   //Add the layers to the network.
   // 1 input, 2 hidden, 1 output
-  void Initialize();
+  virtual void Initialize();
 
   itkSetMacro(NumOfInputNodes, unsigned int);
   itkGetConstReferenceMacro(NumOfInputNodes, unsigned int);

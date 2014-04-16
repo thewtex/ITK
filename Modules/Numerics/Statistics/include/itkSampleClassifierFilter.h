@@ -95,7 +95,7 @@ public:
 
   /** Sets the input sample that will be classified by this filter. */
   using Superclass::SetInput;
-  void SetInput(const SampleType *sample);
+  virtual void SetInput(const SampleType *sample);
 
   const SampleType *  GetInput() const;
 
@@ -128,13 +128,13 @@ public:
 protected:
   SampleClassifierFilter();
   virtual ~SampleClassifierFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   SampleClassifierFilter(const Self &); //purposely not implemented
   void operator=(const Self &);         //purposely not implemented
 
   /** Starts the classification process */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Make a DataObject of the correct type to used as the specified
    * output. This method

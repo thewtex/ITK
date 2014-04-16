@@ -106,7 +106,7 @@ protected:
   ShapeRelabelLabelMapFilter();
   ~ShapeRelabelLabelMapFilter() {}
 
-  void GenerateData();
+  virtual void GenerateData();
 
   template< typename TAttributeAccessor >
   void TemplatedGenerateData(const TAttributeAccessor &)
@@ -167,7 +167,7 @@ protected:
       }
   }
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   bool m_ReverseOrdering;
 

@@ -138,7 +138,7 @@ public:
   /** Some functions. */
   void ComputeForce();
 
-  void Initialize();
+  virtual void Initialize();
 
   void SetStiffnessMatrix();
 
@@ -187,7 +187,7 @@ public:
 protected:
   BalloonForceFilter();
   ~BalloonForceFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void GenerateData();
 

@@ -116,10 +116,10 @@ public:
 
   /** Creates an image half the size of the input image with spacing twice the
     * input image. */
-  void GenerateOutputInformation();
+  virtual void GenerateOutputInformation();
 
   /** This filter requires all of the input image */
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -130,9 +130,9 @@ public:
 
 protected:
 
-  void GenerateData();
+  virtual void GenerateData();
 
-  void EnlargeOutputRequestedRegion(DataObject *output);
+  virtual void EnlargeOutputRequestedRegion(DataObject *output);
 
   BSplineDownsampleImageFilter();
   virtual ~BSplineDownsampleImageFilter() {}

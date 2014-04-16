@@ -115,7 +115,7 @@ public:
   /** Update the filter by computing the output level function
    * by calling Evolve() once the instantiation of necessary variables
    * is verified */
-  void Update();
+  virtual void Update();
 
 protected:
   LevelSetEvolutionBase();

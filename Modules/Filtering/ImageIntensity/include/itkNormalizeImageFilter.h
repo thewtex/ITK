@@ -76,7 +76,7 @@ protected:
   void  GenerateData();
 
   // Override since the filter needs all the data for the algorithm
-  void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion();
 
 private:
   NormalizeImageFilter(const Self &); //purposely not implemented

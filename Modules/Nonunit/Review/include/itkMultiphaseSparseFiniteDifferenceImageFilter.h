@@ -396,7 +396,7 @@ protected:
   virtual void InitializeBackgroundPixels();
 
   /** Constructs the sparse field layers and initializes their values. */
-  void Initialize();
+  virtual void Initialize();
 
   /** Copies the input to the output image.  Processing occurs on the output
    * image, so the data type of the output image determines the precision of

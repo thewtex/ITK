@@ -121,7 +121,7 @@ protected:
   virtual ~LabeledPointSetToPointSetMetricv4();
 
   /** PrintSelf function */
-  void PrintSelf( std::ostream & os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
 private:
   LabeledPointSetToPointSetMetricv4(const Self &); //purposely not implemented

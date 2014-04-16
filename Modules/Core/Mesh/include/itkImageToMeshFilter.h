@@ -63,8 +63,8 @@ public:
 
   /** Set the input image of this process object.  */
   using Superclass::SetInput;
-  void SetInput(unsigned int idx, const InputImageType *input);
-  void SetInput(const InputImageType *input)
+  virtual void SetInput(unsigned int idx, const InputImageType *input);
+  virtual void SetInput(const InputImageType *input)
     {
     this->SetInput(0, input);
     }
@@ -80,7 +80,7 @@ public:
   OutputMeshType * GetOutput(void);
 
   /** Prepare the output */
-  void GenerateOutputInformation(void);
+  virtual void GenerateOutputInformation(void);
 
 protected:
   ImageToMeshFilter();

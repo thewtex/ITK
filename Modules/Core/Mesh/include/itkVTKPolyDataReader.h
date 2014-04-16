@@ -100,10 +100,10 @@ public:
 protected:
   VTKPolyDataReader();
   ~VTKPolyDataReader() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Reads the file */
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Filename to read */
 

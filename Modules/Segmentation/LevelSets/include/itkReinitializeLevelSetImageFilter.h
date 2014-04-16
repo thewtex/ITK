@@ -133,14 +133,14 @@ public:
 protected:
   ReinitializeLevelSetImageFilter();
   ~ReinitializeLevelSetImageFilter(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Internal typedefs. */
   typedef Image< float, itkGetStaticConstMacro(SetDimension) > SpeedImageType;
   typedef LevelSetNeighborhoodExtractor< TLevelSet >           LocatorType;
   typedef FastMarchingImageFilter< TLevelSet, SpeedImageType > FastMarchingImageFilterType;
 
-  void GenerateData();
+  virtual void GenerateData();
 
   virtual void GenerateDataFull();
 

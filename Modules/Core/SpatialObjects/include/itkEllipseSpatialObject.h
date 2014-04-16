@@ -97,7 +97,7 @@ public:
   virtual bool ComputeLocalBoundingBox() const;
 
   /** Copy the information from another SpatialObject */
-  void CopyInformation(const DataObject *data);
+  virtual void CopyInformation(const DataObject *data);
 
 protected:
   EllipseSpatialObject(const Self &); //purposely not implemented

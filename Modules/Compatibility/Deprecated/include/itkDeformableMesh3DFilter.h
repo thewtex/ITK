@@ -160,7 +160,7 @@ protected:
   ~DeformableMesh3DFilter();
   DeformableMesh3DFilter(const Self &); // purposely not implemented
   void operator=(const Self &);         // purposely not implemented
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void GenerateData();
 
@@ -172,7 +172,7 @@ private:
   InputMeshPointer m_Derives;
   InputMeshPointer m_Locations;
 
-  void Initialize();
+  virtual void Initialize();
 
   void SetDefaultStiffnessMatrix();
 

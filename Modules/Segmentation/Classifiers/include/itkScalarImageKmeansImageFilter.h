@@ -153,14 +153,14 @@ public:
 protected:
   ScalarImageKmeansImageFilter();
   virtual ~ScalarImageKmeansImageFilter() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** This method runs the statistical methods that identify the means of the
    * classes and the use the distances to those means in order to label the
    * image pixels.
    * \sa ImageToImageFilter::GenerateData()
    */
-  void GenerateData();
+  virtual void GenerateData();
 
   /* See superclass for doxygen. This methods additionally checks that
    * the number of means is not 0. */

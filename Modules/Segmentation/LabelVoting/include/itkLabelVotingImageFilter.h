@@ -174,7 +174,7 @@ protected:
   void ThreadedGenerateData
     (const OutputImageRegionType & outputRegionForThread, ThreadIdType threadId);
 
-  void PrintSelf(std::ostream &, Indent) const;
+  virtual void PrintSelf(std::ostream &, Indent) const;
 
   /** Determine maximum value among all input images' pixels */
   InputPixelType ComputeMaximumInputValue();

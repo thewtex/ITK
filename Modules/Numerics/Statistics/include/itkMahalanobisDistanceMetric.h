@@ -112,7 +112,7 @@ public:
 protected:
   MahalanobisDistanceMetric(void);
   virtual ~MahalanobisDistanceMetric(void) {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   MeanVectorType       m_Mean;               // mean

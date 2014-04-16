@@ -164,7 +164,7 @@ public:
   typedef Matrix< SpacePrecisionType, VImageDimension, VImageDimension > DirectionType;
 
   /** Restore object to initialized state. */
-  void Initialize();
+  virtual void Initialize();
 
   /** Image dimension. The dimension of an image is fixed at construction. */
   static unsigned int GetImageDimension()

@@ -101,7 +101,7 @@ public:
 protected:
   NormalizedCorrelationPointSetToImageMetric();
   virtual ~NormalizedCorrelationPointSetToImageMetric() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   NormalizedCorrelationPointSetToImageMetric(const Self &); //purposely not

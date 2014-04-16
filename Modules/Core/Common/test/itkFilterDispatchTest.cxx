@@ -69,7 +69,7 @@ public:
   typedef TOutputImage OutputImageType;
   enum { ImageDimension = InputImageType::ImageDimension };
 
-  void Update(void);
+  virtual void Update(void);
 
   /**
    * Method for creation through the object factory.

@@ -270,7 +270,7 @@ public:
 
 protected:
   /** Print contents of an BSplineTransform. */
-  void PrintSelf( std::ostream & os, Indent indent ) const;
+  virtual void PrintSelf( std::ostream & os, Indent indent ) const;
 
   BSplineTransform();
   virtual ~BSplineTransform();

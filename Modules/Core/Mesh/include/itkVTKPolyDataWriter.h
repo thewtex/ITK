@@ -56,7 +56,7 @@ public:
 
   /** Write the Input mesh to the Output file.
    * Use either Update() or Write(). */
-  void Update(void);
+  virtual void Update(void);
 
   void Write(void);
 
@@ -85,7 +85,7 @@ public:
   typedef typename CellType::PointIdIterator PointIdIterator;
 
   /** Set the Input */
-  void SetInput(const InputMeshType *input);
+  virtual void SetInput(const InputMeshType *input);
 
   /** Set/Get the name of the file where data are written. */
   itkSetStringMacro(FileName);
@@ -101,7 +101,7 @@ protected:
 
   InputMeshPointer m_Input;
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   VTKPolyDataWriter(const Self &); //purposely not implemented

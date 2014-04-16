@@ -95,10 +95,10 @@ public:
 protected:
   VTKTetrahedralMeshReader();
   ~VTKTetrahedralMeshReader();
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
   /** Reads the file */
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   VTKTetrahedralMeshReader(const Self&); // purposely not implemented

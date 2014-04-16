@@ -118,9 +118,9 @@ public:
 protected:
   GaussianImageSource();
   // ~GaussianImageSource(); default implementation ok
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
 private:
   GaussianImageSource(const GaussianImageSource &); //purposely not implemented

@@ -91,8 +91,8 @@ protected:
 
   virtual ~IntermodesThresholdCalculator() {}
 
-  void GenerateData(void);
-  void PrintSelf(std::ostream& os, Indent indent) const;
+  virtual void GenerateData(void);
+  virtual void PrintSelf(std::ostream& os, Indent indent) const;
 
   typedef typename HistogramType::TotalAbsoluteFrequencyType  TotalAbsoluteFrequencyType;
   typedef typename HistogramType::AbsoluteFrequencyType       AbsoluteFrequencyType;

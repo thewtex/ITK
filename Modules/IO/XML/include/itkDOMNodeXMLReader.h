@@ -92,7 +92,7 @@ public:
    * Function called by Update() or end-users to generate the output DOM object
    * from an input stream such as file, string, etc.
    */
-  void Update( std::istream& is );
+  virtual void Update( std::istream& is );
 
   /**
    * Function called by end-users to generate the output DOM object from the input XML file.

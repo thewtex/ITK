@@ -169,7 +169,7 @@ protected:
 
   void GPUGenerateData();
 
-  void PrintSelf(std::ostream & os, Indent indent) const
+  virtual void PrintSelf(std::ostream & os, Indent indent) const
   {
     GPUSuperclass::PrintSelf(os, indent);
   }

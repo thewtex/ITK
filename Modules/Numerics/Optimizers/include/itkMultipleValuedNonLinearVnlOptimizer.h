@@ -90,7 +90,7 @@ protected:
   MultipleValuedNonLinearVnlOptimizer();
   virtual ~MultipleValuedNonLinearVnlOptimizer();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   typedef MultipleValuedVnlCostFunctionAdaptor CostFunctionAdaptorType;
 

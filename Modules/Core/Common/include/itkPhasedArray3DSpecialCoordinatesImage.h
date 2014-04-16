@@ -348,7 +348,7 @@ protected:
   }
 
   virtual ~PhasedArray3DSpecialCoordinatesImage() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   PhasedArray3DSpecialCoordinatesImage(const Self &); //purposely not

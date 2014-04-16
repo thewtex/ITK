@@ -438,7 +438,7 @@ protected:
   /** Constructor for use by New() method. */
   Mesh();
   ~Mesh();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   /** Release the memory allocated for the cells pointers. This is done
       based on information provided by the user through the method

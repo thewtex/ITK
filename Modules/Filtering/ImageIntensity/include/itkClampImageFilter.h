@@ -173,9 +173,9 @@ protected:
   ClampImageFilter();
   virtual ~ClampImageFilter() {}
 
-  void GenerateData();
+  virtual void GenerateData();
 
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   ClampImageFilter(const Self&); //purposely not implemented

@@ -157,9 +157,9 @@ protected:
   CollidingFrontsImageFilter();
   virtual ~CollidingFrontsImageFilter() {}
 
-  void GenerateData();
+  virtual void GenerateData();
 
-  void PrintSelf(std::ostream &, Indent) const;
+  virtual void PrintSelf(std::ostream &, Indent) const;
 
 private:
   CollidingFrontsImageFilter(const Self &); //purposely not implemented

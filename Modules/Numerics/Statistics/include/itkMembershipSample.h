@@ -288,7 +288,7 @@ private:
 protected:
   MembershipSample();
   virtual ~MembershipSample() {}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
 private:
   MembershipSample(const Self &); //purposely not implemented

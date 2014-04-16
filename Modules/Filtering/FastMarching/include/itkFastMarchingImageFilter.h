@@ -332,7 +332,7 @@ private:
 protected:
   FastMarchingImageFilter();
   ~FastMarchingImageFilter(){}
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
   virtual void Initialize(LevelSetImageType *);
 
@@ -345,7 +345,7 @@ protected:
   const AxisNodeType & GetNodeUsedInCalculation(unsigned int idx) const
   { return m_NodesUsed[idx]; }
 
-  void GenerateData();
+  virtual void GenerateData();
 
   /** Generate the output image meta information. */
   virtual void GenerateOutputInformation();

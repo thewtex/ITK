@@ -94,9 +94,9 @@ public:
 protected:
   WeightedMeanSampleFilter();
   virtual ~WeightedMeanSampleFilter();
-  void PrintSelf(std::ostream & os, Indent indent) const;
+  virtual void PrintSelf(std::ostream & os, Indent indent) const;
 
-  void GenerateData();
+  virtual void GenerateData();
 
   // compute mean with weight array
   void ComputeMeanWithWeights();
