@@ -4,6 +4,16 @@
 #ifdef VCL_NEEDS_PRAGMA_INTERFACE
 #pragma interface
 #endif
+
+// GCC with -stdc++11 will produce an error if inline static
+// initialization of not integers is performed.
+//
+// Ignore lack of constexpr in inline static initialization.
+#if defined( __GNUC__ ) && ( __GNUC__ >= 4 ) && (__GNUC_MINOR__ >= 6)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-fpermissive"
+#endif
+
 //:
 // \file
 // \brief Templated zero/one/precision
@@ -518,6 +528,11 @@ class vnl_numeric_traits< vcl_complex<long double> >
 #if !VCL_CANNOT_SPECIALIZE_CV
 VCL_DEFINE_SPECIALIZATION
 class vnl_numeric_traits<vcl_complex<long double> const> : public vnl_numeric_traits<vcl_complex<long double> > {};
+#endif
+
+
+#if defined( __GNUC__ ) && ( __GNUC__ >= 4 ) && (__GNUC_MINOR__ >= 6)
+#pragma GCC diagnostic pop
 #endif
 
 #endif // vnl_numeric_traits_h_

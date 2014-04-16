@@ -30,7 +30,10 @@
 
 #include "itkPixelTraits.h"
 #include "itkNumericTraits.h"
+
 #include <iostream>
+
+itkGCCIgnoreWarningPush( "-Wunused-local-typedefs" )
 
 /** Choose a concept checking implementation based on compiler abilities. */
 #ifndef ITK_CONCEPT_NO_CHECKING
@@ -823,5 +826,8 @@ struct IsFixedPoint {
 };
 } // end namespace Concept
 } // end namespace itk
+
+
+itkGCCIgnoreWarningPop(  )
 
 #endif

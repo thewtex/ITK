@@ -490,6 +490,29 @@ itkTypeMacro(newexcp, parentexcp);                                              
   typedef oldtype newtype
 #endif
 
+
+//
+// Define a macro to suppress warnings in a scope for GCC >= 4.6.
+//
+// Example: itkGCCIgnoreWarningPush( "-Wunused-local-typedefs" )
+//
+#if defined( __GNUC__ ) && ( __GNUC__ >= 4 ) && (__GNUC_MINOR__ >= 6)
+#define itkGCCPragma(x) _Pragma(#x)
+#define itkGCCIgnoreWarningPush( warning )            \
+  itkGCCPragma( GCC diagnostic push )                 \
+  itkGCCPragma( GCC diagnostic push warning )
+#define itkGCCIgnoreWarningPop(  )              \
+  itkGCCPragma( GCC diagnostic pop )
+
+#else
+#define itkGCCIgnoreWarningPush( warning )
+#define itkGCCIgnoreWarningPop(  )
+#endif
+
+// todo
+#define itkMSVCgnoreWarningPush( warning )
+#define itkMSVCIgnoreWarningPop(  )
+
 //=============================================================================
 /* Define a common way of declaring a templated function as a friend inside a class.
   - ITK_FRIEND_TEMPLATE_FUNCTION_ARGUMENTS(T)
