@@ -69,13 +69,12 @@ protected:
   ThreadPool();
   ~ThreadPool();
 private:
-  int m_CompletedJobs;
-  bool m_ScheduleForDestruction;
+  int                             m_CompletedJobs;
+  bool                            m_ScheduleForDestruction;
   static SmartPointer<ThreadPool> m_SThreadPoolInstance;
-  static bool m_InstanceFlag;
+  static bool                     m_InstanceFlag;
   ThreadPool(ThreadPool const &);              // copy constructor is private
   ThreadPool & operator=(ThreadPool const &);  // assignment operator is
-
 
   void RemoveActiveId(int id);
 
@@ -94,6 +93,7 @@ private:
   WinJob FetchWork();
 
   static void * ThreadExecute(void *param);
+
   void AddThread();
 
 };

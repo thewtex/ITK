@@ -181,6 +181,7 @@ MultiThreader
 {
   // We are now using thread pool
   int threadId = (int)threadHandle;
+
   m_ThreadPool->WaitForThread(threadId);
 }
 
@@ -189,6 +190,7 @@ MultiThreader
 ::DispatchSingleMethodThread(MultiThreader::ThreadInfoStruct *threadInfo)
 {
   WinJob threadJob;
+
   threadJob.ThreadFunction =  ( unsigned int (__stdcall *)(void *) )(this->SingleMethodProxy);
   threadJob.ThreadArgs.otherArgs = (void *) threadInfo;
   int id = m_ThreadPool->AssignWork(threadJob);

@@ -20,7 +20,6 @@
 #define __itkWinJob_h
 #if defined(_WIN32) || defined(_WIN64)
 
-
 namespace itk
 {
 
@@ -42,10 +41,10 @@ public:
 
   ThreadArgs ThreadArgs;
   WinJob() : Assigned(false),
-             Id(-1),
-             Executed(false),
-             Ptid(-1),
-             UserData(NULL)
+    Id(-1),
+    Executed(false),
+    Ptid(-1),
+    UserData(NULL)
   {
     ThreadArgs.otherArgs = NULL;
   }
