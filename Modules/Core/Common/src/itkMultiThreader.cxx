@@ -43,11 +43,11 @@ namespace itk
 {
 
 // Initialize static member that controls global maximum number of threads.
-ThreadIdType MultiThreader:: m_GlobalMaximumNumberOfThreads = ITK_MAX_THREADS;
+ThreadIdType MultiThreader::m_GlobalMaximumNumberOfThreads = ITK_MAX_THREADS;
 
 // Initialize static member that controls global default number of threads : 0
 // => Not initialized.
-ThreadIdType MultiThreader:: m_GlobalDefaultNumberOfThreads = 0;
+ThreadIdType MultiThreader::m_GlobalDefaultNumberOfThreads = 0;
 
 void MultiThreader::SetGlobalMaximumNumberOfThreads(ThreadIdType val)
 {
@@ -182,10 +182,8 @@ ThreadIdType MultiThreader::GetGlobalDefaultNumberOfThreads()
 // ThreadInfoArray is static, the ThreadIDs can be initialized here
 // and will not change.
 
-
 MultiThreader::MultiThreader() : m_ThreadPool(ThreadPool::GetThreadPool() )
 {
-
   for( ThreadIdType i = 0; i < ITK_MAX_THREADS; ++i )
     {
     m_ThreadInfoArray[i].ThreadID           = i;

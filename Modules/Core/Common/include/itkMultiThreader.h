@@ -132,7 +132,7 @@ public:
   itkSetObjectMacro(ThreadPool, ThreadPool);
 
   /** Get the ThreadPool used by this MultiThreader */
-  itkGetObjectMacro(ThreadPool, ThreadPool);
+  itkGetModifiableObjectMacro(ThreadPool, ThreadPool);
 
   /** This is the structure that is passed to the thread that is
    * created from the SingleMethodExecute, MultipleMethodExecute or
@@ -158,7 +158,6 @@ public:
     ThreadFunctionType ThreadFunction;
     enum { SUCCESS, ITK_EXCEPTION, ITK_PROCESS_ABORTED_EXCEPTION, STD_EXCEPTION, UNKNOWN } ThreadExitCode;
     };
-
 protected:
   MultiThreader();
   ~MultiThreader();
@@ -168,7 +167,7 @@ private:
   MultiThreader(const Self &);  // purposely not implemented
   void operator=(const Self &); // purposely not implemented
 
-  //Thread pool instance and factory
+  // Thread pool instance and factory
   ThreadPool::Pointer m_ThreadPool;
 
   /** An array of thread info containing a thread id

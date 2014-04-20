@@ -17,12 +17,15 @@
  *=========================================================================*/
 #ifndef __itkPThreadJob_h__
 #define __itkPThreadJob_h__
-#ifdef __unix__
 #include <pthread.h>
 
 namespace itk
 {
 
+  /** The ThreadJob class does
+   * blah blah blah
+   * TODO: Umang:  What is this class for?
+   */
 class ThreadJob
 {
 public:
@@ -30,23 +33,15 @@ public:
     {
     void *otherArgs;
     };
-  int       Id;
-  bool      Assigned;
-  bool      Executed;
-  pthread_t Ptid;
-  void *    UserData; // any data user wants the function to use
-
-  void *     (*ThreadFunction)(void *ptr);
-  pthread_t  ThreadHandle;
-  ThreadArgs ThreadArgs;
-
-ThreadJob() :
-    Id(-1),
+  //typedef int ThreadNamingType;
+  typedef uint64_t ThreadNamingType; // Using 64bit type to force type errors
+  ThreadJob() :
+    m_ThreadName(123456789),
+    m_PThreadID(),
     Assigned(false),
     Executed(false),
-    Ptid(-1),
     UserData(NULL),
-    ThreadHandle(-1)
+    ThreadHandle()
   {
     ThreadArgs.otherArgs = NULL;
     itkDebugMacro(<<   "Starting thread \t address=" << this << std::endl );
@@ -54,13 +49,40 @@ ThreadJob() :
 
   ~ThreadJob()
   {
-    itkDebugMacro(<<  std::endl << "Thread finished. pid is  " << Ptid << "\t address=" << this << std::endl );
+    itkDebugMacro(<<  std::endl << "Thread finished. Ptid is  " << Ptid << "\t address=" << this << std::endl );
   }
 
+  ThreadNamingType GetThreadName() const
+    {
+    return m_ThreadName;
+    }
+  void SetThreadName( const ThreadNamingType & tn )
+    {
+    this->m_ThreadName = tn;
+    }
+
+  ThreadProcessIDType GetPThreadID() const
+    {
+    return this->m_PThreadID;
+    }
+  void SetPThreadID( ThreadProcessIDType PThreadID )
+    {
+    this->m_PThreadID = PThreadID;
+    }
+
+private:
+  ThreadNamingType m_ThreadName;
+  ThreadProcessIDType m_PThreadID;
+public:
+  bool      Assigned;
+  bool      Executed;
+  void *    UserData; // any data user wants the function to use
+
+  ThreadFunctionType ThreadFunction;   //void * (*ThreadFunction)(void *ptr);
+  ThreadProcessIDType  ThreadHandle;
+  ThreadArgs ThreadArgs;
 };
 
 } // End namespace itk
 
-#endif
 #endif // __itkPThreadJob_h__
-
