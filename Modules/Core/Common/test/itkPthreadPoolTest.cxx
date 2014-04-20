@@ -20,7 +20,6 @@
 #include "itkPThreadPool.h"
 #include <stdlib.h>
 
-
 #define ITERATIONS 10
 
 void * execute(void *ptr)
@@ -31,6 +30,7 @@ void * execute(void *ptr)
   std::cout << "Ptr received int :" << m << std::endl;
   int    n = 10;
   double factorial = 1.0;
+
   for( int j = 0; j < 90; j++ )
     {
     factorial = 1.0;
@@ -91,4 +91,3 @@ int itkPthreadPoolTest(int argc, char *argv[])
     }
   return 0;
 }
-

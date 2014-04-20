@@ -21,6 +21,7 @@ itkConstrainedValueAdditionImageFilterTest.cxx
 itkAtanImageFilterAndAdaptorTest.cxx
 itkMaskNegatedImageFilterTest.cxx
 itkAddImageFilterTest.cxx
+itkAddImageFilterTest2.cxx
 itkAddImageFilterFrameTest.cxx
 itkPowImageFilterTest.cxx
 itkMultiplyImageFilterTest.cxx
@@ -74,7 +75,6 @@ itkGreaterTest.cxx
 itkLessEqualTest.cxx
 itkLessTest.cxx
 itkClampImageFilterTest.cxx
-itkClampImageFilterTest2.cxx
 itkNthElementPixelAccessorTest2.cxx
 )
 
@@ -86,13 +86,6 @@ itkNthElementPixelAccessorTest2.cxx
 if (DEFINED ITK_CXX_DISABLE_OPTIMIZATION_FLAG)
   set_source_files_properties(
     itkClampImageFilterTest.cxx
-    PROPERTIES COMPILE_FLAGS ${ITK_CXX_DISABLE_OPTIMIZATION_FLAG}
-  )
-endif()
-
-if (DEFINED ITK_CXX_DISABLE_OPTIMIZATION_FLAG)
-  set_source_files_properties(
-    itkClampImageFilterTest2.cxx
     PROPERTIES COMPILE_FLAGS ${ITK_CXX_DISABLE_OPTIMIZATION_FLAG}
   )
 endif()
@@ -157,6 +150,9 @@ itk_add_test(NAME itkMaskNegatedImageFilterTest
       COMMAND ITKImageIntensityTestDriver itkMaskNegatedImageFilterTest)
 itk_add_test(NAME itkAddImageFilterTest
       COMMAND ITKImageIntensityTestDriver itkAddImageFilterTest)
+itk_add_test(NAME itkAddImageFilterTest2
+      COMMAND ITKImageIntensityTestDriver itkAddImageFilterTest2
+      DATA{${ITK_DATA_ROOT}/Input/HeadMRVolume.mha} ${TEMP}/itkAddImageFilterTest2.mha)
 itk_add_test(NAME itkAddImageFilterFrameTest
       COMMAND ITKImageIntensityTestDriver itkAddImageFilterFrameTest)
 itk_add_test(NAME itkPowImageFilterTest
@@ -277,10 +273,7 @@ itk_add_test(NAME itkLessEqualTest
       COMMAND ITKImageIntensityTestDriver itkLessEqualTest)
 itk_add_test(NAME itkLessTest
       COMMAND ITKImageIntensityTestDriver itkLessTest)
-
-itk_add_test(NAME itkNthElementPixelAccessorTest2
-      COMMAND ITKImageIntensityTestDriver itkNthElementPixelAccessorTest2)
 itk_add_test(NAME itkClampImageFilterTest
       COMMAND ITKImageIntensityTestDriver itkClampImageFilterTest)
-itk_add_test(NAME itkClampImageFilterTest2
-      COMMAND ITKImageIntensityTestDriver itkClampImageFilterTest2)
+itk_add_test(NAME itkNthElementPixelAccessorTest2
+      COMMAND ITKImageIntensityTestDriver itkNthElementPixelAccessorTest2)

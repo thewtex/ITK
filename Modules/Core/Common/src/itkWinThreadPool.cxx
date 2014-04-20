@@ -21,21 +21,21 @@
 
 namespace itk
 {
-HANDLE ThreadPool:: m_MutexSync = CreateMutex(
+HANDLE ThreadPool::m_MutexSync = CreateMutex(
     NULL,              // default security attributes
     FALSE,             // initially not owned
     NULL);
-HANDLE ThreadPool:: m_MutexWorkCompletion = CreateMutex(
+HANDLE ThreadPool::m_MutexWorkCompletion = CreateMutex(
     NULL,              // default security attributes
     FALSE,             // initially not owned
     NULL);
-HANDLE ThreadPool:: m_ActiveThreadMutex = CreateMutex(
+HANDLE ThreadPool::m_ActiveThreadMutex = CreateMutex(
     NULL,              // default security attributes
     FALSE,             // initially not owned
     NULL);
 
-bool ThreadPool::         m_InstanceFlag = false;
-SmartPointer<ThreadPool> ThreadPool:: m_SThreadPoolInstance = 0;
+bool                     ThreadPool::m_InstanceFlag = false;
+SmartPointer<ThreadPool> ThreadPool::m_SThreadPoolInstance = 0;
 
 SmartPointer<ThreadPool> ThreadPool::GetThreadPool()
 {
@@ -59,37 +59,39 @@ ThreadPool::ThreadPool() : m_IdCounter(1), m_ThreadCount(0)
   m_ScheduleForDestruction = false;
   m_IncompleteWork = 0;
   m_WorkAvailable = CreateSemaphore(
-        NULL,       // default security attributes
-        0,          // initial count
-        INFINITE, // maximum count
-        NULL);      // unnamed semaphore
+      NULL,       // default security attributes
+      0,          // initial count
+      INFINITE,   // maximum count
+      NULL);      // unnamed semaphore
 }
-void ThreadPool:: AddThread()
+
+void ThreadPool::AddThread()
 {
-    this->m_ThreadCount++;
-    HANDLE aThreadHandle;
-    DWORD dwThreadId;
-    aThreadHandle = CreateThread(
-          NULL,                                               // default
+  this->m_ThreadCount++;
+  HANDLE aThreadHandle;
+  DWORD  dwThreadId;
+  aThreadHandle = CreateThread(
+      NULL,                                                   // default
                                                               // security
                                                               // attributes
-          0,                                                  // use default
+      0,                                                      // use default
                                                               // stack size
-          (LPTHREAD_START_ROUTINE) ThreadPool::ThreadExecute, // thread function
+      (LPTHREAD_START_ROUTINE) ThreadPool::ThreadExecute,     // thread function
                                                               // name
-          this,                                               // argument to
+      this,                                                   // argument to
                                                               // thread function
-          0,                                                  // use default
+      0,                                                      // use default
                                                               // creation flags
-          &dwThreadId);                                       // returns the
+      &dwThreadId);                                           // returns the
                                                               // thread
                                                               // identifier
-    if( aThreadHandle == NULL )
+  if( aThreadHandle == NULL )
     {
     ExitProcess(3);
     }
-    m_ThreadHandles.push_back(aThreadHandle);
+  m_ThreadHandles.push_back(aThreadHandle);
 }
+
 void ThreadPool::InitializeThreads(int maximumThreads)
 {
 
@@ -99,9 +101,9 @@ void ThreadPool::InitializeThreads(int maximumThreads)
       {
       maximumThreads = 1;
       }
-      for(int i=0; i<maximumThreads; i++)
+    for( int i = 0; i < maximumThreads; i++ )
       {
-       AddThread();
+      AddThread();
       }
     }
   catch( std::exception& e )
@@ -154,7 +156,7 @@ int ThreadPool::AssignWork(WinJob winJob)
     DWORD dwWaitResult;
     dwWaitResult = WaitForSingleObject(
         m_MutexWorkCompletion, // handle to mutex
-        INFINITE);           // no time-out interval
+        INFINITE);             // no time-out interval
 
     switch( dwWaitResult )
       {
@@ -172,13 +174,13 @@ int ThreadPool::AssignWork(WinJob winJob)
       case WAIT_ABANDONED:
         itkExceptionMacro(<< "Abandoned mutex");
       }
-      if(m_IncompleteWork > m_ThreadCount)
+    if( m_IncompleteWork > m_ThreadCount )
       {
       AddThread();
       }
     dwWaitResult = WaitForSingleObject(
-        m_MutexSync,  // handle to mutex
-        INFINITE);  // no time-out interval
+        m_MutexSync, // handle to mutex
+        INFINITE);   // no time-out interval
 
     switch( dwWaitResult )
       {
@@ -186,8 +188,8 @@ int ThreadPool::AssignWork(WinJob winJob)
       case WAIT_OBJECT_0:
         winJob.Id = m_IdCounter++;
         m_WorkerQueue.push_back(winJob);
-        itkDebugMacro(<<
-          "Assigning Worker[" << (winJob).Id << "] Address:[" << &winJob << "] to Queue " << std::endl);
+        itkDebugMacro(
+          << "Assigning Worker[" << (winJob).Id << "] Address:[" << &winJob << "] to Queue " << std::endl);
 
         // Release ownership of the mutex object
         if( !ReleaseMutex(m_MutexSync) )
@@ -203,7 +205,7 @@ int ThreadPool::AssignWork(WinJob winJob)
 
     dwWaitResult = WaitForSingleObject(
         m_ActiveThreadMutex, // handle to mutex
-        INFINITE);         // no time-out interval
+        INFINITE);           // no time-out interval
 
     switch( dwWaitResult )
       {
@@ -227,8 +229,8 @@ int ThreadPool::AssignWork(WinJob winJob)
 
     if( !ReleaseSemaphore(
           m_WorkAvailable, // handle to semaphore
-          1,             // increase count by one
-          NULL) )        // not interested in previous count
+          1,               // increase count by one
+          NULL) )          // not interested in previous count
       {
       printf("ReleaseSemaphore error: %d\n", GetLastError() );
       }
@@ -239,7 +241,7 @@ int ThreadPool::AssignWork(WinJob winJob)
     {
     m_ExceptionOccured = true;
     itkDebugMacro(<<  std::endl << "Failed to assign work. \n" << e.what() << std::endl);
-    itkExceptionMacro(<<  e.what());
+    itkExceptionMacro(<<  e.what() );
     }
 }
 
@@ -255,7 +257,7 @@ bool ThreadPool::WaitForThread(int id)
       {
       dwWaitResult = WaitForSingleObject(
           m_ActiveThreadMutex, // handle to mutex
-          INFINITE);         // no time-out interval
+          INFINITE);           // no time-out interval
 
       switch( dwWaitResult )
         {
@@ -296,8 +298,8 @@ bool ThreadPool::WaitForThread(int id)
   catch( std::exception& e )
     {
     m_ExceptionOccured = true;
-    itkDebugMacro(<<
-      "Exception occured while waiting for job with id : " << id << std::endl << e.what() << std::endl);
+    itkDebugMacro(
+      << "Exception occured while waiting for job with id : " << id << std::endl << e.what() << std::endl);
     }
 }
 
@@ -313,8 +315,8 @@ WinJob ThreadPool::FetchWork()
       INFINITE);
 
   dwWaitResult = WaitForSingleObject(
-      m_MutexSync,  // handle to mutex
-      INFINITE);  // no time-out interval
+      m_MutexSync, // handle to mutex
+      INFINITE);   // no time-out interval
 
   switch( dwWaitResult )
     {
@@ -358,11 +360,11 @@ void ThreadPool::RemoveActiveId(int id)
   try
     {
     itkDebugMacro(<<  std::endl << "ActiveThreadids size : " << m_ActiveThreadIds.size() << ". Removing id " << id
-                                       << std::endl);
+                  << std::endl);
     DWORD dwWaitResult;
     dwWaitResult = WaitForSingleObject(
         m_ActiveThreadMutex, // handle to mutex
-        INFINITE);         // no time-out interval
+        INFINITE);           // no time-out interval
     int index = -1;
 
     switch( dwWaitResult )
@@ -386,7 +388,7 @@ void ThreadPool::RemoveActiveId(int id)
           m_CompletedJobs++;
           m_ActiveThreadIds.erase(m_ActiveThreadIds.begin() + index);
           itkDebugMacro(<<  std::endl << "Removed id " << id << " from ActiveThreadIds. Now vector size is "
-                                             << m_ActiveThreadIds.size() << std::endl);
+                        << m_ActiveThreadIds.size() << std::endl);
           }
         else
           {
@@ -406,8 +408,8 @@ void ThreadPool::RemoveActiveId(int id)
 
     // Delete from worker queue
     dwWaitResult = WaitForSingleObject(
-        m_MutexSync,  // handle to mutex
-        INFINITE);  // no time-out interval
+        m_MutexSync, // handle to mutex
+        INFINITE);   // no time-out interval
     bool foundToDelete = false;
     int  delIndex = -1;
 
@@ -427,12 +429,12 @@ void ThreadPool::RemoveActiveId(int id)
 
         m_WorkerQueue.erase(m_WorkerQueue.begin() + delIndex);
         itkDebugMacro(<<  std::endl << "Removed index " << delIndex << " from m_WorkerQueue. Now vector size is "
-                                           << m_WorkerQueue.size() << std::endl);
+                      << m_WorkerQueue.size() << std::endl);
         if( foundToDelete == false )
           {
-          itkDebugMacro(<<
-            std::endl << "Error occured, couldnt find id in WorkerQueue to mark executed. Id is : " << id
-                      << std::endl);
+          itkDebugMacro(
+            << std::endl << "Error occured, couldnt find id in WorkerQueue to mark executed. Id is : " << id
+            << std::endl);
           itkExceptionMacro(<<  "Error occured in RemoveActiveId, couldnt find id in m_WorkerQueue to mark executed. ");
           }
         // Release ownership of the mutex object
@@ -447,7 +449,7 @@ void ThreadPool::RemoveActiveId(int id)
     }
   catch( std::exception & e )
     {
-    itkExceptionMacro(<<  e.what());
+    itkExceptionMacro(<<  e.what() );
     }
 
 }
@@ -468,7 +470,7 @@ void * ThreadPool::ThreadExecute(void *param)
       DWORD dwWaitResult;
       dwWaitResult = WaitForSingleObject(
           m_MutexWorkCompletion, // handle to mutex
-          INFINITE);           // no time-out interval
+          INFINITE);             // no time-out interval
 
       switch( dwWaitResult )
         {
@@ -494,6 +496,7 @@ void * ThreadPool::ThreadExecute(void *param)
       }
 
     }
+
   return 0;
 }
 

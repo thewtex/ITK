@@ -79,7 +79,7 @@ ThreadIdType MultiThreader::GetGlobalDefaultNumberOfThreadsByPlatform()
 void MultiThreader::MultipleMethodExecute()
 {
 
-  pthread_t process_id[ITK_MAX_THREADS];
+  ThreadProcessIDType process_id[ITK_MAX_THREADS];
 
   // obey the global maximum number of threads limit
   if( m_NumberOfThreads > m_GlobalMaximumNumberOfThreads )
@@ -215,9 +215,10 @@ MultiThreader
 ::WaitForSingleMethodThread(ThreadProcessIDType threadHandle)
 {
 // We are now using thread pool
-  pthread_t threadId = threadHandle;
+  ThreadJob::ThreadNamingType threadName = m_ThreadPool->GetNameFromID( threadHandle );
+
   itkDebugMacro(<<  std::endl << "For wait : threadid :" << threadId << std::endl );
-  m_ThreadPool->WaitForThread(threadId);
+  m_ThreadPool->WaitForThread(threadName);
 
 }
 
@@ -226,6 +227,7 @@ MultiThreader
 ::DispatchSingleMethodThread(MultiThreader::ThreadInfoStruct *threadInfo)
 {
   pthread_attr_t attr;
+
   pthread_attr_init(&attr);
 #if !defined( __CYGWIN__ )
   pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
@@ -233,10 +235,9 @@ MultiThreader
   ThreadJob threadJob;
   threadJob.ThreadFunction =  reinterpret_cast<c_void_cast>(this->SingleMethodProxy);
   threadJob.ThreadArgs.otherArgs = (void *) threadInfo;
-  int id = m_ThreadPool->AssignWork(threadJob);
-
-  itkDebugMacro(<< std::endl << "Returning thread id :" << id );
-  return (pthread_t)id;
+  ThreadProcessIDType threadPtr = m_ThreadPool->AssignWork(threadJob);
+  itkDebugMacro(<< std::endl << "Returning thread id :" << threadPtr );
+  return (ThreadProcessIDType)threadPtr;
 
 }
 
