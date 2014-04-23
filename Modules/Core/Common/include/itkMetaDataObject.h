@@ -212,6 +212,20 @@ inline bool ExposeMetaData(const MetaDataDictionary & Dictionary, const std::str
     }
   return true;
 }
+
+// Specializations
+template <> ITKCommon_EXPORT void MetaDataObject< unsigned char >::Print( std::ostream & os ) const;
+template <> ITKCommon_EXPORT void MetaDataObject< char >::Print( std::ostream & os ) const;
+template <> ITKCommon_EXPORT void MetaDataObject< unsigned short >::Print( std::ostream & os ) const;
+template <> ITKCommon_EXPORT void MetaDataObject< short >::Print( std::ostream & os ) const;
+template <> ITKCommon_EXPORT void MetaDataObject< unsigned int >::Print( std::ostream & os ) const;
+template <> ITKCommon_EXPORT void MetaDataObject< int >::Print( std::ostream & os ) const;
+template <> ITKCommon_EXPORT void MetaDataObject< unsigned long >::Print( std::ostream & os ) const;
+template <> ITKCommon_EXPORT void MetaDataObject< long >::Print( std::ostream & os ) const;
+template <> ITKCommon_EXPORT void MetaDataObject< float >::Print( std::ostream & os ) const;
+template <> ITKCommon_EXPORT void MetaDataObject< double >::Print( std::ostream & os ) const;
+template <> ITKCommon_EXPORT void MetaDataObject< std::string >::Print( std::ostream & os ) const;
+
 } // end namespace itk
 
 /**
@@ -224,14 +238,14 @@ inline bool ExposeMetaData(const MetaDataDictionary & Dictionary, const std::str
 #define NATIVE_TYPE_METADATAPRINT(TYPE_NAME)        \
   template< >                                       \
   void                                              \
-  itk::MetaDataObject< TYPE_NAME >                  \
+  ::itk::MetaDataObject< TYPE_NAME >                  \
   ::Print(std::ostream & os) const                  \
     {                                               \
     os << this->m_MetaDataObjectValue << std::endl; \
     }                                               \
   template< >                                       \
   void                                              \
-  itk::MetaDataObject< const TYPE_NAME >            \
+  ::itk::MetaDataObject< const TYPE_NAME >            \
   ::Print(std::ostream & os) const                  \
     {                                               \
     os << this->m_MetaDataObjectValue << std::endl; \
