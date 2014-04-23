@@ -145,6 +145,7 @@ private:
   // This is made private to force the use of the
   // MetaDataObject<MetaDataObjectType>::New() operator!
   //void * operator new(SizeValueType nothing) {};//purposefully not implemented
+  void operator=(const Self &); // purposely not implemented
 
   /**
    * A variable to store this derived type.
