@@ -117,6 +117,7 @@ public:
   typedef TOutputTransform                                            OutputTransformType;
   typedef typename OutputTransformType::Pointer                       OutputTransformPointer;
   typedef typename OutputTransformType::ScalarType                    RealType;
+  typedef typename OutputTransformType::ParametersType                ParametersType;
   typedef typename OutputTransformType::DerivativeType                DerivativeType;
   typedef typename DerivativeType::ValueType                          DerivativeValueType;
 
@@ -285,6 +286,17 @@ public:
     }
 
   /**
+   * Set/Get the initial parameters of the output optimizable transform.
+   */
+  void SetInitialTransformParameters( const ParametersType & param )
+    {
+    this->m_InitialTransformParameters = param;
+    this->Modified();
+    }
+
+  itkGetConstReferenceMacro(InitialTransformParameters, ParametersType);
+
+  /**
    * Set/Get the smoothing sigmas for each level.  At each resolution level, a gaussian smoothing
    * filter (specifically, the \c itkDiscreteGaussianImageFilter) is applied.  Sigma values are
    * specified according to the option \c m_SmoothingSigmasAreSpecifiedInPhysicalUnits.
@@ -386,6 +398,8 @@ protected:
   TransformParametersAdaptorsContainerType                        m_TransformParametersAdaptorsPerLevel;
 
   CompositeTransformPointer                                       m_CompositeTransform;
+
+  ParametersType                                                  m_InitialTransformParameters;
 
   OutputTransformPointer                                          m_OutputTransform;
 

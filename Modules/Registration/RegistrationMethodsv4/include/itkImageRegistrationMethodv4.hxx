@@ -82,6 +82,9 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform, TVirtualImage>
   this->m_OptimizerWeights.SetSize( 0 );
   this->m_OptimizerWeightsAreIdentity = true;
 
+  this->m_InitialTransformParameters = ParametersType(1);
+  this->m_InitialTransformParameters.Fill(0.0f);
+
   this->m_OutputTransform = OutputTransformType::New();
 
   DecoratedOutputTransformPointer transformDecorator = DecoratedOutputTransformType::New().GetPointer();
@@ -287,6 +290,13 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform, TVirtualImage>
   // Set-up the composite transform at initialization
   if( level == 0 )
     {
+    // Initialize the output transform before it is added to the composite transform to be set for optimization.
+    if( this->m_InitialTransformParameters.Size() == this->m_OutputTransform->GetNumberOfParameters() )
+      {
+      itkDebugMacro( "Initialize the output transform by " << this->m_InitialTransformParameters );
+      this->m_OutputTransform->SetParameters( m_InitialTransformParameters );
+      }
+
     this->m_CompositeTransform->ClearTransformQueue();
 
     // If the moving initial transform is a composite transform, unroll
