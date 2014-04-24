@@ -213,6 +213,27 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform, TVirtualImage>
 }
 
 /*
+ * Direct initialization of the optimizable transform.
+ */
+template<typename TFixedImage, typename TMovingImage, typename TTransform, typename TVirtualImage>
+void
+ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform, TVirtualImage>
+::InitializeOptimizableParametersFromTransform( const OutputTransformPointer initTransform )
+{
+  itkDebugMacro( "Direct initialization of the optimizable transform." );
+  if( initTransform->GetNumberOfParameters() > 0 )
+    {
+    this->m_OutputTransform->SetFixedParameters( initTransform->GetFixedParameters() );
+    this->m_OutputTransform->SetParameters( initTransform->GetParameters() );
+    this->Modified();
+    }
+  else
+    {
+    itkExceptionMacro( "The initial transform has no parameters." );
+    }
+}
+
+/*
  * Initialize by setting the interconnects between components.
  */
 template<typename TFixedImage, typename TMovingImage, typename TTransform, typename TVirtualImage>
@@ -289,12 +310,19 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform, TVirtualImage>
     {
     this->m_CompositeTransform->ClearTransformQueue();
 
-    // If the moving initial transform is a composite transform, unroll
-    // it into m_CompositeTransform.  This is a temporary fix to accommodate
-    // the lack of support for calculating the jacobian in the composite
-    // transform.
+    // When The output optimizable transform is already initialized, there is no more need to add
+    // moving initial transform to the composite transform because it is only an identity transform,
+    // so it does not affect the transformation; however, it will take lots of time in jacobian computations
+    // of the composite transform.
 
-    this->m_CompositeTransform->AddTransform( this->m_MovingInitialTransform );
+    if( this->m_OutputTransform->GetNumberOfParameters() == 0 )
+      {
+      // If the moving initial transform is a composite transform, unroll
+      // it into m_CompositeTransform.
+
+      this->m_CompositeTransform->AddTransform( this->m_MovingInitialTransform );
+      }
+
     this->m_CompositeTransform->AddTransform( this->m_OutputTransform );
     this->m_CompositeTransform->FlattenTransformQueue();
 

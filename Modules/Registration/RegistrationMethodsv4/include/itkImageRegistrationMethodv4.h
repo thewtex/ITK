@@ -117,6 +117,7 @@ public:
   typedef TOutputTransform                                            OutputTransformType;
   typedef typename OutputTransformType::Pointer                       OutputTransformPointer;
   typedef typename OutputTransformType::ScalarType                    RealType;
+  typedef typename OutputTransformType::ParametersType                ParametersType;
   typedef typename OutputTransformType::DerivativeType                DerivativeType;
   typedef typename DerivativeType::ValueType                          DerivativeValueType;
 
@@ -322,6 +323,9 @@ public:
 
    /** Get the current convergence state per level.  This is a helper function for reporting observations. */
    itkGetConstReferenceMacro( IsConverged, bool );
+
+  /** Direct initialization of the optimizable transform. */
+   void InitializeOptimizableParametersFromTransform( const OutputTransformPointer initTransform );
 
 #ifdef ITKV3_COMPATIBILITY
   /** Method that initiates the registration. This will Initialize and ensure
