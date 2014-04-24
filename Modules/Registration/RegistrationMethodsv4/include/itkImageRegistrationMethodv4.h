@@ -323,6 +323,9 @@ public:
    /** Get the current convergence state per level.  This is a helper function for reporting observations. */
    itkGetConstReferenceMacro( IsConverged, bool );
 
+  /** Direct initialization of the optimizable transform. */
+   void InitializeOptimizableParametersFromTransform( const OutputTransformPointer initTransform );
+
 #ifdef ITKV3_COMPATIBILITY
   /** Method that initiates the registration. This will Initialize and ensure
    * that all inputs the registration needs are in place, via a call to
