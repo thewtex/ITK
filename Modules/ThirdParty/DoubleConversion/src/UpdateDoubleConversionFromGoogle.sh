@@ -26,7 +26,7 @@ fi
 # next update...
 #
 # This merge done April 30 2013
-git branch DoubleConversion-upstream 0447797f4afab5c5
+git branch DoubleConversion-upstream 7aa4370de566c317
 
 #
 # Make a temp directory to handle the import of the upstream source
@@ -53,6 +53,7 @@ git clone https://code.google.com/p/double-conversion/
 # recover the upstream commit date.
 cd double-conversion
 upstream_date="$(git log -n 1 --format='%cd')"
+upstream_sha="$(git rev-parse HEAD)"
 cd ..
 
 #
@@ -77,7 +78,12 @@ git add --all
 GIT_AUTHOR_NAME='Google double-conversion Maintainers' \
 GIT_AUTHOR_EMAIL='floitsch@google.com' \
 GIT_AUTHOR_DATE="${upstream_date}" \
-git commit -q -m "Google double-conversion (reduced)"
+git commit -q -m "COMP: Google double-conversion (reduced)" \
+-m "This corresponds to commit hash" \
+-m "${upstream_sha}" \
+-m "from Google repository" \
+-m "http://code.google.com/p/double-conversion"
+
 
 #
 # push to the DoubleConversion-upstream branch in the
