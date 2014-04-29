@@ -63,9 +63,12 @@ new algorithms or implementations seeking greater exposure and adoption,
 algorithms that hope to eventually be integrated into the toolkit,
 niche algorithms with limited application, and Modules in progress that do not
 yet have the test coverage and cross-platform standards required by the main toolkit.
-+The modules are OFF by default in ITK's CMake configuration.
+The modules are OFF by default in ITK's CMake configuration.
 Note that these modules do get the same level of support and backwards
 compatibility as other modules in the toolkit.")
+
+#------------------------------------------------
+# Set up Doxygen Group descriptions
 
 # Set a module name list for each group
 foreach( group ${group_list} )
@@ -73,16 +76,12 @@ foreach( group ${group_list} )
   file( GLOB_RECURSE _module_files ${ITK_SOURCE_DIR}/Modules/${group}/itk-module.cmake )
   foreach( _module_f ${_module_files} )
     get_filename_component (module_file_dir ${_module_f} PATH)
-    if (NOT EXISTS "${module_file_dir}/itk-module-init.cmake")
-      file( STRINGS ${_module_f} _module_line REGEX "itk_module[ \n]*\\([ \n]*ITK[A-Za-z0-9]*" )
-      string( REGEX MATCH "ITK[A-Za-z0-9]*" _module_name ${_module_line} )
-      list( APPEND ${group}_module_list ${_module_name} )
-    endif()
+    file( STRINGS ${_module_f} _module_line REGEX "itk_module[ \n]*\\([ \n]*[A-Za-z0-9]*" )
+    string( REGEX MATCH "(\\([ \n]*)([A-Za-z0-9]*)" _module_name ${_module_line} )
+    list( APPEND ${group}_module_list ${CMAKE_MATCH_2} )
   endforeach()
 endforeach()
 
-#------------------------------------------------
-#------------------------------------------------
 set( group_list_dox )
 foreach(group ${group_list} )
   set( group_list_dox
@@ -110,6 +109,25 @@ configure_file(
 
 #------------------------------------------------
 # Turn on the ITK_BUILD option for each group
+
+# Set a module name list for each group and exclude
+# Modules that should be OFF
+foreach( group ${group_list} )
+  set( ${group}_module_list )
+  file( GLOB_RECURSE _module_files ${ITK_SOURCE_DIR}/Modules/${group}/itk-module.cmake )
+  foreach( _module_f ${_module_files} )
+    get_filename_component (module_file_dir ${_module_f} PATH)
+    if (NOT EXISTS "${module_file_dir}/itk-module-init.cmake")
+      file( STRINGS ${_module_f} _module_line REGEX "itk_module[ \n]*\\([ \n]*ITK[A-Za-z0-9]*" )
+      # Remote Modules do not start with "ITK", and should not be ON by default.
+      if( "${_module_line}" )
+        string( REGEX MATCH "ITK[A-Za-z0-9]*" _module_name ${_module_line} )
+        list( APPEND ${group}_module_list ${_module_name} )
+      endif()
+    endif()
+  endforeach()
+endforeach()
+
 if("$ENV{DASHBOARD_TEST_FROM_CTEST}" STREQUAL "")
   # developer build
   option(ITKGroup_Core "Request building core modules" ON)
