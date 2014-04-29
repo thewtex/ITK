@@ -1,12 +1,14 @@
 ###############################################################################
-# find swig
-#find_package(SWIG REQUIRED)
-#include(${SWIG_USE_FILE})
+# Find python
+find_package(PythonInterp REQUIRED)
 
 ###############################################################################
 # Build swig
 
 option(ITK_USE_SYSTEM_SWIG "Use system swig. If OFF, swig is built as an external project." OFF)
+
+set(pygccxml_url https://bitbucket.org/ompl/pygccxml/get/8b816257d1e47f4268d8fb4fd39346b75666dac0.tar.gz)
+set(pygccxml_md5 349fc625cd3f3ec78374c19b94f2df6e)
 
 set(swig_version 3.0.0)
 set(swig_md5     9c8278fad527dda4bf38edffe5acc394)
@@ -136,12 +138,20 @@ else()
   set(SWIG_EXECUTABLE ${swig_ep} CACHE FILEPATH "swig executable." FORCE)
 endif()
 
+itk_download_attempt_check(PYGCCXML)
+ExternalProject_Add(pygccxml
+  URL ${pygccxml_url}
+  URL_MD5 ${pygccxml_md5}
+  SOURCE_DIR ${CMAKE_CURRENT_BINARY_DIR}/pygccxml
+  CONFIGURE_COMMAND ""
+  BUILD_COMMAND ""
+  INSTALL_COMMAND ""
+  )
 
 ###############################################################################
-# find python
-find_package(PythonInterp REQUIRED)
 
 set(CABLE_INDEX ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/idx.py CACHE INTERNAL "cableidx path")
+set(PYGCCXML_DIR ${CMAKE_CURRENT_BINARY_DIR}/pygccxml CACHE INTERNAL "pygccxml path")
 
 ###############################################################################
 # install the files requires for swiginterface
@@ -152,7 +162,7 @@ if(NOT EXTERNAL_WRAP_ITK_PROJECT)
   WRAP_ITK_INSTALL(/Configuration/Generators/SwigInterface module.i.in)
   WRAP_ITK_INSTALL(/Configuration/Generators/SwigInterface module.includes.in)
 
-  install(DIRECTORY pygccxml-1.0.0
+  install(DIRECTORY ${PYGCCXML_DIR}
     DESTINATION "${WRAP_ITK_INSTALL_PREFIX}/Configuration/Generators/SwigInterface"
     PATTERN ".svn" EXCLUDE
     PATTERN "CVS" EXCLUDE
@@ -249,13 +259,6 @@ macro(itk_end_wrap_module_swig_interface)
 
   # message("${opts}")
 
-    # configure the test driver, to set the python path to the pygccxml dir
-  #   find_program(ITK_TEST_DRIVER itkTestDriver)
-  #   set(PYTHON_PYGCCXML_DRIVER "${ITK_TEST_DRIVER}"
-  #     --add-before-env PYTHONPATH "${WRAP_ITK_CMAKE_DIR}/pygccxml-1.0.0/"
-  #     "${PYTHON_EXECUTABLE}"
-  #   )
-
     if(ITK_WRAP_EXPLICIT)
       set(opts ${opts} --include "${WRAPPER_LIBRARY_NAME}Explicit.h")
     endif()
@@ -272,6 +275,8 @@ macro(itk_end_wrap_module_swig_interface)
         --swig-include ${module}_ext.i
         -w1 -w3 -w51 -w52 -w53 -w54 #--warning-error
         -A protected -A private
+        -p ${PYGCCXML_DIR}
+        -g ${GCCXML}
         --typedef-input ${typedef_in_file}
         --typedef-output ${typedef_file}
         --include ${module}SwigInterface.h
@@ -387,7 +392,7 @@ macro(itk_end_wrap_submodule_swig_interface module)
   add_custom_command(
     OUTPUT ${idx_file}
     COMMAND ${CABLE_INDEX}
-          ${xml_file} ${idx_file}
+      ${PYGCCXML_DIR} ${GCCXML} ${xml_file} ${idx_file}
     DEPENDS ${CABLE_INDEX} ${xml_file}
   )
   WRAP_ITK_INSTALL("/Configuration/Typedefs/" "${idx_file}")
