@@ -6,10 +6,15 @@ from __future__ import print_function
 import sys, os
 sys.path.append(sys.path[0]+os.sep+'pygccxml-1.0.0')
 
-import pygccxml, sys, cStringIO
+import pygccxml, sys
+
+try:
+    from six import StringIO
+except ImportError:
+    import cStringIO as StringIO
 
 # the output file
-outputFile = cStringIO.StringIO()
+outputFile = StringIO.StringIO()
 # init the pygccxml stuff
 pygccxml.declarations.scopedef_t.RECURSIVE_DEFAULT = False
 pygccxml.declarations.scopedef_t.ALLOW_EMPTY_MDECL_WRAPPER = True
@@ -31,7 +36,7 @@ for typedef in wrappers_ns.typedefs():
   # drop the :: prefix - it make swig produce invalid code
   if s.startswith("::"):
     s = s[2:]
-  print(outputFile, " {%s} {%s} {%s}" % (s, n, module))
+  outputFile.write(" {%s} {%s} {%s}\n" % (s, n, module))
 
 content = outputFile.getvalue()
 
