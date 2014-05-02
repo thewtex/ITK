@@ -59,17 +59,24 @@ public:
   itkTypeMacro(ThreadPool, Object);
 
   /** Get a singleton */
-  static ThreadPool * GetThreadPool();
+  static ThreadPool * GetThreadPool(); // TODO: This should return a const
+
+  // pointer.  Only 1 thread pool can exist
+  // from the singleton.
 
   /** Waits for maxPollSecs and then stops the threadpool */
   void DestroyPool(int maxPollSecs);
 
   /** This method is called to assign a job to the thread pool */
-  ThreadProcessIDType AssignWork(ThreadJob worker);
+  ThreadProcessIDType AssignWork(ThreadJob worker); // TODO:  Do you want to
+
+  // pass a copy of the job,
+  // or a reference to the
+  // job?
 
   /** Can call this method if we want to pre-start maxThreads in the thread pool
     */
-  void InitializeThreads(int maxThreads);
+  void InitializeThreads(unsigned int maxThreads);
 
   /** This method blocks until the given (job) id has finished executing */
   bool WaitForJobOnThreadHandle(ThreadProcessIDType handle);
@@ -85,13 +92,6 @@ protected:
   ThreadPool();
   ~ThreadPool();
 private:
-
-  /** Count of jobs completed */
-  int m_CompletedJobs;
-
-  /** Set when the thread pool is to be stopped */
-  bool m_ScheduleForDestruction;
-
   static ThreadPool *m_SThreadPoolInstance;
 
   /** Used to yield a singleton instance */
@@ -102,6 +102,12 @@ private:
 
   /** Assignment operator is private */
   ThreadPool & operator=(ThreadPool const &);
+
+  /** Count of jobs completed */
+  int m_CompletedJobs;
+
+  /** Set when the thread pool is to be stopped */
+  bool m_ScheduleForDestruction;
 
   /** Maintains count of threads */
   int m_ThreadCount;
