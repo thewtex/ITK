@@ -39,6 +39,13 @@
 #include "itkSimpleFastMutexLock.h"
 #include "itkMutexLockHolder.h"
 
+#if defined(VERBOSE_THREAD_DEBUG)
+#define ThreadDebugMsg( ostreamMsg )  std::cout ostreamMsg
+#else
+#define ThreadDebugMsg( ostreamMsg )
+#endif
+
+
 namespace itk
 {
 
@@ -51,7 +58,6 @@ public:
   typedef Object                   Superclass;
   typedef SmartPointer<Self>       Pointer;
   typedef SmartPointer<const Self> ConstPointer;
-  typedef std::vector<ThreadJob>   Queue;
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
@@ -88,15 +94,10 @@ public:
   ThreadProcessIDType GetThreadHandleForJob(int jobId);
 
 protected:
-
-  ThreadPool();
+  ThreadPool();  // Protected so that only the GetThreadPool can create a thread pool
   ~ThreadPool();
+
 private:
-  static ThreadPool *m_SThreadPoolInstance;
-
-  /** Used to yield a singleton instance */
-  static bool m_InstanceFlag;
-
   /** copy constructor is private */
   ThreadPool(ThreadPool const &);
 
@@ -112,22 +113,11 @@ private:
   /** Maintains count of threads */
   int m_ThreadCount;
 
-  /** this is a list of jobs(ThreadJob) submitted to the thread pool
-      this is the only place where the jobs are submitted.
-      We need a worker queue because the thread pool assigns work to a
-      thread which is free. So when a job is submitted, it has to be stored
-      somewhere*/
-  Queue m_WorkerQueue;
-
-  /** this is the list of active jobs (running) across all threads */
-  std::vector<int> m_ActiveJobIds;
-
   /** Used by the thread pool to indicate that work (job) is incomplete across
     all threads */
-  int m_IncompleteWork;
-
-  /** Size of worker queue */
-  int m_QueueSize;
+  int m_NumberOfPendingJobsToBeRun;
+  /** To lock on m_NumberOfPendingJobsToBeRun */
+  static SimpleFastMutexLock m_NumberOfPendingJobsToBeRunMutex;
 
   /** counter to assign job ids */
   unsigned int m_IdCounter;
@@ -135,39 +125,58 @@ private:
   /** set if exception occurs */
   bool m_ExceptionOccured;
 
-  /** Mutexes */
-  /** To lock on the vectors */
-  static SimpleFastMutexLock m_VectorQMutex;
-  /** To lock on m_IncompleteWork */
-  static SimpleFastMutexLock m_MutexWorkCompletion;
-  /** To lock on m_InstanceFlag */
-  static SimpleFastMutexLock m_CreateInstanceMutex;
+  typedef std::vector<ThreadJob>   ThreadJobQueueType;
+  /** this is a list of jobs(ThreadJob) submitted to the thread pool
+      this is the only place where the jobs are submitted.
+      We need a worker queue because the thread pool assigns work to a
+      thread which is free. So when a job is submitted, it has to be stored
+      somewhere*/
+  ThreadJobQueueType m_WorkerQueue;
+  /** To lock on m_WorkerQueue */
+  static SimpleFastMutexLock m_WorkerQueueMutex;
+
+  /** this is the list of active jobs (running) across all threads */
+  std::vector<int> m_ActiveJobIds;
 
   /** Vector to hold all active thread handles */
   std::vector<ThreadProcessIDType> m_ThreadHandles;
 
   /** Vector of pairs that hold job ids and their corresponding thread handles
     */
-  /** Here the job id can be -2, -1 or a positive number.
-     -2 means this particular threadhandle (thread) is free
-     -1 means the thread finished with the assigned job and is waiting until WaitForJobOnThreadHandle method is called
-     +ve means the thread is running this job id   */
-  std::vector<std::pair<int, ThreadProcessIDType> > m_ThreadStructs;
+  enum {
+    JOB_THREADHANDLE_IS_FREE=-2, // means this particular threadhandle (thread) is free
+    JOB_THREADHANDLE_IS_DONE=-1  // means the thread finished with the assigned job and is waiting until WaitForJobOnThreadHandle method is called
+    // otherwise threadhandle is actively running a job.
+  };
+  class ThreadProcessStatusPair
+    {
+  public:
+    ThreadProcessStatusPair(const int & tnid, const ThreadProcessIDType & tph):
+      ThreadNumericId(tnid),
+      ThreadProcessHandle(tph)
+    {}
+    int                 ThreadNumericId;
+    ThreadProcessIDType ThreadProcessHandle;
+  private:
+    ThreadProcessStatusPair(); //purposefully not implemented.
+    };
+  typedef std::vector<ThreadProcessStatusPair> ThreadStructsQueueType;
+  ThreadStructsQueueType m_ThreadIDHandlePairingQueue;
+  /** To lock on the vectors */
+  static SimpleFastMutexLock m_ThreadIDHandlePairingQueueMutex;
+
 
   /** This function is called by the threads to get jobs to be executed.
       This method is the "first" call from the threads in the thread pool.
       Now this method blocks the thread until a job is available for the thread to execute.
-      Once a job is available(known from m_ThreadStructs), it gets it from the worker queue and
+      Once a job is available(known from m_ThreadIDHandlePairingQueue), it gets it from the worker queue and
       returns it   */
   ThreadJob FetchWork(ThreadProcessIDType t);
-
-  /** thread function */
-  static void * ThreadExecute(void *param);
 
   /** Used to remove an active job id from the queue because it is done.
       This method is called by the threads once they are done with the job.
       This method removes the job id from m_ActiveJobIds, marks the thread as free
-      by setting appropriate values in the m_ThreadStructs vector and removes the
+      by setting appropriate values in the m_ThreadIDHandlePairingQueue vector and removes the
       job from m_WorkerQueue  */
   void RemoveActiveId(int id);
 
@@ -181,6 +190,16 @@ private:
       are free. If so, it returns false else returns true */
   bool DoIAddAThread();
 
+  static ThreadPool *m_ThreadPoolInstance;
+  /** To lock on m_ThreadPoolInstance */
+  static SimpleFastMutexLock m_ThreadPoolInstanceMutex;
+  /** Used to yield a singleton instance */
+  static bool m_ThreadPoolSingletonExists;
+
+
+
+  /** thread function */
+  static void * ThreadExecute(void *param);
 };
 
 }
