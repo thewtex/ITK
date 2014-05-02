@@ -35,42 +35,55 @@ calling the WaitForJob method on the thread pool.
 #include <stdlib.h>
 #include "itkThreadPool.h"
 #if defined(ITK_USE_PTHREADS)
-#include "itkPThreadPool.cxx"
+#include "itkPThreadPool.cxx"  //TODO:  cxx files should not be included, either change to hxx or have conditional compile
 #elif defined(ITK_USE_WIN32_THREADS)
-#include "itkWinThreadPool.cxx"
+#include "itkWinThreadPool.cxx"  //TODO:  cxx files should not be included, either change to hxx or have conditional compile
 #endif
+
+#include <algorithm>
 
 namespace itk
 {
-SimpleFastMutexLock ThreadPool::m_VectorQMutex;
-SimpleFastMutexLock ThreadPool::m_MutexWorkCompletion;
-SimpleFastMutexLock ThreadPool::m_CreateInstanceMutex;
+SimpleFastMutexLock ThreadPool::m_ThreadIDHandlePairingQueueMutex;
+SimpleFastMutexLock ThreadPool::m_WorkerQueueMutex;
+SimpleFastMutexLock ThreadPool::m_NumberOfPendingJobsToBeRunMutex;
+SimpleFastMutexLock ThreadPool::m_ThreadPoolInstanceMutex;
 
-bool         ThreadPool::m_InstanceFlag = false;
-ThreadPool * ThreadPool::m_SThreadPoolInstance = 0;
+bool         ThreadPool::m_ThreadPoolSingletonExists = false;
+ThreadPool * ThreadPool::m_ThreadPoolInstance = 0;
 
 ThreadPool * ThreadPool::GetThreadPool()
 {
     {
-    MutexLockHolder<SimpleFastMutexLock> mutexHolderAct(m_CreateInstanceMutex);
-    if( !m_InstanceFlag )
+    MutexLockHolder<SimpleFastMutexLock> mutexHolderAct(m_ThreadPoolInstanceMutex);
+    if( !m_ThreadPoolSingletonExists )
       {
-      m_SThreadPoolInstance = new ThreadPool();
-      m_SThreadPoolInstance->DebugOn();
+      //Create thread pool if it does not exist
+      m_ThreadPoolInstance = new ThreadPool();
+      //TODO:  Turn debugging off.
+      m_ThreadPoolInstance->DebugOn();
       }
     }
-  return m_SThreadPoolInstance;
+  return m_ThreadPoolInstance;
 }
 
 ThreadPool::ThreadPool() :
   m_CompletedJobs(0),
   m_ScheduleForDestruction(false),
   m_ThreadCount(0),
-  m_IncompleteWork(0),
+  m_NumberOfPendingJobsToBeRun(0),
   m_IdCounter(1)
 {
-  m_InstanceFlag = true; // TODO: Static member variables should be globally
-                         // initialized, not in the constructor!
+  if ( m_ThreadPoolSingletonExists == true )
+    {
+    // FAILURE: Only 1 threadpool can exist!
+    }
+    m_ThreadPoolSingletonExists = true; //Once initialized, then set to true, this should only be set to true one time.
+  // TODO:  Initialize with some value so that we can avoid some overhead of copy and replacing.
+  m_WorkerQueue.reserve(1000);
+  m_ActiveJobIds.reserve(1000);
+  m_ThreadHandles.reserve(1000);
+  m_ThreadIDHandlePairingQueue.reserve(1000);
 }
 
 void ThreadPool::InitializeThreads(unsigned int maximumThreads)
@@ -92,35 +105,38 @@ ThreadPool::~ThreadPool()
 
 /*
   Once wait thread is called we will look for the threadhandle's job id
-  if it is -2 it means it is done -
+  if it is JOB_THREADHANDLE_IS_FREE it means it is done -
   if it is +ve it means it is running
 
-  if it is -2 / done set the jid to -1 which means that now assign work can
+  if it is JOB_THREADHANDLE_IS_FREE / done set the jid to
+  JOB_THREADHANDLE_IS_DONE which means that now assign work can
   assign further work to this thread
   */
-bool ThreadPool::WaitForJobOnThreadHandle(ThreadProcessIDType handle)
+bool ThreadPool::WaitForJobOnThreadHandle(ThreadProcessIDType threadHandle)
 {
   bool found = false;
-
   try
     {
     itkDebugMacro(
-      << "Waiting for thread with handle " << handle
+      << "Waiting for thread with threadHandle " << threadHandle
       << std::endl );
     while( !found )
       {
-      MutexLockHolder<SimpleFastMutexLock> threadStructMutexHolder(m_VectorQMutex);
         {
-        for( std::vector<int>::size_type i = 0; i != m_ThreadStructs.size(); i++ )
+        MutexLockHolder<SimpleFastMutexLock> threadStructMutexHolder(m_ThreadIDHandlePairingQueueMutex);
+        //TODO:  User iterators rather than indexes here
+        //for( std::vector<int>::size_type i = 0; i != m_ThreadIDHandlePairingQueue.size(); i++ )
+        for( ThreadStructsQueueType::const_iterator tpIter=m_ThreadIDHandlePairingQueue.begin(),
+          tpEnd = m_ThreadIDHandlePairingQueue.end(); tpIter != tpEnd; ++tpIter)
           {
-          if( m_ThreadStructs[i].second == handle )
+          if( tpIter->ThreadProcessHandle == threadHandle )
             {
-            // check if th thread is free (-2) - this means job is done
-            if( m_ThreadStructs[i].first == -2 )
+            // check if the thread is free (JOB_THREADHANDLE_IS_FREE) - this means job is done
+            if( tpIter->ThreadNumericId == JOB_THREADHANDLE_IS_FREE )
               {
               found = true;
               itkDebugMacro(
-                << "Wait ended for thread with handle " << handle
+                << "Wait ended for thread with threadHandle " << threadHandle
                 << std::endl );
               break;
               }
@@ -128,13 +144,12 @@ bool ThreadPool::WaitForJobOnThreadHandle(ThreadProcessIDType handle)
           } // for
         }   // mutex
       }     // while
-
     }
-  catch( std::exception & e )
+  catch( std::exception & itkDebugStatement( e ) )
     {
     m_ExceptionOccured = true;
     itkDebugMacro(
-      << "Exception occured while waiting for thread with handle : " << handle << std::endl << e.what()
+      << "Exception occured while waiting for thread with threadHandle : " << threadHandle << std::endl << e.what()
       << std::endl );
     }
   return true;
@@ -145,21 +160,38 @@ int ThreadPool::GetCompletedJobs() const
   return m_CompletedJobs;
 }
 
+template <typename TVectorType>
+void RemoveStdVectorElement( TVectorType & inVector, typename TVectorType::size_type indexToRemove)
+{
+#define _USE_NEW_SWAP_POP 1
+#if _USE_NEW_SWAP_POP
+#if __cplusplus >= 201103L // ONLY C++11  // http://stackoverflow.com/questions/4442477/remove-ith-item-from-c-stdvector
+       inVector[index] = std::move(inVector.back());
+       inVector.pop_back();
+#else
+        std::swap( inVector[indexToRemove], inVector.back()  );
+        inVector.pop_back();
+#endif
+#else
+        inVector.erase(inVector.begin() + indexToRemove);
+#endif
+}
+
 void ThreadPool::RemoveActiveId(int id)
 {
   try
     {
-    MutexLockHolder<SimpleFastMutexLock> vMutex(m_VectorQMutex);
+    MutexLockHolder<SimpleFastMutexLock> vMutex(m_ThreadIDHandlePairingQueueMutex);
       {
       itkDebugMacro(
-        << std::endl << "Setting threadStruct's jobid to -1. Id is "
+        << std::endl << "Setting threadStruct's jobid to JOB_THREADHANDLE_IS_DONE. Id is "
         << id << std::endl );
       // setting ThreadJobStruct
-      for( std::vector<int>::size_type i = 0; i != m_ThreadStructs.size(); i++ )
+      for( std::vector<int>::size_type i = 0; i != m_ThreadIDHandlePairingQueue.size(); i++ )
         {
-        if( m_ThreadStructs[i].first == id )
+        if( m_ThreadIDHandlePairingQueue[i].ThreadNumericId == id )
           {
-          m_ThreadStructs[i].first = -2; // set this to -1 so that now the
+          m_ThreadIDHandlePairingQueue[i].ThreadNumericId = JOB_THREADHANDLE_IS_FREE; // set this to JOB_THREADHANDLE_IS_DONE so that now the
                                          // thread
                                          // is in wait state
           }
@@ -183,7 +215,7 @@ void ThreadPool::RemoveActiveId(int id)
 
       if( index >= 0 )
         {
-        m_ActiveJobIds.erase(m_ActiveJobIds.begin() + index);
+        RemoveStdVectorElement( m_ActiveJobIds, index );
         // increase the count of jobs completed
         m_CompletedJobs++;
         itkDebugMacro(
@@ -213,7 +245,8 @@ void ThreadPool::RemoveActiveId(int id)
           }
         }
 
-      m_WorkerQueue.erase(m_WorkerQueue.begin() + delIndex);
+      RemoveStdVectorElement( m_WorkerQueue, delIndex );
+
       itkDebugMacro(
         << std::endl << "Removed index " << delIndex << " from WorkerQueue. Now vector size is " << m_WorkerQueue.size()
         << std::endl );
@@ -233,41 +266,48 @@ void ThreadPool::RemoveActiveId(int id)
     }
 }
 
+
 // TODO: Do we want to return a reference to the job in the work queue
 //      This is returning a copy of the ThreadJob from the Queue rather
 //      than a reference to the the job on the Queue.
 ThreadJob ThreadPool::FetchWork(ThreadProcessIDType threadHandle)
 {
   bool workFound = false;
-  int  workId = -1;
+  int  workId = JOB_THREADHANDLE_IS_DONE;
 
   itkDebugMacro(
     << "Waiting for work (semaphore wait)-  thread with handle " << threadHandle
     << std::endl );
+  {
   while( !workFound )
     {
-    MutexLockHolder<SimpleFastMutexLock> threadStructMutexHolder(m_VectorQMutex);
+    MutexLockHolder<SimpleFastMutexLock> threadStructMutexHolder(m_ThreadIDHandlePairingQueueMutex);
+    //TODO:  iterate through vector with iterators rather than index locations
+    //for( std::vector<int>::size_type i = 0, threadStructSize = m_ThreadIDHandlePairingQueue.size(); i != threadStructSize; ++i )
+    for( ThreadStructsQueueType::const_iterator tpIter=m_ThreadIDHandlePairingQueue.begin(),
+          tpEnd = m_ThreadIDHandlePairingQueue.end(); tpIter != tpEnd; ++tpIter)
       {
-      for( std::vector<int>::size_type i = 0, threadStructSize = m_ThreadStructs.size(); i != threadStructSize; ++i )
+      // > 0 because Job ids start from 1
+      //Get const reference to m_ThreadIDHandlePairingQueue[i] to avoid constant dereferening from vector
+      if( ( tpIter->ThreadProcessHandle == threadHandle ) && ( tpIter->ThreadNumericId > 0 ) )
         {
-        // > 0 because Job ids start from 1
-        if( m_ThreadStructs[i].second == threadHandle && m_ThreadStructs[i].first > 0 )
-          {
-          workFound = true;
-          workId = m_ThreadStructs[i].first;
-          itkDebugMacro(
-            << std::endl << "In FetchWork- found work for thread " << m_ThreadStructs[i].second << " Job id is  : " << workId
-            << std::endl );
-          break;
-          }
+        workFound = true;
+        workId = tpIter->ThreadNumericId;
+        itkDebugMacro(
+          << std::endl << "In FetchWork- found work for thread " << tpIter->ThreadProcessHandle << " Job id is  : " << workId
+          << std::endl );
+        break;
         }
       }
     }
+  }
 
   int indexToReturn = -1;
     {
-    MutexLockHolder<SimpleFastMutexLock> mutexHolderSync(m_VectorQMutex);
+    //MutexLockHolder<SimpleFastMutexLock> mutexHolderSync(m_WorkerQueueMutex);  NOTE: Need to lock the ThreadIDHandlePairing not the work queue.  This does not make sense to me though.
+    MutexLockHolder<SimpleFastMutexLock> threadStructMutexHolder(m_ThreadIDHandlePairingQueueMutex);
     // get the index of workerthread from queue
+    //TODO:  iterate through vector with iterators rather than index locations
     for( std::vector<int>::size_type i = 0, workQueueSize = m_WorkerQueue.size(); i != workQueueSize; ++i )
       {
       // if not Assigned already
@@ -301,13 +341,13 @@ ThreadJob ThreadPool::FetchWork(ThreadProcessIDType threadHandle)
 bool ThreadPool::DoIAddAThread()
 {
 
-  MutexLockHolder<SimpleFastMutexLock> threadStructMutexHolder(m_VectorQMutex);
+  MutexLockHolder<SimpleFastMutexLock> threadStructMutexHolder(m_ThreadIDHandlePairingQueueMutex);
     {
     bool addAThread = true;
-    for( std::vector<int>::size_type i = 0, threadStructsSize = m_ThreadStructs.size(); i != threadStructsSize; ++i )
+    for( std::vector<int>::size_type i = 0, threadStructsSize = m_ThreadIDHandlePairingQueue.size(); i != threadStructsSize; ++i )
       {
-      // if any one is -2 dont add a thread: -2 means free -1 means waiting
-      if( m_ThreadStructs[i].first == -2 )
+      // if any one is JOB_THREADHANDLE_IS_FREE dont add a thread: JOB_THREADHANDLE_IS_FREE means free JOB_THREADHANDLE_IS_DONE means waiting
+      if( m_ThreadIDHandlePairingQueue[i].ThreadNumericId == JOB_THREADHANDLE_IS_FREE )
         {
         addAThread = false;
         break;
@@ -322,8 +362,8 @@ ThreadProcessIDType ThreadPool::AssignWork(ThreadJob threadJob)
   try
     {
       {
-      MutexLockHolder<SimpleFastMutexLock> mutexHolder(m_MutexWorkCompletion);
-      m_IncompleteWork++;
+      MutexLockHolder<SimpleFastMutexLock> mutexHolder(m_NumberOfPendingJobsToBeRunMutex);
+      m_NumberOfPendingJobsToBeRun++;
       }
 
     if( DoIAddAThread() == true )
@@ -333,7 +373,7 @@ ThreadProcessIDType ThreadPool::AssignWork(ThreadJob threadJob)
       }
 
       {
-      MutexLockHolder<SimpleFastMutexLock> mutexHolderSync(m_VectorQMutex);
+      MutexLockHolder<SimpleFastMutexLock> mutexHolderSync(m_ThreadIDHandlePairingQueueMutex);
       // adding to queue
 
       threadJob.m_Id = m_IdCounter++;
@@ -345,20 +385,21 @@ ThreadProcessIDType ThreadPool::AssignWork(ThreadJob threadJob)
       itkDebugMacro(<< std::endl << "Adding id " << threadJob.Id << " to ActiveThreadIds" << std::endl );
       m_ActiveJobIds.push_back(threadJob.m_Id );
       itkDebugMacro(<< std::endl << "ActiveThreadids size : " << m_ActiveJobIds.size() << std::endl );
-      std::cout << std::endl << "ActiveThreadids size : " << m_ActiveJobIds.size() << std::endl;
+      // TODO: REMOVE
+      ThreadDebugMsg( << std::endl << "ActiveThreadids size : " << m_ActiveJobIds.size() << std::endl);
 
-      ThreadProcessIDType returnValue; // TODO:  This is being returned
+      ThreadProcessIDType returnValue = NULL; // TODO:  This is being returned
                                        // un-initialzied below
       // now put the job id in the ThreadJobStruct vector
       itkDebugMacro(<< std::endl << "Setting thread struct for a thread - assigning job id " << threadJob.Id
                     << std::endl );
-      for( std::vector<int>::size_type i = 0, threadStructSize = m_ThreadStructs.size(); i != threadStructSize; ++i )
+      for( std::vector<int>::size_type i = 0, threadStructSize = m_ThreadIDHandlePairingQueue.size(); i != threadStructSize; ++i )
         {
-        if( m_ThreadStructs[i].first == -2 )         // only if it is -2 you
+        if( m_ThreadIDHandlePairingQueue[i].ThreadNumericId == JOB_THREADHANDLE_IS_FREE )         // only if it is JOB_THREADHANDLE_IS_FREE you
           {                                          // assign it a job
-          m_ThreadStructs[i].first = threadJob.m_Id; // assign the job id to the
+          m_ThreadIDHandlePairingQueue[i].ThreadNumericId = threadJob.m_Id; // assign the job id to the
                                                      // thread now
-          returnValue = m_ThreadStructs[i].second;
+          returnValue = m_ThreadIDHandlePairingQueue[i].ThreadProcessHandle;
           break;  // break because we dont want to keep assigning
           }
         }

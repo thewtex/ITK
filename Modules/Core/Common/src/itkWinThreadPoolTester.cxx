@@ -20,6 +20,8 @@
 #include "itkWinThreadpool.h"
 #include <stdlib.h>
 
+//TODO: This needs to be moved to the testing directory
+
 const int ITERATIONS = 10;
 
 void * execute(void *ptr)

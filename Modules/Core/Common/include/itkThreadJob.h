@@ -36,8 +36,7 @@ public:
   ThreadJob() :
     m_Id(-1),
     m_Assigned(false),
-    m_Executed(false),
-    m_ThreadFunction(NULL)
+    m_Executed(false)
   {
     m_ThreadArgs.otherArgs = NULL;
   }
@@ -48,9 +47,21 @@ public:
 
 //  private:
 /** Stores the user's data that needs to be passed into the function */
-  struct ThreadArgs
+  class ThreadArgs
     {
+  public:
+    // TODO: Evaluate initialization options.
+    ThreadArgs() : otherArgs(NULL), m_ThreadFunction(NULL) {}
+
+  public:
     void *otherArgs;
+
+  /** Declaring function thatwill be called */
+#if defined(ITK_USE_WIN32_THREADS)
+  unsigned int ( __stdcall *m_ThreadFunction )( void * ptr );
+#else
+  void * (*m_ThreadFunction)(void *ptr);
+#endif
     };
 
   /** This is the Job's id. If it is -1 it means the job hasn't been
@@ -62,13 +73,6 @@ public:
 
   /**  set if job is finished */
   bool m_Executed;
-
-  /** Declaring function thatwill be called */
-#if defined(ITK_USE_WIN32_THREADS)
-  unsigned int ( __stdcall *m_ThreadFunction )( void * ptr );
-#else
-  void * (*m_ThreadFunction)(void *ptr);
-#endif
 
   /** declaring the struct */
   ThreadArgs m_ThreadArgs;
