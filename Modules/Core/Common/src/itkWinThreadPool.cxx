@@ -25,9 +25,9 @@ namespace itk
 void ThreadPool::AddThread()
 {
   this->m_ThreadCount++;
-  HANDLE aThreadHandle;
+  HANDLE newlyAddedThreadHandle;
   DWORD  dwThreadId;
-  aThreadHandle = CreateThread(
+  newlyAddedThreadHandle = CreateThread(
       NULL,                                                   // default
                                                               // security
                                                               // attributes
@@ -42,14 +42,14 @@ void ThreadPool::AddThread()
       &dwThreadId);                                           // returns the
                                                               // thread
                                                               // identifier
-  if( aThreadHandle == NULL )
+  if( newlyAddedThreadHandle == NULL )
     {
     ExitProcess(3);
     }
     {
     MutexLockHolder<SimpleFastMutexLock> threadStructMutexHolder(m_VectorQMutex);
-    m_ThreadHandles.push_back(aThreadHandle);
-    m_ThreadStructs.push_back(std::make_pair(-2, aThreadHandle) );
+    m_ThreadHandles.push_back(newlyAddedThreadHandle);
+    m_ThreadStructs.push_back(std::make_pair(-2, newlyAddedThreadHandle) );
     }
   itkDebugMacro(<< "Thread created with handle :" << m_ThreadHandles[m_ThreadCount - 1] << std::endl );
 }
@@ -62,9 +62,9 @@ Once all are done it will Destroy the thread pool.
 void ThreadPool::DestroyPool(int pollTime = 2)
 {
   m_ScheduleForDestruction = true;
-  while( m_IncompleteWork > 0 )
+  while( m_NumberOfPendingJobsToBeRun > 0 )
     {
-    itkDebugMacro(<<  "Work is still incomplete=" << m_IncompleteWork << std::endl);
+    itkDebugMacro(<<  "Work is still incomplete=" << m_NumberOfPendingJobsToBeRun << std::endl);
     Sleep(pollTime);
     }
 
@@ -89,18 +89,16 @@ void * ThreadPool::ThreadExecute(void *param)
     ThreadJob currentWinJob = winThreadPool->FetchWork(GetCurrentThread() );
     if( currentWinJob.Id < 0 || currentWinJob.Assigned == false )
       {
-      std::cout << "\nIn thread pool thread : Empty job returned from FetchWork so ignoring and continuing ..\n";
+      ThreadDebugMsg( << "\nIn thread pool thread : Empty job returned from FetchWork so ignoring and continuing ..\n");
       continue;
       }
-    std::cout << "\n In thread pool thread " << GetCurrentThread() << " : Work fetched. Job id is : "
-              << currentWinJob.Id
-              << std::endl;
+    ThreadDebugMsg( << "\n In thread pool thread " << GetCurrentThread() << " : Work fetched. Job id is : " << currentWinJob.Id << std::endl);
     currentWinJob.ThreadFunction(currentWinJob.ThreadArgs.otherArgs);
-    std::cout << "\n Thread done with job id :" << currentWinJob.Id << "\n Now removing...\n\n";
+    ThreadDebugMsg( << "\n Thread done with job id :" << currentWinJob.Id << "\n Now removing...\n\n");
     winThreadPool->RemoveActiveId(currentWinJob.Id);
       {
-      MutexLockHolder<SimpleFastMutexLock> mutexHolderSync(m_MutexWorkCompletion);
-      winThreadPool->m_IncompleteWork--;
+      MutexLockHolder<SimpleFastMutexLock> mutexHolderSync(m_NumberOfPendingJobsToBeRunMutex);
+      winThreadPool->m_NumberOfPendingJobsToBeRun--;
       }
 
     }

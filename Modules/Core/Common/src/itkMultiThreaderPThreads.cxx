@@ -233,7 +233,7 @@ MultiThreader
   pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
 #endif
   ThreadJob threadJob;
-  threadJob.m_ThreadFunction =  reinterpret_cast<c_void_cast>(this->SingleMethodProxy);
+  threadJob.m_ThreadArgs.m_ThreadFunction =  reinterpret_cast<c_void_cast>(this->SingleMethodProxy);
   threadJob.m_ThreadArgs.otherArgs = (void *) threadInfo;
   ThreadProcessIDType returnHandle = m_ThreadPool->AssignWork(threadJob);
   itkDebugMacro(<< std::endl << "Got handle :" << returnHandle );

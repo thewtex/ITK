@@ -23,11 +23,11 @@ namespace itk
 
 void ThreadPool::AddThread()
 {
-  std::cout << "In add thread" << std::endl;
+  ThreadDebugMsg( << "In add thread" << std::endl );
 
   this->m_ThreadCount++;
-  pthread_t aThreadHandle;
-  const int rc = pthread_create(&aThreadHandle, NULL, &ThreadPool::ThreadExecute, (void *)this );
+  pthread_t newlyAddedThreadHandle;
+  const int rc = pthread_create(&newlyAddedThreadHandle, NULL, &ThreadPool::ThreadExecute, (void *)this );
   if( rc )
     {
     itkDebugMacro(<< "ERROR; return code from pthread_create() is " << rc << std::endl);
@@ -36,11 +36,9 @@ void ThreadPool::AddThread()
   else
     {
       {
-      MutexLockHolder<SimpleFastMutexLock> threadStructMutexHolder(m_VectorQMutex);
-
-      m_ThreadHandles.push_back(aThreadHandle);
-
-      m_ThreadStructs.push_back(std::make_pair(-2, aThreadHandle) );
+      MutexLockHolder<SimpleFastMutexLock> threadStructMutexHolder(m_ThreadIDHandlePairingQueueMutex);
+      m_ThreadHandles.push_back(newlyAddedThreadHandle);
+      m_ThreadIDHandlePairingQueue.push_back(ThreadProcessStatusPair(-2, newlyAddedThreadHandle) );
       }
 
     itkDebugMacro(<< "Thread created with handle :" << m_ThreadHandles[m_ThreadCount - 1] << std::endl );
@@ -55,17 +53,17 @@ void ThreadPool::AddThread()
 void ThreadPool::DestroyPool(int pollTime = 2)
 {
   m_ScheduleForDestruction = true;
-  while( m_IncompleteWork > 0 )
+  while( m_NumberOfPendingJobsToBeRun > 0 )
     {
-    itkDebugMacro(<< "Work is still incomplete=" << m_IncompleteWork << std::endl );
+    itkDebugMacro(<< "Work is still incomplete=" << m_NumberOfPendingJobsToBeRun << std::endl );
     // TODO:  sleep is not portable across platforms
     sleep(pollTime);
     }
 
   itkDebugMacro(<< "All threads are done" << std::endl << "Terminating threads" << std::endl );
-  for( int i = 0; i < m_ThreadCount; i++ )
+  for( int i = 0; i < m_ThreadCount; ++i )
     {
-    int s = pthread_cancel(m_ThreadHandles[i]);
+    const int s = pthread_cancel(m_ThreadHandles[i]);
     if( s != 0 )
       {
       itkDebugMacro(<< "Cannot cancel thread with id : " << m_ThreadHandles[i] << std::endl );
@@ -77,35 +75,34 @@ void ThreadPool::DestroyPool(int pollTime = 2)
 void * ThreadPool::ThreadExecute(void *param)
 {
   // get the parameters passed in
-  ThreadPool *pThreadPool = (ThreadPool *)param;
+  ThreadPool *pThreadPool = reinterpret_cast<ThreadPool *>(param);
+  // TODO: What is proper action if pThreadPool is NULL?
   const int   s = pthread_setcancelstate(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
-
   if( s != 0 )
     {
+    //TODO: What is proper action if s != 0?
+    itkDebugMacro(<< "Cannot pthread_setcancelstate" << std::endl );
     }
 
   while( !pThreadPool->m_ScheduleForDestruction )
     {
-
+    //TODO: Replace in both Pthread and WinThread  the return value of FetchWork.
     ThreadJob currentPThreadJob = pThreadPool->FetchWork(pthread_self() );
     if( currentPThreadJob.m_Id < 0 || currentPThreadJob.m_Assigned == false )
       {
-      std::cout << "\n Empty job returned from FetchWork so ignoring and continuing ..\n\n";
+      //TODO:  Remove all std::cout
+      ThreadDebugMsg( << "\n Empty job returned from FetchWork so ignoring and continuing ..\n\n");
       continue;
       }
-    std::cout << "\n In thread pool thread " << pthread_self() << " : Work fetched. Job id is : "
-              << currentPThreadJob.m_Id
-              << std::endl;
-    currentPThreadJob.m_ThreadFunction(currentPThreadJob.m_ThreadArgs.otherArgs);
-    std::cout << "\n Thread done with job id :" << currentPThreadJob.m_Id << "\n Now removing...\n\n";
+    ThreadDebugMsg( << "\n In thread pool thread " << pthread_self() << " : Work fetched. Job id is : " << currentPThreadJob.m_Id << std::endl);
+    currentPThreadJob.m_ThreadArgs.m_ThreadFunction(currentPThreadJob.m_ThreadArgs.otherArgs);
+    ThreadDebugMsg(<< "\n Thread done with job id :" << currentPThreadJob.m_Id << "\n Now removing...\n\n");
     pThreadPool->RemoveActiveId(currentPThreadJob.m_Id );
-
       {
-      MutexLockHolder<SimpleFastMutexLock> mutexHolder(m_MutexWorkCompletion);
-      pThreadPool->m_IncompleteWork--;
+      MutexLockHolder<SimpleFastMutexLock> mutexHolder(m_NumberOfPendingJobsToBeRunMutex);
+      pThreadPool->m_NumberOfPendingJobsToBeRun--;
       }
     }
-
   pthread_exit(NULL);
 }
 
