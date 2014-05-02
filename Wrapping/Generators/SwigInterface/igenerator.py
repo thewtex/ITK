@@ -672,7 +672,7 @@ if options.typedef_output:
     typedefFile.write(f.read() + '\n')
     f.close()
   for src in usedSources:
-    typedefFile.write('#include "%sSwigInterface.h\n"' % src)
+    typedefFile.write('#include "%sSwigInterface.h"\n' % src)
   typedefFile.write("#endif\n")
   f = file(options.typedef_output, "w")
   f.write( typedefFile.getvalue() )
