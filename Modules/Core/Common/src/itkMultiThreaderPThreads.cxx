@@ -226,18 +226,17 @@ MultiThreader
 ::DispatchSingleMethodThread(MultiThreader::ThreadInfoStruct *threadInfo)
 {
   pthread_attr_t attr;
-
   pthread_attr_init(&attr);
+
 #if !defined( __CYGWIN__ )
   pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
 #endif
   ThreadJob threadJob;
-  threadJob.ThreadFunction =  reinterpret_cast<c_void_cast>(this->SingleMethodProxy);
-  threadJob.ThreadArgs.otherArgs = (void *) threadInfo;
-  pthread_t returnHandle = m_ThreadPool->AssignWork(threadJob);
+  threadJob.m_ThreadFunction =  reinterpret_cast<c_void_cast>(this->SingleMethodProxy);
+  threadJob.m_ThreadArgs.otherArgs = (void *) threadInfo;
+  ThreadProcessIDType returnHandle = m_ThreadPool->AssignWork(threadJob);
   itkDebugMacro(<< std::endl << "Got handle :" << returnHandle );
   return returnHandle;
-
 }
 
 } // end namespace itk

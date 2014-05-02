@@ -33,6 +33,18 @@ namespace itk
 class ThreadJob
 {
 public:
+  ThreadJob() :
+    m_Id(-1),
+    m_Assigned(false),
+    m_Executed(false),
+    m_ThreadFunction(NULL)
+  {
+    m_ThreadArgs.otherArgs = NULL;
+  }
+
+  ~ThreadJob() {}
+
+//  private:
   /** Stores the user's data that needs to be passed into the function */
   struct ThreadArgs
     {
@@ -41,38 +53,27 @@ public:
 
   /** This is the Job's id. If it is -1 it means the job hasn't been
     initialized*/
-  int Id;
+  int m_Id;
 
   /** Set if the job is assigned to a thread */
-  bool Assigned;
+  bool m_Assigned;
 
   /**  set if job is finished */
-  bool Executed;
+  bool m_Executed;
 
   /** Declaring function thatwill be called */
 #if defined(ITK_USE_WIN32_THREADS)
-  unsigned int ( __stdcall *ThreadFunction )( void * ptr );
+  unsigned int ( __stdcall *m_ThreadFunction )( void * ptr );
 #else
-  void * (*ThreadFunction)(void *ptr);
+  void * (*m_ThreadFunction)(void *ptr);
 #endif
 
   /** declaring the struct */
-  ThreadArgs ThreadArgs;
+  ThreadArgs m_ThreadArgs;
 
-  ThreadJob() :
-    Id(-1),
-    Assigned(false),
-    Executed(false)
-  {
-    ThreadArgs.otherArgs = NULL;
-  }
-
-  ~ThreadJob()
-  {
-  }
 
 };
 
 } // End namespace itk
 
-#endif // __itkPThreadJob_h__
+#endif // __itkThreadJob_h__

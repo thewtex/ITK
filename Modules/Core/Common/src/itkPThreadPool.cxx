@@ -88,24 +88,22 @@ void * ThreadPool::ThreadExecute(void *param)
     {
 
     ThreadJob currentPThreadJob = pThreadPool->FetchWork(pthread_self() );
-    if( currentPThreadJob.Id < 0 || currentPThreadJob.Assigned == false )
+    if( currentPThreadJob.m_Id < 0 || currentPThreadJob.m_Assigned == false )
       {
       std::cout << "\n Empty job returned from FetchWork so ignoring and continuing ..\n\n";
       continue;
       }
     std::cout << "\n In thread pool thread " << pthread_self() << " : Work fetched. Job id is : "
-              << currentPThreadJob.Id
+              << currentPThreadJob.m_Id
               << std::endl;
-    currentPThreadJob.ThreadFunction(currentPThreadJob.ThreadArgs.otherArgs);
-    std::cout << "\n Thread done with job id :" << currentPThreadJob.Id << "\n Now removing...\n\n";
-    pThreadPool->RemoveActiveId(currentPThreadJob.Id );
+    currentPThreadJob.m_ThreadFunction(currentPThreadJob.m_ThreadArgs.otherArgs);
+    std::cout << "\n Thread done with job id :" << currentPThreadJob.m_Id << "\n Now removing...\n\n";
+    pThreadPool->RemoveActiveId(currentPThreadJob.m_Id );
 
       {
       MutexLockHolder<SimpleFastMutexLock> mutexHolder(m_MutexWorkCompletion);
       pThreadPool->m_IncompleteWork--;
-
       }
-
     }
 
   pthread_exit(NULL);
