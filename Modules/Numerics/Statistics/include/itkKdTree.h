@@ -674,7 +674,7 @@ public:
 
   /** Searches the k-nearest neighbors */
   void Search( const MeasurementVectorType &, unsigned int,
-    InstanceIdentifierVectorType & ) const;
+    InstanceIdentifierVectorType &, std::vector<double> & ) const;
 
   /** Searches the neighbors fallen into a hypersphere */
   void Search( const MeasurementVectorType &, double,

@@ -183,7 +183,7 @@ template<typename TSample>
 void
 KdTree<TSample>
 ::Search( const MeasurementVectorType & query,
-  unsigned int numberOfNeighborsRequested, InstanceIdentifierVectorType &result ) const
+  unsigned int numberOfNeighborsRequested, InstanceIdentifierVectorType &result, std::vector<double> &distances ) const
 {
   if( numberOfNeighborsRequested > this->Size() )
     {
@@ -214,6 +214,7 @@ KdTree<TSample>
     nearestNeighbors );
 
   result = nearestNeighbors.GetNeighbors();
+  distances = nearestNeighbors.GetDistances();
 }
 
 template<typename TSample>
