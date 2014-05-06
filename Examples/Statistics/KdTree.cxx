@@ -121,7 +121,6 @@ int main()
 
   // Software Guide : BeginCodeSnippet
   typedef TreeGeneratorType::KdTreeType TreeType;
-  typedef TreeType::NearestNeighbors    NeighborsType;
   typedef TreeType::KdTreeNodeType      NodeType;
 
   TreeType::Pointer tree = treeGenerator->GetOutput();
@@ -214,18 +213,21 @@ int main()
   // Software Guide : BeginCodeSnippet
   unsigned int numberOfNeighbors = 3;
   TreeType::InstanceIdentifierVectorType neighbors;
-  tree->Search( queryPoint, numberOfNeighbors, neighbors );
+  std::vector<double> distances;
+  tree->Search( queryPoint, numberOfNeighbors, neighbors, distances );
 
   std::cout << "kd-tree knn search result:" << std::endl
             << "query point = [" << queryPoint << "]" << std::endl
             << "k = " << numberOfNeighbors << std::endl;
-  std::cout << "measurement vector : distance" << std::endl;
+  std::cout << "measurement vector : distance_by_distMetric : distance_by_tree" << std::endl;
   for ( unsigned int i = 0; i < numberOfNeighbors; ++i )
     {
     std::cout << "[" << tree->GetMeasurementVector( neighbors[i] )
-              << "] : "
+              << "]       :       "
               << distanceMetric->Evaluate(
                   tree->GetMeasurementVector( neighbors[i] ))
+              << "            :       "
+              << distances[i]
               << std::endl;
     }
   // Software Guide : EndCodeSnippet
@@ -243,13 +245,15 @@ int main()
   std::cout << "weighted centroid kd-tree knn search result:" << std::endl
             << "query point = [" << queryPoint << "]" << std::endl
             << "k = " << numberOfNeighbors << std::endl;
-  std::cout << "measurement vector : distance" << std::endl;
+  std::cout << "measurement vector : distance_by_distMetric : distance_by_tree" << std::endl;
   for ( unsigned int i = 0; i < numberOfNeighbors; ++i )
     {
     std::cout << "[" << centroidTree->GetMeasurementVector( neighbors[i] )
-              << "] : "
+              << "]       :       "
               << distanceMetric->Evaluate(
                   centroidTree->GetMeasurementVector( neighbors[i]))
+              << "            :       "
+              << distances[i]
               << std::endl;
     }
   // Software Guide : EndCodeSnippet
