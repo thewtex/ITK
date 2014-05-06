@@ -85,7 +85,39 @@ int itkTriangleMeshToBinaryImageFilterTest3( int argc, char * argv [] )
   spacing[2] = atof( argv[11] );
 
   imageFilter->SetSpacing( spacing );
+//ADDLIZA
+  const ImageType::IndexType& inbuiltIndex = imageFilter->GetIndex();
+  if ((inbuiltIndex[0] == 0)&&(inbuiltIndex[1] == 0)&&(inbuiltIndex[2] == 0))
+  {
+    ImageType::IndexType index;
 
+    index[0] = 1;
+    index[1] = 0;
+    index[2] = 0;
+    imageFilter->SetIndex(index);
+  }
+
+  const ImageType::DirectionType& inbuiltDirection = imageFilter->GetDirection();
+  if ((inbuiltDirection[0][0] == 1)&&(inbuiltDirection[1][1] == 1)&&(inbuiltDirection[2][2] == 1))
+  {
+    ImageType::DirectionType Direction;
+
+    Direction[0][0] = 1.5;
+    Direction[1][1] = 1;
+    Direction[2][2] = 1;
+    imageFilter->SetDirection(Direction);
+  }
+  imageFilter->SetInsideValue( 200.0);
+  imageFilter->SetOutsideValue( 0.0);
+  const double imTolerance = imageFilter->GetTolerance();
+  if (imTolerance > 1e-5)
+  {
+    imageFilter->SetTolerance(1e-5);
+  }
+  else
+  {
+    imageFilter->SetTolerance(1e-6);
+  }
   std::cout << "[PASSED]" << std::endl;
 
   // Testing PrintSelf
@@ -93,6 +125,32 @@ int itkTriangleMeshToBinaryImageFilterTest3( int argc, char * argv [] )
 
   //Update the filter
   imageFilter->Update();
+
+  const ImageType::SpacingType& mySpacing = imageFilter->GetOutput()->GetSpacing();
+
+  if((mySpacing[0] != spacing[0])&&(mySpacing[1] != spacing[1])&&(mySpacing[2] != spacing[2]))
+    {
+    std::cerr << "image->GetSpacing() != spacing" <<std::endl;
+    return EXIT_FAILURE;
+    }
+  const ImageType::ValueType& inPixel = imageFilter->GetInsideValue();
+  if( inPixel == 0.0 )
+    {
+    std::cerr << "image->GetInsideValue() == 0" <<std::endl;
+    return EXIT_FAILURE;
+    }
+  const ImageType::PixelType& outPixel = imageFilter->GetOutsideValue();
+  if( outPixel != 0.0 )
+    {
+    std::cerr << "image->GetOutsideValue() != 0" <<std::endl;
+    return EXIT_FAILURE;
+    }
+  const ImageType::SizeType& imSize = imageFilter->GetSize();
+  if((imSize[0] != size[0])&&(imSize[1] != size[1])&&(imSize[2] != size[2]))
+    {
+    std::cerr << "image->GetSize() != size" <<std::endl;
+    return EXIT_FAILURE;
+    }
 
   typedef itk::ImageFileWriter<ImageType > WriterType;
 

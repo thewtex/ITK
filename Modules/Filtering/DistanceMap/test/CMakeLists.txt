@@ -14,13 +14,17 @@ itkReflectiveImageRegionIteratorTest.cxx
 itkSignedMaurerDistanceMapImageFilterTest.cxx
 itkApproximateSignedDistanceMapImageFilterTest.cxx
 itkIsoContourDistanceImageFilterTest.cxx
-itkLizaSignedMaurerDistanceMapImageFilterTest.cxx
+itkSignedMaurerDistanceMapImageFilterTest11.cxx
+itkSignedDanielssonDistanceMapImageFilterTest11.cxx
 )
 
 CreateTestDriver(ITKDistanceMap  "${ITKDistanceMap-Test_LIBRARIES}" "${ITKDistanceMapTests}")
 
-itk_add_test(NAME itkLizaSignedMaurerDistanceMapImageFilterTest
-      COMMAND ITKDistanceMapTestDriver itkLizaSignedMaurerDistanceMapImageFilterTest)
+itk_add_test(NAME itkSignedMaurerDistanceMapImageFilterTest11
+      COMMAND ITKDistanceMapTestDriver itkSignedMaurerDistanceMapImageFilterTest11)
+
+itk_add_test(NAME itkSignedDanielssonDistanceMapImageFilterTest11
+      COMMAND ITKDistanceMapTestDriver itkSignedDanielssonDistanceMapImageFilterTest11)
 
 itk_add_test(NAME itkDanielssonDistanceMapImageFilterTest
       COMMAND ITKDistanceMapTestDriver itkDanielssonDistanceMapImageFilterTest)
