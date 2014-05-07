@@ -1,6 +1,7 @@
 itk_module_test()
 set(ITKCommon1Tests
 itkAbortProcessObjectTest.cxx
+itkCommandObserverObjectTest.cxx
 itkAdaptorComparisonTest.cxx
 itkCellInterfaceTest.cxx
 itkCovariantVectorGeometryTest.cxx
@@ -170,6 +171,7 @@ itkImageRegionSplitterSlowDimensionTest.cxx
 itkImageRegionSplitterDirectionTest.cxx
 itkImageRegionSplitterMultidimensionalTest.cxx
 itkSimpleFastMutexLockTest.cxx
+itkMetaDataObjectTest.cxx
 )
 
 CreateTestDriver(ITKCommon1 "${ITKCommon_LIBRARIES}" "${ITKCommon1Tests}" itkFloatingPointExceptionsExtern.cxx)
@@ -200,6 +202,7 @@ if(ITK_BUILD_SHARED_LIBS)
 endif()
 
 itk_add_test(NAME itkAbortProcessObjectTest COMMAND ITKCommon1TestDriver itkAbortProcessObjectTest)
+itk_add_test(NAME itkCommandObserverObjectTest COMMAND ITKCommon1TestDriver itkCommandObserverObjectTest)
 itk_add_test(NAME itkAdaptorComparisonTest COMMAND ITKCommon1TestDriver itkAdaptorComparisonTest)
 itk_add_test(NAME itkThreadedIndexedContainerPartitionerTest COMMAND ITKCommon2TestDriver itkThreadedIndexedContainerPartitionerTest)
 itk_add_test(NAME itkThreadedIteratorRangePartitionerTest COMMAND ITKCommon2TestDriver itkThreadedIteratorRangePartitionerTest)
@@ -486,3 +489,5 @@ itk_add_test(NAME itkRegionSplitterMultidimensionalTest COMMAND ITKCommon2TestDr
 itk_add_test(NAME itkSimpleFastMutexLockTest COMMAND ITKCommon2TestDriver itkSimpleFastMutexLockTest)
 # short timeout because failing test will hang and test is quite small
 set_tests_properties(itkSimpleFastMutexLockTest PROPERTIES TIMEOUT 5)
+
+itk_add_test(NAME itkMetaDataObjectTest COMMAND ITKCommon2TestDriver itkMetaDataObjectTest)
