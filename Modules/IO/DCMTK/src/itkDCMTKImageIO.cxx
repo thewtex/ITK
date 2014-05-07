@@ -23,6 +23,7 @@
 #include "itkDCMTKFileReader.h"
 #include <iostream>
 #include "vnl/vnl_cross.h"
+#include "vnl/vnl_math.h"
 
 #include "dcmtk/dcmimgle/dcmimage.h"
 #include "dcmtk/dcmjpeg/djdecode.h"
@@ -221,6 +222,45 @@ DCMTKImageIO
                       << this->m_FileName)
     }
 }
+
+namespace
+{
+
+template <typename TPixel>
+TPixel rescaleRound(double val)
+{
+  return vnl_math_rnd(val);
+}
+template <>
+double rescaleRound<double>(double val)
+{
+  return val;
+}
+template <>
+float rescaleRound<float>(double val)
+{
+  return static_cast<float>(val);
+}
+
+// Rescale assumes that rescaled value fits in output pixel type.
+// this is what the GDCM reader does
+template <typename TPixel>
+void Rescale(const void *data,
+             void *out,
+             unsigned long count,
+             double rescaleSlope,
+             double rescaleIntercept)
+{
+  const TPixel *_data = reinterpret_cast<const TPixel *>(data);
+  TPixel *_out = reinterpret_cast<TPixel *>(out);
+  for(; count > 0; --count, ++_data, ++_out)
+    {
+    *_out = rescaleRound<TPixel>((static_cast<double>(*_data) * rescaleSlope) + rescaleIntercept );
+    }
+}
+
+}
+
 //------------------------------------------------------------------------------
 void
 DCMTKImageIO
@@ -291,10 +331,46 @@ DCMTKImageIO
       }
     // get the image in the DCMTK buffer
     const DiPixel * const interData = m_DImage->getInterData();
-    memcpy(buffer,
-           interData->getData(),
-           interData->getCount() * voxelSize);
-
+    const void *data = interData->getData();
+    unsigned long count = interData->getCount();
+    if(this->m_RescaleSlope != 1.0 || this->m_RescaleIntercept != 0.0)
+      {
+      switch(this->m_ComponentType)
+        {
+        case UCHAR:
+          Rescale<unsigned char>(data,buffer,count,this->m_RescaleSlope,this->m_RescaleIntercept);
+          break;
+        case CHAR:
+          Rescale<char>(data,buffer,count,this->m_RescaleSlope,this->m_RescaleIntercept);
+          break;
+        case USHORT:
+          Rescale<unsigned short>(data,buffer,count,this->m_RescaleSlope,this->m_RescaleIntercept);
+          break;
+        case SHORT:
+          Rescale<short>(data,buffer,count,this->m_RescaleSlope,this->m_RescaleIntercept);
+          break;
+        case UINT:
+          Rescale<unsigned int>(data,buffer,count,this->m_RescaleSlope,this->m_RescaleIntercept);
+          break;
+        case INT:
+          Rescale<int>(data,buffer,count,this->m_RescaleSlope,this->m_RescaleIntercept);
+          break;
+        case ULONG:
+          Rescale<unsigned long>(data,buffer,count,this->m_RescaleSlope,this->m_RescaleIntercept);
+          break;
+        case LONG:
+          Rescale<long>(data,buffer,count,this->m_RescaleSlope,this->m_RescaleIntercept);
+          break;
+        default:
+          break;
+        }
+      }
+    else
+      {
+      memcpy(buffer,
+             data,
+             count * voxelSize);
+      }
     }
   else
     {
