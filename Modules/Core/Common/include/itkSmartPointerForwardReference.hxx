@@ -183,7 +183,7 @@ SmartPointerForwardReference< T >
 template< typename T >
 void
 SmartPointerForwardReference< T >
-::UnRegister()
+::UnRegister() throw()
 {
   if ( m_Pointer )
     {

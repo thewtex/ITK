@@ -101,7 +101,7 @@ public:
 
   /** Decrease the reference count (release by another object).
     * Delegates the counting to its LightObject superclass  */
-  virtual void UnRegister() const
+  virtual void UnRegister() const throw()
   {
     this->LightObject::UnRegister();
   }

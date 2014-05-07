@@ -186,7 +186,7 @@ LightObject
  */
 void
 LightObject
-::UnRegister() const
+::UnRegister() const throw()
 {
   // As ReferenceCount gets unlocked, we may have a race condition
   // to delete the object.

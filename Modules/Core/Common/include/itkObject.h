@@ -102,7 +102,7 @@ public:
   virtual void Register() const;
 
   /** Decrease the reference count (release by another object).  */
-  virtual void UnRegister() const;
+  virtual void UnRegister() const throw();
 
   /** Sets the reference count (use with care)  */
   virtual void SetReferenceCount(int);

@@ -103,7 +103,7 @@ private:
 
   void Register();
 
-  void UnRegister();
+  void UnRegister() throw();
 };
 
 template< typename T >
