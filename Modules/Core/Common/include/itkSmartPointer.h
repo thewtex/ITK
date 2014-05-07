@@ -164,7 +164,7 @@ private:
     if ( m_Pointer ) { m_Pointer->Register(); }
   }
 
-  void UnRegister()
+  void UnRegister() ITK_NOEXCEPT
   {
     if ( m_Pointer ) { m_Pointer->UnRegister(); }
   }
