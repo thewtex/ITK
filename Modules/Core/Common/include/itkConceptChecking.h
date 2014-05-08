@@ -87,6 +87,13 @@
 
 #endif
 
+/* If the compiler warns about unused typedefs then enable this. (BOOST) */
+#if defined(__GNUC__) && ((__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 7)))
+  #define ITK_CONCEPT_UNUSED_ATTRIBUTE __attribute__((unused))
+#else
+  #define ITK_CONCEPT_UNUSED_ATTRIBUTE
+#endif
+
 namespace itk
 {
 /** All concept class definitions are contained in the "itk::Concept"
@@ -591,13 +598,13 @@ struct HasNumericTraits {
   struct Constraints {
     void constraints()
     {
-      typedef typename NumericTraits< T >::ValueType      ValueType;
-      typedef typename NumericTraits< T >::PrintType      PrintType;
-      typedef typename NumericTraits< T >::AbsType        AbsType;
-      typedef typename NumericTraits< T >::AccumulateType AccumulateType;
-      typedef typename NumericTraits< T >::RealType       RealType;
-      typedef typename NumericTraits< T >::ScalarRealType ScalarRealType;
-      typedef typename NumericTraits< T >::FloatType      FloatType;
+      typedef typename NumericTraits< T >::ValueType      ValueType      ITK_CONCEPT_UNUSED_ATTRIBUTE;
+      typedef typename NumericTraits< T >::PrintType      PrintType      ITK_CONCEPT_UNUSED_ATTRIBUTE;
+      typedef typename NumericTraits< T >::AbsType        AbsType        ITK_CONCEPT_UNUSED_ATTRIBUTE;
+      typedef typename NumericTraits< T >::AccumulateType AccumulateType ITK_CONCEPT_UNUSED_ATTRIBUTE;
+      typedef typename NumericTraits< T >::RealType       RealType       ITK_CONCEPT_UNUSED_ATTRIBUTE;
+      typedef typename NumericTraits< T >::ScalarRealType ScalarRealType ITK_CONCEPT_UNUSED_ATTRIBUTE;
+      typedef typename NumericTraits< T >::FloatType      FloatType      ITK_CONCEPT_UNUSED_ATTRIBUTE;
       T    a;
       bool b;
 
@@ -625,7 +632,7 @@ struct HasPixelTraits {
   struct Constraints {
     void constraints()
     {
-      typedef typename PixelTraits< T >::ValueType ValueType;
+      typedef typename PixelTraits< T >::ValueType ValueType ITK_CONCEPT_UNUSED_ATTRIBUTE;
       unsigned int a = PixelTraits< T >::Dimension;
       Detail::IgnoreUnusedVariable(a);
     }
@@ -640,7 +647,7 @@ struct HasValueType {
   struct Constraints {
     void constraints()
     {
-      typedef typename T::ValueType ValueType;
+      typedef typename T::ValueType ValueType ITK_CONCEPT_UNUSED_ATTRIBUTE;
     }
   };
 
@@ -669,7 +676,7 @@ struct HasJoinTraits {
   struct Constraints {
     void constraints()
     {
-      typedef typename JoinTraits< T1, T2 >::ValueType ValueType;
+      typedef typename JoinTraits< T1, T2 >::ValueType ValueType ITK_CONCEPT_UNUSED_ATTRIBUTE;
     }
   };
 
