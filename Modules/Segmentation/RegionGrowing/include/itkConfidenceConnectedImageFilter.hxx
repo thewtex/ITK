@@ -36,7 +36,8 @@ template< typename TInputImage, typename TOutputImage >
 ConfidenceConnectedImageFilter< TInputImage, TOutputImage >
 ::ConfidenceConnectedImageFilter()
 {
-  m_Multiplier = 2.5;
+  m_LowerMultiplier = 2.5;
+  m_UpperMultiplier = 2.5;
   m_NumberOfIterations = 4;
   m_Seeds.clear();
   m_InitialNeighborhoodRadius = 1;
@@ -96,7 +97,9 @@ ConfidenceConnectedImageFilter< TInputImage, TOutputImage >
   this->Superclass::PrintSelf(os, indent);
   os << indent << "Number of iterations: " << m_NumberOfIterations
      << std::endl;
-  os << indent << "Multiplier for confidence interval: " << m_Multiplier
+  os << indent << "Lower multiplier for confidence interval: " << m_LowerMultiplier
+     << std::endl;
+  os << indent << "Upper multiplier for confidence interval: " << m_UpperMultiplier
      << std::endl;
   os << indent << "ReplaceValue: "
      << static_cast< typename NumericTraits< OutputImagePixelType >::PrintType >( m_ReplaceValue )
@@ -244,8 +247,8 @@ ConfidenceConnectedImageFilter< TInputImage, TOutputImage >
     m_Variance  = ( sumOfSquares - ( sum * sum / double(num) ) ) / ( double(num) - 1.0 );
     }
 
-  lower = m_Mean - m_Multiplier *std::sqrt(m_Variance);
-  upper = m_Mean + m_Multiplier *std::sqrt(m_Variance);
+  lower = m_Mean - m_LowerMultiplier *std::sqrt(m_Variance);
+  upper = m_Mean + m_UpperMultiplier *std::sqrt(m_Variance);
 
   // Find the highest and lowest seed intensity.
   InputRealType lowestSeedIntensity = itk::NumericTraits< InputImagePixelType >::max();
@@ -362,8 +365,8 @@ ConfidenceConnectedImageFilter< TInputImage, TOutputImage >
                     << numberOfSamples);
       break;
       }
-    lower = m_Mean - m_Multiplier *std::sqrt(m_Variance);
-    upper = m_Mean + m_Multiplier *std::sqrt(m_Variance);
+    lower = m_Mean - m_LowerMultiplier *std::sqrt(m_Variance);
+    upper = m_Mean + m_UpperMultiplier *std::sqrt(m_Variance);
 
     // Adjust lower and upper to always contain the seed's intensity, otherwise,
     // no pixels will be

@@ -39,19 +39,33 @@ namespace itk
  * of 2.5 would define a confidence interval wide enough to capture
  * 99% of samples in the segment.
  *
+ * To enable more control, the multiplier above and below the mean
+ * can be specified separately using the methods
+ * SetLowerMultiplier() and SetUpperMultiplier().
+ * If instead the general SetMultiplier() method is used, it will
+ * set the upper and lower multipliers to both be this value.
+ * This is particularly useful in cases where, for example, the seed is
+ * placed in a medium intensity region and it is desired that it flood
+ * into an adjoining bright region but not an adjoining dark region
+ * (or vice versa).
+ *
  * After this initial segmentation is calculated, the mean and
  * variance are re-calculated. All the pixels in the previous
  * segmentation are used to calculate the mean the standard deviation
  * (as opposed to using the pixels in the neighborhood of the seed
  * point).  The segmentation is then recalculated using these refined
- * estimates for the mean and variance of the pixel values.  This
- * process is repeated for the specified number of iterations.
+ * estimates for the mean and variance of the pixel values.
+ * This process is repeated for the specified number of iterations.
+ * Each iteration, the flooding is re-run from the initial seeds.
+ * In other words, the pixels segmented in any iteration are
+ * not used as seeds in subsequent iterations.
  * Setting the "NumberOfIterations" to zero stops the algorithm
  * after the initial segmentation from the seed point.
  *
  * NOTE: the lower and upper threshold are restricted to lie within the
  * valid numeric limits of the input data pixel type. Also, the limits
  * may be adjusted to contain the seed point's intensity.
+ *
  * \ingroup RegionGrowingSegmentation
  * \ingroup ITKRegionGrowing
  *
@@ -107,8 +121,31 @@ public:
 
   /** Set/Get the multiplier to define the confidence interval.  Multiplier
    * can be anything greater than zero. A typical value is 2.5 */
-  itkSetMacro(Multiplier, double);
-  itkGetConstMacro(Multiplier, double);
+  void SetMultiplier(double multiplier)
+  {
+    m_LowerMultiplier = multiplier;
+    m_UpperMultiplier = multiplier;
+  }
+  double GetMultiplier()
+  {
+    if( m_LowerMultiplier != m_UpperMultiplier )
+    {
+      std::cout << "Warning: The lower and upper multipliers are different.  "
+          << "To see their values call GetLowerMultiplier() and GetUpperMultiplier().  "
+          << "This method will return only the lower multiplier.\n";
+    }
+    return m_LowerMultiplier;
+  }
+
+  /** Set/Get the lower multiplier to define the confidence interval.  LowerMultiplier
+   * can be anything greater than zero. A typical value is 2.5 */
+  itkSetMacro(LowerMultiplier, double);
+  itkGetConstMacro(LowerMultiplier, double);
+
+  /** Set/Get the upper multiplier to define the confidence interval.  UpperMultiplier
+   * can be anything greater than zero. A typical value is 2.5 */
+  itkSetMacro(UpperMultiplier, double);
+  itkGetConstMacro(UpperMultiplier, double);
 
   /** Set/Get the number of iterations */
   itkSetMacro(NumberOfIterations, unsigned int);
@@ -162,7 +199,8 @@ private:
   void operator=(const Self &);                 //purposely not implemented
 
   SeedsContainerType   m_Seeds;
-  double               m_Multiplier;
+  double               m_LowerMultiplier;
+  double               m_UpperMultiplier;
   unsigned int         m_NumberOfIterations;
   OutputImagePixelType m_ReplaceValue;
   unsigned int         m_InitialNeighborhoodRadius;

@@ -30,7 +30,7 @@ int itkConfidenceConnectedImageFilterTest(int ac, char* av[] )
 
   if(ac < 5)
     {
-    std::cerr << "Usage: " << av[0] << " InputImage BaselineImage seed_x seed_y\n";
+    std::cerr << "Usage: " << av[0] << " InputImage BaselineImage seed_x seed_y [upperMultiplier lowerMultiplier]\n";
     return -1;
     }
 
@@ -51,10 +51,26 @@ int itkConfidenceConnectedImageFilterTest(int ac, char* av[] )
   filter->SetInitialNeighborhoodRadius( 3 ); // measured in pixels
 
   FilterType::IndexType seed; seed[0] = atoi(av[3]); seed[1] = atoi(av[4]);
-  //  FilterType::IndexType seed; seed[0] = 56; seed[1] = 90;
-  //  FilterType::IndexType seed; seed[0] = 96; seed[1] = 214;
+
+  double multiplier = 2.5;
+  if( ac > 5 )
+  {
+    multiplier = atof(av[5]);
+  }
+  double upperMultiplier = multiplier;
+  double lowerMultiplier = multiplier;
+  if( ac > 6 )
+  {
+    upperMultiplier = atof(av[5]);
+    lowerMultiplier = atof(av[6]);
+  }
+
   filter->SetSeed(seed);
-  filter->SetMultiplier(2.5);
+  // If the multiplier is set, there is no need to also set the lower and upper multipliers.
+  filter->SetMultiplier( multiplier );
+  // If the lower and upper multipliers are set, there is no need to set the multiplier.
+  filter->SetLowerMultiplier( lowerMultiplier );
+  filter->SetUpperMultiplier( upperMultiplier);
   filter->SetReplaceValue(255);
   filter->SetNumberOfIterations(10);
 
