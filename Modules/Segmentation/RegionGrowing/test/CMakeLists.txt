@@ -33,6 +33,23 @@ itk_add_test(NAME itkConfidenceConnectedImageFilterTest2
       COMMAND ITKRegionGrowingTestDriver
     --compare-MD5 ${ITK_TEST_OUTPUT_DIR}/ConfidenceConnectedImageFilterTest2.png fcd6bcb56c1689fcef28b57c22475bad
     itkConfidenceConnectedImageFilterTest DATA{${ITK_DATA_ROOT}/Input/cthead1.png} ${ITK_TEST_OUTPUT_DIR}/ConfidenceConnectedImageFilterTest2.png 9999 9999)
+
+# This test shows that no good single multiplier value can accurately separate the two squares together from the background.
+# This is because the medium intensity square leaks into the background.
+itk_add_test(NAME itkConfidenceConnectedImageFilterTest3
+      COMMAND ITKRegionGrowingTestDriver
+    --compare DATA{${ITK_DATA_ROOT}/Baseline/BasicFilters/ConfidenceConnectedImageFilterTest3.png}
+              ${ITK_TEST_OUTPUT_DIR}/ConfidenceConnectedImageFilterTest3.png
+    itkConfidenceConnectedImageFilterTest DATA{${ITK_DATA_ROOT}/Input/NoisySquares.png} ${ITK_TEST_OUTPUT_DIR}/ConfidenceConnectedImageFilterTest3.png 50 50 4)
+
+# This test shows that when the lower and upper multiplier values are set separately, the two squares can be separated from the background.
+# Here, the lower threshold is set to a low value so that the medium intensity square does not leak into the background.
+itk_add_test(NAME itkConfidenceConnectedImageFilterTest4
+      COMMAND ITKRegionGrowingTestDriver
+    --compare DATA{${ITK_DATA_ROOT}/Baseline/BasicFilters/ConfidenceConnectedImageFilterTest4.png}
+              ${ITK_TEST_OUTPUT_DIR}/ConfidenceConnectedImageFilterTest4.png
+    itkConfidenceConnectedImageFilterTest DATA{${ITK_DATA_ROOT}/Input/NoisySquares.png} ${ITK_TEST_OUTPUT_DIR}/ConfidenceConnectedImageFilterTest4.png 50 50 4 2)
+
 itk_add_test(NAME itkVectorConfidenceConnectedImageFilterTest
       COMMAND ITKRegionGrowingTestDriver
     --compare DATA{${ITK_DATA_ROOT}/Baseline/BasicFilters/VectorConfidenceConnectedImageFilterTest.png}
