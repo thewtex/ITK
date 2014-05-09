@@ -49,15 +49,15 @@ public:
 
   itkNewMacro(Self);
 
-  static int Exercise( std::vector<typename RealType> redChannel,
-    std::vector<typename RealType> greenChannel,
-    std::vector<typename RealType> blueChannel )
+  static int Exercise( std::vector<RealType> redChannel,
+    std::vector<RealType> greenChannel,
+    std::vector<RealType> blueChannel )
   {
 
     typedef itk::Function::CustomColormapFunction<
-      typename ScalarType, typename RGBPixelType> ColormapType;
+      ScalarType, RGBPixelType> ColormapType;
 
-    typename ColormapType::Pointer colormap = ColormapType::New();
+    ColormapType::Pointer colormap = ColormapType::New();
 
     // Set the RGB channels
     colormap->SetRedChannel(redChannel);
