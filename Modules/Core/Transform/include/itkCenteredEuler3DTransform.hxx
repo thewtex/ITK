@@ -80,7 +80,6 @@ CenteredEuler3DTransform<TScalar>
   this->SetVarRotation(angleX, angleY, angleZ);
 
   CenterType newCenter;
-  typedef typename CenterType::ValueType CenterValueType;
   newCenter[0] = parameters[3];
   newCenter[1] = parameters[4];
   newCenter[2] = parameters[5];
@@ -217,7 +216,7 @@ CenteredEuler3DTransform<TScalar>
 {
   Pointer inv = New();
 
-  return this->GetInverse(inv) ? inv.GetPointer() : NULL;
+  return this->GetInverse(inv) ? inv.GetPointer() : ITK_NULLPTR;
 }
 
 // Print self

@@ -247,7 +247,7 @@ SubjectImplementation::GetCommand(unsigned long tag)
       return ( *i )->m_Command;
       }
     }
-  return 0;
+  return ITK_NULLPTR;
 }
 
 bool
@@ -294,7 +294,7 @@ Object::New()
   Pointer smartPtr;
   Object *rawPtr = ::itk::ObjectFactory< Object >::Create();
 
-  if ( rawPtr == NULL )
+  if ( rawPtr == ITK_NULLPTR )
     {
     rawPtr = new Object;
     }
@@ -419,7 +419,14 @@ Object
     /**
      * If there is a delete method, invoke it.
      */
-    this->InvokeEvent( DeleteEvent() );
+    try
+      {
+      this->InvokeEvent( DeleteEvent() );
+      }
+    catch(...)
+      {
+      itkWarningMacro("Exception occurred in DeleteEvent Observer!");
+      }
     }
 
   Superclass::UnRegister();
@@ -441,7 +448,14 @@ Object
     /**
      * If there is a delete method, invoke it.
      */
-    this->InvokeEvent( DeleteEvent() );
+    try
+      {
+      this->InvokeEvent( DeleteEvent() );
+      }
+    catch(...)
+      {
+      itkWarningMacro("Exception occurred in DeleteEvent Observer!");
+      }
     }
 
   Superclass::SetReferenceCount(ref);
@@ -498,7 +512,7 @@ Object
     {
     return this->m_SubjectImplementation->GetCommand(tag);
     }
-  return NULL;
+  return ITK_NULLPTR;
 }
 
 void
@@ -571,8 +585,8 @@ Object
 ::Object():
   LightObject(),
   m_Debug(false),
-  m_SubjectImplementation(NULL),
-  m_MetaDataDictionary(NULL),
+  m_SubjectImplementation(ITK_NULLPTR),
+  m_MetaDataDictionary(ITK_NULLPTR),
   m_ObjectName()
 {
   this->Modified();
@@ -610,7 +624,7 @@ MetaDataDictionary &
 Object
 ::GetMetaDataDictionary(void)
 {
-  if ( m_MetaDataDictionary == NULL )
+  if ( m_MetaDataDictionary == ITK_NULLPTR )
     {
     m_MetaDataDictionary = new MetaDataDictionary;
     }
@@ -621,7 +635,7 @@ const MetaDataDictionary &
 Object
 ::GetMetaDataDictionary(void) const
 {
-  if ( m_MetaDataDictionary == NULL )
+  if ( m_MetaDataDictionary == ITK_NULLPTR )
     {
     m_MetaDataDictionary = new MetaDataDictionary;
     }
@@ -632,7 +646,7 @@ void
 Object
 ::SetMetaDataDictionary(const MetaDataDictionary & rhs)
 {
-  if ( m_MetaDataDictionary == NULL )
+  if ( m_MetaDataDictionary == ITK_NULLPTR )
     {
     m_MetaDataDictionary = new MetaDataDictionary;
     }

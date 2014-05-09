@@ -392,8 +392,6 @@ ShapeLabelMapFilter< TImage, TLabelImage >
   typedef typename std::deque< IndexType > IndexListType;
   IndexListType idxList;
 
-  typedef typename LabelObjectType::LengthType LengthType;
-
   typedef typename itk::ConstNeighborhoodIterator< LabelImageType > NeighborIteratorType;
   SizeType neighborHoodRadius;
   neighborHoodRadius.Fill(1);
@@ -748,7 +746,7 @@ ShapeLabelMapFilter< TImage, TLabelImage >
   Superclass::AfterThreadedGenerateData();
 
   // Release the label image
-  m_LabelImage = NULL;
+  m_LabelImage = ITK_NULLPTR;
 }
 
 template< typename TImage, typename TLabelImage >
