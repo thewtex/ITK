@@ -159,6 +159,7 @@ RegistrationParameterScalesFromJacobian< TMetric >
 
   itk::Array<FloatType> dTdt(dim);
 
+  JacobianType jacobianCache(dim,dim);
   // checking each sample point
   for (SizeValueType c=0; c<numSamples; c++)
     {
@@ -167,11 +168,17 @@ RegistrationParameterScalesFromJacobian< TMetric >
     JacobianType jacobian;
     if (this->GetTransformForward())
       {
-      this->m_Metric->GetMovingTransform()->ComputeJacobianWithRespectToParameters(point, jacobian);
+      this->m_Metric->GetMovingTransform()->
+        ComputeJacobianWithRespectToParametersCachedTemporaries(point,
+                                                                jacobian,
+                                                                jacobianCache);
       }
     else
       {
-      this->m_Metric->GetFixedTransform()->ComputeJacobianWithRespectToParameters(point, jacobian);
+      this->m_Metric->GetFixedTransform()->
+        ComputeJacobianWithRespectToParametersCachedTemporaries(point,
+                                                                jacobian,
+                                                                jacobianCache);
       }
 
     if( !this->IsDisplacementFieldTransform() )

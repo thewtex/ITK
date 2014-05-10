@@ -67,7 +67,11 @@ public:
   typedef typename JointHistogramMetricType::MarginalPDFInterpolatorType    MarginalPDFInterpolatorType;
   typedef typename JointHistogramMetricType::JointPDFInterpolatorPointer    JointPDFInterpolatorPointer;
   typedef typename JointHistogramMetricType::MarginalPDFInterpolatorPointer MarginalPDFInterpolatorPointer;
+  //TODO:  This should just be JacobianType to match the rest of the threaded GetValueAndDerivative types
+  //Deprecate the following
   typedef typename JointHistogramMetricType::FixedTransformJacobianType     FixedTransformJacobianType;
+  //TODO: In the parent class too
+  typedef typename JointHistogramMetricType::FixedTransformJacobianType     JacobianType;
   typedef typename JointHistogramMetricType::NumberOfParametersType         NumberOfParametersType;
   typedef typename JointHistogramMetricType::JointPDFType                   JointPDFType;
   typedef typename JointHistogramMetricType::MarginalPDFType                MarginalPDFType;

@@ -212,6 +212,7 @@ KappaStatisticImageToImageMetric<TFixedImage, TMovingImage>
   int intersection = 0;
 
   TransformJacobianType jacobian;
+  TransformJacobianType jacobianCache(TFixedImage::ImageDimension,TFixedImage::ImageDimension);
 
   ti.GoToBegin();
   while( !ti.IsAtEnd() )
@@ -255,8 +256,10 @@ KappaStatisticImageToImageMetric<TFixedImage, TMovingImage>
         intersection++;
         }
 
-      this->m_Transform->ComputeJacobianWithRespectToParameters(
-        inputPoint, jacobian);
+      this->m_Transform->
+        ComputeJacobianWithRespectToParametersCachedTemporaries(inputPoint,
+                                                                jacobian,
+                                                                jacobianCache);
 
       this->m_NumberOfPixelsCounted++;
 
