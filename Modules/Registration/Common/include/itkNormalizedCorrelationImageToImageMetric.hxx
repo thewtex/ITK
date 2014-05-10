@@ -221,6 +221,7 @@ NormalizedCorrelationImageToImageMetric<TFixedImage, TMovingImage>
     }
 
   TransformJacobianType jacobian;
+  TransformJacobianType jacobianCache(TFixedImage::ImageDimension,TFixedImage::ImageDimension);
 
   // Compute contributions to derivatives
   ti.GoToBegin();
@@ -250,7 +251,9 @@ NormalizedCorrelationImageToImageMetric<TFixedImage, TMovingImage>
       const RealType movingValue  = this->m_Interpolator->Evaluate(transformedPoint);
       const RealType fixedValue     = ti.Get();
 
-      this->m_Transform->ComputeJacobianWithRespectToParameters(inputPoint, jacobian);
+      this->m_Transform->ComputeJacobianWithRespectToParametersCachedTemporaries(inputPoint,
+                                                                                 jacobian,
+                                                                                 jacobianCache);
 
       // Get the gradient by NearestNeighboorInterpolation:
       // which is equivalent to round up the point components.
@@ -409,6 +412,7 @@ NormalizedCorrelationImageToImageMetric<TFixedImage, TMovingImage>
     ++ti;
     }
 
+  TransformJacobianType jacobianCache(TFixedImage::ImageDimension,TFixedImage::ImageDimension);
   // Compute contributions to derivatives
   ti.GoToBegin();
   while( !ti.IsAtEnd() )
@@ -438,7 +442,9 @@ NormalizedCorrelationImageToImageMetric<TFixedImage, TMovingImage>
       const RealType fixedValue     = ti.Get();
 
       TransformJacobianType jacobian;
-      this->m_Transform->ComputeJacobianWithRespectToParameters(inputPoint, jacobian);
+      this->m_Transform->ComputeJacobianWithRespectToParametersCachedTemporaries(inputPoint,
+                                                                                 jacobian,
+                                                                                 jacobianCache);
 
       // Get the gradient by NearestNeighboorInterpolation:
       // which is equivalent to round up the point components.

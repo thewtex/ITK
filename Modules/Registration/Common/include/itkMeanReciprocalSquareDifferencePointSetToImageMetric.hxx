@@ -136,6 +136,7 @@ MeanReciprocalSquareDifferencePointSetToImageMetric<TFixedPointSet, TMovingImage
   PointDataIterator pointDataEnd = fixedPointSet->GetPointData()->End();
 
   TransformJacobianType jacobian;
+  TransformJacobianType jacobianCache;
 
   while( pointItr != pointEnd && pointDataItr != pointDataEnd )
     {
@@ -154,7 +155,9 @@ MeanReciprocalSquareDifferencePointSetToImageMetric<TFixedPointSet, TMovingImage
       const RealType diffSquared = diff * diff;
 
       // Now compute the derivatives
-      this->m_Transform->ComputeJacobianWithRespectToParameters(inputPoint, jacobian);
+      this->m_Transform->ComputeJacobianWithRespectToParametersCachedTemporaries(inputPoint,
+                                                                                 jacobian,
+                                                                                 jacobianCache);
 
       // Get the gradient by NearestNeighboorInterpolation:
       // which is equivalent to round up the point components.
@@ -240,6 +243,7 @@ MeanReciprocalSquareDifferencePointSetToImageMetric<TFixedPointSet, TMovingImage
   PointDataIterator pointDataItr = fixedPointSet->GetPointData()->Begin();
   PointDataIterator pointDataEnd = fixedPointSet->GetPointData()->End();
 
+  TransformJacobianType jacobianCache(TMovingImage::ImageDimension,TMovingImage::ImageDimension);
   while( pointItr != pointEnd && pointDataItr != pointDataEnd )
     {
     InputPointType inputPoint;
@@ -256,7 +260,9 @@ MeanReciprocalSquareDifferencePointSetToImageMetric<TFixedPointSet, TMovingImage
 
       // Now compute the derivatives
       TransformJacobianType jacobian;
-      this->m_Transform->ComputeJacobianWithRespectToParameters(inputPoint, jacobian);
+      this->m_Transform->ComputeJacobianWithRespectToParametersCachedTemporaries(inputPoint,
+                                                                                 jacobian,
+                                                                                 jacobianCache);
 
       const RealType diff = movingValue - fixedValue;
       const RealType diffSquared = diff * diff;

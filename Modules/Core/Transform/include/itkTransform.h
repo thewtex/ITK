@@ -496,11 +496,19 @@ public:
    *  will most likely occur during multi-threading.
    *  To avoid repeatitive memory allocation, pass in 'jacobian' with its size
    *  already set. */
-  virtual void ComputeJacobianWithRespectToParameters(const InputPointType  & itkNotUsed(p), JacobianType & itkNotUsed(jacobian) ) const
+  virtual void ComputeJacobianWithRespectToParameters(const InputPointType  & itkNotUsed(p), JacobianType & itkNotUsed(jacobian) ) const = 0;
+#if 0
   {
     itkExceptionMacro(
       "ComputeJacobianWithRespectToParamters( InputPointType, JacobianType"
       " is unimplemented for " << this->GetNameOfClass() );
+  }
+#endif
+
+  virtual void ComputeJacobianWithRespectToParametersCachedTemporaries(const InputPointType  & p, JacobianType & jacobian, JacobianType & itkNotUsed(jacobianWithRespectToPosition) ) const
+  {
+    //NOTE: default implementation is not optimized, and just falls back to original methods.
+    this->ComputeJacobianWithRespectToParameters(p, jacobian);
   }
 
 
