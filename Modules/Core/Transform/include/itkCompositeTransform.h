@@ -364,7 +364,7 @@ public:
    * Expanded interface to Compute the Jacobian with respect to the parameters for the compositie
    * transform using Jacobian rule. This version takes in temporary variables to avoid excessive constructions.
    */
-  virtual void ComputeJacobianWithRespectToParametersCachedTemporaries( const InputPointType & p, JacobianType & outJacobian, JacobianType & jacobianWithRespectToPosition ) const ITK_OVERRIDE;
+  virtual void ComputeJacobianWithRespectToParametersCachedTemporaries( const InputPointType & p, JacobianType & outJacobian, JacobianType & LeftOperandMatrix ) const ITK_OVERRIDE;
 
 protected:
   CompositeTransform();
@@ -412,6 +412,37 @@ private:
 
   mutable ModifiedTimeType m_PreviousTransformsToOptimizeUpdateTime;
 
+  //Computes CompositeOutputMatrix[0:numDims, 0:numParameters] = jwrp[numDims,numDims]*RightOperandMatrix[numDims,numParameters];
+  //The following code is optimized to take great efforts to avoid matrix multiplicaitons by instead doing pointer
+  //arithmetic
+  inline void OptimizedMatrixMultiply(JacobianType &CompositeOutputMatrix,const int NumberOfCompositeParameters, const unsigned int numberOfLocalParameters,
+      const JacobianType &LeftOperandMatrix, const JacobianType &RightOperandMatrix) const
+    {
+    typename JacobianType::ValueType * out = CompositeOutputMatrix.data_block(); //Set the first output row
+    const typename JacobianType::ValueType * const lo = LeftOperandMatrix.data_block(); //Left operand
+    const typename JacobianType::ValueType * const ro = RightOperandMatrix.data_block(); //Right operand
+
+    const unsigned int max_ro_dim = NDimensions*numberOfLocalParameters;
+
+    unsigned int lo_row_offset = 0;
+    for(unsigned int outIndexRow = 0; outIndexRow < NDimensions; ++outIndexRow)
+      {
+      typename JacobianType::ValueType * accumulator = out;
+      for(unsigned int outIndexCol = 0; outIndexCol < numberOfLocalParameters; ++outIndexCol)
+        {
+        const typename JacobianType::ValueType * lo_row = lo+lo_row_offset; //Get start of row
+        *accumulator = 0.0;
+        for(unsigned int roRowOffsets = 0; roRowOffsets < max_ro_dim; roRowOffsets+=numberOfLocalParameters)
+          {
+          *accumulator += (*lo_row++) //postincreament and dereference
+            * (*( ro + roRowOffsets + outIndexCol));
+          }
+        ++accumulator; //Now move to next memory location.
+        }
+      out += NumberOfCompositeParameters; //Now move to the next output row
+      lo_row_offset += NDimensions; //Now move to the next lo row
+      }
+    }
 };
 
 } // end namespace itk

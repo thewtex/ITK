@@ -658,8 +658,7 @@ CompositeTransform<TScalar, NDimensions>
 }
 
 
-template
-<typename TScalar, unsigned int NDimensions>
+template <typename TScalar, unsigned int NDimensions>
 void
 CompositeTransform<TScalar, NDimensions>
 ::ComputeJacobianWithRespectToParameters( const InputPointType & p, JacobianType & outJacobian ) const
@@ -676,8 +675,7 @@ CompositeTransform<TScalar, NDimensions>
 
 
 
-template
-<typename TScalar, unsigned int NDimensions>
+template <typename TScalar, unsigned int NDimensions>
 void
 CompositeTransform<TScalar, NDimensions>
 ::ComputeJacobianWithRespectToParametersCachedTemporaries( const InputPointType & p, JacobianType & outJacobian, JacobianType & jacobianWithRespectToPosition ) const
@@ -687,7 +685,7 @@ CompositeTransform<TScalar, NDimensions>
   //NOTE: assert( jacobianWithRespectToPosition.GetSize == (NDimensions, NDimensions) )
 
   NumberOfParametersType offset = NumericTraits< NumberOfParametersType >::Zero;
-
+  const unsigned int NumberOfCompositeParameters = this->GetNumberOfLocalParameters();
   OutputPointType transformedPoint( p );
 
   /*
@@ -735,6 +733,7 @@ CompositeTransform<TScalar, NDimensions>
     {
     /* Get a raw pointer for efficiency, avoiding SmartPointer register/unregister */
     const TransformType * const transform = this->GetNthTransformConstPointer( tind );
+    const NumberOfParametersType numberOfLocalParameters = transform->GetNumberOfLocalParameters();
 
     const NumberOfParametersType offsetLast = offset;
 
@@ -745,10 +744,9 @@ CompositeTransform<TScalar, NDimensions>
        * better */
 
       // to do: why parameters are listed from N-1 to 1???
-      const NumberOfParametersType numberOfLocalParameters = transform->GetNumberOfLocalParameters();
-
       typename TransformType::JacobianType current_jacobian( NDimensions, numberOfLocalParameters );
-      transform->ComputeJacobianWithRespectToParameters( transformedPoint, current_jacobian );
+
+      transform->ComputeJacobianWithRespectToParametersCachedTemporaries( transformedPoint, current_jacobian,jacobianWithRespectToPosition );
       outJacobian.update( current_jacobian, 0, offset );
       offset += numberOfLocalParameters;
       }
@@ -774,10 +772,7 @@ CompositeTransform<TScalar, NDimensions>
       transform->ComputeJacobianWithRespectToPosition(transformedPoint, jacobianWithRespectToPosition);
 
       const JacobianType & old_j = outJacobian.extract(NDimensions, offsetLast, 0, 0);
-      const JacobianType & update_j = jacobianWithRespectToPosition * old_j;
-
-      outJacobian.update(update_j, 0, 0);
-
+      OptimizedMatrixMultiply(outJacobian,NumberOfCompositeParameters, numberOfLocalParameters,jacobianWithRespectToPosition, old_j);
       // itkExceptionMacro(" To sort out with new ComputeJacobianWithRespectToPosition prototype ");
       }
 
