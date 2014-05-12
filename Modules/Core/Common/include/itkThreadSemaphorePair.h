@@ -14,10 +14,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  *
+ #if defined(__unix__) || defined(__APPLE__)
  *=========================================================================*/
-
-#ifndef __itkThreadJob_h
-#define __itkThreadJob_h
+#ifndef __itkThreadSemPair_h
+#define __itkThreadSemPair_h
+#include "itkThreadPool.h"
 
 namespace itk
 {
@@ -30,56 +31,30 @@ namespace itk
  * Also holds the args pointer - it is passed to the executing function by
  * the thread pool.
  */
-class ThreadJob
-{
-public:
-  ThreadJob() :
-    m_Id(-1),
-    m_Assigned(false),
-    m_Executed(false)
-  {
-    m_ThreadArgs.otherArgs = NULL;
-  }
 
-  ~ThreadJob()
-  {
-  }
 
-//  private:
-/** Stores the user's data that needs to be passed into the function */
-  class ThreadArgs
+  class ThreadPool::ThreadSemaphorePair
   {
 public:
-    // TODO: Evaluate initialization options.
-    ThreadArgs() : otherArgs(NULL), m_ThreadFunction(NULL) {
-    }
-
-public:
-    void *otherArgs;
-
-    /** Declaring function thatwill be called */
-#if defined(ITK_USE_WIN32_THREADS)
-    unsigned int ( __stdcall *m_ThreadFunction )( void * ptr );
+    ThreadSemaphorePair(const ThreadProcessIDType & tph);
+    int SemaphoreWait();
+    int SemaphorePost();
+#if defined(__APPLE__)
+//    sem_t                *Semaphore;
+      semaphore_t           Semaphore;
+#elif defined(_WIN32) || defined(_WIN64)
+    HANDLE               Semaphore;
 #else
-    void * (*m_ThreadFunction)(void *ptr);
+    sem_t                Semaphore;
 #endif
+
+    ThreadSemaphorePair *Next;
+    ThreadProcessIDType  ThreadProcessHandle;
+
+private:
+    static int m_SemCount;
+    ThreadSemaphorePair(); //purposefully not implemented.
   };
+  }
 
-  /** This is the Job's id. If it is -1 it means the job hasn't been
-    initialized*/
-  int m_Id;
-
-  /** Set if the job is assigned to a thread */
-  bool m_Assigned;
-
-  /**  set if job is finished */
-  bool m_Executed;
-
-  /** declaring the struct */
-  ThreadArgs m_ThreadArgs;
-
-};
-
-} // End namespace itk
-
-#endif // __itkThreadJob_h__
+#endif

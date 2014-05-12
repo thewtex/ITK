@@ -17,18 +17,66 @@
  *=========================================================================*/
 
 #include "itkThreadPool.h"
+#include "itkThreadSemaphorePair.h"
 
 namespace itk
 {
 
+
+ThreadPool::ThreadSemaphorePair::ThreadSemaphorePair(const ThreadProcessIDType & tph) :
+      ThreadProcessHandle(tph)
+    {
+#if defined(__APPLE__)
+     if( semaphore_create(current_task(), &Semaphore, SYNC_POLICY_FIFO, 0) != KERN_SUCCESS)
+     {
+      std::cout<<std::endl<<"Semaphore cannot be initialized. "<<strerror(errno);
+      exit(-1);
+     }
+#else
+       sem_init(&Semaphore, 0, 0);
+#endif
+    }
+
+    int ThreadPool::ThreadSemaphorePair::SemaphoreWait()
+    {
+#if defined(__APPLE__)
+      //return sem_wait(Semaphore);
+        if(semaphore_wait(Semaphore) == KERN_SUCCESS)
+         return 0;
+        else
+         return -1;
+#else
+      return sem_wait(&Semaphore);
+#endif
+    }
+
+    int ThreadPool::ThreadSemaphorePair::SemaphorePost()
+    {
+#if defined(__APPLE__)
+      //return sem_post(Semaphore);
+      if(semaphore_signal(Semaphore) == KERN_SUCCESS)
+       return 0;
+      else
+       return -1;
+#else
+      return sem_post(&Semaphore);
+#endif
+    }
+
 void ThreadPool::AddThread()
 {
+  pthread_attr_t attr;
 
+  pthread_attr_init(&attr);
+
+#if !defined( __CYGWIN__ )
+  pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
+#endif
   ThreadDebugMsg( << "In add thread" << std::endl );
 
   this->m_ThreadCount++;
   pthread_t newlyAddedThreadHandle;
-  const int rc = pthread_create(&newlyAddedThreadHandle, NULL, &ThreadPool::ThreadExecute, (void *)this );
+  const int rc = pthread_create(&newlyAddedThreadHandle, &attr, &ThreadPool::ThreadExecute, (void *)this );
   if( rc )
     {
     itkDebugMacro(<< "ERROR; return code from pthread_create() is " << rc << std::endl);
@@ -64,6 +112,30 @@ void ThreadPool::AddThread()
     itkDebugMacro(<< "Thread created with handle :" << m_ThreadHandles[m_ThreadCount - 1] << std::endl );
     }
 
+}
+
+bool ThreadPool::CompareThreadHandles(ThreadProcessIDType t1, ThreadProcessIDType t2)
+{
+  return (pthread_equal(t1, t2) == 0 ? false : true);
+}
+
+
+void ThreadPool::DeallocateThreadLinkedList(ThreadSemaphorePair *list)
+{
+  ThreadSemaphorePair *node = list;
+  ThreadSemaphorePair *next = list;
+
+  while(node!=NULL)
+    {
+    next = node->Next;
+    #if defined(__APPLE__)
+    //sem_close(node->Semaphore);
+    #else
+    sem_destroy(&(node->Semaphore));
+    #endif
+    delete node;
+    node = next;
+    }
 }
 
 /*
