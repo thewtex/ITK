@@ -66,6 +66,11 @@ void ThreadPool::AddThread()
 
 }
 
+bool ThreadPool::CompareThreadHandles(ThreadProcessIDType t1, ThreadProcessIDType t2)
+{
+  return (pthread_equal(t1, t2) == 0 ? false : true);
+}
+
 /*
   This method first checks if all threads are finished executing their jobs.
   If now, it will wait for "poolTime" seconds and then re-check.
