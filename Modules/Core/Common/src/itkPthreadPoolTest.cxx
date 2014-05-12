@@ -43,7 +43,7 @@ void * execute(void *ptr)
 
 }
 
-int itkPthreadPoolTest(int argc, char *argv[])
+int itkPThreadPoolTest(int argc, char *argv[])
 {
 
   try

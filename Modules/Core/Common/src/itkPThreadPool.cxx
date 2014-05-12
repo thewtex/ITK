@@ -66,6 +66,30 @@ void ThreadPool::AddThread()
 
 }
 
+bool ThreadPool::CompareThreadHandles(ThreadProcessIDType t1, ThreadProcessIDType t2)
+{
+  return (pthread_equal(t1, t2) == 0 ? false : true);
+}
+
+
+void ThreadPool::DeallocateThreadLinkedList(ThreadSemaphorePair *list)
+{
+  ThreadSemaphorePair *node = list;
+  ThreadSemaphorePair *next = list;
+
+  while(node!=NULL)
+    {
+    next = node->Next;
+    #if defined(__APPLE__)
+    sem_close(node->Semaphore);
+    #else
+    sem_destroy(&(node->Semaphore));
+    #endif
+    delete node;
+    node = next;
+    }
+}
+
 /*
   This method first checks if all threads are finished executing their jobs.
   If now, it will wait for "poolTime" seconds and then re-check.
