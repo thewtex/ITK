@@ -31,7 +31,11 @@
 #include <iostream>
 #include <algorithm>
 #include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>
 #include <vector>
+#include <sstream>
+#include <string>
 #include <utility>
 #include "itkThreadJob.h"
 #include "itkObject.h"
@@ -47,7 +51,21 @@
 
 namespace itk
 {
-
+/**
+*
+* Thread pool manages the threads for itk. Thread pool is called and initialized from
+* within the MultiThreader. Initially the thread pool is started with zero threads.
+* Threads are added as job(s) are submitted to the thread pool and if it cannot be
+* executed right away. For example : If the thread pool has three threads and all are
+* busy. If a new job is submitted to the thread pool, the thread pool checks to see if
+* any threads are free. If not, it adds a new thread and executed the job right away.
+* The ThreadJob class is used to submit jobs to the thread pool. The ThreadJob's
+* necessary variables need to be set and then the ThreadJob can be passed to the
+* ThreaadPool by calling its AssignWork Method which returns the thread id on which
+* the job is being executed. One can then wait for the job using the thread id and
+* calling the WaitForJob method on the thread pool.
+*
+*/
 class ITKCommon_EXPORT ThreadPool : public Object
 {
 public:
@@ -55,7 +73,7 @@ public:
   /** Standard class typedefs. */
   typedef ThreadPool               Self;
   typedef Object                   Superclass;
-  typedef SmartPointer<Self>       Pointer;
+  typedef SmartPointer< Self >       Pointer;
   typedef SmartPointer<const Self> ConstPointer;
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -99,10 +117,10 @@ protected:
 
 private:
   /** copy constructor is private */
-  ThreadPool(ThreadPool const &);
+  ThreadPool(ThreadPool const &); // purposely not implemented
 
   /** Assignment operator is private */
-  ThreadPool & operator=(ThreadPool const &);
+  ThreadPool & operator=(ThreadPool const &); // purposely not implemented
 
   /** Count of jobs completed */
   int m_CompletedJobs;
@@ -125,21 +143,24 @@ private:
   /** set if exception occurs */
   bool m_ExceptionOccured;
 
-  typedef std::vector<ThreadJob> ThreadJobQueueType;
+  typedef std::vector<ThreadJob> ThreadJobContainterType;
+  typedef std::vector<int> ThreadIntsContainerType;
+  typedef std::vector<ThreadProcessIDType> ThreadProcessIdContainerType;
+
   /** this is a list of jobs(ThreadJob) submitted to the thread pool
       this is the only place where the jobs are submitted.
       We need a worker queue because the thread pool assigns work to a
       thread which is free. So when a job is submitted, it has to be stored
       somewhere*/
-  ThreadJobQueueType m_WorkerQueue;
+  ThreadJobContainterType m_WorkerQueue;
   /** To lock on m_WorkerQueue */
   static SimpleFastMutexLock m_WorkerQueueMutex;
 
   /** this is the list of active jobs (running) across all threads */
-  std::vector<int> m_ActiveJobIds;
+  ThreadIntsContainerType m_ActiveJobIds;
 
   /** Vector to hold all active thread handles */
-  std::vector<ThreadProcessIDType> m_ThreadHandles;
+  ThreadProcessIdContainerType m_ThreadHandles;
 
   /** Vector of pairs that hold job ids and their corresponding thread handles
     */
@@ -176,24 +197,53 @@ public:
     ThreadSemaphorePair(const ThreadProcessIDType & tph) :
       ThreadProcessHandle(tph)
     {
-      sem_init(&Semaphore, 0, 0);
+      #if defined(__APPLE__)
+        std::stringstream sName;
+        sName.str(std::string());
+        sName << "/Semaphore"<<m_SemCount++;
+        std::cout<<std::endl<<"Creating Semaphore with name "<<sName.str().c_str()<<std::endl;
+        sem_unlink(sName.str().c_str());
+        Semaphore = sem_open(sName.str().c_str(), O_CREAT|O_EXCL , 0777 , 0);
+        sem_unlink(sName.str().c_str());
+        if(Semaphore == SEM_FAILED)
+        {
+        std::cout<<std::endl<<"Semaphore with name "<<sName.str().c_str()<<"cannot be initialized. Error code SEM_FAILED = "<<strerror(errno);
+        exit(-1);
+        }
+      #else
+       sem_init(&Semaphore, 0, 0);
+      #endif
     }
 
     int SemaphoreWait()
     {
+      #if defined(__APPLE__)
+      return sem_wait(Semaphore);
+      #else
       return sem_wait(&Semaphore);
+      #endif
     }
 
     int SemaphorePost()
     {
+      #if defined(__APPLE__)
+      return sem_post(Semaphore);
+      #else
       return sem_post(&Semaphore);
+      #endif
     }
 
-    ThreadSemaphorePair *Next;
+    #if defined(__APPLE__)
+    sem_t                *Semaphore;
+    #else
     sem_t                Semaphore;
+    #endif
+
+    ThreadSemaphorePair *Next;
     ThreadProcessIDType  ThreadProcessHandle;
 
 private:
+    static int m_SemCount;
     ThreadSemaphorePair(); //purposefully not implemented.
   };
 
@@ -250,8 +300,8 @@ private:
   };
 
 #endif
-  typedef std::vector<ThreadProcessStatusPair> ThreadStructsQueueType;
-  ThreadStructsQueueType m_ThreadIDHandlePairingQueue;
+  typedef std::vector<ThreadProcessStatusPair> ThreadIDHandlePairingContainerType;
+  ThreadIDHandlePairingContainerType m_ThreadIDHandlePairingQueue;
 
   ThreadSemaphorePair *m_ThreadSemHandlePairingQueue;
   ThreadSemaphorePair *m_ThreadSemHandlePairingForWaitQueue;
@@ -285,7 +335,7 @@ private:
       are free. If so, it returns false else returns true */
   bool DoIAddAThread();
 
-  static ThreadPool *m_ThreadPoolInstance;
+  static ThreadPool* m_ThreadPoolInstance;
   /** To lock on m_ThreadPoolInstance */
   static SimpleFastMutexLock m_ThreadPoolInstanceMutex;
   /** Used to yield a singleton instance */
@@ -299,6 +349,9 @@ private:
 
   /** thread function */
   static void * ThreadExecute(void *param);
+
+  /** Method to compare thread handles - true for same false for different */
+  bool CompareThreadHandles(ThreadProcessIDType t1, ThreadProcessIDType t2);
 
 };
 
