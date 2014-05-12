@@ -16,7 +16,6 @@
  *
  *=========================================================================*/
 
-//
 
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
@@ -79,12 +78,44 @@ int itkDoubleThresholdImageFilterTest( int argc, char * argv[] )
 
   // Setup the fillhole method
   threshold->SetInput(  reader->GetOutput() );
-  threshold->SetInsideValue( 255 );
-  threshold->SetOutsideValue( 0 );
+  const OutputPixelType InsideValue = threshold->GetInsideValue();
+  const OutputPixelType OutsideValue = threshold->GetOutsideValue();
+  if (InsideValue == 255)
+  {
+    threshold->SetInsideValue( 200 );
+  }
+  if (OutsideValue == 0)
+  {
+    threshold->SetOutsideValue( 1 );
+  }
+
   threshold->SetThreshold1( atoi(argv[3]) );
   threshold->SetThreshold2( atoi(argv[4]) );
   threshold->SetThreshold3( atoi(argv[5]) );
   threshold->SetThreshold4( atoi(argv[6]) );
+
+
+  const InputPixelType Th1 = threshold->GetThreshold1();
+  const InputPixelType Th2 = threshold->GetThreshold2();
+  const InputPixelType Th3 = threshold->GetThreshold3();
+  const InputPixelType Th4 = threshold->GetThreshold4();
+  if ((Th1 != atoi(argv[1]))||(Th2 != atoi(argv[2]))||(Th3 != atoi(argv[3]))||(Th4 != atoi(argv[4])))
+  {
+    std::cerr<<"Values inputed as Threshold are not used"<<std::endl;
+  }
+  if ((Th1 <= Th2)&&(Th2 <= Th3)&&(Th3 <= Th4))
+  {
+    std::cerr<<"Values inputed as Threshold meet the requirement"<<std::endl;
+  }
+
+  if (threshold->GetFullyConnected() != false)
+  {
+    threshold->SetFullyConnected(false);
+  }
+  else
+  {
+    threshold->SetFullyConnected(true);
+  }
 
   // Run the filter
   rescaler->SetInput( threshold->GetOutput() );
