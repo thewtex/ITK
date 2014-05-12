@@ -15,7 +15,13 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-/*
+
+#ifndef __itkThreadJob_h
+#define __itkThreadJob_h
+
+namespace itk
+{
+/**
  * This class is used to submit jobs to the thread pool.
  * The thread job maintains important information of the submitted job
  * such as Job Id, information to identify if the job has finished executing.
@@ -24,12 +30,6 @@
  * Also holds the args pointer - it is passed to the executing function by
  * the thread pool.
  */
-#ifndef __itkThreadJob_h__
-#define __itkThreadJob_h__
-
-namespace itk
-{
-
 class ThreadJob
 {
 public:
