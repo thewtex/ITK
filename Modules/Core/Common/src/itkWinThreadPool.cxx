@@ -16,11 +16,55 @@
 *
 *=========================================================================*/
 
-#include <stdlib.h>
 #include "itkThreadPool.h"
+#include "itkThreadSemaphorePair.h"
+
 
 namespace itk
 {
+
+
+
+ThreadPool::ThreadSemaphorePair::ThreadSemaphorePair(const ThreadProcessIDType & tph) :
+      ThreadProcessHandle(tph)
+    {
+
+    Semaphore = CreateSemaphore(
+          NULL,     // default security attributes
+          0,        // initial count
+          INFINITE, // maximum count
+          NULL);    // unnamed semaphore
+    }
+
+    int ThreadPool::ThreadSemaphorePair::SemaphoreWait()
+    {
+      dwWaitResult = WaitForSingleObject(
+          WorkAvailable,       // handle to semaphore
+          INFINITE);
+      switch( dwWaitResult )
+        {
+        // The thread got ownership of the mutex
+        case WAIT_OBJECT_0:
+          return 0; //success
+          break;
+        case WAIT_ABANDONED:
+          return -1;
+        case WAIT_FAILED:
+          return -1;
+        }
+    }
+
+    int ThreadPool::ThreadSemaphorePair::SemaphorePost()
+    {
+      int rc = ReleaseSemaphore(
+          WorkAvailable,   // handle to semaphore
+          1,               // increase count by one
+          NULL);
+
+      //we have to do this because in windows return value 0 means error
+      return (rc ==0 ) ? -1 : 0;
+    }
+
 
 void ThreadPool::AddThread()
 {
@@ -78,6 +122,11 @@ void ThreadPool::AddThread()
     itkDebugMacro(<< "Thread created with handle :" << m_ThreadHandles[m_ThreadCount - 1] << std::endl );
     }
 
+}
+
+bool ThreadPool::CompareThreadHandles(ThreadProcessIDType t1, ThreadProcessIDType t2)
+{
+  return (t1 == t2 ? true : false);
 }
 
 /*

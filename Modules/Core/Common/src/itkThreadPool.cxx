@@ -16,24 +16,10 @@
  *
  *=========================================================================*/
 
-/*
-
-Thread pool manages the threads for itk. Thread pool is called and initialized from
-within the MultiThreader. Initially the thread pool is started with zero threads.
-Threads are added as job(s) are submitted to the thread pool and if it cannot be
-executed right away. For example : If the thread pool has three threads and all are
-busy. If a new job is submitted to the thread pool, the thread pool checks to see if
-any threads are free. If not, it adds a new thread and executed the job right away.
-The ThreadJob class is used to submit jobs to the thread pool. The ThreadJob's
-necessary variables need to be set and then the ThreadJob can be passed to the
-ThreaadPool by calling its AssignWork Method which returns the thread id on which
-the job is being executed. One can then wait for the job using the thread id and
-calling the WaitForJob method on the thread pool.
-
-*/
 
 #include <stdlib.h>
 #include "itkThreadPool.h"
+
 #if defined(ITK_USE_PTHREADS)
 #include "itkPThreadPool.cxx"  //TODO:  cxx files should not be included, either
                                // change to hxx or have conditional compile
@@ -51,9 +37,10 @@ SimpleFastMutexLock ThreadPool::m_ThreadIDHandlePairingQueueMutex;
 SimpleFastMutexLock ThreadPool::m_WorkerQueueMutex;
 SimpleFastMutexLock ThreadPool::m_NumberOfPendingJobsToBeRunMutex;
 SimpleFastMutexLock ThreadPool::m_ThreadPoolInstanceMutex;
+int ThreadPool::ThreadSemaphorePair::m_SemCount = 0;
 
 bool         ThreadPool::m_ThreadPoolSingletonExists = false;
-ThreadPool * ThreadPool::m_ThreadPoolInstance = 0;
+ThreadPool* ThreadPool::m_ThreadPoolInstance = 0;
 
 ThreadPool * ThreadPool::GetThreadPool()
 {
@@ -108,7 +95,6 @@ void ThreadPool::InitializeThreads(unsigned int maximumThreads)
 
 ThreadPool::~ThreadPool()
 {
-  DestroyPool();
   itkDebugMacro(<< std::endl << "Thread pool being destroyed" << std::endl);
 }
 
@@ -123,14 +109,12 @@ ThreadPool::~ThreadPool()
   */
 bool ThreadPool::WaitForJobOnThreadHandle(ThreadProcessIDType threadHandle)
 {
-  bool found = false;
-
   try
     {
     itkDebugMacro(
       << "Waiting for thread with threadHandle " << threadHandle
       << std::endl );
-    //sem_wait(&(GetSemaphoreForThreadWait(threadHandle)->Semaphore));
+
     if(GetSemaphoreForThreadWait(threadHandle)->SemaphoreWait()!=0)
       {
       itkExceptionMacro(<<"Error in semaphore wait");
@@ -138,19 +122,16 @@ bool ThreadPool::WaitForJobOnThreadHandle(ThreadProcessIDType threadHandle)
 
       {
       MutexLockHolder<SimpleFastMutexLock> threadStructMutexHolder(m_ThreadIDHandlePairingQueueMutex);
-      //TODO:  User iterators rather than indexes here
-      //for( std::vector<int>::size_type i = 0; i !=
-      // m_ThreadIDHandlePairingQueue.size(); i++ )
-      for( ThreadStructsQueueType::const_iterator tpIter=m_ThreadIDHandlePairingQueue.begin(),
+
+      for( ThreadIDHandlePairingContainerType::const_iterator tpIter=m_ThreadIDHandlePairingQueue.begin(),
            tpEnd = m_ThreadIDHandlePairingQueue.end(); tpIter != tpEnd; ++tpIter)
         {
-        if( tpIter->ThreadProcessHandle == threadHandle )
+        if( CompareThreadHandles(tpIter->ThreadProcessHandle, threadHandle) )
           {
           // check if the thread is free (JOB_THREADHANDLE_IS_FREE) - this means
           // job is done
           if( tpIter->ThreadNumericId == JOB_THREADHANDLE_IS_FREE )
             {
-            found = true;
             itkDebugMacro(
               << "Wait ended for thread with threadHandle " << threadHandle
               << std::endl );
@@ -315,7 +296,7 @@ ThreadPool::ThreadSemaphorePair* ThreadPool::GetSemaphoreForThreadWait(ThreadPro
   ThreadSemaphorePair *                node = m_ThreadSemHandlePairingForWaitQueue;
   do
     {
-    if(node->ThreadProcessHandle == threadHandle)
+    if(CompareThreadHandles(node->ThreadProcessHandle, threadHandle))
       {
       return node;
       }
@@ -337,7 +318,7 @@ ThreadPool::ThreadSemaphorePair* ThreadPool::GetSemaphoreForThread(ThreadProcess
   ThreadSemaphorePair *                node = m_ThreadSemHandlePairingQueue;
   do
     {
-    if(node->ThreadProcessHandle == threadHandle)
+    if(CompareThreadHandles(node->ThreadProcessHandle, threadHandle))
       {
       break;
       }
@@ -354,18 +335,7 @@ ThreadPool::ThreadSemaphorePair* ThreadPool::GetSemaphoreForThread(ThreadProcess
     }
 }
 
-void ThreadPool::DeallocateThreadLinkedList(ThreadSemaphorePair *list)
-{
-  ThreadSemaphorePair *node = list;
-  ThreadSemaphorePair *next = list;
 
-  while(node!=NULL)
-    {
-    next = node->Next;
-    delete node;
-    node = next;
-    }
-}
 
 // TODO: Do we want to return a reference to the job in the work queue
 //      This is returning a copy of the ThreadJob from the Queue rather
@@ -385,13 +355,13 @@ ThreadJob ThreadPool::FetchWork(ThreadProcessIDType threadHandle)
     //TODO:  iterate through vector with iterators rather than index locations
     //for( std::vector<int>::size_type i = 0, threadStructSize =
     // m_ThreadIDHandlePairingQueue.size(); i != threadStructSize; ++i )
-    for( ThreadStructsQueueType::const_iterator tpIter=m_ThreadIDHandlePairingQueue.begin(),
+    for( ThreadIDHandlePairingContainerType::const_iterator tpIter=m_ThreadIDHandlePairingQueue.begin(),
          tpEnd = m_ThreadIDHandlePairingQueue.end(); tpIter != tpEnd; ++tpIter)
       {
       // > 0 because Job ids start from 1
       //Get const reference to m_ThreadIDHandlePairingQueue[i] to avoid constant
       // dereferening from vector
-      if( ( tpIter->ThreadProcessHandle == threadHandle ) && ( tpIter->ThreadNumericId > 0 ) )
+      if( ( CompareThreadHandles(tpIter->ThreadProcessHandle , threadHandle )) && ( tpIter->ThreadNumericId > 0 ) )
         {
         workFound = true;
         workId = tpIter->ThreadNumericId;
