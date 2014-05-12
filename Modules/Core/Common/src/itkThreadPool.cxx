@@ -16,21 +16,6 @@
  *
  *=========================================================================*/
 
-/*
-
-Thread pool manages the threads for itk. Thread pool is called and initialized from
-within the MultiThreader. Initially the thread pool is started with zero threads.
-Threads are added as job(s) are submitted to the thread pool and if it cannot be
-executed right away. For example : If the thread pool has three threads and all are
-busy. If a new job is submitted to the thread pool, the thread pool checks to see if
-any threads are free. If not, it adds a new thread and executed the job right away.
-The ThreadJob class is used to submit jobs to the thread pool. The ThreadJob's
-necessary variables need to be set and then the ThreadJob can be passed to the
-ThreaadPool by calling its AssignWork Method which returns the thread id on which
-the job is being executed. One can then wait for the job using the thread id and
-calling the WaitForJob method on the thread pool.
-
-*/
 
 #include <stdlib.h>
 #include "itkThreadPool.h"
@@ -51,9 +36,10 @@ SimpleFastMutexLock ThreadPool::m_ThreadIDHandlePairingQueueMutex;
 SimpleFastMutexLock ThreadPool::m_WorkerQueueMutex;
 SimpleFastMutexLock ThreadPool::m_NumberOfPendingJobsToBeRunMutex;
 SimpleFastMutexLock ThreadPool::m_ThreadPoolInstanceMutex;
+int ThreadPool::ThreadSemaphorePair::m_SemCount = 0;
 
 bool         ThreadPool::m_ThreadPoolSingletonExists = false;
-ThreadPool * ThreadPool::m_ThreadPoolInstance = 0;
+ThreadPool* ThreadPool::m_ThreadPoolInstance = 0;
 
 ThreadPool * ThreadPool::GetThreadPool()
 {
@@ -141,7 +127,7 @@ bool ThreadPool::WaitForJobOnThreadHandle(ThreadProcessIDType threadHandle)
       //TODO:  User iterators rather than indexes here
       //for( std::vector<int>::size_type i = 0; i !=
       // m_ThreadIDHandlePairingQueue.size(); i++ )
-      for( ThreadStructsQueueType::const_iterator tpIter=m_ThreadIDHandlePairingQueue.begin(),
+      for( ThreadIDHandlePairingContainerType::const_iterator tpIter=m_ThreadIDHandlePairingQueue.begin(),
            tpEnd = m_ThreadIDHandlePairingQueue.end(); tpIter != tpEnd; ++tpIter)
         {
         if( tpIter->ThreadProcessHandle == threadHandle )
@@ -385,7 +371,7 @@ ThreadJob ThreadPool::FetchWork(ThreadProcessIDType threadHandle)
     //TODO:  iterate through vector with iterators rather than index locations
     //for( std::vector<int>::size_type i = 0, threadStructSize =
     // m_ThreadIDHandlePairingQueue.size(); i != threadStructSize; ++i )
-    for( ThreadStructsQueueType::const_iterator tpIter=m_ThreadIDHandlePairingQueue.begin(),
+    for( ThreadIDHandlePairingContainerType::const_iterator tpIter=m_ThreadIDHandlePairingQueue.begin(),
          tpEnd = m_ThreadIDHandlePairingQueue.end(); tpIter != tpEnd; ++tpIter)
       {
       // > 0 because Job ids start from 1
