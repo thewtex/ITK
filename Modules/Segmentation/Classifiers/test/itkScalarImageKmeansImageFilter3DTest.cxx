@@ -268,8 +268,8 @@ int itkScalarImageKmeansImageFilter3DTest (int argc, char *argv[])
   kmeansLabelImage->SetSpacing( maskReader->GetOutput()->GetSpacing() );
   kmeansLabelImage->SetDirection( maskReader->GetOutput()->GetDirection() );
   kmeansLabelImage->SetOrigin( maskReader->GetOutput()->GetOrigin() );
-  kmeansLabelImage->Allocate( );
-  kmeansLabelImage->FillBuffer( 0 );
+  kmeansLabelImage->Allocate(true);
+  //REMOVE: HACK kmeansLabelImage->FillBuffer( 0 );
 
   typedef itk::LabelStatisticsImageFilter< LabelImageType, LabelImageType > LabelMapStatisticsFilterType;
   LabelMapStatisticsFilterType::Pointer statisticsNonBrainFilter = LabelMapStatisticsFilterType::New();

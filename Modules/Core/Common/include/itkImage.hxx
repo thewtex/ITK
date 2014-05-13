@@ -48,14 +48,14 @@ Image< TPixel, VImageDimension >
 template< typename TPixel, unsigned int VImageDimension >
 void
 Image< TPixel, VImageDimension >
-::Allocate()
+::Allocate(const bool UseDefaultConstructor)
 {
   SizeValueType num;
 
   this->ComputeOffsetTable();
   num = static_cast<SizeValueType>(this->GetOffsetTable()[VImageDimension]);
 
-  m_Buffer->Reserve(num);
+  m_Buffer->Reserve(num, UseDefaultConstructor);
 }
 
 template< typename TPixel, unsigned int VImageDimension >

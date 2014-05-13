@@ -169,7 +169,8 @@ public:
 
   /** Allocate the image memory. The size of the image must
    * already be set, e.g. by calling SetRegions(). */
-  void Allocate();
+  virtual void Allocate() ITK_OVERRIDE { this->Allocate(false); }
+  virtual void Allocate(const bool UseDefaultConstructor);
 
   /** Restore the data object to its initial state. This means releasing
    * memory. */

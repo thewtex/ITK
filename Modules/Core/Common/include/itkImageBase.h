@@ -232,6 +232,10 @@ public:
    *
    * This method should be pure virtual, if backwards compatibility
    * was not required.
+   *
+   * Allocates elements of the image.  If UseDefaultConstructor is true, then
+   * the default constructor is used to initialize each element.  POD date types
+   * initialize to zero.
    */
   virtual void Allocate() {}
 

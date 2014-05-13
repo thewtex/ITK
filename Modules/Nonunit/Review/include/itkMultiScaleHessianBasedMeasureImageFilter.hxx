@@ -158,8 +158,7 @@ MultiScaleHessianBasedMeasureImageFilter
       dynamic_cast< ScalesImageType * >( this->ProcessObject::GetOutput(1) );
 
     scalesImage->SetBufferedRegion( scalesImage->GetRequestedRegion() );
-    scalesImage->Allocate();
-    scalesImage->FillBuffer(0);
+    scalesImage->Allocate(true); // 'true' initializes buffer to zero
     }
 
   if ( m_GenerateHessianOutput )

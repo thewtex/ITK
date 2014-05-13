@@ -81,8 +81,7 @@ int itkShapedFloodFilledImageFunctionConditionalConstIteratorTest1(int argc, cha
 
     ImageType::Pointer visitedImage = ImageType::New();
     visitedImage->SetRegions(region);
-    visitedImage->Allocate();
-    visitedImage->FillBuffer(0);
+    visitedImage->Allocate(true); // 'true' initializes buffer to zero
 
     for (; !shapedFloodIt.IsAtEnd(); ++shapedFloodIt)
       {
