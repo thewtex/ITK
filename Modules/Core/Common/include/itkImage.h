@@ -169,7 +169,13 @@ public:
 
   /** Allocate the image memory. The size of the image must
    * already be set, e.g. by calling SetRegions(). */
-  void Allocate();
+  virtual void Allocate() ITK_OVERRIDE;
+
+  /** Allocate the image memory and initialize pixes with default
+   * initializer for the Image pixel type.  The size of the image must
+   * already be set, e.g. by calling SetRegions().
+   */
+  virtual void AllocateWithDefaultPixelInitializer();
 
   /** Restore the data object to its initial state. This means releasing
    * memory. */

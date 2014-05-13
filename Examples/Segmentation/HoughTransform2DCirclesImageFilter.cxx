@@ -198,8 +198,7 @@ int main( int argc, char *argv[] )
   localOutputImage->SetRegions( region );
   localOutputImage->SetOrigin(localImage->GetOrigin());
   localOutputImage->SetSpacing(localImage->GetSpacing());
-  localOutputImage->Allocate();
-  localOutputImage->FillBuffer(0);
+  localOutputImage->AllocateWithDefaultPixelInitializer(); // initializes buffer to zero
   // Software Guide : EndCodeSnippet
 
 
