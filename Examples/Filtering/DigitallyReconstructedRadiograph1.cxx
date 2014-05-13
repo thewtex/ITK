@@ -336,8 +336,7 @@ int main( int argc, char *argv[] )
     region.SetIndex( start );
 
     image->SetRegions( region );
-    image->Allocate();
-    image->FillBuffer(0);
+    image->AllocateWithDefaultPixelInitializer(); // initialize to zero.
 
     image->Update();
 

@@ -232,6 +232,7 @@ public:
    *
    * This method should be pure virtual, if backwards compatibility
    * was not required.
+   *
    */
   virtual void Allocate() {}
 

@@ -135,13 +135,14 @@ int TestMattesMetricWithAffineTransform(
   typename MovingImageType::Pointer imgMovingMask = MovingImageType::New();
   imgMovingMask->CopyInformation(imgMoving);
   imgMovingMask->SetRegions(region);
-  imgMovingMask->Allocate();
-  imgMovingMask->FillBuffer(0);
+  imgMovingMask->AllocateWithDefaultPixelInitializer(); // initialize
+                                                        // buffer to zero
+
   typename FixedImageType::Pointer imgFixedMask   = FixedImageType::New();
   imgFixedMask->CopyInformation(imgFixed);
   imgFixedMask->SetRegions(region);
-  imgFixedMask->Allocate();
-  imgFixedMask->FillBuffer(0);
+  imgFixedMask->AllocateWithDefaultPixelInitializer(); // initialize
+                                                       // buffer to zero
 
   int NumberFixedImageMaskVoxels=0;
     {//Set up a mask that only has every 10th voxel listed is used in fixed image region

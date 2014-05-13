@@ -48,6 +48,19 @@ Image< TPixel, VImageDimension >
 template< typename TPixel, unsigned int VImageDimension >
 void
 Image< TPixel, VImageDimension >
+::AllocateWithDefaultPixelInitializer()
+{
+  SizeValueType num;
+
+  this->ComputeOffsetTable();
+  num = static_cast<SizeValueType>(this->GetOffsetTable()[VImageDimension]);
+
+  m_Buffer->Reserve(num, true);
+}
+
+template< typename TPixel, unsigned int VImageDimension >
+void
+Image< TPixel, VImageDimension >
 ::Allocate()
 {
   SizeValueType num;
@@ -55,7 +68,7 @@ Image< TPixel, VImageDimension >
   this->ComputeOffsetTable();
   num = static_cast<SizeValueType>(this->GetOffsetTable()[VImageDimension]);
 
-  m_Buffer->Reserve(num);
+  m_Buffer->Reserve(num, false);
 }
 
 template< typename TPixel, unsigned int VImageDimension >
