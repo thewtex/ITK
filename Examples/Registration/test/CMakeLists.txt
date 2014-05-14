@@ -59,34 +59,23 @@ itk_add_test(NAME ImageRegistration4Test COMMAND ${ITK_TEST_DRIVER}
         ${TEMP}/ImageRegistration4Test.png 0
         ${TEMP}/ImageRegistration4BeforeTest.png
         ${TEMP}/ImageRegistration4AfterTest.png
-        24 10000 1
+        24
 )
 
 itk_add_test(NAME ImageRegistration4Test2 COMMAND ${ITK_TEST_DRIVER}
-  --compare DATA{${BASELINE}/ImageRegistration4Test.png}
-            ${TEMP}/ImageRegistration4Test2.png
   $<TARGET_FILE:ImageRegistration4>
-        ${ITK_SOURCE_DIR}/Examples/Data/BrainT1SliceBorder20.png
-        ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceShifted13x17y.png
+        ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20Mask.png
+        ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20Mask.png
         ${TEMP}/ImageRegistration4Test2.png 0
-        ${TEMP}/ImageRegistration4BeforeTest.png
-        ${TEMP}/ImageRegistration4AfterTest.png
-        24 10000 0
-)
-
-itk_add_test(NAME ImageRegistration4Test3 COMMAND ${ITK_TEST_DRIVER}
-  $<TARGET_FILE:ImageRegistration4>
-        ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20Mask.png
-        ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20Mask.png
-        ${TEMP}/ImageRegistration4Test3.png 0
-        ${TEMP}/ImageRegistration4BeforeTest3.png
-        ${TEMP}/ImageRegistration4AfterTest3.png
-        5 10000 0
+        ${TEMP}/ImageRegistration4BeforeTest2.png
+        ${TEMP}/ImageRegistration4AfterTest2.png
+        5
 )
 
 itk_add_test(NAME ImageRegistration5Test1 COMMAND ${ITK_TEST_DRIVER}
   --compare DATA{${BASELINE}/ImageRegistration5Test1PixelCentered.png}
             ${TEMP}/ImageRegistration5Test1PixelCentered.png
+            --compareNumberOfPixelsTolerance 115
   $<TARGET_FILE:ImageRegistration5>
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceRotated10.png
@@ -100,11 +89,15 @@ itk_add_test(NAME ImageRegistration5Test2 COMMAND ${ITK_TEST_DRIVER}
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceR10X13Y17.png
         ${TEMP}/ImageRegistration5Test2PixelCentered.png
+        ${TEMP}/ImageRegistration5Test2DifferenceAfter.png
+        ${TEMP}/ImageRegistration5Test2DifferenceBefore.png
+        1.3
 )
 
 itk_add_test(NAME ImageRegistration6Test COMMAND ${ITK_TEST_DRIVER}
   --compare DATA{${BASELINE}/ImageRegistration6TestPixelCentered.png}
             ${TEMP}/ImageRegistration6TestPixelCentered.png
+            --compareNumberOfPixelsTolerance 100
   $<TARGET_FILE:ImageRegistration6>
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceR10X13Y17.png
@@ -114,6 +107,7 @@ itk_add_test(NAME ImageRegistration6Test COMMAND ${ITK_TEST_DRIVER}
 itk_add_test(NAME ImageRegistration7Test COMMAND ${ITK_TEST_DRIVER}
   --compare DATA{${BASELINE}/ImageRegistration7TestPixelCentered.png}
             ${TEMP}/ImageRegistration7TestPixelCentered.png
+            --compareNumberOfPixelsTolerance 100
   $<TARGET_FILE:ImageRegistration7>
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceR10X13Y17S12.png
@@ -169,6 +163,7 @@ endif()
 itk_add_test(NAME ImageRegistration9Test COMMAND ${ITK_TEST_DRIVER}
   --compare DATA{${BASELINE}/ImageRegistration9TestPixelCentered.png}
             ${TEMP}/ImageRegistration9TestPixelCentered.png
+            --compareNumberOfPixelsTolerance 50
   $<TARGET_FILE:ImageRegistration9>
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceBorder20.png
         ${ITK_SOURCE_DIR}/Examples/Data/BrainProtonDensitySliceR10X13Y17.png
