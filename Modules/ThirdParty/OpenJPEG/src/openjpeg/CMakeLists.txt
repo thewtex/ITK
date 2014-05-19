@@ -64,6 +64,18 @@ CONFIGURE_FILE(${ITK3P_OpenJPEG_SOURCE_DIR}/openjpegDllConfig.h.in
 CONFIGURE_FILE(${ITK3P_OpenJPEG_SOURCE_DIR}/opj_configure.h.in
                ${ITK3P_OpenJPEG_BINARY_DIR}/opj_configure.h)
 
+#-----------------------------------------------------------------------------
+# configure name mangling to allow multiple libraries to coexist
+# peacefully
+if(EXISTS ${ITK3P_OpenJPEG_SOURCE_DIR}/openjpeg_mangle.h.in)
+set(MANGLE_PREFIX itk)
+configure_file(${ITK3P_OpenJPEG_SOURCE_DIR}/openjpeg_mangle.h.in
+               ${ITK3P_OpenJPEG_BINARY_DIR}/openjpeg_mangle.h
+               @ONLY)
+else()
+file(WRITE ${ITK3P_OpenJPEG_BINARY_DIR}/openjpeg_mangle.h "/* No mangling used */\n")
+endif()
+
 INCLUDE_DIRECTORIES("${ITK3P_OpenJPEG_BINARY_DIR}")
 
 # Create the library
@@ -92,7 +104,8 @@ if(NOT ITK_INSTALL_NO_DEVELOPMENT)
   install(FILES
     ${ITK3P_OpenJPEG_BINARY_DIR}/openjpegDllConfig.h
     ${ITK3P_OpenJPEG_SOURCE_DIR}/openjpeg.h
-    DESTINATION ${ITK3P_INSTALL_INCLUDE_DIR} # TODO: itk_openjpeg.h #include "itkopenjpeg/openjpeg.h"
+    ${ITK3P_OpenJPEG_BINARY_DIR}/openjpeg_mangle.h
+    DESTINATION ${ITK3P_INSTALL_INCLUDE_DIR}/itkopenjpeg # TODO: itk_openjpeg.h #include "itkopenjpeg/openjpeg.h"
     COMPONENT Development
   )
 endif(NOT ITK_INSTALL_NO_DEVELOPMENT)
