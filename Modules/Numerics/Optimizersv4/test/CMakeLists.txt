@@ -24,6 +24,7 @@ set(ITKOptimizersv4Tests
   itkRegularStepGradientDescentOptimizerv4Test.cxx
   itkAmoebaOptimizerv4Test.cxx
   itkExhaustiveOptimizerv4Test.cxx
+  itkOnePlusOneEvolutionaryOptimizerv4Test.cxx
  )
 
 set(INPUTDATA ${ITK_DATA_ROOT}/Input)
@@ -130,6 +131,10 @@ itk_add_test(NAME itkAmoebaOptimizerv4Test
 itk_add_test(NAME itkExhaustiveOptimizerv4Test
   COMMAND ITKOptimizersv4TestDriver
   itkExhaustiveOptimizerv4Test)
+
+itk_add_test(NAME itkOnePlusOneEvolutionaryOptimizerv4Test
+  COMMAND ITKOptimizersv4TestDriver
+  itkOnePlusOneEvolutionaryOptimizerv4Test)
 
 itk_add_test(NAME itkRegularStepGradientDescentOptimizerv4Test
   COMMAND ITKOptimizersv4TestDriver
