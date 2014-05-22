@@ -12,7 +12,15 @@ add_subdirectory(DataRepresentation)
 add_subdirectory(Filtering)
 add_subdirectory(IO)
 add_subdirectory(Numerics)
-add_subdirectory(Registration)
 add_subdirectory(Segmentation)
 add_subdirectory(SpatialObjects)
 add_subdirectory(Statistics)
+
+add_subdirectory(RegistrationITKv4)
+## The RegistrationITKv3 is available to
+## ensure that code coverage is maintained
+## high in the case of ITKV3_COMPATIBLITY
+## being enabled
+if(ITKV3_COMPATIBILITY)
+  add_subdirectory(RegistrationITKv3)
+endif()
