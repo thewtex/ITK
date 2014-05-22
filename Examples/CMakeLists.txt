@@ -16,3 +16,11 @@ add_subdirectory(Registration)
 add_subdirectory(Segmentation)
 add_subdirectory(SpatialObjects)
 add_subdirectory(Statistics)
+
+## The RegistrationITKv3 is available to
+## ensure that code coverage is maintained
+## high in the case of ITKV3_COMPATIBLITY
+## being enabled
+if(ITKV3_COMPATIBILITY)
+  add_subdirectory(RegistrationITKv3)
+endif()
