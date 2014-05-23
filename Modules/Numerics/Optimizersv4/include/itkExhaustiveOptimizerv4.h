@@ -128,6 +128,7 @@ public:
   itkGetConstReferenceMacro(MinimumMetricValuePosition, ParametersType);
   itkGetConstReferenceMacro(MaximumMetricValuePosition, ParametersType);
   itkGetConstReferenceMacro(CurrentIndex, ParametersType);
+  itkGetConstReferenceMacro(CurrentIteration, SizeValueType);
   itkGetConstReferenceMacro(MaximumNumberOfIterations, SizeValueType);
 
   /** Get the reason for termination */
