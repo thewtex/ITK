@@ -110,4 +110,6 @@ private:
 #include "itkDataObjectDecorator.hxx"
 #endif
 
+#include "itkDataObjectDecoratorTraits.h"
+
 #endif
