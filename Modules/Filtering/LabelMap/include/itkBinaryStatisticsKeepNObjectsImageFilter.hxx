@@ -32,6 +32,7 @@ BinaryStatisticsKeepNObjectsImageFilter< TInputImage, TFeatureImage >
   m_FullyConnected = false;
   m_ReverseOrdering = false;
   m_Attribute = LabelObjectType::MEAN;
+  m_NumberOfObjects = 0;
   this->SetNumberOfRequiredInputs(2);
 }
 
