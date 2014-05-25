@@ -41,6 +41,7 @@ SimplexMeshAdaptTopologyFilter< TInputMesh, TOutputMesh >::SimplexMeshAdaptTopol
   m_ModifiedCount = 0;
   m_SelectionMethod = 0;
   m_Threshold = 0.5;
+  m_IdOffset = 0;
 }
 
 template< typename TInputMesh, typename TOutputMesh >

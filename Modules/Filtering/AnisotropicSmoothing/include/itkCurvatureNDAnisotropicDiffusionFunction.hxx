@@ -71,6 +71,8 @@ CurvatureNDAnisotropicDiffusionFunction< TImage >
 
   dx_op.SetOrder(1);
   dx_op.CreateDirectional();
+
+  m_K = 0.0;
 }
 
 template< typename TImage >

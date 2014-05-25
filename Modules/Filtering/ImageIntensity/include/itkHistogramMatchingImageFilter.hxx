@@ -52,6 +52,17 @@ HistogramMatchingImageFilter< TInputImage, TOutputImage, THistogramMeasurement >
   m_SourceHistogram = HistogramType::New();
   m_ReferenceHistogram = HistogramType::New();
   m_OutputHistogram = HistogramType::New();
+
+  m_OutputIntensityThreshold = 0.0;
+  m_SourceMinValue = 0.0;
+  m_SourceMaxValue = 0.0;
+  m_SourceMeanValue = 0.0;
+  m_ReferenceMinValue = 0.0;
+  m_ReferenceMaxValue = 0.0;
+  m_ReferenceMeanValue = 0.0;
+  m_OutputMinValue = 0.0;
+  m_OutputMaxValue = 0.0;
+  m_OutputMeanValue = 0.0;
 }
 
 /*

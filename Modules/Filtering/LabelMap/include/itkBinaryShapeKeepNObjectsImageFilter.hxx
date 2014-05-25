@@ -32,6 +32,7 @@ BinaryShapeKeepNObjectsImageFilter< TInputImage >
   m_FullyConnected = false;
   m_ReverseOrdering = false;
   m_Attribute = LabelObjectType::NUMBER_OF_PIXELS;
+  m_NumberOfObjects = 0;
 }
 
 template< typename TInputImage >
