@@ -801,8 +801,10 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform, TVirtualImage>
     {
     case 0:
       {
+      OutputTransformPointer ptr;
+      Self::MakeOutputTransform(ptr);
       DecoratedOutputTransformPointer transformDecorator =  DecoratedOutputTransformType::New();
-      transformDecorator->Set( OutputTransformType::New() );
+      transformDecorator->Set( ptr );
       return transformDecorator.GetPointer();
       }
     default:
