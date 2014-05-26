@@ -78,6 +78,23 @@ DataObjectDecorator< T >
  *
  */
 template< typename T >
+ModifiedTimeType
+DataObjectDecorator< T >
+::GetMTime() const
+{
+  const ModifiedTimeType t = Superclass::GetMTime();
+  if (m_Component.IsNotNull())
+    {
+    return std::max(t, m_Component->GetMTime());
+    }
+  return t;
+}
+
+
+/**
+ *
+ */
+template< typename T >
 void
 DataObjectDecorator< T >
 ::PrintSelf(std::ostream & os, Indent indent) const

@@ -88,6 +88,9 @@ public:
   /** Get the contained object */
   virtual const T * Get() const;
 
+  /** The most recent MTime of this object and the held component */
+  virtual ModifiedTimeType GetMTime() const;
+
 protected:
   DataObjectDecorator();
   ~DataObjectDecorator();

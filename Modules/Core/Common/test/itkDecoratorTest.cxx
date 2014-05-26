@@ -21,6 +21,7 @@
 #include "itkSimpleDataObjectDecorator.h"
 #include "itkDataObjectDecorator.h"
 #include "itkAutoPointerDataObjectDecorator.h"
+#include "itkTestingMacros.h"
 
 namespace {
 template <typename CharType, typename TraitsType, typename MemberType, typename AllocatorType>
@@ -60,6 +61,14 @@ int itkDecoratorTest(int, char* [] )
   transformObject->Scale( 5.0 );
 
   decoratedTransform->Set( constTransformObject );
+
+  const itk::ModifiedTimeType t1 = decoratedTransform->GetMTime();
+
+  transformObject->Modified();
+
+  // ensure if the itk object is modified it's propagated to the
+  // decorator.
+  TEST_EXPECT_TRUE(t1 < decoratedTransform->GetMTime());
 
   std::cout << "Value of decoratedTransform: ";
   decoratedTransform->Get()->Print(std::cout);
