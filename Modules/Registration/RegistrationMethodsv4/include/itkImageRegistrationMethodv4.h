@@ -85,7 +85,10 @@ namespace itk
  *
  * \ingroup ITKRegistrationMethodsv4
  */
-template<typename TFixedImage, typename TMovingImage, typename TOutputTransform, typename TVirtualImage = TFixedImage>
+template<typename TFixedImage,
+         typename TMovingImage,
+         typename TOutputTransform=Transform<double, TFixedImage::ImageDimension,  TFixedImage::ImageDimension >,
+         typename TVirtualImage = TFixedImage>
 class ImageRegistrationMethodv4
 :public ProcessObject
 {
