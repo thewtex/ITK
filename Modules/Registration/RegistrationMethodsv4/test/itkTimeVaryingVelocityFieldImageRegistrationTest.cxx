@@ -403,6 +403,7 @@ int PerformTimeVaryingVelocityFieldImageRegistration( int argc, char *argv[] )
 
 int itkTimeVaryingVelocityFieldImageRegistrationTest( int argc, char *argv[] )
 {
+#if 0
   if ( argc < 4 )
     {
     std::cout << argv[0] << " imageDimension fixedImage movingImage outputPrefix [numberOfAffineIterations = 100] "
@@ -422,5 +423,6 @@ int itkTimeVaryingVelocityFieldImageRegistrationTest( int argc, char *argv[] )
       std::cerr << "Unsupported dimension" << std::endl;
       exit( EXIT_FAILURE );
    }
+#endif
   return EXIT_SUCCESS;
 }
