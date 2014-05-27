@@ -32,7 +32,6 @@ AmoebaOptimizerv4
   this->m_AutomaticInitialSimplex        = true;
   this->m_InitialSimplexDelta.Fill( NumericTraits< ParametersType::ValueType >::One );
   this->m_OptimizeWithRestarts = false;
-  this->m_CurrentIteration = 0;
   this->m_VnlOptimizer = ITK_NULLPTR;
 }
 
@@ -67,8 +66,6 @@ AmoebaOptimizerv4
      << ( this->m_AutomaticInitialSimplex ? "On" : "Off" ) << std::endl;
   os << indent << "InitialSimplexDelta: "
      << this->m_InitialSimplexDelta << std::endl;
-  os << indent << "CurrentIteration: "
-     << this->m_CurrentIteration << std::endl;
 }
 
 
