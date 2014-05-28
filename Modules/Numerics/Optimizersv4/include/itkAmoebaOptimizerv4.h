@@ -48,7 +48,7 @@ namespace itk
  * the best solution obtained by the previous runs. The edge length is half of
  * that from the previous iteration. The heuristic is terminated if the total
  * number of iterations is greater-equal than the maximal number of iterations
- * (SetMaximumNumberOfIterations) or the difference between the current function
+ * (SetNumberOfIterations) or the difference between the current function
  * value and the best function value is less than a threshold
  * (SetFunctionConvergenceTolerance) and
  * max(|best_parameters_i - current_parameters_i|) is less than a threshold
@@ -67,7 +67,6 @@ public:
   typedef SingleValuedNonLinearVnlOptimizerv4 Superclass;
   typedef SmartPointer< Self >                Pointer;
   typedef SmartPointer< const Self >          ConstPointer;
-  typedef unsigned int                        NumberOfIterationsType;
 
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
@@ -87,12 +86,6 @@ public:
 
   /** Plug in a Cost Function into the optimizer  */
   virtual void SetMetric(MetricType *metric) ITK_OVERRIDE;
-
-  /** Set/Get the maximum number of iterations. The optimization algorithm will
-   * terminate after the maximum number of iterations has been reached.
-   * The default value is defined as DEFAULT_MAXIMAL_NUMBER_OF_ITERATIONS. */
-  itkSetMacro( MaximumNumberOfIterations, NumberOfIterationsType );
-  itkGetConstMacro( MaximumNumberOfIterations, NumberOfIterationsType );
 
   /** Set/Get the mode which determines how the amoeba algorithm
    * defines the initial simplex.  Default is
@@ -157,7 +150,6 @@ private:
   //purposely not implemented
   void operator=(const Self &);
 
-  NumberOfIterationsType          m_MaximumNumberOfIterations;
   ParametersType::ValueType       m_ParametersConvergenceTolerance;
   MeasureType                     m_FunctionConvergenceTolerance;
   bool                            m_AutomaticInitialSimplex;

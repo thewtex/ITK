@@ -128,7 +128,6 @@ public:
   itkGetConstReferenceMacro(MinimumMetricValuePosition, ParametersType);
   itkGetConstReferenceMacro(MaximumMetricValuePosition, ParametersType);
   itkGetConstReferenceMacro(CurrentIndex, ParametersType);
-  itkGetConstReferenceMacro(MaximumNumberOfIterations, SizeValueType);
 
   /** Get the reason for termination */
   virtual const std::string GetStopConditionDescription() const ITK_OVERRIDE;
@@ -160,7 +159,6 @@ protected:
   unsigned int    m_CurrentParameter;
   double          m_StepLength;
   ParametersType  m_CurrentIndex;
-  SizeValueType   m_MaximumNumberOfIterations;
   MeasureType     m_MaximumMetricValue;
   MeasureType     m_MinimumMetricValue;
   ParametersType  m_MinimumMetricValuePosition;
