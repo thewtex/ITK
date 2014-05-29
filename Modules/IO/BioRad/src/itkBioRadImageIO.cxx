@@ -500,8 +500,9 @@ void BioRadImageIO::Write(const void *buffer)
   // or simply
   // 4. FileName
   std::string filename = itksys::SystemTools::GetFilenameName(m_FileName);
-  // The buffer is at most 32 bytes:
-  strncpy( header.filename, filename.c_str(), sizeof( header.filename ) );
+  // The buffer is at most 32 bytes, but nust be null-terminated.
+  // Here we copy at most 31 bytes to guarantee the null termination
+  strncpy( header.filename, filename.c_str(), sizeof( header.filename ) - 1);
   file.write( (char *)p, BIORAD_HEADER_LENGTH );
 
   //preparation for writing buffer:
