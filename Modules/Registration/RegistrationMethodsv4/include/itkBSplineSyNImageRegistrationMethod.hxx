@@ -115,6 +115,9 @@ BSplineSyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
       }
     }
 
+  InitialTransformType* fixedInitialTransform = const_cast<InitialTransformType*>(this->GetFixedInitialTransform());
+  // todo: what if null
+
   // Monitor the convergence
   typedef itk::Function::WindowConvergenceMonitoringFunction<RealType> ConvergenceMonitoringType;
   typename ConvergenceMonitoringType::Pointer convergenceMonitoring = ConvergenceMonitoringType::New();
@@ -129,7 +132,7 @@ BSplineSyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform>
   while( this->m_CurrentIteration++ < this->m_NumberOfIterationsPerLevel[this->m_CurrentLevel] && !this->m_IsConverged )
     {
     typename CompositeTransformType::Pointer fixedComposite = CompositeTransformType::New();
-    fixedComposite->AddTransform( this->m_FixedInitialTransform );
+    fixedComposite->AddTransform( fixedInitialTransform );
     fixedComposite->AddTransform( this->m_FixedToMiddleTransform->GetInverseTransform() );
     fixedComposite->FlattenTransformQueue();
     fixedComposite->SetOnlyMostRecentTransformToOptimizeOn();
