@@ -104,8 +104,9 @@ public:
       {
       return;
       }
-    std::cout << "Metric Value:   ";
-    std::cout << optimizer->GetCurrentMetricValue() << std::endl;
+    std::cout << optimizer->GetCurrentIteration() << "   ";
+    std::cout << optimizer->GetCurrentMetricValue() << "   ";
+    std::cout << optimizer->GetInfinityNormOfProjectedGradient() << std::endl;
     }
 };
 
@@ -190,7 +191,6 @@ int main( int argc, char *argv[] )
     }
 
   // Software Guide : BeginCodeSnippet
-
   TransformType::PhysicalDimensionsType   fixedPhysicalDimensions;
   TransformType::MeshSizeType             meshSize;
   TransformType::OriginType               fixedOrigin;
@@ -217,7 +217,6 @@ int main( int argc, char *argv[] )
   parameters.Fill( 0.0 );
 
   transform->SetParameters( parameters );
-  std::cout << "Initial parameters: " << parameters << std::endl;
   //  Software Guide : EndCodeSnippet
 
   typedef itk::MattesMutualInformationImageToImageMetricv4<
@@ -317,10 +316,6 @@ int main( int argc, char *argv[] )
 
   // While the registration filter is run, it updates the output transform parameters with the final registration parameters
   OptimizerType::ParametersType finalParameters = transform->GetParameters();
-
-  std::cout << "Last Transform Parameters" << std::endl;
-  std::cout << finalParameters << std::endl;
-
 
   // Report the time and memory taken by the registration
   chronometer.Report( std::cout );
