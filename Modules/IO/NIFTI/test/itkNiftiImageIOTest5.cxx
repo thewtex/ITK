@@ -32,7 +32,14 @@ SlopeInterceptTest()
   strcpy(niftiImage->fname,filename);
   niftiImage->nifti_type = 1;
   niftiImage->iname = (char *)malloc(strlen(filename)+1);
-  strcpy(niftiImage->iname,filename);
+  if (niftiImage->iname)
+    {
+    strcpy(niftiImage->iname,filename);
+    }
+  else
+    {
+    niftiImage->iname[0] = '\0';
+    }
   niftiImage->dim[0] =
   niftiImage->ndim = 3;
   niftiImage->nx = niftiImage->dim[1] = 8;
