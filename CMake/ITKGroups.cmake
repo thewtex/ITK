@@ -11,7 +11,6 @@ set(group_list
   Bridge
   Nonunit
   Compatibility
-  Remote
   )
 
 set(Core_documentation "This group of modules contain the toolkit framework used
