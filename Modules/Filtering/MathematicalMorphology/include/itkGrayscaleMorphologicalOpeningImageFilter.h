@@ -115,7 +115,7 @@ public:
   virtual void Modified() const;
 
   /** define values used to determine which algorithm to use */
-  enum {
+  typedef enum {
     BASIC = 0,
     HISTO = 1,
     ANCHOR = 2,

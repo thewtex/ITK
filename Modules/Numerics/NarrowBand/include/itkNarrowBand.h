@@ -37,7 +37,9 @@ public:
   TDataType   m_Data;
   TIndexType  m_Index;
   signed char m_NodeState;
-  BandNode() : m_NodeState( 0 ) {}
+  BandNode() :
+    m_Data(0), m_NodeState(0)
+  {}
 };
 
 /** \class NarrowBand
