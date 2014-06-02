@@ -1976,9 +1976,6 @@ PREDEFINED             = "itkNotUsed(x)=" \
                          "itkSetEnumMacro(name,type)=                   virtual void Set##name (const type _arg);" \
                          "itkGetEnumMacro(name,type)=                   virtual type Get##name () const;" \
                          "itkGetConstReferenceObjectMacro(name,type)=                   virtual const type::Pointer& Get##name () const;" \
-                         "itkSetDecoratedInputMacro(name, type, number)=                   virtual void Set##name##Input(const SimpleDataObjectDecorator<type> *_arg);                   virtual void SetInput##number(const SimpleDataObjectDecorator<type> *_arg);                   virtual const SimpleDataObjectDecorator<type> * Get##name##Input() const;                   virtual const SimpleDataObjectDecorator<type> * GetInput##number() const;                   virtual void Set##name(const type &_arg);" \
-                         "itkSetGetDecoratedInputMacro(name, type, number)=                   virtual void Set##name##Input(const SimpleDataObjectDecorator< type > *_arg);         virtual void Set##name(const type &_arg);          virtual const SimpleDataObjectDecorator< type > * Get##name##Input() const;              virtual const type & Get##name() const;          " \
-                         "itkSetDecoratedObjectInputMacro(name, type, number)=                   virtual void Set##name##Input(const DataObjectDecorator<type> *_arg);                   virtual void SetInput##number(const DataObjectDecorator<type> *_arg);                   virtual const DataObjectDecorator<type> * Get##name##Input() const;                   virtual const DataObjectDecorator<type> * GetInput##number() const;                   virtual void Set##name(const type *_arg);" \
                          "itkBooleanMacro(name)=                   virtual void name##On ();                   virtual void name##Off ();" \
                          "itkSetVector2Macro(name,type)=                   virtual void Set##name (type _arg1, type _arg2)                   virtual void Set##name (type _arg[2]);" \
                          "itkGetVector2Macro(name,type)=                   virtual type* Get##name () const;                   virtual void Get##name (type& _arg1, type& _arg2) const;                   virtual void Get##name (type _arg[2]) const;" \
@@ -2026,7 +2023,12 @@ PREDEFINED             = "itkNotUsed(x)=" \
 # definition found in the source code.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-EXPAND_AS_DEFINED      =
+EXPAND_AS_DEFINED      = itkSetDecoratedInputMacro \
+                         itkGetDecoratedInputMacro \
+                         itkSetGetDecoratedInputMacro \
+                         itkSetDecoratedObjectInputMacro \
+                         itkGetDecoratedObjectInputMacro \
+                         itkSetGetDecoratedObjectInputMacro
 
 # If the SKIP_FUNCTION_MACROS tag is set to YES then doxygen's preprocessor will
 # remove all refrences to function-like macros that are alone on a line, have an
