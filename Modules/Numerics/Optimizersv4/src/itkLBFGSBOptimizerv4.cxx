@@ -84,6 +84,7 @@ LBFGSBOptimizerv4
 LBFGSBOptimizerv4
 ::~LBFGSBOptimizerv4()
 {
+  delete m_VnlOptimizer;
 }
 
 void
