@@ -215,6 +215,8 @@ LBFGSBOptimizerv4
   Superclass::SetMetric( metric );
 
   CostFunctionAdaptorType *adaptor = this->GetCostFunctionAdaptor();
+
+  delete m_VnlOptimizer;
   m_VnlOptimizer = new InternalOptimizerType( *adaptor, this );
 
   // set the optimizer parameters
