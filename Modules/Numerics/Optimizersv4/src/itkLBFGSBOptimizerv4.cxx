@@ -215,7 +215,8 @@ LBFGSBOptimizerv4
   Superclass::SetMetric( metric );
 
   CostFunctionAdaptorType *adaptor = this->GetCostFunctionAdaptor();
-  m_VnlOptimizer = new InternalOptimizerType( *adaptor, this );
+
+  m_VnlOptimizer.TakeOwnership( new InternalOptimizerType( *adaptor, this ) );
 
   // set the optimizer parameters
   m_VnlOptimizer->set_trace( m_Trace );
