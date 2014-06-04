@@ -156,7 +156,7 @@ public:
   typedef Array<RealType>                                             MetricSamplingPercentageArrayType;
 
   /** Transform adaptor typedefs */
-  typedef TransformParametersAdaptor<OutputTransformType>             TransformParametersAdaptorType;
+  typedef TransformParametersAdaptorBase<InitialTransformType>        TransformParametersAdaptorType;
   typedef typename TransformParametersAdaptorType::Pointer            TransformParametersAdaptorPointer;
   typedef std::vector<TransformParametersAdaptorPointer>              TransformParametersAdaptorsContainerType;
 
