@@ -135,6 +135,13 @@ if (BUILD_DOCUMENTATION)
     DEPENDS "${ITK_SOURCE_DIR}/Examples" "${ITK_SOURCE_DIR}/Utilities/Doxygen/GenerateExamplesDox.cmake"
     )
 
+  add_custom_target(Documentation ALL
+    COMMAND ${DOXYGEN_EXECUTABLE} ${ITK_BINARY_DIR}/Utilities/Doxygen/doxygen.config
+    MAIN_DEPENDENCY ${ITK_BINARY_DIR}/Utilities/Doxygen/doxygen.config
+    DEPENDS         ${ITK_BINARY_DIR}/Utilities/Doxygen/itkdoxygen.pl
+    DEPENDS         ${ITK_BINARY_DIR}/Documentation/Doxygen/Examples.dox
+    WORKING_DIRECTORY ${ITK_BINARY_DIR}/Utilities/Doxygen
+    )
 
   # Somehow the logo image is not copied into the html folder.
   # Here we ensure that the logo image ends up in the right directory
@@ -144,15 +151,6 @@ if (BUILD_DOCUMENTATION)
       ${ITK_SOURCE_DIR}/Documentation/Art/itkLogoSmall.jpg # logo
       ${ITK_DOXYGEN_OUTPUT_DIR}/html # output doxygen directory
     )
-
-  add_custom_target(Documentation ALL
-    COMMAND ${DOXYGEN_EXECUTABLE} ${ITK_BINARY_DIR}/Utilities/Doxygen/doxygen.config
-    MAIN_DEPENDENCY ${ITK_BINARY_DIR}/Utilities/Doxygen/doxygen.config
-    DEPENDS         ${ITK_BINARY_DIR}/Utilities/Doxygen/itkdoxygen.pl
-    DEPENDS         ${ITK_BINARY_DIR}/Documentation/Doxygen/Examples.dox
-    WORKING_DIRECTORY ${ITK_BINARY_DIR}/Utilities/Doxygen
-    )
-
 
   message( STATUS
            "To generate Doxygen's documentation, you need to build the Documentation target"
