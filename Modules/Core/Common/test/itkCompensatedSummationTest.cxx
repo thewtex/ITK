@@ -25,6 +25,7 @@ int itkCompensatedSummationTest( int, char * [] )
   long int seedValue = 17;
 
   const FloatType expectedMean = 0.5;
+  std::streamsize savePrecision = std::cout.precision();
   std::cout.precision( 22 );
 
   const itk::SizeValueType accumSize = 50000000;
@@ -58,7 +59,7 @@ int itkCompensatedSummationTest( int, char * [] )
   std::cout << "The accumulator sum is:   " << accumulatorSum << std::endl;
   std::cout << "The accumulator mean is:  " << accumulatorMean << std::endl;
   std::cout << "The accumulator error is: " << accumulatorError << std::endl;
-
+  std::cout.precision(savePrecision);
   if( vanillaError <= accumulatorError || accumulatorError > 1.0e-4 )
     {
     std::cerr << "The compensated summation did not compensate well (crazy compiler flags?)." << std::endl;
