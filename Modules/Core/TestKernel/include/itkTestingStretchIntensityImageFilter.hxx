@@ -29,6 +29,8 @@
 #define __itkTestingStretchIntensityImageFilter_hxx
 
 #include "itkTestingStretchIntensityImageFilter.h"
+#include "itkImageRegionIterator.h"
+#include "itkImageRegionConstIterator.h"
 
 namespace itk
 {
