@@ -562,7 +562,9 @@ itkTypeMacro(newexcp, parentexcp);                                              
                                       prevent instantiation
   - ITK_TEMPLATE_EXTERN = use extern template to prevent instantiation
 */
-#if defined( __INTEL_COMPILER ) && __INTEL_COMPILER >= 700
+#if __cplusplus >= 201103L
+#define ITK_TEMPLATE_EXTERN 1
+#elif defined( __INTEL_COMPILER ) && __INTEL_COMPILER >= 700
 #define ITK_TEMPLATE_EXTERN 1
 #elif defined( __GNUC__ ) && __GNUC__ >= 3
 #define ITK_TEMPLATE_EXTERN 1
@@ -608,6 +610,20 @@ itkTypeMacro(newexcp, parentexcp);                                              
 #define ITK_TEMPLATE_IMPORT(x)
 #define ITK_TEMPLATE_IMPORT_WORKS 0
 #endif
+
+/* Define macros to support passing a variable number of arguments
+   throug other macros.  This is used by ITK_TEMPLATE_EXPORT,
+   ITK_TEMPLATE_IMPORT, and by each template's instantiation
+   macro.  */
+#define ITK_TEMPLATE_1(x1)                         x1
+#define ITK_TEMPLATE_2(x1,x2)                      x1,x2
+#define ITK_TEMPLATE_3(x1,x2,x3)                   x1,x2,x3
+#define ITK_TEMPLATE_4(x1,x2,x3,x4)                x1,x2,x3,x4
+#define ITK_TEMPLATE_5(x1,x2,x3,x4,x5)             x1,x2,x3,x4,x5
+#define ITK_TEMPLATE_6(x1,x2,x3,x4,x5,x6)          x1,x2,x3,x4,x5,x6
+#define ITK_TEMPLATE_7(x1,x2,x3,x4,x5,x6,x7)       x1,x2,x3,x4,x5,x6,x7
+#define ITK_TEMPLATE_8(x1,x2,x3,x4,x5,x6,x7,x8)    x1,x2,x3,x4,x5,x6,x7,x8
+#define ITK_TEMPLATE_9(x1,x2,x3,x4,x5,x6,x7,x8,x9) x1,x2,x3,x4,x5,x6,x7,x8,x9
 
 //=============================================================================
 

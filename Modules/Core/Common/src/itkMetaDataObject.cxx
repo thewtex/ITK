@@ -20,6 +20,22 @@
 namespace itk
 {
 
+#if ITK_TEMPLATE_IMPORT_WORKS
+ITK_TEMPLATE_EXPORT( 1(class ITKCommon_EXPORT MetaDataObject< bool > ) );
+ITK_TEMPLATE_EXPORT( 1(class ITKCommon_EXPORT MetaDataObject< unsigned char > ) );
+ITK_TEMPLATE_EXPORT( 1(class ITKCommon_EXPORT MetaDataObject< char > ) );
+ITK_TEMPLATE_EXPORT( 1(class ITKCommon_EXPORT MetaDataObject< signed char > ) );
+ITK_TEMPLATE_EXPORT( 1(class ITKCommon_EXPORT MetaDataObject< unsigned short > ) );
+ITK_TEMPLATE_EXPORT( 1(class ITKCommon_EXPORT MetaDataObject< short > ) );
+ITK_TEMPLATE_EXPORT( 1(class ITKCommon_EXPORT MetaDataObject< unsigned int > ) );
+ITK_TEMPLATE_EXPORT( 1(class ITKCommon_EXPORT MetaDataObject< int > ) );
+ITK_TEMPLATE_EXPORT( 1(class ITKCommon_EXPORT MetaDataObject< unsigned long > ) );
+ITK_TEMPLATE_EXPORT( 1(class ITKCommon_EXPORT MetaDataObject< long > ) );
+ITK_TEMPLATE_EXPORT( 1(class ITKCommon_EXPORT MetaDataObject< float > ) );
+ITK_TEMPLATE_EXPORT( 1(class ITKCommon_EXPORT MetaDataObject< double > ) );
+ITK_TEMPLATE_EXPORT( 1(class ITKCommon_EXPORT MetaDataObject< std::string > ) );
+#else
+ITK_NATIVE_TYPE_METADATAPRINT( bool );
 ITK_NATIVE_TYPE_METADATAPRINT( unsigned char );
 ITK_NATIVE_TYPE_METADATAPRINT( char );
 ITK_NATIVE_TYPE_METADATAPRINT( signed char );
@@ -32,5 +48,6 @@ ITK_NATIVE_TYPE_METADATAPRINT( long );
 ITK_NATIVE_TYPE_METADATAPRINT( float );
 ITK_NATIVE_TYPE_METADATAPRINT( double );
 ITK_NATIVE_TYPE_METADATAPRINT( std::string );
+#endif
 
 } // end namespace itk
