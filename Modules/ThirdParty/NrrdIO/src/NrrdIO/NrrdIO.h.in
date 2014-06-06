@@ -72,7 +72,11 @@ extern "C" {
 #    define NRRDIO_EXPORT extern __declspec(dllimport)
 #  endif
 #else /* TEEM_STATIC || UNIX */
-#  define NRRDIO_EXPORT extern
+#if __GNUC__ >= 4
+    #define NRRDIO_EXPORT extern __attribute__ ((visibility ("default")))
+  #else
+    #define NRRDIO_EXPORT extern
+  #endif
 #endif
 
 #if defined(_WIN32) && !defined(__CYGWIN__) && !defined(__MINGW32__)
