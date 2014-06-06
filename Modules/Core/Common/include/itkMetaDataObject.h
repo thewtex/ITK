@@ -178,37 +178,29 @@ inline bool ExposeMetaData(const MetaDataDictionary & Dictionary, const std::str
 
   const MetaDataObjectBase::ConstPointer baseObjectSmartPointer = Dictionary[key];
 
-  if ( baseObjectSmartPointer.IsNull() || strcmp( typeid( T ).name(), baseObjectSmartPointer->GetMetaDataObjectTypeName() ) != 0 )
+  MetaDataObject< T > const * const TempMetaDataObject = dynamic_cast< MetaDataObject< T > const * >( baseObjectSmartPointer.GetPointer() );
+  if ( TempMetaDataObject == ITK_NULLPTR )
     {
     return false;
     }
-    {
-    MetaDataObject< T > const * const TempMetaDataObject = dynamic_cast< MetaDataObject< T > const * >( baseObjectSmartPointer.GetPointer() );
-    if ( TempMetaDataObject != ITK_NULLPTR )
-      {
-      outval = TempMetaDataObject->GetMetaDataObjectValue();
-      }
-    else
-      {
-      return false;
-      }
-    }
+
+  outval = TempMetaDataObject->GetMetaDataObjectValue();
   return true;
 }
 
-// Specializations
-template <> ITKCommon_EXPORT void MetaDataObject< unsigned char >::Print( std::ostream & os ) const;
-template <> ITKCommon_EXPORT void MetaDataObject< char >::Print( std::ostream & os ) const;
-template <> ITKCommon_EXPORT void MetaDataObject< signed char >::Print( std::ostream & os ) const;
-template <> ITKCommon_EXPORT void MetaDataObject< unsigned short >::Print( std::ostream & os ) const;
-template <> ITKCommon_EXPORT void MetaDataObject< short >::Print( std::ostream & os ) const;
-template <> ITKCommon_EXPORT void MetaDataObject< unsigned int >::Print( std::ostream & os ) const;
-template <> ITKCommon_EXPORT void MetaDataObject< int >::Print( std::ostream & os ) const;
-template <> ITKCommon_EXPORT void MetaDataObject< unsigned long >::Print( std::ostream & os ) const;
-template <> ITKCommon_EXPORT void MetaDataObject< long >::Print( std::ostream & os ) const;
-template <> ITKCommon_EXPORT void MetaDataObject< float >::Print( std::ostream & os ) const;
-template <> ITKCommon_EXPORT void MetaDataObject< double >::Print( std::ostream & os ) const;
-template <> ITKCommon_EXPORT void MetaDataObject< std::string >::Print( std::ostream & os ) const;
+extern template class ITKCommon_EXPORT MetaDataObject< bool >;
+extern template class ITKCommon_EXPORT MetaDataObject< unsigned char >;
+extern template class ITKCommon_EXPORT MetaDataObject< char >;
+extern template class ITKCommon_EXPORT MetaDataObject< signed char >;
+extern template class ITKCommon_EXPORT MetaDataObject< unsigned short >;
+extern template class ITKCommon_EXPORT MetaDataObject< short >;
+extern template class ITKCommon_EXPORT MetaDataObject< unsigned int >;
+extern template class ITKCommon_EXPORT MetaDataObject< int >;
+extern template class ITKCommon_EXPORT MetaDataObject< unsigned long >;
+extern template class ITKCommon_EXPORT MetaDataObject< long >;
+extern template class ITKCommon_EXPORT MetaDataObject< float >;
+extern template class ITKCommon_EXPORT MetaDataObject< double >;
+extern template class ITKCommon_EXPORT MetaDataObject< std::string >;
 
 } // end namespace itk
 
