@@ -20,17 +20,18 @@
 namespace itk
 {
 
-ITK_NATIVE_TYPE_METADATAPRINT( unsigned char );
-ITK_NATIVE_TYPE_METADATAPRINT( char );
-ITK_NATIVE_TYPE_METADATAPRINT( signed char );
-ITK_NATIVE_TYPE_METADATAPRINT( unsigned short );
-ITK_NATIVE_TYPE_METADATAPRINT( short );
-ITK_NATIVE_TYPE_METADATAPRINT( unsigned int );
-ITK_NATIVE_TYPE_METADATAPRINT( int );
-ITK_NATIVE_TYPE_METADATAPRINT( unsigned long );
-ITK_NATIVE_TYPE_METADATAPRINT( long );
-ITK_NATIVE_TYPE_METADATAPRINT( float );
-ITK_NATIVE_TYPE_METADATAPRINT( double );
-ITK_NATIVE_TYPE_METADATAPRINT( std::string );
+template class MetaDataObject< bool >;
+template class MetaDataObject< unsigned char >;
+template class MetaDataObject< char >;
+template class MetaDataObject< signed char >;
+template class MetaDataObject< unsigned short >;
+template class MetaDataObject< short >;
+template class MetaDataObject< unsigned int >;
+template class MetaDataObject< int >;
+template class MetaDataObject< unsigned long >;
+template class MetaDataObject< long >;
+template class MetaDataObject< float >;
+template class MetaDataObject< double >;
+template class MetaDataObject< std::string >;
 
 } // end namespace itk
