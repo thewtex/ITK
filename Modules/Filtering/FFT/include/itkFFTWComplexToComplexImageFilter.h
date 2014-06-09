@@ -25,9 +25,11 @@
 namespace itk
 {
 /** \class FFTWComplexToComplexImageFilter
+ *
  *  \brief Implements an API to enable the Fourier transform or the inverse
  *  Fourier transform of images with complex valued voxels to be computed using
  *  either FFTW from MIT or the FFTW interface in Intel MKL.
+ *
  * This filter is multithreaded and supports input images with sizes which are not
  * a power of two.
  *
@@ -48,7 +50,7 @@ namespace itk
  *
  * \ingroup FourierTransform
  * \ingroup MultiThreaded
- * \ingroup ITKReview
+ * \ingroup ITKFFT
  *
  * \sa FFTWGlobalConfiguration
  */
@@ -57,19 +59,18 @@ class FFTWComplexToComplexImageFilter:
   public FFTComplexToComplexImageFilter< TImage >
 {
 public:
-  typedef FFTWComplexToComplexImageFilter                      Self;
-  typedef FFTComplexToComplexImageFilter< TImage >             Superclass;
-  typedef SmartPointer< Self >                                 Pointer;
-  typedef SmartPointer< const Self >                           ConstPointer;
-
   /** Standard class typedefs. */
+  typedef FFTWComplexToComplexImageFilter          Self;
+  typedef FFTComplexToComplexImageFilter< TImage > Superclass;
+  typedef SmartPointer< Self >                     Pointer;
+  typedef SmartPointer< const Self >               ConstPointer;
+
   typedef TImage                               ImageType;
   typedef typename ImageType::PixelType        PixelType;
   typedef typename Superclass::InputImageType  InputImageType;
   typedef typename Superclass::OutputImageType OutputImageType;
   typedef typename OutputImageType::RegionType OutputImageRegionType;
 
-  //
   // the proxy type is a wrapper for the fftw API
   // since the proxy is only defined over double and float,
   // trying to use any other pixel type is inoperative, as
@@ -90,10 +91,6 @@ public:
 
   /** Image type typedef support. */
   typedef typename ImageType::SizeType ImageSizeType;
-
-  //
-  // these should be defined in every FFT filter class
-  virtual bool FullMatrix();
 
   /**
    * Set/Get the behavior of wisdom plan creation. The default is
@@ -120,13 +117,8 @@ public:
   }
 
 protected:
-  FFTWComplexToComplexImageFilter()
-    {
-    m_PlanRigor = FFTWGlobalConfiguration::GetPlanRigor();
-    }
-  virtual ~FFTWComplexToComplexImageFilter()
-    {
-    }
+  FFTWComplexToComplexImageFilter();
+  virtual ~FFTWComplexToComplexImageFilter() {}
 
   virtual void UpdateOutputData(DataObject *output);
 
