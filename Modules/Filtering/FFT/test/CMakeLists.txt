@@ -9,24 +9,29 @@ itkForwardInverseFFTImageFilterTest.cxx
 itkMagnitudeAndPhaseToComplexImageFilterTest.cxx
 )
 
-if (ITK_USE_FFTWF)
+if(ITK_USE_FFTWF)
   set( ITKFFTTests ${ITKFFTTests}
     itkFFTWF_FFTTest.cxx
     itkFFTWF_RealFFTTest.cxx
     itkVnlFFTWF_FFTTest.cxx
     itkVnlFFTWF_RealFFTTest.cxx
-)
+  )
 endif()
 
-if (ITK_USE_FFTWD)
+if(ITK_USE_FFTWD)
   set( ITKFFTTests ${ITKFFTTests}
     itkFFTWD_FFTTest.cxx
     itkFFTWD_RealFFTTest.cxx
     itkVnlFFTWD_FFTTest.cxx
     itkVnlFFTWD_RealFFTTest.cxx
-)
+  )
 endif()
 
+if(ITK_USE_FFTWF OR ITK_USE_FFTWD)
+  set( ITKFFTTests ${ITKFFTTests}
+    itkFFTComplexToComplexImageFilterTest.cxx
+  )
+endif()
 
 CreateTestDriver(ITKFFT  "${ITKFFT-Test_LIBRARIES}" "${ITKFFTTests}")
 

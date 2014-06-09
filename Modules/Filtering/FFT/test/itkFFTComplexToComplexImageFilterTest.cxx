@@ -37,19 +37,18 @@
 #include "itkImageFileWriter.h"
 #include "itkFFTComplexToComplexImageFilter.h"
 
-int itkFFTComplexToComplexImageFilterTest02( int argc, char * argv[] )
+int itkFFTComplexToComplexImageFilterTest( int argc, char * argv[] )
 {
-
-  if( argc < 3 )
+  if( argc < 4 )
     {
-    std::cerr << "Usage: " << argv[0] << " input output [dir]" << std::endl;
-    std::cerr << "       " "dir: -1 for forward" << std::endl;
-    std::cerr << "       " "dir: 1 for backward" << std::endl;
+    std::cerr << "Usage: " << argv[0] << " <InputImage> <OutputImage> <float|double> [direction]" << std::endl;
+    std::cerr << "       " "direction: -1 for forward" << std::endl;
+    std::cerr << "       " "direction: 1 for backward" << std::endl;
 
     return EXIT_FAILURE;
     }
 
-  const unsigned int                              Dimension = 3;
+  const unsigned int                              Dimension = 2;
 #if defined(ITK_USE_FFTWF) && !defined(ITK_USE_FFTWD)
   typedef float                                   PixelComponentType;
 #else
