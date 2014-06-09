@@ -49,7 +49,7 @@ typename FFTComplexToComplexImageFilter< TImage >::Pointer
 FFTComplexToComplexImageFilter< TImage >
 ::New(void)
 {
-  Pointer smartPtr = ::itk::ObjectFactory< Self >::Create();
+  Pointer smartPtr = ObjectFactory< Self >::Create();
 
 #ifdef ITK_USE_FFTWD
   if ( smartPtr.IsNull() )
@@ -91,10 +91,10 @@ FFTComplexToComplexImageFilter< TImage >::GenerateOutputInformation()
     }
 
   // get pointers to the input and output
-  typename InputImageType::ConstPointer inputPtr  = this->GetInput();
-  typename OutputImageType::Pointer outputPtr = this->GetOutput();
+  const InputImageType * input  = this->GetInput();
+  OutputImageType * output = this->GetOutput();
 
-  if ( !inputPtr || !outputPtr )
+  if ( !input || !output )
     {
     return;
     }
@@ -105,11 +105,9 @@ FFTComplexToComplexImageFilter< TImage >::GenerateOutputInformation()
   // has no meaning in the result of an FFT. For an IFFT, since the
   // spacing is propagated to the complex result, we can use the spacing
   // from the input to propagate back to the output.
-  unsigned int i;
-  const typename InputImageType::SizeType &   inputSize =
-    inputPtr->GetLargestPossibleRegion().GetSize();
-  const typename InputImageType::IndexType &  inputStartIndex =
-    inputPtr->GetLargestPossibleRegion().GetIndex();
+  const typename InputImageType::RegionType & inputRegion = input->GetLargestPossibleRegion();
+  const typename InputImageType::SizeType & inputSize = inputRegion.GetSize();
+  const typename InputImageType::IndexType & inputStartIndex = inputRegion.GetIndex();
 
   typename OutputImageType::SizeType outputSize;
   typename OutputImageType::IndexType outputStartIndex;
@@ -121,16 +119,16 @@ FFTComplexToComplexImageFilter< TImage >::GenerateOutputInformation()
   outputSize[0] = inputSize[0];
   outputStartIndex[0] = inputStartIndex[0];
 
-  for ( i = 1; i < OutputImageType::ImageDimension; i++ )
+  for( unsigned int ii = 1; ii < OutputImageType::ImageDimension; ++ii )
     {
-    outputSize[i] = inputSize[i];
-    outputStartIndex[i] = inputStartIndex[i];
+    outputSize[ii] = inputSize[ii];
+    outputStartIndex[ii] = inputStartIndex[ii];
     }
   typename OutputImageType::RegionType outputLargestPossibleRegion;
   outputLargestPossibleRegion.SetSize(outputSize);
   outputLargestPossibleRegion.SetIndex(outputStartIndex);
 
-  outputPtr->SetLargestPossibleRegion(outputLargestPossibleRegion);
+  output->SetLargestPossibleRegion(outputLargestPossibleRegion);
 }
 
 template< typename TImage >

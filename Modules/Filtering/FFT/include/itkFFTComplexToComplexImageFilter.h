@@ -23,6 +23,7 @@
 
 namespace itk
 {
+
 /** \class FFTComplexToComplexImageFilter
  *
  * \brief Implements an API to enable the Fourier transform or the inverse
@@ -45,7 +46,7 @@ namespace itk
  * \ingroup FourierTransform
  *
  * \sa ForwardFFTImageFilter
- * \ingroup ITKReview
+ * \ingroup ITKFFT
  */
 template< typename TImage >
 class FFTComplexToComplexImageFilter:
@@ -77,17 +78,17 @@ public:
   static Pointer New(void);
 
   /** Transform Direction */
-  typedef enum {
+  enum TransformDirectionType {
     DIRECT = 1,
-    INVERSE
-    }                                             TransformDirectionType;
+    INVERSE = 2
+    };
 
   /** Image type typedef support. */
   typedef typename ImageType::SizeType ImageSizeType;
 
   /** Set/Get the direction in which the transform will be applied.
-   * By selecting DIRECT, this filter will perform a direct Fourier Transform,
-   * By selecting INVERSE, this filter will perform an inverse Fourier Transform,
+   * By selecting DIRECT, this filter will perform a direct, i.e. forward, Fourier Transform,
+   * By selecting INVERSE, this filter will perform an inverse, i.e. backward, Fourier Transform,
    */
   itkSetMacro(TransformDirection, TransformDirectionType);
   itkGetConstMacro(TransformDirection, TransformDirectionType);
@@ -97,10 +98,10 @@ protected:
   virtual ~FFTComplexToComplexImageFilter(){}
 
   /** methods needed for the image filter pipeline */
-  virtual void GenerateOutputInformation(); // figure out allocation for output
+  virtual void GenerateOutputInformation() ITK_OVERRIDE; // figure out allocation for output
                                             // image
 
-  virtual void GenerateInputRequestedRegion();
+  virtual void GenerateInputRequestedRegion() ITK_OVERRIDE;
 
   virtual bool FullMatrix() = 0; // must be implemented in child
 

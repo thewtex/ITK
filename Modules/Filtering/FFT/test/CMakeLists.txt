@@ -9,24 +9,29 @@ itkForwardInverseFFTImageFilterTest.cxx
 itkMagnitudeAndPhaseToComplexImageFilterTest.cxx
 )
 
-if (ITK_USE_FFTWF)
-  set( ITKFFTTests ${ITKFFTTests}
+if(ITK_USE_FFTWF)
+  list( APPEND ITKFFTTests
     itkFFTWF_FFTTest.cxx
     itkFFTWF_RealFFTTest.cxx
     itkVnlFFTWF_FFTTest.cxx
     itkVnlFFTWF_RealFFTTest.cxx
-)
+  )
 endif()
 
-if (ITK_USE_FFTWD)
-  set( ITKFFTTests ${ITKFFTTests}
+if(ITK_USE_FFTWD)
+  list( APPEND ITKFFTTests
     itkFFTWD_FFTTest.cxx
     itkFFTWD_RealFFTTest.cxx
     itkVnlFFTWD_FFTTest.cxx
     itkVnlFFTWD_RealFFTTest.cxx
-)
+  )
 endif()
 
+if(ITK_USE_FFTWF OR ITK_USE_FFTWD)
+  list( APPEND ITKFFTTests
+    itkFFTComplexToComplexImageFilterTest.cxx
+  )
+endif()
 
 CreateTestDriver(ITKFFT  "${ITKFFT-Test_LIBRARIES}" "${ITKFFTTests}")
 
@@ -126,4 +131,44 @@ itk_add_test(NAME itkMagnitudeAndPhaseToComplexImageFilterTest
     itkMagnitudeAndPhaseToComplexImageFilterTest
       DATA{Input/itkBrainSliceComplexMagnitude.mha}
       DATA{Input/itkBrainSliceComplexPhase.mha}
-      ${ITK_TEST_OUTPUT_DIR}/itkMagnitudeAndPhaseToComplexImageFilterTest.mha )
+      ${ITK_TEST_OUTPUT_DIR}/itkMagnitudeAndPhaseToComplexImageFilterTest.mha)
+if(ITK_USE_FFTWF)
+  itk_add_test(NAME itkFFTComplexToComplexImageFilter2DFloatTest
+    COMMAND ITKFFTTestDriver
+      --compare
+        DATA{${ITK_DATA_ROOT}/Input/cthead1.png}
+        ${ITK_TEST_OUTPUT_DIR}/itkFFTComplexToComplexImageFilter2DFloatTest.mha
+      itkFFTComplexToComplexImageFilterTest
+        DATA{${ITK_DATA_ROOT}/Input/cthead1.png}
+        ${ITK_TEST_OUTPUT_DIR}/itkFFTComplexToComplexImageFilter2DFloatTest.mha
+        float)
+  itk_add_test(NAME itkFFTComplexToComplexImageFilter3DFloatTest
+    COMMAND ITKFFTTestDriver
+      --compare
+      DATA{${ITK_DATA_ROOT}/Input/HeadMRVolume.mha}
+        ${ITK_TEST_OUTPUT_DIR}/itkFFTComplexToComplexImageFilter3DFloatTest.mha
+      itkFFTComplexToComplexImageFilterTest
+        DATA{${ITK_DATA_ROOT}/Input/HeadMRVolume.mha}
+        ${ITK_TEST_OUTPUT_DIR}/itkFFTComplexToComplexImageFilter3DFloatTest.mha
+        float)
+endif()
+if(ITK_USE_FFTWD)
+  itk_add_test(NAME itkFFTComplexToComplexImageFilter2DDoubleTest
+    COMMAND ITKFFTTestDriver
+      --compare
+        DATA{${ITK_DATA_ROOT}/Input/cthead1.png}
+        ${ITK_TEST_OUTPUT_DIR}/itkFFTComplexToComplexImageFilter2DDoubleTest.mha
+      itkFFTComplexToComplexImageFilterTest
+        DATA{${ITK_DATA_ROOT}/Input/cthead1.png}
+        ${ITK_TEST_OUTPUT_DIR}/itkFFTComplexToComplexImageFilter2DDoubleTest.mha
+        double)
+  itk_add_test(NAME itkFFTComplexToComplexImageFilter3DDoubleTest
+    COMMAND ITKFFTTestDriver
+      --compare
+      DATA{${ITK_DATA_ROOT}/Input/HeadMRVolume.mha}
+        ${ITK_TEST_OUTPUT_DIR}/itkFFTComplexToComplexImageFilter3DDoubleTest.mha
+      itkFFTComplexToComplexImageFilterTest
+        DATA{${ITK_DATA_ROOT}/Input/HeadMRVolume.mha}
+        ${ITK_TEST_OUTPUT_DIR}/itkFFTComplexToComplexImageFilter3DDoubleTest.mha
+        double)
+endif()
