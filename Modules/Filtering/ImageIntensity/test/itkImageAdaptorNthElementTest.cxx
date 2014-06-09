@@ -28,10 +28,15 @@
 #include "itkImageRegionIteratorWithIndex.h"
 #include "itkNthElementImageAdaptor.h"
 #include "itkAddImageFilter.h"
-
+#include "itkStdStreamStateSave.h"
 
 int itkImageAdaptorNthElementTest(int, char* [] )
 {
+
+// Save the format stream variables for std::cout
+// They will be restored when coutState goes out of scope
+// scope.
+  itk::StdStreamStateSave coutState(std::cout);
 
   //-------------------------------------------------------------
   //                        Typedefs

@@ -18,10 +18,17 @@
 
 #include "itkMath.h"
 #include "itkIntTypes.h"
+#include "itkStdStreamStateSave.h"
+
 #include <iostream>
 
 int main( int, char *[] )
 {
+// Save the format stream variables for std::cout
+// They will be restored when coutState goes out of scope
+// scope.
+  itk::StdStreamStateSave coutState(std::cout);
+
   std::streamsize savePrecision = std::cout.precision(24);
 
   std::cout << "e: " << itk::Math::e << std::endl;

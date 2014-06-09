@@ -16,6 +16,7 @@
  *
  *=========================================================================*/
 #include "itkFloatingPointExceptions.h"
+
 #include <iostream>
 #include <float.h>
 
