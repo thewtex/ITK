@@ -3,6 +3,8 @@ href=\"http://sourceforge.net/projects/gdcm/\">Grass Root DICOM (GDCM)</a> based
 readers and writers of the medical imaging DICOM standard.")
 
 itk_module(ITKIOGDCM
+  FACTORIES
+    GDCMImageIO
   DEPENDS
     ITKGDCM
     ITKIOImageBase

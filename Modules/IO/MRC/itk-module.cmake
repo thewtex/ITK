@@ -3,6 +3,8 @@ files in the MRC file format. https://en.wikipedia.org/wiki/MRC_(file_format) ")
 
 itk_module(ITKIOMRC
   ENABLE_SHARED
+  FACTORIES
+    MRCImageIO
   DEPENDS
     ITKIOImageBase
   TEST_DEPENDS

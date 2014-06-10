@@ -50,8 +50,9 @@ itk_add_test( NAME ImageIOFactoryRegisterTest
     COMMAND ${ITK_TEST_DRIVER}
     $<TARGET_FILE:IOFactoryRegistration>
     )
+# does not work with current re-factorization
 set_tests_properties (ImageIOFactoryRegisterTest
-  PROPERTIES PASS_REGULAR_EXPRESSION  ${REGEX_IO_Factory_Description_First_Word})
+  PROPERTIES PASS_REGULAR_EXPRESSION  "${REGEX_IO_Factory_Description_First_Word}")
 
 
 if(ITK_VISIBLEHUMAN_DATA_ROOT)
