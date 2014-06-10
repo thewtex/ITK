@@ -5,6 +5,8 @@ stack file format.")
 
 itk_module(ITKIOLSM
   ENABLE_SHARED
+  FACTORIES
+    LSMImageIO
   DEPENDS
     ITKIOTIFF
   TEST_DEPENDS

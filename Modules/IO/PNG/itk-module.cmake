@@ -3,6 +3,8 @@ files in the Portable Network Graphics (PNG) format.")
 
 itk_module(ITKIOPNG
   ENABLE_SHARED
+  FACTORIES
+    PNGImageIO
   DEPENDS
     ITKPNG
     ITKIOImageBase

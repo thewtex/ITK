@@ -3,6 +3,8 @@ files in the \"legacy\" (non-XML) VTK file format.")
 
 itk_module(ITKIOVTK
   ENABLE_SHARED
+  FACTORIES
+    VTKImageIO
   DEPENDS
     ITKIOImageBase
   TEST_DEPENDS

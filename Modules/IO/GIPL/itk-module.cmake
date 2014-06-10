@@ -3,6 +3,8 @@ set(DOCUMENTATION "This module contains ImageIO classes for reading the Gipl
 
 itk_module(ITKIOGIPL
   ENABLE_SHARED
+  FACTORIES
+    GiplImageIO
   DEPENDS
     ITKIOImageBase
     ITKZLIB

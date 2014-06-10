@@ -6,6 +6,8 @@ file (usually .mhd + .raw) or the header inline with the data (usually .mha).")
 
 itk_module(ITKIOMeta
   ENABLE_SHARED
+  FACTORIES
+    MetaImageIO
   DEPENDS
     ITKMetaIO
     ITKIOImageBase

@@ -33,21 +33,14 @@ endmacro()
 
 # a list of image IOs to be registered when the corresponding modules are enabled
 set(LIST_OF_IMAGEIO_FORMATS
-    Nifti Nrrd Gipl HDF5 JPEG GDCM BMP LSM PNG TIFF VTK Stimulate BioRad Meta MRC
-    MINC
     MGH SCIFIO FDF
     )
 
 # Set each IO format's module name and factory name
 # Most IO modules have consistent string charactors between their module names
 # and their factory class names, except those:
-set(Nifti_module_name  ITKIONIFTI)
-set(Nrrd_module_name ITKIONRRD)
-set(Gipl_module_name ITKIOGIPL)
-
 set(MGH_module_name MGHIO)
 set(MGH_factory_name MGHImageIO)
-
 set(SCIFIO_module_name SCIFIO)
 set(SCIFIO_factory_name SCIFIOImageIO)
 
@@ -69,9 +62,17 @@ if(NOT ITK_NO_IO_FACTORY_REGISTER_MANAGER)
   set(LIST_OF_FACTORIES_REGISTRATION "")
   set(LIST_OF_FACTORY_NAMES "")
 
+
   foreach (ImageFormat ${LIST_OF_IMAGEIO_FORMATS})
     ADD_FACTORY_REGISTRATION("LIST_OF_FACTORIES_REGISTRATION" "LIST_OF_FACTORY_NAMES"
       ${${ImageFormat}_module_name} ${${ImageFormat}_factory_name})
+  endforeach()
+
+  foreach(itk_module ${ITK_MODULES_ENABLED} )
+    foreach(_factory ${ITK_MODULE_${itk_module}_FACTORIES})
+      ADD_FACTORY_REGISTRATION("LIST_OF_FACTORIES_REGISTRATION" "LIST_OF_FACTORY_NAMES"
+        ${itk_module} ${_factory})
+    endforeach()
   endforeach()
 
   get_filename_component(_selfdir "${CMAKE_CURRENT_LIST_FILE}" PATH)

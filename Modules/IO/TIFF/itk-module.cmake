@@ -3,6 +3,8 @@ files in the Tagged Image File Format (TIFF).")
 
 itk_module(ITKIOTIFF
   ENABLE_SHARED
+  FACTORIES
+    TIFFImageIO
   DEPENDS
     ITKTIFF
     ITKIOImageBase

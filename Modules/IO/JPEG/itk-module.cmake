@@ -3,6 +3,8 @@ writing files in the JPEG format.")
 
 itk_module(ITKIOJPEG
   ENABLE_SHARED
+  FACTORIES
+    JPEGImageIO
   DEPENDS
     ITKJPEG
     ITKIOImageBase
