@@ -2,7 +2,7 @@
 option(ITK_USE_SYSTEM_GCCXML "Use system gccxml. If OFF, gccxml is built as an external project." OFF)
 mark_as_advanced(ITK_USE_SYSTEM_GCCXML)
 
-set(gccxml_url https://github.com/gccxml/gccxml/archive/48b49a6954310efc5a79dd1fbc55128fa9b38fb1.tar.gz)
+set(gccxml_url http://github.com/gccxml/gccxml/archive/48b49a6954310efc5a79dd1fbc55128fa9b38fb1.tar.gz)
 set(gccxml_md5 6a11e170fd51dbdc3a1fc144784ee277)
 
 set(gccxml_ep ${CMAKE_CURRENT_BINARY_DIR}/gccxml/bin/gccxml)
