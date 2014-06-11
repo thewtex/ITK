@@ -188,7 +188,7 @@ inline bool ExposeMetaData(const MetaDataDictionary & Dictionary, const std::str
   return true;
 }
 
-#ifndef ITK_TEMPLATE_EXPLICIT_MetaDataObject
+#if ITK_TEMPLATE_EXTERN && !defined( ITK_TEMPLATE_EXPLICIT_MetaDataObject)
 // Explicit instantiation is required to ensure correct dynamic_cast
 // behavior across shared libraries.
 #if defined( ITKCommon_EXPORTS )

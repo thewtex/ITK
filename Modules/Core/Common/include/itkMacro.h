@@ -556,6 +556,26 @@ itkTypeMacro(newexcp, parentexcp);                                              
 #define ITK_FRIEND_TEMPLATE_FUNCTION_ARGUMENT(T)
 #endif
 
+//=============================================================================
+/* Choose a way to prevent template instantiation on this platform.
+  - ITK_TEMPLATE_EXTERN = use extern template to prevent instantiation
+*/
+#if __cplusplus >= 201103L
+#define ITK_TEMPLATE_EXTERN 1
+#elif defined(__APPLE__) && defined(ITK_BUILD_SHARED_LIBS) && \
+  ( __GNUC__ < 4 || ( __GNUC__ == 4 && _GNUC_MINOR__ <= 2 ) ) && !defined (__clang__)
+#define ITK_TEMPLATE_EXTERN 0
+#elif defined( __INTEL_COMPILER ) && __INTEL_COMPILER >= 700
+#define ITK_TEMPLATE_EXTERN 1
+#elif defined( __GNUC__ ) && __GNUC__ >= 3
+#define ITK_TEMPLATE_EXTERN 1
+#elif defined( _MSC_VER )
+#define ITK_TEMPLATE_EXTERN 1
+#endif
+#if !defined( ITK_TEMPLATE_EXTERN )
+#define ITK_TEMPLATE_EXTERN 0
+#endif
+
 //--------------------------------------------------------------------------------
 //  Helper macros for Template Meta-Programming techniques of for-loops
 // unrolling
