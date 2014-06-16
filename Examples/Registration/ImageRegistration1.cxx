@@ -48,7 +48,7 @@
 #include "itkImageRegistrationMethodv4.h"
 #include "itkTranslationTransform.h"
 #include "itkMeanSquaresImageToImageMetricv4.h"
-#include "itkRegularStepGradientDescentOptimizerv4.h"
+#include "itkGradientDescentOptimizerv4.h"
 // Software Guide : EndCodeSnippet
 
 
@@ -74,7 +74,7 @@ protected:
 
 public:
 
-  typedef itk::RegularStepGradientDescentOptimizerv4<double> OptimizerType;
+  typedef itk::GradientDescentOptimizerv4Template<double>    OptimizerType;
   typedef const OptimizerType*                               OptimizerPointer;
 
   void Execute(itk::Object *caller, const itk::EventObject & event)
@@ -159,7 +159,7 @@ int main( int argc, char *argv[] )
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::RegularStepGradientDescentOptimizerv4<double>       OptimizerType;
+  typedef itk::GradientDescentOptimizerv4Template<double>       OptimizerType;
   // Software Guide : EndCodeSnippet
 
 
@@ -404,8 +404,8 @@ int main( int argc, char *argv[] )
 
   // Software Guide : BeginCodeSnippet
   optimizer->SetLearningRate( .02 );
-  optimizer->SetMinimumStepLength( 0.001 );
-  optimizer->SetRelaxationFactor( 0.5 );
+  //optimizer->SetMinimumStepLength( 0.001 );
+  //optimizer->SetRelaxationFactor( 0.5 );
   // Software Guide : EndCodeSnippet
 
   bool useEstimator = false;
