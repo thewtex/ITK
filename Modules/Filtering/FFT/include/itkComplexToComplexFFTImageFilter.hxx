@@ -30,8 +30,9 @@
  */
 #ifndef __itkComplexToComplexFFTImageFilter_hxx
 #define __itkComplexToComplexFFTImageFilter_hxx
+#include "itkMetaDataObject.h"
 
-#include "itkComplexToComplexFFTImageFilter.h"
+#include "itkVnlComplexToComplexFFTImageFilter.h"
 
 #if defined( ITK_USE_FFTWD ) || defined( ITK_USE_FFTWF )
 #include "itkFFTWComplexToComplexFFTImageFilter.h"
@@ -44,6 +45,40 @@ template< typename TImage >
 class FFTWComplexToComplexFFTImageFilter;
 #endif
 
+template< typename TSelfPointer, typename TImage, typename TPixel >
+struct DispatchFFTW_Complex_New
+{
+  static TSelfPointer Apply()
+    {
+      return VnlComplexToComplexFFTImageFilter< TImage >
+        ::New().GetPointer();
+    }
+};
+
+#ifdef ITK_USE_FFTWD
+template< typename TSelfPointer, typename TImage >
+struct DispatchFFTW_Complex_New< TSelfPointer, TImage, double >
+{
+  static TSelfPointer Apply()
+    {
+      return FFTWComplexToComplexFFTImageFilter< TImage >
+        ::New().GetPointer();
+    }
+};
+#endif
+
+#ifdef ITK_USE_FFTWF
+template< typename TSelfPointer, typename TImage >
+struct DispatchFFTW_Complex_New< TSelfPointer, TImage, float >
+{
+  static TSelfPointer Apply()
+    {
+      return FFTWComplexToComplexFFTImageFilter< TImage >
+        ::New().GetPointer();
+    }
+};
+#endif
+
 template< typename TImage >
 typename ComplexToComplexFFTImageFilter< TImage >::Pointer
 ComplexToComplexFFTImageFilter< TImage >
@@ -51,29 +86,20 @@ ComplexToComplexFFTImageFilter< TImage >
 {
   Pointer smartPtr = ObjectFactory< Self >::Create();
 
-#ifdef ITK_USE_FFTWD
   if ( smartPtr.IsNull() )
     {
-    if ( typeid( typename ImageType::PixelType::value_type ) == typeid( double ) )
-      {
-      smartPtr = dynamic_cast< Self * >(
-        FFTWComplexToComplexFFTImageFilter< TImage >::New().GetPointer() );
-      }
+    smartPtr = DispatchFFTW_Complex_New< Pointer, TImage,
+                                         typename NumericTraits< OutputPixelType >::ValueType >
+      ::Apply();
     }
-#endif
-#ifdef ITK_USE_FFTWF
-  if ( smartPtr.IsNull() )
-    {
-    if ( typeid( typename ImageType::PixelType::value_type ) == typeid( float ) )
-      {
-      smartPtr = dynamic_cast< Self * >(
-        FFTWComplexToComplexFFTImageFilter< TImage >::New().GetPointer() );
-      }
-    }
-#endif
 
   return smartPtr;
 }
+
+template< typename TImage >
+typename ComplexToComplexFFTImageFilter< TImage >::Pointer
+ComplexToComplexFFTImageFilter< TImage >
+::New()
 
 template< typename TImage >
 void
