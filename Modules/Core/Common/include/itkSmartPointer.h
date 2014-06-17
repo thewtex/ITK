@@ -129,11 +129,8 @@ public:
   {
     if ( m_Pointer != r )
       {
-      ObjectType *tmp = m_Pointer; //avoid recursive unregisters by retaining
-                                   // temporarily
-      m_Pointer = r;
-      this->Register();
-      if ( tmp ) { tmp->UnRegister(); }
+      SmartPointer temp(r);
+      temp.swap(*this);
       }
     return *this;
   }
