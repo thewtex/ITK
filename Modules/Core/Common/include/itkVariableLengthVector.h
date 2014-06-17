@@ -477,6 +477,14 @@ public:
   /** Returns vector's squared Euclidean Norm  */
   RealValueType GetSquaredNorm() const;
 
+  void swap(VariableLengthVector &other)
+    {
+      using std::swap;
+      swap(this->m_LetArrayManageMemory, other->m_LetArrayManageMemory);
+      swap(this->m_Data, other->m_Data);
+      swap(this->m_NumElements, other->m_NumElements);
+    }
+
 private:
 
   bool              m_LetArrayManageMemory; // if true, the array is responsible
@@ -514,6 +522,13 @@ std::ostream & operator<<(std::ostream & os, const VariableLengthVector< TValue 
   os << "]";
   return os;
 }
+
+template<typename TValue>
+inline void swap(VariableLengthVector<TValue> &a, VariableLengthVector<TValue> &b )
+{
+  a.swap(b);
+}
+
 } // namespace itk
 
 #include "itkNumericTraitsVariableLengthVectorPixel.h"
