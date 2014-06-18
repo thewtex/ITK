@@ -39,9 +39,12 @@ if (ITK_USE_GPU)
          "${${GPUFILTER_KERNELNAME}_KernelString}")
 
     add_custom_target(${GPUFILTER_KERNELNAME}_Target
-                      SOURCES ${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_FILE})
-    add_dependencies(${GPUFILTER_KERNELNAME}_Target ${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_FILE})
-    add_dependencies(${GPUFILTER_KERNELNAME}_Target ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt)
+                      SOURCES
+                        ${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_FILE}
+                      DEPENDS
+                        ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists.txt
+                        ${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_FILE}.cl
+                      )
     configure_file(${OPENCL_FILE}
                    ${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_FILE}.cl COPYONLY)
     add_dependencies(${GPUFILTER_KERNELNAME}_Target ${CMAKE_CURRENT_BINARY_DIR}/${OUTPUT_FILE}.cl)
