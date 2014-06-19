@@ -185,7 +185,7 @@ endif()
 
 configure_file(src/itk_minc2.h.in src/itk_minc2.h)
 
-if(NOT ITK_INSTALL_NO_DEVELOPMENT)
-  install(FILES ${ITKMINC_BINARY_DIR}/src/itk_minc2.h
-    DESTINATION ${ITKMINC_INSTALL_INCLUDE_DIR})
-endif(NOT ITK_INSTALL_NO_DEVELOPMENT)
+install(FILES ${ITKMINC_BINARY_DIR}/src/itk_minc2.h
+  DESTINATION ${ITKMINC_INSTALL_INCLUDE_DIR}
+  COMPONENT Development
+  )
