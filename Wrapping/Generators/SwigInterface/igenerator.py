@@ -419,7 +419,7 @@ def get_alias(decl_string, w=True):
 
 
 def load_idx(file_name):
-    f = file(file_name)
+    f = open(file_name, "r")
     for l in f:
         (full_name, alias, module) = re.findall(r'{(.*)} {(.*)} {(.*)}', l)[0]
         # workaround lack of :: prefix in idx files
@@ -449,7 +449,7 @@ def load_mdx(file_name):
         # already loaded - no need to do it again
         return
     mdx_loaded.add(file_name)
-    f = file(file_name)
+    f = open(file_name, "r")
     ls = f.readlines()
     f.close()
     for l in ls:
@@ -761,7 +761,7 @@ for f in options.includes:
         s.add(i)
 # and the includes files from other files
 for file_name in options.take_includes:
-    f = file(file_name)
+    f = open(file_name, "r")
     for l in f:
         if l.startswith('#include'):
             i = " ".join(l.strip().split())
@@ -889,13 +889,13 @@ if options.typedef_output:
     typedefFile.write("#ifndef __%sSwigInterface_h\n" % moduleName)
     typedefFile.write("#define __%sSwigInterface_h\n" % moduleName)
     if options.typedef_input:
-        f = file(options.typedef_input)
+        f = open(options.typedef_input, "r")
         typedefFile.write(f.read() + '\n')
         f.close()
     for src in usedSources:
         typedefFile.write('#include "%sSwigInterface.h"\n' % src)
     typedefFile.write("#endif\n")
-    f = file(options.typedef_output, "w")
+    f = open(options.typedef_output, "w")
     f.write(typedefFile.getvalue())
     f.close()
 
@@ -906,11 +906,11 @@ content = headerFile.getvalue() + importFile.getvalue() + \
 
 if args[1] != '-':
     if options.keep and os.path.exists(args[1]) and \
-            file(args[1]).read() == content:
+            open(args[1], "r").read() == content:
         info("%s unchanged." % args[1])
     else:
         info("Writing %s." % args[1])
-        f = file(args[1], "w")
+        f = open(args[1], "w")
         f.write(content)
         f.close()
 else:

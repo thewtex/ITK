@@ -58,7 +58,7 @@ for typedef in wrappers_ns.typedefs():
 content = outputFile.getvalue()
 
 if idxFilePath != '-':
-    f = file(idxFilePath, "w")
+    f = open(idxFilePath, "w")
     f.write(content)
     f.close()
 else:
