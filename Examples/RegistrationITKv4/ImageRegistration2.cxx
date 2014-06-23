@@ -26,6 +26,7 @@
 
 // Software Guide : BeginLatex
 //
+// (TODO: This example should be rewritten using ITKv4 registration framework).
 // The following simple example illustrates how multiple imaging modalities can
 // be registered using the ITK registration framework. The first difference
 // between this and previous examples is the use of the
