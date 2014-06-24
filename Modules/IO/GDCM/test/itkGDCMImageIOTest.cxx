@@ -20,6 +20,7 @@
 #include "itkImageFileWriter.h"
 #include "itkRescaleIntensityImageFilter.h"
 #include "itkGDCMImageIO.h"
+#include "itkMetaDataObject.h"
 
 #include <fstream>
 
@@ -31,7 +32,7 @@ int itkGDCMImageIOTest(int ac, char* av[])
 
   if(ac < 5)
     {
-    std::cerr << "Usage: " << av[0] << " DicomImage OutputDicomImage OutputImage RescalDicomImage\n";
+    std::cerr << "Usage: " << av[0] << " DicomImage OutputDicomImage OutputImage RescaleDicomImage\n";
     return EXIT_FAILURE;
     }
 
@@ -96,7 +97,6 @@ int itkGDCMImageIOTest(int ac, char* av[])
     }
 
   // Rewrite the image in DICOM format
-  //
   typedef itk::ImageFileWriter< InputImageType >  Writer1Type;
   Writer1Type::Pointer writer1 = Writer1Type::New();
   writer1->SetFileName( av[2] );
@@ -150,6 +150,14 @@ int itkGDCMImageIOTest(int ac, char* av[])
   writer3->SetFileName( av[4] );
   writer3->SetInput( rescaler->GetOutput() );
   writer3->UseInputMetaDataDictionaryOff ();
+  itk::MetaDataDictionary & dict = gdcmImageIO->GetMetaDataDictionary();
+  std::ostringstream ostrm;
+  ostrm << itk::Math::Round< int, double >( -1. * rescaler->GetShift() );
+  itk::EncapsulateMetaData< std::string >( dict, "0028|1052", ostrm.str() );
+  ostrm.str( "" );
+  ostrm << itk::Math::Ceil< int, double >( 1. / rescaler->GetScale() );
+  itk::EncapsulateMetaData< std::string >( dict, "0028|1053", ostrm.str() );
+  gdcmImageIO->SetInternalComponentType( itk::ImageIOBase::UCHAR );
   writer3->SetImageIO( gdcmImageIO );
 
   try
