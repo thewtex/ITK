@@ -239,6 +239,14 @@ public:
   /** Get the number of element in each dimension of the generated mesh */
   itkGetConstReferenceMacro(NumberOfElements, SizeType);
 
+  /** set Young Modulus*/
+  itkSetMacro(YoungModulus, double);
+  itkGetConstMacro(YoungModulus, double);
+
+  /** set Poisson Modulus*/
+  itkSetMacro(PoissonRatio, double);
+  itkGetConstMacro(PoissonRatio, double);
+
 protected:
 
   FEMScatteredDataPointSetToImageFilter();
@@ -295,6 +303,8 @@ private:
 
   /** Material */
   MaterialPointerType m_Material;
+  double              m_YoungModulus;
+  double              m_PoissonRatio;
 };
 
 }// end namespace fem

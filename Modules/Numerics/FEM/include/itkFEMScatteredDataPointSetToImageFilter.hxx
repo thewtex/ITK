@@ -42,8 +42,10 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
 {
   this->m_FEMObject = FEMObjectType::New();
   this->m_Material = MaterialType::New();
-  this->m_Material->SetYoungsModulus(694.0);
-  this->m_Material->SetPoissonsRatio(0.45);
+  this->m_YoungModulus = 0.0021;
+  this->m_PoissonRatio = 0.45;
+  this->m_Material->SetYoungsModulus(this->m_YoungModulus);
+  this->m_Material->SetPoissonsRatio(this->m_PoissonRatio);
   this->m_FEMSolver = FEMSolverType::New();
 
   itk::FEMFactoryBase::GetFactory()->RegisterDefaultTypes();
@@ -331,6 +333,8 @@ FEMScatteredDataPointSetToImageFilter<TInputPointSet, TInputMesh, TOutputImage, 
     }
 
   materialContainer->Initialize();
+  this->m_Material->SetYoungsModulus(this->GetYoungModulus());
+  this->m_Material->SetPoissonsRatio(this->GetPoissonRatio());
 
   // fix material to linear elasticity
   femObject->AddNextMaterial(this->m_Material);

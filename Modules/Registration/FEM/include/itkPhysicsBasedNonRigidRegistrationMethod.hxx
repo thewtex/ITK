@@ -35,11 +35,15 @@ PhysicsBasedNonRigidRegistrationMethod<TFixedImage, TMovingImage, TMaskImage, TM
 {
   // defaults
   this->m_NonConnectivity = 0; // VERTEX_CONNECTIVITY
-  this->m_SelectFraction = 0.1;
-  this->m_BlockRadius.Fill( 2 );
+  this->m_YoungModulus = 0.0021;
+  this->m_PoissonRatio = 0.45;
+  this->m_SelectFraction = 0.05;
+  this->m_RejectFraction = 0.25;
+  this->m_BlockRadius.Fill( 1 );
   this->m_SearchRadius.Fill( 5 );
-  this->m_ApproximationSteps = 10;
-  this->m_OutlierRejectionSteps = 10;
+  this->m_ApproximationSteps = 5;
+  this->m_OutlierRejectionSteps = 5;
+
 
   // setup internal pipeline
   this->m_FeatureSelectionFilter = FeatureSelectionFilterType::New();
@@ -75,6 +79,9 @@ PhysicsBasedNonRigidRegistrationMethod<TFixedImage, TMovingImage, TMaskImage, TM
   os << indent << "m_BlockRadius: " << m_BlockRadius << std::endl
      << indent << "m_SearchRadius: " << m_SearchRadius << std::endl
      << indent << "m_SelectFraction: " << m_SelectFraction << std::endl
+     << indent << "m_RejectFraction: " << m_RejectFraction << std::endl
+     << indent << "m_YoungModulus: " << m_YoungModulus << std::endl
+     << indent << "m_PoissonRatio: " << m_PoissonRatio << std::endl
      << indent << "m_NonConnectivity: " << m_NonConnectivity << std::endl
      << indent << "m_ApproximationSteps: " << m_ApproximationSteps << std::endl
      << indent << "m_OutlierRejectionSteps: " << m_OutlierRejectionSteps << std::endl;
@@ -110,6 +117,9 @@ PhysicsBasedNonRigidRegistrationMethod<TFixedImage, TMovingImage, TMaskImage, TM
   typename FEMFilterType::FEMSolverType * femSolver = this->m_FEMFilter->GetModifiableFEMSolver();
   femSolver->SetApproximationSteps( this->m_ApproximationSteps );
   femSolver->SetOutlierRejectionSteps( this->m_OutlierRejectionSteps );
+  femSolver->SetFractionErrorRejected( this->m_RejectFraction );
+  this->m_FEMFilter->SetYoungModulus( this->m_YoungModulus );
+  this->m_FEMFilter->SetPoissonRatio( this->m_PoissonRatio );
 
   // graft our output to the filter to force the proper regions to be generated
   this->m_FEMFilter->GraftOutput( this->GetOutput() );

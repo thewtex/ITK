@@ -100,6 +100,18 @@ public:
   itkSetMacro(SelectFraction, double);
   itkGetConstMacro(SelectFraction, double);
 
+  /** set fraction of the rejected outliers */
+  itkSetMacro(RejectFraction, double);
+  itkGetConstMacro(RejectFraction, double);
+
+  /** set Young Modulus*/
+  itkSetMacro(YoungModulus, double);
+  itkGetConstMacro(YoungModulus, double);
+
+  /** set Poisson Modulus*/
+  itkSetMacro(PoissonRatio, double);
+  itkGetConstMacro(PoissonRatio, double);
+
   /** set/get non-connectivity */
   itkSetMacro(NonConnectivity, unsigned int);
   itkGetConstMacro(NonConnectivity, unsigned int);
@@ -137,7 +149,8 @@ public:
   itkGetInputMacro(Mesh, MeshType);
 
   /** get FEMFilter */
-  itkGetConstObjectMacro(FEMFilter, FEMFilterType);
+  itkGetObjectMacro(FEMFilter, FEMFilterType);
+
 
 #ifdef ITK_USE_CONCEPT_CHECKING
   // Begin concept checking
@@ -170,6 +183,9 @@ private:
 
   // algorithm parameters
   double         m_SelectFraction;
+  double         m_RejectFraction;
+  double         m_YoungModulus;
+  double         m_PoissonRatio;
   unsigned int   m_NonConnectivity;
   ImageSizeType  m_BlockRadius;
   ImageSizeType  m_SearchRadius;
