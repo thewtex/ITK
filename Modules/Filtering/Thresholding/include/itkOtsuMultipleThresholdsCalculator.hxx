@@ -232,7 +232,19 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
     classMean[numberOfClasses - 1] = NumericTraits< MeanType >::Zero;
     }
 
-  VarianceType maxVarBetween = NumericTraits< VarianceType >::Zero;
+  //
+  // The "volatile" modifier is used here for preventing the variable from
+  // being kept in 80 bit FPU registers when using 32-bit x86 processors with
+  // SSE instructions disabled. A case that arised in the Debian 32-bits
+  // distribution.
+  //
+  volatile VarianceType maxVarBetween = NumericTraits< VarianceType >::Zero;
+  //
+  // The introduction of the "volatile" modifier forces the compiler to keep
+  // the variable in memory and therefore store it in the IEEE float/double
+  // format. In this way making numerical results consistent across platforms.
+  //
+
   for ( j = 0; j < numberOfClasses; j++ )
     {
     maxVarBetween += (static_cast< VarianceType >( classFrequency[j] ))
@@ -256,7 +268,20 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
   // yields maximum between-class variance
   while ( Self::IncrementThresholds(thresholdIndexes, globalMean, classMean, classFrequency) )
     {
-    VarianceType varBetween = NumericTraits< VarianceType >::Zero;
+
+    //
+    // The "volatile" modifier is used here for preventing the variable from
+    // being kept in 80 bit FPU registers when using 32-bit x86 processors with
+    // SSE instructions disabled. A case that arised in the Debian 32-bits
+    // distribution.
+    //
+    volatile VarianceType varBetween = NumericTraits< VarianceType >::Zero;
+    //
+    // The introduction of the "volatile" modifier forces the compiler to keep
+    // the variable in memory and therefore store it in the IEEE float/double
+    // format. In this way making numerical results consistent across platforms.
+    //
+
     for ( j = 0; j < numberOfClasses; j++ )
       {
       // The true between-class variance \sigma_B^2 for any number of classes is defined as:
