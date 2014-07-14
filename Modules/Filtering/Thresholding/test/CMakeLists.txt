@@ -285,6 +285,7 @@ itk_add_test(NAME itkMomentsThresholdImageFilterTestShort
 
 itk_add_test(NAME itkOtsuThresholdImageFilterTestShort
       COMMAND ITKThresholdingTestDriver
+    --compareNumberOfPixelsTolerance 1
     --compare DATA{Baseline/itkOtsuThresholdImageFilterTestShort.png}
               ${ITK_TEST_OUTPUT_DIR}/itkOtsuThresholdImageFilterTestShort.png
     itkOtsuThresholdImageFilterTest DATA{${ITK_DATA_ROOT}/Input/Input-RA-Short.nrrd} ${ITK_TEST_OUTPUT_DIR}/itkOtsuThresholdImageFilterTestShort.png)
