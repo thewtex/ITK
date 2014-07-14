@@ -23,6 +23,7 @@
 #include "itkTextOutput.h"
 #include "itkBSplineSmoothingOnUpdateDisplacementFieldTransform.h"
 #include "itkImageMaskSpatialObject.h"
+#include "itkTimeProbe.h"
 
 #include <iostream>
 
@@ -47,7 +48,7 @@
  */
 template< typename TImage, typename TInterpolator>
 int TestMattesMetricWithAffineTransform(
-  TInterpolator * const interpolator, const bool useSampling )
+  TInterpolator * const interpolator, const bool useSampling, const size_t imageSize )
 {
 
 //------------------------------------------------------------
@@ -59,8 +60,8 @@ int TestMattesMetricWithAffineTransform(
   typedef TImage           FixedImageType;
 
   const unsigned int ImageDimension = MovingImageType::ImageDimension;
-
-  typename MovingImageType::SizeType size = {{100,100}};
+  //Image size is scaled to represent sqrt(256^3)
+  typename MovingImageType::SizeType size = {{imageSize,imageSize}};
   typename MovingImageType::IndexType index = {{0,0}};
   typename MovingImageType::RegionType region;
   region.SetSize( size );
@@ -277,13 +278,20 @@ int TestMattesMetricWithAffineTransform(
 
   bool testFailed = false;
 
+  itk::TimeProbe timerGetValueAndDerivative;
+  itk::TimeProbe timerGetValue;
+
   std::cout << "param[4]\tMI\tMI2\tdMI/dparam[4]" << std::endl;
   for( double trans = -10; trans <= 10; trans += 0.5 )
     {
     parameters[4] = trans;
     transformer->SetParameters( parameters );
+    timerGetValueAndDerivative.Start();
     metric->GetValueAndDerivative( metricValueWithDerivative, derivative );
+    timerGetValueAndDerivative.Stop();
+    timerGetValue.Start();
     metricValueOnly = metric->GetValue();
+    timerGetValue.Stop();
 
     std::cout << "OffsetParam: " << trans << "\tvalueWithDerivative: " << metricValueWithDerivative << "\tvalueOnly: " <<
       metricValueOnly << "\tderivative[4]: " << derivative[4];
@@ -301,6 +309,8 @@ int TestMattesMetricWithAffineTransform(
       std::cout << "\t[PASSED]" << std::endl;
       }
     }
+  std::cerr << "GetValueAndDerivative took " << timerGetValueAndDerivative.GetMean() << " seconds.\n";
+  std::cerr << "GetValue took " << timerGetValue.GetMean() << " seconds.\n";
 
   std::cout << "NumberOfValidPoints: " << metric->GetNumberOfValidPoints() << " of " << metric->GetVirtualRegion().GetNumberOfPixels() << std::endl;
 
@@ -314,8 +324,6 @@ int TestMattesMetricWithAffineTransform(
 
   ParametersType parametersPlus( numberOfParameters );
   ParametersType parametersMinus( numberOfParameters );
-  typename MetricType::MeasureType measurePlus;
-  typename MetricType::MeasureType measureMinus;
 
   const double delta = 0.001;
 
@@ -338,19 +346,19 @@ int TestMattesMetricWithAffineTransform(
       }
 
     transformer->SetParameters( parametersPlus );
-    measurePlus = metric->GetValue();
+    const typename MetricType::MeasureType measurePlus = metric->GetValue();
 
     transformer->SetParameters( parametersMinus );
-    measureMinus = metric->GetValue();
+    const typename MetricType::MeasureType measureMinus = metric->GetValue();
 
     const double approxDerivative = -1.0 * ( measurePlus - measureMinus ) / ( 2.0 * delta );
     const double ratio = derivative[perturbParamIndex]/approxDerivative;
 
     std::cout << "perturbParamIndex: " << perturbParamIndex
-      << "\tparameters[]: " << parameters[perturbParamIndex]
-      << "\tderivative[]" << derivative[perturbParamIndex]
-      << "\tapproxDerivative[]" << approxDerivative
-      << "\tratio: " << ratio;
+      << "\tparameters[: " << parameters[perturbParamIndex]
+      << "]\tmetric->GetDerivative[" << derivative[perturbParamIndex]
+      << "]\tapproxDerivative[" << approxDerivative
+      << "]\tratio: " << ratio;
 
     const double evalDiff = vnl_math_abs( ratio - 1.0 );
     if ( evalDiff > tolerance )
@@ -392,6 +400,8 @@ int TestMattesMetricWithAffineTransform(
 int itkMattesMutualInformationImageToImageMetricv4Test(int, char *[] )
 {
 
+  const size_t imageSize = 100; //NOTE 100 is very small
+
   //typedef itk::Image<unsigned char,2> ImageType;
   typedef itk::Image<double,2> ImageType;
 
@@ -404,7 +414,7 @@ int itkMattesMutualInformationImageToImageMetricv4Test(int, char *[] )
 
   std::cout << "Test metric with a linear interpolator." << std::endl;
   bool useSampling = false;
-  int failed = TestMattesMetricWithAffineTransform<ImageType,LinearInterpolatorType>( linearInterpolator, useSampling );
+  int failed = TestMattesMetricWithAffineTransform<ImageType,LinearInterpolatorType>( linearInterpolator, useSampling, imageSize );
   if ( failed )
     {
     std::cout << "Test failed when using all the pixels instead of sampling" << std::endl;
@@ -412,7 +422,7 @@ int itkMattesMutualInformationImageToImageMetricv4Test(int, char *[] )
     }
 
   useSampling = true;
-  failed = TestMattesMetricWithAffineTransform<ImageType,LinearInterpolatorType>( linearInterpolator, useSampling );
+  failed = TestMattesMetricWithAffineTransform<ImageType,LinearInterpolatorType>( linearInterpolator, useSampling, imageSize );
   if ( failed )
     {
     std::cout << "Test failed" << std::endl;
@@ -428,7 +438,7 @@ int itkMattesMutualInformationImageToImageMetricv4Test(int, char *[] )
 
   useSampling = false;
   std::cout << "Test metric with a BSpline interpolator." << std::endl;
-  failed = TestMattesMetricWithAffineTransform<ImageType,BSplineInterpolatorType>( bSplineInterpolator, useSampling );
+  failed = TestMattesMetricWithAffineTransform<ImageType,BSplineInterpolatorType>( bSplineInterpolator, useSampling, imageSize );
   if ( failed )
     {
     std::cout << "Test failed when using all the pixels instead of sampling" << std::endl;
