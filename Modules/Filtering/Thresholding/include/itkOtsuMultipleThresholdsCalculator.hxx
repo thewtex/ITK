@@ -232,12 +232,23 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
     classMean[numberOfClasses - 1] = NumericTraits< MeanType >::Zero;
     }
 
-  VarianceType maxVarBetween = NumericTraits< VarianceType >::Zero;
+  //
+  // Use highest precision possible for intermediate computations by using the
+  // long double type. This prevents differences in computation between
+  // 64-bits and 32-bits platforms that may have SSE disabled.
+  // In 32bits with SSE disabled, intermediate FPU computations will use 80bits floats,
+  // while those with SSE enabled, or with 64bits will use 64bits double types.
+  //
+  typedef long double InterVarianceType;
+
+  InterVarianceType maxVarBetween = NumericTraits< InterVarianceType >::Zero;
   for ( j = 0; j < numberOfClasses; j++ )
     {
-    maxVarBetween += (static_cast< VarianceType >( classFrequency[j] ) / static_cast< VarianceType >( globalFrequency ))
-      * static_cast< VarianceType >( ( classMean[j] ) * ( classMean[j] ) );
+    const InterVarianceType currentClassMean = static_cast< InterVarianceType >( classMean[j] );
+    maxVarBetween += (static_cast< InterVarianceType >( classFrequency[j] ))
+      * ( currentClassMean * currentClassMean );
     }
+  maxVarBetween /= static_cast< InterVarianceType >( globalFrequency );
 
   // Sum the relevant weights for valley emphasis
   WeightType valleyEmphasisFactor = NumericTraits< WeightType >::Zero;
@@ -255,7 +266,7 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
   // yields maximum between-class variance
   while ( Self::IncrementThresholds(thresholdIndexes, globalMean, classMean, classFrequency) )
     {
-    VarianceType varBetween = NumericTraits< VarianceType >::Zero;
+    InterVarianceType varBetween = NumericTraits< InterVarianceType >::Zero;
     for ( j = 0; j < numberOfClasses; j++ )
       {
       // The true between-class variance \sigma_B^2 for any number of classes is defined as:
@@ -270,9 +281,11 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
       // Since we are looking for the argmax, the second term can be ignored because it is a constant, leading to the simpler
       // (\sum_{k=1}^{M} \omega_k \mu_k^2), which is what is implemented here.
       // Although this is no longer truly a "between class variance", we keep that name since it is only different by a constant.
-      varBetween += (static_cast< VarianceType >( classFrequency[j] ) / static_cast< VarianceType >( globalFrequency ))
-              * static_cast< VarianceType >( ( classMean[j] ) * ( classMean[j] ) );
+      const InterVarianceType currentClassMean = static_cast< InterVarianceType >( classMean[j] );
+      varBetween += (static_cast< InterVarianceType >( classFrequency[j] ))
+              * ( currentClassMean * currentClassMean );
       }
+    varBetween /= static_cast< InterVarianceType >( globalFrequency );
 
     if (m_ValleyEmphasis)
     {
