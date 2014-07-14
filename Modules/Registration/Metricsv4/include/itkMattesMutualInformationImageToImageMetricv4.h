@@ -25,6 +25,8 @@
 #include "itkBSplineDerivativeKernelFunction.h"
 #include "itkArray2D.h"
 
+#include "itkSimpleFastMutexLock.h"
+
 namespace itk
 {
 
@@ -183,11 +185,7 @@ public:
    */
   const typename JointPDFDerivativesType::Pointer GetJointPDFDerivatives () const
     {
-    if( this->m_ThreaderJointPDFDerivatives.size() == 0 )
-      {
-      return typename JointPDFDerivativesType::Pointer(ITK_NULLPTR);
-      }
-    return this->m_ThreaderJointPDFDerivatives[0];
+    return this->m_JointPDFDerivatives;
     }
 
 protected:
@@ -252,8 +250,114 @@ protected:
   mutable std::vector<std::vector<PDFValueType> > m_ThreaderFixedImageMarginalPDF;
 
   /** The joint PDF and PDF derivatives. */
-  typename std::vector<typename JointPDFType::Pointer>            m_ThreaderJointPDF;
-  typename std::vector<typename JointPDFDerivativesType::Pointer> m_ThreaderJointPDFDerivatives;
+  typename std::vector<typename JointPDFType::Pointer>    m_ThreaderJointPDF;
+
+  /** \class DerivativeBufferManager
+   * A helper class to manage complexities of minimizing memory
+   * needs for mattes mutual information derivative computations
+   * per thread.
+   */
+  class DerivativeBufferManager
+    {
+    typedef DerivativeBufferManager Self;
+
+  public:
+    void Initialize( const size_t MaxBufferLength, const size_t CachedNumberOfLocalParameters,
+      itk::SimpleFastMutexLock * parentDerivativeLockPtr,
+      typename JointPDFDerivativesType::Pointer parentJointPDFDerivatives )
+      {
+      m_CurrentFillSize=0;
+      m_MemoryBlockSize=CachedNumberOfLocalParameters*MaxBufferLength;
+      m_BufferPDFValuesContainer.resize(MaxBufferLength,ITK_NULLPTR);
+      m_BufferOffsetContainer.resize(MaxBufferLength,0);
+      m_CachedNumberOfLocalParameters=CachedNumberOfLocalParameters;
+      m_MaxBufferSize=MaxBufferLength;
+      m_ParentJointPDFDerivativesLockPtr=parentDerivativeLockPtr;
+      m_ParentJointPDFDerivatives=parentJointPDFDerivatives;
+      //Allocate and initialize to zero (note the () at the end of the new operator)
+      //the memory as a single block
+      m_MemoryBlock.resize(m_MemoryBlockSize,0.0);
+      for (size_t index=0; index < MaxBufferLength; ++index)
+        {
+        this->m_BufferPDFValuesContainer[index]=&(this->m_MemoryBlock[0])+index*m_CachedNumberOfLocalParameters;
+        }
+      }
+
+    DerivativeBufferManager():
+      m_CurrentFillSize(0),
+      m_MemoryBlock(0)
+    {}
+    ~DerivativeBufferManager() {}
+
+    size_t GetCachedNumberOfLocalParameters() const
+      {
+      return this->m_CachedNumberOfLocalParameters;
+      }
+
+    //If offset is same as previous offset, then accumulate with previous
+    PDFValueType * GetNextElementAndAddOffset(const OffsetValueType & offset)
+      {
+      m_BufferOffsetContainer[m_CurrentFillSize] = offset;
+      PDFValueType * PDFBufferForWriting = m_BufferPDFValuesContainer[m_CurrentFillSize];
+      ++m_CurrentFillSize; //Increment to next element
+      if(m_CurrentFillSize ==  m_MaxBufferSize)
+        {
+        this->WriteBufferToPDFDerivative();
+        }
+      return PDFBufferForWriting;
+      }
+
+    // Simply reset the entire cache to all zeros
+    void WriteBufferToPDFDerivative()
+      {
+      this->m_ParentJointPDFDerivativesLockPtr->Lock(); //Need a lock while we dump the buffer.
+
+      typename std::vector< OffsetValueType >::iterator BufferOffsetContainerIter(this->m_BufferOffsetContainer.begin());
+      typename std::vector< PDFValueType * >::iterator  BufferPDFValuesContainerIter(this->m_BufferPDFValuesContainer.begin());
+      typename std::vector< PDFValueType * >::const_iterator EndPDFValuesContainter( this->m_BufferPDFValuesContainer.end() );
+
+      while(BufferPDFValuesContainerIter != EndPDFValuesContainter)
+        {
+        const OffsetValueType ThisIndexOffset = *BufferOffsetContainerIter;
+        JointPDFDerivativesValueType *derivPtr = this->m_ParentJointPDFDerivatives->GetBufferPointer() + ThisIndexOffset;
+
+        PDFValueType * derivativeContribution = *BufferPDFValuesContainerIter;
+        const PDFValueType * const endContribution = derivativeContribution+m_CachedNumberOfLocalParameters;
+        while( derivativeContribution < endContribution )
+          {
+          *( derivPtr ) += *( derivativeContribution );
+          // NOTE: Preliminary inconclusive tests indicates that setting to zero
+          // while it's local in cache is faster than bulk memset after the loop
+          // for small data sets
+          *( derivativeContribution ) = 0.0; //Reset to zero after getting value
+          ++derivativeContribution;
+          ++derivPtr;
+          }
+          ++BufferOffsetContainerIter;
+          ++BufferPDFValuesContainerIter;
+        }
+      this->m_ParentJointPDFDerivativesLockPtr->Unlock();
+      m_CurrentFillSize = 0; //Reset fill size back to zero.
+      }
+
+  private:
+    //DerivativeBufferManager(const Self &); //purposely not implemented
+    //void operator = (const Self &); //purposely not implemented
+
+    size_t                                    m_CurrentFillSize; //How many AccumlatorElements used
+    std::vector<PDFValueType>                 m_MemoryBlock; //Continguous chunk of memory for efficiency
+    size_t                                    m_MemoryBlockSize; //The (number of lines in the buffer) * (cells per line)
+    std::vector< PDFValueType * >             m_BufferPDFValuesContainer;
+    std::vector< OffsetValueType >            m_BufferOffsetContainer;
+    size_t                                    m_CachedNumberOfLocalParameters;
+    size_t                                    m_MaxBufferSize;
+    itk::SimpleFastMutexLock                * m_ParentJointPDFDerivativesLockPtr; //Reference to parent version
+    typename JointPDFDerivativesType::Pointer m_ParentJointPDFDerivatives; //Reference to parent version
+    };
+
+  std::vector< DerivativeBufferManager >    m_ThreaderDerivativeManager;
+  itk::SimpleFastMutexLock                  m_JointPDFDerivativesLock;
+  typename JointPDFDerivativesType::Pointer m_JointPDFDerivatives;
 
   mutable PDFValueType m_JointPDFSum;
 

@@ -106,8 +106,19 @@ protected:
         DerivativeType &                  localDerivativeReturn,
         const ThreadIdType                threadId ) const;
 
+private:
+  MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); // purposely not implemented
+  void operator=( const Self & ); // purposely not implemented
+
+
+
+  /** Internal pointer to the Mattes metric object in use by this threader.
+   *  This will avoid costly dynamic casting in tight loops. */
+  TMattesMutualInformationMetric * m_MattesAssociate;
+
   /** Compute PDF derivative contribution for each parameter of a global support transform type. */
-  virtual void ComputePDFDerivativesGlobalSupportTransform(const ThreadIdType &    threadId,
+  inline void ComputePDFDerivativesGlobalSupportTransform( std::vector<PDFValueType> &derivativeContribution,
+                             const size_t                    localNumberOfThreadsUsed,
                              const OffsetValueType &         fixedImageParzenWindowIndex,
                              const JacobianType &            jacobian,
                              const OffsetValueType &         pdfMovingIndex,
@@ -115,19 +126,12 @@ protected:
                              const PDFValueType &            cubicBSplineDerivativeValue) const;
 
   /** Compute PDF derivative contribution for each parameter of a displacement field. */
-  virtual void ComputePDFDerivativesLocalSupportTransform(
+  inline void ComputePDFDerivativesLocalSupportTransform(
                              const JacobianType &            jacobian,
                              const MovingImageGradientType & movingGradient,
                              const PDFValueType &            cubicBSplineDerivativeValue,
                              DerivativeValueType *           localSupportDerivativeResultPtr) const;
 
-private:
-  MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader( const Self & ); // purposely not implemented
-  void operator=( const Self & ); // purposely not implemented
-
-  /** Internal pointer to the Mattes metric object in use by this threader.
-   *  This will avoid costly dynamic casting in tight loops. */
-  TMattesMutualInformationMetric * m_MattesAssociate;
 };
 
 } // end namespace itk
