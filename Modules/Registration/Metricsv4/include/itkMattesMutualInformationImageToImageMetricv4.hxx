@@ -47,7 +47,7 @@ MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualI
 
   // For multi-threading the metric
   m_ThreaderJointPDF(0),
-  m_ThreaderJointPDFDerivatives(0),
+  m_JointPDFDerivatives(ITK_NULLPTR),
   m_JointPDFSum(0.0)
 {
   // We have our own GetValueAndDerivativeThreader's that we want
@@ -271,9 +271,9 @@ MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualI
           // Collect global derivative contributions
 
           // move joint pdf derivative pointer to the right position
-          JointPDFValueType const * derivPtr = this->m_ThreaderJointPDFDerivatives[0]->GetBufferPointer()
-            + ( fixedIndex  * this->m_ThreaderJointPDFDerivatives[0]->GetOffsetTable()[2] )
-            + ( movingIndex * this->m_ThreaderJointPDFDerivatives[0]->GetOffsetTable()[1] );
+          JointPDFValueType const * derivPtr = this->m_JointPDFDerivatives->GetBufferPointer()
+            + ( fixedIndex  * this->m_JointPDFDerivatives->GetOffsetTable()[2] )
+            + ( movingIndex * this->m_JointPDFDerivatives->GetOffsetTable()[1] );
           for( unsigned int parameter = 0, lastParameter = this->GetNumberOfLocalParameters();
                parameter < lastParameter;
                ++parameter, derivPtr++ )
