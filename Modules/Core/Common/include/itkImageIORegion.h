@@ -160,12 +160,13 @@ private:
   SizeType     m_Size;
 };
 
+
 // Declare operator<<
 extern ITKCommon_EXPORT std::ostream & operator<<(std::ostream & os, const ImageIORegion & region);
 
+
 /** \class ImageIORegionAdaptor
  * \brief Helper class for converting ImageRegions into ImageIORegions and back.
- *
  *
  * \ingroup ITKCommon
  */
@@ -197,12 +198,20 @@ public:
     const unsigned int ioDimension = outIORegion.GetImageDimension();
     const unsigned int imageDimension = VDimension;
 
-    unsigned int minDimension = ( ioDimension > imageDimension ) ? imageDimension : ioDimension;
+    unsigned int minDimension = 0;
+    if( ioDimension > imageDimension )
+      {
+      minDimension = imageDimension;
+      }
+    else
+      {
+      minDimension = ioDimension;
+      }
 
-    ImageSizeType  size  = inImageRegion.GetSize();
-    ImageIndexType index = inImageRegion.GetIndex();
+    const ImageSizeType & size = inImageRegion.GetSize();
+    const ImageIndexType & index = inImageRegion.GetIndex();
 
-    for ( unsigned int i = 0; i < minDimension; i++ )
+    for( unsigned int i = 0; i < minDimension; ++i )
       {
       outIORegion.SetSize(i, size[i]);
       outIORegion.SetIndex(i, index[i] - largestRegionIndex[i]);
@@ -211,7 +220,7 @@ public:
     //
     // Fill in the remaining codimension (if any) with default values
     //
-    for ( unsigned int k = minDimension; k < ioDimension; k++ )
+    for( unsigned int k = minDimension; k < ioDimension; ++k )
       {
       outIORegion.SetSize(k, 1);    // Note that default size in IO is 1 not 0
       outIORegion.SetIndex(k, 0);
@@ -242,9 +251,17 @@ public:
     const unsigned int ioDimension = inIORegion.GetImageDimension();
     const unsigned int imageDimension = VDimension;
 
-    unsigned int minDimension = ( ioDimension > imageDimension ) ? imageDimension : ioDimension;
+    unsigned int minDimension = 0;
+    if( ioDimension > imageDimension )
+      {
+      minDimension = imageDimension;
+      }
+    else
+      {
+      minDimension = ioDimension;
+      }
 
-    for ( unsigned int i = 0; i < minDimension; i++ )
+    for( unsigned int i = 0; i < minDimension; ++i )
       {
       size[i]  = inIORegion.GetSize(i);
       index[i] = inIORegion.GetIndex(i) + largestRegionIndex[i];
