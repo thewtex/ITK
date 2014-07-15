@@ -288,8 +288,16 @@ void Rescaler::InverseRescaleFunctionIntoBestFit(char *out, const TIn *in, size_
 
 bool Rescaler::InverseRescale(char *out, const char *in, size_t n)
 {
+  bool fastpath = true;
+
+  const PixelFormat outputFormat = ComputePixelTypeFromMinMax();
+  if( outputFormat != PF )
+    {
+    fastpath = false;
+    }
+
   // fast path:
-  if( Slope == 1 && Intercept == 0 )
+  if( fastpath && (Slope == 1 && Intercept == 0) )
     {
     memcpy(out,in,n);
     return true;
