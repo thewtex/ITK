@@ -89,10 +89,6 @@ int main()
   //
   // Software Guide : EndLatex
 
-  // Software Guide : BeginCodeSnippet
-  typedef PointSetType::PointType MeasurementVectorType;
-  // Software Guide : EndCodeSnippet
-
   // Software Guide : BeginLatex
   //
   // To make the example a little bit realistic, we add two point
