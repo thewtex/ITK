@@ -215,8 +215,9 @@ private:
   unsigned int m_MinimumObjectSizeInPixels;
 
   // Binary threshold variables
-  PixelType m_OutsideValue;
-  PixelType m_InsideValue;
+  OutputPixelType m_OutsideValue;
+  OutputPixelType m_InsideValue;
+
   PixelType m_LowerBoundary;
   PixelType m_UpperBoundary;
 
