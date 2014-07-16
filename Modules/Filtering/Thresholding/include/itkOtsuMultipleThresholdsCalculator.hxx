@@ -18,7 +18,10 @@
 #ifndef __itkOtsuMultipleThresholdsCalculator_hxx
 #define __itkOtsuMultipleThresholdsCalculator_hxx
 
+#include "itkMath.h"
 #include "itkOtsuMultipleThresholdsCalculator.h"
+#include <numeric>
+
 
 namespace itk
 {
@@ -53,11 +56,8 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
 {
   typename TInputHistogram::ConstPointer histogram = this->GetInputHistogram();
 
-  SizeValueType numberOfHistogramBins = histogram->Size();
-  SizeValueType numberOfClasses = classMean.size();
-
-  MeanType      meanOld;
-  FrequencyType freqOld;
+  const SizeValueType numberOfHistogramBins = histogram->Size();
+  const SizeValueType numberOfClasses = classMean.size();
 
   unsigned int k;
   int          j;
@@ -73,8 +73,8 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
       // threshold
       ++thresholdIndexes[j];
 
-      meanOld = classMean[j];
-      freqOld = classFrequency[j];
+      const MeanType meanOld = classMean[j];
+      const FrequencyType freqOld = classFrequency[j];
 
       classFrequency[j] += histogram->GetFrequency(thresholdIndexes[j]);
 
@@ -165,7 +165,7 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
   typename TInputHistogram::ConstIterator end = histogram->End();
 
   MeanType      globalMean = NumericTraits< MeanType >::Zero;
-  FrequencyType globalFrequency = histogram->GetTotalFrequency();
+  const FrequencyType globalFrequency = histogram->GetTotalFrequency();
   while ( iter != end )
     {
     globalMean += static_cast< MeanType >( iter.GetMeasurementVector()[0] )
@@ -185,7 +185,8 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
     thresholdIndexes[j] = j;
     }
 
-  InstanceIdentifierVectorType maxVarThresholdIndexes = thresholdIndexes;
+  std::vector<InstanceIdentifierVectorType> maxVarThresholdIndexes;
+  maxVarThresholdIndexes.push_back( thresholdIndexes );
 
   // compute frequency and mean of initial classes
   FrequencyType       freqSum = NumericTraits< FrequencyType >::Zero;
@@ -288,19 +289,42 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
       varBetween = varBetween * valleyEmphasisFactor;
     }
 
-    if ( varBetween > maxVarBetween )
+    //std::cout << "varBetween: " << std::setprecision(20) << varBetween << " " << thresholdIndexes[0] << std::endl;
+    // There may be flat spots in the histogram between classes,
+    // causing uncertainty in the threshold.
+    // we'll keep track of these near best values.
+    const unsigned int maxUlps = 8;
+    if ( Math::FloatAlmostEqual( maxVarBetween, varBetween, maxUlps) )
+      {
+       maxVarThresholdIndexes.push_back(thresholdIndexes);
+      }
+    else if ( varBetween > maxVarBetween )
       {
       maxVarBetween = varBetween;
-      maxVarThresholdIndexes = thresholdIndexes;
+      maxVarThresholdIndexes.resize(1);
+      maxVarThresholdIndexes[0] = thresholdIndexes;
       }
     }
 
   // copy corresponding bin max to threshold vector
   m_Output.resize(m_NumberOfThresholds);
+  InstanceIdentifierVectorType indexes = maxVarThresholdIndexes[0];
+
+  std::cout << "-------There are " << indexes.size() << " thresholds close!" << std::endl;
+
+  if ( m_NumberOfThresholds == 1 && indexes.size() > 1 )
+    {
+    indexes[0] = 0;
+    for(j = 0; j < indexes.size(); ++j)
+      {
+      indexes[0] += maxVarThresholdIndexes[j][0];
+      }
+    indexes[0] /= indexes.size();
+    }
 
   for ( j = 0; j < m_NumberOfThresholds; j++ )
     {
-    m_Output[j] = histogram->GetMeasurement(maxVarThresholdIndexes[j],0);
+    m_Output[j] = histogram->GetMeasurement(indexes[j],0);
     }
 }
 
