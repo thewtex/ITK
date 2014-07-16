@@ -19,6 +19,7 @@
 #define __itkOtsuMultipleThresholdsCalculator_hxx
 
 #include "itkOtsuMultipleThresholdsCalculator.h"
+#include "itkCompensatedSummation.h"
 
 namespace itk
 {
@@ -164,15 +165,16 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
   typename TInputHistogram::ConstIterator iter = histogram->Begin();
   typename TInputHistogram::ConstIterator end = histogram->End();
 
-  MeanType      globalMean = NumericTraits< MeanType >::Zero;
+  typedef CompensatedSummation< MeanType > MeanSumType;
+  MeanSumType globalMeanSum;
   FrequencyType globalFrequency = histogram->GetTotalFrequency();
   while ( iter != end )
     {
-    globalMean += static_cast< MeanType >( iter.GetMeasurementVector()[0] )
+    globalMeanSum += static_cast< MeanType >( iter.GetMeasurementVector()[0] )
                   * static_cast< MeanType >( iter.GetFrequency() );
     ++iter;
     }
-  globalMean /= static_cast< MeanType >( globalFrequency );
+  const MeanType globalMean = globalMeanSum.GetSum() / static_cast< MeanType >( globalFrequency );
 
   SizeValueType numberOfClasses = m_NumberOfThresholds + 1;
 
@@ -205,7 +207,7 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
       imgPDF[j] = (WeightType)histogram->GetFrequency(j) / (WeightType)globalFrequency;
     }
 
-  MeanType       meanSum = NumericTraits< MeanType >::Zero;
+  MeanSumType meanSum;
   MeanVectorType classMean(numberOfClasses);
   for ( j = 0; j < numberOfClasses - 1; j++ )
     {
@@ -225,20 +227,21 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
     classMean[numberOfClasses
               - 1] =
       ( globalMean * static_cast< MeanType >( globalFrequency )
-       - meanSum ) / static_cast< MeanType >( classFrequency[numberOfClasses - 1] );
+       - meanSum.GetSum() ) / static_cast< MeanType >( classFrequency[numberOfClasses - 1] );
     }
   else
     {
     classMean[numberOfClasses - 1] = NumericTraits< MeanType >::Zero;
     }
 
-  VarianceType maxVarBetween = NumericTraits< VarianceType >::Zero;
+  typedef CompensatedSummation< VarianceType > VarianceSumType;
+  VarianceSumType maxVarBetweenSum;
   for ( j = 0; j < numberOfClasses; j++ )
     {
-    maxVarBetween += (static_cast< VarianceType >( classFrequency[j] ))
+    maxVarBetweenSum += (static_cast< VarianceType >( classFrequency[j] ))
       * static_cast< VarianceType >( ( classMean[j] ) * ( classMean[j] ) );
     }
-  maxVarBetween /= static_cast< VarianceType >( globalFrequency );
+  VarianceType maxVarBetween = maxVarBetweenSum.GetSum() / static_cast< VarianceType >( globalFrequency );
 
   // Sum the relevant weights for valley emphasis
   WeightType valleyEmphasisFactor = NumericTraits< WeightType >::Zero;
@@ -256,7 +259,7 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
   // yields maximum between-class variance
   while ( Self::IncrementThresholds(thresholdIndexes, globalMean, classMean, classFrequency) )
     {
-    VarianceType varBetween = NumericTraits< VarianceType >::Zero;
+    VarianceSumType varBetweenSum;
     for ( j = 0; j < numberOfClasses; j++ )
       {
       // The true between-class variance \sigma_B^2 for any number of classes is defined as:
@@ -271,10 +274,10 @@ OtsuMultipleThresholdsCalculator< TInputHistogram >
       // Since we are looking for the argmax, the second term can be ignored because it is a constant, leading to the simpler
       // (\sum_{k=1}^{M} \omega_k \mu_k^2), which is what is implemented here.
       // Although this is no longer truly a "between class variance", we keep that name since it is only different by a constant.
-      varBetween += (static_cast< VarianceType >( classFrequency[j] ))
+      varBetweenSum += (static_cast< VarianceType >( classFrequency[j] ))
               * static_cast< VarianceType >( ( classMean[j] ) * ( classMean[j] ) );
       }
-    varBetween /= static_cast< VarianceType >( globalFrequency );
+    VarianceType varBetween = varBetweenSum.GetSum() / static_cast< VarianceType >( globalFrequency );
 
     if (m_ValleyEmphasis)
     {
