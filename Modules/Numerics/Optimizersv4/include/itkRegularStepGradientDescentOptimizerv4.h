@@ -88,6 +88,9 @@ public:
   itkSetMacro(MinimumStepLength, TInternalComputationValueType);
   itkGetConstReferenceMacro(MinimumStepLength, TInternalComputationValueType);
 
+  /** Get current gradient step value */
+  itkGetConstReferenceMacro(CurrentStepLength, TInternalComputationValueType);
+
   /** Set/Get relaxation factor value */
   itkSetMacro(RelaxationFactor, TInternalComputationValueType);
   itkGetConstReferenceMacro(RelaxationFactor, TInternalComputationValueType);
@@ -129,6 +132,9 @@ protected:
 
   /** Minimum gradient step value for convergence checking */
   TInternalComputationValueType  m_MinimumStepLength;
+
+  /** Current gradient step length for convergence checking */
+  TInternalComputationValueType  m_CurrentStepLength;
 
   /** Minimum gradient magnitude value for convergence checking */
   TInternalComputationValueType  m_GradientMagnitudeTolerance;

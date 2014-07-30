@@ -28,6 +28,7 @@ RegularStepGradientDescentOptimizerv4<TInternalComputationValueType>
 ::RegularStepGradientDescentOptimizerv4():
   m_RelaxationFactor( 0.5 ),
   m_MinimumStepLength( 1e-4 ), // Initialize parameter for the convergence checker
+  m_CurrentStepLength( 0 ),
   m_GradientMagnitudeTolerance( 1e-4 ),
   m_CurrentLearningRateRelaxation( 0 )
 {
@@ -78,6 +79,7 @@ RegularStepGradientDescentOptimizerv4<TInternalComputationValueType>
   // Reset the iterations and learning rate scale when the optimizer is started again.
   this->m_CurrentLearningRateRelaxation = 1.0;
   this->m_CurrentIteration = 0;
+  this->m_CurrentStepLength = 0;
 
   // validity check for the value of GradientMagnitudeTolerance
   if ( m_GradientMagnitudeTolerance < 0.0 )
@@ -161,15 +163,15 @@ RegularStepGradientDescentOptimizerv4<TInternalComputationValueType>
     this->m_CurrentLearningRateRelaxation *= this->m_RelaxationFactor;
     }
 
-  const double stepLength = this->m_CurrentLearningRateRelaxation*this->m_LearningRate;
+  this->m_CurrentStepLength = this->m_CurrentLearningRateRelaxation*this->m_LearningRate;
 
-  if ( stepLength < this->m_MinimumStepLength )
+  if ( this->m_CurrentStepLength < this->m_MinimumStepLength )
     {
     this->m_StopCondition = Superclass::STEP_TOO_SMALL;
     this->m_StopConditionDescription << "Step too small after "
                                   << this->m_CurrentIteration
                                   << " iterations. Current step ("
-                                  << stepLength
+                                  << this->m_CurrentStepLength
                                   << ") is less than minimum step ("
                                   << this->m_MinimumStepLength
                                   << ").";
