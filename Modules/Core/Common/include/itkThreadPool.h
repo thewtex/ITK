@@ -261,7 +261,7 @@ private:
       are free. If so, it returns false else returns true */
   ThreadProcessIdentifiers *FindThreadToRun();
 
-  static ThreadPool* m_ThreadPoolInstance;
+  static Pointer m_ThreadPoolInstance;
   /** To lock on m_ThreadPoolInstance */
   static SimpleFastMutexLock m_ThreadPoolInstanceMutex;
 
