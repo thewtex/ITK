@@ -39,10 +39,6 @@
 #include <fenv.h> // should this be cfenv?
 #endif /* ITK_HAVE_FENV_H */
 
-#ifdef ITK_HAVE_EMMINTRIN_H
-#include <emmintrin.h> // sse 2 intrinsics
-#endif /* ITK_HAVE_EMMINTRIN_H */
-
 // assume no SSE2:
 #define USE_SSE2_64IMPL 0
 #define USE_SSE2_32IMPL 0
@@ -103,6 +99,20 @@
 #define VC_USE_ASM_32IMPL 0
 #define VC_USE_ASM_64IMPL 0
 #endif
+
+// Now that it has been established that SSE2 is available,
+// include the required header if this is not gccxml.
+// Note that at this point testing for emmintrin.h is superfluos,
+// if it can't be included now the compiler installation is borked.
+// Still, I keep the test because I don't know why it was put there.
+
+#if (defined(USE_SSE2_32IMPL) || defined(USE_SSE2_64IMPL)) && !defined(__GCCXML__)
+# ifdef ITK_HAVE_EMMINTRIN_H
+#  include <emmintrin.h> // sse 2 intrinsics
+# else
+#  error "SSE2 is supported but emmintrin.h has not been found"
+# endif /* ITK_HAVE_EMMINTRIN_H  */
+#endif /* USE_SSE2_32IMPL || USE_SSE2_64IMPL */
 
 namespace itk
 {
