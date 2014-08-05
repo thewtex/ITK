@@ -135,10 +135,14 @@ namespace itk
 // throw, if it does throw then std::terminate will be called.
 // Use cautiously.
 #define ITK_NOEXCEPT noexcept
+// Can not specify a method as both override and noexcept, use this
+// macro to clarify intent as doing both.
+#define ITK_OVERRIDE_NOEXCEPT noexcept
 #else
 #define ITK_OVERRIDE
 #define ITK_NULLPTR  NULL
 #define ITK_NOEXCEPT throw()
+#define ITK_OVERRIDE_NOEXCEPT throw()
 #endif
 
 
