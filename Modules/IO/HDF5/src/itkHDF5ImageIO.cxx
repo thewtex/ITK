@@ -21,9 +21,11 @@
 #include "itkArray.h"
 #include "itksys/SystemTools.hxx"
 #include "itk_H5Cpp.h"
+#include <itkEventObject.h>
 
 namespace itk
 {
+
 
 HDF5ImageIO::HDF5ImageIO() : m_H5File(ITK_NULLPTR),
                              m_VoxelDataSet(ITK_NULLPTR),
@@ -935,33 +937,30 @@ HDF5ImageIO
   //
   int numComponents = this->GetNumberOfComponents();
 
-  const int HDFDim(this->GetNumberOfDimensions() +
-                   (numComponents > 1 ? 1 : 0));
-  hsize_t *offset = new hsize_t[HDFDim];
-  hsize_t *HDFSize = new hsize_t[HDFDim];
+  this->m_H5RegionDim = this->GetNumberOfDimensions() +
+           (numComponents > 1 ? 1 : 0);
   int limit;
   //
   // fastest moving dimension is intra-voxel
   // index
   if(numComponents > 1)
     {
-    limit = HDFDim - 1;
-    offset[limit] = 0;
-    HDFSize[limit] = numComponents;
+    limit = this->m_H5RegionDim - 1;
+    this->m_H5RegionStart[limit] = 0;
+    this->m_H5RegionSize[limit] = numComponents;
     }
   else
     {
-    limit = HDFDim;
+    limit = this->m_H5RegionDim;
     }
   for(int i=0; i < limit; i++)
     {
-    offset[limit - i - 1] = start[i];
-    HDFSize[limit - i - 1] = size[i];
+    this->m_H5RegionStart[limit - i - 1] = start[i];
+    this->m_H5RegionSize[limit - i - 1] = size[i];
     }
-  slabSpace->setExtentSimple(HDFDim,HDFSize);
-  imageSpace->selectHyperslab(H5S_SELECT_SET,HDFSize,offset);
-  delete[] HDFSize;
-  delete[] offset;
+  this->InvokeEvent( IterationEvent() );
+  slabSpace->setExtentSimple(this->m_H5RegionDim,this->m_H5RegionSize);
+  imageSpace->selectHyperslab(H5S_SELECT_SET,this->m_H5RegionSize,this->m_H5RegionStart);
 }
 
 void

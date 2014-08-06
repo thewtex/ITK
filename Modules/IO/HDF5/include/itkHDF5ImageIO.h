@@ -15,12 +15,6 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-/**
- *         The specification for this file format is taken from the
- *         web site http://analyzedirect.com/support/10.0Documents/Analyze_Resource_01.pdf
- * \author Hans J. Johnson
- *         The University of Iowa 2002
- */
 
 #ifndef __itkHDF5ImageIO_h
 #define __itkHDF5ImageIO_h
@@ -40,7 +34,7 @@ class DataSet;
 }
 
 #include "itkStreamingImageIOBase.h"
-
+#include "itkIntTypes.h"
 namespace itk
 {
 class MetaDataObjectBase;
@@ -91,6 +85,11 @@ public:
   typedef ImageIOBase          Superclass;
   typedef SmartPointer< Self > Pointer;
 
+  /** typedef needs to match hsize_t in the HDF5 headers, which is 64
+    * bit unsigned long
+   **/
+  typedef unsigned long long hsize_t;
+
   /** Method for creation through the object factory. */
   itkNewMacro(Self);
 
@@ -129,6 +128,10 @@ public:
   /** Writes the data to disk from the memory buffer provided. Make sure
    * that the IORegions has been set properly. */
   virtual void Write(const void *buffer) ITK_OVERRIDE;
+
+  itkGetConstMacro(H5RegionDim, int);
+  itkGetConstMacro(H5RegionStart,const hsize_t*);
+  itkGetConstMacro(H5RegionSize,const hsize_t*);
 
 protected:
   HDF5ImageIO();
@@ -190,7 +193,11 @@ private:
   H5::H5File  *m_H5File;
   H5::DataSet *m_VoxelDataSet;
   bool         m_ImageInformationWritten;
+
+  int m_H5RegionDim;
+  hsize_t m_H5RegionStart[4], m_H5RegionSize[4];
 };
+
 } // end namespace itk
 
 #endif // __itkHDF5ImageIO_h

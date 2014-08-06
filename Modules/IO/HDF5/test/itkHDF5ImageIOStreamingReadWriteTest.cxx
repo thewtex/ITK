@@ -15,10 +15,58 @@
  *  limitations under the License.
  *
  *=========================================================================*/
+#include "itkHDF5CommandRegionRecorder.h"
 #include "itkHDF5ImageIOFactory.h"
 #include "itkIOTestHelper.h"
 #include "itkPipelineMonitorImageFilter.h"
 #include "itkStreamingImageFilter.h"
+#include "itkHDF5ImageIO.h"
+
+typedef itk::HDF5CommandRegionRecorder::H5IndexType        H5IndexType;
+typedef itk::HDF5CommandRegionRecorder::H5IndexHistoryType H5IndexHistoryType;
+
+using namespace std;
+
+/** Returns the nested list: [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[4,0,0]]
+ *  Or in case of multiple components:
+ *    [[0,0,0,0],[1,0,0,0],[2,0,0,0],[3,0,0,0],[4,0,0,0]] */
+H5IndexHistoryType CreateExpectedStartStreamingHistory(unsigned int numberOfComponents)
+{
+  H5IndexType ExpectedStart;
+  ExpectedStart.push_back(0);
+  ExpectedStart.push_back(0);
+  ExpectedStart.push_back(0);
+  if (numberOfComponents!=1) ExpectedStart.push_back(0);
+
+  H5IndexHistoryType ExpectedStartHistory;
+  for (unsigned it = 0; it < 5; it++)
+    {
+    ExpectedStart[0] = it;
+    ExpectedStartHistory.push_back( ExpectedStart );
+    }
+
+  return ExpectedStartHistory;
+}
+
+/** Returns the nested list: [[1,5,5],[1,5,5],[1,5,5],[1,5,5],[1,5,5]]
+ *  Or in case of multiple components:
+ *    [[1,5,5,5],[1,5,5,5],[1,5,5,5],[1,5,5,5],[1,5,5,5]] */
+H5IndexHistoryType CreateExpectedSizeStreamingHistory(unsigned int numberOfComponents)
+{
+  H5IndexType ExpectedSize;
+  ExpectedSize.push_back(1);
+  ExpectedSize.push_back(5);
+  ExpectedSize.push_back(5);
+  if (numberOfComponents!=1) ExpectedSize.push_back(3);
+
+  H5IndexHistoryType ExpectedSizeHistory;
+  for (unsigned it = 0; it < 5; it++)
+    {
+    ExpectedSizeHistory.push_back( ExpectedSize );
+    }
+
+  return ExpectedSizeHistory;
+}
 
 template <typename TPixel>
 int HDF5ReadWriteTest2(const char *fileName)
@@ -57,6 +105,14 @@ int HDF5ReadWriteTest2(const char *fileName)
   writer->SetFileName(fileName);
   writer->SetInput(im);
   writer->SetNumberOfStreamDivisions(5);
+
+  // Add an observer which record streaming regions written in the file.
+  itk::HDF5CommandRegionRecorder::Pointer write_observer = itk::HDF5CommandRegionRecorder::New();
+  typedef itk::HDF5ImageIO ImageIOType;
+  ImageIOType::Pointer write_hdf5IO = ImageIOType::New();
+  write_hdf5IO->AddObserver( itk::IterationEvent(), write_observer);
+  writer->SetImageIO(write_hdf5IO);
+
   try
     {
     writer->Write();
@@ -71,10 +127,26 @@ int HDF5ReadWriteTest2(const char *fileName)
   // force writer close
   writer = typename WriterType::Pointer();
 
+  // Create the expected streaming regions.
+  H5IndexHistoryType ExpectedStartHistory = CreateExpectedStartStreamingHistory( im->GetNumberOfComponentsPerPixel() );
+  H5IndexHistoryType ExpectedSizeHistory = CreateExpectedSizeStreamingHistory( im->GetNumberOfComponentsPerPixel() );
+
+  // Check that streaming regions are as expected.
+  if ( ! write_observer->CheckHistory( ExpectedStartHistory, ExpectedSizeHistory, cout ) )
+    {
+    success = EXIT_FAILURE;
+    }
+
   typedef typename itk::ImageFileReader<ImageType> ReaderType;
   typename ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName(fileName);
   reader->SetUseStreaming(true);
+
+  // Add an observer which record streaming regions read in the file.
+  itk::HDF5CommandRegionRecorder::Pointer read_observer = itk::HDF5CommandRegionRecorder::New();
+  ImageIOType::Pointer read_hdf5IO = ImageIOType::New();
+  read_hdf5IO->AddObserver( itk::IterationEvent(), read_observer);
+  reader->SetImageIO(read_hdf5IO);
 
   typedef typename itk::PipelineMonitorImageFilter<ImageType> MonitorFilter;
   typename MonitorFilter::Pointer monitor = MonitorFilter::New();
@@ -111,6 +183,13 @@ int HDF5ReadWriteTest2(const char *fileName)
       }
     }
   itk::IOTestHelper::Remove(fileName);
+
+  // Check that streaming regions are as expected.
+  if ( ! read_observer->CheckHistory( ExpectedStartHistory, ExpectedSizeHistory, cout ) )
+    {
+    success = EXIT_FAILURE;
+    }
+
   return success;
 }
 
