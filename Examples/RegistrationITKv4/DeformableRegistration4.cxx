@@ -21,8 +21,9 @@
 // This example illustrates the use of the \doxygen{BSplineTransform}
 // class for performing registration of two $2D$ images in an ITKv4
 // registration framework. Due to the large number of parameters of
-// the BSpline transform, we will use a \doxygen{LBFGSOptimizerv4} instead of a
-// simple steepest descent or a conjugate gradient descent optimizer.
+// the BSpline transform, we will use a \doxygen{LBFGSOptimizerv4}
+// instead of a simple steepest descent or a conjugate gradient
+// descent optimizer.
 //
 //
 // \index{itk::BSplineTransform}
@@ -112,38 +113,106 @@ int main( int argc, char *argv[] )
   typedef itk::BSplineTransform<
                                 CoordinateRepType,
                                 SpaceDimension,
-                                SplineOrder >     TransformType;
+                                SplineOrder >           TransformType;
   // Software Guide : EndCodeSnippet
 
+  typedef itk::LBFGSOptimizerv4                         OptimizerType;
+
+
+  typedef itk::CorrelationImageToImageMetricv4<
+                                    FixedImageType,
+                                    MovingImageType >   MetricType;
+
+  typedef itk::ImageRegistrationMethodv4<
+                                    FixedImageType,
+                                    MovingImageType,
+                                    TransformType >     RegistrationType;
+
+  MetricType::Pointer         metric        = MetricType::New();
+  OptimizerType::Pointer      optimizer     = OptimizerType::New();
+  RegistrationType::Pointer   registration  = RegistrationType::New();
+
+
+  registration->SetMetric(        metric        );
+  registration->SetOptimizer(     optimizer     );
+
   typedef itk::ImageFileReader< FixedImageType  >               FixedImageReaderType;
+  typedef itk::ImageFileReader< MovingImageType >               MovingImageReaderType;
+
   FixedImageReaderType::Pointer  fixedImageReader = FixedImageReaderType::New();
+  MovingImageReaderType::Pointer movingImageReader = MovingImageReaderType::New();
+
   fixedImageReader->SetFileName(  argv[1] );
+  movingImageReader->SetFileName( argv[2] );
+
   fixedImageReader->Update();
   FixedImageType::ConstPointer fixedImage = fixedImageReader->GetOutput();
-  FixedImageType::RegionType fixedRegion = fixedImage->GetBufferedRegion();
 
-  typedef itk::ImageFileReader< MovingImageType >               MovingImageReaderType;
-  MovingImageReaderType::Pointer movingImageReader = MovingImageReaderType::New();
-  movingImageReader->SetFileName( argv[2] );
-  movingImageReader->Update();
-  MovingImageType::ConstPointer movingImage = movingImageReader->GetOutput();
 
   //  Software Guide : BeginLatex
   //
-  //  This example works with either CC or MSQ metrics.
-  //  Note that in the case of using MSQ metric, you may need to tune the optimizer parameters.
+  //  The transform object is constructed below.
   //
   //  Software Guide : EndLatex
 
   // Software Guide : BeginCodeSnippet
-  typedef itk::CorrelationImageToImageMetricv4<FixedImageType, MovingImageType> MetricType;
-  MetricType::Pointer metric = MetricType::New();
+  TransformType::Pointer    transform   = TransformType::New();
   // Software Guide : EndCodeSnippet
 
   //  Software Guide : BeginLatex
   //
-  //  We need to estimate scales before we set the optimizer.
-  //  Scales are used to compensate the relative differences between parameters (e.g translation vs rotation)
+  //  Fixed parameters of the BSpline transform should be defined
+  //  before the registration. These parameters are set based on
+  //  specifications of the fixed image space lattice.
+  //
+  //  Software Guide : EndLatex
+
+  // Software Guide : BeginCodeSnippet
+  TransformType::PhysicalDimensionsType   fixedPhysicalDimensions;
+  TransformType::MeshSizeType             meshSize;
+  TransformType::OriginType               fixedOrigin;
+
+  unsigned int numberOfGridNodesInOneDimension = 8;
+
+  for( unsigned int i=0; i< SpaceDimension; i++ )
+    {
+    fixedOrigin[i] = fixedImage->GetOrigin()[i];
+    fixedPhysicalDimensions[i] = fixedImage->GetSpacing()[i] *
+    static_cast<double>( fixedImage->GetLargestPossibleRegion().GetSize()[i] - 1 );
+    }
+  meshSize.Fill( numberOfGridNodesInOneDimension - SplineOrder );
+
+  transform->SetTransformDomainOrigin( fixedOrigin );
+  transform->SetTransformDomainPhysicalDimensions( fixedPhysicalDimensions );
+  transform->SetTransformDomainMeshSize( meshSize );
+  transform->SetTransformDomainDirection( fixedImage->GetDirection() );
+  transform->SetIdentity();
+  // Software Guide : EndCodeSnippet
+
+  std::cout << "Intial Parameters = " << std::endl;
+  std::cout << transform->GetParameters() << std::endl;
+
+  //  Software Guide : BeginLatex
+  //
+  //  Then, the initialized transform is connected to the registration
+  //  object and is set to be the optimized directly during the registration
+  //  process.
+  //
+  //  Software Guide : EndLatex
+
+  // Software Guide : BeginCodeSnippet
+  registration->SetInitialTransform( transform );
+  registration->InPlaceOn();
+  // Software Guide : EndCodeSnippet
+
+
+  registration->SetFixedImage( fixedImage );
+  registration->SetMovingImage( movingImageReader->GetOutput() );
+
+  //  Software Guide : BeginLatex
+  //
+  //  The \doxygen{RegistrationParameterScalesFromPhysicalShift} class
+  //  is used to estimate the parameters scales before we set the optimizer.
   //
   //  Software Guide : EndLatex
 
@@ -155,12 +224,10 @@ int main( int argc, char *argv[] )
   scalesEstimator->SetSmallParameterVariation( 1.0 );
   // Software Guide : EndCodeSnippet
 
-  typedef itk::LBFGSOptimizerv4       OptimizerType;
-  OptimizerType::Pointer      optimizer     = OptimizerType::New();
-
   //  Software Guide : BeginLatex
   //
-  //  Next we set the parameters of the LBFGS Optimizer.
+  //  Now the scale estimator is passed to the \doxygen{LBFGSOptimizerv4},
+  //  and we set other parameters of the optimizer as well.
   //
   //  Software Guide : EndLatex
 
@@ -173,14 +240,9 @@ int main( int argc, char *argv[] )
   optimizer->SetScalesEstimator( scalesEstimator );
   // Software Guide : EndCodeSnippet
 
-  typedef itk::ImageRegistrationMethodv4<
-                                        FixedImageType,
-                                        MovingImageType,
-                                        TransformType>    RegistrationType;
-  RegistrationType::Pointer   registration  = RegistrationType::New();
-
-  // One level registration is performed using the shrink factor 1 and smoothing sigma 1
-
+  //  A single level registration process is run using
+  //  the shrink factor 1 and smoothing sigma 0.
+  //
   const unsigned int numberOfLevels = 1;
 
   RegistrationType::ShrinkFactorsArrayType shrinkFactorsPerLevel;
@@ -191,51 +253,10 @@ int main( int argc, char *argv[] )
   smoothingSigmasPerLevel.SetSize( 1 );
   smoothingSigmasPerLevel[0] = 0;
 
-  //  Software Guide : BeginLatex
-  //
-  //  The transform object is constructed below.
-  //  The final transform will be the output of the registration.
-  //
-  //  Software Guide : EndLatex
-
-  // Software Guide : BeginCodeSnippet
-  TransformType::Pointer transform = TransformType::New();
-  // Software Guide : EndCodeSnippet
-
-  registration->SetFixedImage( fixedImage );
-  registration->SetMovingImage( movingImage );
-  registration->SetMetric(        metric        );
-  registration->SetOptimizer(     optimizer     );
   registration->SetNumberOfLevels( numberOfLevels );
   registration->SetSmoothingSigmasPerLevel( smoothingSigmasPerLevel );
   registration->SetShrinkFactorsPerLevel( shrinkFactorsPerLevel );
-  registration->SetInitialTransform( transform );
-  registration->InPlaceOn();
 
-  // Initialize the BSpline transform
-
-  TransformType::PhysicalDimensionsType   fixedPhysicalDimensions;
-  TransformType::MeshSizeType             meshSize;
-  TransformType::OriginType               fixedOrigin;
-
-  unsigned int numberOfGridNodesInOneDimension = 8;
-
-  for( unsigned int i=0; i< SpaceDimension; i++ )
-    {
-    fixedOrigin[i] = fixedImage->GetOrigin()[i];
-    fixedPhysicalDimensions[i] = fixedImage->GetSpacing()[i] *
-                                  static_cast<double>( fixedImage->GetLargestPossibleRegion().GetSize()[i] - 1 );
-    }
-  meshSize.Fill( numberOfGridNodesInOneDimension - SplineOrder );
-
-  transform->SetTransformDomainOrigin( fixedOrigin );
-  transform->SetTransformDomainPhysicalDimensions( fixedPhysicalDimensions );
-  transform->SetTransformDomainMeshSize( meshSize );
-  transform->SetTransformDomainDirection( fixedImage->GetDirection() );
-  transform->SetIdentity();
-
-  std::cout << "Intial Parameters = " << std::endl;
-  std::cout << transform->GetParameters() << std::endl;
 
   // Add time and memory probes
   itk::TimeProbesCollectorBase chronometer;
@@ -253,18 +274,9 @@ int main( int argc, char *argv[] )
     chronometer.Stop( "Registration" );
     memorymeter.Stop( "Registration" );
 
-    const OptimizerType::ConstPointer  outputOptimizer = dynamic_cast<const OptimizerType *>( registration->GetOptimizer() );
-    if( outputOptimizer.IsNotNull() )
-      {
-      std::cout << "Optimizer stop condition = "
-                << outputOptimizer->GetStopConditionDescription()
-                << std::endl;
-      }
-    else
-      {
-      std::cerr << "Output optimizer is null." << std::endl;
-      return EXIT_FAILURE;
-      }
+    std::cout << "Optimizer stop condition = "
+              << registration->GetOptimizer()->GetStopConditionDescription()
+              << std::endl;
     }
   catch( itk::ExceptionObject & err )
     {
@@ -272,14 +284,6 @@ int main( int argc, char *argv[] )
     std::cerr << err << std::endl;
     return EXIT_FAILURE;
     }
-
-  // While the registration filter is run, it updates the output transform parameters with the final registration parameters
-
-  OptimizerType::ParametersType finalParameters = transform->GetParameters();
-
-  std::cout << "Last Transform Parameters" << std::endl;
-  std::cout << finalParameters << std::endl;
-
 
   // Report the time and memory taken by the registration
   chronometer.Report( std::cout );
@@ -294,8 +298,18 @@ int main( int argc, char *argv[] )
   // \item \code{RatLungSlice2.mha}
   // \end{itemize}
   //
+  //  The \emph{transform} object is updated during the registration process
+  //  and is passed to the resampler to map the moving image space onto the
+  //  fixed image space.
   //
   //  Software Guide : EndLatex
+
+  // Software Guide : BeginCodeSnippet
+  OptimizerType::ParametersType finalParameters = transform->GetParameters();
+  // Software Guide : EndCodeSnippet
+
+  std::cout << "Last Transform Parameters" << std::endl;
+  std::cout << finalParameters << std::endl;
 
   typedef itk::ResampleImageFilter<
                             MovingImageType,
@@ -304,7 +318,7 @@ int main( int argc, char *argv[] )
   ResampleFilterType::Pointer resample = ResampleFilterType::New();
 
   resample->SetTransform( transform );
-  resample->SetInput( movingImage );
+  resample->SetInput( movingImageReader->GetOutput() );
 
   resample->SetSize(    fixedImage->GetLargestPossibleRegion().GetSize() );
   resample->SetOutputOrigin(  fixedImage->GetOrigin() );
@@ -397,6 +411,7 @@ int main( int argc, char *argv[] )
 
   // Generate the explicit deformation field resulting from
   // the registration.
+  FixedImageType::RegionType fixedRegion = fixedImage->GetBufferedRegion();
 
   typedef itk::Vector< float, ImageDimension >      VectorType;
   typedef itk::Image< VectorType, ImageDimension >  DisplacementFieldType;
