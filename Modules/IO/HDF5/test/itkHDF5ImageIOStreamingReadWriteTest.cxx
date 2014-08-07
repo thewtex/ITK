@@ -20,11 +20,75 @@
 #include "itkPipelineMonitorImageFilter.h"
 #include "itkStreamingImageFilter.h"
 #include "itkHDF5ImageIO.h"
+#include "itkGenerateImageSource.h"
+#include "itkImageRegionIteratorWithIndex.h"
 
 typedef itk::HDF5CommandRegionRecorder::H5IndexType        H5IndexType;
 typedef itk::HDF5CommandRegionRecorder::H5IndexHistoryType H5IndexHistoryType;
 
 using namespace std;
+
+namespace itk
+{
+
+/** \class DemoImageSource
+ *
+ * \brief Streamable process that will generate image regions from the write requests
+ *
+ * We do not allocate directly the Image, because a Image is a data and is not streamable
+ * the writer would write the image in one pass, without streaming.
+ *
+ * Instead, we need to set a streamable source process as the writer input.
+ * This source process, 'DemoImageSource', will allocate a region of the image
+ * (and set pixels values) on the fly, based on the informations
+ * received from the writer requests.
+ */
+template< class TOutputImage >
+class DemoImageSource:public GenerateImageSource< TOutputImage >
+{
+  public:
+    /** Standard class typedefs. */
+    typedef DemoImageSource                 Self;
+    typedef DemoImageSource< TOutputImage > Superclass;
+    typedef SmartPointer< Self >            Pointer;
+
+    /** Method for creation through the object factory. */
+    itkNewMacro(Self);
+
+    /** Run-time type information (and related methods). */
+    itkTypeMacro(DemoImageSource, GenerateImageSource);
+
+    /** Set the value to fill the image. */
+    itkSetMacro(Value, typename TOutputImage::PixelType);
+
+  protected:
+    DemoImageSource()
+    {
+      m_Value = NumericTraits< typename TOutputImage::PixelType >::Zero;
+    }
+    ~DemoImageSource(){}
+
+    /** Does the real work. */
+    virtual void GenerateData(){
+      TOutputImage* out = this->GetOutput();
+      out->SetBufferedRegion(out->GetRequestedRegion());
+      out->Allocate();
+      itk::ImageRegionIteratorWithIndex<TOutputImage> it(out,out->GetRequestedRegion());
+      for(it.GoToBegin(); !it.IsAtEnd(); ++it)
+        {
+        typename TOutputImage::IndexType idx = it.GetIndex();
+        it.Set(idx[2]*100 + idx[1]*10 + idx[0]);
+        }
+    };
+
+  private:
+    DemoImageSource(const Self &); //purposely not implemented
+    void operator=(const Self &);  //purposely not implemented
+
+    typename TOutputImage::PixelType m_Value;
+};
+
+}
 
 /** Returns the nested list: [[0,0,0],[1,0,0],[2,0,0],[3,0,0],[4,0,0]]
  *  Or in case of multiple components:
@@ -72,37 +136,21 @@ int HDF5ReadWriteTest2(const char *fileName)
 {
   int success(EXIT_SUCCESS);
   typedef typename itk::Image<TPixel,3> ImageType;
-  typename ImageType::RegionType imageRegion;
-  typename ImageType::SizeType size;
-  typename ImageType::IndexType index;
-  typename ImageType::SpacingType spacing;
-  typename ImageType::PointType origin;
-  typename ImageType::DirectionType myDirection;
-  for(unsigned i = 0; i < 3; i++)
-    {
-    size[i] = 5;
-    index[i] = 0;
-    spacing[i] = 1.0 / (static_cast<double>(i) + 1.0);
-    origin[i] = static_cast<double>(i) + 7.0;
-    }
-  imageRegion.SetSize(size);
-  imageRegion.SetIndex(index);
-  typename ImageType::Pointer im =
-    itk::IOTestHelper::AllocateImageFromRegionAndSpacing<ImageType>(imageRegion,spacing);
-  //
-  // fill image buffer
-  vnl_random randgen(12345678);
-  itk::ImageRegionIterator<ImageType> it(im,im->GetLargestPossibleRegion());
-  for(it.GoToBegin(); !it.IsAtEnd(); ++it)
-    {
-    TPixel pix;
-    itk::IOTestHelper::RandomPix(randgen,pix);
-    it.Set(pix);
-    }
+
+  // Create a source object (in this case a constant image).
+  typename ImageType::SizeValueType size[3];
+  size[2] = 5;
+  size[1] = 5;
+  size[0] = 5;
+  typename itk::DemoImageSource<ImageType>::Pointer imageSource =
+      itk::DemoImageSource<ImageType>::New();
+  imageSource->SetValue(static_cast<TPixel>(23)); // Not used.
+  imageSource->SetSize(size);
+
   typedef typename itk::ImageFileWriter<ImageType> WriterType;
   typename WriterType::Pointer writer = WriterType::New();
   writer->SetFileName(fileName);
-  writer->SetInput(im);
+  writer->SetInput(imageSource->GetOutput());
   writer->SetNumberOfStreamDivisions(5);
 
   // Add an observer which record streaming regions written in the file.
@@ -127,8 +175,8 @@ int HDF5ReadWriteTest2(const char *fileName)
   writer = typename WriterType::Pointer();
 
   // Create the expected streaming regions.
-  H5IndexHistoryType ExpectedStartHistory = CreateExpectedStartStreamingHistory( im->GetNumberOfComponentsPerPixel() );
-  H5IndexHistoryType ExpectedSizeHistory = CreateExpectedSizeStreamingHistory( im->GetNumberOfComponentsPerPixel() );
+  H5IndexHistoryType ExpectedStartHistory = CreateExpectedStartStreamingHistory( imageSource->GetOutput()->GetNumberOfComponentsPerPixel() );
+  H5IndexHistoryType ExpectedSizeHistory = CreateExpectedSizeStreamingHistory( imageSource->GetOutput()->GetNumberOfComponentsPerPixel() );
 
   // Check that streaming regions are as expected.
   if ( ! write_observer->CheckHistory( ExpectedStartHistory, ExpectedSizeHistory, cout ) )
@@ -169,12 +217,16 @@ int HDF5ReadWriteTest2(const char *fileName)
     return EXIT_FAILURE;
     }
   im2 = streamer->GetOutput();
-  itk::ImageRegionIterator<ImageType> it2(im2,im2->GetLargestPossibleRegion());
-  for(it.GoToBegin(),it2.GoToBegin(); !it.IsAtEnd() && !it2.IsAtEnd(); ++it,++it2)
+  itk::ImageRegionIteratorWithIndex<ImageType> it2(im2,im2->GetLargestPossibleRegion());
+  typename ImageType::IndexType idx;
+  TPixel origValue;
+  for(it2.GoToBegin(); !it2.IsAtEnd(); ++it2)
     {
-    if(it.Value() != it2.Value())
+    idx = it2.GetIndex();
+    origValue = idx[2]*100 + idx[1]*10 + idx[0];
+    if(it2.Value() != origValue)
       {
-      std::cout << "Original Pixel (" << it.Value()
+      std::cout << "Original Pixel (" << origValue
                 << ") doesn't match read-in Pixel ("
                 << it2.Value() << std::endl;
       success = EXIT_FAILURE;
