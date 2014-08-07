@@ -41,6 +41,14 @@
 namespace itk
 {
 
+template< typename TImage >
+ComplexToComplexFFTImageFilter< TImage >
+::ComplexToComplexFFTImageFilter():
+  m_TransformDirection( FORWARD )
+{
+}
+
+
 template< typename TSelfPointer, typename TImage, typename TPixel >
 struct DispatchFFTW_Complex_New
 {
@@ -95,7 +103,8 @@ ComplexToComplexFFTImageFilter< TImage >
 
 template< typename TImage >
 void
-ComplexToComplexFFTImageFilter< TImage >::GenerateInputRequestedRegion()
+ComplexToComplexFFTImageFilter< TImage >
+::GenerateInputRequestedRegion()
 {
   Superclass::GenerateInputRequestedRegion();
   // get pointers to the input and output
