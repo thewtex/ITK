@@ -19,6 +19,7 @@
 #define __itkCompositeTransform_h
 
 #include "itkMultiTransform.h"
+#include "itkMatrixOffsetTransformBase.h"
 
 #include <deque>
 
@@ -152,8 +153,25 @@ public:
   itkStaticConstMacro( InputDimension, unsigned int, NDimensions );
   itkStaticConstMacro( OutputDimension, unsigned int, NDimensions );
 
-  /** Active Transform state manipulation */
+  typedef MatrixOffsetTransformBase<ScalarType, InputDimension, OutputDimension>
+    MatrixOffsetTransformType;
 
+  /**
+   * Linear transforms derived from the itk::MatrixOffsetTransformBase class
+   * default to a center of rotation at the origin.  However, this is generally
+   * a suboptimal starting point for optimization.  Instead, we use the following
+   * heuristics (h/t to Brad Lowekamp for pointing this out):
+   *  1) we use the center of the previous linear transform (presumably optimized)
+   *     to initialize the current linear transform.
+   *  2) a special case would be if someone wanted to optimize a linear transform
+   *     following optimization of a deformable transform.  What we do in this case
+   *     is go back further in the queue to find the closest, previous linear
+   *     transform and use its center.
+   *  3) if there is no previous transforms, we leave the center of mass as the default.
+   */
+  void InitializeCenterOfLinearTransform( SizeValueType i );
+
+  /** Active Transform state manipulation */
   virtual void SetNthTransformToOptimize( SizeValueType i, bool state )
   {
     this->m_TransformsToOptimizeFlags.at(i) = state;
@@ -163,6 +181,10 @@ public:
   virtual void SetNthTransformToOptimizeOn( SizeValueType i )
   {
     this->SetNthTransformToOptimize( i, true );
+    if( this->m_InitializeCenterOfLinearTransforms )
+      {
+      this->InitializeCenterOfLinearTransform( i );
+      }
   }
 
   virtual void SetNthTransformToOptimizeOff( SizeValueType i )
@@ -180,6 +202,13 @@ public:
   virtual void SetAllTransformsToOptimizeOn()
   {
     this->SetAllTransformsToOptimize( true );
+    if( this->m_InitializeCenterOfLinearTransforms )
+      {
+      for( SizeValueType n = 0; n < this->m_TransformsToOptimizeFlags.size(); ++n )
+        {
+        this->InitializeCenterOfLinearTransform( n );
+        }
+      }
   }
 
   virtual void SetAllTransformsToOptimizeOff()
@@ -355,6 +384,15 @@ public:
   virtual void FlattenTransformQueue();
 
   /**
+   * Initialize the current linear transform to be optimized with the center of the
+   * previous transform in the queue.  This provides a much better initialization than
+   * the default origin.
+   */
+  itkBooleanMacro( InitializeCenterOfLinearTransforms );
+  itkSetMacro( InitializeCenterOfLinearTransforms, bool );
+  itkGetConstMacro( InitializeCenterOfLinearTransforms, bool );
+
+  /**
    * Compute the Jacobian with respect to the parameters for the compositie
    * transform using Jacobian rule. See comments in the implementation.
    */
@@ -410,6 +448,9 @@ protected:
 
   mutable TransformQueueType            m_TransformsToOptimizeQueue;
   mutable TransformsToOptimizeFlagsType m_TransformsToOptimizeFlags;
+
+  mutable bool                          m_InitializeCenterOfLinearTransforms;
+
 
 private:
   CompositeTransform( const Self & ); // purposely not implemented

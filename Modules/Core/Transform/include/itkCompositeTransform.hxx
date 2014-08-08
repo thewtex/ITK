@@ -33,6 +33,7 @@ CompositeTransform<TScalar, NDimensions>::CompositeTransform()
   this->m_TransformsToOptimizeFlags.clear();
   this->m_TransformsToOptimizeQueue.clear();
   this->m_PreviousTransformsToOptimizeUpdateTime = 0;
+  this->m_InitializeCenterOfLinearTransforms = false;
 }
 
 /**
@@ -1171,6 +1172,54 @@ CompositeTransform<TScalar, NDimensions>
   this->m_TransformQueue = transformQueue;
   this->m_TransformsToOptimizeQueue = transformsToOptimizeQueue;
   this->m_TransformsToOptimizeFlags = transformsToOptimizeFlags;
+}
+
+template <typename TScalar, unsigned int NDimensions>
+void
+CompositeTransform<TScalar, NDimensions>
+::InitializeCenterOfLinearTransform( SizeValueType i )
+{
+  if( i >= this->GetNumberOfTransforms() )
+    {
+    itkExceptionMacro( "Requested transform is not in the transform queue." );
+    }
+
+  MatrixOffsetTransformType *matrixOffsetTransformCurrent =
+    dynamic_cast<MatrixOffsetTransformType *>( this->m_TransformQueue[i].GetPointer() );
+
+  if( ! matrixOffsetTransformCurrent )
+    {
+    return;
+    }
+
+  InputPointType center = matrixOffsetTransformCurrent->GetCenter();
+
+  if( i > 0 )
+    {
+    SizeValueType optimalIndex = i;
+    for( int tind = i - 1; tind >= 0; tind-- )
+      {
+      MatrixOffsetTransformType *matrixOffsetTransformPrevious =
+        dynamic_cast<MatrixOffsetTransformType *>( this->m_TransformQueue[tind].GetPointer() );
+      if( matrixOffsetTransformPrevious )
+        {
+        center = matrixOffsetTransformPrevious->GetCenter();
+        optimalIndex = tind;
+        break;
+        }
+      }
+    Pointer subsetCompositeTransform = New();
+    for( SizeValueType tind = 0; tind <= optimalIndex; tind++ )
+      {
+      subsetCompositeTransform->AddTransform( this->m_TransformQueue[tind] );
+      }
+    subsetCompositeTransform->FlattenTransformQueue();
+    InputPointType initializedCenter =
+      subsetCompositeTransform->GetInverseTransform()->TransformPoint( center );
+
+    matrixOffsetTransformCurrent->SetCenter( initializedCenter );
+    }
+  // else it's the first transform and we leave it as the default.
 }
 
 template <typename TScalar, unsigned int NDimensions>

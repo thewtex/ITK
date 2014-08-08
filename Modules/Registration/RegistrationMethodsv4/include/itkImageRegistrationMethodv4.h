@@ -423,7 +423,7 @@ protected:
   CompositeTransformPointer                                       m_CompositeTransform;
 
   //TODO: m_OutputTransform should be removed and replaced with a named input parameter for
-  //      the pipeline  --- Along with many other fixes
+  //      the pipeline
   OutputTransformPointer                                          m_OutputTransform;
 
 

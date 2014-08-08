@@ -52,7 +52,6 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform, TVirtualImage>
   Self::SetInput("FixedInitialTransform", ITK_NULLPTR);
   Self::SetInput("MovingInitialTransform", ITK_NULLPTR);
 
-
   Self::ReleaseDataBeforeUpdateFlagOff();
 
   this->m_CurrentLevel = 0;
@@ -91,7 +90,6 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform, TVirtualImage>
 
   this->m_OptimizerWeights.SetSize( 0 );
   this->m_OptimizerWeightsAreIdentity = true;
-
 
   DecoratedOutputTransformPointer transformDecorator =
         itkDynamicCastInDebugMode< DecoratedOutputTransformType * >( this->MakeOutput(0).GetPointer() );
@@ -301,6 +299,7 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform, TVirtualImage>
   if( level == 0 )
     {
     this->m_CompositeTransform->ClearTransformQueue();
+    this->m_CompositeTransform->InitializeCenterOfLinearTransformsOn();
 
     // Since we cannot instantiate a null object from an abstract class, we need to initialize the moving
     // initial transform as an identity transform.
@@ -324,6 +323,10 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform, TVirtualImage>
       {
       this->m_Optimizer->SetWeights( this->m_OptimizerWeights );
       }
+    }
+  else
+    {
+    this->m_CompositeTransform->InitializeCenterOfLinearTransformsOff();
     }
   this->m_CompositeTransform->SetOnlyMostRecentTransformToOptimizeOn();
 
