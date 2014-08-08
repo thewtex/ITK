@@ -5,6 +5,7 @@ shrinking, and changing its origin or spacing or orientation.")
 
 itk_module(ITKImageGrid
   DEPENDS
+    ITKCommon
     ITKImageFunction
     ITKImageFilterBase
   TEST_DEPENDS
