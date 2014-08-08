@@ -136,6 +136,7 @@ public:
   itkGetConstMacro(H5RegionStart,const hsize_t*);
   itkGetConstMacro(H5RegionSize,const hsize_t*);
 
+  void SetReadWriteMode();
 protected:
   HDF5ImageIO();
   ~HDF5ImageIO();
@@ -197,7 +198,8 @@ private:
   H5::DataSet *m_VoxelDataSet;
   bool         m_ImageInformationWritten;
 
-  int m_H5RegionDim;
+  bool    m_ReadWriteMode;
+  int     m_H5RegionDim;
   hsize_t m_H5RegionStart[4], m_H5RegionSize[4];
 };
 

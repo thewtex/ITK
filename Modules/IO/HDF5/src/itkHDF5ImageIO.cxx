@@ -29,7 +29,8 @@ namespace itk
 
 HDF5ImageIO::HDF5ImageIO() : m_H5File(ITK_NULLPTR),
                              m_VoxelDataSet(ITK_NULLPTR),
-                             m_ImageInformationWritten(false)
+                             m_ImageInformationWritten(false),
+                             m_ReadWriteMode(false)
 {
 }
 
@@ -56,6 +57,12 @@ HDF5ImageIO
   os << indent << "H5File: " << this->m_H5File << std::endl;
 }
 
+void
+HDF5ImageIO
+::SetReadWriteMode()
+{
+    m_ReadWriteMode = true;
+}
 //
 // strings defining HDF file layout for image data.
 namespace
@@ -1044,8 +1051,15 @@ HDF5ImageIO
 
   try
     {
-    this->m_H5File = new H5::H5File(this->GetFileName(),
-                                    H5F_ACC_TRUNC);
+    if (m_ReadWriteMode)
+      {
+      this->m_H5File = new H5::H5File(this->GetFileName(), H5F_ACC_RDWR);
+      return;
+      }
+    else
+      {
+      this->m_H5File = new H5::H5File(this->GetFileName(), H5F_ACC_TRUNC);
+      }
     this->WriteString(ItkVersion,
                       Version::GetITKVersion());
 
@@ -1281,9 +1295,16 @@ HDF5ImageIO
     if(this->m_VoxelDataSet == ITK_NULLPTR)
       {
       this->m_VoxelDataSet = new H5::DataSet();
-      *(this->m_VoxelDataSet) = this->m_H5File->createDataSet(VoxelDataName,
-                                                              dataType,
-                                                              imageSpace,plist);
+      if (! m_ReadWriteMode)
+        {
+        *(this->m_VoxelDataSet) = this->m_H5File->createDataSet(VoxelDataName,
+                                                                  dataType,
+                                                                  imageSpace,plist);
+        }
+      else
+        {
+        *(this->m_VoxelDataSet) = this->m_H5File->openDataSet(VoxelDataName);
+        }
       }
     H5::DataSpace dspace;
     this->SetupStreaming(&imageSpace,&dspace);
