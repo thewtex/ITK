@@ -134,6 +134,9 @@ macro(itk_end_wrap_module_tcl)
       add_dependencies(${lib} ${dep}Swig)
     endforeach()
   endif()
+  if(ITK_USE_COTIRE)
+    cotire(${lib})
+  endif()
 
 endmacro()
 

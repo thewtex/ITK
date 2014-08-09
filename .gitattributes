@@ -34,5 +34,7 @@ zap.pl           crlf=input
 *.txt            whitespace=tab-in-indent,no-lf-at-eof
 *.cmake          whitespace=tab-in-indent,no-lf-at-eof
 
+CMake/cotire.cmake whitespace=
+
 # ExternalData content links must have LF newlines
 *.md5            crlf=input

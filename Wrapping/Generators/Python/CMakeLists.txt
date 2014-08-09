@@ -441,6 +441,9 @@ macro(itk_end_wrap_module_python)
       endif()
     endforeach()
   endif()
+  if(ITK_USE_COTIRE)
+    cotire(${lib})
+  endif()
 
 endmacro()
 

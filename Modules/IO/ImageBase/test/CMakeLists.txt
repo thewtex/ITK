@@ -289,6 +289,9 @@ if(ITK_BUILD_SHARED_LIBS)
   target_link_libraries(FileFreeTestLib ${ITKIOImageBase_LIBRARIES})
   set_property(TARGET FileFreeTestLib PROPERTY LIBRARY_OUTPUT_DIRECTORY ${ITK_TEST_OUTPUT_DIR})
   add_dependencies(ITKIOImageBaseTestDriver FileFreeTestLib)
+  if(ITK_USE_COTIRE)
+    cotire(FileFreeTestLib)
+  endif()
 
   itk_add_test(NAME itkIOPluginTest
            COMMAND itkTestDriver  --add-before-env ITK_AUTOLOAD_PATH "$<TARGET_FILE_DIR:FileFreeTestLib>"
@@ -320,5 +323,8 @@ itk_add_test(NAME itkVectorImageReadWriteTest2
               ${ITK_TEST_OUTPUT_DIR}/VectorImageReadWriteTest.nrrd)
 
 add_executable(itkUnicodeIOTest itkUnicodeIOTest.cxx)
+if(ITK_USE_COTIRE)
+  cotire(itkUnicodeIOTest)
+endif()
 itk_module_target_label(itkUnicodeIOTest)
 itk_add_test(NAME itkUnicodeIOTest COMMAND itkUnicodeIOTest)

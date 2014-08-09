@@ -44,6 +44,9 @@ macro(END_WRAPPER_LIBRARY_TCL)
     add_library(${lib} SHARED ${cpp_file})
     set_target_properties(${lib} PROPERTIES PREFIX "")
     target_link_libraries(${lib} ${WRAPPER_LIBRARY_LINK_LIBRARIES} ${TCL_LIBRARY})
+    if(ITK_USE_COTIRE)
+      cotire(${lib})
+    endif()
 
   endforeach()
 

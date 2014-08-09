@@ -111,6 +111,9 @@ if( CMAKE_CXX_COMPILER_ID MATCHES Clang AND CMAKE_CXX_COMPILER_VERSION VERSION_L
   set_source_files_properties( itkSmartPointerForwardReferenceProcessObject.cxx PROPERTIES COMPILE_FLAGS -fvisibility=default )
 endif()
 
+set_property( DIRECTORY APPEND PROPERTY COTIRE_PREFIX_HEADER_IGNORE_PATH
+  "${CMAKE_CURRENT_SOURCE_DIR}/itkFloatingPointExceptions.cxx" )
+
 
 ### generating libraries
 add_library( ITKCommon ${ITK_LIBRARY_BUILD_TYPE} ${ITKCommon_SRCS})

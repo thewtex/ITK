@@ -167,6 +167,9 @@ macro(itk_end_wrap_module_java)
 
   add_dependencies(${lib} ${WRAPPER_LIBRARY_NAME}Swig)
   install(TARGETS "${lib}" DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/ITK-${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}/Java")
+  if(ITK_USE_COTIRE)
+    cotire(${lib})
+  endif()
 
   if(EXTERNAL_WRAP_ITK_PROJECT)
     # don't depends on the targets from wrapitk in external projects

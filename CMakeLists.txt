@@ -16,8 +16,6 @@ endforeach()
 project(ITK)
 
 include(CMakeDependentOption)
-#
-# use ExternalProject
 include(ExternalProject)
 
 if( CMAKE_HOST_WIN32 )
@@ -42,7 +40,18 @@ if( CMAKE_HOST_WIN32 )
 
 endif()
 
+option(ITK_USE_COTIRE "Use cotire to improve build speed." ON)
 set(CMAKE_MODULE_PATH ${ITK_SOURCE_DIR}/CMake ${CMAKE_MODULE_PATH})
+set_property(DIRECTORY PROPERTY COTIRE_PREFIX_HEADER_IGNORE_PATH
+  "${ITK_SOURCE_DIR}/Modules"
+  "${ITK_BINARY_DIR}/Modules"
+  )
+set_property(DIRECTORY PROPERTY COTIRE_ADD_UNITY_BUILD 0)
+#set_property(DIRECTORY PROPERTY COTIRE_ENABLE_PRECOMPILED_HEADER 1)
+set(COTIRE_MINIMUM_NUMBER_OF_TARGET_SOURCES 3)
+#set_property(DIRECTORY PROPERTY COTIRE_CXX_PREFIX_HEADER_INIT "itkImage.h")
+
+include(cotire)
 include(PreventInSourceBuilds)
 include(PreventInBuildInstalls)
 include(ITKModuleMacros)

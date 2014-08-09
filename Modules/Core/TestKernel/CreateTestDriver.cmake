@@ -20,19 +20,25 @@ macro(CreateTestDriver KIT KIT_LIBS KitTests)
   add_executable(${KIT}TestDriver ${KIT}TestDriver.cxx ${Tests} ${ADDITIONAL_SRC})
   target_link_libraries(${KIT}TestDriver ${KIT_LIBS} ${ITKTestKernel_LIBRARIES})
   itk_module_target_label(${KIT}TestDriver)
+  if(ITK_USE_COTIRE)
+    cotire(${KIT}TestDriver)
+  endif()
 endmacro()
 
 
 macro(CreateTestDriver_SupportBuildInIOFactories KIT KIT_LIBS KitTests)
-   set( ADDITIONAL_SRC ${ARGN} )
-   set(CMAKE_TESTDRIVER_BEFORE_TESTMAIN  "#include \"itkTestDriverBeforeTest.inc\"")
-   set(CMAKE_TESTDRIVER_AFTER_TESTMAIN "#include \"itkTestDriverAfterTest.inc\"")
-   create_test_sourcelist(Tests ${KIT}TestDriver.cxx
-     ${KitTests}
-     EXTRA_INCLUDE  itkTestDriverIncludeBuiltInIOFactories.h
-     FUNCTION  ProcessArgumentsAndRegisterBuiltInFactories
-     )
-   add_executable(${KIT}TestDriver ${KIT}TestDriver.cxx ${Tests} ${ADDITIONAL_SRC})
-   target_link_libraries(${KIT}TestDriver ${KIT_LIBS} ${ITKTestKernel_LIBRARIES})
-   itk_module_target_label(${KIT}TestDriver)
+  set( ADDITIONAL_SRC ${ARGN} )
+  set(CMAKE_TESTDRIVER_BEFORE_TESTMAIN  "#include \"itkTestDriverBeforeTest.inc\"")
+  set(CMAKE_TESTDRIVER_AFTER_TESTMAIN "#include \"itkTestDriverAfterTest.inc\"")
+  create_test_sourcelist(Tests ${KIT}TestDriver.cxx
+    ${KitTests}
+    EXTRA_INCLUDE  itkTestDriverIncludeBuiltInIOFactories.h
+    FUNCTION  ProcessArgumentsAndRegisterBuiltInFactories
+    )
+  add_executable(${KIT}TestDriver ${KIT}TestDriver.cxx ${Tests} ${ADDITIONAL_SRC})
+  target_link_libraries(${KIT}TestDriver ${KIT_LIBS} ${ITKTestKernel_LIBRARIES})
+  itk_module_target_label(${KIT}TestDriver)
+  if(ITK_USE_COTIRE)
+    cotire(${KIT}TestDriver)
+  endif()
 endmacro()

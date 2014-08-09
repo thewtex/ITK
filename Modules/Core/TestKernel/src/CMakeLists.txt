@@ -1,5 +1,8 @@
 add_executable(itkTestDriver itkTestDriver.cxx)
 target_link_libraries(itkTestDriver ${ITKTestKernel_LIBRARIES})
+if(ITK_USE_COTIRE)
+  cotire(itkTestDriver)
+endif()
 itk_module_target_label(itkTestDriver)
 itk_module_target_export(itkTestDriver)
 itk_module_target_install(itkTestDriver)

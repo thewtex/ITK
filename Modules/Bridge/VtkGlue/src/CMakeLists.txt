@@ -15,5 +15,4 @@ target_link_libraries(ITKVtkGlue
     ${VTK_LIBRARIES}
     ${VTK_LIBRARIES_EXPLICIT}
     )
-
 itk_module_target(ITKVtkGlue)
