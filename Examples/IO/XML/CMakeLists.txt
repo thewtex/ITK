@@ -1,6 +1,4 @@
-
-add_executable(DOMFindDemo DOMFindDemo.cxx)
-target_link_libraries(DOMFindDemo ${ITK_LIBRARIES})
+add_example(DOMFindDemo)
 
 add_executable(ParticleSwarmOptimizerReadWrite
   ParticleSwarmOptimizerReadWrite.cxx

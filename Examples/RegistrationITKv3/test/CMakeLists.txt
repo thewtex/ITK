@@ -943,20 +943,20 @@ itk_add_test(NAME ITKv3ModelToImageRegistration2Test COMMAND ${ITK_TEST_DRIVER}
 )
 
 
-itk_add_test(NAME IterativeClosestPoint1Test COMMAND ${ITK_TEST_DRIVER}
-  $<TARGET_FILE:IterativeClosestPoint1>
+itk_add_test(NAME ITKv3IterativeClosestPoint1Test COMMAND ${ITK_TEST_DRIVER}
+  $<TARGET_FILE:ITKv3IterativeClosestPoint1>
         ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointFixedPoints.txt
         ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointMovingPoints.txt
 )
 
-itk_add_test(NAME IterativeClosestPoint2Test COMMAND ${ITK_TEST_DRIVER}
-  $<TARGET_FILE:IterativeClosestPoint2>
+itk_add_test(NAME ITKv3IterativeClosestPoint2Test COMMAND ${ITK_TEST_DRIVER}
+  $<TARGET_FILE:ITKv3IterativeClosestPoint2>
         ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointFixedPoints2.txt
         ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointMovingPoints2.txt
 )
 
-itk_add_test(NAME IterativeClosestPoint3Test COMMAND ${ITK_TEST_DRIVER}
-  $<TARGET_FILE:IterativeClosestPoint3>
+itk_add_test(NAME ITKv3IterativeClosestPoint3Test COMMAND ${ITK_TEST_DRIVER}
+  $<TARGET_FILE:ITKv3IterativeClosestPoint3>
         ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointFixedPoints.txt
         ${ITK_SOURCE_DIR}/Examples/Data/IterativeClosestPointMovingPoints.txt
 )

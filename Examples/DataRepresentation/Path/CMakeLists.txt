@@ -1,9 +1,7 @@
 project(PathExamples)
 include_regular_expression("^.*$")
 
-
-add_executable(PolyLineParametricPath1 PolyLineParametricPath1.cxx )
-target_link_libraries(PolyLineParametricPath1 ${ITK_LIBRARIES})
+add_example(PolyLineParametricPath1)
 
 if(BUILD_TESTING)
   add_subdirectory(test)
