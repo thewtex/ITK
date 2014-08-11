@@ -32,7 +32,6 @@ QuickPropLearningRule <LayerType,TTargetVector>
   m_Momentum = 0.9; //Default
   m_Max_Growth_Factor = 1.75;
   m_Decay = -0.0001;
-  m_SplitEpsilon = 1;
   m_Epsilon = 0.55;
   m_Threshold = 0.0;
   m_SigmoidPrimeOffset = 0;
