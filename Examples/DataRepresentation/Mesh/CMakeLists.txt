@@ -1,5 +1,4 @@
 project(MeshExamples)
-include_regular_expression("^.*$")
 
 foreach(example
     PointSet1

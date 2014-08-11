@@ -1,5 +1,4 @@
 project(ImageExamples)
-include_regular_expression("^.*$")
 
 foreach(example
     Image1

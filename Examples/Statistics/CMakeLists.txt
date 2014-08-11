@@ -1,5 +1,4 @@
 project(StatisticsExamples)
-include_regular_expression("^.*$")
 
 foreach(example
     BayesianPluginClassifier

@@ -1,9 +1,4 @@
-#
-# Examples on the use of segmentation algorithms
-#
-
 project(ImageSegmentation)
-include_regular_expression("^.*$")
 
 foreach(example
     ConfidenceConnected

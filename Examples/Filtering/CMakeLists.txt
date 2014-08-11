@@ -1,5 +1,4 @@
 project(FilteringExamples)
-include_regular_expression("^.*$")
 
 foreach(example
     CompositeFilterExample

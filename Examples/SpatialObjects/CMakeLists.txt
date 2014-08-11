@@ -1,8 +1,4 @@
-#
-#  Examples on the use of SpatialObjects.
-#
 project(SpatialObjectsExamples)
-include_regular_expression("^.*$")
 
 foreach(example
     ArrowSpatialObject

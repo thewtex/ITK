@@ -1,5 +1,4 @@
 project(ITKv4ImageRegistration)
-include_regular_expression("^.*$")
 
 foreach(example
     ImageRegistration1

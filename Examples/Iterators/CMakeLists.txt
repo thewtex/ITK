@@ -1,8 +1,4 @@
-#
-#  Examples on the use of Iterators.
-#
 project(IteratorExamples)
-include_regular_expression("^.*$")
 
 foreach(example
     NeighborhoodIterators1
