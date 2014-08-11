@@ -66,7 +66,7 @@ template <typename TInputImage, typename TOutputImage>
 PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
 ::~PatchBasedDenoisingImageFilter()
 {
-  EmptyCaches();
+  this->EmptyCaches();
 }
 
 template <typename TInputImage, typename TOutputImage>
@@ -82,8 +82,8 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
       delete m_ThreadData[threadId].eigenValsCache[c];
       delete m_ThreadData[threadId].eigenVecsCache[c];
       }
-    m_ThreadData[threadId].eigenValsCache.empty();
-    m_ThreadData[threadId].eigenVecsCache.empty();
+    m_ThreadData[threadId].eigenValsCache.clear();
+    m_ThreadData[threadId].eigenVecsCache.clear();
     }
 }
 
@@ -319,7 +319,7 @@ PatchBasedDenoisingImageFilter<TInputImage, TOutputImage>
     m_NumIndependentComponents = 1;
     }
 
-  EmptyCaches();
+  this->EmptyCaches();
 
   // initialize thread data struct
   const unsigned int numThreads = this->GetNumberOfThreads();
