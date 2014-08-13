@@ -133,16 +133,21 @@ Vector< T, TVectorDimension >
 }
 
 template< typename T, unsigned int TVectorDimension >
-void
+typename Vector< T, TVectorDimension >::RealValueType
 Vector< T, TVectorDimension >
 ::Normalize(void)
 {
   const RealValueType norm = this->GetNorm();
+  if (norm == 0.0)
+    {
+    return norm; // Prevent division by 0
+    }
 
   for ( unsigned int i = 0; i < TVectorDimension; i++ )
     {
     ( *this )[i] = static_cast< T >( static_cast< RealValueType >( ( *this )[i] ) / norm );
     }
+  return norm;
 }
 
 template< typename T, unsigned int TVectorDimension >
