@@ -19,7 +19,6 @@
 #define __itkMattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader_hxx
 
 #include "itkMattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader.h"
-#include "itkImageFileWriter.h"
 
 namespace itk
 {

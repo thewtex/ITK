@@ -384,13 +384,13 @@ private:
     size_t                       m_CachedNumberOfLocalParameters;
     size_t                       m_MaxBufferSize;
     // Pointer handle to parent version
-    itk::SimpleFastMutexLock *   m_ParentJointPDFDerivativesLockPtr;
+    SimpleFastMutexLock *   m_ParentJointPDFDerivativesLockPtr;
     // Smart pointer handle to parent version
     typename JointPDFDerivativesType::Pointer m_ParentJointPDFDerivatives;
   };
 
-  std::vector<DerivativeBufferManager> m_ThreaderDerivativeManager;
-  itk::SimpleFastMutexLock             m_JointPDFDerivativesLock;
+  std::vector<DerivativeBufferManager>      m_ThreaderDerivativeManager;
+  SimpleFastMutexLock                       m_JointPDFDerivativesLock;
   typename JointPDFDerivativesType::Pointer m_JointPDFDerivatives;
 
   mutable PDFValueType m_JointPDFSum;
