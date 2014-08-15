@@ -25,6 +25,7 @@ COMPONENTS
   vtkImagingSources
 REQUIRED
  )
+set(VTK_FOUND 0)
 ")
 set(ITKLevelSetsv4Visualization_EXPORT_CODE_BUILD "
 if(NOT ITK_BINARY_DIR)
@@ -40,6 +41,7 @@ COMPONENTS
   vtkImagingSources
 REQUIRED)
 endif()
+set(VTK_FOUND 0)
 ")
 
 itk_module_impl()

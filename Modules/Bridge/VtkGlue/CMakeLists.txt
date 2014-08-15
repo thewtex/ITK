@@ -20,6 +20,7 @@ COMPONENTS
   vtkIOImage
   vtkImagingSources
  REQUIRED)
+set(VTK_FOUND 0)
 ")
 set(ITKVtkGlue_EXPORT_CODE_BUILD "
 if(NOT ITK_BINARY_DIR)
@@ -34,6 +35,7 @@ COMPONENTS
   vtkIOImage
   vtkImagingSources
 REQUIRED)
+set(VTK_FOUND 0)
 endif()
 ")
 
