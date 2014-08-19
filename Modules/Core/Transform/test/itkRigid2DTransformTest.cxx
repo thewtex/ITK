@@ -254,6 +254,7 @@ int itkRigid2DTransformTest(int ,char * [] )
     mrotation[1][1] =  costh;
 
     rotation->SetMatrix( mrotation );
+    rotation->SetMatrix( mrotation, 1e-8 );
 
     TransformType::OffsetType ioffset;
     ioffset.Fill( 0.0f );
