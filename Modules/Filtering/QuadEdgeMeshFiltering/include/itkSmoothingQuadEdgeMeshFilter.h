@@ -28,7 +28,7 @@ namespace itk
  * \brief Quad Edge Mesh Smoothing Filter
  * \ingroup ITKQuadEdgeMeshFiltering
  */
-template< typename TInputMesh, typename TOutputMesh=TInputMesh >
+template< class TInputMesh, class TOutputMesh=TInputMesh >
 class SmoothingQuadEdgeMeshFilter:
   public QuadEdgeMeshToQuadEdgeMeshFilter< TInputMesh, TOutputMesh >
 {
@@ -63,16 +63,9 @@ public:
 
   itkStaticConstMacro(PointDimension, unsigned int, OutputMeshType::PointDimension);
 
-  typedef DelaunayConformingQuadEdgeMeshFilter< InputMeshType, OutputMeshType > InputOutputDelaunayConformingType;
-  typedef typename InputOutputDelaunayConformingType::Pointer                   InputOutputDelaunayConformingPointer;
-
-  typedef DelaunayConformingQuadEdgeMeshFilter< OutputMeshType, OutputMeshType > OutputDelaunayConformingType;
-  typedef typename OutputDelaunayConformingType::Pointer                         OutputDelaunayConformingPointer;
-
   typedef MatrixCoefficients< OutputMeshType > CoefficientsComputation;
 
-  void SetCoefficientsMethod(CoefficientsComputation *iMethod)
-  { m_CoefficientsMethod = iMethod; }
+  void SetCoefficientsMethod(CoefficientsComputation *iMethod);
 
   itkSetMacro(NumberOfIterations, unsigned int);
   itkGetConstMacro(NumberOfIterations, unsigned int);
@@ -90,7 +83,13 @@ protected:
 
   CoefficientsComputation *m_CoefficientsMethod;
 
+  typedef DelaunayConformingQuadEdgeMeshFilter< InputMeshType, OutputMeshType > InputOutputDelaunayConformingType;
+  typedef typename InputOutputDelaunayConformingType::Pointer                   InputOutputDelaunayConformingPointer;
+
   InputOutputDelaunayConformingPointer m_InputDelaunayFilter;
+
+  typedef DelaunayConformingQuadEdgeMeshFilter< OutputMeshType, OutputMeshType > OutputDelaunayConformingType;
+  typedef typename OutputDelaunayConformingType::Pointer                         OutputDelaunayConformingPointer;
 
   OutputDelaunayConformingPointer m_OutputDelaunayFilter;
 
