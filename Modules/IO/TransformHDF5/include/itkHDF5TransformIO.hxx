@@ -231,6 +231,7 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
   try
     {
     delete this->m_H5File;
+    this->m_H5File = ITK_NULLPTR;
     this->m_H5File = new H5::H5File(this->GetFileName(),H5F_ACC_RDONLY);
     // open /TransformGroup
     H5::Group transformGroup = this->m_H5File->openGroup(transformGroupName);
@@ -337,6 +338,7 @@ HDF5TransformIOTemplate< TInternalComputationValueType >
   try
     {
     delete this->m_H5File;
+    this->m_H5File = ITK_NULLPTR;
     this->m_H5File = new H5::H5File(this->GetFileName(),H5F_ACC_TRUNC);
 
     this->WriteString(ItkVersion, Version::GetITKVersion());
