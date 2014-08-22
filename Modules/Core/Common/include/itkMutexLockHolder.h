@@ -34,6 +34,9 @@ namespace itk
 {
 /** \class MutexLockHolder
  *  \brief A container to store a Mutex.
+ *  This holder class for ensuring that locks are released in
+ *  the event of an exception being thrown after the lock was
+ *  created.
  *
  * \ingroup ITKCommon
  */
@@ -42,18 +45,31 @@ class MutexLockHolder
 {
 public:
   typedef TMutex Mutex;
-  MutexLockHolder(Mutex & mutex):m_Mutex(mutex)
+  MutexLockHolder(Mutex & mutex, const bool noblock=false):m_Mutex(mutex),m_LockCaptured(true)
   {
-    m_Mutex.Lock();
+    if( noblock == false )
+      {
+      m_Mutex.Lock();
+      }
+    else
+      {
+      m_LockCaptured = m_Mutex.TryLock();
+      }
   }
+
+  itkGetMacro(LockCaptured,bool);
 
   ~MutexLockHolder()
   {
-    m_Mutex.Unlock();
+    if ( m_LockCaptured )
+     {
+      m_Mutex.Unlock();
+     }
   }
 
 protected:
   Mutex & m_Mutex;
+  bool    m_LockCaptured;
 };
 } //end itk namespace
 

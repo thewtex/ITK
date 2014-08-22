@@ -74,6 +74,11 @@ public:
   /** Lock the itkFastMutexLock. */
   void Lock();
 
+  /** Non-blocking Lock access.
+   \return bool - true if lock is captured, false if it was already heald by someone else.
+   */
+  bool TryLock();
+
   /** Unlock the FastMutexLock. */
   void Unlock();
 
@@ -92,6 +97,11 @@ private:
 inline void FastMutexLock::Lock(void)
 {
   m_SimpleFastMutexLock.Lock();
+}
+
+inline bool FastMutexLock::TryLock(void)
+{
+  return m_SimpleFastMutexLock.TryLock();
 }
 
 inline void FastMutexLock::Unlock(void)

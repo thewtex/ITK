@@ -47,6 +47,12 @@ void SimpleMutexLock::Lock()
   pthread_mutex_lock(&m_MutexLock);
 }
 
+bool SimpleMutexLock::TryLock()
+{
+  const bool lockCaptured = ( pthread_mutex_trylock(&m_MutexLock) == 0 );
+  return lockCaptured;
+}
+
 // Unlock the MutexLock
 void SimpleMutexLock::Unlock()
 {

@@ -48,6 +48,12 @@ void SimpleMutexLock::Lock()
   WaitForSingleObject(m_MutexLock, INFINITE);
 }
 
+bool SimpleMutexLock::TryLock()
+{
+  const bool lockCaptured = ( WaitForSingleObject(m_MutexLock, 0) == WAIT_OBJECT_0 );
+  return lockCaptured;
+}
+
 // Unlock the MutexLock
 void SimpleMutexLock::Unlock()
 {
