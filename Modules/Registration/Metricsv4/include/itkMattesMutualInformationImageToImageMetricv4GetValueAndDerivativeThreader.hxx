@@ -216,21 +216,26 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader<TDomain
         {
         this->m_MattesAssociate->m_ThreaderDerivativeManager.resize(localNumberOfThreadsUsed);
         }
+      // NOTE: The number of sampling points will be spread across the number of threads.
+      const size_t numberOfSamplePoints = this->m_MattesAssociate->GetNumberOfDomainPoints();
+      // A heuristic that assumues memory for many CPU machines is available
+      // efficient and easy to make, so split it accross all the threads.
+      // A work unit of at least 400 is needed
+      // when the thread size approaches the number of histograms so that the
+      // there is enough work to be done between thread lockings.
+      const size_t cacheBufferLength = std::min<size_t>(
+          1 + numberOfSamplePoints / localNumberOfThreadsUsed, /*Max samples per thread */
+          1024+256*localNumberOfThreadsUsed /*The more number of threads, more memory needed for caching to avoid contention.*/
+        );
       for( ThreadIdType threadId = 0; threadId < localNumberOfThreadsUsed; ++threadId )
         {
         this->m_MattesAssociate->m_ThreaderDerivativeManager[threadId].Initialize(
-          // A heuristic that assumues memory for 2x size of
-          // m_JointPDFDerivati efficient and easy to make, so
-          // split it accross all the threads.  A work unit of at least 400 is needed
-          // when the thread size approaches the number of histograms so that the
-          // there is enough work to be done between thread lockings.
-          std::max<size_t>(500,
-          this->m_MattesAssociate->m_NumberOfHistogramBins * this->m_MattesAssociate->m_NumberOfHistogramBins / localNumberOfThreadsUsed),
+          cacheBufferLength,
           this->GetCachedNumberOfLocalParameters(),
           // Need address of the lock
           &this->m_MattesAssociate->m_JointPDFDerivativesLock,
           this->m_MattesAssociate->m_JointPDFDerivatives, threadId
-          );
+        );
         }
       }
     }
@@ -469,7 +474,9 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader<TDomain
     // Dump all of the remaining per thread derivative buffers
     for( ThreadIdType threadId = 0; threadId < localNumberOfThreadsUsed; ++threadId )
       {
-      this->m_MattesAssociate->m_ThreaderDerivativeManager[threadId].WriteBufferToPDFDerivative();
+      //NOTE: Do not allow non-blocking.  Since this part of the code is
+      //      single threaded, it should not be an issue.
+      this->m_MattesAssociate->m_ThreaderDerivativeManager[threadId].WriteBufferToPDFDerivative(false);
       }
     }
 

@@ -281,6 +281,7 @@ public:
       m_BufferPDFValuesContainer.resize(MaxBufferLength, ITK_NULLPTR);
       m_BufferOffsetContainer.resize(MaxBufferLength, 0);
       m_CachedNumberOfLocalParameters = CachedNumberOfLocalParameters;
+      m_BufferDumpThreshold = std::max<size_t>(1,whichThreadID + MaxBufferLength/(4+whichThreadID % 4)); // Initialize each thread threashold sligthly differently
       m_MaxBufferSize = MaxBufferLength;
       m_ParentJointPDFDerivativesLockPtr = parentDerivativeLockPtr;
       m_ParentJointPDFDerivatives = parentJointPDFDerivatives;
@@ -311,12 +312,14 @@ public:
 
     void CheckAndDumpIfNecessary()
     {
-      if( m_CurrentFillSize ==  m_MaxBufferSize )
+      const bool cacheIsFull = ( m_CurrentFillSize == m_MaxBufferSize );
+      // If partially full, then check and dump if free, else fill more of the buffer
+      if( m_CurrentFillSize > m_BufferDumpThreshold || cacheIsFull )
         {
-        this->WriteBufferToPDFDerivative(); // NOTE: resets m_CurrentFillSize to
-                                            // zero.
+        // NOTE: resets m_CurrentFillSize to zero upon dump
+        // NOTE: does nothing if not full and mutex is busy elsewhere.
+        this->WriteBufferToPDFDerivative( ! cacheIsFull ); //Allow non-blocking if cache is not full
         }
-
     }
 
     // If offset is same as previous offset, then accumulate with previous
@@ -329,42 +332,52 @@ public:
     }
 
     // Simply reset the entire cache to all zeros
-    void WriteBufferToPDFDerivative()
+    // If allowNonBlocking == true, and the mutex is busy, then just return and do nothing.
+    // If allowNonBlocking == flase, then the thread will block until it can gain access to the thread
+    void WriteBufferToPDFDerivative( const bool allowNonBlocking )
     {
-      typename std::vector<OffsetValueType>::iterator BufferOffsetContainerIter(this->m_BufferOffsetContainer.begin() );
-      typename std::vector<PDFValueType *>::iterator  BufferPDFValuesContainerIter(
-        this->m_BufferPDFValuesContainer.begin() );
-
-      // NOTE: Only need to write out portion of buffer filled.
-      size_t bufferIndex = 0;
       // thread safe lazy initialization, prevent race condition on
       // setting, with an atomic set if null.
-      MutexLockHolder< SimpleFastMutexLock > LockHolder(*this->m_ParentJointPDFDerivativesLockPtr);
-      while( bufferIndex < m_CurrentFillSize )
+      MutexLockHolder< SimpleFastMutexLock > LockHolder(*this->m_ParentJointPDFDerivativesLockPtr, allowNonBlocking );
+      if( LockHolder.GetLockCaptured() == true )
         {
-        const OffsetValueType         ThisIndexOffset = *BufferOffsetContainerIter;
-        JointPDFDerivativesValueType *derivPtr = this->m_ParentJointPDFDerivatives->GetBufferPointer()
-          + ThisIndexOffset;
+        typename std::vector<OffsetValueType>::iterator BufferOffsetContainerIter(this->m_BufferOffsetContainer.begin() );
+        typename std::vector<PDFValueType *>::iterator  BufferPDFValuesContainerIter(
+          this->m_BufferPDFValuesContainer.begin() );
 
-        PDFValueType *             derivativeContribution = *BufferPDFValuesContainerIter;
-        const PDFValueType * const endContribution = derivativeContribution + m_CachedNumberOfLocalParameters;
-        while( derivativeContribution < endContribution )
+        // NOTE: Only need to write out portion of buffer filled.
+        size_t bufferIndex = 0;
+        while( bufferIndex < m_CurrentFillSize )
           {
-          *( derivPtr ) += *( derivativeContribution );
-          // NOTE: Preliminary inconclusive tests indicates that setting to zero
-          // while it's local in cache is faster than bulk memset after the loop
-          // for small data sets
-          *( derivativeContribution ) = 0.0; // Reset to zero after getting
-                                             // value
-          ++derivativeContribution;
-          ++derivPtr;
-          }
+          const OffsetValueType         ThisIndexOffset = *BufferOffsetContainerIter;
+          JointPDFDerivativesValueType *derivPtr = this->m_ParentJointPDFDerivatives->GetBufferPointer()
+            + ThisIndexOffset;
 
-        ++BufferOffsetContainerIter;
-        ++BufferPDFValuesContainerIter;
-        ++bufferIndex;
+          PDFValueType *             derivativeContribution = *BufferPDFValuesContainerIter;
+          const PDFValueType * const endContribution = derivativeContribution + m_CachedNumberOfLocalParameters;
+          while( derivativeContribution < endContribution )
+            {
+            *( derivPtr ) += *( derivativeContribution );
+            // NOTE: Preliminary inconclusive tests indicates that setting to zero
+            // while it's local in cache is faster than bulk memset after the loop
+            // for small data sets
+            *( derivativeContribution ) = 0.0; // Reset to zero after getting
+            // value
+            ++derivativeContribution;
+            ++derivPtr;
+            }
+
+          ++BufferOffsetContainerIter;
+          ++BufferPDFValuesContainerIter;
+          ++bufferIndex;
+          }
+        m_CurrentFillSize = 0; // Reset fill size back to zero.
+        m_BufferDumpThreshold = std::max<size_t>(1,m_MaxBufferSize/2); //Do 1/4 of the buffer length.
         }
-      m_CurrentFillSize = 0; // Reset fill size back to zero.
+     else
+       {
+          m_BufferDumpThreshold += std::max<size_t>(1,m_MaxBufferSize/4); //Do a 1/3 more of the buffer length.
+       }
     }
 
 private:
@@ -382,6 +395,7 @@ private:
     std::vector<PDFValueType *>  m_BufferPDFValuesContainer;
     std::vector<OffsetValueType> m_BufferOffsetContainer;
     size_t                       m_CachedNumberOfLocalParameters;
+    size_t                       m_BufferDumpThreshold;
     size_t                       m_MaxBufferSize;
     // Pointer handle to parent version
     SimpleFastMutexLock *   m_ParentJointPDFDerivativesLockPtr;

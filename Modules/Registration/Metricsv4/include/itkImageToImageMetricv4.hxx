@@ -581,7 +581,7 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputat
     }
   else
     {
-    typename VirtualImageType::RegionType region = this->GetVirtualRegion();
+    const typename VirtualImageType::RegionType & region = this->GetVirtualRegion();
     return region.GetNumberOfPixels();
     }
 }
