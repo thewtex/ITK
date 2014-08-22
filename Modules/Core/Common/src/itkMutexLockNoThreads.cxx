@@ -75,6 +75,27 @@ void SimpleMutexLock::Lock()
 #endif
 }
 
+// Non-blocking TryLock the FastMutexLock
+bool SimpleFastMutexLock::TryLock() const
+{
+#ifdef ITK_USE_WIN32_THREADS
+  const bool lockCaptured = TryEnterCriticalSection(&m_FastMutexLock);
+#endif
+#ifdef ITK_USE_PTHREADS
+  const bool lockCaptured = ( pthread_mutex_trylock(&m_FastMutexLock) == 0 );
+#endif
+  /*
+   * non-blocking lock of mutex
+   * - if mutex is not already locked, you will obtain the lock & own the mutex, and return 0 immediately
+   * - if mutex is already locked, pthread_mutex_trylock() will return immediately wth return value EBUSY
+   */
+#if defined(ITK_USE_WIN32_THREADS) || defined(ITK_USE_PTHREADS)
+  return lockCaptured;
+#else
+  return true;
+#endif
+}
+
 // Unlock the MutexLock
 void SimpleMutexLock::Unlock()
 {
