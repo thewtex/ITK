@@ -66,6 +66,11 @@ public:
   /** Lock the MutexLock. */
   void Lock(void);
 
+  /** Non-blocking Lock access.
+   \return bool - true if lock is captured, false if it was already heald by someone else.
+   */
+  bool TryLock();
+
   /** Unlock the MutexLock. */
   void Unlock(void);
 
@@ -112,6 +117,11 @@ public:
   /** Lock the itkMutexLock. */
   void Lock(void);
 
+  /** Non-blocking Lock access.
+   \return bool - true if lock is captured, false if it was already heald by someone else.
+   */
+  bool TryLock();
+
   /** Unlock the MutexLock. */
   void Unlock(void);
 
@@ -130,6 +140,11 @@ private:
 inline void MutexLock::Lock(void)
 {
   m_SimpleMutexLock.Lock();
+}
+
+inline bool MutexLock::TryLock(void)
+{
+  return m_SimpleMutexLock.TryLock();
 }
 
 inline void MutexLock::Unlock(void)
