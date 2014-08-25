@@ -44,8 +44,18 @@ template< typename TMutex >
 class MutexLockHolder
 {
 public:
-  typedef TMutex Mutex;
-  MutexLockHolder(Mutex & mutex, const bool noblock=false):m_Mutex(mutex),m_LockCaptured(true)
+  typedef MutexLockHolder Self;
+  typedef TMutex          MutexType;
+
+  /** The constructor acquires a lock on mutex.
+   *
+   * If noblock is true, then TryLock will be called, and
+   * GetLockCaptured can be used to determine if the lock was
+   * acquired.
+   */
+  MutexLockHolder(MutexType & mutex, bool noblock=false)
+    : m_Mutex(mutex),
+      m_LockCaptured(true)
   {
     if( noblock == false )
       {
@@ -57,7 +67,13 @@ public:
       }
   }
 
-  itkGetMacro(LockCaptured,bool);
+
+  /** True if the holder has acquired the lock, for no-blocking
+   *  constructor this will always be true.
+   */
+  inline bool GetLockCaptured() const { return this->m_LockCaptured; }
+  operator bool () const { return this->m_LockCaptured; }
+
 
   ~MutexLockHolder()
   {
@@ -67,9 +83,18 @@ public:
      }
   }
 
+
 protected:
-  Mutex & m_Mutex;
-  bool    m_LockCaptured;
+
+  MutexType &m_Mutex;
+
+  bool       m_LockCaptured;
+
+
+private:
+  MutexLockHolder(const Self &); //purposely not implemented
+  void operator=(const Self &);  //purposely not implemented
+
 };
 } //end itk namespace
 

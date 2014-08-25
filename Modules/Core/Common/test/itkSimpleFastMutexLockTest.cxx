@@ -46,11 +46,13 @@ int itkSimpleFastMutexLockTest( int , char * [] )
       std::cout << "Failed to capture a free lock with TryLock()" << std::endl;
       return EXIT_FAILURE;
       }
+
+    if (!nblock.TryLock())
+      {
+      std::cout << "Failed to recursively capture a lock with TryLock()" << std::endl;
+      return EXIT_FAILURE;
+      }
     nblock.Unlock();
-    nblock.Lock();
-    //Ensure the the TryLock() does not cause a deadlock.
-    // If the lock isn't recursive, it will block forever and the CTest
-    // timeout will cause the test to fail.
     nblock.Unlock();
     }
 
