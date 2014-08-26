@@ -198,16 +198,14 @@ MultiScaleHessianBasedMeasureImageFilter
     progress->RegisterInternalFilter(this->m_HessianToMeasureFilter, .5 / m_NumberOfSigmaSteps);
     }
 
-  double sigma = m_SigmaMinimum;
-
-  int scaleLevel = 1;
-
-  while ( sigma <= m_SigmaMaximum )
+  for( int scaleLevel = 0; scaleLevel < m_NumberOfSigmaSteps; scaleLevel++ )
     {
     if ( m_NumberOfSigmaSteps == 0 )
       {
       break;
       }
+
+    double sigma  = this->ComputeSigmaValue(scaleLevel);
 
     itkDebugMacro (<< "Computing measure for scale with sigma = " << sigma);
 
@@ -218,10 +216,6 @@ MultiScaleHessianBasedMeasureImageFilter
     m_HessianToMeasureFilter->Update();
 
     this->UpdateMaximumResponse(sigma);
-
-    sigma  = this->ComputeSigmaValue(scaleLevel);
-
-    scaleLevel++;
 
     if ( m_NumberOfSigmaSteps == 1 )
       {
