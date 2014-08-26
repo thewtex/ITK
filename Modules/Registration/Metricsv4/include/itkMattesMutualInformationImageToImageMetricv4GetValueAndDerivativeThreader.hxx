@@ -344,10 +344,6 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
 ::AfterThreadedExecution()
 {
   const ThreadIdType localNumberOfThreadsUsed = this->GetNumberOfThreadsUsed();
-  /* NOTE: It is not worth threading this method. Profiling shows that post-processing
-   * time of images with real-world sizes is too insignificant to register in
-   * the profiler. */
-
   /* Store the number of valid points in the enclosing class
    * m_NumberOfValidPoints by collecting the valid points per thread.
    * We do this here because we're skipping Superclass::AfterThreadedExecution*/
@@ -359,39 +355,8 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader< TDomai
 
   /* Porting: This code is from
    * MattesMutualInformationImageToImageMetric::GetValueAndDerivativeThreadPostProcess */
-
   /* Post-processing that is common the GetValue and GetValueAndDerivative */
   this->m_MattesAssociate->GetValueCommonAfterThreadedExecution();
-
-  if( this->m_MattesAssociate->GetComputeDerivative() && ( ! this->m_MattesAssociate->HasLocalSupport() ) )
-    {
-    // This entire block of code is used to accumulate the per-thread buffers into 1 thread.
-    // For this thread, how many histogram elements are there?
-    const NumberOfParametersType rowSize = this->GetCachedNumberOfLocalParameters() * this->m_MattesAssociate->m_NumberOfHistogramBins;
-    const SizeValueType histogramTotalElementsSize = rowSize * this->m_MattesAssociate->m_NumberOfHistogramBins;
-
-    JointPDFDerivativesValueType *const accumulatorPdfDPtrStart = this->m_MattesAssociate->m_ThreaderJointPDFDerivatives[0]->GetBufferPointer();
-
-    for( SizeValueType t = 1; t < localNumberOfThreadsUsed; ++t )
-      {
-      JointPDFDerivativesValueType * accumulatorPdfDPtr = accumulatorPdfDPtrStart;
-      JointPDFDerivativesValueType const * tempThreadPdfDPtr = this->m_MattesAssociate->m_ThreaderJointPDFDerivatives[t]->GetBufferPointer();
-      JointPDFDerivativesValueType const * const tempThreadPdfDPtrEnd = tempThreadPdfDPtr + histogramTotalElementsSize;
-      while( tempThreadPdfDPtr < tempThreadPdfDPtrEnd )
-        {
-        *( accumulatorPdfDPtr++ ) += *( tempThreadPdfDPtr++ );
-        }
-      }
-
-    const PDFValueType nFactor = 1.0 / ( this->m_MattesAssociate->m_MovingImageBinSize * this->m_MattesAssociate->GetNumberOfValidPoints() );
-
-    JointPDFDerivativesValueType *             accumulatorPdfDPtr = accumulatorPdfDPtrStart;
-    JointPDFDerivativesValueType const * const tempThreadPdfDPtrEnd = accumulatorPdfDPtrStart + histogramTotalElementsSize;
-    while( accumulatorPdfDPtr < tempThreadPdfDPtrEnd )
-      {
-      *( accumulatorPdfDPtr++ ) *= nFactor;
-      }
-    }
 
   // Collect and compute results.
   // Value and derivative are stored in member vars.
