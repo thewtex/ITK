@@ -202,7 +202,10 @@ MultiScaleHessianBasedMeasureImageFilter
 
   int scaleLevel = 1;
 
-  while ( sigma <= m_SigmaMaximum )
+  // Add a small tolerance so that if the last sigma is some tiny number larger than
+  // m_SigmaMaximum, it still gets used.
+  const double tolerance = 1e-5;
+  while ( sigma <= m_SigmaMaximum + tolerance )
     {
     if ( m_NumberOfSigmaSteps == 0 )
       {
