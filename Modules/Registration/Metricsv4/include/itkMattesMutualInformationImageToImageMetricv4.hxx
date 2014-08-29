@@ -238,11 +238,6 @@ MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualI
       this->m_ThreaderJointPDF[threadId]->Allocate(true);
       }
     }
-  else
-    {
-    // Still need to reset to zero for subsequent runs
-    this->m_ThreaderJointPDF[threadId]->FillBuffer(0.0);
-    }
 
   if( this->GetComputeDerivative()  &&  ! this->HasLocalSupport() )
     {
@@ -273,11 +268,6 @@ MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualI
       this->m_ThreaderJointPDFDerivatives[threadId] = JointPDFDerivativesType::New();
       this->m_ThreaderJointPDFDerivatives[threadId]->SetRegions( jointPDFDerivativesRegion);
       this->m_ThreaderJointPDFDerivatives[threadId]->Allocate(true);
-      }
-    else
-      {
-      // Still need to reset to zero for subsequent runs
-      this->m_ThreaderJointPDFDerivatives[threadId]->FillBuffer(0.0);
       }
     }
 }
@@ -314,6 +304,7 @@ MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualI
       while( threadPdf <= threadPdfEnd )
         {
         *( pdfPtr++ ) += *( threadPdf );
+        *( threadPdf ) = 0.0;
         ++threadPdf;
         }
       }
@@ -348,8 +339,8 @@ MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualI
         while( threadPdfDPtr <= threadPdfDPtrEnd )
           {
           *( accumulatorPdfDPtr++ ) += *( threadPdfDPtr );
-
-          threadPdfDPtr++;
+          *( threadPdfDPtr ) = 0.0;
+          ++threadPdfDPtr;
           }
         }
       }
