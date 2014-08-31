@@ -71,7 +71,7 @@ void
 BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
 ::BeforeThreadedGenerateData()
 {
-  TOutputImage * output = this->GetOutput();
+  OutputImageType * output = this->GetOutput();
 
   output->SetBackgroundValue(this->m_OutputBackgroundValue);
 
@@ -84,9 +84,17 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
   // number of threads can be constrained by the region size, so call the
   // SplitRequestedRegion
   // to get the real number of threads which will be used
-  typename TOutputImage::RegionType splitRegion;  // dummy region - just to call
-                                                  // the following method
+  typename OutputImageType::RegionType splitRegion;
   nbOfThreads = this->SplitRequestedRegion(0, nbOfThreads, splitRegion);
+  const typename OutputImageType::RegionType & requestedRegion = output->GetRequestedRegion();
+  const typename OutputImageType::SizeType & requestedSize = requestedRegion.GetSize();
+  // Threading splits lines along the first dimension. If there is only a
+  // single line along the first dimension, only use one thread.
+  if( splitRegion.GetSize()[0] != requestedSize[0] )
+    {
+    nbOfThreads = 1;
+    this->SetNumberOfThreads( nbOfThreads );
+    }
 
   // set up the vars used in the threads
   this->m_NumberOfLabels.clear();
@@ -94,8 +102,8 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
   this->m_Barrier = Barrier::New();
   this->m_Barrier->Initialize(nbOfThreads);
 
-  const SizeValueType pixelcount = output->GetRequestedRegion().GetNumberOfPixels();
-  const SizeValueType xsize = output->GetRequestedRegion().GetSize()[0];
+  const SizeValueType pixelcount = requestedRegion.GetNumberOfPixels();
+  const SizeValueType xsize = requestedSize[0];
   const SizeValueType linecount = pixelcount / xsize;
   m_LineMap.resize(linecount);
   m_FirstLineIdToJoin.resize(nbOfThreads - 1);
