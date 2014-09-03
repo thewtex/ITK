@@ -28,6 +28,7 @@
 #include "itkNrrdImageIOFactory.h"
 #include "itkGiplImageIOFactory.h"
 #include "itkNiftiImageIOFactory.h"
+#include "itkHDF5ImageIOFactory.h"
 #include "itkTestDriverInclude.h"
 #include "itkObjectFactoryBase.h"
 
@@ -44,6 +45,7 @@ RegisterRequiredFactories()
   itk::ObjectFactoryBase::RegisterFactory( itk::NrrdImageIOFactory::New() );
   itk::ObjectFactoryBase::RegisterFactory( itk::GiplImageIOFactory::New() );
   itk::ObjectFactoryBase::RegisterFactory( itk::NiftiImageIOFactory::New() );
+  itk::ObjectFactoryBase::RegisterFactory( itk::HDF5ImageIOFactory::New() );
 }
 
 void
