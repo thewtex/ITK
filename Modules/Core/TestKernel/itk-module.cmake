@@ -9,6 +9,7 @@ itk_module(ITKTestKernel
     ITKIOBMP
     ITKIOGDCM
     ITKIOGIPL
+    ITKIOHDF5
     ITKIOJPEG
     ITKIOLSM
     ITKIOMeta
