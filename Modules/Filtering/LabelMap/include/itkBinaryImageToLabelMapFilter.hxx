@@ -38,6 +38,8 @@ BinaryImageToLabelMapFilter< TInputImage, TOutputImage >
   this->m_NumberOfObjects = 0;
   this->m_OutputBackgroundValue = NumericTraits< OutputPixelType >::NonpositiveMin();
   this->m_InputForegroundValue = NumericTraits< InputPixelType >::max();
+  this->m_ImageRegionSplitter = ImageRegionSplitterDirection::New();
+  this->m_ImageRegionSplitter->SetDirection( 0 );
 }
 
 template< typename TInputImage, typename TOutputImage >
