@@ -25,6 +25,9 @@
 #include "itkBSplineDerivativeKernelFunction.h"
 #include "itkArray2D.h"
 
+#include "itkSimpleFastMutexLock.h"
+#include "itkMutexLockHolder.h"
+
 namespace itk
 {
 
@@ -168,11 +171,11 @@ public:
    */
   const typename JointPDFType::Pointer GetJointPDF () const
     {
-    if( this->m_ThreaderJointPDF.size() == 0 )
+    if( this->m_AccumulatorJointPDF.IsNull() )
       {
       return typename JointPDFType::Pointer(ITK_NULLPTR);
       }
-    return this->m_ThreaderJointPDF[0];
+    return this->m_AccumulatorJointPDF;
     }
 
   /**
@@ -183,11 +186,11 @@ public:
    */
   const typename JointPDFDerivativesType::Pointer GetJointPDFDerivatives () const
     {
-    if( this->m_ThreaderJointPDFDerivatives.size() == 0 )
+    if( this->m_AccumulatorJointPDFDerivatives.IsNull() )
       {
       return typename JointPDFDerivativesType::Pointer(ITK_NULLPTR);
       }
-    return this->m_ThreaderJointPDFDerivatives[0];
+    return this->m_AccumulatorJointPDFDerivatives;
     }
 
   /** Initialize per-thread components for computing metric
@@ -195,6 +198,7 @@ public:
     * per thread before processing each thread.
     */
   virtual void InitializeThread( const ThreadIdType threadId );
+  virtual void FinalizeThread( const ThreadIdType threadId );
 
 protected:
   MattesMutualInformationImageToImageMetricv4();
@@ -260,6 +264,11 @@ protected:
   /** The joint PDF and PDF derivatives. */
   typename std::vector<typename JointPDFType::Pointer>            m_ThreaderJointPDF;
   typename std::vector<typename JointPDFDerivativesType::Pointer> m_ThreaderJointPDFDerivatives;
+  typename JointPDFType::Pointer                                  m_AccumulatorJointPDF;
+  typename JointPDFDerivativesType::Pointer                       m_AccumulatorJointPDFDerivatives;
+
+  std::vector<SimpleFastMutexLock>                                m_JointPDFSubsectionLocks;
+  std::vector<SimpleFastMutexLock>                                m_JointPDFDerivativeSubsectionLocks;
 
   PDFValueType m_JointPDFSum;
 
