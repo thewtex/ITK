@@ -287,6 +287,62 @@ void
 MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputationValueType, TMetricTraits>
 ::FinalizeThread( const ThreadIdType threadId )
 {
+
+  // This method is from MattesMutualImageToImageMetric::GetValueThreadPostProcess. Common
+  // code used by GetValue and GetValueAndDerivative.
+  // Should be threaded. But if modified to do so, should probably not be threaded
+  // separately, but rather as a part of all post-processing.
+    {
+    const size_t numberOfVoxels = this->m_NumberOfHistogramBins * this->m_NumberOfHistogramBins;
+    JointPDFValueType * const accumPDFPtrStart = this->m_AccumulatorJointPDF->GetBufferPointer();
+    JointPDFValueType *       accumPDFPtr = accumPDFPtrStart;
+    JointPDFValueType *       threadPdfStart = this->m_ThreaderJointPDF[threadId]->GetBufferPointer();
+    JointPDFValueType *       threadPdf = threadPdfStart;
+    const size_t numberOfSubsections = static_cast<size_t>( m_JointPDFSubsectionLocks.size() );
+    const size_t numberVoxelsPerSubsection = std::max<size_t>(1, static_cast<size_t>(std::ceil(static_cast<double>( numberOfVoxels) / static_cast<double>( numberOfSubsections ) ) ) );
+    for( size_t subsection = 0; subsection < numberOfSubsections; ++subsection )
+      {
+      JointPDFValueType const * const accumPDFEnd = accumPDFPtrStart + std::min<size_t>(numberOfVoxels,(subsection+1)*numberVoxelsPerSubsection);
+      //Get mutex lock for writing to protect subsections of the accumPDFPtr buffer
+      MutexLockHolder< SimpleFastMutexLock > LockHolder(m_JointPDFSubsectionLocks[subsection]);
+      while( accumPDFPtr < accumPDFEnd )
+        {
+        *( accumPDFPtr ) += *( threadPdf );
+        ++accumPDFPtr;
+        ++threadPdf;
+        }
+      }
+    }
+
+  if( this->GetComputeDerivative() && ( ! this->HasLocalSupport() ) )
+    {
+    // This entire block of code is used to accumulate the per-thread buffers into 1 thread.
+    // For this thread, how many histogram elements are there?
+    const size_t histogramTotalElementsSize = this->GetNumberOfLocalParameters() * this->m_NumberOfHistogramBins * this->m_NumberOfHistogramBins;
+
+    //Accumulate this thread values for Derivatives
+    JointPDFDerivativesValueType * const accumPDFDerivPtrStart = this->m_AccumulatorJointPDFDerivatives->GetBufferPointer();
+    JointPDFDerivativesValueType       * threadPdfDPtrStart = this->m_ThreaderJointPDFDerivatives[threadId]->GetBufferPointer();
+    JointPDFDerivativesValueType       * threadPdfDPtr = threadPdfDPtrStart;
+
+    JointPDFDerivativesValueType * accumPDFDerivPtr = accumPDFDerivPtrStart;
+    const size_t numberOfSubsections = static_cast<size_t>( m_JointPDFDerivativeSubsectionLocks.size() );
+    const size_t numberVoxelDerivativeValuesPerSubsection = std::max<size_t>(1,
+      static_cast<size_t>( std::ceil(static_cast<double>( histogramTotalElementsSize )/static_cast<double>(numberOfSubsections ) ) ) );
+    for( size_t subsection = 0; subsection < numberOfSubsections; ++subsection )
+      {
+      JointPDFDerivativesValueType const * const threadPdfDPtrEnd = threadPdfDPtrStart
+        + std::min<size_t>(histogramTotalElementsSize,(subsection+1)*numberVoxelDerivativeValuesPerSubsection);
+      //Get mutex lock for writing
+      MutexLockHolder< SimpleFastMutexLock > LockHolder(m_JointPDFDerivativeSubsectionLocks[subsection]);
+      while( threadPdfDPtr < threadPdfDPtrEnd )
+        {
+        *( accumPDFDerivPtr ) += *( threadPdfDPtr );
+        ++accumPDFDerivPtr;
+        ++threadPdfDPtr;
+        }
+      }
+    }
 }
 
 
@@ -437,55 +493,23 @@ MattesMutualInformationImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualI
 ::GetValueCommonAfterThreadedExecution()
 {
   const ThreadIdType localNumberOfThreadsUsed = this->GetNumberOfThreadsUsed();
-    {
-    // This method is from MattesMutualImageToImageMetric::GetValueThreadPostProcess. Common
-    // code used by GetValue and GetValueAndDerivative.
-    // Should be threaded. But if modified to do so, should probably not be threaded
-    // separately, but rather as a part of all post-processing.
-
-    const size_t numberOfVoxels = this->m_NumberOfHistogramBins* this->m_NumberOfHistogramBins;
-    JointPDFValueType * const pdfPtrStart = this->m_AccumulatorJointPDF->GetBufferPointer();
-    for( unsigned int t = 0; t < localNumberOfThreadsUsed; ++t )
-      {
-      JointPDFValueType *                 pdfPtr = pdfPtrStart;
-      JointPDFValueType const *          tPdfPtr = this->m_ThreaderJointPDF[t]->GetBufferPointer();
-      JointPDFValueType const * const tPdfPtrEnd = tPdfPtr + numberOfVoxels;
-      while( tPdfPtr < tPdfPtrEnd )
-        {
-        *( pdfPtr++ ) += *( tPdfPtr++ );
-        }
-      }
-    }
-
   if( this->GetComputeDerivative() && ( ! this->HasLocalSupport() ) )
     {
     // This entire block of code is used to accumulate the per-thread buffers into 1 thread.
     // For this thread, how many histogram elements are there?
     const SizeValueType rowSize = this->GetNumberOfLocalParameters() * this->m_NumberOfHistogramBins;
     const SizeValueType histogramTotalElementsSize = rowSize * this->m_NumberOfHistogramBins;
-
-    JointPDFDerivativesValueType *const accumulatorPdfDPtrStart = this->m_AccumulatorJointPDFDerivatives->GetBufferPointer();
-
-    for( SizeValueType t = 0; t < localNumberOfThreadsUsed; ++t )
-      {
-      JointPDFDerivativesValueType * accumulatorPdfDPtr = accumulatorPdfDPtrStart;
-      JointPDFDerivativesValueType const * tempThreadPdfDPtr = this->m_ThreaderJointPDFDerivatives[t]->GetBufferPointer();
-      JointPDFDerivativesValueType const * const tempThreadPdfDPtrEnd = tempThreadPdfDPtr + histogramTotalElementsSize;
-      while( tempThreadPdfDPtr < tempThreadPdfDPtrEnd )
-        {
-        *( accumulatorPdfDPtr++ ) += *( tempThreadPdfDPtr++ );
-        }
-      }
-
+    // This can not be threaded.
     const PDFValueType nFactor = 1.0 / ( this->m_MovingImageBinSize * this->GetNumberOfValidPoints() );
-
+    JointPDFDerivativesValueType *const accumulatorPdfDPtrStart = this->m_AccumulatorJointPDFDerivatives->GetBufferPointer();
     JointPDFDerivativesValueType *             accumulatorPdfDPtr = accumulatorPdfDPtrStart;
-    JointPDFDerivativesValueType const * const tempThreadPdfDPtrEnd = accumulatorPdfDPtrStart + histogramTotalElementsSize;
-    while( accumulatorPdfDPtr < tempThreadPdfDPtrEnd )
+    JointPDFDerivativesValueType const * const threadPdfDPtrEnd = accumulatorPdfDPtrStart + histogramTotalElementsSize;
+    while( accumulatorPdfDPtr < threadPdfDPtrEnd )
       {
       *( accumulatorPdfDPtr++ ) *= nFactor;
       }
     }
+
   for( unsigned int t = 1; t < localNumberOfThreadsUsed; ++t )
     {
     for( SizeValueType i = 0; i < this->m_NumberOfHistogramBins; ++i )
