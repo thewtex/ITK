@@ -171,21 +171,27 @@ inline void EncapsulateMetaData(MetaDataDictionary & Dictionary, const char *key
 template< typename T >
 inline bool ExposeMetaData(const MetaDataDictionary & Dictionary, const std::string key, T & outval)
 {
-  if ( !Dictionary.HasKey(key) )
+  MetaDataDictionary::ConstIterator it = Dictionary.Find( key );
+  if ( it == Dictionary.End() )
     {
     return false;
     }
 
-  const MetaDataObjectBase::ConstPointer baseObjectSmartPointer = Dictionary[key];
+  return ExposeMetaData< T >( it, outval );
+}
 
-  MetaDataObject< T > const * const TempMetaDataObject = dynamic_cast< MetaDataObject< T > const * >( baseObjectSmartPointer.GetPointer() );
+template< typename T >
+inline bool ExposeMetaData( const MetaDataDictionary::ConstIterator & it, T & outval )
+{
+ const MetaDataObjectBase::ConstPointer baseObjectSmartPointer = it->second;
+
+ MetaDataObject< T > const * const TempMetaDataObject = dynamic_cast< MetaDataObject< T > const * >( baseObjectSmartPointer.GetPointer() );
   if ( TempMetaDataObject == ITK_NULLPTR )
-    {
-    return false;
-    }
-
-  outval = TempMetaDataObject->GetMetaDataObjectValue();
-  return true;
+   {
+   return false;
+   }
+ outval = TempMetaDataObject->GetMetaDataObjectValue();
+ return true;
 }
 
 #ifndef ITK_TEMPLATE_EXPLICIT_MetaDataObject

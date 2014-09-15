@@ -697,7 +697,9 @@ void GDCMImageIO::Write(const void *buffer)
   while ( itr != end )
     {
     const std::string & key = itr->first; //Needed for bcc32
-    ExposeMetaData< std::string >(dict, key, value);
+
+//    ExposeMetaData< std::string >(dict, key, value);
+    ExposeMetaData< std::string >( itr, value );
 
     // Convert DICOM name to DICOM (group,element)
     bool b = tag.ReadFromPipeSeparatedString( key.c_str() );
