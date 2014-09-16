@@ -36,14 +36,17 @@ HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   // note: this is not constant to suppress a warning
   unsigned int numberOfSmoothingFilters = NumberOfSmoothingFilters;
 
-  for ( unsigned int i = 0; i < numberOfSmoothingFilters; i++ )
+  if(numberOfSmoothingFilters > 0)
     {
-    GaussianFilterPointer filter = GaussianFilterType::New();
-    filter->SetOrder(GaussianFilterType::ZeroOrder);
-    filter->SetNormalizeAcrossScale(m_NormalizeAcrossScale);
-    filter->InPlaceOn();
-    filter->ReleaseDataFlagOn();
-    m_SmoothingFilters.push_back(filter);
+    for ( unsigned int i = 0; i < numberOfSmoothingFilters; i++ )
+      {
+      GaussianFilterPointer filter = GaussianFilterType::New();
+      filter->SetOrder(GaussianFilterType::ZeroOrder);
+      filter->SetNormalizeAcrossScale(m_NormalizeAcrossScale);
+      filter->InPlaceOn();
+      filter->ReleaseDataFlagOn();
+      m_SmoothingFilters.push_back(filter);
+      }
     }
 
   m_DerivativeFilterA = DerivativeFilterAType::New();
@@ -65,16 +68,18 @@ HessianRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   m_DerivativeFilterB->InPlaceOn();
   m_DerivativeFilterB->ReleaseDataFlagOn(); // output is only used once
 
-  // Deal with the 2D case.
   if ( numberOfSmoothingFilters > 0 )
     {
+    // Deal with the 2D case.
     m_SmoothingFilters[0]->SetInput( m_DerivativeFilterB->GetOutput() );
-    }
-
-  for ( unsigned int i = 1; i < numberOfSmoothingFilters; i++ )
-    {
-    m_SmoothingFilters[i]->SetInput(
-      m_SmoothingFilters[i - 1]->GetOutput() );
+    // connect up smoothing filter chain if necessary
+    if(numberOfSmoothingFilters > 1)
+      {
+      for ( unsigned int i = 1; i < numberOfSmoothingFilters; i++ )
+        {
+        m_SmoothingFilters[i]->SetInput(m_SmoothingFilters[i - 1]->GetOutput() );
+        }
+      }
     }
 
   m_ImageAdaptor = OutputImageAdaptorType::New();
