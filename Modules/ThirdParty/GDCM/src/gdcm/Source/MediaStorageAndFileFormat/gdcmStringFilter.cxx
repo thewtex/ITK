@@ -313,8 +313,13 @@ std::string StringFilter::FromString(const Tag&t, const char * value, size_t len
   //  assert(0);
   //  }
 
-  std::istringstream is;
-  is.str( s );
+  size_t pos = 0;
+  while((pos = s.find("\\", pos)) != std::string::npos)
+    {
+    s.replace(pos, 1, " ");
+    ++pos;
+    }
+  std::istringstream is( s );
   std::ostringstream os;
   switch(vr)
     {
@@ -330,7 +335,6 @@ std::string StringFilter::FromString(const Tag&t, const char * value, size_t len
     FromStringFilterCase(UL);
     //FromStringFilterCase(UN);
     FromStringFilterCase(US);
-    FromStringFilterCase(UT);
   default:
     gdcmErrorMacro( "Not implemented" );
     assert(0);
