@@ -295,8 +295,8 @@ LinuxMemoryUsageObserver::GetMemoryUsage()
 
   // the two fields we want
   //
-  unsigned long vsize;
-  long rss;
+  MemoryUsageObserverBase::MemoryLoadType vsize;
+  MemoryUsageObserverBase::MemoryLoadType rss;
 
   procstats >> pid >> comm >> state >> ppid >> pgrp >> session >> tty_nr
               >> tpgid >> flags >> minflt >> cminflt >> majflt >> cmajflt
@@ -305,7 +305,8 @@ LinuxMemoryUsageObserver::GetMemoryUsage()
 
   procstats.close();
 
-  long page_size_kb = sysconf(_SC_PAGE_SIZE) / 1024; // in case x86-64 is configured to use 2MB pages
+  MemoryUsageObserverBase::MemoryLoadType page_size_kb =
+    sysconf(_SC_PAGE_SIZE) / 1024; // in case x86-64 is configured to use 2MB pages
   //  vm_usage     = vsize / 1024.0;
   return rss * page_size_kb;
 }
