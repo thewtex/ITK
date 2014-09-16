@@ -161,7 +161,10 @@ ImageFileWriter< TInputImage >
             i != allobjects.end(); ++i )
         {
         ImageIOBase *io = dynamic_cast< ImageIOBase * >( i->GetPointer() );
-        msg << "    " << io->GetNameOfClass() << std::endl;
+        if(io != ITK_NULLPTR)
+          {
+          msg << "    " << io->GetNameOfClass() << std::endl;
+          }
         }
       msg << "  You probably failed to set a file suffix, or" << std::endl;
       msg << "    set the suffix to an unsupported type." << std::endl;

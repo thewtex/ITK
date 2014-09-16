@@ -706,7 +706,10 @@ FEMRegistrationFilter<TMovingImage, TFixedImage, TFemObject>::InterpolateVectorF
       eltp = mySolver->GetElementAtPoint(Gpt);
       if( eltp )
         {
-        eltp->GetLocalFromGlobalCoordinates(Gpt, Pos);
+        if(!eltp->GetLocalFromGlobalCoordinates(Gpt, Pos))
+          {
+          itkExceptionMacro(<< "Failed call GetLocalFromGlobalCoordinates");
+          }
 
         unsigned int Nnodes = eltp->GetNumberOfNodes();
         typename Element::VectorType shapef(Nnodes);

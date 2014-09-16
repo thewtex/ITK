@@ -152,8 +152,15 @@ int itkSampleClassifierFilterTest4( int, char * [] )
     const EstimatorType::DistanceToCentroidMembershipFunctionType *
           distanceMemberShpFunction =
         dynamic_cast<const EstimatorType::DistanceToCentroidMembershipFunctionType*>(membershipFunction.GetPointer());
-    std::cout << "Centroid of the " << counter << " membership function "
-              << distanceMemberShpFunction->GetCentroid() << std::endl;
+    if(distanceMemberShpFunction != ITK_NULLPTR)
+      {
+      std::cout << "Centroid of the " << counter << " membership function "
+                << distanceMemberShpFunction->GetCentroid() << std::endl;
+      }
+    else
+      {
+      std::cout << "dynamic_cast failed" << std::endl;
+      }
     functionIter++;
     counter++;
     }

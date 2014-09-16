@@ -81,10 +81,14 @@ public:
   /** Standard Command virtual methods */
   virtual void Execute(Object *caller, const EventObject &) ITK_OVERRIDE
   {
-    std::cout <<
-      (dynamic_cast<NarrowBandLevelSetImageFilter< ::NBTS::SeedImageType,
-       ::NBTS::ImageType> *>(caller))->GetSegmentationFunction()->GetPropagationWeight()
-              << std::endl;
+    typedef NarrowBandLevelSetImageFilter< ::NBTS::SeedImageType,::NBTS::ImageType> FilterType;
+
+    FilterType *filt = dynamic_cast<FilterType *>(caller);
+    if(filt != ITK_NULLPTR)
+      {
+      std::cout << filt->GetSegmentationFunction()->GetPropagationWeight()
+                << std::endl;
+      }
 
   }
   virtual void Execute(const Object *, const EventObject &) ITK_OVERRIDE

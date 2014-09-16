@@ -222,8 +222,15 @@ int itkImageClassifierFilterTest(int argc, char* argv[] )
           gaussianMemberShpFunction =
         dynamic_cast<const EstimatorType::GaussianMembershipFunctionType*>(membershipFunction.GetPointer());
     std::cout << "\tMembership function:\t " << counter << std::endl;
-    std::cout << "\t\tMean="<< gaussianMemberShpFunction->GetMean() << std::endl;
-    std::cout << "\t\tCovariance matrix=" << gaussianMemberShpFunction->GetCovariance() << std::endl;
+    if(gaussianMemberShpFunction != ITK_NULLPTR)
+      {
+      std::cout << "\t\tMean="<< gaussianMemberShpFunction->GetMean() << std::endl;
+      std::cout << "\t\tCovariance matrix=" << gaussianMemberShpFunction->GetCovariance() << std::endl;
+      }
+    else
+      {
+      std::cout << "dynamic cast failed" << std::endl;
+      }
     functionIter++;
     counter++;
     }

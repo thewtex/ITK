@@ -81,18 +81,23 @@ public:
   /** Standard Command virtual methods */
   virtual void Execute(Object *caller, const EventObject &) ITK_OVERRIDE
   {
-    std::cout <<
-      (dynamic_cast<SparseFieldLevelSetImageFilter< ::TSIFTN::SeedImageType, ::TSIFTN::ImageType> *>(caller))->GetRMSChange()
-              << std::endl;
-    std::cout <<
-      (dynamic_cast<SegmentationLevelSetImageFilter< ::TSIFTN::SeedImageType, ::TSIFTN::ImageType> *>(caller))->GetSegmentationFunction()->GetPropagationWeight()
-              << std::endl;
-
+    SparseFieldLevelSetImageFilter< ::TSIFTN::SeedImageType, ::TSIFTN::ImageType> *img =
+      dynamic_cast<SparseFieldLevelSetImageFilter< ::TSIFTN::SeedImageType, ::TSIFTN::ImageType> *>(caller);
+    if(img != ITK_NULLPTR)
+      {
+      std::cout << img->GetRMSChange() << std::endl;
+      }
+    SegmentationLevelSetImageFilter< ::TSIFTN::SeedImageType, ::TSIFTN::ImageType> *img2 =
+      dynamic_cast<SegmentationLevelSetImageFilter< ::TSIFTN::SeedImageType, ::TSIFTN::ImageType> *>(caller);
+    if(img2 != ITK_NULLPTR)
+      {
+      std::cout << img2->GetSegmentationFunction()->GetPropagationWeight()
+                << std::endl;
+      }
   }
   virtual void Execute(const Object *, const EventObject &) ITK_OVERRIDE
   {
     std::cout << "ack" << std::endl;
-
   }
 
 protected:
@@ -116,7 +121,10 @@ public:
   virtual void Execute(Object *caller, const EventObject &) ITK_OVERRIDE
   {
     const ProcessObject * process = dynamic_cast<ProcessObject *>(caller);
-    std::cout << "Progress = " << process->GetProgress() << std::endl;
+    if(process != ITK_NULLPTR)
+      {
+      std::cout << "Progress = " << process->GetProgress() << std::endl;
+      }
   }
   virtual void Execute(const Object *, const EventObject &) ITK_OVERRIDE
   {

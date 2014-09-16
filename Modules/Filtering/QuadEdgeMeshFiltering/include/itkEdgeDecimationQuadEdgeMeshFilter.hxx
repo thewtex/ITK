@@ -311,7 +311,8 @@ EdgeDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >::ProcessWithoutA
   OutputPointIdentifier id_dest = m_Element->GetDestination();
   OutputPointIdentifier idx = ( id_org < id_dest ) ? id_org : id_dest;
 
-  bool to_be_processed(true);
+  // see TODO below
+  // bool to_be_processed(true);
 
   if ( m_Relocate )
     {
@@ -325,11 +326,11 @@ EdgeDecimationQuadEdgeMeshFilter< TInput, TOutput, TCriterion >::ProcessWithoutA
 ///TODO use CheckOrientation!!!
 //   if( m_CheckOrientation )
 //     to_be_processed = CheckOrientation( m_Element, idx, pt );
-
-  if ( !to_be_processed )
-    {
-    return false;
-    }
+//
+//  if ( !to_be_processed )
+//    {
+//    return false;
+//    }
 
   std::list< OutputQEType * > list_qe_to_be_deleted;
   OutputQEType *              temp = m_Element->GetOnext();

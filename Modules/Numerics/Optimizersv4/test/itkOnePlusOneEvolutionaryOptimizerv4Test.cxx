@@ -160,6 +160,10 @@ public:
     {
       OptimizerPointer optimizer =
         dynamic_cast< OptimizerPointer >( object );
+      if( optimizer == ITK_NULLPTR)
+        {
+        return;
+        }
       if( ! itk::IterationEvent().CheckEvent( &event ) )
         {
         return;
