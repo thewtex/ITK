@@ -60,11 +60,13 @@ GradientRecursiveGaussianImageFilter< TInputImage, TOutputImage >
   if ( ImageDimension > 1 )
     {
     m_SmoothingFilters[0]->SetInput( m_DerivativeFilter->GetOutput() );
-
-    for ( int i = 1; i < imageDimensionMinus1; ++i )
+    // loop is dead code for ImageDimension <= 2
+    if( ImageDimension > 2)
       {
-      m_SmoothingFilters[i]->SetInput(
-        m_SmoothingFilters[i - 1]->GetOutput() );
+      for ( int i = 1; i < imageDimensionMinus1; ++i )
+        {
+        m_SmoothingFilters[i]->SetInput(m_SmoothingFilters[i - 1]->GetOutput() );
+        }
       }
     }
 
