@@ -127,7 +127,10 @@ MeshFileWriter< TInputMesh >
       for ( std::list< LightObject::Pointer >::iterator i = allobjects.begin(); i != allobjects.end(); ++i )
         {
         MeshIOBase *io = dynamic_cast< MeshIOBase * >( i->GetPointer() );
-        msg << "    " << io->GetNameOfClass() << std::endl;
+        if(io != ITK_NULLPTR)
+          {
+          msg << "    " << io->GetNameOfClass() << std::endl;
+          }
         }
       }
 
