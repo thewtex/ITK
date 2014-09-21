@@ -51,7 +51,7 @@ void SimpleMutexLock::Lock()
 // Lock the MutexLock
 bool SimpleMutexLock::TryLock()
 {
-  const bool lockCaptured = TryEnterCriticalSection(&m_MutexLock);
+  const bool lockCaptured = ( WaitForSingleObject(m_MutexLock, 1) == WAIT_OBJECT_0 );
   /*
    * non-blocking lock of mutex
    * - if mutex is not already locked, you will obtain the lock & own the mutex, and return 0 immediately
