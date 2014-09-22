@@ -136,31 +136,11 @@ int TIFFImageIO::EvaluateImageAt(void *out, void *in)
         unsigned short *image_us = (unsigned short *)out;
         unsigned short *source_us = (unsigned short *)in;
 
-        red   = *( source_us );
-        green = *( source_us + 1 );
-        blue  = *( source_us + 2 );
-        *( image_us )   = red;
-        *( image_us + 1 ) = green;
-        *( image_us + 2 ) = blue;
-        if ( m_InternalImage->m_SamplesPerPixel == 4 )
-          {
-          alpha = *( source_us + 3 );
-          *( image_us + 3 ) = alpha;
-          }
+        std::copy( source_us, source_us + m_InternalImage->m_SamplesPerPixel, image_us );
         }
       else
         {
-        red   = *( source );
-        green = *( source + 1 );
-        blue  = *( source + 2 );
-        *( image )   = red;
-        *( image + 1 ) = green;
-        *( image + 2 ) = blue;
-        if ( m_InternalImage->m_SamplesPerPixel == 4 )
-          {
-          alpha = *( source + 3 );
-          *( image + 3 ) = alpha;
-          }
+        std::copy( source, source + m_InternalImage->m_SamplesPerPixel, image );
         }
       increment = m_InternalImage->m_SamplesPerPixel;
       break;
@@ -1214,68 +1194,32 @@ void TIFFImageIO::ReadGenericImage(void *_out,
       break;
     }
 
-  if ( m_InternalImage->m_PlanarConfig == PLANARCONFIG_CONTIG )
+  for ( int row = 0; row < (int)height; ++row )
     {
-    for ( int row = 0; row < (int)height; ++row )
+    if ( TIFFReadScanline(m_InternalImage->m_Image, buf, row, 0) <= 0 )
       {
-      if ( TIFFReadScanline(m_InternalImage->m_Image, buf, row, 0) <= 0 )
-        {
-        itkExceptionMacro(<< "Problem reading the row: " << row);
-        }
+      itkExceptionMacro(<< "Problem reading the row: " << row);
+      }
 
-      if ( m_InternalImage->m_Orientation == ORIENTATION_TOPLEFT )
-        {
-        image = out + (size_t) (row) * width * inc;
-        }
-      else // bottom left
-        {
-        image = out + (size_t) (width) * inc * ( height - ( row + 1 ) );
-        }
+    if ( m_InternalImage->m_Orientation == ORIENTATION_TOPLEFT )
+      {
+      image = out + (size_t) (row) * width * inc;
+      }
+    else // bottom left
+      {
+      image = out + (size_t) (width) * inc * ( height - ( row + 1 ) );
+      }
 
-      for ( cc = 0; cc < isize;
-            cc += m_InternalImage->m_SamplesPerPixel )
-        {
-        inc = this->EvaluateImageAt(image,
-                                    static_cast< ComponentType * >( buf )
-                                    + cc);
-        image += inc;
-        }
+    for ( cc = 0; cc < isize;
+          cc += m_InternalImage->m_SamplesPerPixel )
+      {
+      inc = this->EvaluateImageAt(image,
+                                  static_cast< ComponentType * >( buf )
+                                  + cc);
+      image += inc;
       }
     }
-  else if ( m_InternalImage->m_PlanarConfig == PLANARCONFIG_SEPARATE )
-    {
-    uint32 nsamples;
-    TIFFGetField(m_InternalImage->m_Image, TIFFTAG_SAMPLESPERPIXEL, &nsamples);
-    for ( uint32 s = 0; s < nsamples; s++ )
-      {
-      for ( int row = 0; row < (int)height; ++row )
-        {
-        if ( TIFFReadScanline(m_InternalImage->m_Image, buf, row, s) <= 0 )
-          {
-          itkExceptionMacro(<< "Problem reading the row: " << row);
-          }
 
-        inc = 3;
-        if ( m_InternalImage->m_Orientation == ORIENTATION_TOPLEFT )
-          {
-          image =  out + (size_t) (row) * width * inc;
-          }
-        else // bottom left
-          {
-          image = out + (size_t) (width) * inc * ( height - ( row + 1 ) );
-          }
-
-        for ( cc = 0; cc < isize;
-              cc += m_InternalImage->m_SamplesPerPixel )
-          {
-          inc = this->EvaluateImageAt(image,
-                                      static_cast< ComponentType * >( buf )
-                                      + cc);
-          image += inc;
-          }
-        }
-      }
-    }
   _TIFFfree(buf);
 }
 
