@@ -1,3 +1,4 @@
+project(ITK3P_OpenJPEG C)
 include_regular_expression("^.*$")
 
 #
