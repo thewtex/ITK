@@ -43,13 +43,20 @@ if(BUILD_JPIP)
 endif()
 
 # Build the library
-if(WIN32)
-  if(BUILD_SHARED_LIBS)
+if(BUILD_SHARED_LIBS)
+  set(OPJ_STATIC 0)
+  if(WIN32)
     add_definitions(-DOPJ_EXPORTS)
-  else()
-    add_definitions(-DOPJ_STATIC)
-  endif()
+  endif(WIN32)
+else()
+  set(OPJ_STATIC 1)
 endif()
+
+configure_file(${ITK3P_OpenJPEG_SOURCE_DIR}/openjpegDllConfig.h.in
+               ${ITK3P_OpenJPEG_BINARY_DIR}/openjpegDllConfig.h)
+include_directories("${ITK3P_OpenJPEG_BINARY_DIR}")
+
+
 add_library(${OPENJPEG_LIBRARY_NAME} ${OPENJPEG_SRCS})
 if(UNIX)
   target_link_libraries(${OPENJPEG_LIBRARY_NAME} m)

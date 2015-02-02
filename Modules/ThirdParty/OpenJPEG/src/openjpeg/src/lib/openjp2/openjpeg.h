@@ -42,6 +42,7 @@
 #ifndef OPENJPEG_H
 #define OPENJPEG_H
 
+#include "openjpegDllConfig.h"
 
 /* 
 ==========================================================
