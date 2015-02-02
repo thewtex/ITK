@@ -36,3 +36,6 @@ zap.pl           crlf=input
 
 # ExternalData content links must have LF newlines
 *.md5            crlf=input
+
+# Do not deviate from upstream for easy pushing and merging of patches.
+/Modules/ThirdParty/OpenJPEG/src/openjpeg/** -whitespace
