@@ -22,7 +22,9 @@ if(NOT OPENJPEG_NAMESPACE)
 endif()
 # In all cases:
 #string(TOLOWER ${OPENJPEG_NAMESPACE} OPENJPEG_LIBRARY_NAME)
-set(OPENJPEG_LIBRARY_NAME openjp2)
+if(NOT DEFINED OPENJPEG_LIBRARY_NAME)
+  set(OPENJPEG_LIBRARY_NAME openjp2)
+endif()
 
 project(${OPENJPEG_NAMESPACE} C)
 
@@ -66,8 +68,8 @@ set(OPENJPEG_LIBRARY_PROPERTIES
 # --------------------------------------------------------------------------
 # Path to additional CMake modules
 set(CMAKE_MODULE_PATH
-    ${CMAKE_SOURCE_DIR}/cmake
-    ${CMAKE_MODULE_PATH})
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake
+  ${CMAKE_MODULE_PATH})
 
 # --------------------------------------------------------------------------
 # On Visual Studio 8 MS deprecated C. This removes all 1.276E1265 security
@@ -161,18 +163,18 @@ TEST_BIG_ENDIAN(OPJ_BIG_ENDIAN)
 
 #-----------------------------------------------------------------------------
 # Setup file for setting custom ctest vars
-configure_file(
-  ${CMAKE_SOURCE_DIR}/cmake/CTestCustom.cmake.in
-  ${CMAKE_BINARY_DIR}/CTestCustom.cmake
-  @ONLY
-  )
+#configure_file(
+  #${CMAKE_SOURCE_DIR}/cmake/CTestCustom.cmake.in
+  #${CMAKE_BINARY_DIR}/CTestCustom.cmake
+  #@ONLY
+  #)
 
 #-----------------------------------------------------------------------------
 # OpenJPEG build configuration options.
 option(BUILD_SHARED_LIBS "Build OpenJPEG shared library and link executables against it." ON)
-set (EXECUTABLE_OUTPUT_PATH ${OPENJPEG_BINARY_DIR}/bin CACHE PATH "Single output directory for building all executables.")
-set (LIBRARY_OUTPUT_PATH ${OPENJPEG_BINARY_DIR}/bin CACHE PATH "Single output directory for building all libraries.")
-mark_as_advanced(LIBRARY_OUTPUT_PATH EXECUTABLE_OUTPUT_PATH)
+#set (EXECUTABLE_OUTPUT_PATH ${OPENJPEG_BINARY_DIR}/bin CACHE PATH "Single output directory for building all executables.")
+#set (LIBRARY_OUTPUT_PATH ${OPENJPEG_BINARY_DIR}/bin CACHE PATH "Single output directory for building all libraries.")
+#mark_as_advanced(LIBRARY_OUTPUT_PATH EXECUTABLE_OUTPUT_PATH)
 
 #-----------------------------------------------------------------------------
 # configure name mangling to allow multiple libraries to coexist
@@ -275,6 +277,11 @@ configure_file(
  ${CMAKE_CURRENT_BINARY_DIR}/src/lib/openjp2/opj_config_private.h
  @ONLY
  )
+
+# Exit now when building as an ITK module.  We do not want to build docs, we
+# do not have the data to run the tests, and we do not need the Config.cmake
+# files.
+return()
 
 #-----------------------------------------------------------------------------
 # build documentation in doc subdir:
