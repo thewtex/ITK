@@ -2,8 +2,9 @@ project(ITKOpenJPEG)
 set(ITKOpenJPEG_THIRD_PARTY 1)
 
 set(ITKOpenJPEG_INCLUDE_DIRS
-  ${ITKOpenJPEG_BINARY_DIR}/src/openjpeg/src/lib/openjp2
-  ${ITKOpenJPEG_SOURCE_DIR}/src/openjpeg/src/lib/openjp2
+  ${ITKOpenJPEG_BINARY_DIR}/src/itkopenjpeg/src/lib/openjp2
+  ${ITKOpenJPEG_SOURCE_DIR}/src/itkopenjpeg/src/lib/openjp2
+  ${ITKOpenJPEG_SOURCE_DIR}/src
   )
 set(ITKOpenJPEG_LIBRARIES itkopenjp2)
 

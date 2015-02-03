@@ -25,6 +25,6 @@
 #ifndef itk_openjpeg_h
 #define itk_openjpeg_h
 
-#include <itkopenjpeg/openjpeg.h>
+#include <itkopenjpeg/src/lib/openjp2/openjpeg.h>
 
 #endif

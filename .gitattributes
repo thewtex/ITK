@@ -38,4 +38,4 @@ zap.pl           crlf=input
 *.md5            crlf=input
 
 # Do not deviate from upstream for easy pushing and merging of patches.
-/Modules/ThirdParty/OpenJPEG/src/openjpeg/** -whitespace
+/Modules/ThirdParty/OpenJPEG/src/itkopenjpeg/** -whitespace
