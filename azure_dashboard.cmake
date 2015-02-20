@@ -31,6 +31,7 @@ set(dashboard_model "Experimental")
 set(dashboard_track "Gerrit")
 set(dashboard_git_url "http://review.source.kitware.com/p/ITK")
 set(dashboard_git_branch "$ENV{GERRIT_BRANCH_NAME}")
+set(dashboard_no_clean 1)
 
 message("CTEST_SITE = ${CTEST_SITE}")
 message("GCC_VERSION = $ENV{GCC_VERSION}")
