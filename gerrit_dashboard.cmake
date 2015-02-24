@@ -20,8 +20,6 @@ set(CTEST_DASHBOARD_ROOT "$ENV{WORKSPACE}")
 set(CTEST_BINARY_DIRECTORY "ITK-bin")
 set(dashboard_model "Experimental")
 set(dashboard_track "Gerrit")
-set(dashboard_git_url "http://review.source.kitware.com/p/ITK")
-set(dashboard_git_branch "$ENV{GERRIT_BRANCH}")
 set(dashboard_no_clean 1)
 
 message("CTEST_SITE = ${CTEST_SITE}")
