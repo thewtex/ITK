@@ -958,7 +958,7 @@ if __name__ == '__main__':
     wrappingNamespaces = dict()
     # Limit the number of cached, parsed abstract syntax trees to avoid very
     # high memory usage
-    wrappingCacheLength = min(len(moduleNames), 20)
+    wrappingCacheLength = min(len(moduleNames), 10)
     for ii in range(wrappingCacheLength):
         moduleName = moduleNames[ii]
         wrappingNamespace = generate_wrapping_namespace(moduleName)
