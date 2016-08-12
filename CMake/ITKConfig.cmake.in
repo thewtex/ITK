@@ -28,6 +28,26 @@ set(ITK_LEGACY_SILENT "@ITK_LEGACY_SILENT@")
 # Remove code that will become legacy in future releases completely.
 set(ITK_FUTURE_LEGACY_REMOVE "@ITK_FUTURE_LEGACY_REMOVE@")
 
+# Wrapping
+set(ITK_WRAPPING "@ITK_WRAPPING@")
+if( NOT DEFINED ITK_WRAP_PYTHON)
+  set(ITK_WRAP_PYTHON "@ITK_WRAP_PYTHON@")
+endif()
+if( NOT DEFINED ITK_WRAP_JAVA)
+  set(ITK_WRAP_JAVA "@ITK_WRAP_JAVA@")
+endif()
+if(NOT DEFINED ITK_WRAP_RUBY)
+  set(ITK_WRAP_RUBY "@ITK_WRAP_RUBY@")
+endif()
+if( NOT DEFINED ITK_WRAP_PERL)
+  set(ITK_WRAP_PERL "@ITK_WRAP_PERL@")
+endif()
+if(NOT DEFINED ITK_WRAP_TCL)
+  set(ITK_WRAP_TCL "@ITK_WRAP_TCL@")
+endif()
+
+set(ITK_WRAP_PYTHON_VERSION "@PYTHON_VERSION_STRING@")
+
 # ITK's CMake directory with modules ITK uses.
 set(ITK_CMAKE_DIR "@ITK_CONFIG_CMAKE_DIR@")
 
@@ -81,23 +101,3 @@ endif()
 
 # Add configuration with GPU
 set(ITK_USE_GPU "@ITK_USE_GPU@")
-
-# Wrapping
-set(ITK_WRAPPING "@ITK_WRAPPING@")
-if( NOT DEFINED ITK_WRAP_PYTHON)
-  set(ITK_WRAP_PYTHON "@ITK_WRAP_PYTHON@")
-endif()
-if( NOT DEFINED ITK_WRAP_JAVA)
-  set(ITK_WRAP_JAVA "@ITK_WRAP_JAVA@")
-endif()
-if(NOT DEFINED ITK_WRAP_RUBY)
-  set(ITK_WRAP_RUBY "@ITK_WRAP_RUBY@")
-endif()
-if( NOT DEFINED ITK_WRAP_PERL)
-  set(ITK_WRAP_PERL "@ITK_WRAP_PERL@")
-endif()
-if(NOT DEFINED ITK_WRAP_TCL)
-  set(ITK_WRAP_TCL "@ITK_WRAP_TCL@")
-endif()
-
-set(ITK_WRAP_PYTHON_VERSION "@PYTHON_VERSION_STRING@")
