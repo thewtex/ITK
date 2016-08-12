@@ -15,6 +15,9 @@ itkShrinkImagePreserveObjectPhysicalLocations.cxx
 CreateTestDriver_SupportBuildInIOFactories(ITKIntegratedTest  "${ITKIntegratedTest-Test_LIBRARIES}" "${ITKIntegratedTestTests}")
 
 set(TEMP ${ITK_TEST_OUTPUT_DIR})
+if(ITK_WRAP_PYTHON AND NOT BUILD_SHARED_LIBS)
+  list(APPEND ITKIntegratedTest-Test_LIBRARIES ITKCommonGlobals)
+endif()
 
 # temporary solution for all print tests. Each module should have its own print test later.
 add_executable(itkAlgorithmsPrintTest  itkAlgorithmsPrintTest.cxx)

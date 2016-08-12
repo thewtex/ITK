@@ -61,6 +61,9 @@ EM_ASM(
     )
   add_executable(${KIT}TestDriver ${KIT}TestDriver.cxx ${Tests} ${ADDITIONAL_SRC})
   target_link_libraries(${KIT}TestDriver LINK_PUBLIC ${KIT_LIBS} ${ITKTestKernel_LIBRARIES})
+  if(ITK_WRAP_PYTHON AND NOT BUILD_SHARED_LIBS)
+    target_link_libraries(${KIT}TestDriver LINK_PUBLIC ITKCommonGlobals)
+  endif()
   itk_module_target_label(${KIT}TestDriver)
 endmacro()
 
@@ -115,6 +118,9 @@ EM_ASM(
     )
   add_executable(${KIT}TestDriver ${KIT}TestDriver.cxx ${Tests} ${ADDITIONAL_SRC})
   target_link_libraries(${KIT}TestDriver LINK_PUBLIC ${KIT_LIBS} ${ITKTestKernel_LIBRARIES})
+  if(ITK_WRAP_PYTHON AND NOT BUILD_SHARED_LIBS)
+    target_link_libraries(${KIT}TestDriver LINK_PUBLIC ITKCommonGlobals)
+  endif()
   itk_module_target_label(${KIT}TestDriver)
 endmacro()
 
