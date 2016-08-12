@@ -69,7 +69,6 @@ itkDirectory.cxx
 itkLoggerManager.cxx
 itkTimeProbe.cxx
 itkNumericTraitsRGBPixel.cxx
-itkTimeStamp.cxx
 itkTetrahedronCellTopology.cxx
 itkThreadedIndexedContainerPartitioner.cxx
 itkObjectFactoryBase.cxx
@@ -90,6 +89,11 @@ itkRandomVariateGeneratorBase.cxx
 itkAtomicInt.cxx
 itkMath.cxx
 )
+
+set(ITKCommonGlobals_SRCS
+  itkTimeStamp.cxx
+  #itkGlobalTimeStamp.cxx
+  )
 
 if(WIN32)
   list(APPEND ITKCommon_SRCS itkWin32OutputWindow.cxx)
@@ -132,7 +136,13 @@ endif()
 
 
 ### generating libraries
-add_library( ITKCommon ${ITK_LIBRARY_BUILD_TYPE} ${ITKCommon_SRCS})
+add_library(ITKCommon ${ITK_LIBRARY_BUILD_TYPE} ${ITKCommon_SRCS})
+add_library(ITKCommonGlobals ${ITK_LIBRARY_BUILD_TYPE} ${ITKCommonGlobals_SRCS})
+if(ITK_WRAP_PYTHON AND NOT BUILD_SHARED_LIBS)
+  add_library(ITKCommonGlobalsObjects OBJECT ${ITKCommonGlobals_SRCS})
+  set_property(TARGET ITKCommonGlobalsObjects APPEND PROPERTY
+    COMPILE_DEFINITIONS ITKCommonPython_EXPORTS)
+endif()
 
 itk_module_link_dependencies()
 target_link_libraries(ITKCommon LINK_PUBLIC itksys ITKVNLInstantiation)
@@ -145,3 +155,4 @@ if(UNIX)
 endif()
 
 itk_module_target(ITKCommon)
+itk_module_target(ITKCommonGlobals)

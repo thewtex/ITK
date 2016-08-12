@@ -400,7 +400,19 @@ macro(itk_end_wrap_module_python)
 
   # build all the c++ files from this module in a common lib
   if(NOT TARGET ${lib})
-    add_library(${lib} MODULE ${cpp_file} ${ITK_WRAP_PYTHON_CXX_FILES} ${WRAPPER_LIBRARY_CXX_SOURCES})
+    if(NOT BUILD_SHARED_LIBS AND ${lib} STREQUAL ITKCommonPython)
+      add_library(${lib} SHARED ${cpp_file} ${ITK_WRAP_PYTHON_CXX_FILES} ${WRAPPER_LIBRARY_CXX_SOURCES}
+        $<TARGET_OBJECTS:ITKCommonGlobalsObjects>)
+      include(GenerateExportHeader)
+      generate_export_header(${lib}
+        EXPORT_FILE_NAME ${ITKCommon_BINARY_DIR}/ITKCommonPythonExport.h
+        EXPORT_MACRO_NAME ITKCommonPython_EXPORT
+        TEMPLATE_EXPORT_MACRO_NAME ITKCommonPython_TEMPLATE_EXPORT
+        NO_EXPORT_MACRO_NAME ITKCommonPython_HIDDEN
+        STATIC_DEFINE ITK_STATIC)
+    else()
+      add_library(${lib} MODULE ${cpp_file} ${ITK_WRAP_PYTHON_CXX_FILES} ${WRAPPER_LIBRARY_CXX_SOURCES})
+    endif()
     set_target_properties(${lib} PROPERTIES PREFIX "_")
     # gcc 4.4 complains a lot without this flag when building in release mode
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
@@ -416,6 +428,9 @@ macro(itk_end_wrap_module_python)
     endif()
 
     # Link the modules together
+    if(NOT BUILD_SHARED_LIBS AND WRAPPER_LIBRARY_LINK_LIBRARIES)
+      list(REMOVE_ITEM WRAPPER_LIBRARY_LINK_LIBRARIES ITKCommonGlobals)
+    endif()
     target_link_libraries(${lib} LINK_PUBLIC ${WRAPPER_LIBRARY_LINK_LIBRARIES})
     itk_target_link_libraries_with_dynamic_lookup(${lib} LINK_PUBLIC ${PYTHON_LIBRARY})
 

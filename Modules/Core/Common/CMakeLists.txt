@@ -99,7 +99,11 @@ configure_file(src/itkConfigure.h.in itkConfigure.h)
 set(ITKCommon_INCLUDE_DIRS
   ${ITKCommon_BINARY_DIR}
   )
-set(ITKCommon_LIBRARIES ITKCommon)
+if(ITK_WRAP_PYTHON AND NOT BUILD_SHARED_LIBS)
+  set(ITKCommon_LIBRARIES ITKCommon)
+else()
+  set(ITKCommon_LIBRARIES ITKCommon ITKCommonGlobals)
+endif()
 
 itk_module_impl()
 

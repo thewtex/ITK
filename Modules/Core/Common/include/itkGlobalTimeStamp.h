@@ -25,43 +25,22 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#include "itkTimeStamp.h"
-#include "itkAtomicInt.h"
+#ifndef itkGlobalTimeStamp_h
+#define itkGlobalTimeStamp_h
 
-//#include "itkGlobalTimeStamp.h"
+#include "itkIntTypes.h"
+#include "itkAtomicInt.h"
 
 namespace itk
 {
-
 /**
- * Instance creation.
+ * This is the global time stamp, an integer, used by all ITK objects in their
+ * ModifiedTime. It is used to determine whether pipeline updates are
+ * necessary.
+ * \ingroup ITKCommon
  */
-TimeStamp *
-TimeStamp
-::New()
-{
-  return new Self;
-}
+extern AtomicInt<ModifiedTimeType> GlobalTimeStamp;
 
-/**
- * Make this timestamp to be the same as another one.
- */
-const TimeStamp &
-TimeStamp::operator=( const Self & other )
-{
-  this->m_ModifiedTime = other.m_ModifiedTime;
-  return *this;
-}
-
-/**
- * Make sure the new time stamp is greater than all others so far.
- */
-void
-TimeStamp
-::Modified()
-{
-  static AtomicInt<ModifiedTimeType> GlobalTimeStamp(0);
-
-  this->m_ModifiedTime = ++GlobalTimeStamp;
-}
 } // end namespace itk
+
+#endif

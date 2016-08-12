@@ -25,43 +25,21 @@
  *  please refer to the NOTICE file at the top of the ITK source tree.
  *
  *=========================================================================*/
-#include "itkTimeStamp.h"
 #include "itkAtomicInt.h"
+#include "itkIntTypes.h"
 
-//#include "itkGlobalTimeStamp.h"
+#include "ITKCommonExport.h"
+
+#ifdef ITKCommonPython_EXPORTS
+#define GLOBAL_EXPORT ITKCommonPython_EXPORT
+#include "ITKCommonPythonExport.h"
+#else
+#define GLOBAL_EXPORT ITKCommon_EXPORT
+#endif
 
 namespace itk
 {
 
-/**
- * Instance creation.
- */
-TimeStamp *
-TimeStamp
-::New()
-{
-  return new Self;
-}
+extern "C" GLOBAL_EXPORT  AtomicInt<ModifiedTimeType> GlobalTimeStamp( 0 );
 
-/**
- * Make this timestamp to be the same as another one.
- */
-const TimeStamp &
-TimeStamp::operator=( const Self & other )
-{
-  this->m_ModifiedTime = other.m_ModifiedTime;
-  return *this;
-}
-
-/**
- * Make sure the new time stamp is greater than all others so far.
- */
-void
-TimeStamp
-::Modified()
-{
-  static AtomicInt<ModifiedTimeType> GlobalTimeStamp(0);
-
-  this->m_ModifiedTime = ++GlobalTimeStamp;
-}
 } // end namespace itk

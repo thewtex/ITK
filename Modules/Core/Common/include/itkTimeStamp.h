@@ -31,6 +31,13 @@
 #include "itkMacro.h"
 #include "itkIntTypes.h"
 
+#ifdef ITKCommonPython_EXPORTS
+#define GLOBAL_EXPORT ITKCommonPython_EXPORT
+#include "ITKCommonPythonExport.h"
+#else
+#define GLOBAL_EXPORT ITKCommon_EXPORT
+#endif
+
 namespace itk
 {
 /** \class TimeStamp
@@ -55,7 +62,7 @@ namespace itk
  * \ingroup ITKSystemObjects
  * \ingroup ITKCommon
  */
-class ITKCommon_EXPORT TimeStamp
+class GLOBAL_EXPORT TimeStamp
 {
 public:
   /** Standard class typedefs. */
