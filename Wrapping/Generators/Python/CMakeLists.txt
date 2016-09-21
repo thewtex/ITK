@@ -403,6 +403,14 @@ macro(itk_end_wrap_module_python)
     if(NOT BUILD_SHARED_LIBS AND ${lib} STREQUAL ITKCommonPython)
       add_library(${lib} SHARED ${cpp_file} ${ITK_WRAP_PYTHON_CXX_FILES} ${WRAPPER_LIBRARY_CXX_SOURCES}
         $<TARGET_OBJECTS:ITKCommonGlobalsObjects>)
+       set_target_properties(${lib} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+        if(UNIX)
+          set_target_properties(${lib} PROPERTIES SUFFIX .so)
+        endif()
+    else()
+      add_library(${lib} MODULE ${cpp_file} ${ITK_WRAP_PYTHON_CXX_FILES} ${WRAPPER_LIBRARY_CXX_SOURCES})
+    endif()
+    if(${lib} STREQUAL ITKCommonPython)
       include(GenerateExportHeader)
       generate_export_header(${lib}
         EXPORT_FILE_NAME ${ITKCommon_BINARY_DIR}/ITKCommonPythonExport.h
@@ -410,12 +418,6 @@ macro(itk_end_wrap_module_python)
         TEMPLATE_EXPORT_MACRO_NAME ITKCommonPython_TEMPLATE_EXPORT
         NO_EXPORT_MACRO_NAME ITKCommonPython_HIDDEN
         STATIC_DEFINE ITK_STATIC)
-       set_target_properties(${lib} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
-        if(UNIX)
-          set_target_properties(${lib} PROPERTIES SUFFIX .so)
-        endif()
-    else()
-      add_library(${lib} MODULE ${cpp_file} ${ITK_WRAP_PYTHON_CXX_FILES} ${WRAPPER_LIBRARY_CXX_SOURCES})
     endif()
     set_target_properties(${lib} PROPERTIES PREFIX "_")
     # gcc 4.4 complains a lot without this flag when building in release mode
@@ -441,7 +443,7 @@ macro(itk_end_wrap_module_python)
       target_link_libraries(${lib} LINK_PUBLIC ITKCommonPython)
     endif()
 
-    if(CMAKE_VERSION VERSION_GREATER 2.8.12 AND USE_COMPILER_HIDDEN_VISIBILITY AND BUILD_SHARED_LIBS)
+    if(CMAKE_VERSION VERSION_GREATER 2.8.12 AND USE_COMPILER_HIDDEN_VISIBILITY)
       # Prefer to use target properties supported by newer cmake
       set_target_properties(${lib} PROPERTIES CXX_VISIBILITY_PRESET hidden)
       set_target_properties(${lib} PROPERTIES C_VISIBILITY_PRESET hidden)

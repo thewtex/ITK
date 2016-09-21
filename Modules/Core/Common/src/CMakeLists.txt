@@ -141,6 +141,8 @@ if(ITK_WRAP_PYTHON AND NOT BUILD_SHARED_LIBS)
   add_library(ITKCommonGlobalsObjects OBJECT ${ITKCommonGlobals_SRCS})
   set_property(TARGET ITKCommonGlobalsObjects APPEND PROPERTY
     COMPILE_DEFINITIONS ITKCommonPython_EXPORTS)
+else()
+  target_link_libraries(ITKCommon LINK_PUBLIC ITKCommonGlobals)
 endif()
 
 itk_module_link_dependencies()
