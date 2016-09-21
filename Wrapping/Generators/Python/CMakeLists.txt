@@ -441,7 +441,7 @@ macro(itk_end_wrap_module_python)
       target_link_libraries(${lib} LINK_PUBLIC ITKCommonPython)
     endif()
 
-    if(CMAKE_VERSION VERSION_GREATER 2.8.12 AND USE_COMPILER_HIDDEN_VISIBILITY AND BUILD_SHARED_LIBS)
+    if(CMAKE_VERSION VERSION_GREATER 2.8.12 AND USE_COMPILER_HIDDEN_VISIBILITY)
       # Prefer to use target properties supported by newer cmake
       set_target_properties(${lib} PROPERTIES CXX_VISIBILITY_PRESET hidden)
       set_target_properties(${lib} PROPERTIES C_VISIBILITY_PRESET hidden)
