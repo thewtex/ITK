@@ -30,6 +30,7 @@
 
 #include "itkMacro.h"
 #include "itkIntTypes.h"
+#include "itkAtomicInt.h"
 
 namespace itk
 {
@@ -60,6 +61,8 @@ class ITKCommon_EXPORT TimeStamp
 public:
   /** Standard class typedefs. */
   typedef TimeStamp Self;
+
+  typedef AtomicInt< ModifiedTimeType > GlobalTimeStampType;
 
   /** Create an instance of this class. We don't want to use reference
    * counting. */
@@ -105,9 +108,42 @@ public:
    * another. */
   const Self & operator=( const Self & other );
 
+  static GlobalTimeStampType * GetGlobalTimeStamp();
+
 private:
+  static GlobalTimeStampType * m_GlobalTimeStamp;
+  static bool                  m_UsedExistingGlobalTimeStamp;
+  static void TimeStampInitialize( GlobalTimeStampType * existingGlobalTimeStamp = ITK_NULLPTR );                     \
+  static void TimeStampFinalize();                       \
+  friend class GlobalTimeStampInitializer;
+
   ModifiedTimeType m_ModifiedTime;
 };
+
+/** \class GlobalTimeStampInitializer
+ *
+ * \brief Initialize the GlobalTimeStamp singleton.
+ * */
+class ITKCommon_EXPORT GlobalTimeStampInitializer
+{
+public:
+  typedef GlobalTimeStampInitializer Self;
+
+  /** Initialize the time stamp once. */
+  GlobalTimeStampInitializer();
+
+  /** Delete the time stamp when and if required. */
+  ~GlobalTimeStampInitializer();
+
+  /** In the case of the Python wrapping and static ITK libraries, use an
+   * existing global time stamp from the ITKCommonPython binary. Otherwise,
+   * create a new timestamp on the heap. */
+  static void InitializeGlobalTimeStamp();
+
+private:
+  static unsigned int m_Count;
+};
+
 } // end namespace itk
 
 #endif

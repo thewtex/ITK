@@ -400,7 +400,25 @@ macro(itk_end_wrap_module_python)
 
   # build all the c++ files from this module in a common lib
   if(NOT TARGET ${lib})
-    add_library(${lib} MODULE ${cpp_file} ${ITK_WRAP_PYTHON_CXX_FILES} ${WRAPPER_LIBRARY_CXX_SOURCES})
+    if(${lib} STREQUAL ITKCommonPython)
+      include_directories("${ITK_WRAP_PYTHON_SOURCE_DIR}")
+      add_library(${lib} MODULE ${cpp_file} ${ITK_WRAP_PYTHON_CXX_FILES}
+        ${WRAPPER_LIBRARY_CXX_SOURCES}
+        "${ITK_WRAP_PYTHON_SOURCE_DIR}/itkGetGlobalTimeStamp.cxx")
+      include(GenerateExportHeader)
+      generate_export_header(${lib}
+        EXPORT_FILE_NAME ${ITKCommon_BINARY_DIR}/ITKCommonPythonExport.h
+        EXPORT_MACRO_NAME ITKCommonPython_EXPORT
+        TEMPLATE_EXPORT_MACRO_NAME ITKCommonPython_TEMPLATE_EXPORT
+        NO_EXPORT_MACRO_NAME ITKCommonPython_HIDDEN
+        STATIC_DEFINE ITK_STATIC)
+        set_target_properties(${lib} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+      if(UNIX)
+        set_target_properties(${lib} PROPERTIES SUFFIX .so)
+      endif()
+    else()
+      add_library(${lib} MODULE ${cpp_file} ${ITK_WRAP_PYTHON_CXX_FILES} ${WRAPPER_LIBRARY_CXX_SOURCES})
+    endif ()
     set_target_properties(${lib} PROPERTIES PREFIX "_")
     # gcc 4.4 complains a lot without this flag when building in release mode
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
