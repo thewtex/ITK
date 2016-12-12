@@ -30,6 +30,7 @@
 
 #include "itkMacro.h"
 #include "itkIntTypes.h"
+#include "itkAtomicInt.h"
 
 namespace itk
 {
@@ -60,6 +61,8 @@ class ITKCommon_EXPORT TimeStamp
 public:
   /** Standard class typedefs. */
   typedef TimeStamp Self;
+
+  typedef AtomicInt< ModifiedTimeType > GlobalTimeStampType;
 
   /** Create an instance of this class. We don't want to use reference
    * counting. */
@@ -105,8 +108,18 @@ public:
    * another. */
   const Self & operator=( const Self & other );
 
+  /** Set/Get the pointer to GlobalTimeStamp. */
+  static GlobalTimeStampType * GetGlobalTimeStamp();
+  static void SetGlobalTimeStamp( GlobalTimeStampType * timeStamp );
+
 private:
   ModifiedTimeType m_ModifiedTime;
+
+  /** The static GlobalTimeStamp. This is initialized to NULL as the first
+   * stage of static initialization. It is then assigned in
+   * itk::TimeStamp::New() but it can be overridden with SetGlobalTimeStamp().
+   * */
+  static GlobalTimeStampType * m_GlobalTimeStamp;
 };
 } // end namespace itk
 
