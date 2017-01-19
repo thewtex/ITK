@@ -55,3 +55,6 @@ itk_add_test(NAME itkPatchBasedDenoisingImageFilterTestTensors
       DATA{Input/noisyDiffusionTensors.nrrd}
       ${ITK_TEST_OUTPUT_DIR}/PatchBasedDenoisingImageFilterTestTensors.nrrd
       2 6 2 2 100 2)
+
+itk_python_expression_add_test(NAME itkPatchBasedDenoisingImageFilterPythonTest
+  EXPRESSION "denoiser = itk.PatchBasedDenoisingImageFilter.New()")
