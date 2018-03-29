@@ -22,7 +22,7 @@
 #include "itkMacro.h"
 #include "itkThreadSupport.h"
 
-#if defined(ITK_USE_PTHREADS)
+#if defined(ITK_USE_PTHREADS) || defined(__EMSCRIPTEN__)
 #include <pthread.h>
 #include <semaphore.h>
 #include <unistd.h> // for sleep
@@ -61,7 +61,7 @@ public:
   typedef semaphore_t Semaphore;
 #elif defined(ITK_USE_WIN32_THREADS)
   typedef HANDLE Semaphore;
-#elif defined(ITK_USE_PTHREADS)
+#elif defined(ITK_USE_PTHREADS) || defined(__EMSCRIPTEN__)
   typedef sem_t Semaphore;
 #else
 #error Unknown thread system!

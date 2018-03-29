@@ -65,10 +65,10 @@ namespace itk
 #define ITK_MAX_THREADS              1
   typedef int     MutexType;
   typedef int     FastMutexType;
-  typedef void ( *ThreadFunctionType )(void *);
+  typedef void * ( *ThreadFunctionType )(void *);
   typedef int     ThreadProcessIdType;
-#define ITK_THREAD_RETURN_VALUE
-#define ITK_THREAD_RETURN_TYPE void
+#define ITK_THREAD_RETURN_VALUE NULL
+#define ITK_THREAD_RETURN_TYPE void *
 
 #endif
 
