@@ -61,7 +61,7 @@ public:
   using Semaphore = semaphore_t;
 #elif defined(ITK_USE_WIN32_THREADS)
   using Semaphore = HANDLE;
-#elif defined(ITK_USE_PTHREADS)
+#elif defined(ITK_USE_PTHREADS) || defined(__EMSCRIPTEN__)
   using Semaphore = sem_t;
 #else
 #error Unknown thread system!
