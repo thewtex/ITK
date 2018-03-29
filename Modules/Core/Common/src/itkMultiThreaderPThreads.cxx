@@ -77,7 +77,7 @@ void MultiThreader::MultipleMethodExecute()
   pthread_attr_t attr;
 
   pthread_attr_init(&attr);
-#ifndef __CYGWIN__
+#if !defined( __CYGWIN__ ) && !defined( __EMSCRIPTEN__ )
   pthread_attr_setscope(&attr, PTHREAD_SCOPE_PROCESS);
 #endif
   for( ThreadIdType thread_loop = 1; thread_loop < m_NumberOfThreads; ++thread_loop )
@@ -144,7 +144,7 @@ ThreadIdType MultiThreader::SpawnThread(ThreadFunctionType f, void *UserData)
   pthread_attr_t attr;
 
   pthread_attr_init(&attr);
-#ifndef __CYGWIN__
+#if !defined( __CYGWIN__ ) && !defined( __EMSCRIPTEN__ )
   pthread_attr_setscope(&attr, PTHREAD_SCOPE_PROCESS);
 #endif
 
@@ -197,7 +197,7 @@ MultiThreader
   pthread_t      threadHandle;
 
   pthread_attr_init(&attr);
-#if !defined( __CYGWIN__ )
+#if !defined( __CYGWIN__ ) && !defined( __EMSCRIPTEN__ )
   pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
 #endif
 
