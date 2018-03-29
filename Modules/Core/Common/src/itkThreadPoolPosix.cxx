@@ -137,7 +137,7 @@ ThreadPool
   pthread_attr_t attr;
   pthread_attr_init(&attr);
 
-#if !defined( __CYGWIN__ )
+#if !defined( __CYGWIN__ ) && !defined( __EMSCRIPTEN__ )
   pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
 #endif
   const int rc = pthread_create(&m_Threads.back(), &attr, &ThreadPool::ThreadExecute, ITK_NULLPTR);
