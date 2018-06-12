@@ -21,16 +21,6 @@
 
 namespace itk
 {
-ThreadIdType
-ThreadPool
-::GetGlobalDefaultNumberOfThreadsByPlatform()
-{
-  SYSTEM_INFO sysInfo;
-
-  GetSystemInfo(&sysInfo);
-  ThreadIdType num = sysInfo.dwNumberOfProcessors;
-  return num;
-}
 
 //Returns the last Win32 error, in string format. Returns an empty string if there is no error.
 std::string GetLastErrorAsString()

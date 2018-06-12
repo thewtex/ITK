@@ -21,6 +21,7 @@
 #include "itksys/SystemTools.hxx"
 #include "itkMutexLockHolder.h"
 #include "itkSimpleFastMutexLock.h"
+#include "itkMultiThreaderBase.h"
 
 #include <algorithm>
 
@@ -181,77 +182,6 @@ ThreadPool
   PlatformCreate(m_ThreadsSemaphore);
 }
 
-ThreadIdType
-ThreadPool
-::GetGlobalDefaultNumberOfThreads()
-{
-  ThreadIdType threadCount = 0;
-  /* The ITK_NUMBER_OF_THREADS_ENV_LIST contains is an
-   * environmental variable that holds a ':' separated
-   * list of environmental variables that whould be
-   * queried in order for setting the m_GlobalMaximumNumberOfThreads.
-   *
-   * This is intended to be a mechanism suitable to easy
-   * runtime modification to ease using the proper number
-   * of threads for load balancing batch processing
-   * systems where the number of threads
-   * authorized for use may be less than the number
-   * of physical processors on the computer.
-   *
-   * This list contains the Sun|Oracle Grid Engine
-   * environmental variable "NSLOTS" by default
-   */
-  std::vector<std::string> ITK_NUMBER_OF_THREADS_ENV_LIST;
-  std::string       itkNumberOfThreadsEvnListString = "";
-  if( itksys::SystemTools::GetEnv("ITK_NUMBER_OF_THREADS_ENV_LIST",
-                                  itkNumberOfThreadsEvnListString) )
-    {
-    // NOTE: We always put "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS" at the end
-    // unconditionally.
-    itkNumberOfThreadsEvnListString += ":ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS";
-    }
-  else
-    {
-    itkNumberOfThreadsEvnListString = "NSLOTS:ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS";
-    }
-    {
-    std::stringstream numberOfThreadsEnvListStream(itkNumberOfThreadsEvnListString);
-    std::string       item;
-    while( std::getline(numberOfThreadsEnvListStream, item, ':') )
-      {
-      if( item.size() > 0 ) // Do not add empty items.
-        {
-        ITK_NUMBER_OF_THREADS_ENV_LIST.push_back(item);
-        }
-      }
-    }
-  // first, check for environment variable
-  std::string itkGlobalDefaultNumberOfThreadsEnv = "0";
-  for( std::vector<std::string>::const_iterator lit = ITK_NUMBER_OF_THREADS_ENV_LIST.begin();
-       lit != ITK_NUMBER_OF_THREADS_ENV_LIST.end();
-       ++lit )
-    {
-    if( itksys::SystemTools::GetEnv(lit->c_str(), itkGlobalDefaultNumberOfThreadsEnv) )
-      {
-      threadCount = static_cast<ThreadIdType>( atoi( itkGlobalDefaultNumberOfThreadsEnv.c_str() ) );
-      }
-    }
-
-  // otherwise, set number of threads based on system information
-  if( threadCount <= 0 )
-    {
-    threadCount = GetGlobalDefaultNumberOfThreadsByPlatform();
-    }
-
-  // limit the number of threads to m_GlobalMaximumNumberOfThreads
-  threadCount  = std::min( threadCount, ThreadIdType(ITK_MAX_THREADS) );
-
-  // verify that the default number of threads is larger than zero
-  threadCount  = std::max( threadCount, NumericTraits<ThreadIdType>::OneValue() );
-
-  return threadCount;
-}
-
 void
 ThreadPool
 ::AddThreads(ThreadIdType count)
@@ -285,7 +215,7 @@ ThreadPool
   MutexLockHolder<SimpleFastMutexLock> mutexHolder(m_ThreadPoolGlobals->m_Mutex);
   if ( m_Threads.empty() ) //not yet initialized
     {
-    const_cast<ThreadPool *>(this)->AddThreads(ThreadPool::GetGlobalDefaultNumberOfThreads());
+    const_cast<ThreadPool *>(this)->AddThreads(MultiThreaderBase::GetGlobalDefaultNumberOfThreads());
     }
   return int(m_Threads.size()) - int(m_WorkQueue.size()); // lousy approximation
 }
@@ -348,7 +278,7 @@ ThreadPool
     MutexLockHolder<SimpleFastMutexLock> mutexHolder(m_ThreadPoolGlobals->m_Mutex);
     if ( m_Threads.empty() ) //first job
       {
-      AddThreads(ThreadPool::GetGlobalDefaultNumberOfThreads());
+      AddThreads(MultiThreaderBase::GetGlobalDefaultNumberOfThreads());
       }
     m_WorkQueue.push_back(threadJob);
   }

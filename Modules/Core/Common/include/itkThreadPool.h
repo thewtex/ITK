@@ -98,12 +98,6 @@ public:
   /** This method blocks until the given job has finished executing. */
   void WaitForJob(Semaphore& jobSemaphore);
 
-  /** Platform specific number of threads */
-  static ThreadIdType GetGlobalDefaultNumberOfThreadsByPlatform();
-
-  /** Examines environment variables and falls back to hyper-threaded core count */
-  static ThreadIdType GetGlobalDefaultNumberOfThreads();
-
   /** Set/Get wait for threads.
   This function should be used carefully, probably only during static
   initialization phase to disable waiting for threads when ITK is built as a

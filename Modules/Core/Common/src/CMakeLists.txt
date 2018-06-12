@@ -81,7 +81,6 @@ set(ITKCommon_SRCS
   itkNumericTraitsFixedArrayPixel.cxx
   itkMultiThreaderBase.cxx
   itkPlatformMultiThreader.cxx
-  itkPoolMultiThreader.cxx
   itkMetaDataObject.cxx
   itkMetaDataDictionary.cxx
   itkDataObject.cxx
@@ -138,7 +137,6 @@ set(ITKCommon_SRCS
   itkCompensatedSummation.cxx
   itkArrayOutputSpecialization.cxx
   itkNumberToString.cxx
-  itkThreadPool.cxx
   itkRandomVariateGeneratorBase.cxx
   itkMath.cxx
   )
@@ -151,6 +149,9 @@ if(ITK_USE_WIN32_THREADS)
   list(APPEND ITKCommon_SRCS itkThreadPoolWin32.cxx)
 elseif(ITK_USE_PTHREADS)
   list(APPEND ITKCommon_SRCS itkThreadPoolPosix.cxx)
+endif()
+if(ITK_USE_WIN32_THREADS OR ITK_USE_PTHREADS)
+  list(APPEND ITKCommon_SRCS itkPoolMultiThreader.cxx itkThreadPool.cxx)
 endif()
 
 if(ITK_DYNAMIC_LOADING)

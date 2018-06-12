@@ -26,34 +26,6 @@
 
 namespace itk
 {
-ThreadIdType
-ThreadPool
-::GetGlobalDefaultNumberOfThreadsByPlatform()
-{
-  ThreadIdType num;
-
-  // Default the number of threads to be the number of available
-  // processors if we are using pthreads()
-#ifdef _SC_NPROCESSORS_ONLN
-  num = static_cast<ThreadIdType>( sysconf(_SC_NPROCESSORS_ONLN) );
-#elif defined( _SC_NPROC_ONLN )
-  num = static_cast<ThreadIdType>( sysconf(_SC_NPROC_ONLN) );
-#else
-  num = 1;
-#endif
-#if defined( __SVR4 ) && defined( sun ) && defined( PTHREAD_MUTEX_NORMAL )
-  pthread_setconcurrency(num);
-#endif
-
-  itksys::SystemInformation mySys;
-  mySys.RunCPUCheck();
-  int result = mySys.GetNumberOfPhysicalCPU(); // Avoid using hyperthreading cores.
-  if( result == -1 )
-    {
-    num = 1;
-    }
-  return num;
-}
 
 void
 ThreadPool
