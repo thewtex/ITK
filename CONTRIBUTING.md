@@ -31,8 +31,8 @@ Before you begin, perform initial setup:
    $ ./Utilities/SetupForDevelopment.sh
 ```
 
-Note that ITK defines some useful Git aliases, such as `pullall` or `prepush`,
-through the [`SetupGitAliases.sh`] script for general Git tasks in ITK.
+Note that ITK defines some useful Git aliases, such as `review-push`, `pr`, `pr-clean`,
+and `prepush`, through the [`setup-git-aliases`] script for general Git tasks in ITK.
 
 Note that if you answer `y` to the question "Do you want to test push access to
 itk.org? \[y/N\]:", you will most likely receive the following error message:
@@ -315,7 +315,7 @@ branch (**warning**: you could lose commits).
 [UpdatingThirdParty]: Documentation/UpdatingThirdParty.md
 
 [`SetupForDevelopment.sh`]: https://github.com/InsightSoftwareConsortium/ITK/blob/master/Utilities/SetupForDevelopment.sh
-[`SetupGitAliases.sh`]: https://github.com/InsightSoftwareConsortium/ITK/blob/master/Utilities/DevelopmentSetupScripts/SetupGitAliases.sh
+[`setup-git-aliases`]: https://github.com/InsightSoftwareConsortium/ITK/blob/master/Utilities/GitSetup/setup-git-aliases
 
 [ITK discussion]: https://discourse.itk.org/
 [ITK Gerrit]: http://review.source.kitware.com/p/ITK
