@@ -68,4 +68,8 @@ public:
   vnl_fft_prime_factors<T>& operator= (vnl_fft_prime_factors<T> const &) { return *this; }
 };
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_fft_prime_factors.hxx"
+#endif
+
 #endif // vnl_fft_prime_factors_h_

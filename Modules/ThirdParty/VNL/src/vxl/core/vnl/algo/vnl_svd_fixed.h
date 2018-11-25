@@ -177,4 +177,8 @@ vnl_matrix_fixed<T,C,R> vnl_svd_fixed_inverse(vnl_matrix_fixed<T,R,C> const& m)
 template <class T, unsigned int R, unsigned int C>
 std::ostream& operator<<(std::ostream&, vnl_svd_fixed<T,R,C> const& svd);
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_svd_fixed.hxx"
+#endif
+
 #endif // vnl_svd_fixed_h_

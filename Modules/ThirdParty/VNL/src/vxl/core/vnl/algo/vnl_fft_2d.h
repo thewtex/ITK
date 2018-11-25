@@ -39,4 +39,8 @@ struct vnl_fft_2d : public vnl_fft_base<2, T>
   unsigned cols() const { return base::factors_[1].number(); }
 };
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_fft_2d.hxx"
+#endif
+
 #endif // vnl_fft_2d_h_

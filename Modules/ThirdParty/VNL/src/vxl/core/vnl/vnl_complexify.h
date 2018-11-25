@@ -176,4 +176,8 @@ template <class T> VNL_EXPORT
 vnl_sym_matrix<std::complex<T> >
   vnl_complexify(vnl_sym_matrix<T> const& R, vnl_sym_matrix<T> const& I);
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_complex_ops.hxx"
+#endif
+
 #endif // vnl_complexify_h_

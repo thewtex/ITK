@@ -495,4 +495,8 @@ template <class T> VNL_EXPORT std::ostream& operator<<(std::ostream &, vnl_vecto
 // \relatesalso vnl_vector
 template <class T> VNL_EXPORT std::istream& operator>>(std::istream &, vnl_vector<T>      &);
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_vector.hxx"
+#endif
+
 #endif // vnl_vector_h_

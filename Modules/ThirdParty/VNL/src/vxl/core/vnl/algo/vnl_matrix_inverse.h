@@ -53,4 +53,8 @@ vnl_matrix<T> operator*(vnl_matrix_inverse<T> const & i,
   return i.solve(B);
 }
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_matrix_inverse.hxx"
+#endif
+
 #endif // vnl_matrix_inverse_h_

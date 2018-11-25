@@ -103,4 +103,8 @@ vnl_sym_matrix<T>
 vnl_imag(vnl_sym_matrix<std::complex<T> > const& C);
 
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_complex_ops.hxx"
+#endif
+
 #endif // vnl_imag_h_

@@ -28,4 +28,8 @@ struct vnl_fft_base
   vnl_fft_prime_factors<T> factors_[D];
 };
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_fft_base.hxx"
+#endif
+
 #endif // vnl_fft_base_h_

@@ -42,4 +42,8 @@ void VNL_EXPORT x_write_tree(std::ostream & os, vnl_matrix<T> const& v,
 
 #define VNL_XIO_MATRIX_INSTANTIATE(T) extern "Please #include <vnl/xio/vnl_xio_matrix.hxx> first"
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_xio_matrix.hxx"
+#endif
+
 #endif // vnl_xio_matrix_h

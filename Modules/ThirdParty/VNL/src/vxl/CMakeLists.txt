@@ -173,6 +173,9 @@ if(UNIX)
   endif()
 endif()
 
+option(VXL_EXPLICIT_INSTANTIATION "Explicitly instantiate VXL templates." OFF)
+mark_as_advanced(VXL_EXPLICIT_INSTANTIATION)
+
 
 # Some types of path names can cause havoc with regular expressions,
 # so avoid those.

@@ -24,4 +24,8 @@ void vsl_b_read(vsl_b_istream & is, vnl_matrix_fixed<T,m,n> & v);
 template <class T, unsigned m, unsigned n>
 void vsl_print_summary(std::ostream & os,const vnl_matrix_fixed<T,m,n> & b);
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_io_matrix_fixed.hxx"
+#endif
+
 #endif // vnl_io_matrix_fixed_h

@@ -45,4 +45,8 @@ class vnl_svd_economy
   vnl_svd_economy<real_t>& operator=(vnl_svd_economy<real_t> const&) { return *this; }
 };
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_svd_economy.hxx"
+#endif
+
 #endif

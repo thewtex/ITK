@@ -75,4 +75,8 @@ inline vnl_vector_ref<T> vnl_vector_ref_extract(vnl_vector <T> &v, unsigned star
 }
 
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_vector_ref.hxx"
+#endif
+
 #endif // vnl_vector_ref_h_

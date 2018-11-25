@@ -36,4 +36,8 @@ class VNL_EXPORT vnl_file_vector : public vnl_vector<T>
   bool ok_;
 };
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_file_vector.hxx"
+#endif
+
 #endif // vnl_file_vector_h_

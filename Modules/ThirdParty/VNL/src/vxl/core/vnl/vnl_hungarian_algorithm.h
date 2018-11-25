@@ -169,4 +169,8 @@ class VNL_EXPORT vnl_hungarian_algorithm
 
 #define VNL_HUNGARIAN_ALGORITHM_INSTANTIATE(T) extern "please #include vnl/vnl_hungarian_algorithm.hxx instead"
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_hungarian_algorithm.hxx"
+#endif
+
 #endif // vnl_hungarian_algorithm_h_

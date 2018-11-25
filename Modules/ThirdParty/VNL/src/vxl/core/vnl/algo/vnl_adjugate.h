@@ -27,4 +27,8 @@ void vnl_adjugate(vnl_matrix<T> const &A, vnl_matrix<T> *out);
 template <class T>
 vnl_matrix<T> vnl_adjugate(vnl_matrix<T> const &A);
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_adjugate.hxx"
+#endif
+
 #endif // vnl_adjugate_h_

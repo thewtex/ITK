@@ -89,4 +89,8 @@ inline T vnl_qr_determinant(vnl_matrix<T> const& m)
 template <class T>
 std::ostream& operator<<(std::ostream&, vnl_qr<T> const & qr);
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_qr.hxx"
+#endif
+
 #endif // vnl_qr_h_

@@ -732,5 +732,8 @@ inline vnl_matrix<T> operator+(T const& value, vnl_matrix<T> const& m)
 template<class T>
 inline void swap(vnl_matrix<T> &A, vnl_matrix<T> &B) { A.swap(B); }
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_matrix.hxx"
+#endif
 
 #endif // vnl_matrix_h_

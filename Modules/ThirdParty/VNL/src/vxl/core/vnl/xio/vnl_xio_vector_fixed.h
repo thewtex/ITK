@@ -41,4 +41,8 @@ void x_write_tree(std::ostream & os, vnl_vector_fixed<T,n> const& v,
 
 #define VNL_XIO_VECTOR_FIXED_INSTANTIATE(T) extern "Please #include <vnl/xio/vnl_xio_vector_fixed.hxx> first"
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_xio_vector_fixed.hxx"
+#endif
+
 #endif // vnl_xio_vector_fixed_h

@@ -47,4 +47,8 @@ class VNL_EXPORT vnl_unary_function
   virtual ~vnl_unary_function() = default;
 };
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_unary_function.hxx"
+#endif
+
 #endif // vnl_unary_function_h_

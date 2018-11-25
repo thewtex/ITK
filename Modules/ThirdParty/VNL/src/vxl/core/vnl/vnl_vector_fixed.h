@@ -903,4 +903,8 @@ std::istream& operator>> ( std::istream& ostr, vnl_vector_fixed<T,n>& v )
   return ostr;
 }
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_vector_fixed.hxx"
+#endif
+
 #endif // vnl_vector_fixed_h_

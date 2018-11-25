@@ -35,4 +35,8 @@ class VNL_EXPORT vnl_file_matrix : public vnl_matrix<T>
   bool ok_;
 };
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_file_matrix.hxx"
+#endif
+
 #endif // vnl_file_matrix_h_

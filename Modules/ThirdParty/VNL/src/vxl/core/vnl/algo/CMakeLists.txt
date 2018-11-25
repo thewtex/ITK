@@ -100,7 +100,9 @@ if(NETLIB_FOUND)
     vnl_adaptsimpson_integral.cxx vnl_adaptsimpson_integral.h
   )
 
-  aux_source_directory(Templates vnl_algo_sources)
+  if(VXL_EXPLICIT_INSTANTIATION)
+    aux_source_directory(Templates vnl_algo_sources)
+  endif()
 
   # If VXL_INSTALL_INCLUDE_DIR is the default value
   if("${VXL_INSTALL_INCLUDE_DIR}" STREQUAL "include/vxl")

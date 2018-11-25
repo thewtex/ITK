@@ -365,4 +365,8 @@ inline vnl_vector<T> operator* (vnl_vector<T> const& A, vnl_diag_matrix<T> const
   return element_product(D.diagonal(), A);
 }
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_diag_matrix.hxx"
+#endif
+
 #endif // vnl_diag_matrix_h_

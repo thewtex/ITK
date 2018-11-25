@@ -40,4 +40,8 @@ void x_write_tree(std::ostream & os, vnl_vector<T> const& v,
 
 #define VNL_XIO_VECTOR_INSTANTIATE(T) extern "Please #include <vnl/xio/vnl_xio_vector.hxx> first"
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_xio_vector.hxx"
+#endif
+
 #endif // vnl_xio_vector_h

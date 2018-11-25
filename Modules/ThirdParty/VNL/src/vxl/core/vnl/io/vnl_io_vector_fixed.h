@@ -28,4 +28,8 @@ void vsl_b_read(vsl_b_istream & is, vnl_vector_fixed<T,n> & v);
 template <class T, unsigned n>
 void vsl_print_summary(std::ostream & os,const vnl_vector_fixed<T,n> & b);
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_io_vector_fixed.hxx"
+#endif
+
 #endif // vnl_io_vector_fixed_h

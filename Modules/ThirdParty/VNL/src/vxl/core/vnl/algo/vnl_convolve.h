@@ -112,4 +112,8 @@ vnl_convolve(vnl_matrix<T> const& v1, vnl_vector<T> const& v2,
 #define VNL_CONVOLVE_INSTANTIATE(T) \
 extern "please include vnl/algo/vnl_convolve.hxx first"
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_convolve.hxx"
+#endif
+
 #endif // vnl_convolve_h_

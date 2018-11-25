@@ -192,4 +192,8 @@ inline std::ostream& operator<< (std::ostream& os, vnl_quaternion<T> const& q)
 
 #define VNL_QUATERNION_INSTANTIATE(T) extern "Please #include <vnl/vnl_quaternion.hxx> first"
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_quaternion.hxx"
+#endif
+
 #endif // vnl_quaternion_h_

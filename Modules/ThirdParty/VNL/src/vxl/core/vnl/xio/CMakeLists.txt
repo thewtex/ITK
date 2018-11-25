@@ -8,7 +8,9 @@ set(vnl_xio_sources
   vnl_xio_quaternion.hxx     vnl_xio_quaternion.h
 )
 
-aux_source_directory(Templates vnl_xio_sources)
+if(VXL_EXPLICIT_INSTANTIATION)
+  aux_source_directory(Templates vnl_xio_sources)
+endif()
 
 vxl_add_library(LIBRARY_NAME ${VXL_LIB_PREFIX}vnl_xio
   LIBRARY_SOURCES ${vnl_xio_sources}

@@ -92,4 +92,8 @@ std::ostream &vnl_matlab_print(std::ostream &,
 //: naughty naming-convention-defying-but-handy macro.
 #define MATLABPRINT(X) (vnl_matlab_print(std::cerr, (X).as_ref(), #X))
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_matlab_print.hxx"
+#endif
+
 #endif // vnl_matlab_print_h_

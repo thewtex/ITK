@@ -69,4 +69,8 @@ vnl_matrix<T> vnl_rank_row_column_reduce(vnl_matrix<T> const& mat,
 
 #define VNL_RANK_INSTANTIATE(T) extern "please #include vnl/vnl_rank.hxx instead"
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_rank.hxx"
+#endif
+
 #endif // vnl_rank_h_

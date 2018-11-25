@@ -28,4 +28,8 @@ void vsl_b_read(vsl_b_istream & is, vnl_matrix<T> & v);
 template <class T>
 void vsl_print_summary(std::ostream & os,const vnl_matrix<T> & b);
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_io_matrix.hxx"
+#endif
+
 #endif // vnl_io_matrix_h

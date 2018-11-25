@@ -312,5 +312,8 @@ inline vnl_sparse_matrix<T> operator*(T const& value, vnl_sparse_matrix<T> const
   return m * value;
 }
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_sparse_matrix.hxx"
+#endif
 
 #endif // vnl_sparse_matrix_h_

@@ -34,4 +34,8 @@ template <class SquareMatrix> VNL_EXPORT
 SquareMatrix vnl_matrix_exp(SquareMatrix const &X);
 
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_matrix_exp.hxx"
+#endif
+
 #endif // vnl_matrix_exp_h_

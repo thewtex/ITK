@@ -44,4 +44,8 @@ class VNL_EXPORT vnl_fortran_copy
   // Helpers-------------------------------------------------------------------
 };
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_fortran_copy.hxx"
+#endif
+
 #endif // vnl_fortran_copy_h_

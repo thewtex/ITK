@@ -268,4 +268,8 @@ bool operator==(const vnl_matrix<T> &a, const vnl_sym_matrix<T> &b);
 template <class T> void swap(vnl_sym_matrix<T> &a, vnl_sym_matrix<T> &b)
 { a.swap(b); }
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_sym_matrix.hxx"
+#endif
+
 #endif // vnl_sym_matrix_h_

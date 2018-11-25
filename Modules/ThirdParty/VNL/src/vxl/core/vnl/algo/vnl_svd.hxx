@@ -205,14 +205,14 @@ template <class T> void vnl_svd<T>::zero_out_relative(double tol) // sqrt(machin
   zero_out_absolute(tol * std::abs(sigma_max()));
 }
 
-static bool w=false;
-inline bool vnl_svn_warned() { if (w) return true; else { w=true; return false; } }
+static bool vnl_svd_warn=false;
+inline bool vnl_svd_warned() { if (vnl_svd_warn) return true; else { vnl_svd_warn=true; return false; } }
 
 //: Calculate determinant as product of diagonals in W.
 template <class T>
 typename vnl_svd<T>::singval_t vnl_svd<T>::determinant_magnitude() const
 {
-  if (!vnl_svn_warned() && m_ != n_)
+  if (!vnl_svd_warned() && m_ != n_)
     std::cerr << __FILE__ ": called determinant_magnitude() on SVD of non-square matrix\n"
              << "(This warning is displayed only once)\n";
   singval_t product = W_(0, 0);

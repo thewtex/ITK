@@ -71,4 +71,8 @@ class vnl_scatter_3x3 : public vnl_matrix_fixed<T,3,3>
 };
 
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_scatter_3x3.hxx"
+#endif
+
 #endif // vnl_scatter_3x3_h_

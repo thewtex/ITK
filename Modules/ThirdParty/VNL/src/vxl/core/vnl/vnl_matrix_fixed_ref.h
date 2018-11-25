@@ -1002,4 +1002,8 @@ std::istream& operator>> (std::istream& is, vnl_matrix_fixed_ref<T,m,n> const& m
   return is;
 }
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_matrix_fixed_ref.hxx"
+#endif
+
 #endif // vnl_matrix_fixed_ref_h_

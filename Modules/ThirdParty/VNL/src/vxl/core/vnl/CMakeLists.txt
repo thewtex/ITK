@@ -252,7 +252,9 @@ set( vnl_sources
                                vnl_sse.h
 )
 
-aux_source_directory(Templates vnl_sources)
+if(VXL_EXPLICIT_INSTANTIATION)
+  aux_source_directory(Templates vnl_sources)
+endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
   # gcc must have -msse2 option to enable sse2 support

@@ -348,4 +348,8 @@ inline vnl_vector_fixed<T,N> operator* (vnl_vector_fixed<T,N> const& A, vnl_diag
   return element_product(D.diagonal(), A);
 }
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_diag_matrix_fixed.hxx"
+#endif
+
 #endif // vnl_diag_matrix_fixed_h_

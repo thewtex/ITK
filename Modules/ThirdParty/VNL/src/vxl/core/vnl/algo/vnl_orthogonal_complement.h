@@ -21,4 +21,8 @@
 template <class T>
 vnl_matrix<T> vnl_orthogonal_complement(vnl_vector<T> const &v);
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_orthogonal_complement.hxx"
+#endif
+
 #endif // vnl_orthogonal_complement_h_

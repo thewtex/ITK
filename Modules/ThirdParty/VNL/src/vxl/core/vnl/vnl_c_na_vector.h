@@ -61,4 +61,8 @@ class VNL_EXPORT vnl_c_na_vector
 template <class T> VNL_EXPORT
 std::ostream& print_na_vector(std::ostream&, T const*, unsigned);
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_c_na_vector.hxx"
+#endif
+
 #endif // vnl_c_na_vector_h_

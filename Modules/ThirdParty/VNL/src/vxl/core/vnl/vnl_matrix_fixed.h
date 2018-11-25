@@ -1024,4 +1024,8 @@ vnl_matrix_fixed<T,m,n> outer_product(vnl_vector_fixed<T,m> const& a, vnl_vector
 #define VNL_MATRIX_FIXED_INSTANTIATE(T, M, N) \
 extern "please include vnl/vnl_matrix_fixed.hxx instead"
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_matrix_fixed.hxx"
+#endif
+
 #endif // vnl_matrix_fixed_h_

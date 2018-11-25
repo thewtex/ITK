@@ -24,4 +24,8 @@ void vsl_b_read(vsl_b_istream &is, vnl_diag_matrix<T> & v);
 template <class T>
 void vsl_print_summary(std::ostream& os,const vnl_diag_matrix<T> & b);
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_io_diag_matrix.hxx"
+#endif
+
 #endif // vnl_io_diag_matrix_h

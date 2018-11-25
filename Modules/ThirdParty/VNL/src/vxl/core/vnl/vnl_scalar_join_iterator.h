@@ -133,4 +133,8 @@ class VNL_EXPORT vnl_scalar_join_iterator_indexed_pair
   bool operator <  (const vnl_scalar_join_iterator_indexed_pair<T>& that) const;
 };
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_scalar_join_iterator.hxx"
+#endif
+
 #endif // vnl_scalar_join_iterator_h_

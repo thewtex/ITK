@@ -205,4 +205,8 @@ vnl_matrix<T> vnl_svd_inverse(vnl_matrix<T> const& m)
 template <class T>
 std::ostream& operator<<(std::ostream&, vnl_svd<T> const& svd);
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_svd.hxx"
+#endif
+
 #endif // vnl_svd_h_

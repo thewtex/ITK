@@ -50,4 +50,8 @@ inline T vnl_det(vnl_matrix_fixed<T,3,3> const& m) { return vnl_det(m[0],m[1],m[
 template <class T>
 inline T vnl_det(vnl_matrix_fixed<T,4,4> const& m) { return vnl_det(m[0],m[1],m[2],m[3]); }
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_det.hxx"
+#endif
+
 #endif // vnl_det_h_

@@ -70,4 +70,8 @@ struct vnl_fft_1d : public vnl_fft_base<1, T>
   { transform(signal, -1); }
 };
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_fft_1d.hxx"
+#endif
+
 #endif // vnl_fft_1d_h_

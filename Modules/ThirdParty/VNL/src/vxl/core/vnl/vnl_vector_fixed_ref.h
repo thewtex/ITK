@@ -688,5 +688,9 @@ std::istream& operator>>(std::istream& i, const vnl_vector_fixed_ref<T,n>& v)
   return i;
 }
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_vector_fixed_ref.hxx"
+#endif
+
 
 #endif // vnl_vector_fixed_ref_h_

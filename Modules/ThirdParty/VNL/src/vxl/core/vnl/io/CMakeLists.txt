@@ -17,7 +17,9 @@ set(vnl_io_sources
   vnl_io_matrix_fixed.hxx         vnl_io_matrix_fixed.h
 )
 
-aux_source_directory(Templates vnl_io_sources)
+if(VXL_EXPLICIT_INSTANTIATION)
+  aux_source_directory(Templates vnl_io_sources)
+endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
   set_source_files_properties(

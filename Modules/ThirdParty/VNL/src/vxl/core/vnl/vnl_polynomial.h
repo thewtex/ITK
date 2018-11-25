@@ -169,4 +169,8 @@ std::ostream& operator<<(std::ostream& os, vnl_polynomial<T> const& p) { p.print
 
 #define VNL_POLYNOMIAL_INSTANTIATE(T) extern "please #include vnl/vnl_polynomial.hxx instead"
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_polynomial.hxx"
+#endif
+
 #endif // vnl_polynomial_h_

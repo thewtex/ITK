@@ -39,4 +39,8 @@ void x_write_tree(std::ostream & os, vnl_quaternion<T> const& v,
 
 #define VNL_XIO_QUATERNION_INSTANTIATE(T) extern "Please #include <vnl/xio/vnl_xio_quaternion.hxx> first"
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_xio_quaternion.hxx"
+#endif
+
 #endif // vnl_xio_quaternion_h

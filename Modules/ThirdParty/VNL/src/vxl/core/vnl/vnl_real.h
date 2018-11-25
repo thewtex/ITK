@@ -102,4 +102,8 @@ template <class T> VNL_EXPORT
 vnl_sym_matrix<T>
 vnl_real(vnl_sym_matrix<std::complex<T> > const& C);
 
+#ifndef VXL_EXPLICIT_INSTANTIATION
+#include "vnl_complex_ops.hxx"
+#endif
+
 #endif // vnl_real_h_
