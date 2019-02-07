@@ -20,7 +20,6 @@
 
 #include "itkAffineTransform.h"
 #include "itkResampleImageFilter.h"
-#include "itkPipelineMonitorImageFilter.h"
 #include "itkStreamingImageFilter.h"
 #include "itkTestingMacros.h"
 #include "itkMath.h"
@@ -54,8 +53,7 @@ int itkResampleImageTest7( int , char *[] )
   ImageRegionType region;
   region.SetSize ( size );
   region.SetIndex( index );
-  image->SetLargestPossibleRegion( region );
-  image->SetBufferedRegion( region );
+  image->SetRegions( region );
   image->Allocate();
 
   // Fill image with a ramp
@@ -81,15 +79,10 @@ int itkResampleImageTest7( int , char *[] )
     itk::ResampleImageFilter< ImageType, ImageType >::New();
 
   EXERCISE_BASIC_OBJECT_METHODS( resample, ResampleImageFilter, ImageToImageFilter );
-
-  using MonitorFilter = itk::PipelineMonitorImageFilter<ImageType>;
-  MonitorFilter::Pointer monitor = MonitorFilter::New();
-  monitor->SetInput( image );
-
   resample->SetInterpolator(interp);
 
-  resample->SetInput( monitor->GetOutput() );
-  TEST_SET_GET_VALUE( monitor->GetOutput(), resample->GetInput() );
+  resample->SetInput( image );
+  TEST_SET_GET_VALUE( image.GetPointer(), resample->GetInput() );
 
   resample->SetSize( size );
   TEST_SET_GET_VALUE( size, resample->GetSize() );
@@ -125,36 +118,17 @@ int itkResampleImageTest7( int , char *[] )
   // Run the resampling filter without streaming, i.e. 1 StreamDivisions
   numStreamDiv= 1; // do not split, i.e. do not stream
   streamer->SetNumberOfStreamDivisions(numStreamDiv);
-  TRY_EXPECT_NO_EXCEPTION( streamer->Update() );
+  TRY_EXPECT_NO_EXCEPTION( streamer->UpdateLargestPossibleRegion() );
 
-  if (!monitor->VerifyAllInputCanStream(numStreamDiv))
-    {
-    std::cerr << "Avoiding streaming failed to execute as expected!" << std::endl;
-    std::cerr << monitor;
-    std::cerr << "Test failed." << std::endl;
-    return EXIT_FAILURE;
-    }
-  monitor->ClearPipelineSavedInformation();
-
-  ImagePointerType outputNoSDI= streamer->GetOutput(); // save output for later comparison
+  ImagePointerType outputNoSDI = streamer->GetOutput(); // save output for later comparison
   outputNoSDI->DisconnectPipeline(); // disconnect to create new output
 
   // Run the resampling filter with streaming
   numStreamDiv= 8; // split into numStream pieces for streaming.
-  image->Modified(); // enforce re-execution even though nothing of filter changed
   streamer->SetNumberOfStreamDivisions(numStreamDiv);
-  TRY_EXPECT_NO_EXCEPTION( streamer->Update() );
+  TRY_EXPECT_NO_EXCEPTION( streamer->UpdateLargestPossibleRegion() );
 
-  if (!monitor->VerifyAllInputCanStream(numStreamDiv))
-    {
-    std::cerr << "Streaming failed to execute as expected!" << std::endl;
-    std::cerr << monitor;
-    std::cerr << "Test failed." << std::endl;
-    return EXIT_FAILURE;
-    }
-  monitor->ClearPipelineSavedInformation();
-
-  ImagePointerType outputSDI= streamer->GetOutput();
+  ImagePointerType outputSDI = streamer->GetOutput();
   outputSDI->DisconnectPipeline();
 
   itk::ImageRegionIterator<ImageType>
