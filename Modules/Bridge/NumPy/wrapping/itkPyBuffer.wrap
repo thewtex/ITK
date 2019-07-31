@@ -65,8 +65,8 @@ itk_wrap_class("itk::PyBuffer")
              endif()
           endforeach()
        endforeach()
-    endforeach(d)
-  endforeach(t)
+    endforeach()
+  endforeach()
 
   # VectorImage types
   foreach(d ${ITK_WRAP_DIMS})
@@ -100,5 +100,26 @@ itk_wrap_class("itk::PyVnl")
                PyBufferInterfaceTemp)
     file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/PyBuffer.i
                ${PyBufferInterfaceTemp})
-  endforeach(t ${types})
+  endforeach()
+itk_end_wrap_class()
+
+# itk.Matrix
+
+itk_wrap_class("itk::PyMatrix")
+  # Same as itkMatrix.wrap
+  set(types "D;F")
+  foreach(t ${types})
+    foreach(d ${ITK_WRAP_IMAGE_DIMS_INCREMENTED})
+      set(PixelType ${t})
+      itk_wrap_template("${ITKM_${t}}${d}${d}" "${ITKT_${t}},${d},${d}")
+      set(PyMatrixTypes ${ITKM_${t}})
+      configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/PyMatrixBuffer.i.in
+                      ${CMAKE_CURRENT_BINARY_DIR}/PyMatrixBuffer.i.temp
+                      @ONLY)
+      file(READ ${CMAKE_CURRENT_BINARY_DIR}/PyMatrixBuffer.i.temp
+                 PyBufferInterfaceTemp)
+      file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/PyBuffer.i
+                 ${PyBufferInterfaceTemp})
+    endforeach()
+  endforeach()
 itk_end_wrap_class()

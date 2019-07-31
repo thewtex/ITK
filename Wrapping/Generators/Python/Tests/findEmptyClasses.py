@@ -71,6 +71,7 @@ exclude = ["AuthalicMatrixCoefficients",
            "HammingWindowFunction",
            "LanczosWindowFunction",
            "WelchWindowFunction",
+           "PyMatrix",
            ]
 
 total = 0

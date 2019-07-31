@@ -24,7 +24,7 @@ import itk
 import numpy as np
 
 class TestNumpyVnlMemoryviewInterface(unittest.TestCase):
-    """ This tests numpy array <-> ITK Scalar Image conversion. """
+    """ This tests numpy array <-> vnl_matrix / vnl_vector conversion. """
 
     def setUp(self):
         pass

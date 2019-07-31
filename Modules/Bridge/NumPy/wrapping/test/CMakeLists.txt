@@ -11,6 +11,9 @@ if(ITK_WRAP_PYTHON)
     itk_python_add_test(NAME itkPyVnlTest
                         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/itkPyVnlTest.py
     )
+    itk_python_add_test(NAME itkPyMatrixTest
+                        COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/itkPyMatrixTest.py
+    )
     itk_python_add_test(NAME itkPyBufferPipelineTest.py
                         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/itkPyBufferPipelineTest.py
                           DATA{${ITK_DATA_ROOT}/Input/cthead1.png}
