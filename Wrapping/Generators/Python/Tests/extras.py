@@ -35,6 +35,7 @@ itk.force_load()
 
 filename = sys.argv[1]
 mesh_filename = sys.argv[2]
+transform_filename = sys.argv[3]
 
 PixelType = itk.UC
 dim = 2
@@ -126,8 +127,8 @@ assert itk.range(reader.GetOutput()) == (0, 255)
 
 
 # test write
-itk.imwrite(reader, sys.argv[3])
-itk.imwrite(reader, sys.argv[3], True)
+itk.imwrite(reader, sys.argv[4])
+itk.imwrite(reader, sys.argv[4], True)
 
 # test read
 image = itk.imread(filename)
@@ -155,8 +156,15 @@ assert type(mesh) == itk.Mesh[itk.UC, 3]
 mesh = itk.meshread(mesh_filename, itk.UC, fallback_only=True)
 assert type(mesh) == itk.Mesh[itk.F, 3]
 
-itk.meshwrite(mesh, sys.argv[4])
-itk.meshwrite(mesh, sys.argv[4], compression=True)
+itk.meshwrite(mesh, sys.argv[5])
+itk.meshwrite(mesh, sys.argv[5], compression=True)
+
+# test transform read / write
+reader = itk.TransformFileReaderTemplate[itk.D].New()
+reader.SetFileName(transform_filename)
+reader.Update()
+transformList = reader.GetOutput()
+print(transformList)
 
 # test search
 res = itk.search("Index")
@@ -196,7 +204,7 @@ image_series.SetRegions([10, 7, 1])
 image_series.Allocate()
 image_series.FillBuffer(0)
 image_series3d_filename = os.path.join(
-    sys.argv[5], "image_series_extras_py.mha")
+    sys.argv[6], "image_series_extras_py.mha")
 itk.imwrite(image_series, image_series3d_filename)
 series_reader = itk.ImageSeriesReader.New(
     FileNames=[image_series3d_filename, image_series3d_filename])
