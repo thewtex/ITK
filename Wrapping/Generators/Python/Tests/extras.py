@@ -37,201 +37,208 @@ filename = sys.argv[1]
 mesh_filename = sys.argv[2]
 transform_filename = sys.argv[3]
 
-PixelType = itk.UC
-dim = 2
-ImageType = itk.Image[PixelType, dim]
-ReaderType = itk.ImageFileReader[ImageType]
-reader = ReaderType.New(FileName=filename)
+# PixelType = itk.UC
+# dim = 2
+# ImageType = itk.Image[PixelType, dim]
+# ReaderType = itk.ImageFileReader[ImageType]
+# reader = ReaderType.New(FileName=filename)
 
-# test snake_case keyword arguments
-reader = ReaderType.New(file_name=filename)
+# # test snake_case keyword arguments
+# reader = ReaderType.New(file_name=filename)
 
-# test echo
-itk.echo(reader)
-itk.echo(reader, sys.stdout)
+# # test echo
+# itk.echo(reader)
+# itk.echo(reader, sys.stdout)
 
-# test class_
-assert itk.class_(reader) == ReaderType
-assert itk.class_("dummy") == str
+# # test class_
+# assert itk.class_(reader) == ReaderType
+# assert itk.class_("dummy") == str
 
-# test template
-assert itk.template(ReaderType) == (itk.ImageFileReader, (ImageType,))
-assert itk.template(reader) == (itk.ImageFileReader, (ImageType,))
-try:
-    itk.template(str)
-    raise Exception("unknown class should send an exception")
-except KeyError:
-    pass
+# # test template
+# assert itk.template(ReaderType) == (itk.ImageFileReader, (ImageType,))
+# assert itk.template(reader) == (itk.ImageFileReader, (ImageType,))
+# try:
+    # itk.template(str)
+    # raise Exception("unknown class should send an exception")
+# except KeyError:
+    # pass
 
-# test ctype
-assert itk.ctype("unsigned short") == itk.US
-assert itk.ctype("        unsigned      \n   short \t  ") == itk.US
-assert itk.ctype("signed short") == itk.SS
-assert itk.ctype("short") == itk.SS
-try:
-    itk.ctype("dummy")
-    raise Exception("unknown C type should send an exception")
-except KeyError:
-    pass
-
-
-# test output
-assert itk.output(reader) == reader.GetOutput()
-assert itk.output(1) == 1
-# test the deprecated image
-assert itk.image(reader) == reader.GetOutput()
-assert itk.image(1) == 1
-
-# test size
-s = itk.size(reader)
-assert s[0] == s[1] == 256
-s = itk.size(reader.GetOutput())
-assert s[0] == s[1] == 256
-
-# test physical size
-s = itk.physical_size(reader)
-assert s[0] == s[1] == 256.0
-s = itk.physical_size(reader.GetOutput())
-assert s[0] == s[1] == 256.0
-
-# test spacing
-s = itk.spacing(reader)
-assert s[0] == s[1] == 1.0
-s = itk.spacing(reader.GetOutput())
-assert s[0] == s[1] == 1.0
-
-# test origin
-s = itk.origin(reader)
-assert s[0] == s[1] == 0.0
-s = itk.origin(reader.GetOutput())
-assert s[0] == s[1] == 0.0
-
-# test index
-s = itk.index(reader)
-assert s[0] == s[1] == 0
-s = itk.index(reader.GetOutput())
-assert s[0] == s[1] == 0
-
-# test region
-s = itk.region(reader)
-assert s.GetIndex()[0] == s.GetIndex()[1] == 0
-assert s.GetSize()[0] == s.GetSize()[1] == 256
-s = itk.region(reader.GetOutput())
-assert s.GetIndex()[0] == s.GetIndex()[1] == 0
-assert s.GetSize()[0] == s.GetSize()[1] == 256
+# # test ctype
+# assert itk.ctype("unsigned short") == itk.US
+# assert itk.ctype("        unsigned      \n   short \t  ") == itk.US
+# assert itk.ctype("signed short") == itk.SS
+# assert itk.ctype("short") == itk.SS
+# try:
+    # itk.ctype("dummy")
+    # raise Exception("unknown C type should send an exception")
+# except KeyError:
+    # pass
 
 
-# test range
-assert itk.range(reader) == (0, 255)
-assert itk.range(reader.GetOutput()) == (0, 255)
+# # test output
+# assert itk.output(reader) == reader.GetOutput()
+# assert itk.output(1) == 1
+# # test the deprecated image
+# assert itk.image(reader) == reader.GetOutput()
+# assert itk.image(1) == 1
+
+# # test size
+# s = itk.size(reader)
+# assert s[0] == s[1] == 256
+# s = itk.size(reader.GetOutput())
+# assert s[0] == s[1] == 256
+
+# # test physical size
+# s = itk.physical_size(reader)
+# assert s[0] == s[1] == 256.0
+# s = itk.physical_size(reader.GetOutput())
+# assert s[0] == s[1] == 256.0
+
+# # test spacing
+# s = itk.spacing(reader)
+# assert s[0] == s[1] == 1.0
+# s = itk.spacing(reader.GetOutput())
+# assert s[0] == s[1] == 1.0
+
+# # test origin
+# s = itk.origin(reader)
+# assert s[0] == s[1] == 0.0
+# s = itk.origin(reader.GetOutput())
+# assert s[0] == s[1] == 0.0
+
+# # test index
+# s = itk.index(reader)
+# assert s[0] == s[1] == 0
+# s = itk.index(reader.GetOutput())
+# assert s[0] == s[1] == 0
+
+# # test region
+# s = itk.region(reader)
+# assert s.GetIndex()[0] == s.GetIndex()[1] == 0
+# assert s.GetSize()[0] == s.GetSize()[1] == 256
+# s = itk.region(reader.GetOutput())
+# assert s.GetIndex()[0] == s.GetIndex()[1] == 0
+# assert s.GetSize()[0] == s.GetSize()[1] == 256
 
 
-# test write
-itk.imwrite(reader, sys.argv[4])
-itk.imwrite(reader, sys.argv[4], True)
+# # test range
+# assert itk.range(reader) == (0, 255)
+# assert itk.range(reader.GetOutput()) == (0, 255)
 
-# test read
-image = itk.imread(filename)
-assert type(image) == itk.Image[itk.RGBPixel[itk.UC],2]
-image = itk.imread(filename, itk.F)
-assert type(image) == itk.Image[itk.F,2]
-image = itk.imread(filename, itk.F, fallback_only=True)
-assert type(image) == itk.Image[itk.RGBPixel[itk.UC],2]
-try:
-  image = itk.imread(filename, fallback_only=True)
-  # Should never reach this point if test passes since an exception
-  # is expected.
-  raise Exception('`itk.imread()` fallback_only should have failed')
-except Exception as e:
-  if str(e) == "pixel_type must be set when using the fallback_only option":
-    pass
-  else:
-    raise e
 
-# test mesh read / write
-mesh = itk.meshread(mesh_filename)
-assert type(mesh) == itk.Mesh[itk.F, 3]
-mesh = itk.meshread(mesh_filename, itk.UC)
-assert type(mesh) == itk.Mesh[itk.UC, 3]
-mesh = itk.meshread(mesh_filename, itk.UC, fallback_only=True)
-assert type(mesh) == itk.Mesh[itk.F, 3]
+# # test write
+# itk.imwrite(reader, sys.argv[4])
+# itk.imwrite(reader, sys.argv[4], True)
 
-itk.meshwrite(mesh, sys.argv[5])
-itk.meshwrite(mesh, sys.argv[5], compression=True)
+# # test read
+# image = itk.imread(filename)
+# assert type(image) == itk.Image[itk.RGBPixel[itk.UC],2]
+# image = itk.imread(filename, itk.F)
+# assert type(image) == itk.Image[itk.F,2]
+# image = itk.imread(filename, itk.F, fallback_only=True)
+# assert type(image) == itk.Image[itk.RGBPixel[itk.UC],2]
+# try:
+  # image = itk.imread(filename, fallback_only=True)
+  # # Should never reach this point if test passes since an exception
+  # # is expected.
+  # raise Exception('`itk.imread()` fallback_only should have failed')
+# except Exception as e:
+  # if str(e) == "pixel_type must be set when using the fallback_only option":
+    # pass
+  # else:
+    # raise e
+
+# # test search
+# res = itk.search("Index")
+# assert res[0] == "Index"
+# assert res[1] == "index"
+# assert "ContinuousIndex" in res
+
+# res = itk.search("index", True)
+# assert "Index" not in res
+
+# # test down_cast
+# obj = itk.Object.cast(reader)
+# # be sure that the reader is casted to itk::Object
+# assert obj.__class__ == itk.Object
+# down_casted = itk.down_cast(obj)
+# assert down_casted == reader
+# assert down_casted.__class__ == ReaderType
+
+# # test setting the IO manually
+# png_io = itk.PNGImageIO.New()
+# assert png_io.GetFileName() == ''
+# reader=itk.ImageFileReader.New(FileName=filename, ImageIO=png_io)
+# reader.Update()
+# assert png_io.GetFileName() == filename
+
+# # test reading image series
+# series_reader = itk.ImageSeriesReader.New(FileNames=[filename,filename])
+# series_reader.Update()
+# assert series_reader.GetOutput().GetImageDimension() == 3
+# assert series_reader.GetOutput().GetLargestPossibleRegion().GetSize()[2] == 2
+
+# # test reading image series and check that dimension is not increased if
+# # last dimension is 1.
+# image_series = itk.Image[itk.UC, 3].New()
+# image_series.SetRegions([10, 7, 1])
+# image_series.Allocate()
+# image_series.FillBuffer(0)
+# image_series3d_filename = os.path.join(
+    # sys.argv[6], "image_series_extras_py.mha")
+# itk.imwrite(image_series, image_series3d_filename)
+# series_reader = itk.ImageSeriesReader.New(
+    # FileNames=[image_series3d_filename, image_series3d_filename])
+# series_reader.Update()
+# assert series_reader.GetOutput().GetImageDimension() == 3
+
+# # test reading image series with itk.imread()
+# image_series = itk.imread([filename, filename])
+# assert image_series.GetImageDimension() == 3
+
+# # Numeric series filename generation without any integer index. It is
+# # only to produce an ITK object that users could set as an input to
+# # `itk.ImageSeriesReader.New()` or `itk.imread()` and test that it works.
+# numeric_series_filename = itk.NumericSeriesFileNames.New()
+# numeric_series_filename.SetStartIndex(0)
+# numeric_series_filename.SetEndIndex(3)
+# numeric_series_filename.SetIncrementIndex(1)
+# numeric_series_filename.SetSeriesFormat(filename)
+# image_series = itk.imread(numeric_series_filename.GetFileNames())
+# number_of_files = len(numeric_series_filename.GetFileNames())
+# assert image_series.GetImageDimension() == 3
+# assert image_series.GetLargestPossibleRegion().GetSize()[2] == number_of_files
+
+# # test reading image series with `itk.imread()` and check that dimension is
+# # not increased if last dimension is 1.
+# image_series = itk.imread([image_series3d_filename, image_series3d_filename])
+# assert image_series.GetImageDimension() == 3
+
+# # test mesh read / write
+# mesh = itk.meshread(mesh_filename)
+# assert type(mesh) == itk.Mesh[itk.F, 3]
+# mesh = itk.meshread(mesh_filename, itk.UC)
+# assert type(mesh) == itk.Mesh[itk.UC, 3]
+# mesh = itk.meshread(mesh_filename, itk.UC, fallback_only=True)
+# assert type(mesh) == itk.Mesh[itk.F, 3]
+
+# itk.meshwrite(mesh, sys.argv[5])
+# itk.meshwrite(mesh, sys.argv[5], compression=True)
 
 # test transform read / write
-reader = itk.TransformFileReaderTemplate[itk.D].New()
+print(itk.TransformFileReaderTemplate.GetTypes())
+reader = itk.TransformFileReaderTemplate[itk.F].New()
 reader.SetFileName(transform_filename)
 reader.Update()
-transformList = reader.GetOutput()
-print(transformList)
-
-# test search
-res = itk.search("Index")
-assert res[0] == "Index"
-assert res[1] == "index"
-assert "ContinuousIndex" in res
-
-res = itk.search("index", True)
-assert "Index" not in res
-
-
-# test down_cast
-obj = itk.Object.cast(reader)
-# be sure that the reader is casted to itk::Object
-assert obj.__class__ == itk.Object
-down_casted = itk.down_cast(obj)
-assert down_casted == reader
-assert down_casted.__class__ == ReaderType
-
-# test setting the IO manually
-png_io = itk.PNGImageIO.New()
-assert png_io.GetFileName() == ''
-reader=itk.ImageFileReader.New(FileName=filename, ImageIO=png_io)
-reader.Update()
-assert png_io.GetFileName() == filename
-
-# test reading image series
-series_reader = itk.ImageSeriesReader.New(FileNames=[filename,filename])
-series_reader.Update()
-assert series_reader.GetOutput().GetImageDimension() == 3
-assert series_reader.GetOutput().GetLargestPossibleRegion().GetSize()[2] == 2
-
-# test reading image series and check that dimension is not increased if
-# last dimension is 1.
-image_series = itk.Image[itk.UC, 3].New()
-image_series.SetRegions([10, 7, 1])
-image_series.Allocate()
-image_series.FillBuffer(0)
-image_series3d_filename = os.path.join(
-    sys.argv[6], "image_series_extras_py.mha")
-itk.imwrite(image_series, image_series3d_filename)
-series_reader = itk.ImageSeriesReader.New(
-    FileNames=[image_series3d_filename, image_series3d_filename])
-series_reader.Update()
-assert series_reader.GetOutput().GetImageDimension() == 3
-
-# test reading image series with itk.imread()
-image_series = itk.imread([filename, filename])
-assert image_series.GetImageDimension() == 3
-
-# Numeric series filename generation without any integer index. It is
-# only to produce an ITK object that users could set as an input to
-# `itk.ImageSeriesReader.New()` or `itk.imread()` and test that it works.
-numeric_series_filename = itk.NumericSeriesFileNames.New()
-numeric_series_filename.SetStartIndex(0)
-numeric_series_filename.SetEndIndex(3)
-numeric_series_filename.SetIncrementIndex(1)
-numeric_series_filename.SetSeriesFormat(filename)
-image_series = itk.imread(numeric_series_filename.GetFileNames())
-number_of_files = len(numeric_series_filename.GetFileNames())
-assert image_series.GetImageDimension() == 3
-assert image_series.GetLargestPossibleRegion().GetSize()[2] == number_of_files
-
-# test reading image series with `itk.imread()` and check that dimension is
-# not increased if last dimension is 1.
-image_series = itk.imread([image_series3d_filename, image_series3d_filename])
-assert image_series.GetImageDimension() == 3
+transformList = reader.GetTransformList()
+print(len(transformList))
+print(dir(transformList))
+print([transform for transform in transformList])
+# print(list(transformList))
+print(transformList.size())
+print(transformList.begin())
+print(transformList.size())
+# print(transformList.get(0))
 
 # pipeline, auto_pipeline and templated class are tested in other files
 
