@@ -31,157 +31,62 @@ if len(sys.argv) > 3:
 InputPixelType = itk.F
 OutputPixelType = itk.F
 
-InputImageType = itk.GPUImage[InputPixelType, Dimension]
-OutputImageType = itk.GPUImage[OutputPixelType, Dimension]
+InputImageType = itk.Image[InputPixelType, Dimension]
+OutputImageType = itk.Image[OutputPixelType, Dimension]
+InputGPUImageType = itk.GPUImage[InputPixelType, Dimension]
+OutputGPUImageType = itk.GPUImage[OutputPixelType, Dimension]
 
 input_image = itk.imread(input_file, InputPixelType)
+# from pprint import pprint
+# pprint(dir(itk))
+# input_gpu_image = itk.gpu_image_to_image_filter(input_image)
+gpu_image_converter = itk.GPUImageToImageFilter[InputImageType,InputGPUImageType].New(input_image)
+gpu_image_converter.Update()
+input_gpu_image = gpu_image_converter.GetOutput()
+# print(input_gpu_image)
 
 RealOutputPixelType = OutputPixelType;
 
 NeighborhoodFilterType = itk.NeighborhoodOperatorImageFilter[InputImageType, OutputImageType, RealOutputPixelType]
-GPUNeighborhoodFilterType = itk.GPUNeighborhoodOperatorImageFilter[InputImageType, OutputImageType, RealOutputPixelType]
+GPUNeighborhoodFilterType = itk.GPUNeighborhoodOperatorImageFilter[InputGPUImageType, OutputGPUImageType, RealOutputPixelType]
 
 # Create 1D Gaussian operator
 OperatorType = itk.GaussianOperator[RealOutputPixelType, Dimension]
 
-  # OperatorType oper;
-  # oper.SetDirection(0);
-  # oper.SetVariance(8.0);
-  # oper.CreateDirectional();
+oper = OperatorType()
+oper.SetDirection(0)
+oper.SetVariance(8.0)
+oper.CreateDirectional()
 
-  # // test 1~8 threads for CPU
-  # for (int nThreads = 1; nThreads <= 8; nThreads++)
-  # {
-    # typename NeighborhoodFilterType::Pointer CPUFilter = NeighborhoodFilterType::New();
+# test 1~8 work units for CPU
+for number_of_work_units in range(1,9):
+    cpu_filter = NeighborhoodFilterType.New()
+    cpu_timer = itk.TimeProbe()
 
-    # itk::TimeProbe cputimer;
-    # cputimer.Start();
+    cpu_timer.Start()
 
-    # CPUFilter->SetNumberOfWorkUnits(nThreads);
+    cpu_filter.SetNumberOfWorkUnits(number_of_work_units)
 
-    # CPUFilter->SetInput(reader->GetOutput());
-    # CPUFilter->SetOperator(oper);
-    # CPUFilter->Update();
+    cpu_filter.SetInput(input_image)
+    cpu_filter.SetOperator(oper)
+    cpu_filter.Update()
 
-    # cputimer.Stop();
+    cpu_timer.Stop()
 
-    # std::cout << "CPU NeighborhoodFilter took " << cputimer.GetMean() << " seconds with "
-              # << CPUFilter->GetNumberOfWorkUnits() << " threads.\n"
-              # << std::endl;
+    print("CPU NeighborhoodFilter took {0} seconds with {1} work units.\n".format(cpu_timer.GetMean(),
+                cpu_filter.GetNumberOfWorkUnits()))
 
-    # // -------
 
-    # if (nThreads == 8)
-    # {
-      # typename GPUNeighborhoodFilterType::Pointer GPUFilter = GPUNeighborhoodFilterType::New();
+gpu_filter = GPUNeighborhoodFilterType.New()
 
-      # itk::TimeProbe gputimer;
-      # gputimer.Start();
+gpu_timer = itk.TimeProbe()
+gpu_timer.Start()
 
-      # GPUFilter->SetInput(reader->GetOutput());
-      # GPUFilter->SetOperator(oper);
-      # GPUFilter->Update();
+gpu_filter.SetInput(input_gpu_image)
+gpu_filter.SetOperator(oper)
+gpu_filter.Update()
 
-      # GPUFilter->GetOutput()->UpdateBuffers(); // synchronization point (GPU->CPU memcpy)
+gpu_filter.GetOutput().UpdateBuffers() # synchronization point (GPU->CPU memcpy)
 
-      # gputimer.Stop();
-      # std::cout << "GPU NeighborhoodFilter took " << gputimer.GetMean() << " seconds.\n" << std::endl;
-
-      # // ---------------
-      # // RMS Error check
-      # // ---------------
-
-      # double                                    diff = 0;
-      # unsigned int                              nPix = 0;
-      # itk::ImageRegionIterator<OutputImageType> cit(CPUFilter->GetOutput(),
-                                                    # CPUFilter->GetOutput()->GetLargestPossibleRegion());
-      # itk::ImageRegionIterator<OutputImageType> git(GPUFilter->GetOutput(),
-                                                    # GPUFilter->GetOutput()->GetLargestPossibleRegion());
-
-      # for (cit.GoToBegin(), git.GoToBegin(); !cit.IsAtEnd(); ++cit, ++git)
-      # {
-        # double err = (double)(cit.Get()) - (double)(git.Get());
-        # //         if(err > 0.1 || (double)(cit.Get()) < 0.1)   std::cout << "CPU : " << (double)(cit.Get()) << ", GPU :
-        # //         " << (double)(git.Get()) << std::endl;
-        # diff += err * err;
-        # nPix++;
-      # }
-
-      # writer->SetInput(GPUFilter->GetOutput());
-      # writer->Update();
-
-      # if (nPix > 0)
-      # {
-        # double RMSError = sqrt(diff / (double)nPix);
-        # std::cout << "RMS Error : " << RMSError << std::endl;
-        # // the CPU filter operator has type double
-        # // but the double precision is not well-supported on most GPUs
-        # // and by most drivers at this time.  Therefore, the GPU filter
-        # // operator has type float
-        # // relax the RMS threshold here to allow for errors due to
-        # // differences in precision
-        # // NOTE:
-        # //   a threshold of 1.1e-5 worked on linux and Mac, but not Windows
-        # //   why?
-        # double RMSThreshold = 1.2e-5;
-        # if (itk::Math::isnan(RMSError))
-        # {
-          # std::cout << "RMS Error is NaN! nPix: " << nPix << std::endl;
-          # return EXIT_FAILURE;
-        # }
-        # if (RMSError > RMSThreshold)
-        # {
-          # std::cout << "RMS Error exceeds threshold (" << RMSThreshold << ")" << std::endl;
-          # return EXIT_FAILURE;
-        # }
-      # }
-      # else
-      # {
-        # std::cout << "No pixels in output!" << std::endl;
-        # return EXIT_FAILURE;
-      # }
-    # }
-  # }
-
-  # return EXIT_SUCCESS;
-# }
-
-# int
-# itkGPUNeighborhoodOperatorImageFilterTest(int argc, char * argv[])
-# {
-  # if (!itk::IsGPUAvailable())
-  # {
-    # std::cerr << "OpenCL-enabled GPU is not present." << std::endl;
-    # return EXIT_FAILURE;
-  # }
-
-  # if (argc < 3)
-  # {
-    # std::cerr << "Error: missing arguments" << std::endl;
-    # std::cerr << "inputfile outputfile [num_dimensions]" << std::endl;
-    # return EXIT_FAILURE;
-  # }
-
-  # std::string inFile(argv[1]);
-  # std::string outFile(argv[2]);
-
-  # unsigned int dim = 3;
-  # if (argc >= 4)
-  # {
-    # dim = std::stoi(argv[3]);
-  # }
-
-  # if (dim == 2)
-  # {
-    # return runGPUNeighborhoodOperatorImageFilterTest<2>(inFile, outFile);
-  # }
-  # else if (dim == 3)
-  # {
-    # return runGPUNeighborhoodOperatorImageFilterTest<3>(inFile, outFile);
-  # }
-  # else
-  # {
-    # std::cerr << "Error: only 2 or 3 dimensions allowed, " << dim << " selected." << std::endl;
-    # return EXIT_FAILURE;
-  # }
-# }
+gpu_timer.Stop()
+print("GPU NeighborhoodFilter took {0} seconds.\n".format(gpu_timer.GetMean()))
