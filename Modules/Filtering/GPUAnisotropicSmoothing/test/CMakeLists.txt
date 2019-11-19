@@ -24,7 +24,6 @@ itk_add_test(NAME itkGPUGradientAnisotropicDiffusionImageFilterTest2D
 itk_add_test(NAME itkGPUGradientAnisotropicDiffusionImageFilterTest3D
         COMMAND ITKGPUAnisotropicSmoothingTestDriver itkGPUGradientAnisotropicDiffusionImageFilterTest
         DATA{Input/HeadMRVolume.mha}
-        DATA{Input/BrainProtonDensitySlice.png}
         ${ITK_TEST_OUTPUT_DIR}/gpuGradientAnisotropicDiffusionImageFilterTest3D.mha 3)
 
 endif()

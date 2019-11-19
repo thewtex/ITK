@@ -38,10 +38,7 @@ InputGPUImageType = itk.GPUImage[InputPixelType, Dimension]
 OutputGPUImageType = itk.GPUImage[OutputPixelType, Dimension]
 
 input_image = itk.imread(input_file, InputPixelType)
-
-gpu_image_converter = itk.GPUImageToImageFilter[InputImageType,InputGPUImageType].New(input_image)
-gpu_image_converter.Update()
-input_gpu_image = gpu_image_converter.GetOutput()
+input_gpu_image = itk.gpu_image_to_image_filter(input_image)
 
 CPUFilterType = itk.GradientAnisotropicDiffusionImageFilter[InputImageType, OutputImageType]
 GPUFilterType = itk.GPUGradientAnisotropicDiffusionImageFilter[InputGPUImageType, OutputGPUImageType]
@@ -86,4 +83,6 @@ gpu_timer.Stop()
 
 print("GPU NeighborhoodFilter took {0} seconds.\n".format(gpu_timer.GetMean()))
 
-# itk.imwrite(gpu_
+output_image = itk.gpu_image_to_image_filter(gpu_filter.GetOutput(),
+        ttype=(OutputGPUImageType, OutputImageType))
+itk.imwrite(output_image, output_file)
