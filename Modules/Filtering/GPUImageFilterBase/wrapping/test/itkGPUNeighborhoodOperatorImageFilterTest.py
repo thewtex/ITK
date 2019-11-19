@@ -37,8 +37,9 @@ InputGPUImageType = itk.GPUImage[InputPixelType, Dimension]
 OutputGPUImageType = itk.GPUImage[OutputPixelType, Dimension]
 
 input_image = itk.imread(input_file, InputPixelType)
-input_gpu_image = itk.cast_image_filter(input_image,
+input_gpu_image = itk.cast_image_filter(input_image, in_place=False,
         ttype=(InputImageType, InputGPUImageType))
+input_gpu_image.UpdateBuffers()
 
 RealOutputPixelType = OutputPixelType;
 
@@ -89,4 +90,5 @@ print("GPU NeighborhoodFilter took {0} seconds.\n".format(gpu_timer.GetMean()))
 
 output_image = itk.cast_image_filter(gpu_filter.GetOutput(),
         ttype=(OutputGPUImageType, OutputImageType))
+output_gpu_image = gpu_filter.GetOutput()
 itk.imwrite(output_image, output_file)
