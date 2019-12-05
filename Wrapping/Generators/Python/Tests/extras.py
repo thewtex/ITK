@@ -226,6 +226,7 @@ transform_filename = sys.argv[3]
 # itk.meshwrite(mesh, sys.argv[5], compression=True)
 
 # test transform read / write
+print(transform_filename)
 print(itk.TransformFileReaderTemplate.GetTypes())
 reader = itk.TransformFileReaderTemplate[itk.F].New()
 reader.SetFileName(transform_filename)
