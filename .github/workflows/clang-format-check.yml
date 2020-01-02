@@ -1,0 +1,20 @@
+name: clang-format lint
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - uses: DoozyX/clang-format-lint-action@v0.5
+      with:
+        # Source folder to check formatting
+        source: '.'
+        # Folder to exclude from formatting check
+        exclude: './Modules/ThirdParty'
+        # List of extensions to check
+        extensions: '.c,.h,.cxx,.hxx'
+        # Version of clang-format
+        clangFormatVersion: 8.0
