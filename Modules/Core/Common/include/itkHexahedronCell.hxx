@@ -578,15 +578,15 @@ HexahedronCell<TCellInterface>::EvaluateLocation(int &                     itkNo
                                                  InterpolationWeightType * weights)
 {
   this->InterpolationFunctions(pcoords, weights);
-  std::fill_n(x, Self::CellDimension, 0.0);
-  for (unsigned int i = 0; i < Self::NumberOfPoints; i++)
+  static constexpr unsigned int Dimension = Self::CellDimension;
+  std::fill_n(x, Dimension, 0.0);
+  for (unsigned int i = 0; i < Self::NumberOfPoints; ++i)
   {
-    PointType pt = points->GetElement(m_PointIds[i]);
+    const PointType pt = points->GetElement(m_PointIds[i]);
 
-    for (unsigned int j = 0; j < Self::CellDimension; j++)
+    for (unsigned int j = 0; j < Dimension; ++j)
     {
-      const CoordRepType t = pt[j] * weights[i];
-      x[j] += t;
+      x[j] += pt[j] * weights[i];
     }
   }
 }
