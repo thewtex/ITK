@@ -3,6 +3,7 @@ name: ITK.Windows.Python
 trigger:
   branches:
     include:
+    - wip-test-windows-findpython
     - master
     - release*
 variables:
@@ -21,11 +22,6 @@ jobs:
     - script: |
         if DEFINED SYSTEM_PULLREQUEST_SOURCECOMMITID git checkout $(System.PullRequest.SourceCommitId)
       displayName: Checkout pull request HEAD
-
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '3.7'
-        architecture: 'x64'
 
     - script: |
         python -m pip install ninja numpy
@@ -68,9 +64,20 @@ jobs:
         cmake --version
         call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
         ctest -S $(Agent.BuildDirectory)/ITK-dashboard/dashboard.cmake -VV -j 4 -L Python
+        pwd
+        find .
       displayName: 'Build and test'
       env:
         CTEST_OUTPUT_ON_FAILURE: 1
+
+    - bash: |
+        pwd
+        ls -R $(Agent.BuildDirectory)/lib
+
+        ls -R $(Agent.BuildDirectory)
+      workingDirectory: $(Agent.BuildDirectory)
+      condition: succeededOrFailed()
+      displayName: 'Configure CTest script'
 
     - script: |
         ci_addons ctest_junit_formatter $(Build.SourcesDirectory)-build > $(Agent.BuildDirectory)/JUnitTestResults.xml

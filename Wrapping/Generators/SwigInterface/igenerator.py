@@ -5,7 +5,13 @@ import sys
 import os
 import re
 from argparse import ArgumentParser
-from io import StringIO
+
+try:
+    # Python 3
+    from io import StringIO
+except ImportError:
+    # Python 2
+    from cStringIO import StringIO
 
 
 def getType(v):
@@ -165,29 +171,29 @@ class SwigInputGenerator(object):
         self.snakeCaseProcessObjectFunctions = set()
 
 
-    def warn(self, identifier, msg, doWarn=True):
+    def warn(self, id, msg, doWarn=True):
         if not doWarn:
             # don't warn for anything
             return
-        if str(identifier) not in self.options.warnings:
-            if not self.verbose and (identifier, msg) in self.warnings:
+        if str(id) not in self.options.warnings:
+            if not self.verbose and (id, msg) in self.warnings:
                 # just do nothing
                 return
-            self.warnings.add((identifier, msg))
+            self.warnings.add((id, msg))
             if self.verbose:
                 if self.options.warningError:
-                    print("error(%s): %s" % (str(identifier), msg), file=sys.stderr)
+                    print("error(%s): %s" % (str(id), msg), file=sys.stderr)
                 else:
-                    print("warning(%s): %s" % (str(identifier), msg), file=sys.stderr)
+                    print("warning(%s): %s" % (str(id), msg), file=sys.stderr)
             else:
                 if self.options.warningError:
                     print(
                         "%s: error(%s): %s" %
-                        (self.moduleName, str(identifier), msg), file=sys.stderr)
+                        (self.moduleName, str(id), msg), file=sys.stderr)
                 else:
                     print(
                         "%s: warning(%s): %s" %
-                        (self.moduleName, str(identifier), msg), file=sys.stderr)
+                        (self.moduleName, str(id), msg), file=sys.stderr)
 
     def info(self, msg):
         if self.verbose:
@@ -523,7 +529,7 @@ class SwigInputGenerator(object):
                 snakeCase = self.camelCaseToSnakeCase(processObject)
                 self.snakeCaseProcessObjectFunctions.add(snakeCase)
                 self.outputFile.write('import itkHelpers\n')
-                self.outputFile.write('@itkHelpers.accept_numpy_array_like_xarray\n')
+                self.outputFile.write('@itkHelpers.accept_numpy_array_like\n')
                 self.outputFile.write('def %s(*args, **kwargs):\n' % snakeCase)
                 self.outputFile.write('    """Procedural interface for %s"""\n' % processObject)
                 self.outputFile.write('    import itk\n')
@@ -532,19 +538,10 @@ class SwigInputGenerator(object):
                 self.outputFile.write('def %s_init_docstring():\n' % snakeCase)
                 self.outputFile.write('    import itk\n')
                 self.outputFile.write('    import itkTemplate\n')
-                self.outputFile.write('    import itkHelpers\n')
                 self.outputFile.write('    if isinstance(itk.%s, itkTemplate.itkTemplate):\n' % processObject)
-                self.outputFile.write('        filter_object = itk.%s.values()[0]\n' % (processObject))
+                self.outputFile.write('        %s.__doc__ = itk.%s.values()[0].__doc__\n' % (snakeCase, processObject))
                 self.outputFile.write('    else:\n')
-                self.outputFile.write('        filter_object = itk.%s\n\n' % (processObject))
-                self.outputFile.write('    %s.__doc__ = filter_object.__doc__\n' % (snakeCase))
-                self.outputFile.write('    %s.__doc__ += "\\n Args are Input(s) to the filter.\\n"\n' % (snakeCase))
-                self.outputFile.write('    %s.__doc__ += "Available Keyword Arguments:\\n"\n' % (snakeCase))
-                self.outputFile.write('    %s.__doc__ += "".join([\n' % (snakeCase))
-                self.outputFile.write('        "  " + itkHelpers.camel_to_snake_case(item[3:]) + "\\n"\n')
-                self.outputFile.write('        for item in dir(filter_object)\n')
-                self.outputFile.write('        if item[:3] == "Set"])\n')
-
+                self.outputFile.write('        %s.__doc__ = itk.%s.__doc__\n\n' % (snakeCase, processObject))
             self.outputFile.write('%}\n')
             self.outputFile.write("#endif\n")
 
