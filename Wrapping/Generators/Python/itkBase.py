@@ -26,6 +26,12 @@ import types
 import itkConfig
 import itkTemplate
 
+def _create_itk_module(name):
+    swig_module_name = 'itk.' + name + 'Python'
+    spec = importlib.util.spec_from_file_location(swig_module_name,
+        os.path.join(os.path.dirname(__file__), 'itk', name + 'Python.py'))
+    module = importlib.util.module_from_spec(spec)
+    return module
 
 def LoadModule(name, namespace=None):
     """This function causes a SWIG module to be loaded into memory after its
@@ -34,15 +40,18 @@ def LoadModule(name, namespace=None):
     created. These template instances are placed in a module with the given
     name that is either looked up from sys.modules or created and placed there
     if it does not already exist.
+
     Optionally, a 'namespace' parameter can be provided. If it is provided,
     this namespace will be updated with the new template instantiations.
+
     The raw classes loaded from the named module's SWIG interface are placed in
     a 'swig' sub-module. If the namespace parameter is provided, this
     information will be placed in a sub-module named 'swig' therein as well.
     This later submodule will be created if it does not already exist."""
 
+    swig_module_name = 'itk.' + name + 'Python'
     # find the module's name in sys.modules, or create a new module so named
-    this_module = sys.modules.setdefault(name, types.ModuleType(name))
+    this_module = sys.modules.setdefault(swig_module_name, _create_itk_module(name))
 
     # if this library and it's template instantiations have already been loaded
     # into sys.modules, bail out after loading the defined symbols into
@@ -57,7 +66,7 @@ def LoadModule(name, namespace=None):
             # singleton type. That is, they are all identical, so replacing one
             # with the other isn't a problem.
             for k, v in this_module.__dict__.items():
-                if not (k.startswith('_') or k == 'swig'):
+                if not (k.startswith('_') or k.startswith('itk') or k == 'swig'):
                     namespace[k] = v
         return
 
@@ -87,10 +96,8 @@ def LoadModule(name, namespace=None):
 
     # SWIG-generated modules have 'Python' appended. Only load the SWIG module
     # if we haven't already.
-    swigModuleName = name + "Python"
     loader = LibraryLoader()
-    if not swigModuleName in sys.modules:
-        module = loader.load(swigModuleName)
+    module = loader.load(swig_module_name)
 
     # OK, now the modules on which this one depends are loaded and
     # template-instantiated, and the SWIG module for this one is also loaded.
@@ -109,7 +116,7 @@ def LoadModule(name, namespace=None):
         swig = namespace.setdefault('swig', types.ModuleType('swig'))
 
     for k, v in module.__dict__.items():
-        if not k.startswith('__'):
+        if not (k.startswith('__') or k.startswith('itk')):
             setattr(this_module.swig, k, v)
             if namespace is not None:
                 setattr(swig, k, v)
@@ -208,7 +215,9 @@ class LibraryLoader(object):
     def load(self, name):
         self.setup()
         try:
-            return importlib.import_module(name)
+            module = importlib.import_module(name)
+            module.__loader__.exec_module(module)
+            return module
         finally:
             self.cleanup()
 
