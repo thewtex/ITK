@@ -233,7 +233,7 @@ macro(itk_wrap_module_python library_name)
   set(ITK_WRAP_PYTHON_LIBRARY_CALLS "
   PyObject * sysModules = PyImport_GetModuleDict();\n")
   set(ITK_WRAP_PYTHON_CXX_FILES )
-  if(MSVC)
+  if(MSVC AND CMAKE_VERSION VERSION_LESS 3.13.0)
     get_filename_component(python_library_directory "${Python3_LIBRARY}" DIRECTORY)
     # It should use the following code inside `itk_end_wrap_module_python` but
     # `target_link_directories()` was only added to CMake 3.13.
@@ -471,7 +471,13 @@ ${DO_NOT_WAIT_FOR_THREADS_DECLS}
 
     # Link the modules together
     target_link_libraries(${lib} LINK_PUBLIC ${WRAPPER_LIBRARY_LINK_LIBRARIES})
-    itk_target_link_libraries_with_dynamic_lookup(${lib} LINK_PUBLIC ${PYTHON_LIBRARY})
+    if(NOT Python3_LIBRARY AND Python3_LIBRARIES)
+      itk_target_link_libraries_with_dynamic_lookup(${lib} LINK_PUBLIC ${Python3_LIBRARIES})
+    elseif(Python3_LIBRARY)
+      itk_target_link_libraries_with_dynamic_lookup(${lib} LINK_PUBLIC ${Python3_LIBRARY})
+    else()
+      itk_target_link_libraries_with_dynamic_lookup(${lib} LINK_PUBLIC ${PYTHON_LIBRARY})
+    endif()
 
     if(USE_COMPILER_HIDDEN_VISIBILITY)
       # Prefer to use target properties supported by newer cmake
