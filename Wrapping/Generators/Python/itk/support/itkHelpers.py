@@ -211,3 +211,23 @@ def accept_numpy_array_like_xarray(image_filter):
             return image_filter(*args, **kwargs)
 
     return image_filter_wrapper
+
+
+_IMAGEIO_FACTORIES_REGISTERED = False
+def register_imageio_factories():
+    global _IMAGEIO_FACTORIES_REGISTERED
+    if _IMAGEIO_FACTORIES_REGISTERED:
+        return
+
+    import itk
+    imageio_factories = filter(lambda x: 'ImageIOFactory' in x, dir(itk))
+    # print('imageio_factories', list(imageio_factories))
+    # import pdb; pdb.set_trace()
+    for factory in imageio_factories:
+       print(factory)
+       if factory == 'ImageIOFactory':
+           continue
+       factory_class = getattr(itk, factory)
+       print(factory_class)
+       factory_class.RegisterOneFactory()
+    _IMAGEIO_FACTORIES_REGISTERED = True

@@ -646,6 +646,8 @@ def imread(
     """
     import itk
     from itk.support.itkExtras import TemplateTypeError
+    from itk.support.itkHelpers import register_imageio_factories
+    register_imageio_factories()
 
     if fallback_only:
         if pixel_type is None:
