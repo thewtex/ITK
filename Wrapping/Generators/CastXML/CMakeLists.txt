@@ -49,7 +49,7 @@ else()
     set(_download_castxml_binaries 1)
   elseif(CMAKE_HOST_SYSTEM_NAME MATCHES "Darwin" AND CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "arm64")
 
-    set(_castxml_hash 5faef93541cb5f30414286a844e47b5732777f26246c6e0933170668e9cf2ff4f3fa4292e861e73e91ed50971caa9d6e7481eead9c9cefda6d54a9042634bf5c)
+    set(_castxml_hash eb39e6f9366214ab230db28518ccd984daefa9d6ab2cb3a91d14c4325696c5cb83da1d7e0baeb57f61eaca1c5eb6c05fa4d4128e98cef3ccbaec96b8eb38fa42)
     set(_castxml_url "https://data.kitware.com/api/v1/file/hashsum/sha512/${_castxml_hash}/download")
     set(_download_castxml_binaries 1)
 
