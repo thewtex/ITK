@@ -10,7 +10,9 @@
 
 #include "../../zutil.h"
 
-#ifdef _MSC_VER
+#ifdef __EMSCRIPTEN__
+// Currently hard code. Todo: Add SIMD support when WASM-SIMD available.
+#elif _MSC_VER
 #  include <intrin.h>
 #else
 // Newer versions of GCC and clang come with cpuid.h
@@ -25,7 +27,8 @@ Z_INTERNAL int x86_cpu_has_pclmulqdq;
 Z_INTERNAL int x86_cpu_has_tzcnt;
 
 static void cpuid(int info, unsigned* eax, unsigned* ebx, unsigned* ecx, unsigned* edx) {
-#ifdef _MSC_VER
+#ifdef __EMSCRIPTEN__
+#elif _MSC_VER
     unsigned int registers[4];
     __cpuid((int *)registers, info);
 
@@ -39,7 +42,8 @@ static void cpuid(int info, unsigned* eax, unsigned* ebx, unsigned* ecx, unsigne
 }
 
 static void cpuidex(int info, int subinfo, unsigned* eax, unsigned* ebx, unsigned* ecx, unsigned* edx) {
-#ifdef _MSC_VER
+#ifdef __EMSCRIPTEN__
+#elif _MSC_VER
     unsigned int registers[4];
     __cpuidex((int *)registers, info, subinfo);
 
@@ -53,6 +57,14 @@ static void cpuidex(int info, int subinfo, unsigned* eax, unsigned* ebx, unsigne
 }
 
 void Z_INTERNAL x86_check_features(void) {
+#ifdef __EMSCRIPTEN__
+  x86_cpu_has_avx2 = 0;
+  x86_cpu_has_sse2 = 0;
+  x86_cpu_has_ssse3 = 0;
+  x86_cpu_has_sse42 = 0;
+  x86_cpu_has_pclmulqdq = 0;
+  x86_cpu_has_tzcnt = 0;
+#else
     unsigned eax, ebx, ecx, edx;
     unsigned maxbasic;
 
@@ -77,4 +89,5 @@ void Z_INTERNAL x86_check_features(void) {
         x86_cpu_has_tzcnt = 0;
         x86_cpu_has_avx2 = 0;
     }
+#endif
 }
