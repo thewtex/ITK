@@ -429,7 +429,11 @@ check_c_source_compiles(
 if(NOT HAVE_PTRDIFF_T)
     set(NEED_PTRDIFF_T 1)
 
-    check_type_size("void *" SIZEOF_DATA_PTR)
+    if (EMSCRIPTEN OR WASI)
+        set (SIZEOF_DATA_PTR 8)
+    else()
+        check_type_size("void *" SIZEOF_DATA_PTR)
+    endif()
     message(STATUS "sizeof(void *) is ${SIZEOF_DATA_PTR} bytes")
 
     if(${SIZEOF_DATA_PTR} MATCHES "4")
