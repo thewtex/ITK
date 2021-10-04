@@ -93,6 +93,10 @@
 #elif defined(__THW_RS6000)
     #error archfound rs6000
 
+// Emscripten (WebAssembly)
+#elif defined(__EMSCRIPTEN__)
+    #error archfound wasm32
+
 // RISC-V
 #elif defined(__riscv)
     #if __riscv_xlen == 64
