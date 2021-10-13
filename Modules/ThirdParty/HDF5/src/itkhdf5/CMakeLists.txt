@@ -730,7 +730,7 @@ endif ()
 #-----------------------------------------------------------------------------
 # Option to embed library info into executables
 #-----------------------------------------------------------------------------
-if (CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+if (CMAKE_SYSTEM_NAME STREQUAL "Emscripten" OR CMAKE_SYSTEM_NAME STREQUAL "WASI")
   set (H5_HAVE_EMBEDDED_LIBINFO 0)
 else ()
   if (FALSE) # XXX(kitware): Hardcode settings.
