@@ -259,9 +259,11 @@ T min(T a, T b)
   return a < b ? a : b;
 }
 
+#ifndef __wasi__
 extern "C" {
 using SigAction = void (*)(int, siginfo_t*, void*);
 }
+#endif
 
 //  Define SystemInformationImplementation class
 using DELAY_FUNC = void (*)(unsigned int);
@@ -992,7 +994,7 @@ int GetFieldsFromCommand(const char* command, const char** fieldNames,
 #endif
 
 // ****************************************************************************
-#if !defined(_WIN32) && !defined(__MINGW32__) && !defined(__CYGWIN__)
+#if !defined(_WIN32) && !defined(__MINGW32__) && !defined(__CYGWIN__) && !defined(__wasi__)
 void StacktraceSignalHandler(int sigNo, siginfo_t* sigInfo,
                              void* /*sigContext*/)
 {
@@ -4045,7 +4047,7 @@ when set print stack trace in response to common signals.
 */
 void SystemInformationImplementation::SetStackTraceOnError(int enable)
 {
-#if !defined(_WIN32) && !defined(__MINGW32__) && !defined(__CYGWIN__)
+#if !defined(_WIN32) && !defined(__MINGW32__) && !defined(__CYGWIN__) && !defined(__wasi__)
   static int saOrigValid = 0;
   static struct sigaction saABRTOrig;
   static struct sigaction saSEGVOrig;
