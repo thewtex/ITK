@@ -77,15 +77,21 @@
 // support for realpath call
 #ifndef _WIN32
 #  include <climits>
-#  include <pwd.h>
+#  ifndef __wasi__
+#    include <pwd.h>
+#  endif
 #  include <sys/ioctl.h>
 #  include <sys/time.h>
-#  include <sys/wait.h>
+#  ifndef __wasi__
+#    include <sys/wait.h>
+#  endif
 #  include <unistd.h>
 #  include <utime.h>
 #  ifndef __VMS
 #    include <sys/param.h>
-#    include <termios.h>
+#    ifndef __wasi__
+#      include <termios.h>
+#    endif
 #  endif
 #  include <csignal> /* sigprocmask */
 #endif
@@ -383,6 +389,7 @@ inline int Chdir(const std::string& dir)
 inline void Realpath(const std::string& path, std::string& resolved_path,
                      std::string* errorMessage = nullptr)
 {
+#ifndef __wasi__
   char resolved_name[KWSYS_SYSTEMTOOLS_MAXPATH];
 
   errno = 0;
@@ -401,6 +408,7 @@ inline void Realpath(const std::string& path, std::string& resolved_path,
     // if path resolution fails, return what was passed in
     resolved_path = path;
   }
+#endif // __wasi__
 }
 #endif
 
@@ -1553,6 +1561,11 @@ Status SystemTools::Touch(std::string const& filename, bool create)
   if (utimensat(AT_FDCWD, filename.c_str(), nullptr, 0) < 0) {
     return Status::POSIX_errno();
   }
+#elif __wasi__
+  // fall back to utime
+  if (utime(filename.c_str(), nullptr) < 0) {
+    return Status::POSIX_errno();
+  }
 #else
   // fall back to utimes
   if (utimes(filename.c_str(), nullptr) < 0) {
@@ -2119,7 +2132,7 @@ void SystemTools::ConvertToUnixSlashes(std::string& path)
       path.replace(0, 1, homeEnv);
     }
   }
-#ifdef HAVE_GETPWNAM
+#if defined(HAVE_GETPWNAM) && !defined(__wasi__)
   else if (pathCString[0] == '~') {
     std::string::size_type idx = path.find_first_of("/\0");
     char oldch = path[idx];
@@ -3715,7 +3728,7 @@ void SystemTools::SplitPath(const std::string& p,
 #endif
           SystemTools::GetEnv("HOME", homedir);
       }
-#ifdef HAVE_GETPWNAM
+#if defined(HAVE_GETPWNAM) && !defined(__wasi__)
       else if (passwd* pw = getpwnam(root.c_str() + 1)) {
         if (pw->pw_dir) {
           homedir = pw->pw_dir;
@@ -4292,7 +4305,7 @@ bool SystemTools::GetLineFromStream(std::istream& is, std::string& line,
 int SystemTools::GetTerminalWidth()
 {
   int width = -1;
-#ifdef HAVE_TTY_INFO
+#if defined(HAVE_TTY_INFO) && !defined(__wasi__)
   struct winsize ws;
   std::string columns; /* Unix98 environment variable */
   if (ioctl(1, TIOCGWINSZ, &ws) != -1 && ws.ws_col > 0 && ws.ws_row > 0) {
@@ -4375,6 +4388,7 @@ Status SystemTools::SetPermissions(std::string const& file, mode_t mode,
   if (!SystemTools::PathExists(file)) {
     return Status::POSIX(ENOENT);
   }
+#ifndef __wasi__
   if (honor_umask) {
     mode_t currentMask = umask(0);
     umask(currentMask);
@@ -4388,6 +4402,7 @@ Status SystemTools::SetPermissions(std::string const& file, mode_t mode,
   {
     return Status::POSIX_errno();
   }
+#endif // __wasi__
 
   return Status::Success();
 }
