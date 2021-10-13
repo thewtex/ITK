@@ -114,16 +114,23 @@
   #define EIGEN_COMP_ARM 0
 #endif
 
-/// \internal EIGEN_COMP_ARM set to 1 if the compiler is ARM Compiler
+/// \internal EIGEN_COMP_EMSCRIPTEN set to 1 if the compiler is ARM Compiler
 #if defined(__EMSCRIPTEN__)
   #define EIGEN_COMP_EMSCRIPTEN 1
 #else
   #define EIGEN_COMP_EMSCRIPTEN 0
 #endif
 
+/// \internal EIGEN_COMP_WASI set to 1 if the compiler is ARM Compiler
+#if defined(__wasi__)
+  #define EIGEN_COMP_WASI 1
+#else
+  #define EIGEN_COMP_WASI 0
+#endif
+
 
 /// \internal EIGEN_GNUC_STRICT set to 1 if the compiler is really GCC and not a compatible compiler (e.g., ICC, clang, mingw, etc.)
-#if EIGEN_COMP_GNUC && !(EIGEN_COMP_CLANG || EIGEN_COMP_ICC || EIGEN_COMP_MINGW || EIGEN_COMP_PGI || EIGEN_COMP_IBM || EIGEN_COMP_ARM || EIGEN_COMP_EMSCRIPTEN)
+#if EIGEN_COMP_GNUC && !(EIGEN_COMP_CLANG || EIGEN_COMP_ICC || EIGEN_COMP_MINGW || EIGEN_COMP_PGI || EIGEN_COMP_IBM || EIGEN_COMP_ARM || EIGEN_COMP_EMSCRIPTEN || EIGEN_COMP_WASI)
   #define EIGEN_COMP_GNUC_STRICT 1
 #else
   #define EIGEN_COMP_GNUC_STRICT 0
