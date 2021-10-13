@@ -66,7 +66,9 @@ do.
 #include <sys/stat.h>  /* open mode */
 #include <sys/time.h>  /* struct timeval */
 #include <sys/types.h> /* pid_t, fd_set */
+#if !defined(__wasi__)
 #include <sys/wait.h>  /* waitpid */
+#endif
 #include <time.h>      /* gettimeofday */
 #include <unistd.h>    /* pipe, close, fork, execvp, select, _exit */
 
@@ -1469,8 +1471,10 @@ void kwsysProcess_Kill(kwsysProcess* cp)
 
       /* Reap the child.  Keep trying until the call is not
          interrupted.  */
+#if !defined(__wasi__)
       while ((waitpid(cp->ForkPIDs[i], &status, 0) < 0) && (errno == EINTR)) {
       }
+#endif
     }
   }
 
@@ -1609,9 +1613,11 @@ static void kwsysProcessCleanup(kwsysProcess* cp, int error)
 
           /* Reap the child.  Keep trying until the call is not
              interrupted.  */
+#if !defined(__wasi__)
           while ((waitpid(cp->ForkPIDs[i], &status, 0) < 0) &&
                  (errno == EINTR)) {
           }
+#endif
         }
       }
     }
@@ -1709,6 +1715,7 @@ int decc$set_child_standard_streams(int fd1, int fd2, int fd3);
 static int kwsysProcessCreate(kwsysProcess* cp, int prIndex,
                               kwsysProcessCreateInformation* si)
 {
+#if !defined(__wasi__)
   sigset_t mask;
   sigset_t old_mask;
   int pgidPipe[2];
@@ -1884,10 +1891,14 @@ static int kwsysProcessCreate(kwsysProcess* cp, int prIndex,
   }
 
   return 1;
+#else // __wasi__
+  return 0;
+#endif
 }
 
 static void kwsysProcessDestroy(kwsysProcess* cp)
 {
+#if !defined(__wasi__)
   /* A child process has terminated.  Reap it if it is one handled by
      this object.  */
   int i;
@@ -1933,6 +1944,7 @@ static void kwsysProcessDestroy(kwsysProcess* cp)
 
   /* Re-enable signals.  */
   sigprocmask(SIG_SETMASK, &old_mask, 0);
+#endif // !defined(__wasi__)
 }
 
 static int kwsysProcessSetupOutputPipeFile(int* p, const char* name)
@@ -2339,6 +2351,7 @@ static void kwsysProcessChildErrorExit(int errorPipe)
 /* Restores all signal handlers to their default values.  */
 static void kwsysProcessRestoreDefaultSignalHandlers(void)
 {
+#if !defined(__wasi__)
   struct sigaction act;
   memset(&act, 0, sizeof(struct sigaction));
   act.sa_handler = SIG_DFL;
@@ -2441,6 +2454,7 @@ static void kwsysProcessRestoreDefaultSignalHandlers(void)
 #ifdef SIGUNUSED
   sigaction(SIGUNUSED, &act, 0);
 #endif
+#endif // !defined(__wasi__)
 }
 
 static void kwsysProcessExit(void)
@@ -2486,8 +2500,10 @@ static pid_t kwsysProcessFork(kwsysProcess* cp,
     }
 
     /* Wait for the intermediate process to exit and clean it up.  */
+#if !defined(__wasi__)
     while ((waitpid(middle_pid, &status, 0) < 0) && (errno == EINTR)) {
     }
+#endif
     return child_pid;
   }
   /* Not creating a detached process.  Use normal fork.  */
@@ -2649,13 +2665,16 @@ typedef struct kwsysProcessInstances_s
 } kwsysProcessInstances;
 static kwsysProcessInstances kwsysProcesses;
 
+#if !defined(__wasi__)
 /* The old SIGCHLD / SIGINT / SIGTERM handlers.  */
 static struct sigaction kwsysProcessesOldSigChldAction;
 static struct sigaction kwsysProcessesOldSigIntAction;
 static struct sigaction kwsysProcessesOldSigTermAction;
+#endif // !defined(__wasi__)
 
 static void kwsysProcessesUpdate(kwsysProcessInstances* newProcesses)
 {
+#if !defined(__wasi__)
   /* Block signals while we update the set of pipes to check.
      TODO: sigprocmask is undefined for threaded apps.  See
      pthread_sigmask.  */
@@ -2672,10 +2691,12 @@ static void kwsysProcessesUpdate(kwsysProcessInstances* newProcesses)
 
   /* Restore the signal mask to the previous setting.  */
   sigprocmask(SIG_SETMASK, &oldset, 0);
+#endif // !defined(__wasi__)
 }
 
 static int kwsysProcessesAdd(kwsysProcess* cp)
 {
+#if !defined(__wasi__)
   /* Create a pipe through which the signal handler can notify the
      given process object that a child has exited.  */
   {
@@ -2781,10 +2802,14 @@ static int kwsysProcessesAdd(kwsysProcess* cp)
   }
 
   return 1;
+#else
+  return 0;
+#endif // !defined(__wasi__)
 }
 
 static void kwsysProcessesRemove(kwsysProcess* cp)
 {
+#if !defined(__wasi__)
   /* Attempt to remove the given signal pipe from the signal handler set.  */
   {
     /* Find the given process in the set.  */
@@ -2831,6 +2856,7 @@ static void kwsysProcessesRemove(kwsysProcess* cp)
   /* Close the pipe through which the signal handler may have notified
      the given process object that a child has exited.  */
   kwsysProcessCleanupDescriptor(&cp->SignalPipe);
+#endif // !defined(__wasi__)
 }
 
 static void kwsysProcessesSignalHandler(int signum
@@ -2840,6 +2866,7 @@ static void kwsysProcessesSignalHandler(int signum
 #endif
 )
 {
+#if !defined(__wasi__)
   int i;
   int j;
   int procStatus;
@@ -2945,6 +2972,7 @@ static void kwsysProcessesSignalHandler(int signum
 #endif
 
   errno = old_errno;
+#endif // !defined(__wasi__)
 }
 
 void kwsysProcess_ResetStartTime(kwsysProcess* cp)
