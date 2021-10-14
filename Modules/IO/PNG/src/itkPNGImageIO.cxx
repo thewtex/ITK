@@ -19,18 +19,34 @@
 #include "itk_png.h"
 #include "itksys/SystemTools.hxx"
 #include <string>
-#include <csetjmp>
+#ifndef __wasi__
+#  include <csetjmp>
+#endif
+
+/*
+ * Avoid dead code elimination with Emscripten
+ */
+#ifdef __EMSCRIPTEN__
+#  include "emscripten/em_macros.h"
+#else
+#  define EMSCRIPTEN_KEEPALIVE
+#endif
 
 extern "C"
 {
-  void
+  void EMSCRIPTEN_KEEPALIVE
+#ifndef __wasi__
   itkPNGWriteErrorFunction(png_structp png_ptr, png_const_charp itkNotUsed(error_msg))
   {
     longjmp(png_jmpbuf(png_ptr), 1);
+#else
+  itkPNGWriteErrorFunction(png_structp itkNotUsed(png_ptr), png_const_charp itkNotUsed(error_msg))
+  {
+#endif
   }
 
-  void
-  itkPNGWriteWarningFunction(png_structp itkNotUsed(png_ptr), png_const_charp itkNotUsed(warning_msg))
+  void EMSCRIPTEN_KEEPALIVE
+       itkPNGWriteWarningFunction(png_structp itkNotUsed(png_ptr), png_const_charp itkNotUsed(warning_msg))
   {}
 }
 
@@ -162,11 +178,13 @@ PNGImageIO::Read(void * buffer)
     itkExceptionMacro("File is not png type " << this->GetFileName());
   }
 
+#ifndef __wasi__
   if (setjmp(png_jmpbuf(png_ptr)))
   {
     png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
     itkExceptionMacro("PNG critical error in " << this->GetFileName());
   }
+#endif
 
   png_init_io(png_ptr, fp);
   png_set_sig_bytes(png_ptr, 8);
@@ -242,11 +260,13 @@ PNGImageIO::Read(void * buffer)
   }
 
   png_set_error_fn(png_ptr, (png_voidp) nullptr, itkPNGWriteErrorFunction, itkPNGWriteWarningFunction);
+#ifndef __wasi__
   if (setjmp(png_jmpbuf(png_ptr)))
   {
     png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
     itkExceptionMacro("Error while reading file: " << this->GetFileName() << std::endl);
   }
+#endif
   png_read_image(png_ptr, row_pointers.get());
   // close the file
   png_read_end(png_ptr, nullptr);
@@ -353,11 +373,13 @@ PNGImageIO::ReadImageInformation()
     return;
   }
 
+#ifndef __wasi__
   if (setjmp(png_jmpbuf(png_ptr)))
   {
     png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
     itkExceptionMacro("PNG critical error in " << this->GetFileName());
   }
+#endif
 
   png_init_io(png_ptr, fp);
   png_set_sig_bytes(png_ptr, 8);
@@ -559,11 +581,13 @@ PNGImageIO::WriteSlice(const std::string & fileName, const void * const buffer)
   png_init_io(png_ptr, fp);
 
   png_set_error_fn(png_ptr, (png_voidp) nullptr, itkPNGWriteErrorFunction, itkPNGWriteWarningFunction);
+#ifndef __wasi__
   if (setjmp(png_jmpbuf(png_ptr)))
   {
     itkExceptionMacro("Error while writing Slice to file: " << this->GetFileName() << std::endl
                                                             << "Reason: " << itksys::SystemTools::GetLastSystemError());
   }
+#endif
 
   int          colorType;
   unsigned int numComp = this->GetNumberOfComponents();
