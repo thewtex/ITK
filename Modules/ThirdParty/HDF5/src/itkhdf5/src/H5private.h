@@ -47,7 +47,12 @@
 #ifdef H5_STDC_HEADERS
 #include <assert.h>
 #include <ctype.h>
-#include <errno.h>
+#ifndef __wasi__
+#   include <errno.h>
+#else
+#define thread_local
+#   include <errno.h>
+#endif
 #include <fcntl.h>
 #include <float.h>
 #include <limits.h>
@@ -66,7 +71,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #endif
-#ifdef _POSIX_VERSION
+#if defined(_POSIX_VERSION) && !defined(__wasi__)
 #include <sys/wait.h>
 #include <pwd.h>
 #endif
@@ -339,18 +344,22 @@
 /*
  * Networking headers used by the mirror VFD and related tests and utilities.
  */
+#ifndef __wasi__
 #ifdef H5_HAVE_ARPA_INET_H
 #include <arpa/inet.h>
 #endif
+#endif // __wasi__
 #ifdef H5_HAVE_NETDB_H
 #include <netdb.h>
 #endif
+#ifndef __wasi__
 #ifdef H5_HAVE_NETINET_IN_H
 #include <netinet/in.h>
 #endif
 #ifdef H5_HAVE_SYS_SOCKET_H
 #include <sys/socket.h>
 #endif
+#endif // __wasi__
 
 /*
  * Status return values for the `herr_t' type.
