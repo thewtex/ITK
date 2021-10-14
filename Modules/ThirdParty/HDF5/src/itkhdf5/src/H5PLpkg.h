@@ -93,6 +93,7 @@ typedef const void *(__cdecl *H5PL_get_plugin_info_t)(void);
 /* Handle for dynamic library */
 #define H5PL_HANDLE             void *
 
+#ifndef __wasi__
 /* Get a handle to a plugin library.  Windows: TEXT macro handles Unicode strings */
 #define H5PL_OPEN_DLIB(S)       dlopen(S, RTLD_LAZY | RTLD_LOCAL)
 
@@ -101,6 +102,7 @@ typedef const void *(__cdecl *H5PL_get_plugin_info_t)(void);
 
 /* Close dynamic library */
 #define H5PL_CLOSE_LIB(H)       dlclose(H)
+#endif // __wasi__
 
 /* Clear error */
 #define H5PL_CLR_ERROR          HERROR(H5E_PLUGIN, H5E_CANTGET, "can't dlopen:%s", dlerror())
