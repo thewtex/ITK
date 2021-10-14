@@ -441,7 +441,9 @@ ESMDemonsRegistrationFunction<TFixedImage, TMovingImage, TDisplacementField>::Re
 {
   auto * globalData = (GlobalDataStruct *)gd;
 
+#ifndef __wasi__
   m_MetricCalculationLock.lock();
+#endif
   m_SumOfSquaredDifference += globalData->m_SumOfSquaredDifference;
   m_NumberOfPixelsProcessed += globalData->m_NumberOfPixelsProcessed;
   m_SumOfSquaredChange += globalData->m_SumOfSquaredChange;
@@ -450,7 +452,9 @@ ESMDemonsRegistrationFunction<TFixedImage, TMovingImage, TDisplacementField>::Re
     m_Metric = m_SumOfSquaredDifference / static_cast<double>(m_NumberOfPixelsProcessed);
     m_RMSChange = std::sqrt(m_SumOfSquaredChange / static_cast<double>(m_NumberOfPixelsProcessed));
   }
+#ifndef __wasi__
   m_MetricCalculationLock.unlock();
+#endif
 
   delete globalData;
 }

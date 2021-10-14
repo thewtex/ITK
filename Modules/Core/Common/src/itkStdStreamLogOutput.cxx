@@ -47,48 +47,64 @@ StdStreamLogOutput::SetStream(StreamType & Stream)
 void
 StdStreamLogOutput::Flush()
 {
+#ifndef __wasi__
   StdStreamLogOutput::m_Mutex.lock();
+#endif
   if (this->m_Stream)
   {
     this->m_Stream->flush();
   }
+#ifndef __wasi__
   StdStreamLogOutput::m_Mutex.unlock();
+#endif
 }
 
 /** Write to a buffer */
 void
 StdStreamLogOutput::Write(double timestamp)
 {
+#ifndef __wasi__
   StdStreamLogOutput::m_Mutex.lock();
+#endif
   if (this->m_Stream)
   {
     (*this->m_Stream) << timestamp;
   }
+#ifndef __wasi__
   StdStreamLogOutput::m_Mutex.unlock();
+#endif
 }
 
 /** Write to a buffer */
 void
 StdStreamLogOutput::Write(std::string const & content)
 {
+#ifndef __wasi__
   StdStreamLogOutput::m_Mutex.lock();
+#endif
   if (this->m_Stream)
   {
     (*this->m_Stream) << content;
   }
+#ifndef __wasi__
   StdStreamLogOutput::m_Mutex.unlock();
+#endif
 }
 
 /** Write to a buffer */
 void
 StdStreamLogOutput::Write(std::string const & content, double timestamp)
 {
+#ifndef __wasi__
   StdStreamLogOutput::m_Mutex.lock();
+#endif
   if (this->m_Stream)
   {
     (*this->m_Stream) << timestamp << "  :  " << content;
   }
+#ifndef __wasi__
   StdStreamLogOutput::m_Mutex.unlock();
+#endif
 }
 
 void

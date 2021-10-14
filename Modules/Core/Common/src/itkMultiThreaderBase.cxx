@@ -63,8 +63,10 @@ struct MultiThreaderBaseGlobals
   // only used as a fall back option.  If the SetGlobalDefaultThreaderType
   // API is ever used by the developer, the developers choice is
   // respected over the environmental variable.
-  bool       GlobalDefaultThreaderTypeIsInitialized{ false };
+  bool GlobalDefaultThreaderTypeIsInitialized{ false };
+#ifndef __wasi__
   std::mutex globalDefaultInitializerLock;
+#endif
 
   // Global value to control which threader to be used by default. First it is initialized with the default preprocessor
   // definition from CMake configuration value, for compile time control of default. This initial value can be
@@ -125,7 +127,9 @@ MultiThreaderBase::GetGlobalDefaultThreader()
 
   if (!m_PimplGlobals->GlobalDefaultThreaderTypeIsInitialized)
   {
+#ifndef __wasi__
     std::lock_guard<std::mutex> lock(m_PimplGlobals->globalDefaultInitializerLock);
+#endif
 
     // After we have the lock, double check the initialization
     // flag to ensure it hasn't been changed by another thread.
@@ -153,7 +157,7 @@ You should now use ITK_GLOBAL_DEFAULT_THREADER\
 \nFor example ITK_GLOBAL_DEFAULT_THREADER=Pool");
         if (envVar != "NO" && envVar != "OFF" && envVar != "FALSE")
         {
-#ifdef __EMSCRIPTEN__
+#if defined(__EMSCRIPTEN__) || defined(__wasi__)
           MultiThreaderBase::SetGlobalDefaultThreader(ThreaderEnum::Platform);
 #else
           MultiThreaderBase::SetGlobalDefaultThreader(ThreaderEnum::Pool);
@@ -345,7 +349,7 @@ MultiThreaderBase::GetGlobalDefaultNumberOfThreads()
 ThreadIdType
 MultiThreaderBase::GetGlobalDefaultNumberOfThreadsByPlatform()
 {
-#if defined(ITK_LEGACY_REMOVE)
+#if defined(ITK_LEGACY_REMOVE) && !defined(__wasi__)
   return std::thread::hardware_concurrency();
 #endif
 

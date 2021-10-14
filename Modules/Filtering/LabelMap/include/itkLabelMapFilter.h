@@ -132,7 +132,9 @@ protected:
     return static_cast<InputImageType *>(const_cast<DataObject *>(this->ProcessObject::GetInput(0)));
   }
 
+#ifndef __wasi__
   std::mutex m_LabelObjectContainerLock;
+#endif
 
 private:
   typename InputImageType::Iterator m_LabelObjectIterator;

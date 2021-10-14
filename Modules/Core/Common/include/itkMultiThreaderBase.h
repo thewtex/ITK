@@ -36,7 +36,9 @@
 #include "itkImageIORegion.h"
 #include "itkSingletonMacro.h"
 #include <functional>
-#include <thread>
+#ifndef __wasi__
+#  include <thread>
+#endif
 #include "itkProgressReporter.h"
 
 

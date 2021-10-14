@@ -25,7 +25,9 @@ namespace itk
 
 namespace
 {
-std::mutex                       globalDefaultSplitterLock;
+#ifndef __wasi__
+std::mutex globalDefaultSplitterLock;
+#endif
 ImageRegionSplitterBase::Pointer globalDefaultSplitter;
 } // namespace
 
@@ -36,7 +38,9 @@ ImageSourceCommon::GetGlobalDefaultSplitter()
   {
     // thread safe lazy initialization, prevent race condition on
     // setting, with an atomic set if null.
+#ifndef __wasi__
     std::lock_guard<std::mutex> lock(globalDefaultSplitterLock);
+#endif
     if (globalDefaultSplitter.IsNull())
     {
       globalDefaultSplitter = ImageRegionSplitterSlowDimension::New().GetPointer();

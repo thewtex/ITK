@@ -1167,10 +1167,14 @@ ProcessObject::IncrementProgress(float increment)
     m_Progress = std::numeric_limits<uint32_t>::max();
   }
 
+#ifdef __wasi__
+  this->InvokeEvent(ProgressEvent());
+#else
   if (std::this_thread::get_id() == this->m_UpdateThreadID)
   {
     this->InvokeEvent(ProgressEvent());
   }
+#endif
 }
 
 
@@ -1312,7 +1316,9 @@ ProcessObject::PropagateResetPipeline()
   // Clear the updating flag.
   m_Updating = false;
 
+#ifndef __wasi__
   m_UpdateThreadID = std::thread::id();
+#endif
   //
   // Loop through the inputs
   //
@@ -1660,7 +1666,9 @@ ProcessObject::UpdateOutputData(DataObject * itkNotUsed(output))
    * inputs since they may lead back to the same data object.
    */
   m_Updating = true;
+#ifndef __wasi__
   m_UpdateThreadID = std::this_thread::get_id();
+#endif
 
   if (m_Inputs.size() == 1)
   {
