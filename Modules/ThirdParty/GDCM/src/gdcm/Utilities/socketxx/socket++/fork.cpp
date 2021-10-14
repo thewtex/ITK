@@ -8,7 +8,7 @@
 //
 // Version: 12Jan97 1.11
 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__wasi__)
 
 #include <config.h>
 
@@ -201,4 +201,4 @@ void Fork::suicide_signal (int signo)
   if (sigaction (signo, &sa, nullptr) == -1)
     perror ("Fork: Cannot commit suicide with the specified signal");
 }
-#endif //windows does not get fork
+#endif //windows, wasi does not get fork
