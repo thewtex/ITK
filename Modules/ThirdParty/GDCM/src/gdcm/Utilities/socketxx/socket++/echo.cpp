@@ -28,20 +28,21 @@ void echo::echobuf::serve_clients (int portno)
       sockinetbuf::bind ();
     } else
       sockinetbuf::bind ((unsigned long) INADDR_ANY, portno);
-
+#ifndef __wasi__
     // act as a server now
     listen (sockbuf::somaxconn);
+#endif
 
     // commit suicide when we receive SIGTERM
     //but only if you're not on windows, which doesn't have forking
-#ifndef WIN32
+#if !defined(WIN32) && !defined(__wasi__)
     Fork::suicide_signal (SIGTERM);
 #endif
 
     for (;;) {
       sockbuf s = accept ();
       //!!! FIXME this is most definitely broken for windows.
-#ifndef WIN32
+#if !defined(WIN32) && !defined(__wasi__)
         Fork f (true, true); // kill my children when I get terminated.
 	if (f.is_child ()) {
 #else //win32 has no forking
@@ -56,7 +57,7 @@ void echo::echobuf::serve_clients (int portno)
 	      if (wcnt == -1) throw sockerr (errno);
 	      rcnt -= wcnt;
 	    }
-#ifndef WIN32
+#if !defined(WIN32) && !defined(__wasi__)
 	  sleep (300);
 	  exit (0);
 #endif
