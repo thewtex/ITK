@@ -292,9 +292,11 @@ protected:
     /* All these methods are thread safe except ReduceBuffer */
 
     void
-    Initialize(size_t                                    maxBufferLength,
-               const size_t                              cachedNumberOfLocalParameters,
-               std::mutex *                              parentDerivativeLockPtr,
+    Initialize(size_t       maxBufferLength,
+               const size_t cachedNumberOfLocalParameters,
+#ifndef __wasi__
+               std::mutex * parentDerivativeLockPtr,
+#endif
                typename JointPDFDerivativesType::Pointer parentJointPDFDerivatives);
 
     void
@@ -354,13 +356,17 @@ protected:
     size_t                       m_CachedNumberOfLocalParameters;
     size_t                       m_MaxBufferSize;
     // Pointer handle to parent version
+#ifndef __wasi__
     std::mutex * m_ParentJointPDFDerivativesLockPtr;
+#endif
     // Smart pointer handle to parent version
     typename JointPDFDerivativesType::Pointer m_ParentJointPDFDerivatives;
   };
 
-  std::vector<DerivativeBufferManager>      m_ThreaderDerivativeManager;
-  std::mutex                                m_JointPDFDerivativesLock;
+  std::vector<DerivativeBufferManager> m_ThreaderDerivativeManager;
+#ifndef __wasi__
+  std::mutex m_JointPDFDerivativesLock;
+#endif
   typename JointPDFDerivativesType::Pointer m_JointPDFDerivatives;
 
   PDFValueType m_JointPDFSum;

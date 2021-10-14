@@ -36,7 +36,9 @@
 #include <map>
 #include <set>
 #include <algorithm>
-#include <thread>
+#ifndef __wasi__
+#  include <thread>
+#endif
 
 namespace itk
 {
@@ -964,11 +966,15 @@ private:
   NameSet m_RequiredInputNames;
 
   /** These support the progress method and aborting filter execution. */
-  bool                  m_AbortGenerateData;
+  bool m_AbortGenerateData;
+#ifdef __wasi__
+  AtomicShim<uint32_t> m_Progress;
+#else
   std::atomic<uint32_t> m_Progress;
 
 
   std::thread::id m_UpdateThreadID;
+#endif
 
   /** Support processing data in multiple threads. Used by subclasses
    * (e.g., ImageSource). */

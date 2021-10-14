@@ -94,7 +94,9 @@ OutputWindow::PrintSelf(std::ostream & os, Indent indent) const
 void
 OutputWindow::DisplayText(const char * txt)
 {
+#ifndef __wasi__
   std::lock_guard<std::mutex> cerrLock(m_cerrMutex);
+#endif
   std::cerr << txt;
   if (m_PromptUser)
   {
