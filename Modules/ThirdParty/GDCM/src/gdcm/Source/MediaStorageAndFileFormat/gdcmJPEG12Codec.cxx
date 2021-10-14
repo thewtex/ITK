@@ -15,7 +15,9 @@
 
 #include "gdcm_ljpeg12.h"
 
+#ifndef __wasi__
 #include <setjmp.h>
+#endif
 
 #define JPEGBITSCodec JPEG12Codec
 #define my_error_mgr my_error_mgr_12BIT
