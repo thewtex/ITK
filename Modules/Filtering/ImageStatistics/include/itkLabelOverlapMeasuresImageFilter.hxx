@@ -122,7 +122,9 @@ LabelOverlapMeasuresImageFilter<TLabelImage>::ThreadedStreamedGenerateData(const
   {
     MapType tomerge{};
     {
+#ifndef __wasi__
       const std::lock_guard<std::mutex> lockGuard(m_Mutex);
+#endif
 
       if (m_LabelSetMeasures.empty())
       {

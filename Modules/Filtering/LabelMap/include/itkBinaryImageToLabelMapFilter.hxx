@@ -78,7 +78,11 @@ BinaryImageToLabelMapFilter<TInputImage, TOutputImage>::GenerateData()
   const SizeValueType xsize = requestedSize[0];
   const SizeValueType linecount = pixelcount / xsize;
   this->m_LineMap.resize(linecount);
+#ifndef __wasi__
   this->m_NumberOfLabels.store(0);
+#else
+  this->m_NumberOfLabels = 0;
+#endif
   this->SetupLineOffsets(false);
 
   ProgressTransformer progress1(0.0f, 0.5f, this);
@@ -92,7 +96,11 @@ BinaryImageToLabelMapFilter<TInputImage, TOutputImage>::GenerateData()
     progress1.GetProcessObject());
 
   // compute the total number of labels
+#ifndef __wasi__
   SizeValueType nbOfLabels = this->m_NumberOfLabels.load();
+#else
+  SizeValueType nbOfLabels = this->m_NumberOfLabels;
+#endif
 
   // insert all the labels into the structure -- an extra loop but
   // saves complicating the ones that come later
@@ -192,8 +200,12 @@ BinaryImageToLabelMapFilter<TInputImage, TOutputImage>::DynamicThreadedGenerateD
     ++lineId;
   }
 
+#ifndef __wasi__
   this->m_NumberOfLabels.fetch_add(nbOfLabels, std::memory_order_relaxed);
   const std::lock_guard<std::mutex> lockGuard(this->m_Mutex);
+#else
+  this->m_NumberOfLabels += nbOfLabels;
+#endif
   this->m_WorkUnitResults.push_back(workUnitData);
 }
 

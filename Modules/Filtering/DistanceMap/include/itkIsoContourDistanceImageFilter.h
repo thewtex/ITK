@@ -22,7 +22,9 @@
 #include "itkNarrowBand.h"
 #include "itkNeighborhoodIterator.h"
 #include "itkNumericTraits.h"
-#include <mutex>
+#ifndef __wasi__
+#  include <mutex>
+#endif
 
 namespace itk
 {
@@ -201,7 +203,9 @@ private:
   NarrowBandPointer       m_NarrowBand{};
   std::vector<RegionType> m_NarrowBandRegion{};
 
+#ifndef __wasi__
   std::mutex m_Mutex{};
+#endif
 };
 } // namespace itk
 

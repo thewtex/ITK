@@ -19,7 +19,9 @@
 #define itkSLICImageFilter_h
 
 #include "itkImageToImageFilter.h"
+#ifndef __wasi__
 #include <mutex>
+#endif
 
 namespace itk
 {
@@ -238,7 +240,9 @@ private:
   bool m_InitializationPerturbation{ true };
 
   double     m_AverageResidual{};
+#ifndef __wasi__
   std::mutex m_Mutex{};
+#endif
 };
 } // end namespace itk
 

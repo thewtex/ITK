@@ -20,7 +20,9 @@
 
 #include "itkImageRegionIterator.h"
 #include "itkIndex.h"
-#include <mutex>
+#ifndef __wasi__
+#  include <mutex>
+#endif
 
 namespace itk
 {
@@ -373,7 +375,9 @@ IsoContourDistanceImageFilter<TInputImage, TOutputImage>::ComputeValue(const Inp
 
         PixelRealType                     valNew0 = val0 * val;
         PixelRealType                     valNew1 = val1 * val;
+#ifndef __wasi__
         const std::lock_guard<std::mutex> lockGuard(m_Mutex);
+#endif
         if (itk::Math::abs(static_cast<double>(valNew0)) < itk::Math::abs(static_cast<double>(outNeigIt.GetNext(n, 0))))
         {
           outNeigIt.SetNext(n, 0, static_cast<PixelType>(valNew0));

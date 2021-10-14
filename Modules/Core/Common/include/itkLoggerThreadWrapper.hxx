@@ -30,7 +30,9 @@ template <typename SimpleLoggerType>
 void
 LoggerThreadWrapper<SimpleLoggerType>::SetPriorityLevel(PriorityLevelEnum level)
 {
+#ifndef __wasi__
   const std::lock_guard<std::mutex> lockGuard(m_Mutex);
+#endif
   this->m_OperationQ.push(OperationEnum::SET_PRIORITY_LEVEL);
   this->m_LevelQ.push(level);
 }
@@ -42,7 +44,9 @@ template <typename SimpleLoggerType>
 typename SimpleLoggerType::PriorityLevelEnum
 LoggerThreadWrapper<SimpleLoggerType>::GetPriorityLevel() const
 {
+#ifndef __wasi__
   const std::lock_guard<std::mutex> lockGuard(m_Mutex);
+#endif
   PriorityLevelEnum                 level = this->m_PriorityLevel;
   return level;
 }
@@ -51,7 +55,9 @@ template <typename SimpleLoggerType>
 void
 LoggerThreadWrapper<SimpleLoggerType>::SetLevelForFlushing(PriorityLevelEnum level)
 {
+#ifndef __wasi__
   const std::lock_guard<std::mutex> lockGuard(m_Mutex);
+#endif
   this->m_LevelForFlushing = level;
   this->m_OperationQ.push(OperationEnum::SET_LEVEL_FOR_FLUSHING);
   this->m_LevelQ.push(level);
@@ -61,7 +67,9 @@ template <typename SimpleLoggerType>
 typename SimpleLoggerType::PriorityLevelEnum
 LoggerThreadWrapper<SimpleLoggerType>::GetLevelForFlushing() const
 {
+#ifndef __wasi__
   const std::lock_guard<std::mutex> lockGuard(m_Mutex);
+#endif
   PriorityLevelEnum                 level = this->m_LevelForFlushing;
   return level;
 }
@@ -70,7 +78,9 @@ template <typename SimpleLoggerType>
 void
 LoggerThreadWrapper<SimpleLoggerType>::SetDelay(DelayType delay)
 {
+#ifndef __wasi__
   const std::lock_guard<std::mutex> lockGuard(m_Mutex);
+#endif
   this->m_Delay = delay;
 }
 
@@ -78,7 +88,9 @@ template <typename SimpleLoggerType>
 auto
 LoggerThreadWrapper<SimpleLoggerType>::GetDelay() const -> DelayType
 {
+#ifndef __wasi__
   const std::lock_guard<std::mutex> lockGuard(m_Mutex);
+#endif
   DelayType                         delay = this->m_Delay;
   return delay;
 }
@@ -88,7 +100,9 @@ template <typename SimpleLoggerType>
 void
 LoggerThreadWrapper<SimpleLoggerType>::AddLogOutput(OutputType * output)
 {
+#ifndef __wasi__
   const std::lock_guard<std::mutex> lockGuard(m_Mutex);
+#endif
   this->m_OperationQ.push(OperationEnum::ADD_LOG_OUTPUT);
   this->m_OutputQ.push(output);
 }
@@ -97,7 +111,9 @@ template <typename SimpleLoggerType>
 void
 LoggerThreadWrapper<SimpleLoggerType>::Write(PriorityLevelEnum level, std::string const & content)
 {
+#ifndef __wasi__
   const std::lock_guard<std::mutex> lockGuard(m_Mutex);
+#endif
   if (this->m_PriorityLevel >= level)
   {
     this->m_OperationQ.push(OperationEnum::WRITE);
@@ -148,7 +164,9 @@ template <typename SimpleLoggerType>
 void
 LoggerThreadWrapper<SimpleLoggerType>::Flush()
 {
+#ifndef __wasi__
   const std::lock_guard<std::mutex> lockGuard(m_Mutex);
+#endif
   this->PrivateFlush();
 }
 
@@ -157,18 +175,22 @@ LoggerThreadWrapper<SimpleLoggerType>::LoggerThreadWrapper()
 {
   m_Delay = 300; // ms
   m_TerminationRequested = false;
+#ifndef __wasi__
   m_Thread = std::thread(&Self::ThreadFunction, this);
+#endif
 }
 
 template <typename SimpleLoggerType>
 LoggerThreadWrapper<SimpleLoggerType>::~LoggerThreadWrapper()
 {
   this->Flush();
+#ifndef __wasi__
   if (m_Thread.joinable())
   {
     m_TerminationRequested = true;
     m_Thread.join(); // waits for it to finish if necessary
   }
+#endif
 }
 
 template <typename SimpleLoggerType>
@@ -177,8 +199,11 @@ LoggerThreadWrapper<SimpleLoggerType>::ThreadFunction()
 {
   while (!m_TerminationRequested)
   {
+    while (!m_OperationQ.empty())
     {
+#ifndef __wasi__
       const std::lock_guard<std::mutex> lockGuard(m_Mutex);
+#endif
       while (!m_OperationQ.empty())
       {
         switch (m_OperationQ.front())
@@ -220,7 +245,9 @@ LoggerThreadWrapper<SimpleLoggerType>::PrintSelf(std::ostream & os, Indent inden
 {
   Superclass::PrintSelf(os, indent);
 
+#ifndef __wasi__
   os << indent << "Thread ID: " << m_Thread.get_id() << std::endl;
+#endif
   os << indent << "TerminationRequested: " << m_TerminationRequested << std::endl;
 
   os << indent << "OperationQ size: " << m_OperationQ.size() << std::endl;

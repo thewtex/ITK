@@ -20,7 +20,9 @@
 
 #include "itkImageToImageFilter.h"
 #include "itkArray.h"
-#include <mutex>
+#ifndef __wasi__
+#  include <mutex>
+#endif
 
 namespace itk
 {
@@ -123,7 +125,9 @@ private:
   SizeValueType m_UnderflowCount{ 0 };
   SizeValueType m_OverflowCount{ 0 };
 
+#ifndef __wasi__
   std::mutex m_Mutex{};
+#endif
 };
 } // end namespace itk
 

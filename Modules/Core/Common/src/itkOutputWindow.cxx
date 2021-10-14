@@ -36,7 +36,9 @@ namespace itk
 struct OutputWindowGlobals
 {
   OutputWindow::Pointer m_Instance{ nullptr };
+#ifndef __wasi__
   std::recursive_mutex  m_StaticInstanceLock;
+#endif
 };
 
 /**
@@ -96,7 +98,9 @@ OutputWindow::PrintSelf(std::ostream & os, Indent indent) const
 void
 OutputWindow::DisplayText(const char * txt)
 {
+#ifndef __wasi__
   const std::lock_guard<std::mutex> lockGuard(m_cerrMutex);
+#endif
   std::cerr << txt;
   if (m_PromptUser)
   {
@@ -117,7 +121,9 @@ OutputWindow::Pointer
 OutputWindow::GetInstance()
 {
   itkInitGlobalsMacro(PimplGlobals);
+#ifndef __wasi__
   const std::lock_guard<std::recursive_mutex> lockGuard(m_PimplGlobals->m_StaticInstanceLock);
+#endif
   if (!m_PimplGlobals->m_Instance)
   {
     // Try the factory first
@@ -145,7 +151,9 @@ OutputWindow::SetInstance(OutputWindow * instance)
 {
   itkInitGlobalsMacro(PimplGlobals);
 
+#ifndef __wasi__
   const std::lock_guard<std::recursive_mutex> lockGuard(m_PimplGlobals->m_StaticInstanceLock);
+#endif
   if (m_PimplGlobals->m_Instance == instance)
   {
     return;
