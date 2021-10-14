@@ -71,7 +71,9 @@ bool ULConnectionInfo::Initialize(UserInformation const & inUserInformation,
 
   //test to see if the given computer name is actually an IP address
   if (mCalledIPAddress == 0 && !mCalledComputerName.empty()){
+#ifndef __wasi__
     mCalledIPAddress = inet_addr(mCalledComputerName.c_str());
+#endif
   //  if (mCalledIPAddress != 0)
   //    mCalledComputerName = "";
   }

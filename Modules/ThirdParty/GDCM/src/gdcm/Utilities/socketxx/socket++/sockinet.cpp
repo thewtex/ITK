@@ -24,7 +24,9 @@
 
 #if defined(__CYGWIN__) || !defined(WIN32)
 	EXTERN_C_BEGIN
+#ifndef __wasi__
 #    include <netdb.h>
+#endif
 #    include <sys/time.h>
 #    include <sys/socket.h>
 #    include <stdlib.h>
@@ -109,9 +111,11 @@ void sockinetaddr::setport(const char* sn, const char* pn)
     if (isdigit (*sn)) {
         sin_port = htons(atoi(sn));
     } else {
+#ifndef __wasi__
       servent* sp = getservbyname(sn, pn);
       if (sp == nullptr) throw sockerr (EADDRNOTAVAIL, "sockinetaddr::setport");
       sin_port = sp->s_port;
+#endif
     }
 }
 
@@ -122,6 +126,7 @@ int sockinetaddr::getport () const
 
 void sockinetaddr::setaddr(const char* host_name)
 {
+#ifndef __wasi__
   if ( (sin_addr.s_addr = inet_addr(host_name)) == INADDR_NONE) {
     hostent* hp = gethostbyname(host_name);
     if (hp == nullptr) throw sockerr (EADDRNOTAVAIL, "sockinetaddr::setaddr");
@@ -137,10 +142,12 @@ void sockinetaddr::setaddr(const char* host_name)
     sin_family = hp->h_addrtype;
   } else
     sin_family = sockinetbuf::af_inet;
+#endif
 }
 
 const char* sockinetaddr::gethostname () const
 {
+#ifndef __wasi__
   if (sin_addr.s_addr == htonl(INADDR_ANY)) {
     static char hostname[64];
     if (::gethostname(hostname, 63) == -1) return "";
@@ -153,6 +160,7 @@ const char* sockinetaddr::gethostname () const
   if (hp == nullptr) return "";
   if (hp->h_name) return hp->h_name;
   return "";
+#endif
 }
 
 sockinetbuf::sockinetbuf (const sockbuf::sockdesc& sd_)
@@ -167,8 +175,10 @@ sockinetaddr sockinetbuf::localaddr() const
 {
   sockinetaddr sin;
   socklen_t len = sin.size();
+#ifndef __wasi__
   if (::getsockname(rep->sock, sin.addr (), &len) == -1)
     throw sockerr (errno, "sockinetbuf::localaddr");
+#endif
   return sin;
 }
 
@@ -190,8 +200,10 @@ sockinetaddr sockinetbuf::peeraddr() const
 {
   sockinetaddr sin;
   socklen_t len = sin.size();
+#ifndef __wasi__
   if (::getpeername(rep->sock, sin.addr (), &len) == -1)
     throw sockerr (errno, "sockinetbuf::peeraddr");
+#endif
   return sin;
 }
 
@@ -328,23 +340,29 @@ sockbuf::sockdesc sockinetbuf::accept (const char* host_name,
 
 bool sockinetbuf::tcpnodelay () const
 {
+#ifndef __wasi__
   struct protoent* proto = getprotobyname ("tcp");
   if (proto == nullptr) throw sockerr (ENOPROTOOPT, "sockinetbuf::tcpnodelay");
 
   int old = 0;
   getopt (TCP_NODELAY, &old, sizeof (old), proto->p_proto);
   return old!=0;
+#endif
 }
 
 bool sockinetbuf::tcpnodelay (bool set) const
 {
+#ifndef __wasi__
   struct protoent* proto = getprotobyname ("tcp");
   if (proto == nullptr) throw sockerr (ENOPROTOOPT, "sockinetbuf::tcpnodelay");
+#endif
 
   int old = 0;
   int opt = set;
+#ifndef __wasi__
   getopt (TCP_NODELAY, &old, sizeof (old), proto->p_proto);
   setopt (TCP_NODELAY, &opt, sizeof (opt), proto->p_proto);
+#endif
   return old!=0;
 }
 

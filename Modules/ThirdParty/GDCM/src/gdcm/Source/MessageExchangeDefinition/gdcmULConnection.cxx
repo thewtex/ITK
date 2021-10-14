@@ -211,13 +211,17 @@ bool ULConnection::InitializeIncomingConnection()
     sockinetbuf sin (sockbuf::sock_stream);
     // http://hea-www.harvard.edu/~fine/Tech/addrinuse.html
     int val = 1;
+#ifndef __wasi__
     sin.setopt( SO_REUSEADDR, &val, sizeof(val) );
+#endif
     sin.bind( mInfo.GetCalledIPPort() );
     //int theRecvTimeout = 
     sin.recvtimeout(60);//(int)GetTimer().GetTimeout());
     //int theSendTimeout = 
     sin.sendtimeout(60);//(int)GetTimer().GetTimeout());
+#ifndef __wasi__
     sin.listen();
+#endif
     //sin.debug( true );
     if (sin.is_readready(60, 0))
       {

@@ -138,11 +138,14 @@ class MY_API sockbuf: public std::streambuf
         enum type {
             sock_stream            = SOCK_STREAM,
             sock_dgram            = SOCK_DGRAM,
+#ifndef __wasi__
             sock_raw            = SOCK_RAW,
             sock_rdm            = SOCK_RDM,
             sock_seqpacket      = SOCK_SEQPACKET
+#endif // __wasi__
         };
         enum option {
+#ifndef __wasi__
             so_debug            = SO_DEBUG,
             so_reuseaddr    = SO_REUSEADDR,
             so_keepalive    = SO_KEEPALIVE,
@@ -153,12 +156,14 @@ class MY_API sockbuf: public std::streambuf
             so_sndbuf        = SO_SNDBUF,
             so_rcvbuf        = SO_RCVBUF,
             so_error        = SO_ERROR,
+#endif // __wasi__
             so_type        = SO_TYPE
         };
         enum level {
             sol_socket          = SOL_SOCKET
         };
         enum msgflag {
+#ifndef __wasi__
             msg_oob        = MSG_OOB,
             msg_peek            = MSG_PEEK,
             msg_dontroute    = MSG_DONTROUTE
@@ -166,13 +171,16 @@ class MY_API sockbuf: public std::streambuf
 #if !(defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__GNU__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__bsdi__) || defined(__APPLE__) || defined(__EMSCRIPTEN__) )
             ,msg_maxiovlen    = MSG_MAXIOVLEN
 #endif
+#endif // __wasi__
         };
         enum shuthow {
             shut_read,
             shut_write,
             shut_readwrite
         };
+#ifndef __wasi__
         enum { somaxconn    = SOMAXCONN };
+#endif
         struct socklinger {
             int    l_onoff;    // option on/off
             int    l_linger;    // linger time
@@ -246,7 +254,9 @@ class MY_API sockbuf: public std::streambuf
         virtual void bind    (sockAddr&);
         virtual void connect    (sockAddr&);
 
+#ifndef __wasi__
         void listen    (int num=somaxconn);
+#endif
         virtual sockdesc accept();
         virtual sockdesc accept(sockAddr& sa);
 

@@ -240,10 +240,12 @@ bool sockerr::arg () const
   case EPROTOTYPE:
   case ENOPROTOOPT:
   case EPROTONOSUPPORT:
+#ifndef __wasi__
   case ESOCKTNOSUPPORT:
   case EOPNOTSUPP:
   case EPFNOSUPPORT:
   case EAFNOSUPPORT:
+#endif
   case EADDRINUSE:
   case EADDRNOTAVAIL:
     return true;
@@ -263,12 +265,15 @@ bool sockerr::op () const
   case ENOBUFS:
   case EISCONN:
   case ENOTCONN:
+#ifndef __wasi__
   case ESHUTDOWN:
   case ETOOMANYREFS:
+#endif
   case ETIMEDOUT:
   case ECONNREFUSED:
   case ELOOP:
   case ENAMETOOLONG:
+#ifndef __wasi__
   case EHOSTDOWN:
   case EHOSTUNREACH:
   case ENOTEMPTY:
@@ -277,6 +282,7 @@ bool sockerr::op () const
 #   endif
   case EUSERS:
   case EDQUOT:
+#endif // __wasi__
     return true;
   }
   return false;
@@ -343,6 +349,7 @@ sockbuf::sockbuf (int domain, sockbuf::type st, int proto)
   WSADATA wsaData;
   WSAStartup(version, &wsaData);
 #endif
+#ifndef __wasi__
   SOCKET soc = ::socket (domain, st, proto);
 
   if (soc == static_cast<SOCKET>(SOCKET_ERROR))
@@ -353,6 +360,7 @@ sockbuf::sockbuf (int domain, sockbuf::type st, int proto)
 #endif
 
   rep = new sockbuf::sockcnt (soc);
+#endif // __wasi__
 
   char_type* gbuf = new char_type [BUFSIZ];
   char_type* pbuf = new char_type [BUFSIZ];
@@ -558,37 +566,47 @@ std::streamsize sockbuf::xsputn (const char_type* s, std::streamsize n)
 
 void sockbuf::bind (sockAddr& sa)
 {
+#ifndef __wasi__
   if (::bind (rep->sock, sa.addr (), sa.size ()) == -1)
     throw sockerr (errno, "sockbuf::bind", sockname.text.c_str());
+#endif
 }
 
 void sockbuf::connect (sockAddr& sa)
 {
+#ifndef __wasi__
   if (::connect(rep->sock, sa.addr (), sa.size()) == -1)
     throw sockerr (errno, "sockbuf::connect", sockname.text.c_str());
+#endif
 }
 
+#ifndef __wasi__
 void sockbuf::listen (int num)
 {
   if (::listen (rep->sock, num) == -1)
     throw sockerr (errno, "sockbuf::listen", sockname.text.c_str());
 }
+#endif
 
 sockbuf::sockdesc sockbuf::accept (sockAddr& sa)
 {
   socklen_t len = sa.size ();
   int soc = -1;
+#ifndef __wasi__
   if ((int)(soc = ::accept (rep->sock, sa.addr (),
                        &len)) == -1)
     throw sockerr (errno, "sockbuf::sockdesc", sockname.text.c_str());
+#endif
   return {soc};
 }
 
 sockbuf::sockdesc sockbuf::accept ()
 {
   int soc = -1;
+#ifndef __wasi__
   if ((int)(soc = ::accept (rep->sock, nullptr, nullptr)) == -1)
     throw sockerr (errno, "sockbuf::sockdesc", sockname.text.c_str());
+#endif
   return {soc};
 }
 
@@ -633,9 +651,11 @@ int sockbuf::recvfrom (sockAddr& sa, void* buf, int len, int msgf)
   int rval = 0;
   socklen_t __sa_len = sa.size ();
 
+#ifndef __wasi__
   if ((rval = ::recvfrom (rep->sock, (char*) buf, len,
                           msgf, sa.addr (), &__sa_len)) == -1)
     throw sockerr (errno, "sockbuf::recvfrom", sockname.text.c_str());
+#endif
   return rval;
 }
 
@@ -683,6 +703,7 @@ int sockbuf::sendto (sockAddr& sa, const void* buf, int len, int msgf)
     throw sockerr (ETIMEDOUT, "sockbuf::sendto", sockname.text.c_str());
 
   int wlen=0;
+#ifndef __wasi__
   while(len>0) {
     int wval = ::sendto (rep->sock, (const char*) buf, len, msgf,
                          sa.addr (), sa.size());
@@ -690,6 +711,7 @@ int sockbuf::sendto (sockAddr& sa, const void* buf, int len, int msgf)
     len -= wval;
     wlen += wval;
   }
+#endif
   return wlen;
 }
 
@@ -704,21 +726,25 @@ int sockbuf::recvmsg (msghdr* msg, int msgf)
   if (rep->oob && atmark ())
     throw sockoob ();
 
+#ifndef __wasi__
   int rval = ::recvmsg(rep->sock, msg, msgf);
   if (rval == -1) throw sockerr (errno, "sockbuf::recvmsg", sockname.text.c_str());
   return rval;
+#endif
 }
 
 int sockbuf::sendmsg (msghdr* msg, int msgf)
 // upon error, write throws the number of bytes writen so far instead
 // of sockerr.
 {
+#ifndef __wasi__
   if (rep->stmo != -1 && is_writeready (rep->stmo)==0)
     throw sockerr (ETIMEDOUT, "sockbuf::sendmsg", sockname.text.c_str());
 
   int wlen = ::sendmsg (rep->sock, msg, msgf);
   if (wlen == -1) throw 0;
   return wlen;
+#endif
 }
 #endif // !__linux__ && !WIN32
 
@@ -803,35 +829,45 @@ void sockbuf::shutdown (shuthow sh)
 int sockbuf::getopt (int op, void* buf, int len, int thelevel) const
 {
   socklen_t salen = len;
+#ifndef __wasi__
   if (::getsockopt (rep->sock, thelevel, op, (char*) buf, &salen) == -1)
     throw sockerr (errno, "sockbuf::getopt", sockname.text.c_str());
+#endif
   return len;
 }
 
 void sockbuf::setopt (int op, void* buf, int len, int thelevel) const
 {
+#ifndef __wasi__
   if (::setsockopt (rep->sock, thelevel, op, (char*) buf, len) == -1)
     throw sockerr (errno, "sockbuf::setopt", sockname.text.c_str());
+#endif
 }
 
 sockbuf::type sockbuf::gettype () const
 {
   int ty=0;
   getopt (so_type, &ty, sizeof (ty));
+#ifndef __wasi__
   return sockbuf::type(ty);
+#endif
 }
 
 int sockbuf::clearerror () const
 {
   int err=0;
+#ifndef __wasi__
   getopt (so_error, &err, sizeof (err));
+#endif
   return err;
 }
 
 bool sockbuf::debug () const
 {
   int old = 0;
+#ifndef __wasi__
   getopt (so_debug, &old, sizeof (old));
+#endif
   return old!=0;
 }
 
@@ -839,15 +875,19 @@ bool sockbuf::debug (bool set) const
 {
   int old=0;
   int opt = set;
+#ifndef __wasi__
   getopt (so_debug, &old, sizeof (old));
   setopt (so_debug, &opt, sizeof (opt));
+#endif
   return old!=0;
 }
 
 bool sockbuf::reuseaddr () const
 {
   int old = 0;
+#ifndef __wasi__
   getopt (so_reuseaddr, &old, sizeof (old));
+#endif
   return old!=0;
 }
 
@@ -855,15 +895,19 @@ bool sockbuf::reuseaddr (bool set) const
 {
   int old=0;
   int opt = set;
+#ifndef __wasi__
   getopt (so_reuseaddr, &old, sizeof (old));
   setopt (so_reuseaddr, &opt, sizeof (opt));
+#endif
   return old!=0;
 }
 
 bool sockbuf::keepalive () const
 {
   int old = 0;
+#ifndef __wasi__
   getopt (so_keepalive, &old, sizeof (old));
+#endif
   return old!=0;
 }
 
@@ -871,15 +915,19 @@ bool sockbuf::keepalive (bool set) const
 {
   int old=0;
   int opt = set;
+#ifndef __wasi__
   getopt (so_keepalive, &old, sizeof (old));
   setopt (so_keepalive, &opt, sizeof (opt));
+#endif
   return old!=0;
 }
 
 bool sockbuf::dontroute () const
 {
   int old = 0;
+#ifndef __wasi__
   getopt (so_dontroute, &old, sizeof (old));
+#endif
   return old!=0;
 }
 
@@ -887,15 +935,19 @@ bool sockbuf::dontroute (bool set) const
 {
   int old = 0;
   int opt = set;
+#ifndef __wasi__
   getopt (so_dontroute, &old, sizeof (old));
   setopt (so_dontroute, &opt, sizeof (opt));
+#endif
   return old!=0;
 }
 
 bool sockbuf::broadcast () const
 {
   int old=0;
+#ifndef __wasi__
   getopt (so_broadcast, &old, sizeof (old));
+#endif
   return old!=0;
 }
 
@@ -903,15 +955,19 @@ bool sockbuf::broadcast (bool set) const
 {
   int old = 0;
   int opt = set;
+#ifndef __wasi__
   getopt (so_broadcast, &old, sizeof (old));
   setopt (so_broadcast, &opt, sizeof (opt));
+#endif
   return old!=0;
 }
 
 bool sockbuf::oobinline () const
 {
   int old=0;
+#ifndef __wasi__
   getopt (so_oobinline, &old, sizeof (old));
+#endif
   return old!=0;
 }
 
@@ -919,8 +975,10 @@ bool sockbuf::oobinline (bool set) const
 {
   int old = 0;
   int opt = set;
+#ifndef __wasi__
   getopt (so_oobinline, &old, sizeof (old));
   setopt (so_oobinline, &opt, sizeof (opt));
+#endif
   return old!=0;
 }
 
@@ -934,45 +992,57 @@ bool sockbuf::oob (bool b)
 sockbuf::socklinger sockbuf::linger () const
 {
   socklinger old (0, 0);
+#ifndef __wasi__
   getopt (so_linger, &old, sizeof (old));
+#endif
   return old;
 }
 
 sockbuf::socklinger sockbuf::linger (sockbuf::socklinger opt) const
 {
   socklinger old (0, 0);
+#ifndef __wasi__
   getopt (so_linger, &old, sizeof (old));
   setopt (so_linger, &opt, sizeof (opt));
+#endif
   return old;
 }
 
 int sockbuf::sendbufsz () const
 {
   int old=0;
+#ifndef __wasi__
   getopt (so_sndbuf, &old, sizeof (old));
+#endif
   return old;
 }
 
 int sockbuf::sendbufsz (int sz) const
 {
   int old=0;
+#ifndef __wasi__
   getopt (so_sndbuf, &old, sizeof (old));
   setopt (so_sndbuf, &sz, sizeof (sz));
+#endif
   return old;
 }
 
 int sockbuf::recvbufsz () const
 {
   int old=0;
+#ifndef __wasi__
   getopt (so_rcvbuf, &old, sizeof (old));
+#endif
   return old;
 }
 
 int sockbuf::recvbufsz (int sz) const
 {
   int old=0;
+#ifndef __wasi__
   getopt (so_rcvbuf, &old, sizeof (old));
   setopt (so_rcvbuf, &sz, sizeof (sz));
+#endif
   return old;
 }
 
@@ -980,6 +1050,7 @@ bool sockbuf::atmark () const
 // return true, if the read pointer for socket points to an
 // out of band data
 {
+#ifndef __wasi__
 #if !defined(WIN32) || defined(__CYGWIN__)
   int arg;
   if (::ioctl (rep->sock, SIOCATMARK, &arg) == -1)
@@ -990,6 +1061,7 @@ bool sockbuf::atmark () const
     throw sockerr (WSAGetLastError(), "sockbuf::atmark", sockname.text.c_str());
 #endif // !WIN32
   return arg!=0;
+#endif // __wasi__
 }
 
 //#if !defined(WIN32)
@@ -999,8 +1071,10 @@ int sockbuf::pgrp () const
 // signals
 {
   int arg;
+#ifndef __wasi__
   if (::ioctl (rep->sock, SIOCGPGRP, &arg) == -1)
     throw sockerr (errno, "sockbuf::pgrp", sockname.text.c_str());
+#endif
   return arg;
 }
 
@@ -1009,8 +1083,10 @@ int sockbuf::pgrp (int new_pgrp) const
 // return the old pgrp
 {
   int old = pgrp ();
+#ifndef __wasi__
   if (::ioctl (rep->sock, SIOCSPGRP, &new_pgrp) == -1)
     throw sockerr (errno, "sockbuf::pgrp", sockname.text.c_str());
+#endif
   return old;
 }
 
@@ -1018,7 +1094,7 @@ void sockbuf::closeonexec (bool set) const
 // if set is true, set close on exec flag
 // else clear close on exec flag
 {
-#if !defined( __sgi) && !defined(__hpux)
+#if !defined( __sgi) && !defined(__hpux) && !defined(__wasi__)
   if (set) {
     if (::ioctl (rep->sock, FIOCLEX, 0) == -1)
       throw sockerr (errno, "sockbuf::closeonexec", sockname.text.c_str());
@@ -1077,8 +1153,10 @@ void sockbuf::async (bool set) const
 // possible on the socket, the process will get SIGIO
 {
   int arg = set;
+#ifndef __wasi__
   if (::ioctl (rep->sock, FIOASYNC, &arg) == -1)
     throw sockerr (errno, "sockbuf::async", sockname.text.c_str());
+#endif
 }
 #endif // !WIN32
 
