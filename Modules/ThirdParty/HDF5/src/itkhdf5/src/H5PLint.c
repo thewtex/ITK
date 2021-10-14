@@ -318,10 +318,12 @@ H5PL__open(const char *path, H5PL_type_t type, const H5PL_key_t *key, hbool_t *s
     /* There are different reasons why a library can't be open, e.g. wrong architecture.
      * If we can't open the library, just return.
      */
+#ifndef __wasi__
     if (NULL == (handle = H5PL_OPEN_DLIB(path))) {
         H5PL_CLR_ERROR; /* clear error */
         HGOTO_DONE(SUCCEED)
     }
+#endif
 
     /* Return a handle for the function H5PLget_plugin_type in the dynamic library.
      * The plugin library is supposed to define this function.
