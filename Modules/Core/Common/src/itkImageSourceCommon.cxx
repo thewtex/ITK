@@ -25,15 +25,24 @@ namespace itk
 
 namespace
 {
+#ifndef __wasi__
 std::once_flag                   globalDefaultSplitterOnceFlag;
+#endif
 ImageRegionSplitterBase::Pointer globalDefaultSplitter;
 } // namespace
 
 const ImageRegionSplitterBase *
 ImageSourceCommon::GetGlobalDefaultSplitter()
 {
+#ifndef __wasi__
   std::call_once(globalDefaultSplitterOnceFlag,
                  []() { globalDefaultSplitter = ImageRegionSplitterSlowDimension::New().GetPointer(); });
+#else
+  if (globalDefaultSplitter.IsNull())
+  {
+    globalDefaultSplitter = ImageRegionSplitterSlowDimension::New().GetPointer();
+  }
+#endif
 
   return globalDefaultSplitter;
 }

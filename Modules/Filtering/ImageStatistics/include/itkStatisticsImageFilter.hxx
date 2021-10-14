@@ -20,7 +20,9 @@
 
 
 #include "itkImageScanlineIterator.h"
-#include <mutex>
+#ifndef __wasi__
+#  include <mutex>
+#endif
 
 namespace itk
 {
@@ -125,7 +127,9 @@ StatisticsImageFilter<TInputImage>::ThreadedStreamedGenerateData(const RegionTyp
     it.NextLine();
   }
 
+#ifndef __wasi__
   std::lock_guard<std::mutex> mutexHolder(m_Mutex);
+#endif
   m_ThreadSum += sum;
   m_SumOfSquares += sumOfSquares;
   m_Count += count;

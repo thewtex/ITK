@@ -19,12 +19,16 @@
 #define itkThreadLogger_h
 
 #include "itkLogger.h"
-#include <mutex>
-#include <atomic>
+#ifndef __wasi__
+#  include <mutex>
+#  include <atomic>
+#endif
 
 #include <string>
 #include <queue>
-#include <thread>
+#ifndef __wasi__
+#  include <thread>
+#endif
 
 namespace itk
 {
@@ -134,9 +138,13 @@ private:
 
   using OutputContainerType = std::queue<OutputType::Pointer>;
 
+#ifndef __wasi__
   std::thread m_Thread;
 
   std::atomic<bool> m_TerminationRequested;
+#else
+  bool m_TerminationRequested;
+#endif
 
   OperationContainerType m_OperationQ;
 
@@ -146,7 +154,9 @@ private:
 
   OutputContainerType m_OutputQ;
 
+#ifndef __wasi__
   mutable std::mutex m_Mutex;
+#endif
 
   DelayType m_Delay;
 
