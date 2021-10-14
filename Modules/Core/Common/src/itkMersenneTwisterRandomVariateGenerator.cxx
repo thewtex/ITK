@@ -17,9 +17,11 @@
  *=========================================================================*/
 #include "itkMersenneTwisterRandomVariateGenerator.h"
 
-#include "itkSingleton.h"
+#ifndef __wasi__
+#  include <atomic>
+#endif
 
-#include <atomic>
+#include "itkSingleton.h"
 
 namespace itk
 {
@@ -35,8 +37,12 @@ struct MersenneTwisterGlobals
   ~MersenneTwisterGlobals() = default;
 
   MersenneTwisterRandomVariateGenerator::Pointer                  m_StaticInstance{};
+#ifndef __wasi__
   std::mutex                                                      m_StaticInstanceMutex{};
   std::atomic<MersenneTwisterRandomVariateGenerator::IntegerType> m_StaticDiffer{};
+#else
+  MersenneTwisterRandomVariateGenerator::IntegerType              m_StaticDiffer{};
+#endif
 };
 
 itkGetGlobalSimpleMacro(MersenneTwisterRandomVariateGenerator, MersenneTwisterGlobals, PimplGlobals);
@@ -72,7 +78,9 @@ MersenneTwisterRandomVariateGenerator::Pointer
 MersenneTwisterRandomVariateGenerator::GetInstance()
 {
   itkInitGlobalsMacro(PimplGlobals);
+#ifndef __wasi__
   const std::lock_guard<std::mutex> lockGuard(m_PimplGlobals->m_StaticInstanceMutex);
+#endif
 
   if (!m_PimplGlobals->m_StaticInstance)
   {

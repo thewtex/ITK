@@ -29,7 +29,9 @@
 #define itkPlatformMultiThreader_h
 
 #include "itkMultiThreaderBase.h"
-#include <mutex>
+#ifndef __wasi__
+#  include <mutex>
+#endif
 #include <memory>
 
 namespace itk
@@ -143,8 +145,10 @@ public:
 
   struct WorkUnitInfo : MultiThreaderBase::WorkUnitInfo
   {
-    int *                       ActiveFlag = nullptr;
+    int * ActiveFlag = nullptr;
+#ifndef __wasi__
     std::shared_ptr<std::mutex> ActiveFlagLock;
+#endif
   };
 
 protected:
@@ -162,9 +166,11 @@ private:
   /** Storage of MutexFunctions and ints used to control spawned
    *  threads and the spawned thread ids. */
   int                         m_SpawnedThreadActiveFlag[ITK_MAX_THREADS]{};
-  std::shared_ptr<std::mutex> m_SpawnedThreadActiveFlagMutex[ITK_MAX_THREADS]{};
   ThreadProcessIdType         m_SpawnedThreadProcessID[ITK_MAX_THREADS]{};
   WorkUnitInfo                m_SpawnedThreadInfoArray[ITK_MAX_THREADS]{};
+#ifndef __wasi__
+  std::shared_ptr<std::mutex> m_SpawnedThreadActiveFlagMutex[ITK_MAX_THREADS]{};
+#endif
 
 #if !defined(ITK_LEGACY_REMOVE)
   /** The methods to invoke. */

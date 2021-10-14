@@ -67,7 +67,9 @@ struct MultiThreaderBaseGlobals
   // API is ever used by the developer, the developers choice is
   // respected over the environmental variable.
   bool       GlobalDefaultThreaderTypeIsInitialized{ false };
+#ifndef __wasi__
   std::mutex globalDefaultInitializerMutex;
+#endif
 
   // Global value to control which threader to be used by default. First it is initialized with the default preprocessor
   // definition from CMake configuration value, for compile time control of default. This initial value can be
@@ -125,8 +127,10 @@ MultiThreaderBase::SetGlobalDefaultThreader(ThreaderEnum threaderType)
 {
   itkInitGlobalsMacro(PimplGlobals);
 
+#ifndef __wasi__
   // Acquire mutex then call private method to do the real work.
   const std::lock_guard<std::mutex> lockGuard(m_PimplGlobals->globalDefaultInitializerMutex);
+#endif
 
   MultiThreaderBase::SetGlobalDefaultThreaderPrivate(threaderType);
 }
@@ -158,7 +162,7 @@ MultiThreaderBase::GetGlobalDefaultThreaderPrivate()
                             "ITK_GLOBAL_DEFAULT_THREADER\nFor example ITK_GLOBAL_DEFAULT_THREADER=Pool");
       if (envVar != "NO" && envVar != "OFF" && envVar != "FALSE")
       {
-#ifdef __EMSCRIPTEN__
+#if defined(__EMSCRIPTEN__) || defined(__wasi__)
         MultiThreaderBase::SetGlobalDefaultThreaderPrivate(ThreaderEnum::Platform);
 #else
         MultiThreaderBase::SetGlobalDefaultThreaderPrivate(ThreaderEnum::Pool);
@@ -181,8 +185,10 @@ MultiThreaderBase::GetGlobalDefaultThreader()
 {
   itkInitGlobalsMacro(PimplGlobals);
 
+#ifndef __wasi__
   // Acquire mutex then call private method to do the real work.
   const std::lock_guard<std::mutex> lockGuard(m_PimplGlobals->globalDefaultInitializerMutex);
+#endif
 
   return MultiThreaderBase::GetGlobalDefaultThreaderPrivate();
 }
@@ -233,7 +239,9 @@ MultiThreaderBase::SetGlobalDefaultNumberOfThreads(ThreadIdType val)
 {
   itkInitGlobalsMacro(PimplGlobals);
 
+#ifndef __wasi__
   const std::lock_guard<std::mutex> lockGuard(m_PimplGlobals->globalDefaultInitializerMutex);
+#endif
 
   m_PimplGlobals->m_GlobalDefaultNumberOfThreads =
     std::clamp<ThreadIdType>(val, 1, m_PimplGlobals->m_GlobalMaximumNumberOfThreads);
@@ -263,7 +271,9 @@ MultiThreaderBase::GetGlobalDefaultNumberOfThreads()
 {
   itkInitGlobalsMacro(PimplGlobals);
 
+#ifndef __wasi__
   const std::lock_guard<std::mutex> lockGuard(m_PimplGlobals->globalDefaultInitializerMutex);
+#endif
 
   if (m_PimplGlobals->m_GlobalDefaultNumberOfThreads == 0) // need to initialize
   {
@@ -334,7 +344,7 @@ MultiThreaderBase::GetGlobalDefaultNumberOfThreads()
 ThreadIdType
 MultiThreaderBase::GetGlobalDefaultNumberOfThreadsByPlatform()
 {
-#if defined(ITK_LEGACY_REMOVE)
+#if defined(ITK_LEGACY_REMOVE) && !defined(__wasi__)
   return std::thread::hardware_concurrency();
 #endif
 

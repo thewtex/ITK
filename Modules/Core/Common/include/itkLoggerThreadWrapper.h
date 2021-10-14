@@ -20,8 +20,10 @@
 
 #include <string>
 #include <queue>
-#include <thread>
-#include <atomic>
+#ifndef __wasi__
+#  include <thread>
+#  include <atomic>
+#endif
 
 #include "itkObjectFactory.h"
 #include <mutex>
@@ -152,9 +154,13 @@ protected:
   ThreadFunction();
 
 private:
+#ifndef __wasi__
   std::thread m_Thread{};
 
   std::atomic<bool> m_TerminationRequested{};
+#else
+  bool m_TerminationRequested{};
+#endif
 
   std::queue<OperationEnum> m_OperationQ{};
 
@@ -164,7 +170,9 @@ private:
 
   std::queue<typename OutputType::Pointer> m_OutputQ{};
 
+#ifndef __wasi__
   mutable std::mutex m_Mutex{};
+#endif
 
   DelayType m_Delay{};
 

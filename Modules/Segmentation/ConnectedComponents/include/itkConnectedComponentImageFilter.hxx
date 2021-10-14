@@ -99,7 +99,11 @@ ConnectedComponentImageFilter<TInputImage, TOutputImage, TMaskImage>::GenerateDa
   const SizeValueType xsize = requestedSize[0];
   const SizeValueType linecount = pixelcount / xsize;
   this->m_LineMap.resize(linecount);
+#ifndef __wasi__
   this->m_NumberOfLabels.store(0);
+#else
+  this->m_NumberOfLabels = 0;
+#endif
 
   ProgressTransformer progress1(0.0f, 0.5f, this);
 
@@ -111,7 +115,11 @@ ConnectedComponentImageFilter<TInputImage, TOutputImage, TMaskImage>::GenerateDa
     [this](const RegionType & lambdaRegion) { this->DynamicThreadedGenerateData(lambdaRegion); },
     progress1.GetProcessObject());
 
+#ifndef __wasi__
   SizeValueType nbOfLabels = this->m_NumberOfLabels.load();
+#else
+  SizeValueType nbOfLabels = this->m_NumberOfLabels;
+#endif
 
   // insert all the labels into the structure -- an extra loop but
   // saves complicating the ones that come later
@@ -203,8 +211,12 @@ ConnectedComponentImageFilter<TInputImage, TOutputImage, TMaskImage>::DynamicThr
     ++lineId;
   }
 
+#ifndef __wasi__
   this->m_NumberOfLabels.fetch_add(nbOfLabels, std::memory_order_relaxed);
   const std::lock_guard<std::mutex> lockGuard(this->m_Mutex);
+#else
+  this->m_NumberOfLabels += nbOfLabels;
+#endif
   this->m_WorkUnitResults.push_back(workUnitData);
 }
 

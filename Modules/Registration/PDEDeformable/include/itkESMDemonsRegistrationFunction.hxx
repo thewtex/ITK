@@ -409,7 +409,9 @@ ESMDemonsRegistrationFunction<TFixedImage, TMovingImage, TDisplacementField>::Re
 {
   const std::unique_ptr<const GlobalDataStruct> globalData(static_cast<GlobalDataStruct *>(gd));
 
+#ifndef __wasi__
   const std::lock_guard<std::mutex> lockGuard(m_MetricCalculationMutex);
+#endif
   m_SumOfSquaredDifference += globalData->m_SumOfSquaredDifference;
   m_NumberOfPixelsProcessed += globalData->m_NumberOfPixelsProcessed;
   m_SumOfSquaredChange += globalData->m_SumOfSquaredChange;

@@ -12,6 +12,11 @@
 
 // IWYU pragma: private
 #include "../InternalHeaderCheck.h"
+#if EIGEN_HAS_CXX11_ATOMIC
+#ifndef __wasi__
+#include <atomic>
+#endif
+#endif
 
 namespace Eigen {
 
@@ -78,7 +83,7 @@ namespace internal {
 template<typename Index> struct GemmParallelInfo
 {
 
-#ifdef EIGEN_HAS_OPENMP
+#if defined(EIGEN_HAS_OPENMP) && !defined(__wasi__)
   GemmParallelInfo() : sync(-1), users(0), lhs_start(0), lhs_length(0) {}
   std::atomic<Index> sync;
   std::atomic<int> users;
@@ -98,7 +103,7 @@ void parallelize_gemm(const Functor& func, Index rows, Index cols, Index depth, 
   // Without C++11, we have to disable GEMM's parallelization on
   // non x86 architectures because there volatile is not enough for our purpose.
   // See bug 1572.
-#if (! defined(EIGEN_HAS_OPENMP)) || defined(EIGEN_USE_BLAS)
+#if (! defined(EIGEN_HAS_OPENMP)) || defined(EIGEN_USE_BLAS) && !defined(__wasi__)
   // FIXME the transpose variable is only needed to properly split
   // the matrix product when multithreading is enabled. This is a temporary
   // fix to support row-major destination matrices. This whole

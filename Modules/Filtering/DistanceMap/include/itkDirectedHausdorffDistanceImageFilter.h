@@ -22,7 +22,9 @@
 #include "itkNumericTraits.h"
 #include "itkArray.h"
 #include "itkCompensatedSummation.h"
-#include <mutex>
+#ifndef __wasi__
+#  include <mutex>
+#endif
 
 namespace itk
 {
@@ -190,7 +192,9 @@ private:
   RealType m_AverageHausdorffDistance{};
   bool     m_UseImageSpacing{ true };
 
+#ifndef __wasi__
   std::mutex m_Mutex{};
+#endif
 }; // end of class
 } // end namespace itk
 

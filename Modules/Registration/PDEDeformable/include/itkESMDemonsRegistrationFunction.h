@@ -324,7 +324,9 @@ private:
   mutable double        m_SumOfSquaredChange{};
 
   /** Mutex lock to protect modification to metric. */
+#ifndef __wasi__
   mutable std::mutex m_MetricCalculationMutex{};
+#endif
 };
 } // end namespace itk
 
