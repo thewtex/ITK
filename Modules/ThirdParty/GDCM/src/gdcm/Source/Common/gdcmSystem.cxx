@@ -50,7 +50,9 @@
 #define _unlink unlink
 #else
 //#include <features.h> // we want GNU extensions
+#ifndef __wasi__
 #include <dlfcn.h>
+#endif
 #include <sys/types.h>
 #include <fcntl.h>
 #include <unistd.h> /* gethostname */
@@ -310,10 +312,12 @@ bool System::SetPermissions(const char* file, unsigned short mode)
     {
     return false;
     }
+#ifndef __wasi__
   if ( chmod(file, mode) < 0 )
     {
     return false;
     }
+#endif
 
   return true;
 }
