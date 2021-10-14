@@ -127,15 +127,19 @@ inline void Realpath(const char *path, std::string & resolved_path)
 {
   char resolved_name[GDCM_FILENAME_MAXPATH];
 
+#ifndef __wasi__
   char *ret = realpath(path, resolved_name);
   if( ret )
     {
+#endif
     resolved_path = resolved_name;
+#ifndef __wasi__
     }
   else
     {
     resolved_path = "";
     }
+#endif
 }
 #endif
 
