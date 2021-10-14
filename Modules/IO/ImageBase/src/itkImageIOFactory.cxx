@@ -26,15 +26,19 @@ namespace itk
 
 namespace
 {
+#ifndef __wasi__
 std::mutex createImageIOLock;
-}
+#endif
+} // namespace
 
 ImageIOBase::Pointer
 ImageIOFactory::CreateImageIO(const char * path, IOFileModeEnum mode)
 {
   std::list<ImageIOBase::Pointer> possibleImageIO;
 
+#ifndef __wasi__
   std::lock_guard<std::mutex> mutexHolder(createImageIOLock);
+#endif
 
   for (auto & allobject : ObjectFactoryBase::CreateAllInstance("itkImageIOBase"))
   {

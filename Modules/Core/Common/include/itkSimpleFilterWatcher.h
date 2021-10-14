@@ -21,7 +21,9 @@
 #include "itkCommand.h"
 #include "itkProcessObject.h"
 #include "itkTimeProbe.h"
-#include <mutex>
+#ifndef __wasi__
+#  include <mutex>
+#endif
 
 namespace itk
 {
@@ -187,7 +189,9 @@ protected:
   {
     if (m_Process)
     {
+#ifndef __wasi__
       std::lock_guard<std::mutex> outputSerializer(m_ProgressOutput);
+#endif
       ++m_Steps;
       if (!m_Quiet)
       {
@@ -292,7 +296,9 @@ private:
   bool                        m_TestAbort{ false };
   std::string                 m_Comment;
   itk::ProcessObject::Pointer m_Process;
-  std::mutex                  m_ProgressOutput;
+#ifndef __wasi__
+  std::mutex m_ProgressOutput;
+#endif
 
   using CommandType = SimpleMemberCommand<SimpleFilterWatcher>;
   CommandType::Pointer m_StartFilterCommand;
