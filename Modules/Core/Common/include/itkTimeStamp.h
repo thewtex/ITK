@@ -30,7 +30,11 @@
 
 #include "itkMacro.h"
 #include "itkIntTypes.h"
-#include <atomic>
+#ifdef __wasi__
+#  include "itkAtomicShim.h"
+#else
+#  include <atomic>
+#endif
 #include "itkSingletonMacro.h"
 
 namespace itk
@@ -63,7 +67,11 @@ public:
   /** Standard class type aliases. */
   using Self = TimeStamp;
 
+#ifdef __wasi__
+  using GlobalTimeStampType = AtomicShim<ModifiedTimeType>;
+#else
   using GlobalTimeStampType = std::atomic<ModifiedTimeType>;
+#endif
 
   /** Create an instance of this class. We don't want to use reference
    * counting. */

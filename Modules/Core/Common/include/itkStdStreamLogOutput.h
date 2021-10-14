@@ -90,7 +90,9 @@ protected:
 private:
   StreamPointerType m_Stream;
 
+#ifndef __wasi__
   std::mutex m_Mutex;
+#endif
 };
 } // namespace itk
 

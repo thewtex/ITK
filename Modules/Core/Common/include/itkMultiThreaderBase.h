@@ -35,9 +35,13 @@
 #include "itkImageRegion.h"
 #include "itkImageIORegion.h"
 #include "itkSingletonMacro.h"
-#include <atomic>
+#ifndef __wasi__
+#  include <atomic>
+#endif
 #include <functional>
-#include <thread>
+#ifndef __wasi__
+#  include <thread>
+#endif
 #include "itkProgressReporter.h"
 
 
@@ -259,14 +263,7 @@ INTEL_PRAGMA_WARN_POP
     ThreadIdType       NumberOfThreads;
     void *             UserData;
     ThreadFunctionType ThreadFunction;
-    enum
-    {
-      SUCCESS,
-      ITK_EXCEPTION,
-      ITK_PROCESS_ABORTED_EXCEPTION,
-      STD_EXCEPTION,
-      UNKNOWN
-    } ThreadExitCode;
+    enum { SUCCESS, ITK_EXCEPTION, ITK_PROCESS_ABORTED_EXCEPTION, STD_EXCEPTION, UNKNOWN } ThreadExitCode;
   };
   // clang-format off
 ITK_GCC_PRAGMA_DIAG_POP()
@@ -485,7 +482,11 @@ private:
   /** Only used to synchronize the global variable across static libraries.*/
   itkGetGlobalDeclarationMacro(MultiThreaderBaseGlobals, PimplGlobals);
 
+#ifndef __wasi__
   std::atomic<bool> m_UpdateProgress{ true };
+#else
+  bool m_UpdateProgress{ true };
+#endif
 
   static MultiThreaderBaseGlobals * m_PimplGlobals;
   /** Friends of Multithreader.

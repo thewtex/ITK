@@ -28,8 +28,10 @@
 #ifndef itkOutputWindow_h
 #define itkOutputWindow_h
 
-#include <atomic>
-#include <mutex>
+#ifndef __wasi__
+#  include <atomic>
+#  include <mutex>
+#endif
 #include "itkObject.h"
 
 namespace itk
@@ -134,8 +136,12 @@ protected:
 private:
   itkGetGlobalDeclarationMacro(OutputWindowGlobals, PimplGlobals);
 
-  std::atomic<bool>            m_PromptUser;
-  std::mutex                   m_cerrMutex;
+#ifndef __wasi__
+  std::atomic<bool> m_PromptUser;
+  std::mutex        m_cerrMutex;
+#else
+  bool m_PromptUser;
+#endif
   static OutputWindowGlobals * m_PimplGlobals;
 };
 } // end namespace itk

@@ -147,8 +147,10 @@ It can affect all MultiThreaderBase's derived classes in ITK");
 
   struct WorkUnitInfo : MultiThreaderBase::WorkUnitInfo
   {
-    int *                       ActiveFlag = nullptr;
+    int * ActiveFlag = nullptr;
+#ifndef __wasi__
     std::shared_ptr<std::mutex> ActiveFlagLock;
+#endif
   };
 
 protected:
@@ -165,10 +167,12 @@ private:
 
   /** Storage of MutexFunctions and ints used to control spawned
    *  threads and the spawned thread ids. */
-  int                         m_SpawnedThreadActiveFlag[ITK_MAX_THREADS];
+  int m_SpawnedThreadActiveFlag[ITK_MAX_THREADS];
+#ifndef __wasi__
   std::shared_ptr<std::mutex> m_SpawnedThreadActiveFlagLock[ITK_MAX_THREADS];
-  ThreadProcessIdType         m_SpawnedThreadProcessID[ITK_MAX_THREADS];
-  WorkUnitInfo                m_SpawnedThreadInfoArray[ITK_MAX_THREADS];
+#endif
+  ThreadProcessIdType m_SpawnedThreadProcessID[ITK_MAX_THREADS];
+  WorkUnitInfo        m_SpawnedThreadInfoArray[ITK_MAX_THREADS];
 
 #if !defined(ITK_LEGACY_REMOVE)
   /** The methods to invoke. */

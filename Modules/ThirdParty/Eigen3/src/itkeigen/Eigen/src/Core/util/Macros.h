@@ -829,6 +829,7 @@
 
 #ifndef EIGEN_HAS_CXX11_ATOMIC
   #if    EIGEN_MAX_CPP_VER>=11 && \
+         !defined(__wasi__) && \
          (__has_feature(cxx_atomic) \
       || (EIGEN_COMP_CXXVER > 11) \
       || ((EIGEN_COMP_CXXVER == 11) && (EIGEN_COMP_MSVC==0 || EIGEN_COMP_MSVC >= 1700)))
