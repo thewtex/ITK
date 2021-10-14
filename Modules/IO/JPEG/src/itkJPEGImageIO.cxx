@@ -20,7 +20,18 @@
 #include "itksys/SystemTools.hxx"
 
 #include "itk_jpeg.h"
-#include <csetjmp>
+#ifndef __wasi__
+#  include <csetjmp>
+#endif
+
+/*
+ * Avoid dead code elimination with Emscripten
+ */
+#ifdef __EMSCRIPTEN__
+#  include "emscripten/em_macros.h"
+#else
+#  define EMSCRIPTEN_KEEPALIVE
+#endif
 
 #define JPEGIO_JPEG_MESSAGES 1
 
@@ -32,16 +43,19 @@
 // can longjmp out of the jpeg library
 struct itk_jpeg_error_mgr
 {
-  struct jpeg_error_mgr pub;           /* "public" fields */
-  jmp_buf               setjmp_buffer; /* for return to caller */
+  struct jpeg_error_mgr pub; /* "public" fields */
+#ifndef __wasi__
+  jmp_buf setjmp_buffer; /* for return to caller */
+#endif
 };
 
 extern "C"
 {
-  METHODDEF(void) itk_jpeg_error_exit(j_common_ptr cinfo)
+  METHODDEF(void) EMSCRIPTEN_KEEPALIVE itk_jpeg_error_exit(j_common_ptr cinfo)
   {
     /* cinfo->err really points to an itk_jpeg_error_mgr struct, so coerce pointer
      */
+#ifndef __wasi__
     itk_jpeg_error_mgr * myerr = (itk_jpeg_error_mgr *)cinfo->err;
 
     /* Always display the message. */
@@ -50,9 +64,10 @@ extern "C"
 
     /* Return control to the setjmp point */
     longjmp(myerr->setjmp_buffer, 1);
+#endif
   }
 
-  METHODDEF(void) itk_jpeg_output_message(j_common_ptr cinfo)
+  METHODDEF(void) EMSCRIPTEN_KEEPALIVE itk_jpeg_output_message(j_common_ptr cinfo)
   {
 #if (defined JPEGIO_JPEG_MESSAGES && JPEGIO_JPEG_MESSAGES == 1)
     char buffer[JMSG_LENGTH_MAX + 1];
@@ -141,11 +156,13 @@ JPEGImageIO::CanReadFile(const char * file)
   // for any output message call itk_jpeg_output_message
   jerr.pub.output_message = itk_jpeg_output_message;
   // set the jump point
+#ifndef __wasi__
   if (setjmp(jerr.setjmp_buffer))
   {
     jpeg_destroy_decompress(&cinfo);
     return false;
   }
+#endif
   // initialize the JPEG decompression object
   jpeg_create_decompress(&cinfo);
   // specify data source
@@ -186,11 +203,13 @@ JPEGImageIO::Read(void * buffer)
   // for any output message call itk_jpeg_output_message
   jerr.pub.output_message = itk_jpeg_output_message;
 
+#ifndef __wasi__
   if (setjmp(jerr.setjmp_buffer))
   {
     jpeg_destroy_decompress(&cinfo);
     itkExceptionMacro("JPEG fatal error in the file: " << this->GetFileName());
   }
+#endif
 
   jpeg_create_decompress(&cinfo);
 
@@ -227,6 +246,7 @@ JPEGImageIO::Read(void * buffer)
 
     while (cinfo.output_scanline < cinfo.output_height)
     {
+#ifndef __wasi__
       if (setjmp(jerr.setjmp_buffer))
       {
         jpeg_destroy_decompress(&cinfo);
@@ -235,6 +255,7 @@ JPEGImageIO::Read(void * buffer)
         itkWarningMacro("JPEG error in the file " << this->GetFileName());
         return;
       }
+#endif
 
       jpeg_read_scanlines(&cinfo, buf1, 1);
 
@@ -266,6 +287,7 @@ JPEGImageIO::Read(void * buffer)
   {
     while (cinfo.output_scanline < cinfo.output_height)
     {
+#ifndef __wasi__
       if (setjmp(jerr.setjmp_buffer))
       {
         jpeg_destroy_decompress(&cinfo);
@@ -273,6 +295,7 @@ JPEGImageIO::Read(void * buffer)
         itkWarningMacro("JPEG error in the file " << this->GetFileName());
         return;
       }
+#endif
 
       jpeg_read_scanlines(&cinfo, &row_pointers[cinfo.output_scanline], cinfo.output_height - cinfo.output_scanline);
     }
@@ -355,11 +378,13 @@ JPEGImageIO::ReadImageInformation()
 
   cinfo.err = jpeg_std_error(&jerr.pub);
   jerr.pub.error_exit = itk_jpeg_error_exit;
+#ifndef __wasi__
   if (setjmp(jerr.setjmp_buffer))
   {
     jpeg_destroy_decompress(&cinfo);
     itkExceptionMacro("Error JPEGImageIO could not open file: " << this->GetFileName());
   }
+#endif
   jpeg_create_decompress(&cinfo);
 
   // set the source file
@@ -500,6 +525,7 @@ JPEGImageIO::WriteSlice(const std::string & fileName, const void * const buffer)
   struct jpeg_compress_struct cinfo;
   cinfo.err = jpeg_std_error(&jerr.pub);
 
+#ifndef __wasi__
   // set the jump point
   if (setjmp(jerr.setjmp_buffer))
   {
@@ -507,6 +533,7 @@ JPEGImageIO::WriteSlice(const std::string & fileName, const void * const buffer)
     delete[] row_pointers;
     itkExceptionMacro("JPEG error, failed to write " << fileName);
   }
+#endif
 
   jpeg_create_compress(&cinfo);
 
