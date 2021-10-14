@@ -937,7 +937,9 @@ ImageIOBase::ReadBufferAsASCII(std::istream & is, void * buffer, IOComponentEnum
 
 namespace
 {
-std::mutex                       ioDefaultSplitterLock;
+#ifndef __wasi__
+std::mutex ioDefaultSplitterLock;
+#endif
 ImageRegionSplitterBase::Pointer ioDefaultSplitter;
 
 } // namespace
@@ -947,9 +949,11 @@ ImageIOBase::GetImageRegionSplitter() const
 {
   if (ioDefaultSplitter.IsNull())
   {
+#ifndef __wasi__
     // thread safe lazy initialization,  prevent race condition on
     // setting, with an atomic set if null.
     std::lock_guard<std::mutex> lock(ioDefaultSplitterLock);
+#endif
     if (ioDefaultSplitter.IsNull())
     {
       ioDefaultSplitter = ImageRegionSplitterSlowDimension::New().GetPointer();

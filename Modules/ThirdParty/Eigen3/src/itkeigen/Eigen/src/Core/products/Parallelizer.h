@@ -11,7 +11,9 @@
 #define EIGEN_PARALLELIZER_H
 
 #if EIGEN_HAS_CXX11_ATOMIC
+#ifndef __wasi__
 #include <atomic>
+#endif
 #endif
 
 namespace Eigen {
@@ -84,7 +86,7 @@ template<typename Index> struct GemmParallelInfo
   // to guarantee that when thread A says to thread B that it is
   // done with packing a block, then all writes have been really
   // carried out... C++11 memory model+atomic guarantees this.
-#if EIGEN_HAS_CXX11_ATOMIC
+#if defined(EIGEN_HAS_CXX11_ATOMIC) && !defined(__wasi__)
   std::atomic<Index> sync;
   std::atomic<int> users;
 #else
@@ -104,7 +106,7 @@ void parallelize_gemm(const Functor& func, Index rows, Index cols, Index depth, 
   // Without C++11, we have to disable GEMM's parallelization on
   // non x86 architectures because there volatile is not enough for our purpose.
   // See bug 1572.
-#if (! defined(EIGEN_HAS_OPENMP)) || defined(EIGEN_USE_BLAS) || ((!EIGEN_HAS_CXX11_ATOMIC) && !(EIGEN_ARCH_i386_OR_x86_64))
+#if (! defined(EIGEN_HAS_OPENMP)) || defined(EIGEN_USE_BLAS) || ((!EIGEN_HAS_CXX11_ATOMIC) && !(EIGEN_ARCH_i386_OR_x86_64)) && !defined(__wasi__)
   // FIXME the transpose variable is only needed to properly split
   // the matrix product when multithreading is enabled. This is a temporary
   // fix to support row-major destination matrices. This whole

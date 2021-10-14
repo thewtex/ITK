@@ -140,6 +140,18 @@ public:
 #  endif // Mallinfo
 #endif   // !defined(WIN32) && !defined(_WIN32)
 
+class ShimMemoryUsageObserver : public MemoryUsageObserverBase
+{
+public:
+  /** destructor */
+  ~ShimMemoryUsageObserver() override{};
+  MemoryLoadType
+  GetMemoryUsage() override
+  {
+    return 0;
+  };
+};
+
 /* \class MemoryUsageObserver
  * The best MemoryUsageObserver has been chosen for each OS.
  * However, SysResourceMemoryUsageObserver is far from being accurate. Other
@@ -159,8 +171,10 @@ class ITKCommon_EXPORT MemoryUsageObserver
   public MacOSXMemoryUsageObserver
 #elif defined(__FreeBSD__) || defined(__OpenBSD__)
   public SysResourceMemoryUsageObserver
-#else
+#elif defined(ITK_HAS_MALLINFO) || defined(ITK_HAS_MALLINFO2)
   public MallinfoMemoryUsageObserver
+#else
+  public ShimMemoryUsageObserver
 #endif
 {
 public:
