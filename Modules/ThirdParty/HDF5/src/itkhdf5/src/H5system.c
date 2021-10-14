@@ -624,6 +624,7 @@ void HDsrand(unsigned int seed)
  *       present so that it's less likely to become dead code.
  */
 #ifdef H5_HAVE_FCNTL
+#ifndef __wasi__
 int
 Pflock(int fd, int operation) {
 
@@ -650,6 +651,7 @@ Pflock(int fd, int operation) {
     return 0;
 
 } /* end Pflock() */
+#endif /* __wasi__ */
 #endif /* H5_HAVE_FCNTL */
 
 

@@ -14,6 +14,9 @@
 #ifdef OLD_HEADER_FILENAME
 #include <iostream.h>
 #else
+#ifdef __wasi__
+#define thread_local
+#endif
 #include <iostream>
 #endif
 #include <string>
