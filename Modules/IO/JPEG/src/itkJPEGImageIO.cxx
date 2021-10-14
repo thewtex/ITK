@@ -20,22 +20,36 @@
 #include "itksys/SystemTools.hxx"
 
 #include "itk_jpeg.h"
-#include <csetjmp>
+#ifndef __wasi__
+#  include <csetjmp>
+#endif
+
+/*
+ * Avoid dead code elimination with Emscripten
+ */
+#ifdef __EMSCRIPTEN__
+#  define EM_KEEPALIVE EMSCRIPTEN_KEEPALIVE
+#else
+#  define EM_KEEPALIVE
+#endif
 
 // create an error handler for jpeg that
 // can longjmp out of the jpeg library
 struct itk_jpeg_error_mgr
 {
-  struct jpeg_error_mgr pub;           /* "public" fields */
-  jmp_buf               setjmp_buffer; /* for return to caller */
+  struct jpeg_error_mgr pub; /* "public" fields */
+#ifndef __wasi__
+  jmp_buf setjmp_buffer; /* for return to caller */
+#endif
 };
 
 extern "C"
 {
-  METHODDEF(void) itk_jpeg_error_exit(j_common_ptr cinfo)
+  METHODDEF(void) EM_KEEPALIVE itk_jpeg_error_exit(j_common_ptr cinfo)
   {
     /* cinfo->err really points to a itk_jpeg_error_mgr struct, so coerce pointer
      */
+#ifndef __wasi__
     auto * myerr = reinterpret_cast<itk_jpeg_error_mgr *>(cinfo->err);
 
     /* Always display the message. */
@@ -45,9 +59,10 @@ extern "C"
     jpeg_abort(cinfo); /* clean up libjpeg state */
     /* Return control to the setjmp point */
     longjmp(myerr->setjmp_buffer, 1);
+#endif
   }
 
-  METHODDEF(void) itk_jpeg_output_message(j_common_ptr) {}
+  METHODDEF(void) EM_KEEPALIVE itk_jpeg_output_message(j_common_ptr) {}
 }
 
 namespace itk
@@ -57,12 +72,17 @@ namespace
 {
 // Wrap setjmp call to avoid warnings about variable clobbering.
 bool
+#ifndef __wasi__
 wrapSetjmp(itk_jpeg_error_mgr & jerr)
 {
   if (setjmp(jerr.setjmp_buffer))
   {
     return true;
   }
+#else
+wrapSetjmp(itk_jpeg_error_mgr & itkNotUsed(jerr))
+{
+#endif
   return false;
 }
 } // namespace
@@ -301,6 +321,7 @@ JPEGImageIO::ReadImageInformation()
 
   cinfo.err = jpeg_std_error(&jerr.pub);
   jerr.pub.error_exit = itk_jpeg_error_exit;
+#ifndef __wasi__
   if (setjmp(jerr.setjmp_buffer))
   {
     // clean up
@@ -308,6 +329,7 @@ JPEGImageIO::ReadImageInformation()
     // this is not a valid jpeg file
     itkExceptionMacro("Error JPEGImageIO could not open file: " << this->GetFileName());
   }
+#endif
   jpeg_create_decompress(&cinfo);
 
   // set the source file

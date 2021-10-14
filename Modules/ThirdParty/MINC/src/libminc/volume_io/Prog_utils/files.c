@@ -910,7 +910,7 @@ VIOAPI  VIO_STR  get_temporary_filename( void )
   }
   tmp_fd = open(tmpfile_ptr, O_CREAT | O_EXCL | O_RDWR, S_IWRITE | S_IREAD);
 
-#else
+#elif !defined(__wasi__)
 #error "System defines neither mkstemp(), tempnam(), nor tmpnam()"
 #endif /* Neither HAVE_MKSTEMP, HAVE_TEMPNAM, or HAVE_TMPNAM defined. */
 

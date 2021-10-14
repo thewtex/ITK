@@ -19,7 +19,18 @@
 #include "itk_png.h"
 #include "itksys/SystemTools.hxx"
 #include <string>
-#include <csetjmp>
+#ifndef __wasi__
+#  include <csetjmp>
+#endif
+
+/*
+ * Avoid dead code elimination with Emscripten
+ */
+#ifdef __EMSCRIPTEN__
+#  define EM_KEEPALIVE EMSCRIPTEN_KEEPALIVE
+#else
+#  define EM_KEEPALIVE
+#endif
 
 namespace itk
 {
@@ -27,17 +38,22 @@ extern "C"
 {
   /* The PNG library does not expect the error function to return.
      Therefore we must use this ugly longjmp call.  */
-  void
+  void EM_KEEPALIVE
+#ifndef __wasi__
   itkPNGWriteErrorFunction(png_structp png_ptr, png_const_charp itkNotUsed(error_msg))
   {
     longjmp(png_jmpbuf(png_ptr), 1);
+#else
+  itkPNGWriteErrorFunction(png_structp itkNotUsed(png_ptr), png_const_charp itkNotUsed(error_msg))
+  {
+#endif
   }
 }
 
 extern "C"
 {
-  void
-  itkPNGWriteWarningFunction(png_structp itkNotUsed(png_ptr), png_const_charp itkNotUsed(warning_msg))
+  void EM_KEEPALIVE
+       itkPNGWriteWarningFunction(png_structp itkNotUsed(png_ptr), png_const_charp itkNotUsed(warning_msg))
   {}
 }
 
@@ -45,12 +61,17 @@ namespace
 {
 // Wrap setjmp call to avoid warnings about variable clobbering.
 bool
+#ifndef __wasi__
 wrapSetjmp(png_structp & png_ptr)
 {
   if (setjmp(png_jmpbuf(png_ptr)))
   {
     return true;
   }
+#else
+wrapSetjmp(png_structp & itkNotUsed(png_ptr))
+{
+#endif
   return false;
 }
 } // namespace
@@ -260,11 +281,13 @@ PNGImageIO::Read(void * buffer)
   }
 
   png_set_error_fn(png_ptr, (png_voidp) nullptr, itkPNGWriteErrorFunction, itkPNGWriteWarningFunction);
+#ifndef __wasi__
   if (setjmp(png_jmpbuf(png_ptr)))
   {
     png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
     itkExceptionMacro("Error while reading file: " << this->GetFileName() << std::endl);
   }
+#endif
   png_read_image(png_ptr, row_pointers.get());
   // close the file
   png_read_end(png_ptr, nullptr);

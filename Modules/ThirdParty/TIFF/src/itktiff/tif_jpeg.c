@@ -42,7 +42,9 @@
  *
  * Contributed by Tom Lane <tgl@sss.pgh.pa.us>.
  */
+#ifndef __wasi__
 #include <setjmp.h>
+#endif
 
 int TIFFFillStrip(TIFF* tif, uint32 strip);
 int TIFFFillTile(TIFF* tif, uint32 tile);
@@ -113,9 +115,22 @@ int TIFFReInitJPEG_12( TIFF *tif, int scheme, int is_encode );
  * On some machines it may be worthwhile to use _setjmp or sigsetjmp
  * in place of plain setjmp.  These macros will make it easier.
  */
+#ifndef __wasi__
 #define SETJMP(jbuf)    setjmp(jbuf)
 #define LONGJMP(jbuf,code)  longjmp(jbuf,code)
 #define JMP_BUF      jmp_buf
+#else
+// shim
+struct __jmp_buf_tag {
+  int __mask_was_saved
+};
+typedef struct __jmp_buf_tag jmp_buf[1];
+#define JMP_BUF jmp_buf
+int setjmp(jmp_buf) {}
+#define SETJMP(jbuf) setjmp(jbuf)
+int longjmp(jmp_buf,int) {}
+#define LONGJMP(jbuf,code)  longjmp(jbuf,code)
+#endif
 
 typedef struct jpeg_destination_mgr jpeg_destination_mgr;
 typedef struct jpeg_source_mgr jpeg_source_mgr;
@@ -204,11 +219,20 @@ static const TIFFField jpegFields[] = {
  */
 
 /*
+ * Avoid dead code elimination with Emscripten
+ */
+#ifdef __EMSCRIPTEN__
+#define EM_KEEPALIVE EMSCRIPTEN_KEEPALIVE
+#else
+#define EM_KEEPALIVE
+#endif
+
+/*
  * Error handling routines (these replace corresponding
  * IJG routines from jerror.c).  These are used for both
  * compression and decompression.
  */
-static void
+static void EM_KEEPALIVE
 TIFFjpeg_error_exit(j_common_ptr cinfo)
 {
   JPEGState *sp = (JPEGState *) cinfo;  /* NB: cinfo assumed first */
@@ -225,7 +249,7 @@ TIFFjpeg_error_exit(j_common_ptr cinfo)
  * since error_exit does its own thing and trace_level
  * is never set > 0.
  */
-static void
+static void EM_KEEPALIVE
 TIFFjpeg_output_message(j_common_ptr cinfo)
 {
   char buffer[JMSG_LENGTH_MAX];
