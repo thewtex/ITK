@@ -37,6 +37,9 @@ else()
   set(RETSIGTYPE void)
   set(STDC_HEADERS 1)
 endif()
+if(WASI)
+  set(HAVE_FORK 0)
+endif()
 
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
