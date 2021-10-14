@@ -1028,7 +1028,7 @@ GTestLog::~GTestLog() {
 // this class (creat, dup, dup2, and close)
 GTEST_DISABLE_MSC_DEPRECATED_PUSH_()
 
-#if GTEST_HAS_STREAM_REDIRECTION
+#if defined(GTEST_HAS_STREAM_REDIRECTION) && !defined(__wasi__)
 
 // Object that captures an output stream (stdout/stderr).
 class CapturedStream {
