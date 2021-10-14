@@ -932,6 +932,7 @@ png_safe_warning(png_structp png_nonconst_ptr, png_const_charp warning_message)
 }
 #endif
 
+#ifdef PNG_SETJMP_SUPPORTED
 int /* PRIVATE */
 png_safe_execute(png_imagep image_in, int (*function)(png_voidp), png_voidp arg)
 {
@@ -959,5 +960,6 @@ png_safe_execute(png_imagep image_in, int (*function)(png_voidp), png_voidp arg)
 
    return result;
 }
+#endif /* PNG_SETJMP_SUPPORTED */
 #endif /* SIMPLIFIED READ || SIMPLIFIED_WRITE */
 #endif /* READ || WRITE */
