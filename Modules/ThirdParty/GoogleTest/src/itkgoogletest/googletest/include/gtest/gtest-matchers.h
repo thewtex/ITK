@@ -35,7 +35,9 @@
 #ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_MATCHERS_H_
 #define GOOGLETEST_INCLUDE_GTEST_GTEST_MATCHERS_H_
 
+#ifndef __wasi__
 #include <atomic>
+#endif
 #include <memory>
 #include <ostream>
 #include <string>
@@ -221,9 +223,15 @@ class StreamMatchResultListener : public MatchResultListener {
 };
 
 struct SharedPayloadBase {
+#ifndef __wasi__
   std::atomic<int> ref{1};
   void Ref() { ref.fetch_add(1, std::memory_order_relaxed); }
   bool Unref() { return ref.fetch_sub(1, std::memory_order_acq_rel) == 1; }
+#else
+  int ref{1};
+  void Ref() { ++ref; }
+  bool Unref() { --ref; }
+#endif
 };
 
 template <typename T>
