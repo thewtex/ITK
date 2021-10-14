@@ -265,7 +265,9 @@ namespace gdcm
 
 struct my_error_mgr {
    struct jpeg_error_mgr pub; /* "public" fields */
+#ifndef __wasi__
    jmp_buf setjmp_buffer;     /* for return to caller */
+#endif
 };
 typedef struct my_error_mgr* my_error_ptr;
 
@@ -292,10 +294,19 @@ JPEGBITSCodec::~JPEGBITSCodec()
 }
 
 /*
+ * Avoid dead code elimination with Emscripten
+ */
+#ifdef __EMSCRIPTEN__
+#define EM_KEEPALIVE EMSCRIPTEN_KEEPALIVE
+#else
+#define EM_KEEPALIVE
+#endif
+
+/*
  * Here's the routine that will replace the standard error_exit method:
  */
 extern "C" {
-METHODDEF(void) my_error_exit (j_common_ptr cinfo) {
+METHODDEF(void) EM_KEEPALIVE my_error_exit (j_common_ptr cinfo) {
    /* cinfo->err really points to a my_error_mgr struct, so coerce pointer */
    my_error_ptr myerr = (my_error_ptr) cinfo->err;
 
@@ -304,7 +315,9 @@ METHODDEF(void) my_error_exit (j_common_ptr cinfo) {
    (*cinfo->err->output_message) (cinfo);
 
    /* Return control to the setjmp point */
+#ifndef __wasi__
    longjmp(myerr->setjmp_buffer, 1);
+#endif
 }
 }
 
@@ -333,6 +346,7 @@ bool JPEGBITSCodec::GetHeaderInfo(std::istream &is, TransferSyntax &ts)
     cinfo.err = jpeg_std_error(&jerr.pub);
     jerr.pub.error_exit = my_error_exit;
     // Establish the setjmp return context for my_error_exit to use.
+#ifndef __wasi__
     if (setjmp(jerr.setjmp_buffer))
       {
       // If we get here, the JPEG code has signaled an error.
@@ -349,6 +363,7 @@ bool JPEGBITSCodec::GetHeaderInfo(std::istream &is, TransferSyntax &ts)
       // weird Icon Image from GE...
       return false;
       }
+#endif
     }
 
   if( Internals->StateSuspension == 0 )
@@ -722,6 +737,7 @@ bool JPEGBITSCodec::DecodeByStreams(std::istream &is, std::ostream &os)
     // We set up the normal JPEG error routines, then override error_exit.
     cinfo.err = jpeg_std_error(&jerr.pub);
     jerr.pub.error_exit = my_error_exit;
+#ifndef __wasi__
     // Establish the setjmp return context for my_error_exit to use.
     if (setjmp(jerr.setjmp_buffer))
       {
@@ -738,6 +754,7 @@ bool JPEGBITSCodec::DecodeByStreams(std::istream &is, std::ostream &os)
       // weird Icon Image from GE...
       return false;
       }
+#endif
     }
 
   if( Internals->StateSuspension == 0 )
@@ -1199,12 +1216,14 @@ bool JPEGBITSCodec::InternalCode(const char* input, unsigned long len, std::ostr
    */
   cinfo.err = jpeg_std_error(&jerr.pub);
   jerr.pub.error_exit = my_error_exit;
+#ifndef __wasi__
     // Establish the setjmp return context for my_error_exit to use.
     if (setjmp(jerr.setjmp_buffer))
       {
       jpeg_destroy_compress(&cinfo);
       return false;
       }
+#endif
 
   /* Now we can initialize the JPEG compression object. */
   jpeg_create_compress(&cinfo);
@@ -1411,12 +1430,14 @@ bool JPEGBITSCodec::EncodeBuffer(std::ostream &os, const char *data, size_t data
      */
     cinfo.err = jpeg_std_error(&jerr.pub);
     jerr.pub.error_exit = my_error_exit;
+#ifndef __wasi__
     // Establish the setjmp return context for my_error_exit to use.
     if (setjmp(jerr.setjmp_buffer))
       {
       jpeg_destroy_compress(&cinfo);
       return false;
       }
+#endif
 
     /* Now we can initialize the JPEG compression object. */
     jpeg_create_compress(&cinfo);
