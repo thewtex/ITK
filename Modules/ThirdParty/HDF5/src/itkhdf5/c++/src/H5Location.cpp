@@ -12,6 +12,9 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include <string>
+#ifdef __wasi__
+#define thread_local
+#endif
 #include <iostream>
 using namespace std;
 
