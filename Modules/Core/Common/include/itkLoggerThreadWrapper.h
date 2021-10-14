@@ -20,8 +20,10 @@
 
 #include <string>
 #include <queue>
-#include <thread>
-#include <atomic>
+#ifndef __wasi__
+#  include <thread>
+#  include <atomic>
+#endif
 
 #include "itkObjectFactory.h"
 #include <mutex>
@@ -160,9 +162,13 @@ private:
 
   using OutputContainerType = std::queue<typename OutputType::Pointer>;
 
+#ifndef __wasi__
   std::thread m_Thread;
 
   std::atomic<bool> m_TerminationRequested;
+#else
+  bool m_TerminationRequested;
+#endif
 
   OperationContainerType m_OperationQ;
 
@@ -172,7 +178,9 @@ private:
 
   OutputContainerType m_OutputQ;
 
+#ifndef __wasi__
   mutable std::mutex m_Mutex;
+#endif
 
   DelayType m_Delay;
 

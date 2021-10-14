@@ -25,7 +25,11 @@
 #include "itkMath.h"
 #include "itkSingletonMacro.h"
 
-#include <atomic>
+#ifndef __wasi__
+#  include <atomic>
+#else
+#  include "itkAtomicShim.h"
+#endif
 #include <mutex>
 #include <climits>
 #include <ctime>
@@ -313,7 +317,11 @@ protected:
   int m_Left;
 
   // Seed value
+#ifndef __wasi__
   std::atomic<IntegerType> m_Seed;
+#else
+  AtomicShim<IntegerType> m_Seed;
+#endif
 
 private:
   /** Only used to synchronize the global variable across static libraries.*/
@@ -323,8 +331,10 @@ private:
   static Pointer
   CreateInstance();
 
+#ifndef __wasi__
   // Local lock to enable concurrent access to singleton
   std::mutex m_InstanceLock;
+#endif
 
   // Static/Global Variable need to be thread-safely accessed
 
@@ -337,7 +347,9 @@ private:
 inline void
 MersenneTwisterRandomVariateGenerator::Initialize(const IntegerType seed)
 {
+#ifndef __wasi__
   std::lock_guard<std::mutex> mutexHolder(m_InstanceLock);
+#endif
   this->m_Seed = seed;
   // Initialize generator state with seed
   // See Knuth TAOCP Vol 2, 3rd Ed, p.106 for multiplier.

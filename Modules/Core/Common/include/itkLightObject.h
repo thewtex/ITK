@@ -22,7 +22,11 @@
 #include "itkSmartPointer.h"
 #include "itkTimeStamp.h"
 #include "itkIndent.h"
-#include <atomic>
+#ifdef __wasi__
+#  include "itkAtomicShim.h"
+#else
+#  include <atomic>
+#endif
 
 #include <iostream>
 #include <typeinfo>
@@ -161,7 +165,11 @@ protected:
   InternalClone() const;
 
   /** Number of uses of this object by other objects. */
+#ifdef __wasi__
+  mutable AtomicShim<int> m_ReferenceCount;
+#else
   mutable std::atomic<int> m_ReferenceCount;
+#endif
 };
 
 /**

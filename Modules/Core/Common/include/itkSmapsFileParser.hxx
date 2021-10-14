@@ -103,7 +103,7 @@ SmapsFileParser<TSmapsDataType>::ReadFile(const std::string & mapFileLocation)
   {
 #if defined(WIN32) || defined(_WIN32)
     itkGenericExceptionMacro(<< "smaps files don't exist on Windows");
-#else
+#elif !defined(__wasi__)
     int pid = getpid();
     filename << "/proc/" << pid << "/smaps";
 #endif
@@ -157,7 +157,7 @@ VMMapFileParser<TVMMapDataType>::ReadFile(const std::string & mapFileLocation)
     {
 #if defined(WIN32) || defined(_WIN32)
       itkGenericExceptionMacro(<< "VMMap files don't exist on Windows");
-#else
+#elif !defined(__wasi__)
       std::stringstream vmmapCommand;
       vmmapCommand << "vmmap " << getpid();
 

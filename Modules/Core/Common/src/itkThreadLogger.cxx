@@ -26,85 +26,119 @@ ThreadLogger::ThreadLogger()
 {
   m_Delay = 300; // ms
   m_TerminationRequested = false;
+#ifndef __wasi__
   m_Thread = std::thread(&ThreadLogger::ThreadFunction, this);
+#endif
 }
 
 ThreadLogger::~ThreadLogger()
 {
+#ifndef __wasi__
   if (m_Thread.joinable())
   {
     m_TerminationRequested = true;
     m_Thread.join(); // waits for it to finish if necessary
   }
+#endif
 }
 
 void
 ThreadLogger::SetPriorityLevel(PriorityLevelEnum level)
 {
+#ifndef __wasi__
   this->m_Mutex.lock();
+#endif
   this->m_OperationQ.push(SET_PRIORITY_LEVEL);
   this->m_LevelQ.push(level);
+#ifndef __wasi__
   this->m_Mutex.unlock();
+#endif
 }
 
 Logger::PriorityLevelEnum
 ThreadLogger::GetPriorityLevel() const
 {
+#ifndef __wasi__
   this->m_Mutex.lock();
+#endif
   PriorityLevelEnum level = this->m_PriorityLevel;
+#ifndef __wasi__
   this->m_Mutex.unlock();
+#endif
   return level;
 }
 
 void
 ThreadLogger::SetLevelForFlushing(PriorityLevelEnum level)
 {
+#ifndef __wasi__
   this->m_Mutex.lock();
+#endif
   this->m_LevelForFlushing = level;
   this->m_OperationQ.push(SET_LEVEL_FOR_FLUSHING);
   this->m_LevelQ.push(level);
+#ifndef __wasi__
   this->m_Mutex.unlock();
+#endif
 }
 
 Logger::PriorityLevelEnum
 ThreadLogger::GetLevelForFlushing() const
 {
+#ifndef __wasi__
   this->m_Mutex.lock();
+#endif
   PriorityLevelEnum level = this->m_LevelForFlushing;
+#ifndef __wasi__
   this->m_Mutex.unlock();
+#endif
   return level;
 }
 
 void
 ThreadLogger::SetDelay(DelayType delay)
 {
+#ifndef __wasi__
   this->m_Mutex.lock();
+#endif
   this->m_Delay = delay;
+#ifndef __wasi__
   this->m_Mutex.unlock();
+#endif
 }
 
 ThreadLogger::DelayType
 ThreadLogger::GetDelay() const
 {
+#ifndef __wasi__
   this->m_Mutex.lock();
+#endif
   DelayType delay = this->m_Delay;
+#ifndef __wasi__
   this->m_Mutex.unlock();
+#endif
   return delay;
 }
 
 void
 ThreadLogger::AddLogOutput(OutputType * output)
 {
+#ifndef __wasi__
   this->m_Mutex.lock();
+#endif
   this->m_OperationQ.push(ADD_LOG_OUTPUT);
   this->m_OutputQ.push(output);
+#ifndef __wasi__
   this->m_Mutex.unlock();
+#endif
 }
 
 void
 ThreadLogger::Write(PriorityLevelEnum level, std::string const & content)
 {
+#ifndef __wasi__
   this->m_Mutex.lock();
+#endif
   this->m_OperationQ.push(WRITE);
   this->m_MessageQ.push(content);
   this->m_LevelQ.push(level);
@@ -112,16 +146,22 @@ ThreadLogger::Write(PriorityLevelEnum level, std::string const & content)
   {
     this->InternalFlush();
   }
+#ifndef __wasi__
   this->m_Mutex.unlock();
+#endif
 }
 
 void
 ThreadLogger::Flush()
 {
+#ifndef __wasi__
   this->m_Mutex.lock();
+#endif
   this->m_OperationQ.push(FLUSH);
   this->InternalFlush();
+#ifndef __wasi__
   this->m_Mutex.unlock();
+#endif
 }
 
 void
@@ -167,7 +207,9 @@ ThreadLogger::ThreadFunction()
 {
   while (!m_TerminationRequested)
   {
+#ifndef __wasi__
     m_Mutex.lock();
+#endif
     while (!m_OperationQ.empty())
     {
       switch (m_OperationQ.front())
@@ -198,7 +240,9 @@ ThreadLogger::ThreadFunction()
       }
       m_OperationQ.pop();
     }
+#ifndef __wasi__
     m_Mutex.unlock();
+#endif
     itksys::SystemTools::Delay(this->GetDelay());
   }
 }
@@ -208,7 +252,9 @@ ThreadLogger::PrintSelf(std::ostream & os, Indent indent) const
 {
   Superclass::PrintSelf(os, indent);
 
+#ifndef __wasi__
   os << indent << "Thread ID: " << this->m_Thread.get_id() << std::endl;
+#endif
   os << indent << "Low-priority Message Delay: " << this->m_Delay << std::endl;
   os << indent << "Operation Queue Size: " << this->m_OperationQ.size() << std::endl;
   os << indent << "Message Queue Size: " << this->m_MessageQ.size() << std::endl;
