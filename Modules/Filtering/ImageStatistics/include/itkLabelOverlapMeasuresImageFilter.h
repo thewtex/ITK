@@ -20,7 +20,9 @@
 
 #include "itkImageSink.h"
 #include "itkNumericTraits.h"
-#include <mutex>
+#ifndef __wasi__
+#  include <mutex>
+#endif
 #include <unordered_map>
 
 namespace itk
@@ -212,7 +214,9 @@ protected:
 private:
   MapType m_LabelSetMeasures;
 
+#ifndef __wasi__
   std::mutex m_Mutex;
+#endif
 }; // end of class
 
 } // end namespace itk

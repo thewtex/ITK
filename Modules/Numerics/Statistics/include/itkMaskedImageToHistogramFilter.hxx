@@ -66,7 +66,9 @@ MaskedImageToHistogramFilter<TImage, TMaskImage>::ThreadedComputeMinimumAndMaxim
     ++inputIt;
     ++maskIt;
   }
+#ifndef __wasi__
   std::lock_guard<std::mutex> mutexHolder(this->m_Mutex);
+#endif
   for (unsigned int i = 0; i < nbOfComponents; ++i)
   {
     this->m_Minimum[i] = std::min(this->m_Minimum[i], min[i]);

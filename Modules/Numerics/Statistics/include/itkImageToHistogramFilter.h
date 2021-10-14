@@ -18,7 +18,9 @@
 #ifndef itkImageToHistogramFilter_h
 #define itkImageToHistogramFilter_h
 
-#include <mutex>
+#ifndef __wasi__
+#  include <mutex>
+#endif
 
 #include "itkHistogram.h"
 #include "itkImageSink.h"
@@ -173,7 +175,9 @@ protected:
   virtual void
   ThreadedMergeHistogram(HistogramPointer && histogram);
 
+#ifndef __wasi__
   std::mutex m_Mutex;
+#endif
 
   HistogramPointer m_MergeHistogram;
 

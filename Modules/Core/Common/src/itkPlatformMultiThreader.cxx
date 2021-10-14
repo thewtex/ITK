@@ -27,7 +27,6 @@
  *=========================================================================*/
 #include "itkPlatformMultiThreader.h"
 #include "itkNumericTraits.h"
-#include <algorithm>
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -49,7 +48,9 @@ PlatformMultiThreader::PlatformMultiThreader()
   {
     m_ThreadInfoArray[i].WorkUnitID = i;
     m_ThreadInfoArray[i].ActiveFlag = nullptr;
+#ifndef __wasi__
     m_ThreadInfoArray[i].ActiveFlagLock = nullptr;
+#endif
 
 #if !defined(ITK_LEGACY_REMOVE)
     m_MultipleMethod[i] = nullptr;
@@ -57,7 +58,9 @@ PlatformMultiThreader::PlatformMultiThreader()
 #endif
 
     m_SpawnedThreadActiveFlag[i] = 0;
+#ifndef __wasi__
     m_SpawnedThreadActiveFlagLock[i] = nullptr;
+#endif
     m_SpawnedThreadInfoArray[i].WorkUnitID = i;
   }
 }

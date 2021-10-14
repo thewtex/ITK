@@ -167,7 +167,9 @@ LoggerThreadWrapper<SimpleLoggerType>::LoggerThreadWrapper()
 {
   m_Delay = 300; // ms
   m_TerminationRequested = false;
+#ifndef __wasi__
   m_Thread = std::thread(&Self::ThreadFunction, this);
+#endif
 }
 
 /** Destructor */
@@ -175,11 +177,13 @@ template <typename SimpleLoggerType>
 LoggerThreadWrapper<SimpleLoggerType>::~LoggerThreadWrapper()
 {
   this->Flush();
+#ifndef __wasi__
   if (m_Thread.joinable())
   {
     m_TerminationRequested = true;
     m_Thread.join(); // waits for it to finish if necessary
   }
+#endif
 }
 
 template <typename SimpleLoggerType>
@@ -188,7 +192,9 @@ LoggerThreadWrapper<SimpleLoggerType>::ThreadFunction()
 {
   while (!m_TerminationRequested)
   {
+#ifndef __wasi__
     m_Mutex.lock();
+#endif
     while (!m_OperationQ.empty())
     {
       switch (m_OperationQ.front())
@@ -217,7 +223,9 @@ LoggerThreadWrapper<SimpleLoggerType>::ThreadFunction()
       m_OperationQ.pop();
     }
     SimpleLoggerType::PrivateFlush();
+#ifndef __wasi__
     m_Mutex.unlock();
+#endif
     itksys::SystemTools::Delay(this->GetDelay());
   }
 }
@@ -229,7 +237,9 @@ LoggerThreadWrapper<SimpleLoggerType>::PrintSelf(std::ostream & os, Indent inden
 {
   Superclass::PrintSelf(os, indent);
 
+#ifndef __wasi__
   os << indent << "Thread ID: " << this->m_Thread.get_id() << std::endl;
+#endif
   os << indent << "Low-priority Message Delay: " << this->m_Delay << std::endl;
   os << indent << "Operation Queue Size: " << this->m_OperationQ.size() << std::endl;
   os << indent << "Message Queue Size: " << this->m_MessageQ.size() << std::endl;

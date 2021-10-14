@@ -24,7 +24,9 @@
 #include "itkConstNeighborhoodIterator.h"
 
 #include <deque>
-#include <mutex>
+#ifndef __wasi__
+#  include <mutex>
+#endif
 
 namespace itk
 {

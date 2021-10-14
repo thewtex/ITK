@@ -219,7 +219,9 @@ ImageToHistogramFilter<TImage>::ThreadedComputeMinimumAndMaximum(const RegionTyp
     ++inputIt;
   }
 
+#ifndef __wasi__
   std::lock_guard<std::mutex> mutexHolder(m_Mutex);
+#endif
   for (unsigned int i = 0; i < nbOfComponents; ++i)
   {
     m_Minimum[i] = std::min(m_Minimum[i], min[i]);
@@ -264,7 +266,9 @@ ImageToHistogramFilter<TImage>::ThreadedMergeHistogram(HistogramPointer && histo
   while (true)
   {
 
+#ifndef __wasi__
     std::unique_lock<std::mutex> lock(m_Mutex);
+#endif
 
     if (m_MergeHistogram.IsNull())
     {
@@ -280,8 +284,10 @@ ImageToHistogramFilter<TImage>::ThreadedMergeHistogram(HistogramPointer && histo
       HistogramPointer tomergeHistogram;
       swap(m_MergeHistogram, tomergeHistogram);
 
+#ifndef __wasi__
       // allow other threads to merge data
       lock.unlock();
+#endif
 
       using HistogramIterator = typename HistogramType::ConstIterator;
 

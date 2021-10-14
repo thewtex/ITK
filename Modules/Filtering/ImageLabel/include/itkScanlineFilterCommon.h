@@ -20,10 +20,14 @@
 
 #include "itkImageToImageFilter.h"
 #include "itkConstShapedNeighborhoodIterator.h"
-#include <atomic>
+#ifndef __wasi__
+#  include <atomic>
+#endif
 #include <deque>
 #include <functional>
-#include <mutex>
+#ifndef __wasi__
+#  include <mutex>
+#endif
 #include <vector>
 
 namespace itk
@@ -188,9 +192,11 @@ protected:
   void
   LinkLabels(const InternalLabelType label1, const InternalLabelType label2)
   {
+#ifndef __wasi__
     std::lock_guard<std::mutex> mutexHolder(m_Mutex);
-    InternalLabelType           E1 = this->LookupSet(label1);
-    InternalLabelType           E2 = this->LookupSet(label2);
+#endif
+    InternalLabelType E1 = this->LookupSet(label1);
+    InternalLabelType E2 = this->LookupSet(label2);
 
     if (E1 < E2)
     {
@@ -517,11 +523,17 @@ protected:
   OffsetVectorType      m_LineOffsets;
   UnionFindType         m_UnionFind;
   ConsecutiveVectorType m_Consecutive;
-  std::mutex            m_Mutex;
+#ifndef __wasi__
+  std::mutex m_Mutex;
+#endif
 
+#ifndef __wasi__
   std::atomic<SizeValueType> m_NumberOfLabels;
-  std::deque<WorkUnitData>   m_WorkUnitResults;
-  LineMapType                m_LineMap;
+#else
+  SizeValueType m_NumberOfLabels;
+#endif
+  std::deque<WorkUnitData> m_WorkUnitResults;
+  LineMapType              m_LineMap;
 };
 } // end namespace itk
 

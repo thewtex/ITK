@@ -122,7 +122,9 @@ LabelOverlapMeasuresImageFilter<TLabelImage>::ThreadedStreamedGenerateData(const
   {
 
     {
+#ifndef __wasi__
       std::unique_lock<std::mutex> lock(m_Mutex);
+#endif
 
       if (m_LabelSetMeasures.empty())
       {
@@ -135,8 +137,10 @@ LabelOverlapMeasuresImageFilter<TLabelImage>::ThreadedStreamedGenerateData(const
         MapType tomerge;
         swap(m_LabelSetMeasures, tomerge);
 
+#ifndef __wasi__
         // allow other threads to merge data
         lock.unlock();
+#endif
 
         // Merge tomerge into localStatistics, locally
         MergeMap(localStatistics, tomerge);

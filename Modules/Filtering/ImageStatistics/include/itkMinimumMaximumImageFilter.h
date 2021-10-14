@@ -20,7 +20,9 @@
 
 #include "itkImageSink.h"
 #include "itkSimpleDataObjectDecorator.h"
-#include <mutex>
+#ifndef __wasi__
+#  include <mutex>
+#endif
 
 #include <vector>
 
@@ -143,7 +145,9 @@ private:
   PixelType m_ThreadMin;
   PixelType m_ThreadMax;
 
+#ifndef __wasi__
   std::mutex m_Mutex;
+#endif
 };
 } // end namespace itk
 

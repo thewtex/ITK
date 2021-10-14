@@ -39,7 +39,9 @@ struct BuildInformationGlobals
   BuildInformationGlobals():m_InformationInstance(nullptr)
   {}
 /** To lock on the internal variables */
+#ifndef __wasi__
   std::mutex m_Mutex;
+#endif
   BuildInformation::Pointer m_InformationInstance;
   BuildInformation::MapType m_Map;
 };
@@ -60,7 +62,9 @@ BuildInformation
 ::GetInstance()
 {
   itkInitGlobalsMacro(PimplGlobals);
+#ifndef __wasi__
   std::lock_guard<std::mutex> mutexHolder(m_PimplGlobals->m_Mutex);
+#endif
   if (m_PimplGlobals->m_InformationInstance.IsNull())
   {
     m_PimplGlobals->m_InformationInstance = ObjectFactory<Self>::Create();

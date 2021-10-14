@@ -206,8 +206,10 @@ MattesMutualInformationImageToImageMetricv4GetValueAndDerivativeThreader<
                          this->m_MattesAssociate->m_NumberOfHistogramBins *
                            this->m_MattesAssociate->m_NumberOfHistogramBins / localNumberOfWorkUnitsUsed),
         this->GetCachedNumberOfLocalParameters(),
-        // Need address of the lock
+      // Need address of the lock
+#ifndef __wasi__
         &this->m_MattesAssociate->m_JointPDFDerivativesLock,
+#endif
         this->m_MattesAssociate->m_JointPDFDerivatives);
     }
   }
