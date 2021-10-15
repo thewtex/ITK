@@ -28,9 +28,9 @@
  * Avoid dead code elimination with Emscripten
  */
 #ifdef __EMSCRIPTEN__
-#  define EM_KEEPALIVE EMSCRIPTEN_KEEPALIVE
+#  include "emscripten/em_macros.h"
 #else
-#  define EM_KEEPALIVE
+#  define EMSCRIPTEN_KEEPALIVE
 #endif
 
 // create an error handler for jpeg that
@@ -45,7 +45,7 @@ struct itk_jpeg_error_mgr
 
 extern "C"
 {
-  METHODDEF(void) EM_KEEPALIVE itk_jpeg_error_exit(j_common_ptr cinfo)
+  METHODDEF(void) EMSCRIPTEN_KEEPALIVE itk_jpeg_error_exit(j_common_ptr cinfo)
   {
     /* cinfo->err really points to a itk_jpeg_error_mgr struct, so coerce pointer
      */
@@ -62,7 +62,7 @@ extern "C"
 #endif
   }
 
-  METHODDEF(void) EM_KEEPALIVE itk_jpeg_output_message(j_common_ptr) {}
+  METHODDEF(void) EMSCRIPTEN_KEEPALIVE itk_jpeg_output_message(j_common_ptr) {}
 }
 
 namespace itk

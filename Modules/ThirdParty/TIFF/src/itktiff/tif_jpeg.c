@@ -31,6 +31,15 @@
 #ifdef JPEG_SUPPORT
 
 /*
+ * Avoid dead code elimination with Emscripten
+ */
+#ifdef __EMSCRIPTEN__
+#  include "emscripten/em_macros.h"
+#else
+#  define EMSCRIPTEN_KEEPALIVE
+#endif
+
+/*
  * TIFF Library
  *
  * JPEG Compression support per TIFF Technical Note #2
@@ -219,20 +228,11 @@ static const TIFFField jpegFields[] = {
  */
 
 /*
- * Avoid dead code elimination with Emscripten
- */
-#ifdef __EMSCRIPTEN__
-#define EM_KEEPALIVE EMSCRIPTEN_KEEPALIVE
-#else
-#define EM_KEEPALIVE
-#endif
-
-/*
  * Error handling routines (these replace corresponding
  * IJG routines from jerror.c).  These are used for both
  * compression and decompression.
  */
-static void EM_KEEPALIVE
+static void EMSCRIPTEN_KEEPALIVE
 TIFFjpeg_error_exit(j_common_ptr cinfo)
 {
   JPEGState *sp = (JPEGState *) cinfo;  /* NB: cinfo assumed first */
@@ -249,7 +249,7 @@ TIFFjpeg_error_exit(j_common_ptr cinfo)
  * since error_exit does its own thing and trace_level
  * is never set > 0.
  */
-static void EM_KEEPALIVE
+static void EMSCRIPTEN_KEEPALIVE
 TIFFjpeg_output_message(j_common_ptr cinfo)
 {
   char buffer[JMSG_LENGTH_MAX];

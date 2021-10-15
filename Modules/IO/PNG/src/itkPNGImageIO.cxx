@@ -27,9 +27,9 @@
  * Avoid dead code elimination with Emscripten
  */
 #ifdef __EMSCRIPTEN__
-#  define EM_KEEPALIVE EMSCRIPTEN_KEEPALIVE
+#  include "emscripten/em_macros.h"
 #else
-#  define EM_KEEPALIVE
+#  define EMSCRIPTEN_KEEPALIVE
 #endif
 
 namespace itk
@@ -38,7 +38,7 @@ extern "C"
 {
   /* The PNG library does not expect the error function to return.
      Therefore we must use this ugly longjmp call.  */
-  void EM_KEEPALIVE
+  void EMSCRIPTEN_KEEPALIVE
 #ifndef __wasi__
   itkPNGWriteErrorFunction(png_structp png_ptr, png_const_charp itkNotUsed(error_msg))
   {
@@ -52,7 +52,7 @@ extern "C"
 
 extern "C"
 {
-  void EM_KEEPALIVE
+  void EMSCRIPTEN_KEEPALIVE
        itkPNGWriteWarningFunction(png_structp itkNotUsed(png_ptr), png_const_charp itkNotUsed(warning_msg))
   {}
 }
