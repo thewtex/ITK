@@ -111,6 +111,17 @@
 #else
 #define THREAD_LOCAL static
 #endif
+#if defined(__wasi__)
+// shim
+pid_t getpid(void)
+{
+  return 0;
+}
+uid_t getuid(void)
+{
+  return 0;
+}
+#endif
 
 #if defined(__linux__) && defined(__NR_gettid) && defined(HAVE_JRAND48)
 #define DO_JRAND_MIX
