@@ -87,6 +87,17 @@
 #define rand()    random()
 #endif
 
+#if defined(__wasi__)
+// shim
+pid_t getpid(void)
+{
+  return 0;
+}
+uid_t getuid(void)
+{
+  return 0;
+}
+#endif
 #if defined(_WIN32)
 /* offer a limited gettimeofday on Win32 system */
 #include <stdio.h>
