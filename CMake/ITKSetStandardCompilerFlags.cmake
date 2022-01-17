@@ -435,6 +435,42 @@ unset(C_OPTIMIZATION_FLAGS)
 unset(CXX_OPTIMIZATION_FLAGS)
 
 #-----------------------------------------------------------------------------
+# LLVM Clang Module support
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  option(ITK_USE_CLANG_MODULES "Use Clang modules to speed up compilation." ON)
+
+  if(ITK_USE_CLANG_MODULES AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
+    message(FATAL_ERROR "ITK_USE_CLANG_MODULES only supported with Clang 9 or greater.")
+  endif()
+
+  if(ITK_USE_CLANG_MODULES)
+    set(ITK_PREBUILT_CLANG_MODULE_PATH ${ITK_BINARY_DIR}/PrebuiltClangModules)
+    file(MAKE_DIRECTORY ${ITK_PREBUILT_CLANG_MODULE_PATH})
+    set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -fmodules -fbuiltin-module-map -fimplicit-module-maps -fprebuilt-module-path=${ITK_PREBUILT_CLANG_MODULE_PATH}")
+
+    execute_process(COMMAND ${CMAKE_CXX_COMPILER} -v -c -x c++ -o "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/ClangModuleSystemIncludeCheck.o" ${ITK_CMAKE_DIR}/ClangSearchPathInput.cxx
+     OUTPUT_VARIABLE _clang_system_includes_output
+     ERROR_VARIABLE _clang_system_includes_error
+     )
+    string(REGEX REPLACE "\n" ";" _clang_system_includes_error "${_clang_system_includes_error}")
+    set(ITK_CLANG_MODULE_SYSTEM_INCLUDES)
+    set(_system_includes 0)
+    foreach(_line ${_clang_system_includes_error})
+      if("${_line}" MATCHES "End of search list")
+        set(_system_includes 0)
+      endif()
+      if(${_system_includes})
+        string(STRIP "${_line}" _line)
+        list(APPEND ITK_CLANG_MODULE_SYSTEM_INCLUDES -internal-isystem ${_line})
+      endif()
+      if("${_line}" MATCHES "#include <...> search starts here:")
+        set(_system_includes 1)
+      endif()
+    endforeach()
+  endif()
+endif()
+
+#-----------------------------------------------------------------------------
 #Check the set of platform flags the compiler supports
 check_compiler_platform_flags()
 

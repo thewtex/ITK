@@ -62,6 +62,9 @@ EM_ASM(
   add_executable(${KIT}TestDriver ${KIT}TestDriver.cxx ${Tests} ${ADDITIONAL_SRC})
   target_link_libraries(${KIT}TestDriver LINK_PUBLIC ${KIT_LIBS} ${ITKTestKernel_LIBRARIES})
   itk_module_target_label(${KIT}TestDriver)
+  if(TARGET "${${itk-module}_CLANG_MODULE_TARGET}")
+    add_dependencies(${KIT}TestDriver ${${itk-module}_CLANG_MODULE_TARGET})
+  endif()
 endmacro()
 
 #-----------------------------------------------------------------------------

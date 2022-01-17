@@ -21,6 +21,7 @@
 #define itkCommonEnums_h
 
 #include "itkIntTypes.h"
+
 #include <ostream>
 
 namespace itk

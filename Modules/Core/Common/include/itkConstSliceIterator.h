@@ -20,6 +20,7 @@
 
 #include "itkMacro.h"
 #include "itkIntTypes.h"
+
 #include <valarray>
 
 namespace itk

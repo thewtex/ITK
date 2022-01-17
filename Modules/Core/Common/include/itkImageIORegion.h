@@ -18,10 +18,11 @@
 #ifndef itkImageIORegion_h
 #define itkImageIORegion_h
 
-#include <algorithm>
 #include "itkIntTypes.h"
 #include "itkObjectFactory.h"
 #include "itkImageRegion.h"
+
+#include <algorithm>
 
 namespace itk
 {

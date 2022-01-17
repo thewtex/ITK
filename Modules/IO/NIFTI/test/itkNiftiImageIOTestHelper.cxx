@@ -18,6 +18,7 @@
 
 #include <set>
 #include "itkNiftiImageIOTest.h"
+#include "itkMath.h"
 
 // The WriteNiftiTestFiles function writes binary data to disk to ensure that both big and little endian files are
 // available. This allows all the data necessary to create the images to be stored in source files rather than have
@@ -39,7 +40,6 @@ WriteNiftiTestFiles(const std::string & prefix)
   NiftiBigEndian.sform_code = NIFTI_XFORM_UNKNOWN;
   strncpy(NiftiBigEndian.magic, "ni1\0", 4);
 #include "BigEndian_img.h"
-#include "itkMath.h"
   // Force to be Nifti-compliant
   std::ofstream little_hdr((prefix + "NiftiLittleEndian.hdr").c_str(), std::ios::binary | std::ios::out);
   if (!little_hdr.is_open())

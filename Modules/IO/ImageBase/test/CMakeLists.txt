@@ -359,6 +359,7 @@ itk_add_test(NAME itkImageFileReaderManyComponentVectorTest
 
 add_executable(itkUnicodeIOTest itkUnicodeIOTest.cxx)
 itk_module_target_label(itkUnicodeIOTest)
+target_link_libraries(itkUnicodeIOTest  LINK_PUBLIC "${ITKIOImageBase-Test_LIBRARIES}")
 itk_add_test(NAME itkUnicodeIOTest COMMAND itkUnicodeIOTest)
 
 

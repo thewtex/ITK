@@ -1,0 +1,5 @@
+module @itk-module@ {
+  requires @CPLUSPLUS_REQUIRES@
+  @HEADERS@
+  export *
+}

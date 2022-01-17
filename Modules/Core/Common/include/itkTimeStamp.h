@@ -30,8 +30,9 @@
 
 #include "itkMacro.h"
 #include "itkIntTypes.h"
-#include <atomic>
 #include "itkSingletonMacro.h"
+
+#include <atomic>
 
 namespace itk
 {

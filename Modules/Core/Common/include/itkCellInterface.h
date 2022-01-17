@@ -23,6 +23,7 @@
 #include "itkAutoPointer.h"
 #include "itkArray.h"
 #include "itkCommonEnums.h"
+#include "itkNumericTraits.h"
 
 #include <map>
 

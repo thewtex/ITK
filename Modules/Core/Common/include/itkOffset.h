@@ -21,6 +21,8 @@
 #include "itkSize.h"
 #include "itkMath.h"
 
+#include <cstring>
+
 namespace itk
 {
 
@@ -449,7 +451,7 @@ Offset<VDimension>::GetBasisOffset(unsigned int dim)
 {
   Self ind;
 
-  memset(ind.m_InternalArray, 0, sizeof(OffsetValueType) * VDimension);
+  std::memset(ind.m_InternalArray, 0, sizeof(OffsetValueType) * VDimension);
   ind.m_InternalArray[dim] = 1;
   return ind;
 }

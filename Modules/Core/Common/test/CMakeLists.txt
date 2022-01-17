@@ -571,6 +571,8 @@ endif()
 
 add_executable(itkCMakeConfigurationTest itkCMakeConfigurationTest.cxx)
 itk_module_target_label(itkCMakeConfigurationTest)
+target_link_libraries(itkCMakeConfigurationTest LINK_PUBLIC "${ITKCommon-Test_LIBRARIES}")
+
 itk_add_test(NAME itkCMakeConfigurationTest
          COMMAND itkCMakeConfigurationTest ${CMAKE_BINARY_DIR})
 itk_add_test(NAME itkDataObjectAndProcessObjectTest COMMAND ITKCommon2TestDriver itkDataObjectAndProcessObjectTest)
