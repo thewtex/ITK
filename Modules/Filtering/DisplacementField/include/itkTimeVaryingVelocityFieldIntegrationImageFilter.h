@@ -21,6 +21,7 @@
 #include "itkImageToImageFilter.h"
 
 #include "itkVectorInterpolateImageFunction.h"
+#include "itkNumericTraitsVectorPixel.h"
 
 namespace itk
 {

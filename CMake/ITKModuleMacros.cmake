@@ -212,6 +212,84 @@ macro(itk_module_impl)
     endif()
   endif()
 
+  if(NOT ${itk-module}_THIRD_PARTY AND ITK_USE_CLANG_MODULES AND NOT itk-module MATCHES "GPU" AND NOT itk-module STREQUAL ITKIOMeta)
+    # Use Clang Objective-C / C++ Module support
+
+    # Use the same compiler flags for compiling the modules
+    string(REPLACE " " ";" _flags_list "${ITK_REQUIRED_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
+    set(_cxx_common_flags ${_flags_list})
+    if(DEFINED CMAKE_BUILD_TYPE)
+      if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        string(REPLACE " " ";" _flags_list "${CMAKE_CXX_FLAGS_DEBUG}")
+        list(APPEND _cxx_common_flags ${_flags_list})
+      elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+        string(REPLACE " " ";" _flags_list "${CMAKE_CXX_FLAGS_MINSIZEREL}")
+        list(APPEND _cxx_common_flags ${_flags_list})
+      elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+        string(REPLACE " " ";" _flags_list "${CMAKE_CXX_FLAGS_RELEASE}")
+        list(APPEND _cxx_common_flags ${_flags_list})
+      elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+        string(REPLACE " " ";" _flags_list "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+        list(APPEND _cxx_common_flags ${_flags_list})
+      endif()
+    endif()
+
+    get_directory_property(_include_dirs INCLUDE_DIRECTORIES)
+    set(_include_flags)
+    foreach(_include_dir ${_include_dirs})
+      list(APPEND _include_flags -I${_include_dir})
+    endforeach()
+
+    set(_platform_flags -fexceptions -fcxx-exceptions)
+    if ("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
+      list(APPEND _platform_flags -fgnuc-version=4.2.1 -fmath-errno -D__GCC_ATOMIC_TEST_AND_SET_TRUEVAL=1)
+    endif()
+
+    set(CPLUSPLUS_REQUIRES "cplusplus14")
+    # The current highest value is "17"
+    # https://clang.llvm.org/docs/Modules.html#requires-declaration
+    if (NOT "${CMAKE_CXX_STANDARD}" STREQUAL "14")
+      set(CPLUSPLUS_REQUIRES "cplusplus17")
+    endif()
+    file(GLOB _module_headers ${${itk-module}_SOURCE_DIR}/include/*.h)
+    set(HEADERS)
+    set(_excluded_headers
+      itkExceptionObject.h
+      itkFFTWForwardFFTImageFilter.h
+      itkFFTWInverseFFTImageFilter.h
+      itkFFTWRealToHalfHermitianForwardFFTImageFilter.h
+      itkFFTWHalfHermitianToRealInverseFFTImageFilter.h
+      itkFFTWComplexToComplexFFTImageFilter.h
+      itkFFTWCommon.h
+      itkGTest.h
+      itkGTestPredicate.h
+      itkGTestTypedefsAndConstructors.h
+    )
+    foreach(_header ${_module_headers})
+      get_filename_component(_header_fn "${_header}" NAME)
+      if(NOT _header_fn IN_LIST _excluded_headers)
+        set(HEADERS "${HEADERS}  header \"${_header_fn}\"\n")
+      endif()
+    endforeach()
+    configure_file("${ITK_CMAKE_DIR}/module.modulemap.in" ${${itk-module}_SOURCE_DIR}/include/module.modulemap @ONLY)
+
+    set(_clang_module_target ${itk-module}.pcm)
+    set(${itk-module}_CLANG_MODULE_TARGET ${_clang_module_target})
+    set(_clang_module_output ${ITK_PREBUILT_CLANG_MODULE_PATH}/${_clang_module_target})
+
+    add_custom_command(OUTPUT ${_clang_module_output}
+      COMMAND ${CMAKE_C_COMPILER} -cc1 -emit-module -fmodules module.modulemap -fmodule-name=${itk-module} -xc++ -std=c++${CMAKE_CXX_STANDARD} ${_platform_flags} ${_include_flags} ${ITK_CLANG_MODULE_SYSTEM_INCLUDES} -fprebuilt-module-path=${ITK_PREBUILT_CLANG_MODULE_PATH} -o ${_clang_module_output}
+      WORKING_DIRECTORY ${${itk-module}_SOURCE_DIR}/include
+      DEPENDS ${_module_headers}
+      COMMENT "Building ${itk-module} Clang Module"
+      )
+    add_custom_target(${_clang_module_target}
+      DEPENDS ${_clang_module_output}
+      COMMENT "Building ${itk-module} Clang Module Target"
+      )
+    add_dependencies(${itk-module}-all ${_clang_module_target})
+  endif()
+
   if(EXISTS ${${itk-module}_SOURCE_DIR}/src/CMakeLists.txt AND NOT ${itk-module}_NO_SRC)
     set_property(GLOBAL APPEND PROPERTY ITKTargets_MODULES ${itk-module})
     add_subdirectory(src)
@@ -492,6 +570,9 @@ macro(itk_module_add_library _name)
   endif()
   add_library(${_name} ${_LIBRARY_BUILD_TYPE} ${ARGN})
   target_compile_features(${_name} PUBLIC cxx_std_${CMAKE_CXX_STANDARD})
+  if(TARGET "${${itk-module}_CLANG_MODULE_TARGET}")
+    add_dependencies(${_name} ${${itk-module}_CLANG_MODULE_TARGET})
+  endif()
   itk_module_link_dependencies()
   itk_module_target(${_name})
 endmacro()

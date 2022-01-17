@@ -71,6 +71,9 @@ EM_ASM(
     ${KIT_LIBS}
     ${ITKTestKernel_LIBRARIES})
   itk_module_target_label(${KIT}TestDriver)
+  if(TARGET "${${itk-module}_CLANG_MODULE_TARGET}")
+    add_dependencies(${KIT}TestDriver ${${itk-module}_CLANG_MODULE_TARGET})
+  endif()
 endmacro()
 
 #-----------------------------------------------------------------------------

@@ -22,6 +22,7 @@
 #include "itkVectorContainer.h"
 #include "itkPoint.h"
 #include "itkIntTypes.h"
+
 #include <set>
 
 namespace itk

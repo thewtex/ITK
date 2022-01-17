@@ -1582,6 +1582,8 @@ endif()
 
 add_executable(itkCMakeConfigurationTest itkCMakeConfigurationTest.cxx)
 itk_module_target_label(itkCMakeConfigurationTest)
+target_link_libraries(itkCMakeConfigurationTest LINK_PUBLIC "${ITKCommon-Test_LIBRARIES}")
+
 itk_add_test(
   NAME
   itkCMakeConfigurationTest

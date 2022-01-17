@@ -20,6 +20,7 @@
 
 #include "itkNeighborhood.h"
 #include "itkNumericTraits.h"
+
 #include <vector>
 
 namespace itk
