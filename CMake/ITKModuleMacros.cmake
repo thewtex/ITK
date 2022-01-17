@@ -210,6 +210,50 @@ macro(itk_module_impl)
     endif()
   endif()
 
+  set(_cxx_module_source ${${itk-module}_SOURCE_DIR}/src/${itk-module}.ixx)
+  if(NOT ${itk-module}_THIRD_PARTY AND ITK_USE_CXX_MODULES AND EXISTS ${_cxx_module_source})
+    set(_prebuild_module_path ${CMAKE_BINARY_DIR}/modules)
+    set(_cxx_module_target ${itk-module}.pcm)
+    set(${itk-module}_CXX_MODULE_TARGET ${_cxx_module_target})
+    set(_cxx_module_output ${_prebuild_module_path}/${_cxx_module_target})
+    string(REPLACE " " ";" _flags_list "${ITK_REQUIRED_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
+    set(_cxx_module_flags ${_flags_list})
+    if(DEFINED CMAKE_BUILD_TYPE)
+      if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        string(REPLACE " " ";" _flags_list "${CMAKE_CXX_FLAGS_DEBUG}")
+        list(APPEND _cxx_module_flags ${_flags_list})
+      elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+        string(REPLACE " " ";" _flags_list "${CMAKE_CXX_FLAGS_MINSIZEREL}")
+        list(APPEND _cxx_module_flags ${_flags_list})
+      elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+        string(REPLACE " " ";" _flags_list "${CMAKE_CXX_FLAGS_RELEASE}")
+        list(APPEND _cxx_module_flags ${_flags_list})
+      elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+        string(REPLACE " " ";" _flags_list "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+        list(APPEND _cxx_module_flags ${_flags_list})
+      endif()
+    endif()
+    if(CMAKE_COMPILER_IS_GNUCXX)
+      set(_cxx_module_flags ${_cxx_module_flags} -std=c++${CMAKE_CXX_STANDARD} -x c++ -c )
+      set(_prebuild_module_path ${CMAKE_BINARY_DIR}/gcm.cache)
+      set(_cxx_module_output ${_prebuild_module_path}/${itk-module}.gcm)
+    endif()
+    set(_cxx_module_timestamp_file "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/${_cxx_module_target}.timestamp")
+    add_custom_command(OUTPUT ${_cxx_module_timestamp_file}
+      COMMAND ${CMAKE_COMMAND} -E echo "Building ${itk-module} C++ Module"
+      COMMAND ${CMAKE_CXX_COMPILER} ${_cxx_module_flags} ${_cxx_module_source}
+      COMMAND ${CMAKE_COMMAND} -E touch "${_cxx_module_timestamp_file}"
+      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+      MAIN_DEPENDENCY ${_cxx_module_source}
+      COMMENT "Building ${itk-module} C++ Module COMMENT"
+      )
+    add_custom_target(${_cxx_module_target}
+      DEPENDS ${_cxx_module_timestamp_file}
+      COMMENT "Building ${itk-module} C++ Module Target"
+      )
+    add_dependencies(${itk-module}-all ${_cxx_module_target})
+  endif()
+
   if(EXISTS ${${itk-module}_SOURCE_DIR}/src/CMakeLists.txt AND NOT ${itk-module}_NO_SRC)
     set_property(GLOBAL APPEND PROPERTY ITKTargets_MODULES ${itk-module})
     add_subdirectory(src)
@@ -481,6 +525,9 @@ macro(itk_module_add_library _name)
                                           cxx_lambdas
                                           cxx_noexcept
                                           cxx_alias_templates )
+  if(TARGET "${${itk-module}_CXX_MODULE_TARGET}")
+    add_dependencies(${_name} ${${itk-module}_CXX_MODULE_TARGET})
+  endif()
   itk_module_link_dependencies()
   itk_module_target(${_name})
 endmacro()
