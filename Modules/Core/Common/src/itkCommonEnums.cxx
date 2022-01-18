@@ -15,7 +15,11 @@
  *  limitations under the License.
  *
  *=========================================================================*/
-#include "itkCommonEnums.h"
+#ifdef ITK_USE_CXX_MODULES
+import "itkCommonEnums.h";
+#else
+#  include "itkCommonEnums.h"
+#endif
 
 namespace itk
 {

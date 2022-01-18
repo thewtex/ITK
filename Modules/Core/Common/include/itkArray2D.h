@@ -19,7 +19,11 @@
 #define itkArray2D_h
 
 #include "itkMacro.h"
-#include "itkIntTypes.h"
+#ifdef ITK_USE_CXX_IMODULES
+import "itkIntTypes.h";
+#else
+#  include "itkIntTypes.h"
+#endif
 #include "vnl/vnl_matrix.h"
 
 namespace itk

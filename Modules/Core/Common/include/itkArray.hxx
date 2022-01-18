@@ -18,8 +18,6 @@
 #ifndef itkArray_hxx
 #define itkArray_hxx
 
-#include "itkNumericTraitsArrayPixel.h"
-
 namespace itk
 {
 /** Default constructor */

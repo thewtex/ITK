@@ -22,7 +22,11 @@
 #include "itkMacro.h"
 #include "itkObject.h"
 #include "itkObjectFactory.h"
-#include "itkIntTypes.h"
+#ifdef ITK_USE_CXX_MODULES
+import "itkIntTypes.h";
+#else
+#  include "itkIntTypes.h"
+#endif
 
 #if defined(WIN32) || defined(_WIN32)
 #  include <windows.h>

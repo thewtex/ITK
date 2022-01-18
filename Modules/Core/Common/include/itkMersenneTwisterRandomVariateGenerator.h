@@ -21,7 +21,11 @@
 #include "itkMacro.h"
 #include "itkObjectFactory.h"
 #include "itkRandomVariateGeneratorBase.h"
-#include "itkIntTypes.h"
+#ifdef ITK_USE_CXX_MODULES
+import "itkIntTypes.h";
+#else
+#  include "itkIntTypes.h"
+#endif
 #include "itkMath.h"
 #include "itkSingletonMacro.h"
 

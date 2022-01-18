@@ -19,7 +19,11 @@
 #define itkImageIORegion_h
 
 #include <algorithm>
-#include "itkIntTypes.h"
+#ifdef ITK_USE_CXX_IMODULES
+import "itkIntTypes.h";
+#else
+#  include "itkIntTypes.h"
+#endif
 #include "itkObjectFactory.h"
 #include "itkImageRegion.h"
 

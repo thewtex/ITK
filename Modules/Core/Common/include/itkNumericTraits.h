@@ -1983,6 +1983,8 @@ public:
 /// \endcond
 } // end namespace itk
 
-#include "itkFixedArray.h"
+#ifndef ITK_USE_CXX_MODULES
+#  include "itkFixedArray.h"
+#endif
 
 #endif // itkNumericTraits_h

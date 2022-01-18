@@ -212,10 +212,11 @@ macro(itk_module_impl)
 
   set(_cxx_module_source ${${itk-module}_SOURCE_DIR}/src/${itk-module}.ixx)
   if(NOT ${itk-module}_THIRD_PARTY AND ITK_USE_CXX_MODULES AND EXISTS ${_cxx_module_source})
-    set(_prebuild_module_path ${CMAKE_BINARY_DIR}/modules)
+    set(_module_cache_path ${ITK_BINARY_DIR})
     set(_cxx_module_target ${itk-module}.pcm)
     set(${itk-module}_CXX_MODULE_TARGET ${_cxx_module_target})
-    set(_cxx_module_output ${_prebuild_module_path}/${_cxx_module_target})
+    set(_cxx_module_output)
+
     string(REPLACE " " ";" _flags_list "${ITK_REQUIRED_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
     set(_cxx_module_flags ${_flags_list})
     if(DEFINED CMAKE_BUILD_TYPE)
@@ -233,22 +234,90 @@ macro(itk_module_impl)
         list(APPEND _cxx_module_flags ${_flags_list})
       endif()
     endif()
-    if(CMAKE_COMPILER_IS_GNUCXX)
-      set(_cxx_module_flags ${_cxx_module_flags} -std=c++${CMAKE_CXX_STANDARD} -x c++ -c )
-      set(_prebuild_module_path ${CMAKE_BINARY_DIR}/gcm.cache)
-      set(_cxx_module_output ${_prebuild_module_path}/${itk-module}.gcm)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+      set(_cxx_module_flags -c ${_cxx_module_flags} -std=c++${CMAKE_CXX_STANDARD} -x c++-module --precompile -fmodule-name=${itk-module})
+      get_directory_property(_include_dirs INCLUDE_DIRECTORIES)
+      foreach(_include_dir ${_include_dirs})
+        list(APPEND _cxx_module_flags -I${_include_dir})
+      endforeach()
+      set(_cxx_module_header_units_flags ${_cxx_module_flags} -x c++-header )
+      file(MAKE_DIRECTORY ${_module_cache_path}/prebuilt)
+      set(_cxx_module_output -o ${_module_cache_path}/prebuilt/${itk-module}.pcm)
+      set(_cxx_module_header_units_output -o ${_module_cache_path}/prebuilt/${itk-module}-headers.pcm)
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+      set(_cxx_module_flags -c ${_cxx_module_flags} -std=c++${CMAKE_CXX_STANDARD} -x c++)
+      get_directory_property(_include_dirs INCLUDE_DIRECTORIES)
+      foreach(_include_dir ${_include_dirs})
+        list(APPEND _cxx_module_flags -I${_include_dir})
+      endforeach()
+      set(_cxx_module_header_units_flags ${_cxx_module_flags} -DITK_USE_CXX_MODULES=1 -fmodule-only -x c++-user-header -flang-info-include-translate -flang-info-module-cmi)
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+      set(_cxx_module_flags /c ${_cxx_module_flags} /std:c++latest)
+      get_directory_property(_include_dirs INCLUDE_DIRECTORIES)
+      foreach(_include_dir ${_include_dirs})
+        list(APPEND _cxx_module_flags -I${_include_dir})
+      endforeach()
+      set(_cxx_module_header_units_flags ${_cxx_module_flags} /exportHeader)
     endif()
-    set(_cxx_module_timestamp_file "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/${_cxx_module_target}.timestamp")
-    add_custom_command(OUTPUT ${_cxx_module_timestamp_file}
-      COMMAND ${CMAKE_COMMAND} -E echo "Building ${itk-module} C++ Module"
-      COMMAND ${CMAKE_CXX_COMPILER} ${_cxx_module_flags} ${_cxx_module_source}
-      COMMAND ${CMAKE_COMMAND} -E touch "${_cxx_module_timestamp_file}"
-      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-      MAIN_DEPENDENCY ${_cxx_module_source}
-      COMMENT "Building ${itk-module} C++ Module COMMENT"
+
+    set(_cxx_module_headers_timestamp_file "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/${_cxx_module_target}-headers.timestamp")
+    set(_levels 2)
+    set(_level_timestamps)
+    set(_previous_timestamp)
+    foreach(_level RANGE ${_levels})
+      set(_level_timestamp ${_cxx_module_headers_timestamp_file}.${_level})
+      list(APPEND _level_timestamps ${_level_timestamp})
+      if (EXISTS ${${itk-module}_SOURCE_DIR}/src/${itk-module}.header-units.${_level})
+        file(STRINGS ${${itk-module}_SOURCE_DIR}/src/${itk-module}.header-units.${_level} _module_headers)
+        list(TRANSFORM _module_headers PREPEND ${${itk-module}_SOURCE_DIR}/include/)
+      else()
+        file(GLOB _module_headers ${${itk-module}_SOURCE_DIR}/include/*.h)
+      endif()
+      set(_header_unit_depends)
+      foreach(_module_header ${_module_headers})
+        set(_cxx_module_header_units_output)
+        get_filename_component(_header ${_module_header} NAME)
+        if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+          set(_output ${_module_cache_path}/prebuilt/${itk-module}-${_header}.pcm)
+          set(_cxx_module_header_units_output -fmodule-name=${itk-module}-${_header} -o ${_output})
+        endif()
+        set(_timestamp ${_cxx_module_headers_timestamp_file}.${_header})
+        add_custom_command(OUTPUT ${_timestamp}
+          COMMAND ${CMAKE_CXX_COMPILER} ${_cxx_module_header_units_flags} ${_header} ${_cxx_module_header_units_output}
+          COMMAND ${CMAKE_COMMAND} -E touch "${_timestamp}"
+          WORKING_DIRECTORY ${ITK_BINARY_DIR}
+          COMMENT "Building ${itk-module} C++ module header unit ${_header}"
+        )
+        list(APPEND _header_unit_depends ${_timestamp})
+      endforeach()
+      add_custom_command(OUTPUT ${_level_timestamp}
+        COMMAND ${CMAKE_COMMAND} -E echo "Building ${itk-module} C++ module header units"
+        COMMAND ${CMAKE_COMMAND} -E touch "${_level_timestamp}"
+        DEPENDS ${_header_unit_depends} ${_previous_timestamp}
+        WORKING_DIRECTORY ${ITK_BINARY_DIR}
+        COMMENT "Building ${itk-module} C++ module header units"
       )
+      set(_previous_timestamp ${_level_timestamp})
+    endforeach()
+
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+      list(TRANSFORM _header_unit_depends PREPEND -fmodule-file=)
+    else()
+      set(_header_unit_depends)
+    endif()
+    # set(_cxx_module_timestamp_file "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/${_cxx_module_target}.timestamp")
+    # add_custom_command(OUTPUT ${_cxx_module_timestamp_file}
+    #   COMMAND ${CMAKE_COMMAND} -E echo "Building ${itk-module} C++ Module"
+    #   COMMAND ${CMAKE_CXX_COMPILER} ${_cxx_module_flags} ${_header_unit_depends} ${_cxx_module_source} ${_cxx_module_output}
+    #   COMMAND ${CMAKE_COMMAND} -E touch "${_cxx_module_timestamp_file}"
+    #   WORKING_DIRECTORY ${ITK_BINARY_DIR}
+    #   MAIN_DEPENDENCY ${_cxx_module_source}
+    #   DEPENDS ${_cxx_module_headers_timestamp_file}
+    #   COMMENT "Building ${itk-module} C++ Module COMMENT"
+    #   )
     add_custom_target(${_cxx_module_target}
-      DEPENDS ${_cxx_module_timestamp_file}
+      # DEPENDS ${_cxx_module_timestamp_file}
+      DEPENDS ${_level_timestamps}
       COMMENT "Building ${itk-module} C++ Module Target"
       )
     add_dependencies(${itk-module}-all ${_cxx_module_target})
@@ -527,6 +596,8 @@ macro(itk_module_add_library _name)
                                           cxx_alias_templates )
   if(TARGET "${${itk-module}_CXX_MODULE_TARGET}")
     add_dependencies(${_name} ${${itk-module}_CXX_MODULE_TARGET})
+    # target_compile_definitions(${_name} PRIVATE -DITK_USE_CXX_MODULES=1)
+    # target_compile_options(${_name} PRIVATE -fmodule-file=${ITK_BINARY_DIR}/prebuilt/${itk-module}.pcm)
   endif()
   itk_module_link_dependencies()
   itk_module_target(${_name})

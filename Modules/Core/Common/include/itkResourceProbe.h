@@ -19,7 +19,11 @@
 #define itkResourceProbe_h
 
 #include "itkMacro.h"
-#include "itkIntTypes.h"
+#ifdef ITK_USE_CXX_MODULES
+import "itkIntTypes.h";
+#else
+#  include "itkIntTypes.h"
+#endif
 
 #include <iostream> // For cout.
 #include <string>

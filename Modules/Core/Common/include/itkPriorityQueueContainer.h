@@ -19,7 +19,11 @@
 #define itkPriorityQueueContainer_h
 
 #include "itkVectorContainer.h"
-#include "itkIntTypes.h"
+#ifdef ITK_USE_CXX_MODULES
+import "itkIntTypes.h";
+#else
+#  include "itkIntTypes.h"
+#endif
 #include "itkNumericTraits.h"
 
 #include <functional>

@@ -31,7 +31,11 @@
 #include "itkObject.h"
 #include "itkThreadSupport.h"
 #include "itkObjectFactory.h"
-#include "itkIntTypes.h"
+#ifdef ITK_USE_CXX_MODULES
+import "itkIntTypes.h";
+#else
+#  include "itkIntTypes.h"
+#endif
 #include "itkImageRegion.h"
 #include "itkImageIORegion.h"
 #include "itkSingletonMacro.h"
@@ -259,14 +263,7 @@ INTEL_PRAGMA_WARN_POP
     ThreadIdType       NumberOfThreads;
     void *             UserData;
     ThreadFunctionType ThreadFunction;
-    enum
-    {
-      SUCCESS,
-      ITK_EXCEPTION,
-      ITK_PROCESS_ABORTED_EXCEPTION,
-      STD_EXCEPTION,
-      UNKNOWN
-    } ThreadExitCode;
+    enum { SUCCESS, ITK_EXCEPTION, ITK_PROCESS_ABORTED_EXCEPTION, STD_EXCEPTION, UNKNOWN } ThreadExitCode;
   };
   // clang-format off
 ITK_GCC_PRAGMA_DIAG_POP()

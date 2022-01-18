@@ -18,7 +18,11 @@
 #ifndef itkTotalProgressReporter_h
 #define itkTotalProgressReporter_h
 
-#include "itkIntTypes.h"
+#ifdef ITK_USE_CXX_MODULES
+import "itkIntTypes.h";
+#else
+#  include "itkIntTypes.h"
+#endif
 #include "itkProcessObject.h"
 
 namespace itk

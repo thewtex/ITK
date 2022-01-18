@@ -20,7 +20,11 @@
 
 #include "itkMacro.h"
 #include "itkVariableLengthVector.h"
-#include "itkIntTypes.h"
+#ifdef ITK_USE_CXX_IMODULES
+import "itkIntTypes.h";
+#else
+#  include "itkIntTypes.h"
+#endif
 
 namespace itk
 {

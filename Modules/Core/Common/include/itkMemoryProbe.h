@@ -20,7 +20,11 @@
 
 #include "itkResourceProbe.h"
 #include "itkMemoryUsageObserver.h"
-#include "itkIntTypes.h"
+#ifdef ITK_USE_CXX_MODULES
+import "itkIntTypes.h";
+#else
+#  include "itkIntTypes.h"
+#endif
 
 namespace itk
 {

@@ -20,7 +20,11 @@
 #define itkIsNumber_h
 
 #include "itkMetaProgrammingLibrary.h"
-#include "itkIntTypes.h"
+#ifdef ITK_USE_CXX_IMODULES
+import "itkIntTypes.h";
+#else
+#  include "itkIntTypes.h"
+#endif
 
 namespace itk
 {
