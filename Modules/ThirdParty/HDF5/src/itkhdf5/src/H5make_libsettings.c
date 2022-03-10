@@ -57,7 +57,7 @@ static void
 insert_libhdf5_settings(FILE *flibinfo)
 {
 /* ITK --start */
-#if defined(H5_HAVE_EMBEDDED_LIBINFO) && !defined(__EMSCRIPTEN__)
+#if defined(H5_HAVE_EMBEDDED_LIBINFO) && !defined(__EMSCRIPTEN__) && !defined(__wasi__)
 /* ITK --stop */
     FILE *fsettings; /* for files libhdf5.settings */
     int   inchar;
