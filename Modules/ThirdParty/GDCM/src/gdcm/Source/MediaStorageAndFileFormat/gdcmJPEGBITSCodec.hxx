@@ -297,16 +297,16 @@ JPEGBITSCodec::~JPEGBITSCodec()
  * Avoid dead code elimination with Emscripten
  */
 #ifdef __EMSCRIPTEN__
-#define EM_KEEPALIVE EMSCRIPTEN_KEEPALIVE
+#  include "emscripten/em_macros.h"
 #else
-#define EM_KEEPALIVE
+#define EMSCRIPTEN_KEEPALIVE
 #endif
 
 /*
  * Here's the routine that will replace the standard error_exit method:
  */
 extern "C" {
-METHODDEF(void) EM_KEEPALIVE my_error_exit (j_common_ptr cinfo) {
+METHODDEF(void) EMSCRIPTEN_KEEPALIVE my_error_exit (j_common_ptr cinfo) {
    /* cinfo->err really points to a my_error_mgr struct, so coerce pointer */
    my_error_ptr myerr = (my_error_ptr) cinfo->err;
 
