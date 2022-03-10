@@ -63,6 +63,7 @@
 /* Handle for dynamic library */
 #define H5PL_HANDLE HINSTANCE
 
+#ifdef __wasi__
 /* Get a handle to a plugin library.  Windows: TEXT macro handles Unicode strings */
 #define H5PL_OPEN_DLIB(S) LoadLibraryExA(S, NULL, LOAD_WITH_ALTERED_SEARCH_PATH)
 
@@ -71,6 +72,7 @@
 
 /* Close dynamic library */
 #define H5PL_CLOSE_LIB(H) FreeLibrary(H)
+#endif
 
 /* Clear error - nothing to do */
 #define H5PL_CLR_ERROR

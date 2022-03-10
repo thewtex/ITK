@@ -376,10 +376,19 @@ H5FD__core_write_to_bstore(H5FD_core_t *file, haddr_t addr, size_t size)
 #else
             bytes_wrote = HDwrite(file->fd, ptr, bytes_in);
 #endif /* H5_HAVE_PREADWRITE */
+#ifndef __wasi__
         } while (-1 == bytes_wrote && EINTR == errno);
+#else
+        } while (-1 == bytes_wrote);
+#endif
+
 
         if (-1 == bytes_wrote) { /* error */
+#ifndef __wasi__
             int    myerrno = errno;
+#else
+            int    myerrno = 1;
+#endif
             time_t mytime  = HDtime(NULL);
 
             offset = HDlseek(file->fd, (HDoff_t)0, SEEK_CUR);
@@ -903,10 +912,18 @@ H5FD__core_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxaddr
 #else
                         bytes_read = HDread(file->fd, mem, bytes_in);
 #endif /* H5_HAVE_PREADWRITE */
+#ifndef __wasi__
                     } while (-1 == bytes_read && EINTR == errno);
+#else
+                    } while (-1 == bytes_read);
+#endif
 
                     if (-1 == bytes_read) { /* error */
+#ifndef __wasi__
                         int    myerrno = errno;
+#else
+                        int    myerrno = 1;
+#endif
                         time_t mytime  = HDtime(NULL);
 
                         offset = HDlseek(file->fd, (HDoff_t)0, SEEK_CUR);
@@ -1657,6 +1674,7 @@ H5FD__core_lock(H5FD_t *_file, hbool_t rw)
 
         /* Place a non-blocking lock on the file */
         if (HDflock(file->fd, lock_flags | LOCK_NB) < 0) {
+#ifndef __wasi__
             if (file->ignore_disabled_file_locks && ENOSYS == errno) {
                 /* When errno is set to ENOSYS, the file system does not support
                  * locking, so ignore it.
@@ -1665,6 +1683,7 @@ H5FD__core_lock(H5FD_t *_file, hbool_t rw)
             }
             else
                 HSYS_GOTO_ERROR(H5E_FILE, H5E_BADFILE, FAIL, "unable to lock file")
+#endif
         } /* end if */
     }     /* end if */
 
@@ -1695,6 +1714,7 @@ H5FD__core_unlock(H5FD_t *_file)
 
     if (file->fd >= 0)
         if (HDflock(file->fd, LOCK_UN) < 0) {
+#ifndef __wasi__
             if (file->ignore_disabled_file_locks && ENOSYS == errno) {
                 /* When errno is set to ENOSYS, the file system does not support
                  * locking, so ignore it.
@@ -1703,6 +1723,7 @@ H5FD__core_unlock(H5FD_t *_file)
             }
             else
                 HSYS_GOTO_ERROR(H5E_FILE, H5E_BADFILE, FAIL, "unable to unlock file")
+#endif
         }
 
 done:

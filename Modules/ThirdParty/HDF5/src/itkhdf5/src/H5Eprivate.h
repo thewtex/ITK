@@ -112,6 +112,7 @@ typedef struct H5E_t H5E_t;
  * stack.
  */
 #ifndef H5_HAVE_WIN32_API
+#ifndef __wasi__
 #define HSYS_DONE_ERROR(majorcode, minorcode, retcode, str)                                                  \
     {                                                                                                        \
         int myerrno = errno;                                                                                 \
@@ -130,6 +131,26 @@ typedef struct H5E_t H5E_t;
         HGOTO_ERROR(majorcode, minorcode, retcode, "%s, errno = %d, error message = '%s'", str, myerrno,     \
                     HDstrerror(myerrno));                                                                    \
     }
+#else // __wasi__
+#define HSYS_DONE_ERROR(majorcode, minorcode, retcode, str)                                                  \
+    {                                                                                                        \
+        int myerrno = 1;                                                                                 \
+        /* Other projects may rely on the description format to get the errno and any changes should be      \
+         * considered as an API change                                                                       \
+         */                                                                                                  \
+        HDONE_ERROR(majorcode, minorcode, retcode, "%s, errno = %d, error message = '%s'", str, myerrno,     \
+                    HDstrerror(myerrno));                                                                    \
+    }
+#define HSYS_GOTO_ERROR(majorcode, minorcode, retcode, str)                                                  \
+    {                                                                                                        \
+        int myerrno = 1;                                                                                 \
+        /* Other projects may rely on the description format to get the errno and any changes should be      \
+         * considered as an API change                                                                       \
+         */                                                                                                  \
+        HGOTO_ERROR(majorcode, minorcode, retcode, "%s, errno = %d, error message = '%s'", str, myerrno,     \
+                    HDstrerror(myerrno));                                                                    \
+    }
+#endif
 #else /* H5_HAVE_WIN32_API */
 /* On Windows we also emit the result of GetLastError(). This call returns a DWORD, which is always a
  * 32-bit unsigned type. Note that on Windows, either errno or GetLastError() (but probably not both) will

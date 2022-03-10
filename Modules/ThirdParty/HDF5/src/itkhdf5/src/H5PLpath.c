@@ -646,8 +646,13 @@ H5PL__path_table_iterate_process_path(const char *plugin_path, H5PL_iterate_type
 
             /* Get info for directory entry */
             if (HDstat(path, &my_stat) == -1)
+#ifndef __wasi__
                 HGOTO_ERROR(H5E_FILE, H5E_CANTGET, H5_ITER_ERROR, "can't stat file %s -- error was: %s", path,
                             HDstrerror(errno))
+#else
+                HGOTO_ERROR(H5E_FILE, H5E_CANTGET, H5_ITER_ERROR, "can't stat file %s -- error was: %s", path,
+                            HDstrerror(1))
+#endif
 
             /* If it is a directory, skip it */
             if (S_ISDIR(my_stat.st_mode))
@@ -679,8 +684,13 @@ H5PL__path_table_iterate_process_path(const char *plugin_path, H5PL_iterate_type
 done:
     if (dirp)
         if (HDclosedir(dirp) < 0)
+#ifndef __wasi__
             HDONE_ERROR(H5E_FILE, H5E_CLOSEERROR, H5_ITER_ERROR, "can't close directory: %s",
                         HDstrerror(errno))
+#else
+            HDONE_ERROR(H5E_FILE, H5E_CLOSEERROR, H5_ITER_ERROR, "can't close directory: %s",
+                        HDstrerror(1))
+#endif
 
     path = (char *)H5MM_xfree(path);
 
@@ -880,8 +890,13 @@ H5PL__find_plugin_in_path(const H5PL_search_params_t *search_params, hbool_t *fo
 
             /* Get info for directory entry */
             if (HDstat(path, &my_stat) == -1)
+#ifndef __wasi__
                 HGOTO_ERROR(H5E_FILE, H5E_CANTGET, FAIL, "can't stat file %s -- error was: %s", path,
                             HDstrerror(errno))
+#else
+                HGOTO_ERROR(H5E_FILE, H5E_CANTGET, FAIL, "can't stat file %s -- error was: %s", path,
+                            HDstrerror(1))
+#endif
 
             /* If it is a directory, skip it */
             if (S_ISDIR(my_stat.st_mode)) {
@@ -902,7 +917,11 @@ H5PL__find_plugin_in_path(const H5PL_search_params_t *search_params, hbool_t *fo
 done:
     if (dirp)
         if (HDclosedir(dirp) < 0)
+#ifndef __wasi__
             HDONE_ERROR(H5E_FILE, H5E_CLOSEERROR, FAIL, "can't close directory: %s", HDstrerror(errno))
+#else
+            HDONE_ERROR(H5E_FILE, H5E_CLOSEERROR, FAIL, "can't close directory: %s", HDstrerror(1))
+#endif
 
     path = (char *)H5MM_xfree(path);
 

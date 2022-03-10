@@ -11,6 +11,9 @@
  * help@hdfgroup.org.                                                        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+#ifdef __wasi__
+#define thread_local
+#endif
 #include <string>
 #include <iostream>
 using namespace std;

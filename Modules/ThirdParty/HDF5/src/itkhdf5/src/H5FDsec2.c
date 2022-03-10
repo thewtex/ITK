@@ -348,7 +348,11 @@ H5FD__sec2_open(const char *name, unsigned flags, hid_t fapl_id, haddr_t maxaddr
 
     /* Open the file */
     if ((fd = HDopen(name, o_flags, H5_POSIX_CREATE_MODE_RW)) < 0) {
+#ifndef __wasi__
         int myerrno = errno;
+#else
+        int myerrno = 1;
+#endif
         HGOTO_ERROR(
             H5E_FILE, H5E_CANTOPENFILE, NULL,
             "unable to open file: name = '%s', errno = %d, error message = '%s', flags = %x, o_flags = %x",
@@ -744,10 +748,18 @@ H5FD__sec2_read(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, hid_t H5_ATTR_UNU
 #else
             bytes_read  = HDread(file->fd, buf, bytes_in);
 #endif /* H5_HAVE_PREADWRITE */
+#ifndef __wasi__
         } while (-1 == bytes_read && EINTR == errno);
+#else
+        } while (-1 == bytes_read);
+#endif
 
         if (-1 == bytes_read) { /* error */
+#ifndef __wasi__
             int    myerrno = errno;
+#else
+            int    myerrno = 1;
+#endif
             time_t mytime  = HDtime(NULL);
 
             offset = HDlseek(file->fd, (HDoff_t)0, SEEK_CUR);
@@ -853,10 +865,18 @@ H5FD__sec2_write(H5FD_t *_file, H5FD_mem_t H5_ATTR_UNUSED type, hid_t H5_ATTR_UN
 #else
             bytes_wrote = HDwrite(file->fd, buf, bytes_in);
 #endif /* H5_HAVE_PREADWRITE */
+#ifndef __wasi__
         } while (-1 == bytes_wrote && EINTR == errno);
+#else
+        } while (-1 == bytes_wrote);
+#endif
 
         if (-1 == bytes_wrote) { /* error */
+#ifndef __wasi__
             int    myerrno = errno;
+#else
+            int    myerrno = 1;
+#endif
             time_t mytime  = HDtime(NULL);
 
             offset = HDlseek(file->fd, (HDoff_t)0, SEEK_CUR);
@@ -992,6 +1012,7 @@ H5FD__sec2_lock(H5FD_t *_file, hbool_t rw)
 
     /* Place a non-blocking lock on the file */
     if (HDflock(file->fd, lock_flags | LOCK_NB) < 0) {
+#ifndef __wasi__
         if (file->ignore_disabled_file_locks && ENOSYS == errno) {
             /* When errno is set to ENOSYS, the file system does not support
              * locking, so ignore it.
@@ -1000,6 +1021,7 @@ H5FD__sec2_lock(H5FD_t *_file, hbool_t rw)
         }
         else
             HSYS_GOTO_ERROR(H5E_VFL, H5E_CANTLOCKFILE, FAIL, "unable to lock file")
+#endif
     }
 
 done:
@@ -1028,6 +1050,7 @@ H5FD__sec2_unlock(H5FD_t *_file)
     HDassert(file);
 
     if (HDflock(file->fd, LOCK_UN) < 0) {
+#ifndef __wasi__
         if (file->ignore_disabled_file_locks && ENOSYS == errno) {
             /* When errno is set to ENOSYS, the file system does not support
              * locking, so ignore it.
@@ -1036,6 +1059,7 @@ H5FD__sec2_unlock(H5FD_t *_file)
         }
         else
             HSYS_GOTO_ERROR(H5E_VFL, H5E_CANTUNLOCKFILE, FAIL, "unable to unlock file")
+#endif
     }
 
 done:
