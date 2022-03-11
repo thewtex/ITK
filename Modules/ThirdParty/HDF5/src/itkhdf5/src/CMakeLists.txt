@@ -1088,7 +1088,7 @@ if (NOT EXISTS "${HDF5_GENERATED_SOURCE_DIR}/H5Tinit.c")
 # ITK -- stop ]]
     add_custom_command (TARGET H5detect POST_BUILD
         COMMAND    ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:H5detect>
-        ARGS       H5Tinit.c
+        ARGS       > H5Tinit.c
         BYPRODUCTS H5Tinit.c gen_SRCS.stamp1
         COMMAND    ${CMAKE_COMMAND}
         ARGS       -E touch gen_SRCS.stamp1
@@ -1169,7 +1169,7 @@ endif ()
 
 add_custom_command (TARGET H5make_libsettings POST_BUILD
     COMMAND    ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:H5make_libsettings>
-    ARGS       H5lib_settings.c
+    ARGS       > H5lib_settings.c
     BYPRODUCTS H5lib_settings.c gen_SRCS.stamp2
     COMMAND    ${CMAKE_COMMAND}
     ARGS       -E touch gen_SRCS.stamp2
