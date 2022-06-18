@@ -19,6 +19,7 @@
 #define itkManhattanDistanceMetric_h
 
 #include "itkDistanceMetric.h"
+#include "itkNumericTraitsArrayPixel.h"
 
 namespace itk
 {

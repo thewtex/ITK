@@ -22,6 +22,7 @@
 #include "itkImageFileWriter.h"
 #include "itkHistogramToEntropyImageFilter.h"
 #include "itkTestingMacros.h"
+#include "itkNumericTraitsArrayPixel.h"
 
 int
 itkHistogramToEntropyImageFilterTest1(int argc, char * argv[])

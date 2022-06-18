@@ -25,6 +25,7 @@
 #include "itkVariableSizeMatrix.h"
 #include "itkNumericTraits.h"
 #include "itkNumericTraitsStdVector.h"
+#include "itkNumericTraitsArrayPixel.h"
 #include "itkSize.h"
 #include <vector>
 

@@ -22,6 +22,7 @@
 #include "itkImageFileWriter.h"
 #include "itkHistogramToProbabilityImageFilter.h"
 #include "itkTestingMacros.h"
+#include "itkNumericTraitsArrayPixel.h"
 
 int
 itkHistogramToProbabilityImageFilterTest1(int argc, char * argv[])

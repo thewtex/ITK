@@ -23,6 +23,7 @@
 #include "itkScalarImageToHistogramGenerator.h"
 #include "itkMath.h"
 #include "itkTestingMacros.h"
+#include "itkNumericTraitsArrayPixel.h"
 
 #define NUMBANDS1 1
 #define NUMBANDS2 2

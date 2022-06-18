@@ -21,6 +21,7 @@
 #include "itkProcessObject.h"
 #include "itkArray.h"
 #include "itkSimpleDataObjectDecorator.h"
+#include "itkNumericTraitsArrayPixel.h"
 
 namespace itk
 {

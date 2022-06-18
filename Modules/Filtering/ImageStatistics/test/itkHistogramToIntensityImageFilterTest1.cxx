@@ -22,6 +22,7 @@
 #include "itkImageFileWriter.h"
 #include "itkHistogramToIntensityImageFilter.h"
 #include "itkTestingMacros.h"
+#include "itkNumericTraitsArrayPixel.h"
 
 int
 itkHistogramToIntensityImageFilterTest1(int argc, char * argv[])
