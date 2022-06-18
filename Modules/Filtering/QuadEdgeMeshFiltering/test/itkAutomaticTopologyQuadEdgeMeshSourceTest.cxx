@@ -32,7 +32,7 @@ itkAutomaticTopologyQuadEdgeMeshSourceTest(int, char *[])
   using CellType = MeshType::CellType;
 
   using MeshSourceType = itk::AutomaticTopologyMeshSource<MeshType>;
-  using IdentifierType = MeshSourceType::IdentifierType;
+  using MeshIdentifierType = MeshSourceType::IdentifierType;
   using IdentifierArrayType = MeshSourceType::IdentifierArrayType;
 
   MeshSourceType::Pointer meshSource;
@@ -253,7 +253,7 @@ itkAutomaticTopologyQuadEdgeMeshSourceTest(int, char *[])
       {
         std::cout << "Cell " << i << ":\n";
 
-        using NeighborSet = std::set<IdentifierType>;
+        using NeighborSet = std::set<MeshIdentifierType>;
         NeighborSet cellSet;
 
         mesh->GetCellBoundaryFeatureNeighbors(0, i, 0, &cellSet);

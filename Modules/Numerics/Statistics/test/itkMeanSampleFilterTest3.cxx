@@ -19,6 +19,7 @@
 #include "itkMeanSampleFilter.h"
 #include "itkHistogram.h"
 #include "itkMahalanobisDistanceMetric.h"
+#include "itkNumericTraitsArrayPixel.h"
 
 int
 itkMeanSampleFilterTest3(int, char *[])

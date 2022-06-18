@@ -20,6 +20,7 @@
 
 #include "itkFunctionBase.h"
 #include "itkMeasurementVectorTraits.h"
+#include "itkNumericTraitsArrayPixel.h"
 
 namespace itk
 {

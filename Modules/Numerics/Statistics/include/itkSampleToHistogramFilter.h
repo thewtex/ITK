@@ -22,6 +22,7 @@
 #include "itkProcessObject.h"
 #include "itkMeasurementVectorTraits.h"
 #include "itkSimpleDataObjectDecorator.h"
+#include "itkNumericTraitsArrayPixel.h"
 
 itkDeclareExceptionMacro(SampleToHistogramFilterException, ExceptionObject, "Histogram-related Exception");
 itkDeclareExceptionMacro(MissingHistogramSizeInput,

@@ -20,6 +20,8 @@
 
 #include "itkMatrix.h"
 #include "itkMembershipFunctionBase.h"
+#include "itkNumericTraits.h"
+#include "itkNumericTraitsArrayPixel.h"
 
 namespace itk
 {

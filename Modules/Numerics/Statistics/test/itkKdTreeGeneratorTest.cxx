@@ -18,6 +18,7 @@
 
 #include "itkListSample.h"
 #include "itkKdTreeGenerator.h"
+#include "itkNumericTraitsArrayPixel.h"
 
 int
 itkKdTreeGeneratorTest(int, char *[])

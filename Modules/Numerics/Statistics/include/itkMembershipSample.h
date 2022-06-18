@@ -20,6 +20,7 @@
 
 #include <unordered_map>
 #include "itkSubsample.h"
+#include "itkNumericTraitsArrayPixel.h"
 
 namespace itk
 {

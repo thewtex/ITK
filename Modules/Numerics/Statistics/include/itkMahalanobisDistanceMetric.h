@@ -25,6 +25,7 @@
 #include "vnl/algo/vnl_matrix_inverse.h"
 #include "vnl/algo/vnl_determinant.h"
 #include "itkArray.h"
+#include "itkNumericTraitsArrayPixel.h"
 
 #include "itkDistanceMetric.h"
 
