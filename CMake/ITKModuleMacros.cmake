@@ -212,7 +212,16 @@ macro(itk_module_impl)
     endif()
   endif()
 
-  if(NOT ${itk-module}_THIRD_PARTY AND ITK_USE_CLANG_MODULES AND NOT itk-module MATCHES "GPU" AND NOT itk-module STREQUAL ITKIOMeta)
+  set(_excluded_modules
+    ITKIOMeta
+    ITKFFT
+    ITKBridgeNumPy
+    ITKTestKernel
+    ITKIOImageBase
+    )
+  if(NOT ${itk-module}_THIRD_PARTY AND ITK_USE_CLANG_MODULES AND NOT
+      itk-module MATCHES "GPU" AND NOT itk-module IN_LIST _excluded_modules
+      )
     # Use Clang Objective-C / C++ Module support
 
     # Use the same compiler flags for compiling the modules
@@ -252,7 +261,8 @@ macro(itk_module_impl)
       set(CPLUSPLUS_REQUIRES "cplusplus17")
     endif()
     file(GLOB _module_headers ${${itk-module}_SOURCE_DIR}/include/*.h)
-    set(HEADERS)
+    set(_header_files)
+    set(_header_paths)
     set(_excluded_headers
       itkExceptionObject.h
       itkFFTWForwardFFTImageFilter.h
@@ -264,30 +274,91 @@ macro(itk_module_impl)
       itkGTest.h
       itkGTestPredicate.h
       itkGTestTypedefsAndConstructors.h
+      itkOrientationAdapterBase.h
+      itkEnableIf.h
+      itkIsBaseOf.h
+      itkIsConvertible.h
+      itkIsSame.h
+      #itkImage.h
+      #itkImageRegionIterator.h
+      #itkImageIterator.h
+      #itkImageScanlineIterator.h
+      #itkVectorContainer.h
+      #itkDiffusionTensor3D.h
+      #itkSymmetricSecondRankTensor.h
+      #itkZeroFluxNeumannBoundaryCondition.h
     )
     foreach(_header ${_module_headers})
       get_filename_component(_header_fn "${_header}" NAME)
       if(NOT _header_fn IN_LIST _excluded_headers)
-        set(HEADERS "${HEADERS}  header \"${_header_fn}\"\n")
+        list(APPEND _header_files ${_header_fn})
+        list(APPEND _header_paths ${_header})
       endif()
     endforeach()
-    configure_file("${ITK_CMAKE_DIR}/module.modulemap.in" ${${itk-module}_SOURCE_DIR}/include/module.modulemap @ONLY)
 
-    set(_clang_module_target ${itk-module}.pcm)
-    set(${itk-module}_CLANG_MODULE_TARGET ${_clang_module_target})
-    set(_clang_module_output ${ITK_PREBUILT_CLANG_MODULE_PATH}/${_clang_module_target})
+    # We check to see if the headers are changed.  If so, remove the clang
+    # modules so they are regenerated.
+    set(_headers_list_md5 "${${itk-module}_BINARY_DIR}/test/CMakeFiles/ClangModuleHeadersList.md5")
+    list(SORT _header_paths)
+    string(MD5 _new_md5 "${_header_paths}")
+    set(_regenerate_sources FALSE)
+    if(NOT EXISTS "${_headers_list_md5}")
+      set(_regenerate_sources TRUE)
+    else()
+      file(READ "${_headers_list_md5}" _old_md5)
+      if(NOT ("${_old_md5}" STREQUAL "${_new_md5}"))
+        set(_regenerate_sources TRUE)
+      endif()
+    endif()
+    file(WRITE "${_headers_list_md5}" "${_new_md5}")
+    if(${_regenerate_sources})
+      # Remove all modules because dependent modules may need to be updated
+      file(REMOVE_RECURSE ${ITK_PREBUILT_CLANG_MODULE_PATH})
+      file(MAKE_DIRECTORY ${ITK_PREBUILT_CLANG_MODULE_PATH})
+    endif()
 
-    add_custom_command(OUTPUT ${_clang_module_output}
-      COMMAND ${CMAKE_C_COMPILER} -cc1 -emit-module -fmodules module.modulemap -fmodule-name=${itk-module} -xc++ -std=c++${CMAKE_CXX_STANDARD} ${_platform_flags} ${_include_flags} ${ITK_CLANG_MODULE_SYSTEM_INCLUDES} -fprebuilt-module-path=${ITK_PREBUILT_CLANG_MODULE_PATH} -o ${_clang_module_output}
-      WORKING_DIRECTORY ${${itk-module}_SOURCE_DIR}/include
-      DEPENDS ${_module_headers}
-      COMMENT "Building ${itk-module} Clang Module"
-      )
-    add_custom_target(${_clang_module_target}
-      DEPENDS ${_clang_module_output}
+    list(LENGTH _header_files _num_headers)
+    set(MODULEMAP_CONTENTS )
+    set(_module_num 1)
+    set(_maximum_number_of_headers 10)
+    set(_available_headers "${_maximum_number_of_headers}")
+    set(_header_start 1)
+    set(_outputs)
+    while(${_num_headers} GREATER ${_available_headers})
+      set(HEADERS)
+      list(SUBLIST _header_files ${_header_start} ${_maximum_number_of_headers} _modulen_headers)
+      math(EXPR _header_start "${_header_start} + ${_maximum_number_of_headers}")
+      foreach(_header ${_modulen_headers})
+        set(HEADERS "${HEADERS}  header \"${_header}\"\n")
+      endforeach()
+
+      set(_module_name ${itk-module}${_module_num})
+      set(_clang_module ${_module_name}.pcm)
+      set(_clang_module_output ${ITK_PREBUILT_CLANG_MODULE_PATH}/${_clang_module})
+      list(APPEND _outputs ${_clang_module_output})
+
+      set(MODULEMAP_CONTENTS "${MODULEMAP_CONTENTS}\nmodule ${_module_name} {\n requires ${CPLUSPLUS_REQUIRES}\n${HEADERS}\n  export *\n}\n\n")
+
+      add_custom_command(OUTPUT ${_clang_module_output}
+        COMMAND ${CMAKE_C_COMPILER} -cc1 -emit-module -fmodules
+        module.modulemap -fmodule-name=${_module_name} -xc++ -std=c++${CMAKE_CXX_STANDARD} ${_platform_flags} ${_include_flags} ${ITK_CLANG_MODULE_SYSTEM_INCLUDES} -fprebuilt-module-path=${ITK_PREBUILT_CLANG_MODULE_PATH} -o ${_clang_module_output}
+        WORKING_DIRECTORY ${${itk-module}_SOURCE_DIR}/include
+        DEPENDS ${_module_headers}
+        COMMENT "Building ${itk-module} Clang Module"
+        )
+
+      math(EXPR _module_num "${_module_num} + 1")
+      math(EXPR _available_headers "${_available_headers} + ${_maximum_number_of_headers}")
+    endwhile()
+    file(WRITE ${${itk-module}_SOURCE_DIR}/include/module.modulemap ${MODULEMAP_CONTENTS})
+
+    #configure_file("${ITK_CMAKE_DIR}/module.modulemap.in" ${${itk-module}_SOURCE_DIR}/include/module.modulemap @ONLY)
+
+    add_custom_target(${itk-module}ClangModule
+      DEPENDS ${_outputs}
       COMMENT "Building ${itk-module} Clang Module Target"
       )
-    add_dependencies(${itk-module}-all ${_clang_module_target})
+    add_dependencies(${itk-module}-all ${itk-module}ClangModule)
   endif()
 
   if(EXISTS ${${itk-module}_SOURCE_DIR}/src/CMakeLists.txt AND NOT ${itk-module}_NO_SRC)
