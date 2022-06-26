@@ -210,6 +210,8 @@ macro(itk_module_impl)
     ITKBridgeNumPy
     ITKTestKernel
     ITKIOImageBase
+    ITKIntegratedTest
+    ITKKLMRegionGrowing
     )
   if(NOT ${itk-module}_THIRD_PARTY AND ITK_USE_CLANG_MODULES AND NOT
       itk-module MATCHES "GPU" AND NOT itk-module IN_LIST _excluded_modules
@@ -252,6 +254,8 @@ macro(itk_module_impl)
     if (NOT "${CMAKE_CXX_STANDARD}" STREQUAL "14")
       set(CPLUSPLUS_REQUIRES "cplusplus17")
     endif()
+
+    if(0)
     file(GLOB _module_headers ${${itk-module}_SOURCE_DIR}/include/*.h)
     set(_header_files)
     set(_header_paths)
@@ -343,14 +347,46 @@ macro(itk_module_impl)
       math(EXPR _available_headers "${_available_headers} + ${_maximum_number_of_headers}")
     endwhile()
     file(WRITE ${${itk-module}_SOURCE_DIR}/include/module.modulemap ${MODULEMAP_CONTENTS})
+    endif()
+    # todo: check if python executable available
+    execute_process(COMMAND ${Python3_EXECUTABLE} ${ITK_CMAKE_DIR}/GenerateModuleMap.py ${${itk-module}_SOURCE_DIR}/include ${itk-module} ${CPLUSPLUS_REQUIRES}
+      RESULT_VARIABLE generate_module_map_result
+      OUTPUT_VARIABLE generate_module_map_output
+      ERROR_VARIABLE generate_module_map_error
+    )
+    if (generate_module_map_result EQUAL 0 OR "${generate_module_map_output}" OR "${generate_module_map_error}")
+        message(FATAL_ERROR "Error during generation of the ${itk-module} Clang module map.\nOutput: ${generate_module_map_output}\nError: ${generate_module_map_error}")
+    endif()
+    set(_num_modules ${generate_module_map_result})
+    set(_module_num 1)
+    set(_outputs)
+    set(_previous_output)
+    set(_custom_commands)
+    foreach(_module_num RANGE 1 ${_num_modules})
+      set(_module_name ${itk-module}${_module_num})
+      set(_clang_module ${_module_name}.pcm)
+      set(_clang_module_output ${ITK_PREBUILT_CLANG_MODULE_PATH}/${_clang_module})
+      list(APPEND _outputs ${_clang_module_output})
 
-    #configure_file("${ITK_CMAKE_DIR}/module.modulemap.in" ${${itk-module}_SOURCE_DIR}/include/module.modulemap @ONLY)
+      set(_custom_commands ${_custom_commands}
+        )
+      add_custom_command(OUTPUT ${_clang_module_output}
+        COMMAND ${CMAKE_C_COMPILER} -cc1 -emit-module -fmodules
+        module.modulemap -fmodule-name=${_module_name} -xc++ -std=c++${CMAKE_CXX_STANDARD} ${_platform_flags} ${_include_flags} ${ITK_CLANG_MODULE_SYSTEM_INCLUDES} -fprebuilt-module-path=${ITK_PREBUILT_CLANG_MODULE_PATH} -o ${_clang_module_output}
+        WORKING_DIRECTORY ${${itk-module}_SOURCE_DIR}/include
+        DEPENDS ${_module_headers} ${_previous_output}
+        COMMENT "Building ${itk-module} Clang Module"
+        )
 
-    add_custom_target(${itk-module}ClangModule
+      set(_previous_output ${_clang_module_output})
+    endforeach()
+
+    set(${itk-module}_CLANG_MODULE_TARGET ${itk-module}ClangModules)
+    add_custom_target(${${itk-module}_CLANG_MODULE_TARGET}
       DEPENDS ${_outputs}
       COMMENT "Building ${itk-module} Clang Module Target"
       )
-    add_dependencies(${itk-module}-all ${itk-module}ClangModule)
+    add_dependencies(${itk-module}-all ${${itk-module}_CLANG_MODULE_TARGET})
   endif()
 
   if(EXISTS ${${itk-module}_SOURCE_DIR}/src/CMakeLists.txt AND NOT ${itk-module}_NO_SRC)

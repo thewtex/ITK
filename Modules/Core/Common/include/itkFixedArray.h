@@ -446,6 +446,4 @@ swap(FixedArray<TValue, VLength> & a, FixedArray<TValue, VLength> & b)
 #  include "itkFixedArray.hxx"
 #endif
 
-#include "itkNumericTraitsFixedArrayPixel.h"
-
 #endif

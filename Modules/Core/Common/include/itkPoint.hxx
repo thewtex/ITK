@@ -17,7 +17,7 @@
  *=========================================================================*/
 #ifndef itkPoint_hxx
 #define itkPoint_hxx
-#include "itkNumericTraitsPointPixel.h"
+
 #include "itkMath.h"
 #include "itkObject.h"
 

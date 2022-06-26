@@ -19,8 +19,6 @@
 #define itkCurvatureRegistrationFilter_hxx
 #if !defined(ITK_USE_CUFFTW) && (defined(ITK_USE_FFTWF) || defined(ITK_USE_FFTWD))
 
-#  include "itkCurvatureRegistrationFilter.h"
-
 #  include "itkImageRegionIterator.h"
 #  include "itkImageRegionConstIteratorWithIndex.h"
 

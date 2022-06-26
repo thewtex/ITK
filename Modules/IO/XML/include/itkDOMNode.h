@@ -276,8 +276,6 @@ private:
 
 } // namespace itk
 
-#include "itkDOMTextNode.h"
-
 #include "itkStringTools.h"
 #include "itkFancyString.h"
 

@@ -1420,8 +1420,6 @@ swap(VariableLengthVector<T> & l_, VariableLengthVector<T> & r_) noexcept
 
 } // namespace itk
 
-#include "itkNumericTraitsVariableLengthVectorPixel.h"
-
 #ifndef ITK_MANUAL_INSTANTIATION
 #  include "itkVariableLengthVector.hxx"
 #endif

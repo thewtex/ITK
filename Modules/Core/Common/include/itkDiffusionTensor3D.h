@@ -157,7 +157,6 @@ swap(DiffusionTensor3D<T> & a, DiffusionTensor3D<T> & b)
 }
 
 } // end namespace itk
-#include "itkNumericTraitsDiffusionTensor3DPixel.h"
 
 #ifndef ITK_MANUAL_INSTANTIATION
 #  include "itkDiffusionTensor3D.hxx"

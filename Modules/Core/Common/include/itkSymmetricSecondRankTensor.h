@@ -260,8 +260,6 @@ swap(SymmetricSecondRankTensor<T> & a, SymmetricSecondRankTensor<T> & b)
 }
 } // end namespace itk
 
-#include "itkNumericTraitsTensorPixel.h"
-
 #ifndef ITK_MANUAL_INSTANTIATION
 #  include "itkSymmetricSecondRankTensor.hxx"
 #endif
