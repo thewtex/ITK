@@ -18,8 +18,6 @@
 #ifndef itkVariableLengthVector_hxx
 #define itkVariableLengthVector_hxx
 
-#include "itkNumericTraitsVariableLengthVectorPixel.h"
-#include "itkMath.h"
 #include <cstring>
 #include <cstdlib>
 

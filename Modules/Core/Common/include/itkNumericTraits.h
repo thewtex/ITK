@@ -1990,6 +1990,4 @@ public:
 /// \endcond
 } // end namespace itk
 
-#include "itkFixedArray.h"
-
 #endif // itkNumericTraits_h

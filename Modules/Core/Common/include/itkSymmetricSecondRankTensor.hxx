@@ -18,8 +18,6 @@
 #ifndef itkSymmetricSecondRankTensor_hxx
 #define itkSymmetricSecondRankTensor_hxx
 
-#include "itkNumericTraitsTensorPixel.h"
-
 namespace itk
 {
 /**
