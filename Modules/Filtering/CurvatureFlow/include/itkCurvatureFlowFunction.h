@@ -19,7 +19,6 @@
 #define itkCurvatureFlowFunction_h
 
 #include "itkFiniteDifferenceFunction.h"
-#include "itkMacro.h"
 
 namespace itk
 {

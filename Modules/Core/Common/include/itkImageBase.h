@@ -35,6 +35,7 @@
 #include "itkObjectFactory.h"
 #include "itkOffset.h"
 #include "itkFixedArray.h"
+#include "itkPoint.h"
 #include "itkImageHelper.h"
 #include "itkFloatTypes.h"
 

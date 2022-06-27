@@ -39,23 +39,26 @@ cplusplus_requires = sys.argv[3]
 headers = [h for h in include_dir.glob('*.h')]
 nodes = set([str(h.name) for h in headers])
 used_nodes = set()
-excluded_headers = {'itkExceptionObject.h',
+excluded_headers = {
+ # Do not include directly
+ 'itkExceptionObject.h',
+ # Deprecated
  'itkOrientationAdapterBase.h',
  'itkEnableIf.h',
  'itkIsBaseOf.h',
  'itkIsConvertible.h',
  'itkIsSame.h',
+ # Weird inconsistent definition errors
+ 'itkCurvatureFlowFunction.h',
+ 'itkBoxImageFilter.h',
+ 'itkPadImageFilterBase.h',
+ 'itkConstantPadImageFilter.h',
+ 'itkBSplineL2ResampleImageFilterBase.h',
+ 'itkBSplineResampleImageFilterBase.h',
+ 'itkBSplineCenteredResampleImageFilterBase.h',
 }
 
 regex = re.compile('^#\s*include\s+\"(itk\w+\.h)\"$')
-excluded_edges = {'itkNumericTraitsRGBPixel.h',
- 'itkNumericTraitsRGBAPixel.h',
- 'itkNumericTraitsDiffusionTensor3DPixel.h',
- 'itkNumericTraitsTensorPixel.h',
- 'itkNumericTraitsFixedArrayPixel.h',
- 'itkNumericTraitsCovariantVectorPixel.h',
- 'itkNumericTraitsVariableLengthVectorPixel.h',
- }
 edges = []
 for header in headers:
     with open(header, 'r') as fp:
@@ -64,7 +67,7 @@ for header in headers:
             if match:
                 dep = match.groups()[0]
                 # The NumericTraits specializations have special include conditions
-                if dep in nodes and not dep in excluded_edges:
+                if dep in nodes:
                     edges.append((header.name, match.groups()[0]))
     hxx_file = Path(str(header) + 'xx')
     if hxx_file.exists():
@@ -74,7 +77,7 @@ for header in headers:
                 if match:
                     dep = match.groups()[0]
                     # The NumericTraits specializations have special include conditions
-                    if dep in nodes and not dep in excluded_edges:
+                    if dep in nodes:
                         edges.append((header.name, match.groups()[0]))
 
 graph = nx.DiGraph()

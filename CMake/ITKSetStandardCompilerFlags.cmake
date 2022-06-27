@@ -446,7 +446,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   if(ITK_USE_CLANG_MODULES)
     set(ITK_PREBUILT_CLANG_MODULE_PATH ${ITK_BINARY_DIR}/PrebuiltClangModules)
     file(MAKE_DIRECTORY ${ITK_PREBUILT_CLANG_MODULE_PATH})
-    set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -fmodules -fbuiltin-module-map -fimplicit-module-maps -fprebuilt-module-path=${ITK_PREBUILT_CLANG_MODULE_PATH}")
+    set(ITK_REQUIRED_CXX_FLAGS "${ITK_REQUIRED_CXX_FLAGS} -Wmodule-conflict -fmodules -fbuiltin-module-map -fimplicit-module-maps -fprebuilt-module-path=${ITK_PREBUILT_CLANG_MODULE_PATH}")
 
     execute_process(COMMAND ${CMAKE_CXX_COMPILER} -v -c -x c++ -o "${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/CMakeTmp/ClangModuleSystemIncludeCheck.o" ${ITK_CMAKE_DIR}/ClangSearchPathInput.cxx
      OUTPUT_VARIABLE _clang_system_includes_output

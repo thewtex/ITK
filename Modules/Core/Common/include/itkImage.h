@@ -18,16 +18,12 @@
 #ifndef itkImage_h
 #define itkImage_h
 
-#include "itkImageRegion.h"
 #include "itkImportImageContainer.h"
 #include "itkDefaultPixelAccessor.h"
 #include "itkDefaultPixelAccessorFunctor.h"
-#include "itkPoint.h"
-#include "itkFixedArray.h"
 #include "itkWeakPointer.h"
 #include "itkNeighborhoodAccessorFunctor.h"
-
-#include <type_traits> // For is_same
+#include "itkImageBase.h"
 
 namespace itk
 {

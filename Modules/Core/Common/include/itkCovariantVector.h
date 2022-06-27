@@ -21,6 +21,7 @@
 #include "itkIndent.h"
 #include "itkVector.h"
 #include "vnl/vnl_vector_ref.h"
+#include "itkNumericTraits.h"
 
 namespace itk
 {

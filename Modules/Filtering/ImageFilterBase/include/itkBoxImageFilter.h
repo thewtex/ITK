@@ -18,7 +18,6 @@
 #ifndef itkBoxImageFilter_h
 #define itkBoxImageFilter_h
 
-#include "itkImageToImageFilter.h"
 #include "itkCastImageFilter.h"
 
 namespace itk
