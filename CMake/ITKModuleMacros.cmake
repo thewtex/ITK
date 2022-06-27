@@ -220,9 +220,32 @@ macro(itk_module_impl)
     ITKIOImageBase
     ITKIntegratedTest
     ITKKLMRegionGrowing
+    ITKImageGrid
+    ITKFastMarching
+    ITKMesh
+    ITKConnectedComponents
+    ITKDistanceMap
+    ITKLevelSets
+    ITKMathematicalMorphology
+    ITKImageFilterBase
+    ITKPath
+    ITKBinaryMathematicalMorphology
+    ITKImageFeature
+    ITKImageStatistics
+    ITKImageIntensity
+    )
+  set(_included_modules
+    ITKCommon
+    ITKAnisotropicSmoothing
+    ITKCurvatureFlow
+    ITKFiniteDifference
+    ITKImageAdaptors
+    ITKImageFunction
+    ITKStatistics
+    ITKTransform
     )
   if(NOT ${itk-module}_THIRD_PARTY AND ITK_USE_CLANG_MODULES AND NOT
-      itk-module MATCHES "GPU" AND NOT itk-module IN_LIST _excluded_modules
+      itk-module MATCHES "GPU" AND itk-module IN_LIST _included_modules
       )
     # Use Clang Objective-C / C++ Module support
 

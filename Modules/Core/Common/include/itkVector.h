@@ -19,6 +19,7 @@
 #define itkVector_h
 
 #include "itkFixedArray.h"
+#include "itkNumericTraits.h"
 
 #include "vnl/vnl_vector_ref.h" // GetVnlVector method return
 
