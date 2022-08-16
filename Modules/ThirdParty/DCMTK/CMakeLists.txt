@@ -78,8 +78,20 @@ else(DCMTK_USE_ICU)
      )
 endif()
 
-set(_ITKDCMTK_LIB_NAMES dcmdata dcmimage dcmimgle dcmjpeg dcmjpls
-    dcmnet dcmpstat dcmqrdb dcmsr dcmtls ijg12 ijg16 ijg8 oflog ofstd oficonv)
+if(APPLE)
+  # Character set conversion creates linking errors on MacOS. We disable
+  # `iconv` which is likely going to be found on the system by DCMTK, and
+  # that is going to create linking errors.
+  list(APPEND
+      CHARSET_CONVERSION_ARGS
+        -DDCMTK_WITH_ICONV:BOOL=OFF
+      )
+endif()
+
+#set(_ITKDCMTK_LIB_NAMES dcmdata dcmimage dcmimgle dcmjpeg dcmjpls
+    #dcmnet dcmpstat dcmqrdb dcmsr dcmtls ijg12 ijg16 ijg8 oflog ofstd oficonv)
+# Enable minimal DCMTK libs for wasm
+set(_ITKDCMTK_LIB_NAMES ofstd oflog dcmdata dcmimgle dcmimage dcmsr dcmpstat dcmnet dcmqrdb oficonv dcmiod)
 if(WIN32)
   set(ITKDCMTK_LIBDEP_WIN iphlpapi ws2_32 netapi32 wsock32)
 endif()
@@ -225,7 +237,7 @@ endforeach()
     -DCMAKE_CXX_EXTENSIONS:BOOL=${CMAKE_CXX_EXTENSIONS}
     -DDCMTK_ENABLE_CXX11:BOOL=ON
     -DDCMTK_FORCE_FPIC_ON_UNIX:BOOL=ON
-    -DBUILD_APPS:BOOL=OFF        # Only DCMTK libraries are needed
+    -DBUILD_APPS:BOOL=${DCMTK_BUILD_APPS}
     -DDCMTK_WITH_OPENSSL:BOOL=OFF
     -DDCMTK_WITH_PNG:BOOL=ON
     -DDCMTK_WITH_XML:BOOL=OFF
