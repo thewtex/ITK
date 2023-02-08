@@ -59,7 +59,7 @@ using std::intptr_t;
 using std::uintptr_t;
 
 
-#if defined(ITK_USE_64BITS_IDS) && ((ULLONG_MAX != ULONG_MAX) || (LLONG_MAX != LONG_MAX))
+#if defined(ITK_USE_64BITS_IDS) && ((ULLONG_MAX != ULONG_MAX) || (LLONG_MAX != LONG_MAX)) || defined(__wasm32__)
 
 /** Any count of number of items (number of pixels in an image, number of
  *  points) (it is unsigned) */
