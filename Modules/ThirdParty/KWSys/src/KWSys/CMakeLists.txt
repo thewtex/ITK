@@ -441,6 +441,11 @@ if(KWSYS_USE_SystemTools)
     KWSYS_CXX_STAT_HAS_ST_MTIM=${KWSYS_CXX_STAT_HAS_ST_MTIM}
     KWSYS_CXX_STAT_HAS_ST_MTIMESPEC=${KWSYS_CXX_STAT_HAS_ST_MTIMESPEC}
     )
+  if(WASI)
+    set_property(SOURCE SystemTools.cxx APPEND PROPERTY
+      COMPILE_DEFINITIONS _WASI_EMULATED_SIGNAL)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lwasi-emulated-signal")
+  endif()
   if(NOT WIN32)
     if(KWSYS_STANDALONE)
       option(KWSYS_SYSTEMTOOLS_SUPPORT_WINDOWS_SLASHES "If true, Windows paths will be supported on Unix as well" ON)
@@ -471,6 +476,11 @@ if(KWSYS_USE_SystemInformation)
       set_property(SOURCE SystemInformation.cxx APPEND PROPERTY
         COMPILE_DEFINITIONS KWSYS_SYS_HAS_IFADDRS_H=1)
     endif()
+  endif()
+  if(WASI)
+    set_property(SOURCE SystemInformation.cxx APPEND PROPERTY
+      COMPILE_DEFINITIONS _WASI_EMULATED_SIGNAL)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lwasi-emulated-signal")
   endif()
   if(WIN32)
     include(CheckSymbolExists)
