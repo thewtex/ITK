@@ -323,7 +323,6 @@ H5PL__open(const char *path, H5PL_type_t type, const H5PL_key_t *key, hbool_t *s
         H5PL_CLR_ERROR; /* clear error */
         HGOTO_DONE(SUCCEED)
     }
-#endif
 
     /* Return a handle for the function H5PLget_plugin_type in the dynamic library.
      * The plugin library is supposed to define this function.
@@ -336,6 +335,7 @@ H5PL__open(const char *path, H5PL_type_t type, const H5PL_key_t *key, hbool_t *s
      */
     if (NULL == (get_plugin_info = (H5PL_get_plugin_info_t)H5PL_GET_LIB_FUNC(handle, "H5PLget_plugin_info")))
         HGOTO_DONE(SUCCEED)
+#endif
 
     /* Check the plugin type and return if it doesn't match the one passed in */
     loaded_plugin_type = (H5PL_type_t)(*get_plugin_type)();
@@ -430,7 +430,9 @@ H5PL__close(H5PL_HANDLE handle)
 {
     FUNC_ENTER_PACKAGE_NOERR
 
+#ifndef __wasi__
     H5PL_CLOSE_LIB(handle);
+#endif
 
     FUNC_LEAVE_NOAPI(SUCCEED)
 } /* end H5PL__close() */
