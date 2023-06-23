@@ -901,7 +901,17 @@ png_safe_error),(png_structp png_nonconst_ptr, png_const_charp error_message),
        * element of a jmp_buf, but C doesn't tell us the type of that.
        */
       if (image->opaque != NULL && image->opaque->error_buf != NULL)
+#ifndef __wasi__
          longjmp(png_control_jmp_buf(image->opaque), 1);
+#else
+      {
+         size_t pos = png_safecat(image->message, (sizeof image->message), 0,
+             "bad longjmp: ");
+         png_safecat(image->message, (sizeof image->message), pos,
+             error_message);
+         abort();
+      }
+#endif
 
       /* Missing longjmp buffer, the following is to help debugging: */
       {
