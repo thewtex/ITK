@@ -9,7 +9,9 @@
 # If you do not have access to either file, you may request a copy from
 # help@hdfgroup.org.
 #
-set(CMAKE_CXX_STANDARD 98)
+if(NOT DEFINED CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 98)
+endif()
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
