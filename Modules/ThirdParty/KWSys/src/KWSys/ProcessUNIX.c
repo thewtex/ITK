@@ -860,10 +860,12 @@ void kwsysProcess_Execute(kwsysProcess* cp)
   {
     /* Create the pipe.  */
     int p[2];
+#ifndef __wasi__
     if (pipe(p KWSYSPE_VMS_NONBLOCK) < 0) {
       kwsysProcessCleanup(cp, 1);
       return;
     }
+#endif
 
     /* Store the pipe.  */
     cp->PipeReadEnds[KWSYSPE_PIPE_STDOUT] = p[0];
@@ -910,10 +912,12 @@ void kwsysProcess_Execute(kwsysProcess* cp)
   {
     /* Create the pipe.  */
     int p[2];
+#ifndef __wasi__
     if (pipe(p KWSYSPE_VMS_NONBLOCK) < 0) {
       kwsysProcessCleanup(cp, 1);
       return;
     }
+#endif
 
     /* Store the pipe.  */
     cp->PipeReadEnds[KWSYSPE_PIPE_STDERR] = p[0];
@@ -972,6 +976,7 @@ void kwsysProcess_Execute(kwsysProcess* cp)
       } else {
         /* Create a pipe to sit between the children.  */
         int p[2] = { -1, -1 };
+#ifndef __wasi__
         if (pipe(p KWSYSPE_VMS_NONBLOCK) < 0) {
           if (nextStdIn != cp->PipeChildStd[0]) {
             kwsysProcessCleanupDescriptor(&nextStdIn);
@@ -979,6 +984,7 @@ void kwsysProcess_Execute(kwsysProcess* cp)
           kwsysProcessCleanup(cp, 1);
           return;
         }
+#endif
 
         /* Set close-on-exec flag on the pipe's ends.  */
         if ((fcntl(p[0], F_SETFD, FD_CLOEXEC) < 0) ||
@@ -1378,6 +1384,7 @@ int kwsysProcess_WaitForExit(kwsysProcess* cp, double* userTimeout)
     /* The timeout expired.  */
     cp->State = kwsysProcess_State_Expired;
   } else {
+#ifndef __wasi__
     /* The children exited.  Report the outcome of the child processes.  */
     for (prPipe = 0; prPipe < cp->NumberOfCommands; ++prPipe) {
       cp->ProcessResults[prPipe].ExitCode = cp->CommandExitCodes[prPipe];
@@ -1401,6 +1408,7 @@ int kwsysProcess_WaitForExit(kwsysProcess* cp, double* userTimeout)
         cp->ProcessResults[prPipe].State = kwsysProcess_StateByIndex_Error;
       }
     }
+#endif
     /* support legacy state status value */
     cp->State = cp->ProcessResults[cp->NumberOfCommands - 1].State;
   }
@@ -1418,6 +1426,7 @@ void kwsysProcess_Interrupt(kwsysProcess* cp)
     return;
   }
 
+#ifndef __wasi__
   /* Interrupt the children.  */
   if (cp->CreateProcessGroup) {
     if (cp->ForkPIDs) {
@@ -1438,6 +1447,7 @@ void kwsysProcess_Interrupt(kwsysProcess* cp)
        the current process group for consistency with Windows.  */
     kill(0, SIGINT);
   }
+#endif
 }
 
 void kwsysProcess_Kill(kwsysProcess* cp)
@@ -2466,6 +2476,7 @@ static void kwsysProcessExit(void)
 static pid_t kwsysProcessFork(kwsysProcess* cp,
                               kwsysProcessCreateInformation* si)
 {
+#ifndef __wasi__
   /* Create a detached process if requested.  */
   if (cp->OptionDetach) {
     /* Create an intermediate process.  */
@@ -2500,14 +2511,13 @@ static pid_t kwsysProcessFork(kwsysProcess* cp,
     }
 
     /* Wait for the intermediate process to exit and clean it up.  */
-#if !defined(__wasi__)
     while ((waitpid(middle_pid, &status, 0) < 0) && (errno == EINTR)) {
     }
-#endif
     return child_pid;
   }
   /* Not creating a detached process.  Use normal fork.  */
   return fork();
+#endif
 }
 #endif
 
@@ -2546,7 +2556,9 @@ static void kwsysProcessKill(pid_t process_id)
 #endif
 
   /* Suspend the process to be sure it will not create more children.  */
+#ifndef __wasi__
   kill(process_id, SIGSTOP);
+#endif
 
 #if defined(__CYGWIN__)
   /* Some Cygwin versions seem to need help here.  Give up our time slice
@@ -2629,6 +2641,7 @@ static void kwsysProcessKill(pid_t process_id)
 #endif
   }
 
+#ifndef __wasi__
   /* Kill the process.  */
   kill(process_id, SIGKILL);
 
@@ -2641,6 +2654,7 @@ static void kwsysProcessKill(pid_t process_id)
   kill(process_id, SIGCONT);
   kill(process_id, SIGKILL);
 #endif
+#endif // __wasi__
 }
 
 #if defined(__VMS)
