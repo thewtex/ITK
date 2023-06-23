@@ -2729,9 +2729,11 @@ H5F__build_actual_name(const H5F_t *f, const H5P_genplist_t *fapl, const char *n
             if (st.st_mode != fst.st_mode || st.st_ino != fst.st_ino || st.st_dev != fst.st_dev)
                 HGOTO_ERROR(H5E_FILE, H5E_BADVALUE, FAIL, "files' st_ino or st_dev fields changed!")
 
+#ifndef __wasi__
             /* Get the resolved path for the file name */
             if (NULL == HDrealpath(name, realname))
                 HGOTO_ERROR(H5E_FILE, H5E_CANTGET, FAIL, "can't retrieve real path for file")
+#endif
 
             /* Duplicate the resolved path for the file name */
             if (NULL == (*actual_name = (char *)H5MM_strdup(realname)))
