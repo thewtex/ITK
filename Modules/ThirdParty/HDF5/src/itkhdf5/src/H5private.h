@@ -1568,7 +1568,11 @@ H5_DLL int64_t HDstrtoll(const char *s, const char **rest, int base);
 #define HDttyname(F) ttyname(F)
 #endif /* HDttyname */
 #ifndef HDtzset
+#ifndef __wasi__
 #define HDtzset() tzset()
+#else
+#define HDtzset()
+#endif
 #endif /* HDtzset */
 #ifndef HDumask
 #define HDumask(N) umask(N)
