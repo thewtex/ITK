@@ -300,6 +300,12 @@ Pflock(int fd, int operation)
     return 0;
 
 } /* end Pflock() */
+#else
+int
+Pflock(int fd, int operation)
+{
+    return 0;
+} /* end Pflock() */
 #endif /* __wasi__ */
 #endif /* H5_HAVE_FCNTL */
 
