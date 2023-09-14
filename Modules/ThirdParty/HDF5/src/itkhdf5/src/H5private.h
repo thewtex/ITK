@@ -47,12 +47,7 @@
 #ifdef H5_STDC_HEADERS
 #include <assert.h>
 #include <ctype.h>
-#ifndef __wasi__
-#   include <errno.h>
-#else
-#define thread_local
-#   include <errno.h>
-#endif
+#include <errno.h>
 #include <fcntl.h>
 #include <float.h>
 #include <limits.h>

@@ -11,9 +11,6 @@
  * help@hdfgroup.org.                                                        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifdef __wasi__
-#define thread_local
-#endif
 #include <iostream>
 
 #include <string>
