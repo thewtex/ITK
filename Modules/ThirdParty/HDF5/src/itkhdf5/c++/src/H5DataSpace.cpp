@@ -11,7 +11,7 @@
  * help@hdfgroup.org.                                                        *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include <iostream>
+#include <cstdio>
 #include <string>
 
 #include "H5Include.h"
@@ -20,8 +20,6 @@
 #include "H5DataSpace.h"
 
 namespace H5 {
-using std::cerr;
-using std::endl;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // This DOXYGEN_SHOULD_SKIP_THIS block is a work-around approach to control
@@ -688,7 +686,7 @@ DataSpace::~DataSpace()
         close();
     }
     catch (Exception &close_error) {
-        cerr << "DataSpace::~DataSpace - " << close_error.getDetailMsg() << endl;
+        fprintf(stderr, "DataSpace::~DataSpace - %s\n", close_error.getDetailMsg().c_str());
     }
 }
 
