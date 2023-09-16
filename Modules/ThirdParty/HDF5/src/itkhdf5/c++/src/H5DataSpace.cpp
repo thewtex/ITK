@@ -54,8 +54,16 @@ DataSpace::getConstant()
     if (ALL_ == 0)
         ALL_ = new DataSpace(H5S_ALL);
     else
+#ifdef __wasi__
+    {
+      fprintf(stderr, "At: DataSpace::getConstant\n");
+      fprintf(stderr, "DataSpace::getConstant is being invoked on an allocated ALL_\n");
+      abort();
+    }
+#else
         throw DataSpaceIException("DataSpace::getConstant",
                                   "DataSpace::getConstant is being invoked on an allocated ALL_");
+#endif
     return (ALL_);
 }
 
@@ -91,7 +99,13 @@ DataSpace::DataSpace(H5S_class_t type) : IdComponent()
 {
     id = H5Screate(type);
     if (id < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace constructor\n");
+      fprintf(stderr, "H5Screate failed\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace constructor", "H5Screate failed");
+#endif
     }
 }
 
@@ -108,7 +122,13 @@ DataSpace::DataSpace(int rank, const hsize_t *dims, const hsize_t *maxdims) : Id
 {
     id = H5Screate_simple(rank, dims, maxdims);
     if (id < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace constructor\n");
+      fprintf(stderr, "H5Screate_simple failed\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace constructor", "H5Screate_simple failed");
+#endif
     }
 }
 
@@ -157,7 +177,14 @@ DataSpace::copy(const DataSpace &like_space)
             close();
         }
         catch (Exception &close_error) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::copy\n");
+      fprintf(stderr, close_error.getDetailMsg().c_str());
+      fprintf(stderr, "\n");
+      abort();
+#else
             throw DataSpaceIException("DataSpace::copy", close_error.getDetailMsg());
+#endif
         }
     } // end if
 
@@ -165,7 +192,13 @@ DataSpace::copy(const DataSpace &like_space)
     id = H5Scopy(like_space.getId());
 
     if (id < 0)
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::copy\n");
+      fprintf(stderr, "H5Scopy failed\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::copy", "H5Scopy failed");
+#endif
 }
 
 //--------------------------------------------------------------------------
@@ -204,7 +237,13 @@ DataSpace::isSimple() const
     else if (simple == 0)
         return false;
     else {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::isSimple\n");
+      fprintf(stderr, "H5Sis_simple returns negative value\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::isSimple", "H5Sis_simple returns negative value");
+#endif
     }
 }
 
@@ -244,8 +283,14 @@ DataSpace::getSimpleExtentDims(hsize_t *dims, hsize_t *maxdims) const
 {
     int ndims = H5Sget_simple_extent_dims(id, dims, maxdims);
     if (ndims < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::getSimpleExtentDims\n");
+      fprintf(stderr, "H5Sget_simple_extent_dims returns negative number of dimensions\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::getSimpleExtentDims",
                                   "H5Sget_simple_extent_dims returns negative number of dimensions");
+#endif
     }
     return (ndims);
 }
@@ -262,9 +307,15 @@ DataSpace::getSimpleExtentNdims() const
 {
     int ndims = H5Sget_simple_extent_ndims(id);
     if (ndims < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::getSimpleExtentNDims\n");
+      fprintf(stderr, "H5Sget_simple_extent_ndims returns negative value for dimensionality of the dataspace\n");
+      abort();
+#else
         throw DataSpaceIException(
             "DataSpace::getSimpleExtentNdims",
             "H5Sget_simple_extent_ndims returns negative value for dimensionality of the dataspace");
+#endif
     }
     return (ndims);
 }
@@ -287,9 +338,15 @@ DataSpace::getSimpleExtentNpoints() const
     if (num_elements > -1)
         return (num_elements);
     else {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::getSimpleExtentNpoints\n");
+      fprintf(stderr, "H5Sget_simple_extent_npoints returns negative value for the number of elements in the dataspace\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::getSimpleExtentNpoints",
                                   "H5Sget_simple_extent_npoints returns negative value for the number of "
                                   "elements in the dataspace");
+#endif
     }
 }
 
@@ -305,8 +362,14 @@ DataSpace::getSimpleExtentType() const
 {
     H5S_class_t class_name = H5Sget_simple_extent_type(id);
     if (class_name == H5S_NO_CLASS) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::getSimpleExtentType\n");
+      fprintf(stderr, "H5Sget_simple_extent_type returns H5S_NO_CLASS\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::getSimpleExtentType",
                                   "H5Sget_simple_extent_type returns H5S_NO_CLASS");
+#endif
     }
     return (class_name);
 }
@@ -324,7 +387,13 @@ DataSpace::extentCopy(const DataSpace &dest_space) const
     hid_t  dest_space_id = dest_space.getId();
     herr_t ret_value     = H5Sextent_copy(dest_space_id, id);
     if (ret_value < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::extentCopy\n");
+      fprintf(stderr, "H5sextent_copy failed\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::extentCopy", "H5Sextent_copy failed");
+#endif
     }
 }
 
@@ -361,7 +430,13 @@ DataSpace::setExtentSimple(int rank, const hsize_t *current_size, const hsize_t 
     herr_t ret_value;
     ret_value = H5Sset_extent_simple(id, rank, current_size, maximum_size);
     if (ret_value < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::setExtentSimple\n");
+      fprintf(stderr, "H5Sset_extent_simple failed\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::setExtentSimple", "H5Sset_extent_simple failed");
+#endif
     }
 }
 
@@ -412,9 +487,15 @@ DataSpace::getSelectHyperNblocks() const
 {
     hssize_t num_blocks = H5Sget_select_hyper_nblocks(id);
     if (num_blocks < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::getSelectHyperNblocks\n");
+      fprintf(stderr, "H5Sget_select_hyper_nblocks returns negative value for the number of hyperslab blocks\n");
+      abort();
+#else
         throw DataSpaceIException(
             "DataSpace::getSelectHyperNblocks",
             "H5Sget_select_hyper_nblocks returns negative value for the number of hyperslab blocks");
+#endif
     }
     return (num_blocks);
 }
@@ -434,8 +515,14 @@ DataSpace::getSelectHyperBlocklist(hsize_t startblock, hsize_t numblocks, hsize_
     herr_t ret_value;
     ret_value = H5Sget_select_hyper_blocklist(id, startblock, numblocks, buf);
     if (ret_value < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::getSelectHyperBlocklist\n");
+      fprintf(stderr, "H5Sget_select_hyper_blocklist failed\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::getSelectHyperBlocklist",
                                   "H5Sget_select_hyper_blocklist failed");
+#endif
     }
 }
 
@@ -451,7 +538,13 @@ DataSpace::getSelectElemNpoints() const
 {
     hssize_t num_points = H5Sget_select_elem_npoints(id);
     if (num_points < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::getSelectElemNpoints\n");
+      fprintf(stderr, "H5Sget_select_elem_npoints failed\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::getSelectElemNpoints", "H5Sget_select_elem_npoints failed");
+#endif
     }
     return (num_points);
 }
@@ -474,7 +567,13 @@ DataSpace::getSelectElemPointlist(hsize_t startpoint, hsize_t numpoints, hsize_t
     herr_t ret_value;
     ret_value = H5Sget_select_elem_pointlist(id, startpoint, numpoints, buf);
     if (ret_value < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::getSelectElemPointlist\n");
+      fprintf(stderr, "H5Sget_select_elem_pointlist failed\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::getSelectElemPointlist", "H5Sget_select_elem_pointlist failed");
+#endif
     }
 }
 
@@ -520,7 +619,13 @@ DataSpace::selectElements(H5S_seloper_t op, const size_t num_elements, const hsi
     herr_t ret_value;
     ret_value = H5Sselect_elements(id, op, num_elements, coord);
     if (ret_value < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::selectElements\n");
+      fprintf(stderr, "H5Sselect_elements failed\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::selectElements", "H5Sselect_elements failed");
+#endif
     }
 }
 
@@ -536,7 +641,13 @@ DataSpace::selectAll() const
 {
     herr_t ret_value = H5Sselect_all(id);
     if (ret_value < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::selectAll\n");
+      fprintf(stderr, "H5Sselect_all failed\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::selectAll", "H5Sselect_all failed");
+#endif
     }
 }
 
@@ -552,7 +663,13 @@ DataSpace::selectNone() const
 {
     herr_t ret_value = H5Sselect_none(id);
     if (ret_value < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::selectNone\n");
+      fprintf(stderr, "H5Sselect_none failed\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::selectNone", "H5Sselect_none failed");
+#endif
     }
 }
 
@@ -574,7 +691,13 @@ DataSpace::selectValid() const
     else if (ret_value == 0)
         return false;
     else {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::selectValid\n");
+      fprintf(stderr, "H5Sselect_valid failed\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::selectValid", "H5Sselect_valid returns negative value");
+#endif
     }
 }
 
@@ -599,7 +722,13 @@ DataSpace::selectHyperslab(H5S_seloper_t op, const hsize_t *count, const hsize_t
     herr_t ret_value;
     ret_value = H5Sselect_hyperslab(id, op, start, stride, count, block);
     if (ret_value < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::selectHyperslab\n");
+      fprintf(stderr, "H5Sselect_hyperslab failed\n");
+      abort();
+#else
         throw DataSpaceIException("DataSpace::selectHyperslab", "H5Sselect_hyperslab failed");
+#endif
     }
 }
 
@@ -642,7 +771,14 @@ DataSpace::p_setId(const hid_t new_id)
         close();
     }
     catch (Exception &close_error) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::p_setId\n");
+      fprintf(stderr, close_error.getDetailMsg().c_str());
+      fprintf(stderr, "\n");
+      abort();
+#else
         throw DataSpaceIException(inMemFunc("p_setId"), close_error.getDetailMsg());
+#endif
     }
     // reset object's id to the given id
     id = new_id;
@@ -663,7 +799,13 @@ DataSpace::close()
     if (p_valid_id(id)) {
         herr_t ret_value = H5Sclose(id);
         if (ret_value < 0) {
+#ifdef __wasi__
+      fprintf(stderr, "At: DataSpace::close\n");
+      fprintf(stderr, "H5Sclose failed\n");
+      abort();
+#else
             throw DataSpaceIException("DataSpace::close", "H5Sclose failed");
+#endif
         }
         // reset the id
         id = H5I_INVALID_HID;
@@ -687,6 +829,7 @@ DataSpace::~DataSpace()
     }
     catch (Exception &close_error) {
         fprintf(stderr, "DataSpace::~DataSpace - %s\n", close_error.getDetailMsg().c_str());
+        fprintf(stderr, "\n");
     }
 }
 
