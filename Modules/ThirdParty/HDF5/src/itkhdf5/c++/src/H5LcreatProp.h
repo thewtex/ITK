@@ -67,8 +67,6 @@ class H5_DLLCPP LinkCreatPropList : public PropList {
     static void deleteConstants();
 
   private:
-    static LinkCreatPropList *DEFAULT_;
-
     // Creates the global constant, should only be used by the library
     static LinkCreatPropList *getConstant();
 

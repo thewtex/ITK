@@ -26,9 +26,6 @@ namespace H5 {
 // the order of creation and deletion of the global constants.  See Design Notes
 // in "H5PredType.cpp" for information.
 
-// Initialize a pointer for the constant
-LinkAccPropList *LinkAccPropList::DEFAULT_ = 0;
-
 //--------------------------------------------------------------------------
 // Function:    LinkAccPropList::getConstant
 //              Creates a LinkAccPropList object representing the HDF5 constant
@@ -50,13 +47,9 @@ LinkAccPropList::getConstant()
         IdComponent::H5dontAtexit_called = true;
     }
 
-    // If the constant pointer is not allocated, allocate it. Otherwise,
-    // throw because it shouldn't be.
-    if (DEFAULT_ == 0)
-        DEFAULT_ = new LinkAccPropList(H5P_LINK_ACCESS);
-    else
-        throw PropListIException("LinkAccPropList::getConstant",
-                                 "LinkAccPropList::getConstant is being invoked on an allocated DEFAULT_");
+    // Initialize a pointer for the constant
+    LinkAccPropList *DEFAULT_ = new LinkAccPropList(H5P_LINK_ACCESS);
+
     return (DEFAULT_);
 }
 
@@ -70,6 +63,7 @@ LinkAccPropList::getConstant()
 void
 LinkAccPropList::deleteConstants()
 {
+    LinkAccPropList *DEFAULT_ = getConstant();
     if (DEFAULT_ != 0)
         delete DEFAULT_;
 }

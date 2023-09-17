@@ -142,8 +142,6 @@ class H5_DLLCPP DataSpace : public IdComponent {
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
-    static DataSpace *ALL_;
-
     // Creates the global constant
     static DataSpace *getConstant();
 

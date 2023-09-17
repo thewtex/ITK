@@ -30,9 +30,6 @@ using std::endl;
 // the order of creation and deletion of the global constants.  See Design Notes
 // in "H5PredType.cpp" for information.
 
-// Initialize a pointer for the constant
-PropList *PropList::DEFAULT_ = 0;
-
 //--------------------------------------------------------------------------
 // Function:    PropList::getConstant
 // Purpose      Creates a PropList object representing the HDF5 constant
@@ -53,13 +50,8 @@ PropList::getConstant()
         IdComponent::H5dontAtexit_called = true;
     }
 
-    // If the constant pointer is not allocated, allocate it. Otherwise,
-    // throw because it shouldn't be.
-    if (DEFAULT_ == 0)
-        DEFAULT_ = new PropList(H5P_DEFAULT);
-    else
-        throw PropListIException("PropList::getConstant",
-                                 "PropList::getConstant is being invoked on an allocated DEFAULT_");
+    // Initialize a pointer for the constant
+    PropList *DEFAULT_ = new PropList(H5P_DEFAULT);
     return (DEFAULT_);
 }
 
@@ -71,6 +63,7 @@ PropList::getConstant()
 void
 PropList::deleteConstants()
 {
+    PropList *DEFAULT_ = getConstant();
     if (DEFAULT_ != 0)
         delete DEFAULT_;
 }

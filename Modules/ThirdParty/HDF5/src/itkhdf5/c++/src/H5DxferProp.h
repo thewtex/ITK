@@ -121,8 +121,6 @@ class H5_DLLCPP DSetMemXferPropList : public PropList {
     static void deleteConstants();
 
   private:
-    static DSetMemXferPropList *DEFAULT_;
-
     // Creates the global constant, should only be used by the library
     static DSetMemXferPropList *getConstant();
 

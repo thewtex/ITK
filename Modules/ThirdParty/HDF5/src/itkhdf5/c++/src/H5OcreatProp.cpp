@@ -26,9 +26,6 @@ namespace H5 {
 // the order of creation and deletion of the global constants.  See Design Notes
 // in "H5PredType.cpp" for information.
 
-// Initialize a pointer for the constant
-ObjCreatPropList *ObjCreatPropList::DEFAULT_ = 0;
-
 //--------------------------------------------------------------------------
 // Function:    ObjCreatPropList::getConstant
 //              Creates a ObjCreatPropList object representing the HDF5 constant
@@ -50,13 +47,9 @@ ObjCreatPropList::getConstant()
         IdComponent::H5dontAtexit_called = true;
     }
 
-    // If the constant pointer is not allocated, allocate it. Otherwise,
-    // throw because it shouldn't be.
-    if (DEFAULT_ == 0)
-        DEFAULT_ = new ObjCreatPropList(H5P_OBJECT_CREATE);
-    else
-        throw PropListIException("ObjCreatPropList::getConstant",
-                                 "ObjCreatPropList::getConstant is being invoked on an allocated DEFAULT_");
+    // Initialize a pointer for the constant
+    ObjCreatPropList *DEFAULT_ = new ObjCreatPropList(H5P_OBJECT_CREATE);
+
     return (DEFAULT_);
 }
 
@@ -70,6 +63,7 @@ ObjCreatPropList::getConstant()
 void
 ObjCreatPropList::deleteConstants()
 {
+    ObjCreatPropList *DEFAULT_ = getConstant();
     if (DEFAULT_ != 0)
         delete DEFAULT_;
 }

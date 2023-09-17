@@ -27,8 +27,6 @@ namespace H5 {
 // the order of creation and deletion of the global constants.  See Design Notes
 // in "H5PredType.cpp" for information.
 
-// Initialize a pointer for the constant
-DSetMemXferPropList *DSetMemXferPropList::DEFAULT_ = 0;
 
 //--------------------------------------------------------------------------
 // Function:    DSetMemXferPropList::getConstant
@@ -52,14 +50,8 @@ DSetMemXferPropList::getConstant()
         IdComponent::H5dontAtexit_called = true;
     }
 
-    // If the constant pointer is not allocated, allocate it. Otherwise,
-    // throw because it shouldn't be.
-    if (DEFAULT_ == 0)
-        DEFAULT_ = new DSetMemXferPropList(H5P_DATASET_XFER);
-    else
-        throw PropListIException(
-            "DSetMemXferPropList::getConstant",
-            "DSetMemXferPropList::getConstant is being invoked on an allocated DEFAULT_");
+    // Initialize a pointer for the constant
+    DSetMemXferPropList *DEFAULT_ = new DSetMemXferPropList(H5P_DATASET_XFER);
     return (DEFAULT_);
 }
 
@@ -72,6 +64,7 @@ DSetMemXferPropList::getConstant()
 void
 DSetMemXferPropList::deleteConstants()
 {
+    DSetMemXferPropList *DEFAULT_ = getConstant();
     if (DEFAULT_ != 0)
         delete DEFAULT_;
 }

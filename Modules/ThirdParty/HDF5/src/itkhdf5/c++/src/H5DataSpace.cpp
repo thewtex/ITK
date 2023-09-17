@@ -26,9 +26,6 @@ namespace H5 {
 // the order of creation and deletion of the global constants.  See Design Notes
 // in "H5PredType.cpp" for information.
 
-// Initialize a pointer for the constant
-DataSpace *DataSpace::ALL_ = 0;
-
 //--------------------------------------------------------------------------
 // Function:    DataSpace::getConstant
 //              Creates a DataSpace object representing the HDF5 constant
@@ -49,21 +46,7 @@ DataSpace::getConstant()
         IdComponent::H5dontAtexit_called = true;
     }
 
-    // If the constant pointer is not allocated, allocate it. Otherwise,
-    // throw because it shouldn't be.
-    if (ALL_ == 0)
-        ALL_ = new DataSpace(H5S_ALL);
-    else
-#ifdef __wasi__
-    {
-      fprintf(stderr, "At: DataSpace::getConstant\n");
-      fprintf(stderr, "DataSpace::getConstant is being invoked on an allocated ALL_\n");
-      abort();
-    }
-#else
-        throw DataSpaceIException("DataSpace::getConstant",
-                                  "DataSpace::getConstant is being invoked on an allocated ALL_");
-#endif
+    static DataSpace *ALL_ = new DataSpace(H5S_ALL);
     return (ALL_);
 }
 
@@ -75,6 +58,7 @@ DataSpace::getConstant()
 void
 DataSpace::deleteConstants()
 {
+    DataSpace *ALL_ = getConstant();
     if (ALL_ != 0)
         delete ALL_;
 }
