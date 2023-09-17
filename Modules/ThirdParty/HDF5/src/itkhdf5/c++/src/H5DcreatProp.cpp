@@ -34,8 +34,6 @@ namespace H5 {
 // the order of creation and deletion of the global constants.  See Design Notes
 // in "H5PredType.cpp" for information.
 
-// Initialize a pointer for the constant
-DSetCreatPropList *DSetCreatPropList::DEFAULT_ = 0;
 
 //--------------------------------------------------------------------------
 // Function:    DSetCreatPropList::getConstant
@@ -59,13 +57,8 @@ DSetCreatPropList::getConstant()
         IdComponent::H5dontAtexit_called = true;
     }
 
-    // If the constant pointer is not allocated, allocate it. Otherwise,
-    // throw because it shouldn't be.
-    if (DEFAULT_ == 0)
-        DEFAULT_ = new DSetCreatPropList(H5P_DATASET_CREATE);
-    else
-        throw PropListIException("DSetCreatPropList::getConstant",
-                                 "DSetCreatPropList::getConstant is being invoked on an allocated DEFAULT_");
+    // Initialize a pointer for the constant
+    static DSetCreatPropList * DEFAULT_ = new DSetCreatPropList(H5P_DATASET_CREATE);
     return (DEFAULT_);
 }
 
@@ -78,6 +71,7 @@ DSetCreatPropList::getConstant()
 void
 DSetCreatPropList::deleteConstants()
 {
+    DSetCreatPropList * DEFAULT_ = getConstant();
     if (DEFAULT_ != 0)
         delete DEFAULT_;
 }
