@@ -131,8 +131,6 @@ class H5_DLLCPP PropList : public IdComponent {
     virtual void p_setId(const hid_t new_id) H5_OVERRIDE;
 
   private:
-    static PropList *DEFAULT_;
-
     // Dynamically allocates the PropList global constant
     static PropList *getConstant();
 

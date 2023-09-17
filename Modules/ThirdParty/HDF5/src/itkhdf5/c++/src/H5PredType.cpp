@@ -128,7 +128,6 @@ PredType::~PredType()
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Definition pointers for the constants
-PredType *PredType::PREDTYPE_CONST_ = 0; // dummy
 PredType *PredType::STD_I8BE_;
 PredType *PredType::STD_I8LE_;
 PredType *PredType::STD_I16BE_;
@@ -328,14 +327,15 @@ PredType::getPredTypes()
         IdComponent::H5dontAtexit_called = true;
     }
 
+    // Dummy constant
+    static PredType *PREDTYPE_CONST_ = 0;
     // If the dummy constant pointer is not allocated, allocate all PredType
     // constant pointers.  Otherwise, throw because it shouldn't be.
     if (PREDTYPE_CONST_ == 0)
+        {
+        PREDTYPE_CONST_ = new PredType;
         makePredTypes();
-    else
-        throw H5::DataTypeIException(
-            "PredType::getPredTypes",
-            "PredType::getPredTypes is being invoked on an allocated PREDTYPE_CONST_");
+        }
     return PREDTYPE_CONST_;
 }
 
@@ -347,7 +347,6 @@ PredType::getPredTypes()
 void
 PredType::makePredTypes()
 {
-    PREDTYPE_CONST_ = new PredType;
     C_S1_           = new PredType(H5T_C_S1);
     FORTRAN_S1_     = new PredType(H5T_FORTRAN_S1);
 
@@ -713,6 +712,7 @@ PredType::deleteConstants()
     delete NATIVE_UINT_FAST64_;
 #endif /* H5_SIZEOF_UINT_FAST64_T */
 
+    PredType *PREDTYPE_CONST_ = getPredTypes();
     delete PREDTYPE_CONST_;
     PREDTYPE_CONST_ = 0;
 } // deleteConstants

@@ -256,9 +256,6 @@ class H5_DLLCPP PredType : public AtomType {
     // Dynamically allocates PredType global constants
     static void makePredTypes();
 
-    // Dummy constant
-    static PredType *PREDTYPE_CONST_;
-
     // Declaration of pointers to constants
     static PredType *STD_I8BE_;
     static PredType *STD_I8LE_;

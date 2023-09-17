@@ -149,8 +149,6 @@ class H5_DLLCPP DSetCreatPropList : public ObjCreatPropList {
     static void deleteConstants();
 
   private:
-    static DSetCreatPropList *DEFAULT_;
-
     // Creates the global constant, should only be used by the library
     static DSetCreatPropList *getConstant();
 
