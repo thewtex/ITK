@@ -32,9 +32,6 @@ namespace H5 {
 // the order of creation and deletion of the global constants.  See Design Notes
 // in "H5PredType.cpp" for information.
 
-// Initialize a pointer for the constant
-FileAccPropList *FileAccPropList::DEFAULT_ = 0;
-
 //--------------------------------------------------------------------------
 // Function:    FileAccPropList::getConstant
 //              Creates a FileAccPropList object representing the HDF5 constant
@@ -56,13 +53,9 @@ FileAccPropList::getConstant()
         IdComponent::H5dontAtexit_called = true;
     }
 
-    // If the constant pointer is not allocated, allocate it. Otherwise,
-    // throw because it shouldn't be.
-    if (DEFAULT_ == 0)
-        DEFAULT_ = new FileAccPropList(H5P_FILE_ACCESS);
-    else
-        throw PropListIException("FileAccPropList::getConstant",
-                                 "FileAccPropList::getConstant is being invoked on an allocated DEFAULT_");
+    // Initialize a pointer for the constant
+    FileAccPropList *DEFAULT_ = new FileAccPropList(H5P_FILE_ACCESS);
+
     return (DEFAULT_);
 }
 
@@ -76,6 +69,7 @@ FileAccPropList::getConstant()
 void
 FileAccPropList::deleteConstants()
 {
+    FileAccPropList *DEFAULT_ = getConstant();
     if (DEFAULT_ != 0)
         delete DEFAULT_;
 }

@@ -158,8 +158,6 @@ class H5_DLLCPP FileAccPropList : public PropList {
     static void deleteConstants();
 
   private:
-    static FileAccPropList *DEFAULT_;
-
     // Creates the global constant, should only be used by the library
     static FileAccPropList *getConstant();
 
