@@ -11,6 +11,14 @@ if _version_info < (3, 7, 0):
 from . import _ITKCommonPython
 %}
 
+%{
+// Required for building with CPython Stable ABI
+#ifdef _MSC_VER
+#include "stdlib.h"
+#include "malloc.h"
+#endif
+%}
+
 //By including pyabc.i and using the -py3 command line option when calling SWIG,
 //the proxy classes of the STL containers will automatically gain an appropriate
 //abstract base class.
