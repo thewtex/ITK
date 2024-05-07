@@ -341,13 +341,14 @@ static int get_clock(uint32_t *clock_high, uint32_t *clock_low,
 	THREAD_LOCAL FILE		*state_f;
 	THREAD_LOCAL uint16_t		clock_seq;
 	struct timeval 			tv;
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__wasi__)
 	struct flock			fl;
 #endif
 	uint64_t			clock_reg;
 	mode_t				save_umask;
 	int				len;
 
+#if !defined(__wasi__)
 	if (state_fd == -2) {
 		save_umask = umask(0);
 		state_fd = open("/var/lib/libuuid/clock.txt",
@@ -361,7 +362,8 @@ static int get_clock(uint32_t *clock_high, uint32_t *clock_low,
 			}
 		}
 	}
-#ifndef _WIN32
+#endif
+#if !defined(_WIN32) && !defined(__wasi__)
 	fl.l_type = F_WRLCK;
 	fl.l_whence = SEEK_SET;
 	fl.l_start = 0;
@@ -441,7 +443,7 @@ try_again:
 			fflush(state_f);
 		}
 		rewind(state_f);
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__wasi__)
 		fl.l_type = F_UNLCK;
 		if (fcntl(state_fd, F_SETLK, &fl) < 0) {
 			fclose(state_f);
