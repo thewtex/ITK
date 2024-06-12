@@ -249,7 +249,9 @@ LabelStatisticsImageFilter<TInputImage, TLabelImage>::ThreadedStreamedGenerateDa
   {
     MapType tomerge{};
     {
+#if !defined(__wasi__) && !defined(__EMSCRIPTEN__)
       const std::lock_guard<std::mutex> lockGuard(m_Mutex);
+#endif
 
       if (m_LabelStatistics.empty())
       {
