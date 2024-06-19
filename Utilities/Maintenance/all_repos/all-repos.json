@@ -1,0 +1,13 @@
+{
+    "output_dir": "output",
+    "source": "itk_all_repos.itk_remote_modules",
+    "source_settings":  {
+        "itk_source_dir": "/home/matt/src/ITK"
+    },
+    "push": "all_repos.push.github_pull_request",
+    "push_settings": {
+        "api_key_env": "ALL_REPOS_KEY",
+        "fork": true,
+        "username": "thewtex"
+    }
+}
