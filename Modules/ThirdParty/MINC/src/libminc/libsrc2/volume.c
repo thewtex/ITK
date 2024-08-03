@@ -72,9 +72,10 @@ static int _generate_ident( char * id_str, size_t length )
   char *temp_ptr;
   char time_str[26];
   int result;
+  pid_t pid;
   
 // Linking in ws2_32  for gethostname is problematic with static libraries.
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__wasi__)
   strcpy(host_str, "unknown");
 #else
   if (gethostname(host_str, sizeof(host_str)) != 0) {
@@ -99,11 +100,17 @@ static int _generate_ident( char * id_str, size_t length )
 #endif
   strftime(time_str, sizeof(time_str), "%Y.%m.%d.%H.%M.%S", &tm_buf);
   
+#ifdef __wasi__
+  pid = 0;
+#else
+  pid = getpid();
+#endif
+
   result = snprintf(id_str, length, "%s:%s:%s:%u:%u", 
                     user_str, 
                     host_str, 
                     time_str, 
-                    getpid(), 
+                    pid, 
                     identx++);
   return result;
 }

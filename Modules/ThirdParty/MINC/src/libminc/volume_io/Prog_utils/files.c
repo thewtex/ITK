@@ -489,6 +489,9 @@ VIOAPI  VIO_Status  copy_file(
     concat_to_string( &command, " " );
     concat_to_string( &command, dest_expanded );
 
+#ifdef __wasi__
+    status = VIO_ERROR;
+#else
     if( system( command ) != 0 )
     {
         print_error( "Error copying file %s to %s: ",
@@ -498,6 +501,7 @@ VIOAPI  VIO_Status  copy_file(
     }
     else
         status = VIO_OK;
+#endif
 
     delete_string( src_expanded );
     delete_string( dest_expanded );
@@ -534,6 +538,9 @@ VIOAPI  VIO_Status  move_file(
     concat_to_string( &command, " " );
     concat_to_string( &command, dest_expanded );
 
+#ifdef __wasi__
+    status = VIO_ERROR;
+#else
     if( system( command ) != 0 )
     {
         print_error( "Error moving file %s to %s: ",
@@ -543,6 +550,7 @@ VIOAPI  VIO_Status  move_file(
     }
     else
         status = VIO_OK;
+#endif
 
     delete_string( src_expanded );
     delete_string( dest_expanded );
@@ -1013,13 +1021,21 @@ VIOAPI  VIO_Status  open_file(
         tmp_name = get_temporary_filename();
 
         (void) snprintf( command, sizeof(command), "gunzip -c %s > %s", expanded, tmp_name );
+#ifdef __wasi__
+        command_status = VIO_ERROR;
+#else
         command_status = system( command );
+#endif
 
         /* Try again, using bzip2 */
         if( command_status != 0 )
         {
             (void) snprintf( command, sizeof(command), "bunzip2 -c %s > %s", expanded, tmp_name );
+#ifdef __wasi__
+            command_status = VIO_ERROR;
+#else
             command_status = system( command );
+#endif
         }
 
         /* Check for failure */
