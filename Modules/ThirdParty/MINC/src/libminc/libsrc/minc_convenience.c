@@ -1486,6 +1486,7 @@ MNCAPI int micreate_ident( char * id_str, size_t length )
     char *temp_ptr;
     char time_str[26];
     int result;
+    pid_t pid;
 
     if (gethostname(host_str, sizeof(host_str)) != 0) {
         strcpy(host_str, "unknown");
@@ -1508,6 +1509,12 @@ MNCAPI int micreate_ident( char * id_str, size_t length )
 #endif
     strftime(time_str, sizeof(time_str), "%Y.%m.%d.%H.%M.%S", &tm_buf);
 
+#ifdef __wasi__
+    pid = 0;
+#else
+    pid = getpid();
+#endif
+
     result = snprintf(id_str, length, "%s%c%s%c%s%c%u%c%u", 
                       user_str, 
                       MI_IDENT_SEP,
@@ -1515,7 +1522,7 @@ MNCAPI int micreate_ident( char * id_str, size_t length )
                       MI_IDENT_SEP,
                       time_str, 
                       MI_IDENT_SEP,
-                      getpid(), 
+                      pid, 
                       MI_IDENT_SEP,
                       identx++);
     return (result);
