@@ -91,7 +91,7 @@ endif()
 #set(_ITKDCMTK_LIB_NAMES dcmdata dcmimage dcmimgle dcmjpeg dcmjpls
     #dcmnet dcmpstat dcmqrdb dcmsr dcmtls ijg12 ijg16 ijg8 oflog ofstd oficonv)
 # Enable minimal DCMTK libs for wasm
-set(_ITKDCMTK_LIB_NAMES ofstd oflog dcmdata dcmimgle dcmimage dcmsr dcmpstat dcmnet dcmqrdb oficonv dcmiod)
+set(_ITKDCMTK_LIB_NAMES dcmdata dcmpstat dcmsr dcmimage dcmimgle dcmnet dcmqrdb dcmiod oflog ofstd oficonv)
 if(WIN32)
   set(ITKDCMTK_LIBDEP_WIN iphlpapi ws2_32 netapi32 wsock32)
 endif()
