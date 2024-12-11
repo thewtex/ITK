@@ -85,7 +85,7 @@ set(_ITKDCMTK_LIB_NAMES dcmdata dcmpstat dcmsr dcmqrdb dcmimgle
 
 # Enable minimal DCMTK libs for wasm
 set(_ITKDCMTK_LIB_NAMES dcmdata dcmpstat dcmsr dcmqrdb dcmimgle
-  dcmimage dcmnet dcmiod dcmfg
+  dcmimage dcmjpeg dcmjpls dcmnet dcmiod dcmfg
   dcmseg dcmpmap ofstd oflog oficonv )
 if(WIN32)
   set(ITKDCMTK_LIBDEP_WIN iphlpapi ws2_32 netapi32 wsock32)
