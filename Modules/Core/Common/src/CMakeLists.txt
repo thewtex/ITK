@@ -186,6 +186,10 @@ elseif(MSVC)
   set_source_files_properties(itkCompensatedSummation.cxx PROPERTIES COMPILE_FLAGS -fp:precise)
 endif()
 
+if(WASI)
+  set_source_files_properties(itkObjectFactoryBase.cxx PROPERTIES COMPILE_FLAGS -fno-lto)
+endif()
+
 ### generating libraries
 itk_module_add_library(ITKCommon ${ITKCommon_SRCS})
 
