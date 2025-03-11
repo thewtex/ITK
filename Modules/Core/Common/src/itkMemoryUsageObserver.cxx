@@ -417,7 +417,7 @@ SunSolarisMemoryUsageObserver::GetMemoryUsage()
 
 #endif // defined(__SUNPRO_CC) || defined (__sun__)
 
-#if !defined(WIN32) && !defined(_WIN32) || defined(__OpenBSD__)
+#if !defined(WIN32) && !defined(_WIN32) && !defined(__wasi__) || defined(__OpenBSD__)
 
 /**         ----         SysResource Memory Usage Observer       ----       */
 
