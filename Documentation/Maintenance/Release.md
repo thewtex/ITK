@@ -576,18 +576,41 @@ cd ITKPythonPackage
 git reset --hard HEAD~1
 ```
 
-For Linux ARM builds, the steps are similar, but the wheel build step is:
+For Linux ARM builds, the steps are similar, but the wheel build step is on an
+ARM Mac:
 
 ```bash
-sudo podman run --privileged --rm tonistiigi/binfmt --install all
-podman run -it -v $(pwd):/work/ quay.io/pypa/manylinux_2_28_aarch64:2024-03-25-9206bd9 bash
-# In the container
-cd /work
+# FLOSS Docker on mac
+brew install colima
+colima start --cpu 9 --memory 16 --mount $PWD:/work:w
+
+# Get your UID, e.g. 501
+id -u
+# Get your GID, e.g. 20
+id -g
+docker run --name itk-manylinux-aarch64-base-2025.07.14 -it quay.io/pypa/manylinux_2_28_aarch64:2025.07.14-5
 # Upgrade GPG keys
 dnf upgrade -y almalinux-release
-# Newer Python.cmake module required for the SABI
-pipx upgrade cmake
 yum install sudo ninja-build
+# Set up corresponding uid, gid accounts
+mkdir /home/manualuser
+echo "manualuser:x:501:20:,,,:/home/manualuser:/bin/bash" >> /etc/passwd
+# Ensure that a group exists for your GID in /etc/group
+chown -R manualuser:20 /home/manualuser
+sudo visudo
+# Add at the end: manualuser ALL=(ALL) NOPASSWD: ALL
+# Add to the end of /etc/shadow: manualuser:*:19485:0:99999:7:::
+exit
+docker commit itk-manylinux-aarch64-base-2025.07.14 itk-manylinux-aarch64-build-2025.07.14
+
+# For subsequent builds with the same base image, the previous steps can be
+# skipped
+docker run -it --rm -u $(id -u):$(id -g) -v /work/:/work/ itk-manylinux-aarch64-build-2025.07.14
+cd /work
+./scripts/internal/manylinux-build-wheels.sh
+
+# In the container
+cd /work
 ./scripts/internal/manylinux-build-wheels.sh
 # Exit the container
 exit
