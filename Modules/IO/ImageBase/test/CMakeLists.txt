@@ -954,6 +954,7 @@ set(
   ITKIOImageBaseGTests
   itkConvertBufferGTest.cxx
   itkConvertBufferGTest2.cxx
+  itkImageIOExtensionFactoryGTest.cxx
   itkIOCommonGTest.cxx
   itkIOCommonGTest2.cxx
   itkImageFileReaderGTest1.cxx
