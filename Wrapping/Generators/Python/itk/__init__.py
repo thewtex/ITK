@@ -26,8 +26,10 @@
 # two contexts.
 from itkConfig import ITK_GLOBAL_VERSION_STRING as __version__
 
-# Tests/lazy.py asserts itk.__package__ == "itk"; guard the invariant.
-assert __package__ == "itk"
+if __package__ != "itk":
+    raise RuntimeError(
+        f"itk/__init__.py loaded as package {__package__!r}; expected 'itk'."
+    )
 
 from itk.support.extras import *
 from itk.support.init_helpers import *
