@@ -97,6 +97,13 @@ def __dir__():
     return sorted({*globals().keys(), *_lazy_attribute_to_module.keys()})
 
 
+def __reduce_ex__(_protocol: int):
+    # Bare types.ModuleType has no reducer; stdlib pickle raises on 3.12+.
+    import importlib as _importlib
+
+    return (_importlib.import_module, (__name__,))
+
+
 def _initialize_module():
     """
     A function to explicitly avoid polluting the global namespace

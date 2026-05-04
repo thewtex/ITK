@@ -53,6 +53,7 @@ if itkConfig.DefaultFactoryLoading:
 import pickle
 
 assert pickle.loads(pickle.dumps(itk.ITKCommon)) is itk.ITKCommon
+assert pickle.loads(pickle.dumps(itk)) is itk
 
 # Test pickling used bash Dask
 _has_cloudpickle: bool = False
