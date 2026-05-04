@@ -78,7 +78,37 @@ DefaultFactoryLoading: bool = _get_environment_boolean(
     "ITK_PYTHON_DEFAULTFACTORYLOADING", "True"
 )
 NotInPlace: bool = _get_environment_boolean("ITK_PYTHON_NOTINPLACE", "False")
+
+from os import environ as _environ
+
+if "ITK_PYTHON_LAZYLOADING" in _environ:
+    import warnings as _warnings
+
+    _warnings.warn(
+        "ITK_PYTHON_LAZYLOADING is no longer consulted; lazy loading is "
+        "always on. Remove the variable from your environment.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    del _warnings
+del _environ
 del _get_environment_boolean
+
+
+def __getattr__(name: str):
+    if name == "LazyLoading":
+        import warnings as _warnings
+
+        _warnings.warn(
+            "itkConfig.LazyLoading is removed and reads will be unsupported "
+            "in a future release; lazy loading is always on. Remove any "
+            "reads or assignments.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return True
+    raise AttributeError(f"module 'itkConfig' has no attribute {name!r}")
+
 
 # Internal settings
 
