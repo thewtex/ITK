@@ -26,6 +26,7 @@ its dotted name.
 """
 
 import importlib
+import importlib.util
 import sys
 import types
 
@@ -59,7 +60,12 @@ def _make_itk_lazy_submodule(
     """
     m = types.ModuleType(f"itk.{module_name}")
     m.__package__ = "itk"  # PEP 366
-    m.__loader__ = None
+    # PEP 451 ModuleSpec so importlib.util.find_spec, inspect, and IDE
+    # introspection treat the synthetic submodule as a normal module.
+    m.__spec__ = importlib.util.spec_from_loader(
+        m.__name__, loader=None, origin="itk lazy submodule"
+    )
+    m.__loader__ = m.__spec__.loader
 
     belong: dict[str, str] = {k: v[0] for k, v in lazy_attributes.items() if v}
 
